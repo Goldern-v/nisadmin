@@ -1,23 +1,14 @@
 import moment from 'moment'
 import Form from 'src/components/Form'
-import ImageUploader from 'src/components/ImageUploader'
-import emitter from 'src/libs/ev'
-import loginViewModel from 'src/modules/login/LoginViewModel'
 import service from 'src/services/api'
 import styled from 'styled-components'
 import React, { useEffect, useLayoutEffect, useState } from 'react'
-import { RouteComponentProps } from 'react-router'
 import { Button, Col, DatePicker, Icon, Input, message, Modal, Radio, Row, Select } from 'antd'
 import { ModalComponentProps } from 'src/libs/createModal'
 import { observer } from 'mobx-react-lite'
 import { to } from 'src/libs/fns'
 import { Rules } from 'src/components/Form/interfaces'
 import { appStore, authStore } from 'src/stores'
-import {
-  CURRENTLEVEL_LIST,
-  POST_LIST,
-  TITLE_LIST,
-} from 'src/modules/nurseFiles/view/nurseFiles-hj/views/nurseFilesList/modal/AddNursingModal'
 import { statisticsViewModal } from 'src/modules/nurseFiles/view/statistics/StatisticsViewModal'
 import { Spin } from 'src/vendors/antd'
 import { DictItem } from 'src/services/api/CommonApiService'
@@ -35,7 +26,7 @@ const rules: Rules = {
   empName: (val) => !!val || "请输入姓名",
 };
 
-if (["wh", "gzsrm","lyyz","qhwy", "ytll"].includes(appStore.HOSPITAL_ID)) {
+if (["wh", "gzsrm","lyyz","qhwy", "ytll", 'whhk'].includes(appStore.HOSPITAL_ID)) {
   rules.userType = (val) => !!val || "请选择类型";
 }
 
@@ -91,7 +82,6 @@ export default observer(function AddScheduleNursingModal(props: Props) {
           refForm!.current!.setFields({
             empName: "",
             sex: "1",
-
             userType: "",
             startDate: moment(),
           });
@@ -100,7 +90,6 @@ export default observer(function AddScheduleNursingModal(props: Props) {
           refForm!.current!.setFields({
             empName: "",
             sex: "1",
-
             userType: "",
             startDate: moment(),
           });
@@ -109,7 +98,6 @@ export default observer(function AddScheduleNursingModal(props: Props) {
           refForm!.current!.setFields({
             empName: "",
             sex: "1",
-
             userType: "",
             startDate: moment(),
           });
@@ -118,7 +106,6 @@ export default observer(function AddScheduleNursingModal(props: Props) {
           refForm!.current!.setFields({
             empName: "",
             sex: "1",
-
             userType: "",
             startDate: moment(),
           });
@@ -127,7 +114,14 @@ export default observer(function AddScheduleNursingModal(props: Props) {
           refForm!.current!.setFields({
             empName: "",
             sex: "1",
-
+            userType: "",
+            startDate: moment(),
+          });
+        },
+        whhk: () => {
+          refForm!.current!.setFields({
+            empName: "",
+            sex: "1",
             userType: "",
             startDate: moment(),
           });
@@ -139,7 +133,7 @@ export default observer(function AddScheduleNursingModal(props: Props) {
 
       const getDictInfo = appStore.hisMatch({
         map: {
-          'wh,lyyz,qhwy,ytll': () => {
+          'wh,lyyz,qhwy,ytll,whhk': () => {
             statisticsViewModal.initDict().then((res) => {
               setTitleList(statisticsViewModal.getDict("技术职称"));
               setPostList(statisticsViewModal.getDict("职务"));
@@ -380,107 +374,7 @@ export default observer(function AddScheduleNursingModal(props: Props) {
                   </Col>
                 </React.Fragment>
               ),
-              wh: () => (
-                <React.Fragment>
-                  <Col span={24}>
-                    <Form.Field label={`类型`} name="userType" required>
-                      <Select>
-                        {userTypeList.map((item: DictItem) => (
-                          <Select.Option value={item.code} key={item.name}>
-                            {item.name}
-                          </Select.Option>
-                        ))}
-                      </Select>
-                    </Form.Field>
-                  </Col>
-                  <Col span={24}>
-                    <Form.Field label={`开始时间`} name="startDate">
-                      <DatePicker />
-                    </Form.Field>
-                  </Col>
-                  <Col span={24}>
-                    <Form.Field label={`周工时`} name="timeLimit">
-                      <Input />
-                    </Form.Field>
-                  </Col>
-                </React.Fragment>
-              ),
-              gzsrm: () => (
-                <React.Fragment>
-                  <Col span={24}>
-                    <Form.Field label={`类型`} name="userType" required>
-                      <Select>
-                        {userTypeList.map((item: DictItem) => (
-                          <Select.Option value={item.code} key={item.name}>
-                            {item.name}
-                          </Select.Option>
-                        ))}
-                      </Select>
-                    </Form.Field>
-                  </Col>
-                  <Col span={24}>
-                    <Form.Field label={`开始时间`} name="startDate">
-                      <DatePicker />
-                    </Form.Field>
-                  </Col>
-                  <Col span={24}>
-                    <Form.Field label={`周工时`} name="timeLimit">
-                      <Input />
-                    </Form.Field>
-                  </Col>
-                </React.Fragment>
-              ),
-              lyyz: () => (
-                <React.Fragment>
-                  <Col span={24}>
-                    <Form.Field label={`类型`} name="userType" required>
-                      <Select>
-                        {userTypeList.map((item: DictItem) => (
-                          <Select.Option value={item.code} key={item.name}>
-                            {item.name}
-                          </Select.Option>
-                        ))}
-                      </Select>
-                    </Form.Field>
-                  </Col>
-                  <Col span={24}>
-                    <Form.Field label={`开始时间`} name="startDate">
-                      <DatePicker />
-                    </Form.Field>
-                  </Col>
-                  <Col span={24}>
-                    <Form.Field label={`周工时`} name="timeLimit">
-                      <Input />
-                    </Form.Field>
-                  </Col>
-                </React.Fragment>
-              ),
-              qhwy: () => (
-                <React.Fragment>
-                  <Col span={24}>
-                    <Form.Field label={`类型`} name="userType" required>
-                      <Select>
-                        {userTypeList.map((item: DictItem) => (
-                          <Select.Option value={item.code} key={item.name}>
-                            {item.name}
-                          </Select.Option>
-                        ))}
-                      </Select>
-                    </Form.Field>
-                  </Col>
-                  <Col span={24}>
-                    <Form.Field label={`开始时间`} name="startDate">
-                      <DatePicker />
-                    </Form.Field>
-                  </Col>
-                  <Col span={24}>
-                    <Form.Field label={`周工时`} name="timeLimit">
-                      <Input />
-                    </Form.Field>
-                  </Col>
-                </React.Fragment>
-              ),
-              ytll: () => (
+              'wh,gzsrm,lyyz,qhwy,ytll,whhk': () => (
                 <React.Fragment>
                   <Col span={24}>
                     <Form.Field label={`类型`} name="userType" required>
@@ -562,7 +456,8 @@ export default observer(function AddScheduleNursingModal(props: Props) {
                   </Col>
                 </React.Fragment>
               )
-            })}
+            },
+            true)}
           </Row>
         </Form>
         <Aside>
@@ -570,7 +465,7 @@ export default observer(function AddScheduleNursingModal(props: Props) {
             type="info-circle"
             style={{ color: "#fa8c16", marginRight: "5px" }}
           />
-          {["wh", "gzsrm","lyyz","qhwy", "ytll"].includes(appStore.HOSPITAL_ID)
+          {["wh", "gzsrm","lyyz","qhwy", "ytll", 'whhk'].includes(appStore.HOSPITAL_ID)
             ? "注：只能添加没有工号的人员，有工号的正式人员请联系管理员进行添加"
             : "注：只能添加没有工号的进修人员，有工号的正式人员请联系管理员进行添加"}
         </Aside>

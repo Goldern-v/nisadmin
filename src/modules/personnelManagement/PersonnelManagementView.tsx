@@ -31,6 +31,7 @@ export default function PersonnelManagementView() {
       case 'ytll':
         return menuConfig_wh;
       case 'qhwy':
+      case 'whhk':
         return menuConfig_qhwy;
       case 'gzsrm':
         return menuConfig_gzsrm;

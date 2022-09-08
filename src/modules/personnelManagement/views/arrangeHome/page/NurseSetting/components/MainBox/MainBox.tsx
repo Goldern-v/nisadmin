@@ -110,137 +110,70 @@ export default observer(function MainBox() {
     //   width: 35
     // },
 
-    ...appStore.hisAdapter({
-      hj: () => [
-        {
-          title: "职称",
-          dataIndex: "newTitle",
-          width: "10%",
-          key: "newTitle",
-        },
-        {
-          title: "层级",
-          dataIndex: "nurseHierarchy",
-          key: "nurseHierarchy",
-          width: "10%",
-        },
-        {
-          title: "职务",
-          dataIndex: "job",
-          key: "job",
-          width: 120,
-        },
-      ],
-      nys: () => [
-        {
-          title: "职称",
-          dataIndex: "newTitle",
-          width: "10%",
-          key: "newTitle",
-        },
-        {
-          title: "类型",
-          dataIndex: "nurseHierarchy",
-          key: "nurseHierarchy",
-          width: "10%",
-        },
-        {
-          title: "职务",
-          dataIndex: "job",
-          key: "job",
-          width: 120,
-        },
-        {
-          title: "周工时",
-          dataIndex: "timeLimit",
-          key: "timeLimit",
-          width: 70,
-        },
-      ],
-      wh: () => [
-        {
-          title: "开始时间",
-          dataIndex: "startDate",
-          key: "startDate",
-          width: 120,
-        },
-        {
-          title: "周工时",
-          dataIndex: "timeLimit",
-          key: "timeLimit",
-          width: 70,
-        },
-      ],
-      gzsrm: () => [
-        {
-          title: "开始时间",
-          dataIndex: "startDate",
-          key: "startDate",
-          width: 120,
-        },
-        {
-          title: "周工时",
-          dataIndex: "timeLimit",
-          key: "timeLimit",
-          width: 70,
-        },
-      ],
-      gxjb: () => [
-        {
-          title: "开始时间",
-          dataIndex: "startDate",
-          key: "startDate",
-          width: 120,
-        },
-        {
-          title: "周工时",
-          dataIndex: "timeLimit",
-          key: "timeLimit",
-          width: 70,
-        },
-      ],
-      lyyz: () => [
-        {
-          title: "开始时间",
-          dataIndex: "startDate",
-          key: "startDate",
-          width: 120,
-        },
-        {
-          title: "周工时",
-          dataIndex: "timeLimit",
-          key: "timeLimit",
-          width: 70,
-        },
-      ],
-      qhwy: () => [
-        {
-          title: "开始时间",
-          dataIndex: "startDate",
-          key: "startDate",
-          width: 120,
-        },
-        {
-          title: "周工时",
-          dataIndex: "timeLimit",
-          key: "timeLimit",
-          width: 70,
-        },
-      ],
-      ytll: () => [
-        {
-          title: "开始时间",
-          dataIndex: "startDate",
-          key: "startDate",
-          width: 120,
-        },
-        {
-          title: "周工时",
-          dataIndex: "timeLimit",
-          key: "timeLimit",
-          width: 70,
-        },
-      ],
+    ...appStore.hisMatch({
+      map: {
+        other: [
+          {
+            title: "职称",
+            dataIndex: "newTitle",
+            width: "10%",
+            key: "newTitle",
+          },
+          {
+            title: "层级",
+            dataIndex: "nurseHierarchy",
+            key: "nurseHierarchy",
+            width: "10%",
+          },
+          {
+            title: "职务",
+            dataIndex: "job",
+            key: "job",
+            width: 120,
+          },
+        ],
+        nys: [
+          {
+            title: "职称",
+            dataIndex: "newTitle",
+            width: "10%",
+            key: "newTitle",
+          },
+          {
+            title: "类型",
+            dataIndex: "nurseHierarchy",
+            key: "nurseHierarchy",
+            width: "10%",
+          },
+          {
+            title: "职务",
+            dataIndex: "job",
+            key: "job",
+            width: 120,
+          },
+          {
+            title: "周工时",
+            dataIndex: "timeLimit",
+            key: "timeLimit",
+            width: 70,
+          },
+        ],
+        'wh,gzsrm,gxjb,lyyz,qhwy,ytll,whhk': [
+          {
+            title: "开始时间",
+            dataIndex: "startDate",
+            key: "startDate",
+            width: 120,
+          },
+          {
+            title: "周工时",
+            dataIndex: "timeLimit",
+            key: "timeLimit",
+            width: 70,
+          },
+        ],
+      },
+      vague: true
     }),
     {
       title: "操作",

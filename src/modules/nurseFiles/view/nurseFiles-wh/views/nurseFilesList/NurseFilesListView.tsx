@@ -409,7 +409,7 @@ const columns: ColumnProps<any>[] = [
     width: 100,
     align: 'center'
   },
-  appStore.HOSPITAL_ID === 'qhwy' ?
+  ['qhwy', 'whhk'].includes(appStore.HOSPITAL_ID) ?
   {
     title: '护理学会会员证号',
     dataIndex: 'membershipCardNumber',

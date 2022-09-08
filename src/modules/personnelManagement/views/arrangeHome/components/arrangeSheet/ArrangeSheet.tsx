@@ -50,27 +50,12 @@ export default observer(function ArrangeSheet(props: Props) {
   /** 修改工时 or 加减班 */
 
   let editEffectiveTimeModal = createModal(
-    appStore.hisAdapter({
-      hj: () => EditEffectiveTimeModal,
-      wjgdszd: () => EditVacationCountModal_wh,
-      wh: () => EditVacationCountModal_wh,
-      gxjb: () => EditVacationCountModal_wh,
-      lcey: () => EditVacationCountModal_wh,
-      dghl: () => EditVacationCountModal_wh,
-      fqfybjy: () => EditVacationCountModal_wh,
-      jmfy: () => EditVacationCountModal_wh,
-      nys: () => EditVacationCountModal_wh,
-      gzsrm: () => EditVacationCountModal_wh,
-      fssdy: () => EditVacationCountModal_wh,
-      fsxt: () => EditVacationCountModal_wh,
-      sdlj: () => EditVacationCountModal_wh,
-      whyx: () => EditVacationCountModal_wh,
-      gdtj: () => EditVacationCountModal_wh,
-      lyyz: () => EditVacationCountModal_wh,
-      qhwy: () => EditVacationCountModal_wh,
-      whsl: () => EditVacationCountModal_wh,
-      ytll: () => EditVacationCountModal_wh,
-      zhzxy: () => EditVacationCountModal_wh,
+    appStore.hisMatch({
+      map: {
+        'wjgdszd,wh,gxjb,lcey,dghl,fqfybjy,jmfy,nys,gzsrm,fssdy,fsxt,sdlj,whyx,gdtj,lyyz,qhwy,whsl,ytll,zhzxy,whhk': EditVacationCountModal_wh,
+        other: EditEffectiveTimeModal,
+      },
+      vague: true
     })
   );
   const addAccumulativeLeaveModal = createModal(AddAccumulativeLeaveModal);
@@ -347,7 +332,7 @@ export default observer(function ArrangeSheet(props: Props) {
     }),
     ...appStore.hisMatch({
       map: {
-        "whyx,qhwy": [
+        "whyx,qhwy,whhk": [
           {
             title: "备注",
             dataIndex: "empRemark",
@@ -778,7 +763,7 @@ export default observer(function ArrangeSheet(props: Props) {
           if (appStore.HOSPITAL_ID == 'fssdy') {
             widthNys += 200
           }
-          if (['qhwy','nfzxy'].includes(appStore.HOSPITAL_ID)) {
+          if (['qhwy','nfzxy', 'whhk'].includes(appStore.HOSPITAL_ID)) {
             widthNys += 100
           }
           /** noscorll */
@@ -786,29 +771,16 @@ export default observer(function ArrangeSheet(props: Props) {
             "#arrangeSheet #baseTable"
           ).style.width =
             (sheetViewModal.dateList.length +
-              appStore.hisAdapter({
-                yczyy: () => 2,
-                nys: () => (isEdit ? 6 : 5),
-                hj: () => 3,
-                wjgdszd: () => 6,
-                wh: () => 6,
-                gxjb: () => 6,
-                jmfy: () => 6,
-                dghl: () => 6,
-                fqfybjy: () => 5,
-                gzsrm: () => 6,
-                lcey: () => 2,
-                dgxg: () => 2,
-                fsxt: () => 6,
-                fssdy: () => 7,
-                whyx: () => 6,
-                sdlj: () => 6,
-                gdtj: () => 6,
-                lyyz: () => 6,
-                qhwy: () => 6,
-                whsl: () => 6,
-                ytll: () => 6,
-                zhzxy: () => 6,
+              appStore.hisMatch({
+                map: {
+                  hj: 3,
+                  fqfybjy: 5,
+                  nys: (isEdit ? 6 : 5),
+                  'wjgdszd,wh,gxjb,jmfy,dghl,gzsrm,fsxt,whyx,sdlj,gdtj,lyyz,qhwy,whsl,ytll,zhzxy,whhk': 6,
+                  fssdy: 7,
+                  other: 2
+                },
+                vague: true
               })) *
             70 +
             widthNys +
@@ -845,6 +817,7 @@ export default observer(function ArrangeSheet(props: Props) {
         break;
       case "whyx":
       case "qhwy":
+      case 'whhk':
         const dragRowWhyx = sheetViewModal.sheetTableData[dragIndex];
         if (!dragRowWhyx) return;
         sheetViewModal.sheetTableData = update(sheetViewModal.sheetTableData, {
@@ -913,32 +886,35 @@ export default observer(function ArrangeSheet(props: Props) {
                 {
                   appStore.hisMatch({
                     map: {
-                      'qhwy': <div className='remark-con system'>
-                                <div className="remark-title">
-                                  系统标注:
-                                </div>
+                      'qhwy,whhk':
+                        <div className='remark-con system'>
+                          <div className="remark-title">
+                            系统标注:
+                          </div>
                           <div>
                             <p>1.符号标识："▲" 代表全院应急；"★" 代表科室应急班；"<span style={{color:"red",fontSize:"18px"}}>➁</span>"代表二线；"<span style={{color:"red",fontSize:"18px"}}>➂</span>"代表三线；</p>
                           </div>
                       </div>,
-                      'whyx':<div className="remark-con system">
-                              <div className="remark-title">
-                                系统标注:
-                              </div>
-                              <div>
-                                <p>
-                                  1.符号标识：“▲”代表<span className="underline">白班</span>应急；“★”代表<span className="underline">夜班应急</span>，左上角“<span style={{ color: "red" }}>♥</span>”代表<span className="underline">期望</span>排班。
-                                </p>
-                                <p>
-                                  2.字体颜色：名字<span style={{ color: "red" }}>红色</span>为<span className="underline">实习生</span>；名字<span style={{ color: "blue" }}>蓝色</span>为<span className="underline">进修生</span>；班次<span style={{ color: "red" }}>红色</span>为<span className="underline">各类休假</span>。
-                                </p>
-                                <p>
-                                  3.背景颜色：名字<span style={{ background: "#fff58a" }}>黄色</span>为<span className="underline">未脱教护士</span>；班次<span style={{ background: "#b2a595" }}>棕色</span>为<span className="underline">中夜班</span>。
-                                </p>
-                              </div>
-                            </div>,
+                      'whyx':
+                        <div className="remark-con system">
+                          <div className="remark-title">
+                            系统标注:
+                          </div>
+                          <div>
+                            <p>
+                              1.符号标识：“▲”代表<span className="underline">白班</span>应急；“★”代表<span className="underline">夜班应急</span>，左上角“<span style={{ color: "red" }}>♥</span>”代表<span className="underline">期望</span>排班。
+                            </p>
+                            <p>
+                              2.字体颜色：名字<span style={{ color: "red" }}>红色</span>为<span className="underline">实习生</span>；名字<span style={{ color: "blue" }}>蓝色</span>为<span className="underline">进修生</span>；班次<span style={{ color: "red" }}>红色</span>为<span className="underline">各类休假</span>。
+                            </p>
+                            <p>
+                              3.背景颜色：名字<span style={{ background: "#fff58a" }}>黄色</span>为<span className="underline">未脱教护士</span>；班次<span style={{ background: "#b2a595" }}>棕色</span>为<span className="underline">中夜班</span>。
+                            </p>
+                          </div>
+                        </div>,
                       default:""
-                    }
+                    },
+                    vague: true
                   })
                 }
                 <div className={"remark-con real"}>

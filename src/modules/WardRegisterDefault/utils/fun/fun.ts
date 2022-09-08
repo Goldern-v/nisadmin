@@ -625,7 +625,7 @@ export function getFun(context: any) {
           selectedRowKeys.indexOf(item.key) >= 0)
         // 自定义签名不需要复制
         let customSignObj: Record<string,any> = {}
-        if (['whyx','lyyz','qhwy'].includes(appStore.HOSPITAL_ID)) {
+        if (['whyx','lyyz','qhwy', 'whhk'].includes(appStore.HOSPITAL_ID)) {
           customSign.map((v:any) => {
             customSignObj[v.itemCode] = ''
           })
