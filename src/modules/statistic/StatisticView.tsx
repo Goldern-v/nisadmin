@@ -45,6 +45,8 @@ import 护士男女分布 from "./views/护士男女分布/护士男女分布";
 //护士在职状态分析
 import 护士工作年限分布 from "./views/护士工作年限分布/护士工作年限分布";
 //护士在职状态分析
+import 护士层级分布 from "./views/护士层级分布/护士层级分布";
+//护士在职状态分析
 import 护士在职状态分析 from "./views/护士在职状态分析/护士在职状态分析";
 //护士离职原因分析
 import 护士离职原因分析 from "./views/护士离职原因分析/护士离职原因分析";
@@ -64,7 +66,8 @@ import professionalTec from "./views/professional-tec";
 // import NurseScheduleByShift from './components/NurseScheduleByShift'
 // import TableModel from './common/TableModel'
 // export interface Props extends RouteComponentProps<{ type?: string }> {}
-
+// 护理人员一览表（层级）
+import NurseList_whyx from "./views/nursingStatistics/NurseList_whyx/NurseList_whyx";
 // 患者查询统计   大块
 // 住院病人认知情况统计表
 // import 住院病人认知情况统计表 from 'src/modules/statistic/PatientQueryView/住院病人认知情况统计表/住院病人认知情况统计表.tsx'
@@ -219,6 +222,16 @@ export default function StatisticView() {
       name: "护士工作年限分布",
       path: "/statistic/护士工作年限分布",
       component: 护士工作年限分布,
+    },
+    {
+      name: "护士层级分布",
+      path: "/statistic/护士层级分布",
+      component: 护士层级分布,
+    },
+    {
+      name: "护理人员一览表(层级)",
+      path: "/statistic/护理人员一览表(层级)",
+      component: NurseList_whyx,
     },
     {
       name: "护士在职状态分析",
