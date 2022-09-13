@@ -54,6 +54,10 @@ class PromotionApp extends BaseApiService {
     newFormData.set('masterId', query.masterId)
     return this.post(`/nurse/promotion/deleteAttachment`, newFormData);
   }
+  //获取当前用户信息
+  public async getTimingUser(query: any) {
+    return this.get(`/user/getTimingUser?empNo=${query}`);
+  }
 }
 
 export const PromotionApplicationApi = new PromotionApp()

@@ -7,6 +7,7 @@ import { message } from "antd";
 import { master, tableObjN1, tableObjN2, tableObjN3, tableObjN4, AdituCommitOneN1, AdituCommitTwoN1, AdituCommitOneN2, AdituCommitTwoN2, AdituCommitOneN3, AdituCommitTwoN3, AdituCommitOneN4, AdituCommitTwoN4 } from './types'
 
 
+
 class PromotionApp {
   @observable public loading = false; // 晋升表code
   @observable public editStatus = '创建'; // 晋升表修改状态
@@ -80,8 +81,6 @@ class PromotionApp {
   @computed get listObj() {
     return {
       master: this.master,
-      itemDataMap: this.handleDifferent(),
-      commitStep: this.commitStep,
     }
   }
 
@@ -140,6 +139,7 @@ class PromotionApp {
     this.carePatientList.map((item: any) => {
       item.masterId = this.master.id
     })
+    console.log(this.master, master);
     let obj = {
       master: this.master,
       itemDataMap: this.handleDifferent(),
@@ -193,7 +193,7 @@ class PromotionApp {
         })
       }
     } else if (this.master.nextNodeCode == 'commit_kh_pj') {
-      let isInfo = formListTwo.some((item: string) => !rawForm[item])
+      let isInfo =  Object.keys(formListTwo).some((item: string) => !rawForm[item])
       if (isInfo) {
         return message.warning('填写六、七项还有信息未填，请确认！')
       } else {
@@ -234,6 +234,10 @@ class PromotionApp {
     return PromotionApplicationApi.getcancelById(this.master.id)
   }
 
+  // 获取当前用户信息
+  getTimingUser(empNo:string | undefined){
+    return PromotionApplicationApi.getTimingUser(empNo)
+  }
 
   // 获取当前用户的晋升表数据
   createOnload() {

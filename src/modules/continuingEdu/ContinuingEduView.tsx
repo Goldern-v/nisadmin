@@ -214,14 +214,14 @@ export default function ContinuingEdu(props: Props) {
             authStore.isOnlyInternsManage,
         },
       ],
-      // "whyx":[
-      //   {
-      //     title: "晋升管理",
-      //     icon: <JSGL />,
-      //     path: "/continuingEdu/PromotionManagement",
-      //     component: PromotionManagement,
-      //   }
-      // ],
+      "whyx":[
+        {
+          title: "晋升管理",
+          icon: <JSGL />,
+          path: "/continuingEdu/PromotionManagement",
+          component: PromotionManagement,
+        }
+      ],
       other: [
         {
           title: "晋升管理",
@@ -1058,13 +1058,13 @@ export default function ContinuingEdu(props: Props) {
         ],
       },
     }),
-    // {
-    //   title: "晋升申请",
-    //   icon: <JSGL />,
-    //   path: "/continuingEdu/PromotionApplication",
-    //   component: PromotionApplication,
-    //   hide: !['whyx'].includes(appStore.HOSPITAL_ID)
-    // },
+    {
+      title: "晋升申请",
+      icon: <JSGL />,
+      path: "/continuingEdu/PromotionApplication",
+      component: PromotionApplication,
+      hide: !['whyx'].includes(appStore.HOSPITAL_ID)
+    },
     {
       title: "类型管理",
       icon: <TKGL />,

@@ -1,5 +1,6 @@
 import { appStore, authStore } from "src/stores/index";
 import moment from 'moment'
+
 export const master ={
   id: '', // 晋升表code
   formCode: 'HSJS_0001', // 晋升表code
