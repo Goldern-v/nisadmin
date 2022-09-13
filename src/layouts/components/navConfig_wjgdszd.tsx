@@ -41,7 +41,6 @@ export const navConfig: (AppStore: any, authStore: any) => navConfigItem[] = (ap
     {
       name: "病区登记本",
       path: "/wardRegister",
-      hidden: !appStore.isDev
     },
     // {
     //   name: '不良事件',

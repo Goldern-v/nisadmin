@@ -11,7 +11,7 @@ export interface Props extends RouteComponentProps {
 
 interface sortParams {
     visible : boolean
-    sortNumber :any
+    sortNumber :number
     currentId: any
 }
 export default function MainBox() {
@@ -28,7 +28,7 @@ export default function MainBox() {
     const [confirmLoading, setConfirmLoading] = useState(false)
     const [effect, setEffect] = useState(true)
     const [loadingTransfer, setLoadingTransfer] = useState(false)
-    const [sortObj,setSortVisible]=useState<sortParams>({visible:false,sortNumber:0,currentId:''})
+    const [sortObj,setSortVisible]=useState<sortParams>({visible:false,sortNumber:1,currentId:''})
     // 表格
     const columns: any = [
         {
@@ -112,6 +112,7 @@ export default function MainBox() {
             deptCode: scheduleStore.getDeptCode(), //string 科室
             groupName: groupName, //string 分组名称
             groupColor: groupColor, //string 分组颜色
+           ...appStore.HOSPITAL_ID==='nfzxy'?  {sortValue:tableData.length ? tableData.length +1 :1}:null , //针对nfzxy添加的排序标识
         }
         if (!groupName) {
             message.warning('保存前请先填写分组名称')
@@ -311,7 +312,7 @@ export default function MainBox() {
         setTableData([...tableData])
             emitter.emit('saveDragData', (tableData: any) => {
                 // let list =tableData.sort((a:any,b:any)=>b.sortValue-a.sortValue)
-                service.personnelSettingApiService.schSettingNurseGroup(tableData).then(() => {
+                service.personnelSettingApiService.schSettingNurseGroup(currentItem).then(() => {
                     handleSortCancel()
                     getMealList()
                 })
@@ -320,7 +321,7 @@ export default function MainBox() {
     /*排序弹窗取消*/
     const handleSortCancel =()=>{
         sortObj.visible =false
-        sortObj.sortNumber=0
+        sortObj.sortNumber=1
         sortObj.currentId=''
         setSortVisible({...sortObj})
     }
@@ -439,7 +440,7 @@ export default function MainBox() {
                             setSortVisible({...sortObj})
                         }}/>
                     </div>
-                    <Remarks>仅支持设置小雨当前所有序号的任何序号，设置后与设置的序号对调</Remarks>
+                    <Remarks>仅支持设置小于当前所有序号的任何序号，设置后与设置的序号对调</Remarks>
                 </Modal>
             </TransferBox>
         </Wrapper>

@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { DatePicker, Select, Input, Checkbox, message } from 'antd'
 import { authStore, appStore } from 'src/stores'
 import { qualityControlRecordEditModel as qcModel, Emp, BedNurse, IAudit, ICode, INodeAppoint } from './../model/QualityControlRecordEditModel'
@@ -38,18 +38,18 @@ export default observer(function FormPannel() {
   let hushi = appStore.HOSPITAL_ID == 'wh' ? '执行护士' : '管床护士'
   let zhuyuanhao = appStore.HOSPITAL_ID == 'wh' ? '诊疗号' : '住院号'
 
-  const [codeList, setCodeList] = useState<Array<ICode>>([]);//指定人员 选择列表
+  // const [codeList, setCodeList] = useState<Array<ICode>>([]);//指定人员 选择列表
 
-  const handleUserListChange = (empNo: any) => {
-    let target = userList.find((item: Emp) => item.empNo == empNo)
+  // const handleUserListChange = (empNo: any) => {
+  //   let target = userList.find((item: Emp) => item.empNo == empNo)
 
-    if (target) qcModel.setMaster({
-      ...master, userList: [{
-        empNo: empNo,
-        empName: target.empName
-      }]
-    })
-  }
+  //   if (target) qcModel.setMaster({
+  //     ...master, userList: [{
+  //       empNo: empNo,
+  //       empName: target.empName
+  //     }]
+  //   })
+  // }
 
   const handleWarCodeChange = (wardCode: string) => {
     qcModel.setMaster({ ...master, wardCode, bedNurseList: [] })
@@ -81,7 +81,6 @@ export default observer(function FormPannel() {
         newBedNurseList.push(newItem)
       }
     }
-
     qcModel.setMaster({ ...master, bedNurseList: newBedNurseList })
   }
 
@@ -95,7 +94,6 @@ export default observer(function FormPannel() {
 
   //新建时显示的质控人
   const qcNewPerson = () => {
-    // console.log('new')
     if (!authStore.user) return ''
     let empNo = authStore.user.empNo
     let empName = authStore.user.empName
@@ -169,16 +167,7 @@ export default observer(function FormPannel() {
 
     })
     qcModel.setNodeAppointList(newNodeAppointList)
-
   }
-
-  useEffect(() => {
-    // setTimeout(() => {
-    //   console.log(auditList)
-    //   console.log(qcModel)
-    //   console.log("auditList")
-    // }, 2000)
-  }, [])
 
   return <Wrapper>
     <div className="master-area" id="masterArea">
@@ -198,20 +187,6 @@ export default observer(function FormPannel() {
       <div className="item">
         <div className="label">质控人:</div>
         <div className={checkClass('userList')}>
-          {/* <Select
-            disabled
-            showSearch
-            placeholder="请选择质控人"
-            onChange={(val: any) => {
-              qcModel.setMasterErrObj('userList', false)
-              handleUserListChange(val)
-            }}
-            value={(master.userList[0] && master.userList[0].empNo) || undefined}
-            filterOption={(input: any, option: any) =>
-              option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-            }>
-            {userList.map((item: any, idx: number) => <Option key={idx} value={item.empNo}>{item.empName}</Option>)}
-          </Select> */}
           <Input disabled value={
             appStore.queryObj.id ?
               qcEditPerson() : qcNewPerson()
@@ -260,7 +235,6 @@ export default observer(function FormPannel() {
                                   <Option value={codeItem.code} key={codeItem.code} >{codeItem.name}</Option>
                                 ):''
                               }
-                              {/* <Option value="a" >a</Option> */}
                             </Select>
                           </div>
                         </li>
@@ -314,8 +288,6 @@ export default observer(function FormPannel() {
                   }} />
               </div>
             </div>
-            
-
           </React.Fragment>
 
         },
@@ -323,6 +295,8 @@ export default observer(function FormPannel() {
       })}
     </div>
     <QuestionCon>
+      {/* 表单介绍 */}
+      {['gzsrm'].includes(appStore.HOSPITAL_ID) && baseInfo.intro && <span className='question-intro'>{baseInfo.intro}</span>}
       {itemGroupList.map((itemGroup: any, groupIdx: number) =>
         <QcItemGroup
           itemGroup={itemGroup}
@@ -350,7 +324,6 @@ export default observer(function FormPannel() {
       },
       currentHospitalId: qcMatchCode
     })}
-    
   </Wrapper >
 })
 const ReasonCon = styled.div`
@@ -409,43 +382,47 @@ const QuestionCon = styled.div`
   height: 0; */
   font-size: 12px;
   padding-bottom: 10px;
+  .question-intro {
+    font-size: 14px;
+    font-weight: bold;
+  }
 `
 
 const AuditList = styled.div`
+  position: relative;
+  font-size: 12px;
+  /* border-bottom: 0.5px dashed #bbbbbb; */
+  padding-bottom: 10px;
+  .auditListTitle{
     position: relative;
-    font-size: 12px;
-    /* border-bottom: 0.5px dashed #bbbbbb; */
-    padding-bottom: 10px;
-    .auditListTitle{
-      position: relative;
-      font-size: 14px;
-      font-weight: bold;
-      padding-top: 5px;
-    }
-    .list{
+    font-size: 14px;
+    font-weight: bold;
+    padding-top: 5px;
+  }
+  .list{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    .auditItem{
       list-style: none;
       margin: 0;
       padding: 0;
-      .auditItem{
-        list-style: none;
-        margin: 0;
-        padding: 0;
+      position: relative;
+      display: flex;
+      -webkit-display: flex;
+      -moz-display: flex;
+      -ms-display: flex;
+      align-items: center;
+      -webkit-align-items: center;
+      -moz-align-items: center;
+      -ms-align-items: center;
+      .auditItemName{
         position: relative;
-        display: flex;
-        -webkit-display: flex;
-        -moz-display: flex;
-        -ms-display: flex;
-        align-items: center;
-        -webkit-align-items: center;
-        -moz-align-items: center;
-        -ms-align-items: center;
-        .auditItemName{
-          position: relative;
-          margin-right: 10px;
-        }
-        .auditSelectList{
-          width: 190px;
-        }
+        margin-right: 10px;
+      }
+      .auditSelectList{
+        width: 190px;
       }
     }
+  }
 `

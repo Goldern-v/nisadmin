@@ -12,8 +12,8 @@ import FormPannel from "./components/FormPannel";
 import FormPanelYx from "./components/FormPanelYx";
 import PreviewPannel from "./components/PreviewPannel";
 import { navTitle } from "src/modules/quality/data/qcTitle";
-import QcrEditNoRadio from "../qualityControlRecordEditNoRadio/QualityControlRecordEdit";
-import { qualityControlRecordApi } from "src/modules/quality/views/qualityControlRecord/api/QualityControlRecordApi";
+// import QcrEditNoRadio from "../qualityControlRecordEditNoRadio/QualityControlRecordEdit";
+// import { qualityControlRecordApi } from "src/modules/quality/views/qualityControlRecord/api/QualityControlRecordApi";
 
 export interface Props {}
 
@@ -55,12 +55,13 @@ const QualityControlRecordEdit = observer(function QualityControlRecordEdit() {
           let inpNoLengthArr = appStore.hisMatch({
             map: {
               wh: [7, 8],
+              sdlj: [6, 7, 8],
               other: [7],
             },
           });
-          ////非贵州
+          // 非贵州
           if (
-            !["gzsrm","gzhd", "whyx", "fsxt"].includes(appStore.HOSPITAL_ID) &&
+            !["gzsrm", "gzhd", "whyx", "fsxt"].includes(appStore.HOSPITAL_ID) &&
             (isNaN(inpNo) || inpNoLengthArr.indexOf(master[x].length) < 0)
           ) {
             //if (isNaN(inpNo) || inpNoLengthArr.indexOf(master[x].length) < 0) {
@@ -72,27 +73,32 @@ const QualityControlRecordEdit = observer(function QualityControlRecordEdit() {
             masterErr = true;
             errMsg = `住院号必须为数字`;
           }
-        }else if(["gzhd"].includes(appStore.HOSPITAL_ID) && (!master[x] || master[x].length===0)){
+        } else if (
+          ["gzhd"].includes(appStore.HOSPITAL_ID) &&
+          (!master[x] || master[x].length === 0)
+        ) {
           qcModel.setMasterErrObj(x, true);
           masterErr = true;
           errMsg = `住院号不能为空`;
-        }else if (['whyx'].includes(appStore.HOSPITAL_ID) && baseInfo.isPatientNumber !== '否' && (!master[x] || master[x].length===0) ) {
+        } else if (
+          ["whyx"].includes(appStore.HOSPITAL_ID) &&
+          baseInfo.isPatientNumber !== "否" &&
+          (!master[x] || master[x].length === 0)
+        ) {
           qcModel.setMasterErrObj(x, true);
           masterErr = true;
         }
-      } else if(x == 'bedLabel') {
-        if (appStore.HOSPITAL_ID == 'whyx'  && baseInfo.isBedNumber == '否' ) {
-
-        } 
-        else if (['gzsrm','nys'].includes(appStore.HOSPITAL_ID)) {
-
-        }
-        else if (master[x].length <= 0 && Object.keys(masterErrObj).indexOf(x) >= 0) {
+      } else if (x == "bedLabel") {
+        if (appStore.HOSPITAL_ID == "whyx" && baseInfo.isBedNumber == "否") {
+        } else if (["gzsrm", "nys"].includes(appStore.HOSPITAL_ID)) {
+        } else if (
+          master[x].length <= 0 &&
+          Object.keys(masterErrObj).indexOf(x) >= 0
+        ) {
           qcModel.setMasterErrObj(x, true);
           masterErr = true;
         }
-      }
-       else if (master[x] instanceof Array) {
+      } else if (master[x] instanceof Array) {
         if (master[x].length <= 0) {
           if (Object.keys(masterErrObj).indexOf(x) >= 0) {
             qcModel.setMasterErrObj(x, true);
@@ -255,13 +261,13 @@ const QualityControlRecordEdit = observer(function QualityControlRecordEdit() {
         <div className="main-contain">
           <Spin spinning={loading}>
             <div className="main-content">
-              {step === 1 && 
-              appStore.hisMatch({
-                map: {
-                  whyx: <FormPanelYx />,
-                  other: <FormPannel />
-                }
-              })}
+              {step === 1 &&
+                appStore.hisMatch({
+                  map: {
+                    whyx: <FormPanelYx />,
+                    other: <FormPannel />,
+                  },
+                })}
               {step === 2 && (
                 <PreviewPannel setpChange={(step) => setStep(step)} />
               )}
@@ -273,40 +279,29 @@ const QualityControlRecordEdit = observer(function QualityControlRecordEdit() {
   );
 });
 export default observer(function Layout() {
-  const { HOSPITAL_ID, location } = appStore;
-  const search = qs.parse(location.search.replace("?", ""));
+  // const { HOSPITAL_ID, location } = appStore;
+  // const search = qs.parse(location.search.replace("?", ""));
   // 表单为满意度且医院为贵州
   // 0 默认 1 改造 其他置空
-  const [openNotRadio, setOpenNotRadio] = useState(2);
+  // const [openNotRadio, setOpenNotRadio] = useState(2);
   // const [component, setComponent] = useState<React.Component | HTMLSpanElement>(<span></span>)
-  const map = (code: number) => {
-    if (!["gzsrm"].includes(HOSPITAL_ID)) return <QualityControlRecordEdit/>
-    switch (code) {
-      case 0:
-        return <QualityControlRecordEdit/>
-      case 1:
-        return <QcrEditNoRadio />
-      default:
-        return <span></span>
-    }
-  }
-  useEffect(() => {
-    if (!["gzsrm"].includes(HOSPITAL_ID)) {
-      setOpenNotRadio(0)
-      return
-    };
-    // 测试
-    // if (search.qcCode == 'GSY_QCTP140') {
-    //   setOpenNotRadio(1)
-    //   return
-    // }
-    // qualityControlRecordApi
-    //   .getFilterQcCodeList()
-    //   .then((res) => {
-    //     setOpenNotRadio(Number((res.data || []).includes(search?.qcCode)))
-    //   })
-    //   .catch((err) => {});
-  }, []);
+  // const map = (code: number) => {
+  //   if (!["gzsrm"].includes(HOSPITAL_ID)) return <QualityControlRecordEdit/>
+  //   switch (code) {
+  //     case 0:
+  //       return <QualityControlRecordEdit/>
+  //     case 1:
+  //       return <QcrEditNoRadio />
+  //     default:
+  //       return <span></span>
+  //   }
+  // }
+  // useEffect(() => {
+  //   if (!["gzsrm"].includes(HOSPITAL_ID)) {
+  //     setOpenNotRadio(0)
+  //     return
+  //   };
+  // }, []);
   return (
     // <React.Fragment>
     //   {

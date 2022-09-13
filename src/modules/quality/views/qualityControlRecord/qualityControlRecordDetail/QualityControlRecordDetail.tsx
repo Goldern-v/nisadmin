@@ -7,8 +7,8 @@ import { qualityControlRecordApi } from 'src/modules/quality/views/qualityContro
 import { Spin } from 'antd'
 import { ScrollBox } from 'src/components/common'
 import { appStore } from 'src/stores'
-import QcrDetailNoRadio from '../qualityControlRecordDetailNoRadio/QualityControlRecordDetail'
-import qs from "qs";
+// import QcrDetailNoRadio from '../qualityControlRecordDetailNoRadio/QualityControlRecordDetail'
+// import qs from "qs";
 
 function QualityControlRecordDetail() {
   let [detailData, setDetailData]: any = useState([])
@@ -104,36 +104,36 @@ function QualityControlRecordDetail() {
 }
 export default function Layout() {
 
-  const { HOSPITAL_ID, location, hisAdapter } = appStore;
-  const search = qs.parse(location.search.replace("?", ""));
-  // 表单为满意度且医院为贵州
-  const [openNotRadio, setOpenNotRadio] = useState(2);
+  // const { HOSPITAL_ID, location, hisAdapter } = appStore;
+  // const search = qs.parse(location.search.replace("?", ""));
+  // // 表单为满意度且医院为贵州
+  // const [openNotRadio, setOpenNotRadio] = useState(2);
   
-  const map = (code: number) => {
-    if (!["gzsrm"].includes(HOSPITAL_ID)) return <QualityControlRecordDetail/>
-    switch (code) {
-      case 0:
-        return <QualityControlRecordDetail/>
-      case 1:
-        return <QcrDetailNoRadio />
-      default:
-        return <span></span>
-    }
-  }
-  useEffect(() => {
-    if (!["gzsrm"].includes(HOSPITAL_ID)) {
-      setOpenNotRadio(0)
-      return
-    };
-    // qualityControlRecordApi
-    //   .getFilterQcCodeList()
-    //   .then((res) => {
-    //     setOpenNotRadio(Number((res.data || []).includes(search?.qcCode)))
-    //   })
-    //   .catch((err) => {
-    //     setOpenNotRadio(0)
-    //   });
-  }, []);
+  // const map = (code: number) => {
+  //   if (!["gzsrm"].includes(HOSPITAL_ID)) return <QualityControlRecordDetail/>
+  //   switch (code) {
+  //     case 0:
+  //       return <QualityControlRecordDetail/>
+  //     case 1:
+  //       return <QcrDetailNoRadio />
+  //     default:
+  //       return <span></span>
+  //   }
+  // }
+  // useEffect(() => {
+  //   if (!["gzsrm"].includes(HOSPITAL_ID)) {
+  //     setOpenNotRadio(0)
+  //     return
+  //   };
+  //   // qualityControlRecordApi
+  //   //   .getFilterQcCodeList()
+  //   //   .then((res) => {
+  //   //     setOpenNotRadio(Number((res.data || []).includes(search?.qcCode)))
+  //   //   })
+  //   //   .catch((err) => {
+  //   //     setOpenNotRadio(0)
+  //   //   });
+  // }, []);
   return (
     // <React.Fragment>
     //   {
