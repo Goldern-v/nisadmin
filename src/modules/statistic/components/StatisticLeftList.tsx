@@ -143,11 +143,15 @@ const LEFT_MENU_CONFIG = [
                   title: "护士离职原因分析", path: "/statistic/护士离职原因分析",
                 },
                 {
-                  title: "护理人员统计",
-                  path: "/statistic/护理人员统计",
-                  hide: ["jmfy",'nys'].includes(appStore.HOSPITAL_ID)
+                  title: '护理人员统计',
+                  path: '/statistic/护理人员统计',
+                  hide: ['jmfy', 'nys', 'whyx'].includes(appStore.HOSPITAL_ID),
+                },
+                {
+                  title: "护士层级分布", path: "/statistic/护士层级分布",
                 },
                 { title: "护理人员一览表", path: "/statistic/护理人员一览表" },
+                { title: "护理人员一览表(层级)", path: "/statistic/护理人员一览表(层级)" },
                 {
                   title: "科室护士明细表",
                   path: "/statistic/科室护士明细表",

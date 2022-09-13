@@ -248,6 +248,10 @@ class StatisticsApi extends BaseApiService {
   public async getTotalUser() {
     return this.get(`/total/totalUser`)
   }
+  // 护士节假日排班表
+  public async getTotalHierarchy() {
+    return this.get(`/total/totalHierarchy`)
+  }
   // 护士节假日排班表 -- 聊城
   public async getTotalUserForLC(type: any = 0) {
     return this.post(`/total/totalUserForLC`, { type })
@@ -305,6 +309,11 @@ class StatisticsApi extends BaseApiService {
   // 统计工作年限
   public countEntryDate(query: any) {
     return this.post('/countInformation/countEntryDate', query)
+  }
+
+   // 统计人员层级
+   public countHierarchy(query: any) {
+    return this.post('/countInformation/countHierarchy', query)
   }
 
   // 统计在职状态
