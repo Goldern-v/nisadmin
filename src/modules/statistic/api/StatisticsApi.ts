@@ -73,7 +73,7 @@ class StatisticsApi extends BaseApiService {
       classShow = ['whyx'].includes(appStore.HOSPITAL_ID) ? '白班' : 'A班'
       classShow = ['nys'].includes(appStore.HOSPITAL_ID) ? '日班' : classShow
     } else if (classShow === '夜班') {
-      classShow = classShow = ['nys'].includes(appStore.HOSPITAL_ID) ? '夜班' : 'P班'
+      classShow=['nys','whyx'].includes(appStore.HOSPITAL_ID)?{'nys':'夜班','whyx':'N班'}[appStore.HOSPITAL_ID]:'P班'
     } else if (classShow === '休假') {
       classShow = '休假'
     }
@@ -142,8 +142,7 @@ class StatisticsApi extends BaseApiService {
     if (classShow === '白班') {
       classShow = ['whyx'].includes(appStore.HOSPITAL_ID) ? '白班' : 'A班'
     } else if (classShow === '夜班') {
-      /*不太清楚逻辑，whyx夜班改为N班，其他不动*/
-      classShow = appStore.HOSPITAL_ID ==='whyx' ? 'N班':'P班'
+      classShow ='P班'
     } else if (classShow === '休假') {
       classShow = '休假'
     } else {
