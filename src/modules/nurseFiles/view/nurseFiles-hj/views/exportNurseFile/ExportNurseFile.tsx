@@ -267,8 +267,8 @@ export default function ExportNurseFile(props: Props) {
     ]).then((res) => {
       setInited(true)
       setTimeout(() => {
-        // let _title = document.title
-        document.title = res[0].empName + '信息档案'
+        let _title = document.title
+        document.title = res[0].empName + '技术档案'
         printing(fileForm, {
           injectGlobalCss: true,
           scanStyles: false,
@@ -278,10 +278,9 @@ export default function ExportNurseFile(props: Props) {
           }
           `
         })
-        // setTimeout(() => {
-        //   document.title = _title
-        // }, 500)
-
+        setTimeout(() => {
+          document.title =inited?document.title:_title
+        }, 500)
         props.onCallBack && props.onCallBack()
       }, 500)
     })
