@@ -15,32 +15,36 @@ export default function ExaminationResults(props: Props) {
       <div className='title title-1'>表五</div>
       <table>
         <colgroup>
-          <col width='20%' />
-          <col width='20%' />
-          <col width='20%' />
-          <col width='20%' />
-          <col width='20%' />
+          <col width='25%' />
+          <col width='25%' />
+          <col width='25%' />
+          <col width='25%' />
+          {/*<col width='20%' />*/}
         </colgroup>
         <tbody>
           <tr>
-            <td colSpan={5} style={{ height: 40 }}>
+            <td colSpan={4} style={{ height: 40 }}>
               <span className='title'>年度考核结果</span>
             </td>
           </tr>
           <tr className='head'>
+            <td>序号</td>
             <td>年度</td>
-            <td>优秀</td>
-            <td>称职</td>
-            <td>基本称职</td>
-            <td>不称职</td>
+            <td>考核结果</td>
+            <td>状态</td>
+            {/*<td>基本称职</td>*/}
+            {/*<td>不称职</td>*/}
           </tr>
           {yearCheckList.map((item: any, index: number) => (
             <tr className='h-tr' key={index}>
+              <td>{index+1}</td>
               <td>{item.year}</td>
-              <td>{item.checkResult == '优秀' ? '✔' : ''}</td>
-              <td>{item.checkResult == '称职' ? '✔' : ''}</td>
-              <td>{item.checkResult == '基本称职' ? '✔' : ''}</td>
-              <td>{item.checkResult == '不称职' ? '✔' : ''}</td>
+              <td>{item.checkResult}</td>
+              <td>{item.auditedStatusName}</td>
+              {/*<td>{item.checkResult == '优秀' ? '✔' : ''}</td>*/}
+              {/*<td>{item.checkResult == '称职' ? '✔' : ''}</td>*/}
+              {/*<td>{item.checkResult == '基本称职' ? '✔' : ''}</td>*/}
+              {/*<td>{item.checkResult == '不称职' ? '✔' : ''}</td>*/}
             </tr>
           ))}
           {numberToArray(1, Math.max(0, rowNum)).map((item: any, index: number) => (

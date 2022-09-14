@@ -36,16 +36,16 @@ export default function TwoPage() {
       </div>
       <div className='title-1'>附件</div>
       <div className='text-con'>
-        <div className='indent-1'>1、身份证复印件</div>
-        <div className='indent-1'>2、学历毕业证复印件（含第一学历至最高学历）</div>
-        <div className='indent-1'>3、执业证复印件</div>
-        <div className='indent-1'>4、资格证复印件</div>
-        <div className='indent-1'>5、职称聘用证明</div>
-        <div className='indent-1'>6、层级晋级表</div>
-        <div className='indent-1'>7、护理会诊人员资质认定表</div>
-        <div className='indent-1'>8、夜班护士准入评价表</div>
-        <div className='indent-1'>9、厚街医院护理人员执业准入资格备案表</div>
-        <div className='indent-1'>10、高风险诊疗技术操作人员资质申请表</div>
+        {/*<div className='indent-1'>1、身份证复印件</div>*/}
+        <div className='indent-1'>1、学历毕业证复印件（含第一学历至最高学历）</div>
+        <div className='indent-1'>2、执业证复印件</div>
+        <div className='indent-1'>3、资格证复印件</div>
+        {/*<div className='indent-1'>5、职称聘用证明</div>*/}
+        {/*<div className='indent-1'>6、层级晋级表</div>*/}
+        {/*<div className='indent-1'>7、护理会诊人员资质认定表</div>*/}
+        {/*<div className='indent-1'>8、夜班护士准入评价表</div>*/}
+        {/*<div className='indent-1'>9、厚街医院护理人员执业准入资格备案表</div>*/}
+        {/*<div className='indent-1'>10、高风险诊疗技术操作人员资质申请表</div>*/}
       </div>
     </Wrapper>
   )

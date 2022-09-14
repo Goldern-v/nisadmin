@@ -18,7 +18,8 @@ export default function OnePage(props: Props) {
   const showImage = imgObj.filterData.map((item:any,index:any)=>{
     return (
       <PrintPage key={index} pageIndex={startPage[startIndex]+index}>
-        <div className="NavTlt">职称证书</div>
+        {/*职称证书*/}
+        <div className="NavTlt">{imgObj.content||'职称证书'}</div>
         <div className="title">{imgObj.content}{imgObj.filterData.length>1&&index+1}</div>
         <img src={item}/>
       </PrintPage>
