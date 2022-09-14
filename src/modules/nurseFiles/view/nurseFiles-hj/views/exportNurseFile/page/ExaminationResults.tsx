@@ -53,7 +53,6 @@ export default function ExaminationResults(props: Props) {
               <td />
               <td />
               <td />
-              <td />
             </tr>
           ))}
         </tbody>
