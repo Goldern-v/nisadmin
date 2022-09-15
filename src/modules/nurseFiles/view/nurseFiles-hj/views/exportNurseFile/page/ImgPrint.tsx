@@ -50,6 +50,8 @@ const Wrapper = styled.div`
     max-width:80%;
     position:relative;
     left:50%;
+    height: 800px;
     transform: translateX(-50%);
+    overflow: hidden;
   }
 `;

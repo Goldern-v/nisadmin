@@ -64,7 +64,7 @@ export default function LevelChange(props: Props) {
             </td>
           </tr>
           <tr>
-            <td>取得职称资格及层级</td>
+            <td>取得职称资格</td>
             <td>职称聘用时间</td>
           </tr>
 
