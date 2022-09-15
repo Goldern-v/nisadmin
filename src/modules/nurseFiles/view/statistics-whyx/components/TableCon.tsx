@@ -46,6 +46,12 @@ export default function TableCon(props: Props) {
       align: "center"
     },
     {
+      title: "是否离职",
+      dataIndex: "status",
+      width: 100,
+      align: "center",
+    },
+    {
       title: "性别",
       dataIndex: "sex",
       width: 80,
