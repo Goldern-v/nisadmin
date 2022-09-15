@@ -46,7 +46,7 @@ export default function TableCon(props: Props) {
       align: "center"
     },
     {
-      title: "是否离职",
+      title: "在院情况",
       dataIndex: "status",
       width: 100,
       align: "center",
