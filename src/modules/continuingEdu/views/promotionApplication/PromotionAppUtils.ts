@@ -201,6 +201,7 @@ class PromotionApp {
           master: this.master,
           itemDataMap: this.handleDifferent(),
           commitStep: this.master.nextNodeCode || '',
+          carePatientList: this.carePatientList,
         }
         this.loading = true;
         PromotionApplicationApi.getSaveOrCommit(obj).then((res) => {

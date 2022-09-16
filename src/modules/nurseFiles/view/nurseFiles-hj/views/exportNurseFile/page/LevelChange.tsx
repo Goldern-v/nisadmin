@@ -64,14 +64,15 @@ export default function LevelChange(props: Props) {
             </td>
           </tr>
           <tr>
-            <td>取得职称资格及层级</td>
+            <td>取得职称资格</td>
             <td>职称聘用时间</td>
           </tr>
 
           {levelChangeList.map((item: any, index: number) => (
             <tr key={index} className='h-tr'>
               <td>
-                {item.titleQualification} {item.hierarchy}
+                {/*   {item.hierarchy}  去掉对应职称 */}
+                {item.titleQualification}
               </td>
               <td>{item.appointmentTime}</td>
             </tr>
