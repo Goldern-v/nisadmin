@@ -65,7 +65,7 @@ export default function SumMonth(props: Props) {
 
 		{
 			"mainKey": "GLZB03001", "combinedKey": "GLZB03000", "isCombined": "0",
-			weekNum: '第二周', answer: '3.急救设备器材及药品完好合格率', answerSmall: '5.1无证护士',
+			weekNum: '第二周', answer: '3.急救设备器材及药品完好合格率', answerSmall: '3.1除颤仪',
 			tips: '1.根据《急救设备器材管理制度》、《急救药品管理制度》要求；2.设备能正常运行；3.急救物品数量或功能完好；4.急救药品数量无缺失、失效、标识不清楚',
 			method: '所有急救物品及药品均检查'
 		},

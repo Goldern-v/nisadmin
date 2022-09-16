@@ -102,7 +102,7 @@ export default observer(function FollowUpRecord() {
       title: "工时结余（小时）",
       dataIndex: "balanceHourNow",
       align: "center",
-      width: 100,
+      width: 110,
       render(text: any, record: any) {
         return Number(text).toFixed(2);
       }
@@ -112,6 +112,29 @@ export default observer(function FollowUpRecord() {
       dataIndex: "totalHoliday",
       width: 100
     },
+    ...appStore.hisMatch({map:{
+      'qhwy':[
+        {
+          title: "产假结余",
+          dataIndex: "maternityHourNow",
+          width: 100,
+          align: "center",
+        },
+        {
+          title: "探亲假",
+          dataIndex: "homeHourNow",
+          width: 100,
+          align: "center",
+        },
+        {
+          title: "公差结余",
+          dataIndex: "toleranceHourNow",
+          width: 100,
+          align: "center",
+        },
+    ],
+      other:[],
+    }}),
     {
       title: "备注",
       dataIndex: "remark",
@@ -189,7 +212,7 @@ export default observer(function FollowUpRecord() {
       .then(res => {
         setDataSource(res.data.list);
         setPageLoading(false);
-        setTotal(res.data.totalCount);
+        setTotal(res.data.totalCount); 
       });
     // qcOneService.qcSafetyCheckGetPage({ ...pageOptions, wardCode: authStore.selectedDeptCode }).then((res) => {
     //   setDataSource(res.data.list)
@@ -264,6 +287,7 @@ export default observer(function FollowUpRecord() {
         wrapperStyle={{ margin: "0 15px" }}
         type={["index"]}
         surplusHeight={200}
+        surplusWidth={200}
         pagination={{
           current: pageOptions.pageIndex,
           pageSize: pageOptions.pageSize,

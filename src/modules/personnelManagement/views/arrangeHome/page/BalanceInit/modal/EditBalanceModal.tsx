@@ -67,6 +67,9 @@ export default function EditBalanceModal(props: Props) {
     data.balanceHourNow = Number(data.balanceHourNow) || 0;
     data.totalHoliday = Number(data.totalHoliday) || 0;
 
+    data.maternityHourNow = Number(data.maternityHourNow) || 0;
+    data.homeHourNow = Number(data.homeHourNow) || 0;
+    data.toleranceHourNow = Number(data.toleranceHourNow) || 0;
     /** 保存接口 */
     arrangeService.schBalanceHourSaveOrUpdate(data).then((res: any) => {
       message.success("保存成功");
@@ -93,6 +96,9 @@ export default function EditBalanceModal(props: Props) {
           publicHourNow: props.oldData.publicHourNow,
           holidayHourNow: props.oldData.holidayHourNow,
           balanceHourNow: props.oldData.balanceHourNow,
+          maternityHourNow: props.oldData.maternityHourNow,
+          homeHourNow: props.oldData.homeHourNow,
+          toleranceHourNow: props.oldData.toleranceHourNow,
           totalHoliday: props.oldData.totalHoliday,
           periodHourNow: props.oldData.periodHourNow,
           remark: props.oldData.remark,
@@ -107,6 +113,9 @@ export default function EditBalanceModal(props: Props) {
           publicHourNow: 0,
           holidayHourNow: 0,
           balanceHourNow: 0,
+          maternityHourNow: 0,
+          homeHourNow: 0,
+          toleranceHourNow: 0,
           totalHoliday: 0,
           periodHourNow: 0,
           remark: "",
@@ -181,6 +190,7 @@ export default function EditBalanceModal(props: Props) {
               <InputNumber/>
             </Form.Field>
           </Col>
+         
           {
             appStore.HOSPITAL_ID === 'jmfy' && (
               <Col span={24}>
@@ -216,7 +226,27 @@ export default function EditBalanceModal(props: Props) {
               vague:true
             })
           }
-
+          {
+            appStore.HOSPITAL_ID === 'qhwy' && (
+              <React.Fragment>
+                <Col span={24}>
+                  <Form.Field label={`产假结余`} name="maternityHourNow">
+                    <InputNumber/>
+                  </Form.Field>
+                </Col>
+                <Col span={24}>
+                  <Form.Field label={`探亲假`} name="homeHourNow">
+                    <InputNumber/>
+                  </Form.Field>
+                </Col>
+                <Col span={24}>
+                  <Form.Field label={`公差结余`} name="toleranceHourNow">
+                    <InputNumber/>
+                  </Form.Field>
+                </Col>
+              </React.Fragment>
+            )
+          }
           <Col span={24}>
             <Form.Field label={`结余类型`} name="status">
               <Select disabled={props.oldData}>
