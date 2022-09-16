@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import React, { useState, useEffect, useLayoutEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
-import { Modal, DatePicker, Button, Input } from 'antd'
+import { Modal, DatePicker, Button, Input, Select } from 'antd'
 import BaseTable from 'src/components/BaseTable'
 import { observer } from 'mobx-react-lite'
 import { fileDownload } from 'src/utils/file/file'
@@ -13,6 +13,7 @@ import DeptSelect from 'src/components/DeptSelect'
 import moment from 'moment'
 import { authStore } from 'src/stores'
 import { message } from 'antd/es'
+const { Option } = Select;
 
 const { MonthPicker } = DatePicker
 
@@ -22,10 +23,12 @@ export interface Props extends RouteComponentProps {}
 
 export default observer(function WritingForm(props: any) {
   const [tableData, setTableData] = useState([])
+  const [cacheTableData, setCacheTableData] = useState([])
   const [loadingTable, setLoadingTable] = useState(false)
   const [selectedDept, setSelectedDept] = useState(authStore.defaultDeptCode)
   const [tableList, setTableList] = useState(new Array())
   const [deptList, setDeptList] = useState([])
+  const [defaultValue, setDefaultValue] = useState('')
 
   // const [visible, setVisible] = useState(false)
   // const [wardList, setWardList] = useState('')
@@ -412,6 +415,7 @@ export default observer(function WritingForm(props: any) {
             const arrOne = tableData.slice();
             setTableData([])
             setTableData(arrOne)
+            
           } else {
             message.error(`${sign}失败！`)
           }
@@ -423,7 +427,6 @@ export default observer(function WritingForm(props: any) {
   }
   // 获取某一个月的开始时间和结束时间
   const startEndDate = () => {
-    console.log('1111111', date, moment(date))
     let startDate = moment(date);
     let endDate: any = new Date(startDate.format('YYYY/MM/DD'));
     startDate.date(1);
@@ -462,7 +465,7 @@ export default observer(function WritingForm(props: any) {
 
   useEffect(() => {
     getTableData()
-  }, [date])
+  }, [date, selectedDept])
 
   const getTableData = () => {
     const { startDate, endDate } = startEndDate()
@@ -482,7 +485,12 @@ export default observer(function WritingForm(props: any) {
           }
         })
         .then((res) => {
-          setTableData(res.data || [])
+          // setTableData(res.data || [])
+          setCacheTableData(res.data || [])
+          const data = res.data.filter((item: any) => {
+            return item.EVAL_DESC.indexOf(defaultValue) !== -1;
+          })
+          setTableData(data)
           setLoadingTable(false)
         })
     } else {
@@ -495,7 +503,6 @@ export default observer(function WritingForm(props: any) {
   // }
 
   // const onOk = (params: any) => {
-  //   console.log(params, 6666)
   //   writingFormService.getNurseVet(params).then((res) => {
   //     if (res.code === 200) {
   //       setLoadingTable(false)
@@ -532,9 +539,6 @@ export default observer(function WritingForm(props: any) {
   }
 
   const rowSelection = {
-    // onChange: (selectedRowKeys: any, selectedRows: any) => {
-    //   console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-    // },
     onSelect: (record: any, selected: any, selectedRows: any) => {
       checkData = selectedRows
       
@@ -544,6 +548,17 @@ export default observer(function WritingForm(props: any) {
     },
   };
 
+  // const cache: any = JSON.parse(JSON.stringify(tableData))
+
+  const handleChange = (data: any) => {
+    let newData: string = data === '全部' ? '' : data
+    setDefaultValue(newData)
+    let newTableData = cacheTableData.filter((item: any) => {
+      return item.EVAL_DESC.indexOf(newData) !== -1;
+    })
+    setTableData(newTableData)
+  }
+
   return (
     <Wrapper>
       <HeaderCon>
@@ -551,6 +566,16 @@ export default observer(function WritingForm(props: any) {
           <PageTitle>非术科VTE质量单统计</PageTitle>
         </LeftIcon>
         <RightIcon>
+          <div className='item'>
+            <div className='label'>等级评估：</div>
+            <div className='content'>
+              <Select defaultValue="全部" style={{ width: 180 }} onChange={handleChange}>
+                {['全部',  '非术科VTE中高危及以上',  '非术科VTE极高危',  '非术科VTE高危',  '非术科VTE中高危',  '非术科VTE中危',  '非术科VTE低危',  '非术科VTE极低危' ].map((item: any, index) =>{
+                  return <Option value={item}>{item}</Option>
+                })}
+              </Select>
+            </div>
+          </div>
           <div className='item'>
             <div className='label'>日期：</div>
             <div className='content'>
@@ -564,7 +589,23 @@ export default observer(function WritingForm(props: any) {
           <div className='item'>
             <div className='label'>科室：</div>
             <div className='content'>
-              <DeptSelect onChange={(val: any) => setSelectedDept(val)} style={{ width: 160 }} />
+              {/* <DeptSelect onChange={(val: any) => setSelectedDept(val)} style={{ width: 160 }} /> */}
+              <Select 
+                style={{ width: 160 }} 
+                value={selectedDept}
+                // allowClear
+                onChange={(val:any)=> setSelectedDept(val) }
+                showSearch={true}
+                filterOption={(input: any, option: any) =>
+                  option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                }
+              >
+                {deptList.map((item: any) => (
+                  <Select.Option key={item.name} value={item.code}>
+                    {item.name}
+                  </Select.Option>
+                ))}
+              </Select>
             </div>
           </div>
 
