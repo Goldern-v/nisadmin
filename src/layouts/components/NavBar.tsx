@@ -310,12 +310,12 @@ export default observer(function NavBar(props: any) {
                 className="logo"
                 style={{ height: 30 }}
               />
-              <img
-                src={require("../images/护理管理系统.png")}
-                alt=""
-                className="name"
-                style={{ paddingRight: 30 }}
-              />
+              {/*<img*/}
+              {/*  src={require("../images/护理管理系统.png")}*/}
+              {/*  alt=""*/}
+              {/*  className="name"*/}
+              {/*  style={{ paddingRight: 30 }}*/}
+              {/*/>*/}
             </React.Fragment>
           );
           break;
