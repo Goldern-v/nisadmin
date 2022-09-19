@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import React, { useState, useEffect, useLayoutEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
-import { Modal, DatePicker, Button, Input } from 'antd'
+import { Modal, DatePicker, Button, Input, Select } from 'antd'
 import BaseTable from 'src/components/BaseTable'
 import { observer } from 'mobx-react-lite'
 import { fileDownload } from 'src/utils/file/file'
@@ -14,6 +14,8 @@ import moment from 'moment'
 import { authStore } from 'src/stores'
 import { message } from 'antd/es'
 
+const { Option } = Select
+
 const { MonthPicker } = DatePicker
 
 const { confirm } = Modal;
@@ -22,13 +24,16 @@ export interface Props extends RouteComponentProps {}
 
 export default observer(function WritingForm(props: any) {
   const [tableData, setTableData] = useState([])
+  const [cacheTableData, setCacheTableData] = useState([])
   const [loadingTable, setLoadingTable] = useState(false)
   const [selectedDept, setSelectedDept] = useState(authStore.defaultDeptCode)
   const [tableList, setTableList] = useState(new Array())
   const [deptList, setDeptList] = useState([])
+  const [defaultValue, setDefaultValue] = useState('')
 
   const [date, setDate]= useState(moment())
   let checkData: any[] = []
+
 
   // let date = moment()
   // const [date]
@@ -646,7 +651,6 @@ export default observer(function WritingForm(props: any) {
     let startDate = moment(date);
     let endDate: any = new Date(startDate.format('YYYY/MM/DD'));
     startDate.date(1);
-    console.log('start', date, startDate.format('YYYY/MM/DD'))
 
     endDate.setMonth(endDate.getMonth() + 1);
     endDate.setDate(0);
@@ -682,11 +686,10 @@ export default observer(function WritingForm(props: any) {
 
   useEffect(() => {
     getTableData()
-  }, [date])
+  }, [date, selectedDept])
 
   const getTableData = () => {
     const { startDate, endDate } = startEndDate()
-    console.log(startDate.format("YYYY-MM-DD"), endDate.format("YYYY-MM-DD"), moment(date).format("MM"), 6666)
     setLoadingTable(true)
     if (date) {
       writingFormService
@@ -703,7 +706,14 @@ export default observer(function WritingForm(props: any) {
           }
         })
         .then((res) => {
-          setTableData(res.data || [])
+          if (res.code === '200') {
+            // setTableData(res.data || [])
+            setCacheTableData(res.data || [])
+            const data = res.data.filter((item: any) => {
+              return item.EVAL_DESC.indexOf(defaultValue) !== -1;
+            })
+            setTableData(data)
+          }
           setLoadingTable(false)
         })
     } else {
@@ -716,7 +726,6 @@ export default observer(function WritingForm(props: any) {
   // }
 
   // const onOk = (params: any) => {
-  //   console.log(params, 6666)
   //   writingFormService.getNurseVet(params).then((res) => {
   //     if (res.code === 200) {
   //       setLoadingTable(false)
@@ -765,6 +774,16 @@ export default observer(function WritingForm(props: any) {
     },
   };
 
+  const handleChange = (data: any) => {
+    let newData: string = data === '全部' ? '' : data
+    setDefaultValue(newData)
+    let newTableData = cacheTableData.filter((item: any) => {
+      return item.EVAL_DESC.indexOf(newData) !== -1;
+    })
+    setTableData(newTableData)
+    
+  }
+
   return (
     <Wrapper>
       <HeaderCon>
@@ -772,6 +791,16 @@ export default observer(function WritingForm(props: any) {
           <PageTitle>术科VTE质量单统计</PageTitle>
         </LeftIcon>
         <RightIcon>
+          <div className='item'>
+            <div className='label'>等级评估：</div>
+            <div className='content'>
+              <Select defaultValue='全部' style={{ width: 180 }} onChange={handleChange}>
+                {['全部',  '术科VTE中高危及以上',  '术科VTE极高危',  '术科VTE高危',  '术科VTE中高危',  '术科VTE中危',  '术科VTE低危',  '术科VTE极低危' ].map((item: any, index) =>{
+                  return <Option value={item}>{item}</Option>
+                })}
+              </Select>
+            </div>
+          </div>
           <div className='item'>
             <div className='label'>日期：</div>
             <div className='content'>
@@ -798,7 +827,26 @@ export default observer(function WritingForm(props: any) {
           <div className='item'>
             <div className='label'>科室：</div>
             <div className='content'>
-              <DeptSelect onChange={(val: any) => setSelectedDept(val)} style={{ width: 160 }} />
+              {/* <DeptSelect deptCode={selectedDept} onChange={(val: any) => {
+                setSelectedDept(val)
+              } } style={{ width: 160 }} /> */}
+              <Select 
+                style={{ width: 160 }} 
+                value={selectedDept}
+                // allowClear
+                onChange={(val:any)=> setSelectedDept(val) }
+                showSearch={true}
+                filterOption={(input: any, option: any) =>
+                  option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                }
+              >
+                {/* <Select.Option value='全部'>全部</Select.Option> */}
+                {deptList.map((item: any) => (
+                  <Select.Option key={item.name} value={item.code}>
+                    {item.name}
+                  </Select.Option>
+                ))}
+              </Select>
             </div>
           </div>
 
