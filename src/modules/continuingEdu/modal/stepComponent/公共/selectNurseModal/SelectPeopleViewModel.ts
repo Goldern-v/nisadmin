@@ -13,7 +13,7 @@ class SelectPeopleViewModel {
       label: "按片区选择",
       data: [],
       dataLabel: "deptName",
-      stepLabel: "deptCode"
+      // stepLabel: "deptCode"
     },
     {
       step: "默认科室",
@@ -49,6 +49,7 @@ class SelectPeopleViewModel {
   ];
   /** 病区下数据 */
   @observable public selectTreeHasBigDept = [
+
     {
       step: "按护理单元选择",
       label: "按护理单元选择",
@@ -133,9 +134,13 @@ class SelectPeopleViewModel {
         }
       } else if (this.stepState.length == 2) {
         if (this.stepState[0] == "按片区选择") {
-          this.selectedBigDeptCode = this.stepState[1].split("-")[0];
-          this.selectedBigDeptName = this.stepState[1].split("-")[1];
-          this.stepState = [];
+          // this.selectedBigDeptCode = this.stepState[1].split("-")[0];
+          // this.selectedBigDeptName = this.stepState[1].split("-")[1];
+          this.currentData = {
+            list: (await ser.groupByBigDeptInDeptList({ showAuthDept: true }))
+                .data
+          };
+          // this.stepState = [];
         } else if (this.stepState[0] == "按护理单元选择") {
           this.currentData = {
             list: (await ser.groupByDeptInDeptList(
@@ -231,19 +236,28 @@ class SelectPeopleViewModel {
     }
     if (this.stepState.length == 2) {
       let { dataLabel } = this.selectTreeData.find(
-        (item: any) => item.step == this.stepState[0]
+          (item: any) => item.step == this.stepState[0]
       ) || {
         dataLabel: ""
       };
       let userData: any =
-        (this.currentData.list || []).find(
-          (item: any) => item[dataLabel || ""] == this.stepState[1]
-        ) || {};
+          (this.currentData.list || []).find(
+              (item: any) => item[dataLabel || ""] == this.stepState[1]
+          ) || {};
+      /*不包含N层级的数据*/
+      let containN:any=[],noContainN:any=[] ;
+      (userData.userList || []).map((item:any)=>{
+        if(item.currentLevel&&item.currentLevel.includes('N')){
+          containN.push(item)
+        }else{
+          noContainN.push(item)
+        }
+      })
       return {
         parent: userData[dataLabel || ""],
-        list: (userData.userList || []).map((item: any) => ({
+        list: containN.sort((a:any,b:any)=>a.currentLevel.substr(1) - b.currentLevel.substr(1)).concat(noContainN).map((item: any) => ({
           ...item,
-          label: item.empName,
+          label: `${item.currentLevel} ${item.empName}`,
           key: item.empNo,
           userList: [item]
         })),
