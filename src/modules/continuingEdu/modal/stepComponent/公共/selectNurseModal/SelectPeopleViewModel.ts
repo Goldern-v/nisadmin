@@ -1,5 +1,5 @@
 import { observable, computed, action } from "mobx";
-import { authStore } from "src/stores";
+import {appStore, authStore} from "src/stores";
 import service from "src/services/api";
 class SelectPeopleViewModel {
   @observable modalLoading: boolean = false;
@@ -257,7 +257,7 @@ class SelectPeopleViewModel {
         parent: userData[dataLabel || ""],
         list: containN.sort((a:any,b:any)=>a.currentLevel.substr(1) - b.currentLevel.substr(1)).concat(noContainN).map((item: any) => ({
           ...item,
-          label: `${item.currentLevel} ${item.empName}`,
+          label:`${appStore.HOSPITAL_ID==='whyx'?`${item.currentLevel} ${item.empName}`:`${item.empName}`}` ,
           key: item.empNo,
           userList: [item]
         })),
