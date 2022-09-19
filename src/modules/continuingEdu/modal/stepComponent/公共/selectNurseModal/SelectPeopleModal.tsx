@@ -396,20 +396,9 @@ const CheckListCon = observer(function (props: any) {
                               selectPeopleViewModel.pushStep(
                                 item[
                                   selectPeopleViewModel!.currentTreeData!.stepLabel
-                                ]
-                                  ? `${item[
-                                  selectPeopleViewModel!.currentTreeData!
-                                    .stepLabel
-                                  ]
-                                  }-${item[
-                                  selectPeopleViewModel!.currentTreeData!
-                                    .dataLabel
-                                  ]
-                                  }`
-                                  : item[
-                                  selectPeopleViewModel!.currentTreeData!
-                                    .dataLabel || ""
-                                  ], appStore.HOSPITAL_ID == 'lcey' ? (item.deptCode || item.level || item.title || item.job || item.year) : ''
+                                ]||item[
+                                    selectPeopleViewModel!.currentTreeData!.dataLabel]
+                                , appStore.HOSPITAL_ID == 'lcey' ? (item.deptCode || item.level || item.title || item.job || item.year) : ''
                               )
                             }
                           >
