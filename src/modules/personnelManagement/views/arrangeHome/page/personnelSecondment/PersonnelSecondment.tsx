@@ -4,6 +4,7 @@ import { Button } from "antd";
 import BreadcrumbBox from "src/layouts/components/BreadcrumbBox";
 import { Place } from "src/components/common";
 import BaseTable from "src/components/BaseTable";
+import { DoCon } from "src/components/BaseTable";
 import { ColumnProps, PaginationConfig, Select } from "src/vendors/antd";
 import createModal from "src/libs/createModal";
 import PersonelSecondModal from "./modal/PersonelSecondModal";
@@ -12,7 +13,7 @@ import { appStore, authStore } from "src/stores";
 import DeptSelect from "src/components/DeptSelect";
 export interface Props { }
 
-export default function PersonnelSecondment() {
+export default function PersonnelSecondment() { 
   const [dataSource, setDataSource] = useState([]);
   const [status, setStatus] = useState("1");
   const [pageLoading, setPageLoading] = useState(false);
@@ -50,11 +51,51 @@ export default function PersonnelSecondment() {
       dataIndex: "detailTransferTo",
       width: 300
     },
+    ...appStore.hisMatch({map:{
+      'qhwy':[
+        {
+          title: "护士总数",
+          dataIndex: "nurseNum",
+          width: 100,
+          align: "center"
+        },
+        {
+          title: "患者总数",
+          dataIndex: "patientNum",
+          width: 100,
+          align: "center"
+        },
+        {
+          title: "审核状态",
+          dataIndex: "status",
+          width: 100,
+          align: "center"
+        },
+      ],
+      other:[],
+    }}),
     {
       title: "操作人",
       dataIndex: "empName",
-      width: 100,
-      align: "center"
+      width: 150,
+      align: "center",
+      render(text: any, record: any) {
+        return (
+          <DoCon>
+            { text}
+            {appStore.HOSPITAL_ID === 'qhwy' && record.status=='驳回' && <span 
+              onClick={() => {
+                personelSecondModal.show({ 
+                  onOkCallBack: getData,
+                  recordData:record
+                 })
+              }}
+            >
+              编辑
+            </span>}
+          </DoCon>
+        );
+      }
     }
   ];
 
@@ -128,6 +169,7 @@ export default function PersonnelSecondment() {
         columns={columns}
         dataSource={dataSource}
         surplusHeight={220}
+        surplusWidth={220}
         type={["index"]}
         pagination={{
           current: pageOptions.pageIndex,

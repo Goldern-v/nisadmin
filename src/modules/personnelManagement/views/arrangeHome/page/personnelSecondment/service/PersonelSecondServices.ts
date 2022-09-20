@@ -34,6 +34,10 @@ export default class PersonelSecondServices extends BaseApiService {
   public saveOrUpdate(saveObj: SaveObj) {
     return this.post(`/schDeptTransferWH/saveOrUpdate`, saveObj)
   }
+  // 青海借调审核新增或编辑
+  public saveOrUpdateByAudit(saveObj: SaveObj) {
+    return this.post(`/schDeptTransferWH/saveOrUpdateByAudit`, saveObj)
+  }
 }
 
 export const personelSecondServices = new PersonelSecondServices()
