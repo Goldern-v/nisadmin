@@ -25,6 +25,8 @@ export interface Props extends ModalComponentProps {
   getTableData?: any;
   detail?:any;
   type?:any;
+  needAudit?:any;
+  title?:any;
 }
 
 /** 设置规则 */
@@ -33,11 +35,8 @@ const rules: Rules = {
 };
 
 export default function GroupsSrAduitModal(props: Props) {
-  const [title, setTitle] = useState("");
-
-  let { visible, onCancel, selectedRows ,detail,type} = props;
+  let { visible, onCancel, selectedRows ,detail,type,needAudit,title} = props;
   let refForm = React.createRef<Form>();
-
   const onSave = async () => {
     if (!refForm.current) return;
     let [err, value] = await to(refForm.current.validateFields());
@@ -76,11 +75,26 @@ export default function GroupsSrAduitModal(props: Props) {
 
   return (
     <Modal
-      title={"护士临时借调审核"}
+      title={title}
       visible={visible}
-      onCancel={onCancel}
-      onOk={onSave}
       okText="保存"
+      onOk={onSave}
+      onCancel={onCancel}
+      footer={needAudit?[
+        <Button key="back" onClick={onCancel}>
+          取消
+        </Button>,
+        <Button key="submit" type="primary" onClick={onSave}>
+          保存
+        </Button>,
+      ]:[
+        <Button key="back" onClick={onCancel}>
+          取消
+        </Button>,
+        <Button key="submit" type="primary" onClick={onCancel}>
+          关闭
+        </Button>,
+      ]}
       forceRender
     >
       <Form ref={refForm} labelWidth={80}>
@@ -115,12 +129,12 @@ export default function GroupsSrAduitModal(props: Props) {
             <Col span={24}>
               <Form.Field label={`患者总数`} name="patientNum" >
                 <Input  disabled/>
-              </Form.Field>
+              </Form.Field> 
             </Col>
           </React.Fragment>)}
           <Col span={24}>
-            <Form.Field label={`审核结果`} name="flag">
-              <Radio.Group buttonStyle="solid">
+            <Form.Field label={`审核结果`} name="flag" >
+              <Radio.Group buttonStyle="solid" disabled={!needAudit}>
                 <Radio.Button value={true}>通过</Radio.Button>
                 <Radio.Button value={false}>退回</Radio.Button>
               </Radio.Group>
@@ -129,7 +143,7 @@ export default function GroupsSrAduitModal(props: Props) {
 
           <Col span={24}>
             <Form.Field label={`审核意见`} name="detail">
-              <Input.TextArea />
+              <Input.TextArea  disabled={!needAudit}/>
             </Form.Field>
           </Col>
         </Row>

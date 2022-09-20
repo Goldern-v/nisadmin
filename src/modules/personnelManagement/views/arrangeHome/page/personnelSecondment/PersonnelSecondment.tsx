@@ -79,24 +79,35 @@ export default function PersonnelSecondment() {
       dataIndex: "empName",
       width: 150,
       align: "center",
-      render(text: any, record: any) {
-        return (
-          <DoCon>
-            { text}
-            {appStore.HOSPITAL_ID === 'qhwy' && record.status=='驳回' && <span 
-              onClick={() => {
-                personelSecondModal.show({ 
-                  onOkCallBack: getData,
-                  recordData:record
-                 })
-              }}
-            >
-              编辑
-            </span>}
-          </DoCon>
-        );
-      }
-    }
+     
+    },
+    ...appStore.hisMatch({map:{
+      'qhwy':[
+        {
+          title: "操作",
+          dataIndex: "",
+          width: 100,
+          align: "center",
+          render(text: any, record: any) {
+            return (
+              <DoCon>
+                { record.status=='驳回' && <span 
+                  onClick={() => {
+                    personelSecondModal.show({ 
+                      onOkCallBack: getData,
+                      recordData:record
+                     })
+                  }}
+                >
+                  编辑
+                </span>}
+              </DoCon>
+            );
+          }
+        },
+      ],
+        other:[],
+      }}),
   ];
 
   const getData = () => {
