@@ -65,7 +65,7 @@ export default class AMServices extends BaseApiService {
         : "";
       obj.endDate = selectedDate[1] ? selectedDate[1].format("YYYY-MM-DD") : "";
     }
-    return this.post(`/flow/task/solvedPage`, obj);
+    return this.post(`/flow/task/solvedPage`, obj); 
   }
 
   /** 按照人员批量审核 */
@@ -79,6 +79,18 @@ export default class AMServices extends BaseApiService {
   /** 批量审核查房记录 */
   public srRecordBatchHandleNode(obj: any) {
     return this.post(`/srRecord/batchHandleNode`, obj);
+  }
+  public getDetail(id:string) {
+    return this.get(`/schDeptTransferWH/getDetail/`+ id)
+  }
+  // qhwy单个审核
+  public audit(obj: any) {
+    return this.post(`/schDeptTransferWH/audit`, obj)
+  }
+
+  // qhwy批量审核
+  public batchAudited(obj: any) {
+    return this.post(`/schDeptTransferWH/batchAudited`, obj)
   }
 }
 
