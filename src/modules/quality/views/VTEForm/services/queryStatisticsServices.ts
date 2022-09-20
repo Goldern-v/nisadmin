@@ -11,6 +11,10 @@ class WritingFormService extends BaseApiService {
   public saveNurseVet(obj: any) {
     return this.post(`/qualityList/saveList`, obj)
   }
+
+  public exportQualityExcel(obj: any) {
+    return this.post(`/qualityList/exportQualityStatistics`, obj, { responseType: 'blob' })
+  }
 }
 
 export const writingFormService = new WritingFormService()

@@ -455,6 +455,17 @@ export default observer(function WritingForm(props: any) {
       fileDownload(res)
     })
   }
+  const exportQualityExcel = () => {
+    let data = {
+      formName: '非术科质量单汇总',
+      wardCode: selectedDept,
+      queryMonth: moment(date).format("MM"),
+      queryYear: moment(date).format("YYYY"),
+    }
+    writingFormService.exportQualityExcel(data).then((res) => {
+      fileDownload(res)
+    })
+  }
 
   useEffect(() => {
     service.commonApiService.getNursingUnitAll().then((res) => {
@@ -627,6 +638,16 @@ export default observer(function WritingForm(props: any) {
               }}
             >
               导出Excel
+            </Button>
+          </div>
+          <div className='item'>
+            <Button
+              className='excel'
+              onClick={() => {
+                exportQualityExcel()
+              }}
+            >
+              导出汇总Excel
             </Button>
           </div>
         </RightIcon>
