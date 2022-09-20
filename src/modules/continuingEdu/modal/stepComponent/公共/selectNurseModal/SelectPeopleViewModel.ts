@@ -200,13 +200,23 @@ class SelectPeopleViewModel {
   @computed get currentTreeData() {
     if (this.stepState.length == 1) {
       if (this.stepState[0] == "默认科室") {
+        /*不包含N层级的数据*/
+        let containN:any=[],noContainN:any=[] ;
+        (this.currentData.userList|| []).map((item:any)=>{
+          if(item.currentLevel&&item.currentLevel.includes('N')){
+            containN.push(item)
+          }else{
+            noContainN.push(item)
+          }
+        })
         return {
           parent: authStore.selectedDeptName,
-          list: (this.currentData.userList || []).map((item: any) => ({
+          list:containN.sort((a:any,b:any)=>a.currentLevel.substr(1) - b.currentLevel.substr(1)).concat(noContainN).map((item: any) => ({
             ...item,
-            userList: [item],
-            label: item.empName,
-            key: item.empNo
+            /*whyx需要增加层级*/
+            label:`${appStore.HOSPITAL_ID==='whyx'?`${item.currentLevel} ${item.empName}`:`${item.empName}`}` ,
+            key: item.empNo,
+            userList: [item]
           })),
           type: "userList",
           dataLabel: "empName"
