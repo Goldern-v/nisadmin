@@ -63,7 +63,7 @@ export default function NurseReviews(props: Props) {
     className="badevent-user-check-modal">
     <Wrapper>
       {
-        (aduitData.nodeName == '科护士长审核' || aduitData.nodeName == '大科护士长审核') && <Row>
+        (aduitData.nodeCode == 'nurse_handle' || aduitData.nodeCode == 'big_head_nurse') && <Row>
         <Col span={18}>
         <Radio.Group onChange={(e)=>{onRadioChange(e)}} value={userAudit.noPass}>
           <Radio value={false}>合格</Radio>
@@ -73,7 +73,7 @@ export default function NurseReviews(props: Props) {
       </Row>
       }
       {
-        (aduitData.nodeName == '晋升小组审核' || aduitData.nodeName == '护理部审核') && <Row>
+        (aduitData.nodeCode == 'promotion_team_audit' || aduitData.nodeCode == 'nursing_minister_audit') && <Row>
          <Col span={18}>
          <Radio.Group onChange={(e)=>{onRadioChange(e)}} value={userAudit.noPass}>
            <Radio value={false}>同意晋升</Radio>
