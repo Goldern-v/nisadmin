@@ -99,6 +99,8 @@ export default observer(function AuditsTableDHSZ(props: Props) {
       aMServices.getDetail(row.othersMessage.id).then((res)=>{
         goupsqhwyAduitModal.show({
           type:'audited',
+          title:"护士临时借调审核",
+          needAudit:props.needAudit,
           detail:res.data,
           getTableData: () => {
             emitter.emit("refreshNurseAuditTable");
@@ -136,6 +138,8 @@ export default observer(function AuditsTableDHSZ(props: Props) {
           ? "特殊时段查房"
           : text == "badEventMaster"
           ? "不良事件"
+          : text == "nurseSecond"
+          ? "护士临时借调"
           : "";
       },
     },
@@ -304,6 +308,7 @@ export default observer(function AuditsTableDHSZ(props: Props) {
       console.log('selectedRows', selectedRows)
         goupsqhwyAduitModal.show({
           selectedRows,
+          title:"护士临时借调批量审核",
           type:'batchAudited',
           getTableData: () => {
             emitter.emit("refreshNurseAuditTable");
