@@ -362,7 +362,7 @@ export default observer(function WritingForm(props: any) {
       record.isAppropriate = "√"
     }
     writingFormService.saveNurseVet({
-      formName: '广州市花都人民医院术科VTE质量表',
+      formName: '广州市花都人民医院非术科VTE质量表',
       wardCode: selectedDept,
       listMonth: moment(date).format("MM"),
       listYear: moment(date).format("YYYY"),
@@ -396,7 +396,7 @@ export default observer(function WritingForm(props: any) {
       content: '',
       onOk() {
         writingFormService.saveNurseVet({
-          formName: '广州市花都人民医院术科VTE质量表',
+          formName: '广州市花都人民医院非术科VTE质量表',
           wardCode: selectedDept,
           listMonth: moment(date).format("MM"),
           listYear: moment(date).format("YYYY"),
@@ -440,7 +440,7 @@ export default observer(function WritingForm(props: any) {
   const exportExcel = () => {
     const { startDate, endDate } = startEndDate()
     let data = {
-      formName: '广州市花都人民医院术科VTE质量表',
+      formName: '广州市花都人民医院非术科VTE质量表',
       wardCode: selectedDept,
       queryMonth: moment(date).format("MM"),
       queryYear: moment(date).format("YYYY"),
@@ -534,7 +534,7 @@ export default observer(function WritingForm(props: any) {
       }
     })
     writingFormService.saveNurseVet({
-      formName: '广州市花都人民医院术科VTE质量表',
+      formName: '广州市花都人民医院非术科VTE质量表',
       wardCode: selectedDept,
       listMonth: moment(date).format("MM"),
       listYear: moment(date).format("YYYY"),
