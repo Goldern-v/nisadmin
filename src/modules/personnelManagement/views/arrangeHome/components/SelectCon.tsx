@@ -212,8 +212,7 @@ export default observer(function SelectCon() {
             if( item.empNo.includes('试工工人')) noEmpNoArr1.push(item)
             if( item.empNo.includes('规培护士')) noEmpNoArr2.push(item)
             if( item.empNo.includes('助理护士')) noEmpNoArr3.push(item)
-            if( item.empNo.includes('实习护士')) noEmpNoArr4.push(item)
-            if(!item.empNo) noEmpNoArr.push(item)
+            if( !item.empNo || item.empNo.includes('实习护士')) noEmpNoArr4.push(item)
             if(item.empNo && !item.groupName && !['试工工人','规培护士','助理护士','实习护士'].includes(item.empNo)) {noGroupArr.push(item)}
           })
           newArr = newArr.concat(
@@ -222,7 +221,6 @@ export default observer(function SelectCon() {
             [{id:"规培护士",groupNameTitle:"规培护士",colSpan:settingLength}],noEmpNoArr2,
             [{id:"助理护士",groupNameTitle:"助理护士",colSpan:settingLength}],noEmpNoArr3,
             [{id:"实习护士",groupNameTitle:"实习护士",colSpan:settingLength}],noEmpNoArr4,
-            [{id:"实习生",groupNameTitle:"实习生",colSpan:settingLength}],noEmpNoArr
             )
           printModal.printArrangeNew(visibleArr,newArr)
         }else {
