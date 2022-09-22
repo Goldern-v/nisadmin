@@ -21,8 +21,8 @@ export interface Props extends ModalComponentProps {
 
 /** 设置规则 */
 const rules: Rules = {
-  nurseNum: (val) => !!val || '请填写护士总数',
-  patientNum: (val) => !!val || '请填写患者总数',
+  // nurseNum: (val) => !!val || '请填写护士总数',
+  // patientNum: (val) => !!val || '请填写患者总数',
   deptCodeTransferTo: (val) => !!val || '请选择接收科室',
   empNoTransferTo: (val) => !!val || '请选择借出护士',
   startDate: (val) => !!val || '请选择借出时间'
