@@ -677,10 +677,10 @@ export default observer(function WritingForm(props: any) {
     })
   }
 
-  const exportQualityExcel = () => {
+  const exportQualityExcel = (wardCode = selectedDept) => {
     let data = {
       formName: '术科质量单汇总',
-      wardCode: selectedDept,
+      wardCode,
       queryMonth: moment(date).format("MM"),
       queryYear: moment(date).format("YYYY"),
     }
@@ -799,9 +799,9 @@ export default observer(function WritingForm(props: any) {
   return (
     <Wrapper>
       <HeaderCon>
-        <LeftIcon>
+        {/* <LeftIcon>
           <PageTitle>术科VTE质量单统计</PageTitle>
-        </LeftIcon>
+        </LeftIcon> */}
         <RightIcon>
           <div className='item'>
             <div className='label'>等级评估：</div>
@@ -823,19 +823,6 @@ export default observer(function WritingForm(props: any) {
               />
             </div>
           </div>
-          {/* <div className='item'>
-            <div className='label'>科室：</div>
-            <div className='content'>
-              <Select style={{ width: 200 }} value={selectedDept} onChange={(val: any) => setSelectedDept(val)}>
-                <Select.Option value=''>全部</Select.Option>
-                {deptList.map((item: any) => (
-                  <Select.Option value={item.code} key={item.code}>
-                    {item.name}
-                  </Select.Option>
-                ))}
-              </Select>
-            </div>
-          </div> */}
           <div className='item'>
             <div className='label'>科室：</div>
             <div className='content'>
@@ -892,6 +879,16 @@ export default observer(function WritingForm(props: any) {
               导出汇总Excel
             </Button>
           </div>
+          {authStore.isDepartmentHuadu && <div className='item'>
+            <Button
+              className='excel'
+              onClick={() => {
+                exportQualityExcel('')
+              }}
+            >
+              导出全院汇总Excel
+            </Button>
+          </div>}
         </RightIcon>
       </HeaderCon>
       <MidCon>

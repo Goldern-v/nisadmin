@@ -455,10 +455,10 @@ export default observer(function WritingForm(props: any) {
       fileDownload(res)
     })
   }
-  const exportQualityExcel = () => {
+  const exportQualityExcel = (wardCode = selectedDept) => {
     let data = {
       formName: '非术科质量单汇总',
-      wardCode: selectedDept,
+      wardCode,
       queryMonth: moment(date).format("MM"),
       queryYear: moment(date).format("YYYY"),
     }
@@ -573,9 +573,9 @@ export default observer(function WritingForm(props: any) {
   return (
     <Wrapper>
       <HeaderCon>
-        <LeftIcon>
+        {/* <LeftIcon>
           <PageTitle>非术科VTE质量单统计</PageTitle>
-        </LeftIcon>
+        </LeftIcon> */}
         <RightIcon>
           <div className='item'>
             <div className='label'>等级评估：</div>
@@ -650,6 +650,16 @@ export default observer(function WritingForm(props: any) {
               导出汇总Excel
             </Button>
           </div>
+          {authStore.isDepartmentHuadu && <div className='item'>
+            <Button
+              className='excel'
+              onClick={() => {
+                exportQualityExcel('')
+              }}
+            >
+              导出全院汇总Excel
+            </Button>
+          </div>}
         </RightIcon>
       </HeaderCon>
       <MidCon>

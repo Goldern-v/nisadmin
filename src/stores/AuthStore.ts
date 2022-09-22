@@ -199,6 +199,28 @@ export default class AuthStore {
     }
   }
 
+  // 花都 护理部成员和vte小组成员
+  public get isDepartmentHuadu() {
+    // QCR1100  护理部(孙琳)
+    // QCR0001  护理部
+    let adminCode = ['HDRM_QCR0016', 'QCR0001_1', 'QCR0001_2', 'QCR0001_3', 'QCR0001']
+    try {
+      if (this.isAdmin) return true;
+      let arrdeis = adminCode.find((item) => {
+        if (this.user) {
+          return this.user.roleManageCodeList.includes(item)
+        }
+      })
+      if (arrdeis) {
+        return true
+      } else {
+        return false
+      }
+    } catch (error) {
+      return false
+    }
+  }
+
 
   /** 是否是科护士长 */
   public get isSupervisorNurse() {
