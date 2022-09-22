@@ -21,6 +21,7 @@ import GroupsHlbModal from "../modal/GroupsHlbModal";
 import { message } from "src/vendors/antd";
 import { statisticsViewModal } from "src/modules/nurseFiles/view/statistics/StatisticsViewModal";
 import GroupsSrAduitModal from "../modal/GroupsSrAduitModal";
+import GroupsqhwyAduitModal from "../modal/GroupsqhwyAduitModal";
 export interface Props {
   showType: string;
   keyword: string;
@@ -50,6 +51,7 @@ export default observer(function AuditsTableDHSZ(props: Props) {
   const groupsEmpNoAduitModal = createModal(GroupsEmpNoAduitModal);
   const groupsHlbModal = createModal(GroupsHlbModal);
   const goupsSrAduitModal = createModal(GroupsSrAduitModal);
+  const goupsqhwyAduitModal = createModal(GroupsqhwyAduitModal);
 
   const toDetails = (row: any) => {
     console.log("ok",showType,props.needAudit);
@@ -93,6 +95,19 @@ export default observer(function AuditsTableDHSZ(props: Props) {
     }else if(showType === 'nursePromotion'){
       row.needAudit = props.needAudit;
       appStore.history.push(`/PromotionAduit?${qs.stringify(row)}`);
+    }else if(showType == 'nurseSecond'){
+      aMServices.getDetail(row.othersMessage.id).then((res)=>{
+        goupsqhwyAduitModal.show({
+          type:'audited',
+          title:"护士临时借调审核",
+          needAudit:props.needAudit,
+          detail:res.data,
+          getTableData: () => {
+            emitter.emit("refreshNurseAuditTable");
+          },
+        });
+      })
+     
     }
   };
 
@@ -123,6 +138,8 @@ export default observer(function AuditsTableDHSZ(props: Props) {
           ? "特殊时段查房"
           : text == "badEventMaster"
           ? "不良事件"
+          : text == "nurseSecond"
+          ? "护士临时借调"
           : "";
       },
     },
@@ -287,6 +304,16 @@ export default observer(function AuditsTableDHSZ(props: Props) {
           emitter.emit("refreshNurseAuditTable");
         },
       });
+    }else if (showType == 'nurseSecond'){
+      console.log('selectedRows', selectedRows)
+        goupsqhwyAduitModal.show({
+          selectedRows,
+          title:"护士临时借调批量审核",
+          type:'batchAudited',
+          getTableData: () => {
+            emitter.emit("refreshNurseAuditTable");
+          },
+        });
     }
   };
 
@@ -340,6 +367,7 @@ export default observer(function AuditsTableDHSZ(props: Props) {
       <groupsEmpNoAduitModal.Component />
       <groupsHlbModal.Component />
       <goupsSrAduitModal.Component />
+      <goupsqhwyAduitModal.Component />
     </Wrapper>
   );
 });

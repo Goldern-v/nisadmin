@@ -133,7 +133,7 @@ export default observer(function 护士离职原因分析() {
         {
           appStore.hisMatch({
             map: {
-              whyx: "",
+              whyx: authStore.isDepartmentYaXin &&<Option  value={''}>全院</Option>,
               other:<Option value={''}>全院</Option>
             },
             vague: true

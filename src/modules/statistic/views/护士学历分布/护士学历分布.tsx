@@ -105,7 +105,7 @@ export default observer(function 护士学历分布() {
         {
           appStore.hisMatch({
             map: {
-              whyx: "",
+              whyx: authStore.isDepartmentYaXin &&<Option  value={''}>全院</Option>,
               other:<Option value={''}>全院</Option>
             },
             vague: true
