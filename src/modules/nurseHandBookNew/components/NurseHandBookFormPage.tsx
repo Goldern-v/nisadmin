@@ -16,6 +16,7 @@ import moment from 'moment'
 import { DatePicker } from 'antd';
 import {useRef} from "src/types/react";
 import printFn from "printing";
+import printing from "printing";
 const api = new NurseHandBookService();
 export interface Props { }
 export default observer(function nurseHandBookFormPage(props: any) {
@@ -322,22 +323,37 @@ export default observer(function nurseHandBookFormPage(props: any) {
   //   },1000);
   //
   // }
-  const newOnPrint =()=>{
-    printFn(refPrint.current, {
-      injectGlobalCss: true,
-      scanStyles: false,
-      css: `
-           @page {
-            size: A3 portrait;
-            margin: 0mm 0mm 0mm 0mm;
-            page-break-after: always;
-    transform: translateY(64%) translateX(-50px) rotate(90deg) scale(1.2,1.4);
-           }
-         
-        `
-    });
+  const defaultPrintCss = `
+    @page{
+      margin:0mm;
+      color:red
+    }
+    #print-page{
+      padding:20px;
+      transform: scaleX(1) scaleY(0.8);
+    }
+  `
+  /*lcBaseInfo基本信息  lcAttendance考勤记录 lcPlan护理工作计划 lcConclusion护理工作总结 lcEducation继续教育与科研 lcWard病区工作*/
+   const newOnPrint =()=>{
+     const horizontal =['lcBaseInfo','lcAttendance'].includes(queryObj.type)
+     /*默认horizontal 聊城二院的基础信息跟考勤信息外的需要另外处理*/
+     if(appStore.HOSPITAL_ID==='lcey'){
+     return  printing(refPrint.current, {
+         direction:horizontal ? "horizontal":"vertical",
+         injectGlobalCss: true,
+         scanStyles: true,
+         css: defaultPrintCss
+       });
+     }else{
+       printing(refPrint.current, {
+         direction: "horizontal",
+         injectGlobalCss: true,
+         scanStyles: true,
+         css: defaultPrintCss
+       });
+     }
   }
-
+  /*旧版打印不生效，原因不明*/
   const toPrint = () => {
     let iframeEl = document.getElementById("iframe") as any
     if (iframeEl && isPrint) {
