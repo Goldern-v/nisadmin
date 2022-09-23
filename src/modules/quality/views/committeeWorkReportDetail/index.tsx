@@ -20,7 +20,7 @@ export interface Props extends RouteComponentProps {}
 export default observer(function AnalysisDetail() {
   const pageRef: any = useRef<HTMLElement>()
   // 根据params获取对应实例
-  const {instance} = useInstance() 
+  const {instance} = useInstance()
   const { queryObj } = appStore
   useEffect(() => {
     instance.init()

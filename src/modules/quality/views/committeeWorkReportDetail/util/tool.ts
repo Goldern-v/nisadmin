@@ -53,3 +53,11 @@ export const checkRole = () => {
   if (level == 1) return authStore.level2Watch
   return authStore.level3Check
 }
+
+/**
+ * 检查数据是否合格
+ */
+// export const checkQualified = (item: any, keys: any ) => {
+//   const flag = false
+//   Object.keys(keys).forEach((v:string) => {})
+// }

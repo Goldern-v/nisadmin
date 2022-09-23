@@ -17,12 +17,10 @@ export interface Props {
 }
 export default observer(function TableSection(props: Props) {
   const { sectionTitle, sectionId } = props;
-  const {instance} = useInstance() ;
+  const {instance} = useInstance();
   let data = instance.getSectionData(sectionId);
-  // console.log(data,1);
-  
-  const columns = useColumns({ tempList: data.tempList || []})
-  // console.log(columns,data.tempList,'data.tempListdata.tempList');
+  const section = instance.getSection(sectionId)
+  const columns = useColumns({ tempList: data.tempList || [], showIndex: section?.listConfig?.showIndex})
   
   return (
     <SectionCon>

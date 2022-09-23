@@ -81,21 +81,6 @@ export default class AppStore {
     if (process.env.REACT_APP_BLANK_DEMO)
       return require("src/assets/images/logo.png")
 
-    // if (this.HOSPITAL_ID == "wh") {
-    //   return require("src/assets/images/武汉logo.png");
-    // } else if (this.HOSPITAL_ID == "hj") {
-    //   return require("src/assets/images/厚街logo.png");
-    // } else if (this.HOSPITAL_ID == "nys") {
-    //   return require("src/assets/images/南医三logo.png");
-    // } else if (this.HOSPITAL_ID == "dgxg") {
-    //   return require("src/assets/images/东莞谢岗.png");
-    // } else if (this.HOSPITAL_ID == "nfzxy") {
-    //   return require("src/assets/images/南方中西医logo.png")
-    // } else if (this.HOSPITAL_ID == "gzsrm") {
-    //   return require("src/assets/images/贵州省人民医院.png")
-    // } else {
-    //   return require("src/assets/images/logo.png");
-    // }
     let logoUrl = require("src/assets/images/logo.png");
     switch (this.HOSPITAL_ID) {
       case "wh":

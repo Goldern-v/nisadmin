@@ -9,10 +9,11 @@ export interface Props {
   str: string
   index: number
   setVal: any,
-  type?: 'TextArea' |'DatePicker'| 'TimePicker' | undefined
+  type?: 'TextArea' |'DatePicker'| 'TimePicker' | undefined,
+  setValCb?: Function | undefined
 }
 export default observer(function TableInput(props: Props) {
-  const { str, index, type } = props
+  const { str, index, type, setValCb } = props
   const Con = !type ? Input : Input[type]
   const item = cloneJson(props.row)
   const onChange= (date:any, dateString:any) => {
@@ -44,6 +45,7 @@ export default observer(function TableInput(props: Props) {
             props.setVal((prev: any) => {
               const cloneData = cloneJson(prev)
               cloneData.list[index] = item
+              setValCb && setValCb(cloneData, index, str)
               return cloneData
             })
           }
