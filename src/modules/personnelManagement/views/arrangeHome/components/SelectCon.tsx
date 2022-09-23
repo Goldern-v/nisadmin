@@ -209,11 +209,11 @@ export default observer(function SelectCon() {
             newArr = newArr.concat([{id:group.groupName,groupNameTitle:group.groupName,colSpan:settingLength}],arr)
           })
           sheetViewModal.sheetTableData.forEach((item:any) => {
-            if(!item.empNo|| ['试工工人'].includes(item.empNo)) noEmpNoArr1.push(item)
-            if(!item.empNo|| ['规培护士'].includes(item.empNo)) noEmpNoArr2.push(item)
-            if(!item.empNo|| ['助理护士'].includes(item.empNo)) noEmpNoArr3.push(item)
-            if(!item.empNo|| ['实习护士'].includes(item.empNo)) noEmpNoArr4.push(item)
-            if(item.empNo && !item.groupName && !['试工工人','规培护士','助理护士','实习护士'].includes(item.empNo)) noGroupArr.push(item)
+            if( item.empNo.includes('试工工人')) noEmpNoArr1.push(item)
+            if( item.empNo.includes('规培护士')) noEmpNoArr2.push(item)
+            if( item.empNo.includes('助理护士')) noEmpNoArr3.push(item)
+            if( !item.empNo || item.empNo.includes('实习护士')) noEmpNoArr4.push(item)
+            if(item.empNo && !item.groupName && !['试工工人','规培护士','助理护士','实习护士'].includes(item.empNo)) {noGroupArr.push(item)}
           })
           newArr = newArr.concat(
             [{id:"未分组人员",groupNameTitle:"未分组人员",colSpan:settingLength}],noGroupArr,

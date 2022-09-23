@@ -76,9 +76,12 @@ export const navConfig: (appStore:any,authStore?:any) => navConfigItem[] = (appS
     name: "我的档案",
     path: "/selfNurseFile",
   },
-  
+  {
+    name: "敏感指标",
+    path: "/indicator",
+  },
   {
     name: "系统设置",
-    path: "/setting",
+    path: "/setting", 
   },
 ]);
