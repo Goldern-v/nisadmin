@@ -6,6 +6,19 @@ class WholePrintData {
   @observable public master={} as any;
   @observable public rowList = [] as any;
   @observable public evaluationList = [] as any;
+  @observable public chartMap = {
+    '图一 临床护理质量指标对比（发生例数）':[],
+    '图二 临床护理质量指标对比（发生率）':[],
+    '图三 临床护理质量指标对比（发生率）':[],
+    '图四 临床护理质量指标对比（发生例数）':[],
+    '图五 临床护理质量指标对比（发生率）':[],
+    '图六 工作量及管理质量指标对比（发生率）':[],
+    '图七 工作量及管理质量指标对比（发生率）':[],
+    '图八 工作量及管理质量指标对比（发生率）':[]
+
+  } as any
+  @observable public currentCycleMessage = ''
+  @observable public preCycleMessage=''
 
   // 年份汇总数据
   @observable public deptCode = ""; //科室

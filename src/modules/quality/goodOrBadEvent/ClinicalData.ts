@@ -23,6 +23,7 @@ class ClinicalData {
   @observable public month = moment().month()+1; //yue份
   @observable public quarter = moment().quarter() as unknown; //季度
   @observable public tableLoading = false; //表格loading
+  @observable public currentMonthDays = moment().daysInMonth();//这个月有几天，用于按键跳到下一个输入框
 
   // 年份汇总数据
   @observable public deptCodeYear = ""; //科室
@@ -108,6 +109,25 @@ class ClinicalData {
     importEl.click()
   }
 
+  focusNextIpt(e?:any){
+    if ((e.keyCode && e.keyCode == 13)) {
+      let baseTableEl = document.getElementById('baseTable')
+      if (baseTableEl) {
+        let iptList = baseTableEl.querySelectorAll('input:enabled,textarea:enabled') as any
+
+        for (let i = 0; i < iptList.length; i++) {
+          let el = iptList[i]
+          if (el == (e.target)) {
+            if (iptList[i + this.currentMonthDays]) {
+              iptList[i + this.currentMonthDays].focus && iptList[i + this.currentMonthDays].focus()
+              iptList[i + this.currentMonthDays].click && iptList[i + this.currentMonthDays].click()
+            }
+            break
+          }
+        }
+      }
+    }
+  }
 
   /** 获取表格数据 */
   // onload() {
