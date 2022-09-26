@@ -755,10 +755,10 @@ export default function ContinuingEdu(props: Props) {
   ]
 
 
-  
+
   // 菜单列表
   const LEFT_MENU_CONFIG = [
-    { 
+    {
       hide: appStore.HOSPITAL_ID != 'whyx',
       title: "培训日历",
       icon: <RYGL />,
@@ -891,14 +891,14 @@ export default function ContinuingEdu(props: Props) {
               },
               {
                 title: "护理人员执业/夜班准入",
-                formName: "护师人员执业/夜班准入资格申请表",
+                formName: appStore.HOSPITAL_ID==='hj'?"护理人员执业/夜班准入资格申请表":"护师人员执业/夜班准入资格申请表",
                 path: "/continuingEdu/护理人员执业/夜班准入",
                 formCode: "FQA00002",
                 component: FormApply,
               },
               {
                 title: "高风险诊疗技术操作技术人员准入",
-                formName: "高风险诊疗技术操作人员资质申请表",
+                formName: appStore.HOSPITAL_ID==='hj'?"高风险高难度技术操作人员资质申请表":"高风险诊疗技术操作人员资质申请表",
                 path: "/continuingEdu/高风险诊疗技术操作技术人员准入",
                 formCode: "FQA00003",
                 component: FormApply,
@@ -1075,7 +1075,7 @@ export default function ContinuingEdu(props: Props) {
         ["hj", "dgxg",'lyyz','qhwy', 'whhk'].includes(appStore.HOSPITAL_ID) ||
         authStore.isOnlyInternsManage,
     },
-    
+
     {
       title: "菜单设置",
       icon: <KSGL />,
