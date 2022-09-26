@@ -68,7 +68,7 @@ export default observer(function ExamPrint(props: Props) {
                             {item.participateRate * 100}%
                           </td>
                           <td style={{ textAlign: "center" }}>
-                            {item.unParticipateRate * 100}%}
+                            {item.unParticipateRate * 100}%
                           </td>
                           <td style={{ textAlign: "center" }}>
                             {item.avgCorrectRate * 100}%
