@@ -585,14 +585,14 @@ switch (appStore.HOSPITAL_ID) {
               {
                 appStore.hisMatch({
                   map: {
-                    sdlj: isSpecial && <React.Fragment>
+                    'sdlj,nfsd': isSpecial && <React.Fragment>
                       <Col span={24}>
                         <Form.Field label={`扣减天数`} name="deductionDay">
                           <InputNumber min={0.5} step={0.5} precision={1} />
                         </Form.Field>
                       </Col>
-
-                    </React.Fragment>
+                    </React.Fragment>,
+                    other: ''
                   },
                   vague:true
                 })

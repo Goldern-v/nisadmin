@@ -92,6 +92,7 @@ export default observer(function NurseFilesView(props: Props) {
       case "whyx":
         return NurseFilesListView_whyx;
       case "sdlj":
+      case "nfsd":
         return NurseFilesListView_wh;
       case "lyrm":
         return NurseFilesListView_wh;
@@ -169,18 +170,6 @@ export default observer(function NurseFilesView(props: Props) {
       component: TraineeFiles_nys,
       icon: <TXHSCX />,
     },
-
-    // {
-    //   title: "查询统计",
-    //   icon: <CXTJ />,
-    //   children: [
-    //     {
-    //       title: "外出进修",
-    //       path: "/nurseFile/outStudy",
-    //       component: StatisticsViewsNys
-    //     }
-    //   ]
-    // }
   ];
   const LEFT_MENU_CONFIG_WH = [
     onTheJobCon,

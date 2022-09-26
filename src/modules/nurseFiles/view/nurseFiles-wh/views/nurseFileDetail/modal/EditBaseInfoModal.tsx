@@ -326,7 +326,7 @@ export default function EditWorkHistoryModal(props: Props) {
           </Col>
           <Col span={12}>
             <Form.Field
-              label={ appStore.HOSPITAL_ID === 'sdlj' ? '参加护理工作时间' : `取得执业证书并从事护理岗位时间` }
+              label={ ['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID) ? '参加护理工作时间' : `取得执业证书并从事护理岗位时间` }
               name="zyzsNursingPostDate"
             >
               <DatePicker />
@@ -410,7 +410,7 @@ export default function EditWorkHistoryModal(props: Props) {
           </Col>
          {appStore.HOSPITAL_ID !== 'gxjb'?
            <Col span={12}>
-           <Form.Field label={appStore.HOSPITAL_ID === 'sdlj' ? `夏季鞋码大小` : `鞋码大小`} name="shoeSize">
+           <Form.Field label={['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID) ? `夏季鞋码大小` : `鞋码大小`} name="shoeSize">
              <SelectOrAutoInput dict="鞋码大小" />
            </Form.Field>
          </Col>: <Col span={12}>
@@ -419,7 +419,7 @@ export default function EditWorkHistoryModal(props: Props) {
            </Form.Field>
          </Col>
          } 
-          {appStore.HOSPITAL_ID === 'sdlj' && <Col span={12}>
+          {['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID) && <Col span={12}>
             <Form.Field label={`冬季鞋码大小`} name="maps.winter_shoe_size">
               <SelectOrAutoInput dict="鞋码大小" />
             </Form.Field>

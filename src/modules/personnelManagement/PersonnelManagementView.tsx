@@ -61,6 +61,7 @@ export default function PersonnelManagementView() {
       case 'whyx'://武汉亚心
         return menuConfig_whyx;
       case 'sdlj'://顺德龙江
+      case 'nfsd':
         return menuConfig_wh;
       case 'lyrm'://临邑人民
         return menuConfig_lyrm;

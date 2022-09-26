@@ -65,7 +65,7 @@ export default observer(function PersonWinning() {
       width: 100,
       align: 'center'
     },
-    ...appStore.HOSPITAL_ID !== 'sdlj' ? [{
+    ...!['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID) ? [{
       title: '现层级开始时间',
       dataIndex: 'startDate',
       key: 'startDate',

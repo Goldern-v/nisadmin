@@ -57,7 +57,7 @@ export default observer(function PersonWinning() {
     //   width: 120,
     //   align: 'center'
     // },
-    ...appStore.HOSPITAL_ID !== 'sdlj' ? [{
+    ...!['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID) ? [{
       title: '原职称名称',
       dataIndex: 'titleOld',
       key: 'titleOld',

@@ -97,7 +97,7 @@ export function openAuditModal(title: string, row: any, callBack: any) {
 
                   {
                     "取得护士执业证书时间": 'zyzsDate',
-                    ...appStore.HOSPITAL_ID === 'sdlj' ? {"参加护理工作时间": 'zyzsNursingPostDate'} : {"取得执业证书并从事护理岗位时间": 'zyzsNursingPostDate'},
+                    ...['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID) ? {"参加护理工作时间": 'zyzsNursingPostDate'} : {"取得执业证书并从事护理岗位时间": 'zyzsNursingPostDate'},
                   },
                   {
                     "护士执业证书有效截止日期": 'zyzsEffectiveUpDate',
@@ -117,7 +117,7 @@ export function openAuditModal(title: string, row: any, callBack: any) {
                   },
                   ...appStore.hisMatch({
                     map: {
-                      'sdlj': [{
+                      'sdlj,nfsd': [{
                         "工作护理单元": 'deptName',
                         "夏季鞋码大小": 'shoeSize',
                       }],
@@ -298,7 +298,7 @@ export function openAuditModal(title: string, row: any, callBack: any) {
             },
             ...appStore.hisMatch({
               map: {
-                'sdlj': [
+                'sdlj,nfsd': [
                   {
                     "授予学分": `creditGranted`
                   }
@@ -413,6 +413,7 @@ export function openAuditModal(title: string, row: any, callBack: any) {
           tableFormat: (() => {
             switch (appStore.HOSPITAL_ID) {
               case 'sdlj':
+              case 'nfsd':
                 return [{
                   "参于课题名称": `goName`,
                   "课题主持人姓名": `hostName`
@@ -714,7 +715,7 @@ export function openAuditModal(title: string, row: any, callBack: any) {
           type: 'nurseWHTitle',
           title: '审核职称变动信息',
           tableFormat: [
-            appStore.HOSPITAL_ID !== 'sdlj' ? {
+            !['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID) ? {
               "原职称名称": `titleOld`,
               "现职称名称": `titleNew`
             } : {
@@ -774,14 +775,14 @@ export function openAuditModal(title: string, row: any, callBack: any) {
           type: 'nurseWHTransferPost',
           title: '审核岗位变动信息',
           tableFormat: [
-            appStore.HOSPITAL_ID !== 'sdlj' ? {
+            !['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID) ? {
               "原工作科室": `oldDeptName`,
               "现工作科室": `newDeptName`
             } : {
               "开始时间": `transferDate`,
               "结束时间": `endDate`
             },
-            appStore.HOSPITAL_ID === 'sdlj' ? {
+            ['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID) ? {
               "科室": `newDeptCode`,
               "考核成绩": `deptBeDepartment`
             } :
@@ -815,7 +816,7 @@ export function openAuditModal(title: string, row: any, callBack: any) {
               "原层级名称": `nursehierarchyOld`,
               "现层级名称": `nursehierarchyNew`
             },
-            appStore.HOSPITAL_ID !== 'sdlj' ? {
+            !['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID) ? {
               "现层级开始时间": `startDate`
             }: {
               "开始时间": `startDate`,

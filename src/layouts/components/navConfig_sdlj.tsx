@@ -1,5 +1,4 @@
 import React from "react";
-import { appStore, authStore } from "src/stores";
 
 export interface navConfigItem {
   onClick?: any;

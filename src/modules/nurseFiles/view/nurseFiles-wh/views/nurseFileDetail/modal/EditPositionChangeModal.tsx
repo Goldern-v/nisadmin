@@ -44,7 +44,7 @@ export interface Props extends ModalComponentProps {
 // titleOld: data.titleOld,
 // titleNew: data.titleNew,
 const rules: Rules = {
-  ...appStore.HOSPITAL_ID !== 'sdlj' ? {titleOld: val => !!val || "请填写原职称名称",
+  ...!['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID) ? {titleOld: val => !!val || "请填写原职称名称",
   titleNew: val => !!val || "请填写现职称名称"} : {titleNew: val => !!val || "请填写职称名称"},
   winNewTiTleDate: val => !!val || "请选择考取专业技术资格证书时间",
   employNewTiTleDate: val => !!val || "请选择聘用专业技术资格时间"
@@ -157,7 +157,7 @@ export default function EditPositionChangeModal(props: Props) {
               <DatePicker />
             </Form.Field>
           </Col> */}
-          {appStore.HOSPITAL_ID !== 'sdlj' && <Col span={24}>
+          {!['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID) && <Col span={24}>
             <Form.Field label={`原职称名称`} name="titleOld" required>
               <Select>
                 {nurseFileDetailViewModal
@@ -171,7 +171,7 @@ export default function EditPositionChangeModal(props: Props) {
             </Form.Field>
           </Col>}
           <Col span={24}>
-            <Form.Field label={appStore.HOSPITAL_ID === 'sdlj' ? '职称名称' : `现职称名称`} name="titleNew" required>
+            <Form.Field label={['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID) ? '职称名称' : `现职称名称`} name="titleNew" required>
               <Select>
                 {nurseFileDetailViewModal
                   .getDict("技术职称")

@@ -43,7 +43,7 @@ export default observer(function PersonWinning() {
       align: 'center',
       width: 55
     },
-    ...appStore.HOSPITAL_ID !== 'sdlj' ? [{
+    ...!['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID) ? [{
       title: '原工作科室',
       dataIndex: 'oldDeptName',
       key: 'oldDeptName',
@@ -63,7 +63,7 @@ export default observer(function PersonWinning() {
       width: 130,
       align: 'center'
     },
-    ...appStore.HOSPITAL_ID !== 'sdlj' ? [{
+    ...!['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID) ? [{
       title: '现科室隶属部门',
       dataIndex: 'deptBeDepartment',
       key: 'deptBeDepartment',

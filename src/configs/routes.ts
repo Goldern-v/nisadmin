@@ -16,12 +16,8 @@ import { appStore, authStore } from 'src/stores'
 import { RouteItem } from '../components/RouterView'
 import { specialModule } from './routerConfig/specialModule'
 
-// import ViewHome from '../views/ViewHome'
-// import ViewLogin from '../views/ViewLogin'
-// import ViewUsers from '../views/ViewUsers'
 import demo1 from "src/demo1";
 
-// import ScheduleView from 'src/modules/schedule/views/ScheduleView'
 const ScheduleHomeView = lazy(() =>
   import("src/modules/schedule/views/ScheduleHome/ScheduleHomeView")
 );
@@ -46,10 +42,6 @@ const MealSettingView = lazy(() =>
 const ScheduleSettingView = lazy(() =>
   import("src/modules/schedule/views/ScheduleSetting/ScheduleSettingView")
 );
-
-// const NurseFilesListView = lazy(() => import('src/modules/nurseFiles/views/nurseFilesList/NurseFilesListView'))
-// const NurseFileDetailView = lazy(() => import('src/modules/nurseFiles/views/nurseFileDetail/NurseFileDetailView'))
-// const NurseAudit = lazy(() => import('src/modules/nurseFiles/views/nurseAudit/NurseAudit'
 
 const BadEventView = lazy(() =>
   import("src/modules/badEvents/views/BadEventView")
@@ -265,7 +257,6 @@ const WardManagementView = lazy(() =>
 const PersonnelManagementView = lazy(() =>
   import("src/modules/personnelManagement/PersonnelManagementView")
 );
-// const EditArrangePage = lazy(() => import('src/modules/personnelManagement/views/arrangeHome/page/EditArrangePage/EditArrangePage'
 const EditArrangePage = lazy(() =>
   import(
     "src/modules/personnelManagement/views/arrangeHome/page/EditArrangePage/EditArrangePage"
@@ -1006,11 +997,6 @@ const routes: RouteItem[] = [
     path: "/continuingEdu",
     redirect: "/continuingEdu/人员管理"
   },
-  // setLayout("/continuingEdu", ContinuingEdu, layouts.MainLayout),
-  // {
-  //   path: "/continuingEdu",
-  //   redirect: "/continuingEdu/审核发布"
-  // },
   {
     path: "/communityRoundsRouter",
     redirect: "/communityRoundsRouter/checkWardRecord"
@@ -1061,10 +1047,6 @@ const routes: RouteItem[] = [
     path: "/wardManagement",
     redirect: "/wardManagement/扁平管理设置"
   },
-  // {
-  //   path: '/quality',
-  //   redirect: '/quality/qualityControlRecord/3'
-  // },
   ...appStore.hisMatch({
     map: {
       "gdtj,whfk": [
@@ -1082,7 +1064,6 @@ const routes: RouteItem[] = [
     },
     vague: true,
   }),
-
 ];
 
 export default routes;

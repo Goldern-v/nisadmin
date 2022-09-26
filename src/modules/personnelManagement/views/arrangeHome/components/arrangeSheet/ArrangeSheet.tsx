@@ -52,7 +52,7 @@ export default observer(function ArrangeSheet(props: Props) {
   let editEffectiveTimeModal = createModal(
     appStore.hisMatch({
       map: {
-        'wjgdszd,wh,gxjb,lcey,dghl,fqfybjy,jmfy,nys,gzsrm,fssdy,fsxt,sdlj,whyx,gdtj,lyyz,qhwy,whsl,ytll,zhzxy,whhk': EditVacationCountModal_wh,
+        'wjgdszd,wh,gxjb,lcey,dghl,fqfybjy,jmfy,nys,gzsrm,fssdy,fsxt,sdlj,whyx,gdtj,lyyz,qhwy,whsl,ytll,zhzxy,whhk,nfsd': EditVacationCountModal_wh,
         other: EditEffectiveTimeModal,
       },
       vague: true
@@ -511,7 +511,7 @@ export default observer(function ArrangeSheet(props: Props) {
   };
 
   /** 武汉特殊字段*/
-  if (["wh", "gzsrm", "gxjb", "fsxt", "sdlj", "whyx", 'fssdy',"gdtj", "lyyz", "qhwy","whsl","wjgdszd", 'ytll','zhzxy'].includes(appStore.HOSPITAL_ID)) {
+  if (["wh", "gzsrm", "gxjb", "fsxt", "sdlj", "whyx", 'fssdy',"gdtj", "lyyz", "qhwy","whsl","wjgdszd", 'ytll','zhzxy', 'nfsd'].includes(appStore.HOSPITAL_ID)) {
     columns.push(
       {
         title: (
@@ -562,7 +562,7 @@ export default observer(function ArrangeSheet(props: Props) {
       {
         title: (
           <div>
-            <div>{appStore.HOSPITAL_ID=='sdlj'?'工休结余':'公休结余'}</div>
+            <div>{['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID)?'工休结余':'公休结余'}</div>
             <div>（天）</div>
           </div>
         ),
@@ -574,7 +574,7 @@ export default observer(function ArrangeSheet(props: Props) {
       },
       ...appStore.hisMatch({
         map: {
-          'sdlj': [
+          'sdlj,nfsd': [
             {
               title: (
                 <div>
@@ -603,7 +603,7 @@ export default observer(function ArrangeSheet(props: Props) {
                 return <HolidayHour id={record.id} />;
               },
             }
-        ]
+          ]
         },
         vague:true
       }),
@@ -776,7 +776,7 @@ export default observer(function ArrangeSheet(props: Props) {
                   hj: 3,
                   fqfybjy: 5,
                   nys: (isEdit ? 6 : 5),
-                  'wjgdszd,wh,gxjb,jmfy,dghl,gzsrm,fsxt,whyx,sdlj,gdtj,lyyz,qhwy,whsl,ytll,zhzxy,whhk': 6,
+                  'wjgdszd,wh,gxjb,jmfy,dghl,gzsrm,fsxt,whyx,sdlj,gdtj,lyyz,qhwy,whsl,ytll,zhzxy,whhk,nfsd': 6,
                   fssdy: 7,
                   other: 2
                 },

@@ -28,7 +28,7 @@ import NurseAudit_wh from 'src/modules/nurseFiles/view/nurseFiles-wh/views/nurse
 import NurseFileDetailView_wh from 'src/modules/nurseFiles/view/nurseFiles-wh/views/nurseFileDetail/NurseFileDetailView'
 import NurseAudit_whyx from 'src/modules/nurseFiles/view/nurseFiles-whyx/views/nurseAudit/NurseAudit'
 import NurseFileDetailView_whyx from 'src/modules/nurseFiles/view/nurseFiles-whyx/views/nurseFileDetail/NurseFileDetailView'
-import NurseFileDetailView_wjgdszd from 'src/modules/nurseFiles/view/nurseFiles-wjgdszd/views/nurseFileDetail/NurseFileDetailView'
+// import NurseFileDetailView_wjgdszd from 'src/modules/nurseFiles/view/nurseFiles-wjgdszd/views/nurseFileDetail/NurseFileDetailView'
 import NurseFileDetailView_xzsn from 'src/modules/nurseFiles/view/nurseFiles-xzsn/views/nurseFileDetail/NurseFileDetailView'
 import NurseFileDetailView_yczyy from 'src/modules/nurseFiles/view/nurseFiles-yczyy/views/nurseFileDetail/NurseFileDetailView'
 import React, { lazy } from 'react'
@@ -168,9 +168,8 @@ if (process.env.REACT_APP_HOSPITAL_ID == "hj") {
     ),
     setLayout("/nursingRulesNewEdit", NursingRulesNewEdit, layouts.MainLayout)
   ];
-} else if (["wh","gxjb","fssdy","fsxt","sdlj","gdtj","zzwy","wjgdszd", 'ytll','zhzxy'].includes(appStore.HOSPITAL_ID)) {
+} else if (["wh","gxjb","fssdy","fsxt","sdlj","gdtj","zzwy","wjgdszd", 'ytll','zhzxy', 'nfsd'].includes(appStore.HOSPITAL_ID)) {
   specialModule = [
-    // setLayout('/nurseFilesList', NurseFilesListView_wh, layouts.MainLayout),
     setLayout("/nurseAudit", NurseAudit_wh, layouts.MainLayout),
     setLayout(
       "/nurseFileDetail/:type",
@@ -211,7 +210,6 @@ if (process.env.REACT_APP_HOSPITAL_ID == "hj") {
   specialModule = [...homeRouter(SettingView)]
 } else if (appStore.HOSPITAL_ID == 'gzhd') {
   specialModule = [
-    // setLayout('/nurseFilesList', NurseFilesListView, layouts.MainLayout),
     setLayout("/nurseAudit", NurseAudit_gzhd, layouts.MainLayout),
     setLayout(
       "/nurseFileDetail/:type",
@@ -585,7 +583,8 @@ if (process.env.REACT_APP_HOSPITAL_ID == "hj") {
     ),
     setLayout("/nursingRulesNewEdit", NursingRulesNewEdit, layouts.MainLayout)
   ]  
-} else if (["lyrm"].includes(appStore.HOSPITAL_ID)) {
+} else {
+  // 使用医院：临邑
   specialModule = [
     ...homeRouter(HomeView),
     // 档案 武汉
@@ -617,44 +616,5 @@ if (process.env.REACT_APP_HOSPITAL_ID == "hj") {
     setLayout("/nursingRulesNewEdit", NursingRulesNewEdit, layouts.MainLayout)
   ];
 }
-// else if (process.env.REACT_APP_HOSPITAL_ID == "fssdy") {
-//   specialModule = [
-//     // setLayout('/nurseFilesList', NurseFilesListView_wh, layouts.MainLayout),
-//     setLayout("/nurseAudit", NurseAudit_wh, layouts.MainLayout),
-//     setLayout(
-//       "/nurseFileDetail/:type",
-//       NurseFileDetailView_wh,
-//       layouts.MainLayout
-//     ),
-//     setLayout(
-//       "/selfNurseFile/:type",
-//       NurseFileDetailView_wh,
-//       layouts.MainLayout
-//     ),
-//     setLayout("/auditsManagement", AuditsManagementView_wh, layouts.MainLayout),
-//     setLayout("/wh_single_point_login", SingleSignOnWh),
-//     ...homeRouter(HomeView_wh),
-//   ];
-
-//   //武汉护理制度
-//   specialModule = specialModule.concat([
-//     setLayout("/nursingRulesNew", NursingRulesNew_wh, layouts.MainLayout),
-//     setLayout(
-//       "/nursingRulesNewDetail",
-//       NursingRulesNewDetail_wh,
-//       layouts.MainLayout
-//     ),
-//     setLayout(
-//       "/NursingRulesPagePreView",
-//       NursingRulesPagePreview_wh,
-//       layouts.MainLayout
-//     ),
-//     setLayout(
-//       "/nursingRulesNewEdit",
-//       NursingRulesNewEdit_wh,
-//       layouts.MainLayout
-//     )
-//   ]);
-// }
 
 export { specialModule };
