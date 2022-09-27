@@ -753,14 +753,7 @@ export default function ContinuingEdu(props: Props) {
       hide: !['fsxt'].includes(appStore.HOSPITAL_ID)
     },
   ]
-<<<<<<< HEAD
 
-
-
-=======
-  
->>>>>>> 86959ac9f54f634d6bdf0acd6bfa183b58169966
-  // 菜单列表
   const LEFT_MENU_CONFIG = [
     {
       hide: appStore.HOSPITAL_ID != 'whyx',
