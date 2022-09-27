@@ -153,7 +153,7 @@ export default function EditJoinScientificModal(props: Props) {
               <Input />
             </Form.Field>
           </Col>
-          {appStore.HOSPITAL_ID !== 'sdlj' && <Col span={24}>
+          {!['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID) && <Col span={24}>
             <Form.Field label={`课题主持人工号`} name='hostNo'>
               <Input />
             </Form.Field>
@@ -203,7 +203,7 @@ export default function EditJoinScientificModal(props: Props) {
               <AutoComplete dataSource={nurseFileDetailViewModal.getDict('完成情况').map((item) => item.name)} />
             </Form.Field>
           </Col>
-          {appStore.HOSPITAL_ID !== 'sdlj' && <Col span={24}>
+          {!['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID) && <Col span={24}>
             <Form.Field label={`时间`} name='completionDate'>
               <DatePicker />
             </Form.Field>

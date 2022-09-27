@@ -1,7 +1,7 @@
 import Moment from 'moment'
 import Form from 'src/components/Form'
 import styled from 'styled-components'
-import React, { useEffect, useLayoutEffect, useState } from 'react'
+import React, { useLayoutEffect, useState } from 'react'
 import { Col, DatePicker, Input, Modal, Radio, Row, Select } from 'antd'
 import { Rules } from 'src/components/Form/interfaces'
 import { MonthList } from 'src/modules/quality/utils/toolCon'

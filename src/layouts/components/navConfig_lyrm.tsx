@@ -78,7 +78,11 @@ export const navConfig: (appStore:any,authStore?:any) => navConfigItem[] = (appS
   },
   {
     name: "敏感指标",
-    path: "/indicator",
+    onClick: () => {
+      let [http, host, port] = location.origin.split(':');
+      let url = `http://192.168.4.175:9091/bcyNursingQuality/ssoLogin?token=${authStore.authToken}`
+      window.open(url)
+    }
   },
   {
     name: "系统设置",

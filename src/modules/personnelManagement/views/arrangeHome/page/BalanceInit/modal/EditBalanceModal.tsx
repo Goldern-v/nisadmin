@@ -201,14 +201,14 @@ export default function EditBalanceModal(props: Props) {
             )
           }
           <Col span={24}>
-            <Form.Field label={appStore.HOSPITAL_ID=='sdlj'?'工休结余':`公休结余`} name="publicHourNow">
+            <Form.Field label={['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID)?'工休结余':`公休结余`} name="publicHourNow">
               <InputNumber/>
             </Form.Field>
           </Col>
           {
             appStore.hisMatch({
               map: {
-                sdlj: <React.Fragment>
+                'sdlj,nfsd': <React.Fragment>
                         <Col span={24}>
                           <Form.Field label={`例假结余`} name="periodHourNow">
                             <InputNumber min={0} step={0.5} precision={1} />

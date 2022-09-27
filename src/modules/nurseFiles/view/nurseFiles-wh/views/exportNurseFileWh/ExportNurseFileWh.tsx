@@ -235,7 +235,7 @@ export default function ExportNurseFileWh(props: Props) {
           title: '课题主持人姓名',
           dataKey: 'hostName',
         },
-        appStore.HOSPITAL_ID !== 'sdlj' && {
+        !['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID) && {
           title: '课题主持人工号',
           dataKey: 'hostNo',
         },
@@ -528,7 +528,7 @@ export default function ExportNurseFileWh(props: Props) {
   const handlePrint = () => {
     let printEl = document.getElementById(exportId)
     let documentTitle = window.document.title
-    window.document.title = `${appStore.HOSPITAL_ID === 'sdlj' ? localStorage.getItem('empName') + '-': ''}护理人员信息档案`
+    window.document.title = `${['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID) ? localStorage.getItem('empName') + '-': ''}护理人员信息档案`
 
     if (printEl) printing(printEl, {
       injectGlobalCss: true,

@@ -87,11 +87,12 @@ export default observer(function TopCon(props: any) {
       map: {
         // 武汉默认只有二级质控能在pc端添加
         wh: qualityControlRecordVM.level == 2 ? defaultCreateCon : <span />,
-        hj: defaultCreateCon,
+        'hj,nfsd': defaultCreateCon,
         gxjb: defaultCreateCon,
         whyx: createBtn ? withOutAuditCreateCon : "",
         other: withOutAuditCreateCon,
       },
+      vague: true,
     });
   };
 
@@ -244,7 +245,7 @@ export default observer(function TopCon(props: any) {
               </Radio.Group>
             </div>
           ),
-          hj: qualityControlRecordVM.formSelectList.length >= 1 && (
+          'hj,nfsd': qualityControlRecordVM.formSelectList.length >= 1 && (
               <div className="radio-con">
                 <Radio.Group
                   name="radiogroup"
@@ -277,15 +278,17 @@ export default observer(function TopCon(props: any) {
               </div>
             ),
         },
+        vague: true
       })}
 
       {(appStore.hisMatch({
         map: {
-          'hj': qualityControlRecordVM.readWay == 1 &&
+          'hj,nfsd': qualityControlRecordVM.readWay == 1 &&
           qualityControlRecordVM.level == 2,
           other: qualityControlRecordVM.readWay == 1 ||
           qualityControlRecordVM.level == 2
-        }
+        },
+        vague: true
       })) && (
         <React.Fragment>
           <span style={{ margin: "0 3px 0 15px" }}>科室:</span>
@@ -318,7 +321,7 @@ export default observer(function TopCon(props: any) {
           <FormSelect refreshData={props.refreshData} />
         </React.Fragment>
       )}
-      {appStore.HOSPITAL_ID == "hj" && (
+      {["hj", 'nfsd'].includes(appStore.HOSPITAL_ID) && (
         <React.Fragment>
           <span style={{ margin: "0 3px 0 15px" }}>表单小组:</span>
           <TableSelect refreshData={props.refreshData} />

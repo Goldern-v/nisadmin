@@ -1,8 +1,9 @@
 import { observer } from "mobx-react";
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
+import React from "react";
 import BaseTable from "src/components/BaseTable";
-import { useColumns } from "./hook/useColumns";
+import styled from "styled-components";
+import { useInstance } from "../../hook/useModel";
+import { useColumns, Props as ColumnsProps } from "./hook/useColumns";
 
 export interface Props {
   sectionId: string;
@@ -10,12 +11,25 @@ export interface Props {
   setData: any;
 }
 export default observer(function TableModal(props: Props) {
-  let { setData, data } = props;
-  const columns = useColumns({
-    tempList: data?.tempList || [],
-    isEdit: true,
-    setData,
-  });
+  let { setData, data, sectionId } = props;
+  const { instance } = useInstance()
+  // const [propsObj, setPropsObj] = useState<ColumnsProps>({
+  //   tempList: data?.tempList || [],
+  //   isEdit: true,
+  //   setData,
+  // })
+    const section = instance.getSection(sectionId)
+    const propsObj: ColumnsProps = {
+      tempList: data?.tempList || [],
+      isEdit: true,
+      setData,
+    }
+    if (section?.listConfig?.setDataCb) {
+      // const obj = { ...propsObj, setDataCb: section.setDataCb }
+      // setPropsObj(obj)
+      propsObj.setDataCb = section?.listConfig?.setDataCb
+    }
+  const columns = useColumns(propsObj);
   return (
     <Wrapper>
       <BaseTable dataSource={data?.list || []} columns={columns} />

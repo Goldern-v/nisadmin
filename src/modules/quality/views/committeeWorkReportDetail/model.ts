@@ -33,7 +33,7 @@ interface SectionCase {
   modal?: any
   section?: any
   keyName?: string
-  maxLength?:number
+  maxLength?: number
 }
 
 interface Constr {
@@ -56,6 +56,7 @@ export class ReportDetail {
   private formatData: Function = () => { }
   private getData: Function = () => { }
   private initRender: Function = () => { }
+  public id: string = ''
 
   constructor({
     sectionList,
@@ -104,25 +105,25 @@ export class ReportDetail {
   }
   /** 设置组件数据 */
   @action
- async setSectionData(sectionId: string, data: any) {
+  async setSectionData(sectionId: string, data: any) {
     let obj = this.getSection(sectionId)
     if (obj) {
       Object.assign(obj.data, data)
       //保存数据
       if (obj.data.value) {
         const saveData: ReportFieldData = {
-          reportId: appStore.queryObj.id,
+          reportId: appStore.queryObj.id || this.id,
           data: obj.data.value
         }
-       await this.saveReportFieldData(saveData)
+        await this.saveReportFieldData(saveData)
       }
       if (obj.data.list) {
         const saveData: ReportFieldData = {
-          reportId: appStore.queryObj.id,
+          reportId: appStore.queryObj.id || this.id,
           tableName: obj.data.tableName || '',
           data: obj.data.list
         }
-       await this.saveReportTableData(saveData)
+        await this.saveReportTableData(saveData)
       }
 
       return true
@@ -152,10 +153,9 @@ export class ReportDetail {
   /** 数据初始化 */
   async initData() {
     try {
-      // this.initRender && (await this.initRender())
       // 实例化并使用bind绑定数据
       this.allData = this.getData()
-      const res = await analysisDetailApi.getPageDetaile(appStore.queryObj.id)
+      const res = await analysisDetailApi.getPageDetaile(appStore.queryObj.id || this.id)
       console.log('接口数据======》', res.data)
       if (res.code != 200) return
       let { fieldDataMap } = res.data
@@ -172,11 +172,11 @@ export class ReportDetail {
         reportYear,
         reportTemplateDto
       } = res.data
-      for(let keys of Object.keys(this.allData)){
-          for(let item of Object.keys(this.allData[keys])){
-       if(fieldDataMap.hasOwnProperty(item)) {
-        this.allData[keys][item]=fieldDataMap[item]
-       }
+      for (let keys of Object.keys(this.allData)) {
+        for (let item of Object.keys(this.allData[keys])) {
+          if (fieldDataMap.hasOwnProperty(item)) {
+            this.allData[keys][item] = fieldDataMap[item]
+          }
         }
       }
       this.allData.pageInfo = {
@@ -199,7 +199,10 @@ export class ReportDetail {
 
     }
   }
-  async init() {
+  async init(id?: string) {
+    if (id) {
+      this.id = id
+    }
     await this.initData()
     this.baseModal = createModal(BaseModal)
   }

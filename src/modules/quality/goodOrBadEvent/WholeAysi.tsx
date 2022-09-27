@@ -57,11 +57,6 @@ export default function WholeAysi(props: Props) {
 	const [modalDate, setModalDate] = useState(['','']);
 	const { history } = appStore
 
-	const [params, setParams] = useState({
-		deptCode: '佛山',
-		templateId: 'xiantan'
-	} as any)
-
 	const reportName: MutableRefObject<any> = useRef('');
 
 	const getPage = () => {
@@ -96,7 +91,8 @@ export default function WholeAysi(props: Props) {
 			"belongsCycle": "07"
 		}
 	]
-	const columns: ColumnProps<any>[] | any = [
+
+	const columns3: ColumnProps<any>[] | any = [
 		{
 			title: "序号",
 			dataIndex: "",
@@ -137,34 +133,52 @@ export default function WholeAysi(props: Props) {
 		{
 			title: "创建时间",
 			dataIndex: "createDate",
-			// render: (text: any, record: any, index: number) => "2022-01-01～2022-01-31",
 			align: "center",
 			width: 100
 		},
-		{
-			title: "创建人",
-			dataIndex: "createName",
-			// render: (text: any, record: any, index: number) => "张家辉",
-			align: "center",
-			width: 70
-		},
-		{
-			title: "操作",
-			// dataIndex: "classfiy",
-			render: (text: any, record: any, index: number) => {
-				return (
-					<DoCon>
-						{/* <span onClick={() => row.empName && onDoubleClick(row)}>查看</span> */}
-						<span onClick={() => onDoubleClick(record)}>查看</span>
-					</DoCon>
-				)
-			},
-			align: "center",
-			width: 60
-		},
-
 	]
-
+	let columns: ColumnProps<any>[] | any =[]
+	if(authStore.isDepartment){
+		columns = [
+			...columns3,
+			{
+				title: "创建人",
+				dataIndex: "createName",
+				align: "center",
+				width: 70
+			},
+			{
+				title: "操作",
+				render: (text: any, record: any, index: number) => {
+					return (
+						<DoCon>
+							<span onClick={() => onDoubleClick(record)}>查看</span>
+						</DoCon>
+					)
+				},
+				align: "center",
+				width: 60
+			},
+	
+		]
+	}else{
+		columns = [
+			...columns3,
+			{
+				title: "操作",
+				render: (text: any, record: any, index: number) => {
+					return (
+						<DoCon>
+							<span onClick={() => onDoubleClick(record)}>查看</span>
+						</DoCon>
+					)
+				},
+				align: "center",
+				width: 60
+			},
+	
+		]
+	}
 	useEffect(() => {
 		getTableList()
 	}, [])
@@ -462,6 +476,7 @@ const Wrapper = styled.div`
   .disabled-row .color-orange *[disabled] {
     color: orange !important;
   }
+
 
 
   .bcy-input-number{

@@ -17,7 +17,7 @@ interface FullLoadingBarObj {
   isFullpage?: boolean;
 }
 
-type hisIds = "hj" | "wh" | "ys" | "nys" | "dzlc" | "gzhd" | "lcey" | "germ" | "jmfy" | "dghl" | "dgxg" | "yczyy" | "nfzxy" | "xzsn" | "fqfybjy" | "wjgdszd" | "bhsrm" | "qzxyy" | "fssdy" | "gxjb" | "fsxt" | "whyx" | "gzsrm" | "sdlj" | "lyrm" | "gdtj" | "whfk" | "lyyz" | "qhwy" | "whsl" | "zzwy" | "ytll" | "zhzxy" | 'whhk';
+type hisIds = "hj" | "wh" | "ys" | "nys" | "dzlc" | "gzhd" | "lcey" | "germ" | "jmfy" | "dghl" | "dgxg" | "yczyy" | "nfzxy" | "xzsn" | "fqfybjy" | "wjgdszd" | "bhsrm" | "qzxyy" | "fssdy" | "gxjb" | "fsxt" | "whyx" | "gzsrm" | "sdlj" | "lyrm" | "gdtj" | "whfk" | "lyyz" | "qhwy" | "whsl" | "zzwy" | "ytll" | "zhzxy" | 'whhk' | 'nfsd';
 // type HisAdapterMap = { [p in hisIds]?: any };
 type HisAdapterMap = Record<string, any>;
 
@@ -81,21 +81,6 @@ export default class AppStore {
     if (process.env.REACT_APP_BLANK_DEMO)
       return require("src/assets/images/logo.png")
 
-    // if (this.HOSPITAL_ID == "wh") {
-    //   return require("src/assets/images/武汉logo.png");
-    // } else if (this.HOSPITAL_ID == "hj") {
-    //   return require("src/assets/images/厚街logo.png");
-    // } else if (this.HOSPITAL_ID == "nys") {
-    //   return require("src/assets/images/南医三logo.png");
-    // } else if (this.HOSPITAL_ID == "dgxg") {
-    //   return require("src/assets/images/东莞谢岗.png");
-    // } else if (this.HOSPITAL_ID == "nfzxy") {
-    //   return require("src/assets/images/南方中西医logo.png")
-    // } else if (this.HOSPITAL_ID == "gzsrm") {
-    //   return require("src/assets/images/贵州省人民医院.png")
-    // } else {
-    //   return require("src/assets/images/logo.png");
-    // }
     let logoUrl = require("src/assets/images/logo.png");
     switch (this.HOSPITAL_ID) {
       case "wh":

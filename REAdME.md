@@ -43,10 +43,28 @@
 },
 ```
 
+### printing 打印ant-table 会出现间隔过大的问题
+a:
+ant-table 在打印时 .ant-spin-nested-loading 的高度默认100%
+添加以下内容在css中
+.ant-spin-nested-loading {
+  height: auto !important;
+}
+```tsx
+printing(ref, {
+  injectGlobalCss: true,
+  scanStyles: false,
+  css: ` 
+    .ant-spin-nested-loading {
+      height: auto !important;
+    }
+  `
+}
+```
+
 ## 配置新医院， /home路由白屏
 
 需要在src/configs/routerConfig/specialModule.ts 页面进行新医院的配置
 
 ## 审核模块档案
-
 需要在src\layouts\MainLayout.tsx页面进行新医院的配置

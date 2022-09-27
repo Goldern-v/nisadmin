@@ -7,7 +7,7 @@ const hospitalPath: string =
   appStore.hisMatch({
     map: {
       nys: 'schNightTotalContentNys',
-      'dghl,fqfybjy,sdlj': 'schNightTotalContentHl',
+      'dghl,fqfybjy,sdlj,nfsd': 'schNightTotalContentHl',
       //20210926暂时隐藏
       gzsrm: 'nightTotalContentSgy',
       default: 'schNightTotalContent',

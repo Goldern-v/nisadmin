@@ -202,7 +202,7 @@ export default observer(function Main(props: any) {
           <span> / </span>
           {appStore.hisMatch({
             map: {
-              'hj,lyyz,qhwy,whhk': <React.Fragment>
+              'hj,lyyz,qhwy,whhk,nfsd': <React.Fragment>
                 {queryObj.userType && <Link to="/continuingEdu/其他人员">其他人员</Link>}
                 {!queryObj.userType && <Link to="/continuingEdu/人员管理">正式人员</Link>}
               </React.Fragment>,
@@ -229,8 +229,7 @@ export default observer(function Main(props: any) {
           </span>
         </div>
         <div className="btn-group">
-          {/* <Button onClick={() => setSorceAppendVisible(true)}>添加学分</Button> */}
-          {['hj','lyyz','qhwy', 'whhk'].includes(appStore.HOSPITAL_ID)&& <Button onClick={() => setInPrint(true)} loading={inPrint} >导出个人学习档案</Button>}
+          {['hj','lyyz','qhwy', 'whhk', 'nfsd'].includes(appStore.HOSPITAL_ID)&& <Button onClick={() => setInPrint(true)} loading={inPrint} >导出个人学习档案</Button>}
           <Button onClick={() => history.goBack()}>返回</Button>
         </div>
       </div>

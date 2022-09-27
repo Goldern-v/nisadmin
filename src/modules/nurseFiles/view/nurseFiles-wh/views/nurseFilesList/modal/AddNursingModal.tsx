@@ -132,7 +132,7 @@ const blurSetForm =(e:ChangeEvent<HTMLInputElement>)=>{
           {getFieldDecorator('deptCode', {
             initialValue: authStore.selectedDeptCode
           })(
-            ['sdlj'].includes(appStore.HOSPITAL_ID)
+            ['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID)
             ? <TreeSelectCom
             list={authStore.treeDeptList}
             placeholder='选择所属科室'
