@@ -5,6 +5,9 @@ import { Link } from 'react-router-dom'
 import { appStore } from 'src/stores'
 import createModal from "src/libs/createModal"
 import { observer } from 'mobx-react-lite'
+import printing from 'printing'
+import {scheduleStore } from 'src/stores'
+
 // import { trainingInfoReviewService } from './api/TrainingInfoReviewService'
 import { trainingInfoReviewModel } from './model/TrainingInfoReviewModel'
 
@@ -25,6 +28,7 @@ export interface Props { }
 
 export default observer(function TrainingInfoReview() {
   const { history, queryObj } = appStore
+  let printRef: any = React.createRef<HTMLDivElement>();
   const auditModal = createModal(AuditModal)
   const { baseInfo, auditInfo, taskTypeName } = trainingInfoReviewModel
   const lastAuditItem = auditInfo[auditInfo.length - 1] || null
@@ -35,7 +39,30 @@ export default observer(function TrainingInfoReview() {
       onOkCallBack: () => setTimeout(() => history.goBack(), 500)
     })
   }
-
+const printDetail = ()=>{
+  printing(scheduleStore.printELement, {
+    direction: "horizontal",
+    injectGlobalCss: true,
+    scanStyles: true,
+    css: `
+           @page {
+            size: A4;
+            margin: 0mm 0mm 0mm 0mm;
+           }
+          .main-title{
+          display:flex;
+          justify-content: center;
+          align-items: center;
+           font-weight:700
+           }
+           * {
+           -webkit-print-color-adjust: exact !important;   /* Chrome, Safari */
+           color-adjust: exact !important;                 /*Firefox*/
+           font-size:12px  !important;
+           }
+        `
+  });
+}
   useEffect(() => {
     trainingInfoReviewModel.init()
   }, [])
@@ -88,6 +115,8 @@ export default observer(function TrainingInfoReview() {
               )
             }
           })}
+        {appStore.HOSPITAL_ID==='hj'&&<Button onClick={() =>printDetail()}>打印
+        </Button>}
         <Button
           onClick={() => history.goBack()}>
           返回

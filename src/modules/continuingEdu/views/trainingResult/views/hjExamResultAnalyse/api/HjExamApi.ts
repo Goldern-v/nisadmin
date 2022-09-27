@@ -55,7 +55,12 @@ export default class HjExamApi extends BaseApiService {
       { cetpId }
     );
   }
-
+  // 按科室
+  public getAnalyCorrectRate(cetpId: any) {
+    return this.get(
+        `/studyAndTrain/teachingPlanManage/analyCorrectRate?cetpId=${cetpId}`,
+    );
+  }
   //导出(南医三新增exportType入参)
   public exportExam(cetpId: any, urlName: string, exportType?: any) {
     //统计exportExamResultStats  分析exportExamResultAnalyse  报表exportExamResultAnalyseReport

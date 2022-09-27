@@ -27,6 +27,7 @@ export default class ScheduleStore {
   @observable private endTime: string
   @observable private selectedWeekIndex: string
   @observable private department: any
+  @observable printELement: any
 
   @action
   public setErrorData = (errorData: any) => {
@@ -141,5 +142,10 @@ export default class ScheduleStore {
     } else {
       return [startWeekNumber, endWeekNumber]
     }
+  }
+  /*学习培训打印节点*/
+  @action
+  public getPrintHtml=(ele:HTMLDivElement)=>{
+    this.printELement =ele && ele
   }
 }

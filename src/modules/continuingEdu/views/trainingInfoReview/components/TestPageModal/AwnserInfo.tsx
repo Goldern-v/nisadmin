@@ -1,6 +1,10 @@
 import styled from "styled-components";
 import React, { useState, useEffect } from "react";
 import { Button } from "antd";
+import { appStore } from 'src/stores'
+import {trainingInfoReviewService} from  '../../api/TrainingInfoReviewService'
+import { fileDownload } from "src/utils/file/file";
+
 export interface Props {
   info?: any;
 }
@@ -24,7 +28,12 @@ export default function answerInfo(props: Props) {
 
   //问答题
   let wendaArr = questionList.filter((item: any) => item.questionType == 4);
-
+    const handleExport = () => {
+        const params = {cetpId: info.cetpId}
+        trainingInfoReviewService.handleExport(params).then(res => {
+            fileDownload(res)
+        })
+    }
   return (
     <Wrapper>
       <div className="main-title">参考答案</div>
@@ -113,6 +122,11 @@ export default function answerInfo(props: Props) {
           的，可能下次你看到的就会不一样。
         </div>
       )}
+      {
+        appStore.HOSPITAL_ID==='hj'&&<div className='import-button'>
+            <Button onClick={()=>handleExport()}>导出</Button>
+          </div>
+      }
     </Wrapper>
   );
 }
@@ -134,5 +148,10 @@ const Wrapper = styled.div`
     margin-top: 15px;
     padding: 15px;
     background: #eee;
+  }
+  .import-button{
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 15px;
   }
 `;
