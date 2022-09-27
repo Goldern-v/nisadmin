@@ -19,11 +19,10 @@ export default function SumDeptProModal(props: Props) {
   const formatStatus = (obj: Record<string, any>) => {
     let text = '不达标'
     if (!obj.qualificationRate && !obj.score) return ''
-    else if (obj.qualificationRate && !obj.score) {
-      Number(obj.qualificationRate) >= 90 && (text = '达标')
+    else if (obj.qualificationRate && obj.score) {
+      Number(obj.qualificationRate) >= 90 && Number(obj.score) >= 90 && (text = '达标')
       return text
     }
-    Number(obj.qualificationRate) >= 90 && Number(obj.score) >= 90 && (text = '达标')
     return text
   }
   useEffect(() => { }, []);
