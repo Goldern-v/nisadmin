@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import React, {useState, useEffect} from 'react'
 import {Button, InputNumber, Popover} from 'antd'
 import {hjExamModal} from '../../HjExamModal'
+import { trainingResultModel } from './../../../../models/TrainingResultModel'
 
 export interface Props {
     data?: any[],
@@ -10,7 +11,8 @@ export interface Props {
 }
 
 export default function QuestionsStatistics(props: Props) {
-    const {data, type, title} = props
+    const {data, type} = props
+    const {baseInfo}=trainingResultModel
     const [heard, setHeard] = useState([] as any)
     useEffect(() => {
         const {
@@ -139,7 +141,7 @@ export default function QuestionsStatistics(props: Props) {
     }
 
     return <Wrapper>
-        <div className="main-title">《{title}》</div>
+        <div className="main-title">《{baseInfo?.title}》</div>
         <div className="question-list">
             {/*考试详情*/}
             <div className='question-head'>

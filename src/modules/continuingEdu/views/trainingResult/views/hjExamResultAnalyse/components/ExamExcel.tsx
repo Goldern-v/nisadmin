@@ -36,7 +36,6 @@ useEffect(()=>{
             <Report>
                 <QuestionsStatistics
                     type='view'
-                    title={'title'}
                     data={hjExamModal.analyCorrectRateData?.questionList}
                 />
             </Report>
