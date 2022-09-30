@@ -19,26 +19,32 @@ import { PUBLISH_STATUS_ARR } from "../../utils/enums";
 import { globalModal } from "src/global/globalModal";
 
 const columns = [
-  "A级质量问题及科室",
+  "A级评价标准",
+  "问题及科室",
   "原因分析",
   "改进措施",
   "评价效果",
+  "formName1",
   "mainProblem1",
   "causeAnalysis1",
   "correctiveWay1",
   "evaluation1",
-  "B—>A级质量问题及科室",
+  'B->A级评价标准',
+  "问题及科室",
   "原因分析",
   "改进措施",
   "评价效果",
+  'formName2',
   "mainProblem2",
   "causeAnalysis2",
   "correctiveWay2",
   "evaluation2",
-  "其他共性问题",
+  '其他评价标准',
+  "问题及科室",
   "原因分析",
   "改进措施",
   "评价效果",
+  'formName3',
   "mainProblem3",
   "causeAnalysis3",
   "correctiveWay3",
@@ -46,14 +52,17 @@ const columns = [
 ];
 
 const initList = () => ({
+  formName1: '',
   mainProblem1: "",
   causeAnalysis1: "",
   correctiveWay1: "",
   evaluation1: "",
+  formName2: '',
   mainProblem2: "",
   causeAnalysis2: "",
   correctiveWay2: "",
   evaluation2: "",
+  formName3: '',
   mainProblem3: "",
   causeAnalysis3: "",
   correctiveWay3: "",
@@ -231,13 +240,13 @@ export default observer(function QcThreeProblem(props) {
 
           <Button onClick={handleSearch}>查询</Button>
 
-          {btnRules && <Button onClick={handlePublishOrCancel}>{PUBLISH_STATUS_ARR[data.status].btn}</Button>}
           {authStore.level3Check && <Button onClick={handleCreate} type="primary">
             创建
           </Button>}
+          {btnRules && <Button onClick={handlePublishOrCancel}>{PUBLISH_STATUS_ARR[data.status].btn}</Button>}
           {btnRules && data.status == 0 && <Button onClick={handleSave}>保存</Button>}
           {authStore.level3Check && data.id && <Button onClick={handleDel}>删除</Button>}
-          <Button disabled={!data.id} onClick={handleExport}>导出</Button> 
+          <Button disabled={!data.id} onClick={handleExport}>导出</Button>
         </PageHeader>
         {!data.id && (
           <div className="contain--empty">
@@ -253,7 +262,7 @@ export default observer(function QcThreeProblem(props) {
               </div>
               <div className={"contain__main" + (data.status == 1 || !authStore.level3Check ? ' contain__main--published' : '')}>
                 {columns.map((v: any, i: number) => {
-                  if (i % 8 <= 3) {
+                  if (i % 10 <= 4) {
                     return (
                       <div className="contain__main__title" key={i}>
                         {v}
@@ -331,7 +340,7 @@ const Main = styled.div`
       .contain__main__title {
         font-size: 17px;
         line-height: 32px;
-        flex-basis: 25%;
+        flex-basis: 20%;
         border: 1px solid #eeeeee;
         background: rgb(242, 244, 245);
         text-align: center;
@@ -340,7 +349,7 @@ const Main = styled.div`
         font-size: 14px;
         padding: 1px;
         line-height: 20px;
-        flex-basis: 25%;
+        flex-basis: 20%;
         /* min-height: 148px; */
         white-space: pre-wrap;
         word-break: break-all;

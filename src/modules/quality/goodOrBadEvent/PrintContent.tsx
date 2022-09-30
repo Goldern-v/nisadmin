@@ -56,6 +56,8 @@ const PrintContent = (props: Props) => {
 	const [chartsImg4, setChartsImg4]: any = useState('')
 	const [chartsImg5, setChartsImg5]: any = useState('')
 	const [chartsImg6, setChartsImg6]: any = useState('')
+	const [chartsImg7, setChartsImg7]: any = useState('')
+	const [chartsImg8, setChartsImg8]: any = useState('')
 	
 	const [gridLeft, setGridLeft] = useState('12%');
 	const [gridRight, setGridRight] = useState('12%');
@@ -132,6 +134,18 @@ const PrintContent = (props: Props) => {
 				let srcStr6 = canvasEl6.toDataURL()
 				setChartsImg6(srcStr6)
 			}
+
+			let canvasEl7 = document.querySelector('.canvas7 canvas') as any
+			if (canvasEl7) {
+				let srcStr7 = canvasEl7.toDataURL()
+				setChartsImg7(srcStr7)
+			}
+
+			let canvasEl8 = document.querySelector('.canvas8 canvas') as any
+			if (canvasEl8) {
+				let srcStr8 = canvasEl8.toDataURL()
+				setChartsImg8(srcStr8)
+			}
 		}, 1000)
 
 
@@ -155,6 +169,8 @@ const PrintContent = (props: Props) => {
 		}
 
 	}
+
+	// x轴文字换行，6个一行
 	const xAxisSetting = {
 		type: 'category',
 		axisTick: { show: false },
@@ -162,7 +178,7 @@ const PrintContent = (props: Props) => {
 			interval: 0,  //控制X轴刻度全部显示
 			formatter: function (value: any) {
 				let len = value.length;
-				let length = 5; //控制一行显示个数
+				let length = 6; //控制一行显示个数
 				let num = Math.ceil(len / length);//循环次数
 				if (num > 1) {
 					let str = '';
@@ -175,6 +191,15 @@ const PrintContent = (props: Props) => {
 				}
 			}
 
+		}
+	}
+
+	// x轴文字显示，不换行
+	const xAxisSettingNoWrap = {
+		type: 'category',
+		axisTick: { show: false },
+		axisLabel: {
+			interval: 0,  //控制X轴刻度全部显示
 		}
 	}
 
@@ -203,7 +228,7 @@ const PrintContent = (props: Props) => {
 
 
 	const getBolatuOption = (data: any) => {
-		let currentNum = 0, prevNum = 0
+		let currentNum = 0, prevNum = 0,legendData = [wholePrintData.preCycleMessage,wholePrintData.currentCycleMessage]
 		if (wholePrintData.rowList.length > 0) {
 			// 有数据
 			let clinicalData = dataSource.slice(0, 16)
@@ -222,55 +247,47 @@ const PrintContent = (props: Props) => {
 		}
 		let dataList = [prevNum, currentNum]
 		let XaxisList = [`${Number(wholePrintData.master.belongsYear) - 1}`, `${wholePrintData.master.belongsYear}`]
+		
 		return {
 			title: {
 				text: '图1 临床护理质量指标对比（发生例数）',
 				...getEchartsTitle,
 				subtext: ' ',
-
 			},
-
-			legend: {
-				bottom: 0,
-				selectedMode: false,
-				data: XaxisList
-			},
-
 			grid: {
 				left: gridLeft,
-				bottom: gridBottom,
+				right: gridRight,
+			},
+			legend: {
+				// data: legendData
+				data:legendData
 			},
 			xAxis: [
 				{
-					type: 'category',
-					axisTick: {
-						alignWithLabel: true
-					},
-					data: XaxisList,
-
-
+					data: wholePrintData.chartMap['图一 临床护理质量指标对比（发生例数）'][0] || [],
+					...xAxisSettingNoWrap,
 				}
 			],
 			yAxis: [
 				{
-					type: 'value',
-				},
-
+					type: 'value'
+				}
 			],
 			series: [
 				{
-					type: 'bar',
-					animation: false,
-					data: dataList,
-					label: {
-						show: true,
-						position: 'top'
-					},
-				}
-
+					name: legendData[0],
+					...yAxisSetting,
+					data:wholePrintData.chartMap['图一 临床护理质量指标对比（发生例数）'][2] || []
+					// data: prevList
+				},
+				{
+					name: legendData[1],
+					...yAxisSetting,
+					data: wholePrintData.chartMap['图一 临床护理质量指标对比（发生例数）'][1] || []
+				},
 			]
-		};
-
+		}
+		
 	}
 
 	// table数据
@@ -318,7 +335,8 @@ const PrintContent = (props: Props) => {
 					{
 						title: () => {
 							return (
-								<span>{wholePrintData.master.belongsYear}</span>
+								// <span>{wholePrintData.master.belongsYear}</span>
+								<span>{wholePrintData.currentCycleMessage}</span>
 							)
 						}, key: 'currentYearCount', dataIndex: 'currentYearCount', align: 'center',
 
@@ -339,7 +357,8 @@ const PrintContent = (props: Props) => {
 					{
 						title: () => {
 							return (
-								<span>{wholePrintData.master.belongsYear}</span>
+								// <span>{wholePrintData.master.belongsYear}</span>
+								<span>{wholePrintData.currentCycleMessage}</span>
 							)
 						}, key: 'currentYearRate', dataIndex: 'currentYearRate', align: 'center',
 						onCell(record: any, rowIndex: any) {
@@ -358,7 +377,8 @@ const PrintContent = (props: Props) => {
 					{
 						title: () => {
 							return (
-								<span>{wholePrintData.master.belongsYear - 1}</span>
+								// <span>{wholePrintData.master.belongsYear - 1}</span>
+								<span>{wholePrintData.preCycleMessage}</span>
 							)
 						}, key: 'preYearCount', dataIndex: 'preYearCount', align: 'center',
 						onCell(record: any, rowIndex: any) {
@@ -377,7 +397,8 @@ const PrintContent = (props: Props) => {
 					{
 						title: () => {
 							return (
-								<span>{wholePrintData.master.belongsYear - 1}</span>
+								// <span>{wholePrintData.master.belongsYear - 1}</span>
+								<span>{wholePrintData.preCycleMessage}</span>
 							)
 						}, key: 'preYearRate', dataIndex: 'preYearRate', align: 'center',
 						onCell(record: any, rowIndex: any) {
@@ -396,6 +417,7 @@ const PrintContent = (props: Props) => {
 
 	// 柱状图2
 	const getBolatuOption2 = () => {
+		// wholePrintData.chartMap()
 		// 临床护理质量指标对比（发生例数）
 		let xAxisList = [] as any, currentList = [] as any, prevList = [] as any, legendData = []
 		if (wholePrintData.rowList.length > 0) {
@@ -409,10 +431,12 @@ const PrintContent = (props: Props) => {
 				}
 			})
 		}
-		legendData = [`${Number(wholePrintData.master.belongsYear) - 1}`, `${wholePrintData.master.belongsYear}`]
+		// legendData = [`${Number(wholePrintData.master.belongsYear) - 1}`, `${wholePrintData.master.belongsYear}`]
+		legendData = [wholePrintData.preCycleMessage,wholePrintData.currentCycleMessage]
+		// console.log(xAxisList,prevList,currentList)
 		return {
 			title: {
-				text: '图2 临床护理质量指标对比（发生例数）',
+				text: '图2 临床护理质量指标对比（发生率）',
 				...getEchartsTitle
 			},
 			grid: {
@@ -420,11 +444,12 @@ const PrintContent = (props: Props) => {
 				right: gridRight,
 			},
 			legend: {
-				data: legendData
+				// data: legendData
+				data:legendData
 			},
 			xAxis: [
 				{
-					data: xAxisList,
+					data: wholePrintData.chartMap['图二 临床护理质量指标对比（发生率）'][0],
 					...xAxisSetting,
 				}
 			],
@@ -436,20 +461,22 @@ const PrintContent = (props: Props) => {
 			series: [
 				{
 					name: legendData[0],
-					...yAxisSetting,
-					data: prevList
+					...yAxisSettingRate,
+					data:wholePrintData.chartMap['图二 临床护理质量指标对比（发生率）'][2]
+					// data: prevList
 				},
 				{
 					name: legendData[1],
-					...yAxisSetting,
-					data: currentList
+					// ...yAxisSetting,
+					...yAxisSettingRate,
+					data: wholePrintData.chartMap['图二 临床护理质量指标对比（发生率）'][1]
 				},
 			]
 		}
 	}
 	// 柱状图3
 	const getBolatuOption3 = () => {
-		let currentNum = 0, prevNum = 0
+		let currentNum = 0, prevNum = 0,legendData = [wholePrintData.preCycleMessage,wholePrintData.currentCycleMessage]
 		if (wholePrintData.rowList.length > 0) {
 			// 有数据
 			let clinicalData = dataSource.slice(0, 16)
@@ -478,51 +505,42 @@ const PrintContent = (props: Props) => {
 				text: '图3 临床护理质量指标对比（发生率）',
 				...getEchartsTitle,
 				subtext: ' ',
-
 			},
-
-			legend: {
-				bottom: 0,
-				selectedMode: false,
-				data: XaxisList
-			},
-
 			grid: {
-				// left: gridLeft,
-				bottom: gridBottom,
+				left: gridLeft,
+				right: gridRight,
+			},
+			legend: {
+				// data: legendData
+				data:legendData
 			},
 			xAxis: [
 				{
-					type: 'category',
-					axisTick: {
-						alignWithLabel: true
-					},
-					data: XaxisList,
+					data: wholePrintData.chartMap['图三 临床护理质量指标对比（发生率）'][0],
+					...xAxisSettingNoWrap,
 				}
 			],
 			yAxis: [
 				{
-					type: 'value',
-				},
-
+					type: 'value'
+				}
 			],
 			series: [
 				{
-					type: 'bar',
-					animation: false,
-					data: dataList,
-					label: {
-						show: true,
-						position: 'top',
-						formatter: (val: any, idx: number) => {
-							// console.log(val)
-							return Math.floor(val?.value * 10000) / 100 + '%'
-						}
-					},
-				}
-
+					name: legendData[0],
+					// ...yAxisSetting,
+					...yAxisSettingRate,
+					data:wholePrintData.chartMap['图三 临床护理质量指标对比（发生率）'][2]
+					// data: prevList
+				},
+				{
+					name: legendData[1],
+					// ...yAxisSetting,
+					...yAxisSettingRate,
+					data: wholePrintData.chartMap['图三 临床护理质量指标对比（发生率）'][1]
+				},
 			]
-		};
+		}
 	}
 	// 柱状图4
 	const getBolatuOption4 = () => {
@@ -539,12 +557,13 @@ const PrintContent = (props: Props) => {
 				}
 			})
 		}
-		legendData = [`${Number(wholePrintData.master.belongsYear) - 1}`, `${wholePrintData.master.belongsYear}`]
+		legendData = [wholePrintData.preCycleMessage,wholePrintData.currentCycleMessage]
 
 		return {
 			title: {
-				text: '图4 临床护理质量指标对比（发生率）',
-				...getEchartsTitle
+				text: '图4 临床护理质量指标对比（发生例数）',
+				...getEchartsTitle,
+				subtext: ' ',
 			},
 			legend: {
 				data: legendData
@@ -555,7 +574,7 @@ const PrintContent = (props: Props) => {
 			},
 			xAxis: [
 				{
-					data: xAxisList,
+					data: wholePrintData.chartMap['图四 临床护理质量指标对比（发生例数）'][0],
 					...xAxisSetting
 				}
 			],
@@ -567,13 +586,13 @@ const PrintContent = (props: Props) => {
 			series: [
 				{
 					name: legendData[0],
-					...yAxisSettingRate,
-					data: prevList
+					...yAxisSetting,
+					data: wholePrintData.chartMap['图四 临床护理质量指标对比（发生例数）'][2]
 				},
 				{
 					name: legendData[1],
-					...yAxisSettingRate,
-					data: currentList
+					...yAxisSetting,
+					data: wholePrintData.chartMap['图四 临床护理质量指标对比（发生例数）'][1]
 				},
 			]
 		}
@@ -602,54 +621,44 @@ const PrintContent = (props: Props) => {
 			prevNum = Math.floor(prevNum / rateCount * 10000) / 10000
 		}
 		let dataList = [prevNum, currentNum]
-		let XaxisList = [`${Number(wholePrintData.master.belongsYear) - 1}`, `${wholePrintData.master.belongsYear}`]
+		let legendData = [wholePrintData.preCycleMessage,wholePrintData.currentCycleMessage]
 		// console.log(dataList)
 		return {
 			title: {
-				text: '图5 工作量及管理质量指标对比（发生率）',
+				text: '图5 临床护理质量指标对比（发生率）',
 				...getEchartsTitle,
 				subtext: ' ',
 			},
 			legend: {
-				bottom: 0,
-				selectedMode: false,
-				data: XaxisList
+				data: legendData
 			},
-
 			grid: {
-				// left: gridLeft,
-				bottom: gridBottom
+				// left:gridLeft,
+				// bottom: '80px',
+				right: gridRight,
 			},
 			xAxis: [
 				{
-					type: 'category',
-					axisTick: {
-						alignWithLabel: true
-					},
-					data: XaxisList,
+					data: wholePrintData.chartMap['图五 临床护理质量指标对比（发生率）'][0],
+					...xAxisSettingNoWrap
 				}
 			],
 			yAxis: [
 				{
-					type: 'value',
-				},
-
+					type: 'value'
+				}
 			],
 			series: [
 				{
-					type: 'bar',
-					animation: false,
-					data: dataList,
-					label: {
-						show: true,
-						position: 'top',
-						formatter: (val: any, idx: number) => {
-							// console.log(val)
-							return Math.floor(val?.value * 10000) / 100 + '%'
-						}
-					},
-				}
-
+					name: legendData[0],
+					...yAxisSettingRate,
+					data: wholePrintData.chartMap['图五 临床护理质量指标对比（发生率）'][2]
+				},
+				{
+					name: legendData[1],
+					...yAxisSettingRate,
+					data: wholePrintData.chartMap['图五 临床护理质量指标对比（发生率）'][1]
+				},
 			]
 		};
 	}
@@ -670,7 +679,7 @@ const PrintContent = (props: Props) => {
 				}
 			})
 		}
-		legendData = [`${Number(wholePrintData.master.belongsYear) - 1}`, `${wholePrintData.master.belongsYear}`]
+		legendData = [wholePrintData.preCycleMessage,wholePrintData.currentCycleMessage]
 
 		// console.log(legendData,xAxisList,currentList,prevList)
 
@@ -684,33 +693,14 @@ const PrintContent = (props: Props) => {
 			},
 			grid: {
 				// left:gridLeft,
-				bottom: '120px',
+				bottom: '65px',
 				// containLabel: false,
 				right: gridRight,
 			},
 			xAxis: [
 				{
-					data: xAxisList,
-					type: 'category',
-					axisTick: { show: false },
-					axisLabel: {
-						interval: 0,  //控制X轴刻度全部显示
-						formatter: function (value: any) {
-							let len = value.length;
-							let length = 4; //控制一行显示个数
-							let num = Math.ceil(len / length);//循环次数
-							if (num > 1) {
-								let str = '';
-								for (let i = 0; i < num; i++) {
-									str += value.substring(i * length, (i + 1) * length) + '\n';
-								}
-								return str;
-							} else {
-								return value;
-							}
-						}
-
-					}
+					data: wholePrintData.chartMap['图六 工作量及管理质量指标对比（发生率）'][0],
+					...xAxisSetting,
 				}
 			],
 			yAxis: [
@@ -722,12 +712,133 @@ const PrintContent = (props: Props) => {
 				{
 					name: legendData[0],
 					...yAxisSettingRate,
-					data: prevList
+					data: wholePrintData.chartMap['图六 工作量及管理质量指标对比（发生率）'][2]
 				},
 				{
 					name: legendData[1],
 					...yAxisSettingRate,
-					data: currentList
+					data: wholePrintData.chartMap['图六 工作量及管理质量指标对比（发生率）'][1]
+				},
+			]
+		}
+	}
+	// 柱状图7
+	const getBolatuOption7 = () => {
+		// 临床护理质量指标对比（发生例数）
+		let xAxisList = [] as any, currentList = [] as any, prevList = [] as any, legendData = []
+		if (wholePrintData.rowList.length > 0) {
+			// console.log(wholePrintData.rowList)
+			// 有数据
+			let clinicalData = dataSource.slice(16, 28)
+			// console.log(clinicalData)
+			clinicalData.map((it: any) => {
+				if (it.isRate) {
+					xAxisList.push(it.classify)
+					currentList.push(it.currentYearRate || 0)
+					prevList.push(it.preYearRate || 0)
+				}
+			})
+		}
+		legendData = [wholePrintData.preCycleMessage,wholePrintData.currentCycleMessage]
+
+		// console.log(legendData,xAxisList,currentList,prevList)
+
+		return {
+			title: {
+				text: '图7 工作量及管理质量指标对比（发生率）',
+				...getEchartsTitle
+			},
+			legend: {
+				data: legendData
+			},
+			grid: {
+				// left:gridLeft,
+				bottom: '90px',
+				// containLabel: false,
+				right: gridRight,
+			},
+			xAxis: [
+				{
+					data: wholePrintData.chartMap['图七 工作量及管理质量指标对比（发生率）'][0],
+					...xAxisSetting
+				}
+			],
+			yAxis: [
+				{
+					type: 'value'
+				}
+			],
+			series: [
+				{
+					name: legendData[0],
+					...yAxisSettingRate,
+					data: wholePrintData.chartMap['图七 工作量及管理质量指标对比（发生率）'][2]
+				},
+				{
+					name: legendData[1],
+					...yAxisSettingRate,
+					data: wholePrintData.chartMap['图七 工作量及管理质量指标对比（发生率）'][1]
+				},
+			]
+		}
+	}
+	// 柱状图8
+	const getBolatuOption8 = () => {
+		// 临床护理质量指标对比（发生例数）
+		let xAxisList = [] as any, currentList = [] as any, prevList = [] as any, legendData = []
+		if (wholePrintData.rowList.length > 0) {
+			// console.log(wholePrintData.rowList)
+			// 有数据
+			let clinicalData = dataSource.slice(16, 28)
+			// console.log(clinicalData)
+			clinicalData.map((it: any) => {
+				if (it.isRate) {
+					xAxisList.push(it.classify)
+					currentList.push(it.currentYearRate || 0)
+					prevList.push(it.preYearRate || 0)
+				}
+			})
+		}
+		legendData = [wholePrintData.preCycleMessage,wholePrintData.currentCycleMessage]
+
+		// console.log(legendData,xAxisList,currentList,prevList)
+
+		return {
+			title: {
+				text: '图8 工作量及管理质量指标对比（发生率）',
+				...getEchartsTitle,
+				subtext: ' ',
+			},
+			legend: {
+				data: legendData
+			},
+			grid: {
+				// left:gridLeft,
+				// bottom: '100px',
+				// containLabel: false,
+				right: gridRight,
+			},
+			xAxis: [
+				{
+					data: wholePrintData.chartMap['图八 工作量及管理质量指标对比（发生率）'][0],
+					...xAxisSettingNoWrap,
+				}
+			],
+			yAxis: [
+				{
+					type: 'value'
+				}
+			],
+			series: [
+				{
+					name: legendData[0],
+					...yAxisSettingRate,
+					data: wholePrintData.chartMap['图八 工作量及管理质量指标对比（发生率）'][2]
+				},
+				{
+					name: legendData[1],
+					...yAxisSettingRate,
+					data: wholePrintData.chartMap['图八 工作量及管理质量指标对比（发生率）'][1]
 				},
 			]
 		}
@@ -736,7 +847,7 @@ const PrintContent = (props: Props) => {
 		<div className="first-content-box">
 			<div className='first-title'>{`${propsData.title}`}</div>
 			<div className='title-m'>一、计划阶段</div>
-			<div className='title-s'>(一)通过{wholePrintData.master.belongsYear}年及{Number(wholePrintData.master.belongsYear) - 1}年全科临床护理及护理工作质量/管理指标的数据对比（见表1，图1-图6），发现主要存在问题：</div>
+			<div className='title-s'>(一)通过{wholePrintData.currentCycleMessage}及{wholePrintData.preCycleMessage}全科临床护理及护理工作质量/管理指标的数据对比（见表1，图1-图8），发现主要存在问题：</div>
 			{(!isPrint && authStore.isDepartment) && <Input.TextArea onChange={(e: any) => setTextArea1_1(e.target.value)} disabled={!authStore.isDepartment} className='print-page__ipt' value={textArea1_1} placeholder='字数上限2000字' autosize={{ minRows: 3 }} maxLength={2000} />}
 			{(isPrint || !authStore.isDepartment) && <p className='print-page__ptext print-page__ipt' style={{ 'whiteSpace': 'pre-wrap' }}>{textArea1_1}</p>}
 			<div className='second-content-box'>
@@ -779,6 +890,14 @@ const PrintContent = (props: Props) => {
 				{!isPrint && deductionData && <ReactEcharts className='canvas6' style={{ height: 550, width: 680, margin: '0 auto' }} option={getBolatuOption6()} />}
 				{isPrint && deductionData && chartsImg6 && <img src={chartsImg6} alt="" />}
 			</div>
+			<div className='second-content-bolatu-bolatu'>
+				{!isPrint && deductionData && <ReactEcharts className='canvas7' style={{ height: 550, width: 680, margin: '0 auto' }} option={getBolatuOption7()} />}
+				{isPrint && deductionData && chartsImg7 && <img src={chartsImg7} alt="" />}
+			</div>
+			<div className='second-content-bolatu-bolatu'>
+				{!isPrint && deductionData && <ReactEcharts className='canvas8' style={{ height: 550, width: 680, margin: '0 auto' }} option={getBolatuOption8()} />}
+				{isPrint && deductionData && chartsImg8 && <img src={chartsImg8} alt="" />}
+			</div>
 		</div>}
 
 		<div>
@@ -792,7 +911,9 @@ const PrintContent = (props: Props) => {
 		</div>
 
 		<div>
-			<div className='title-s'>（三）确定2021年护理质量改进目标为：</div>
+		{wholePrintData.master.reportType=='2' && <div className='title-s'>（三）确定下个年护理质量改进目标为：</div>}
+		{wholePrintData.master.reportType=='1' && <div className='title-s'>（三）确定下个季度护理质量改进目标为：</div>}
+			{wholePrintData.master.reportType=='0' && <div className='title-s'>（三）确定下个月护理质量改进目标为：</div>}
 			{(!isPrint && authStore.isDepartment) && <TextArea  className='print-page__ipt' placeholder='字数上限2000字' value={textArea1_3} onChange={(e: any) => setTextArea1_3(e.target.value)} maxLength={2000} autosize={{ minRows: 3 }} />}
 			{(isPrint || !authStore.isDepartment) && <p className='print-page__ptext print-page__ipt' style={{ 'whiteSpace': 'pre-wrap' }}>{textArea1_3}</p>}
 

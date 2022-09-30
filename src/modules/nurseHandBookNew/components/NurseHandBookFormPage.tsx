@@ -14,10 +14,14 @@ import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import moment from 'moment'
 import { DatePicker } from 'antd';
+import {useRef} from "src/types/react";
+import printFn from "printing";
+import printing from "printing";
 const api = new NurseHandBookService();
 export interface Props { }
 export default observer(function nurseHandBookFormPage(props: any) {
   const { MonthPicker } = DatePicker;
+  const refPrint: any = useRef<HTMLElement>();
   const [tableHeadContent,setTableHeadContent]:any = useState([])
   const [iframeSrc, setIframeSrc]: any = useState('')
   const [bodyModal, setBodyModal]: any = useState([])
@@ -71,7 +75,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
         setTableTitle(res.data.title)
         setFileList(res.data.files)
         let [tableContent, tableRemark, line, recordName, complexHead, recordDate, tableHead] = res.data.formDataDtoList
-        
+
         setTableHeadContent(tableHead.formContent)
         let templeContent:any = []
         let lineList:any = []
@@ -81,7 +85,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
           })
         }
         if(line.formContent.length){
-          line.formContent.map((item:any)=>{    
+          line.formContent.map((item:any)=>{
             lineList.push(JSON.parse(item.computeRow))
           })
         }
@@ -143,11 +147,11 @@ export default observer(function nurseHandBookFormPage(props: any) {
     let tBodyList: any = []
     let computeList: any = []
     bodyModal.map((item:any)=>{
-      tBodyList.push({tableData:JSON.stringify(fiterList(item.tableData))}) 
+      tBodyList.push({tableData:JSON.stringify(fiterList(item.tableData))})
     })
     let cHeaderList:any = fiterList([complexHeadList])
     computeRow.map((item:any)=>{
-      computeList.push({computeRow:JSON.stringify(item)}) 
+      computeList.push({computeRow:JSON.stringify(item)})
     })
     api.saveOrUpdate(queryObj.type, {
       id: queryObj.id || "",
@@ -223,8 +227,8 @@ export default observer(function nurseHandBookFormPage(props: any) {
     let obj:any = typeList.find((item:any) => {
       return item.code == queryObj.manualType
     })
-    if(obj){ 
-      return obj.name 
+    if(obj){
+      return obj.name
     }
   }
 
@@ -239,80 +243,117 @@ export default observer(function nurseHandBookFormPage(props: any) {
       }
     }
   }
-  const onPrint = () => {
-    setButtonLoading(true)
-    let element = document.getElementById("print-content") // 这个dom元素是要导出的pdf的div容器
-    const w = element?.offsetWidth || 0;  // 获得该容器的宽
-    const h = element?.offsetHeight || 0;  // 获得该容器的高
-    const offsetTop = element?.offsetTop || 0; // 获得该容器到文档顶部的距离  
-    const offsetLeft = element?.offsetLeft || 0; // 获得该容器到文档最左的距离
-    const canvas = document.createElement("canvas");
-    let abs = 0;
-    const win_i = document.body.clientWidth; // 获得当前可视窗口的宽度（不包含滚动条）
-    const win_o = window.innerWidth; // 获得当前窗口的宽度（包含滚动条）
-    if (win_o > win_i) {
-      abs = (win_o - win_i) / 2; // 获得滚动条宽度的一半
+  // const onPrint = () => {
+  //   setButtonLoading(true)
+  //   let element = document.getElementById("print-content") // 这个dom元素是要导出的pdf的div容器
+  //   const w = element?.offsetWidth || 0;  // 获得该容器的宽
+  //   const h = element?.offsetHeight || 0;  // 获得该容器的高
+  //   const offsetTop = element?.offsetTop || 0; // 获得该容器到文档顶部的距离
+  //   const offsetLeft = element?.offsetLeft || 0; // 获得该容器到文档最左的距离
+  //   const canvas = document.createElement("canvas");
+  //   let abs = 0;
+  //   const win_i = document.body.clientWidth; // 获得当前可视窗口的宽度（不包含滚动条）
+  //   const win_o = window.innerWidth; // 获得当前窗口的宽度（包含滚动条）
+  //   if (win_o > win_i) {
+  //     abs = (win_o - win_i) / 2; // 获得滚动条宽度的一半
+  //   }
+  //   canvas.width = w * 2; // 将画布宽&&高放大两倍
+  //   canvas.height = h * 2;
+  //   const context = canvas.getContext('2d');
+  //   context && context.scale(2, 2);
+  //   context && context.translate(-offsetLeft - abs, -offsetTop);
+  //   const iframe: any = document.getElementById("iframe") || document.createElement("iframe")
+  //   setIsPrint(true)
+  //   setTimeout(() => {
+  //     // 这里默认横向没有滚动条的情况，因为offset.left()，有无滚动条的时候存在差值，因此translate的时候，要把这个差值去掉
+  //     html2canvas(element || document.createElement("div"), {
+  //       allowTaint: true,
+  //       scale: 2 // 提升画面质量，但是会增加文件大小
+  //     }).then(canvas => {
+  //        try{
+  //          const contentWidth = canvas.width;
+  //          const contentHeight = canvas.height;
+  //          // 一页pdf显示html页面生成的canvas高度
+  //          const pageHeight = contentWidth / 592.28 * 841.89;
+  //          // 未生成pdf的html页面高度
+  //          let leftHeight = contentHeight;
+  //          // 页面偏移
+  //          let position = 0;
+  //          // a4纸的尺寸[595.28,841.89]，html页面生成的canvas在pdf中图片的宽高
+  //          const imgWidth = 595.28;
+  //          const imgHeight = 592.28 / contentWidth * contentHeight;
+  //
+  //          const pageDate = canvas.toDataURL('image/png');
+  //
+  //          const pdf = new jsPDF('p', 'pt', 'a4', true);
+  //          // 有两个高度需要区分，一个是html页面的实际高度，和生成pdf的页面的高度（841.89）
+  //          // 当内容未超过pdf一页显示的范围，无需分页
+  //          if (leftHeight < pageHeight) {
+  //            pdf.addImage(pageDate, 'PNG', 0, position, imgWidth, imgHeight, '', 'FAST');
+  //          } else { // 分页
+  //            while (leftHeight > 0) {
+  //              pdf.addImage(pageDate, 'PNG', 0, position, imgWidth, imgHeight, '', 'FAST')
+  //              leftHeight -= pageHeight;
+  //              position -= 841.89;
+  //              // 避免添加空白页
+  //              if (leftHeight > 0) {
+  //                pdf.addPage()
+  //              }
+  //            }
+  //          }
+  //          console.log(pdf);
+  //          let src = pdf.output('dataurlstring');
+  //          let arr: any = src.split(',');
+  //          let mime = arr[0].match(/:(.*?);/)[1];
+  //          let bstr = atob(arr[1]);
+  //          let n = bstr.length;
+  //          let u8arr = new Uint8Array(n);
+  //          while (n--) {
+  //            u8arr[n] = bstr.charCodeAt(n);
+  //          }
+  //          let blob = new Blob([u8arr], { type: mime });
+  //          src = window.URL.createObjectURL(blob)
+  //          console.log('blob===',blob,src);
+  //          setIframeSrc(src)
+  //          setButtonLoading(false)
+  //        }catch (e){
+  //          console.log('e',e)
+  //        }
+  //     })
+  //   },1000);
+  //
+  // }
+  const defaultPrintCss = `
+    @page{
+      margin:0mm;
+      color:red
     }
-    canvas.width = w * 2; // 将画布宽&&高放大两倍
-    canvas.height = h * 2;
-    const context = canvas.getContext('2d');
-    context && context.scale(2, 2);
-    context && context.translate(-offsetLeft - abs, -offsetTop);
-    const iframe: any = document.getElementById("iframe") || document.createElement("iframe")
-    setIsPrint(true)
-    setTimeout(() => {
-      // 这里默认横向没有滚动条的情况，因为offset.left()，有无滚动条的时候存在差值，因此translate的时候，要把这个差值去掉
-      html2canvas(element || document.createElement("div"), {
-        allowTaint: true,
-        scale: 2 // 提升画面质量，但是会增加文件大小
-      }).then(canvas => {
-        const contentWidth = canvas.width;
-        const contentHeight = canvas.height;
-        // 一页pdf显示html页面生成的canvas高度
-        const pageHeight = contentWidth / 592.28 * 841.89;
-        // 未生成pdf的html页面高度
-        let leftHeight = contentHeight;
-        // 页面偏移
-        let position = 0;
-        // a4纸的尺寸[595.28,841.89]，html页面生成的canvas在pdf中图片的宽高
-        const imgWidth = 595.28;
-        const imgHeight = 592.28 / contentWidth * contentHeight;
-
-        const pageDate = canvas.toDataURL('image/png');
-
-        const pdf = new jsPDF('p', 'pt', 'a4', true);
-        // 有两个高度需要区分，一个是html页面的实际高度，和生成pdf的页面的高度（841.89）
-        // 当内容未超过pdf一页显示的范围，无需分页
-        if (leftHeight < pageHeight) {
-          pdf.addImage(pageDate, 'PNG', 0, position, imgWidth, imgHeight, '', 'FAST');
-        } else { // 分页
-          while (leftHeight > 0) {
-            pdf.addImage(pageDate, 'PNG', 0, position, imgWidth, imgHeight, '', 'FAST')
-            leftHeight -= pageHeight;
-            position -= 841.89;
-            // 避免添加空白页
-            if (leftHeight > 0) {
-              pdf.addPage()
-            }
-          }
-        }
-        let src = pdf.output('dataurlstring');
-        let arr: any = src.split(',');
-        let mime = arr[0].match(/:(.*?);/)[1];
-        let bstr = atob(arr[1]);
-        let n = bstr.length;
-        let u8arr = new Uint8Array(n);
-        while (n--) {
-          u8arr[n] = bstr.charCodeAt(n);
-        }
-        let blob = new Blob([u8arr], { type: mime });
-        src = window.URL.createObjectURL(blob)
-        setIframeSrc(src)
-        setButtonLoading(false)
-      })
-    });
-
+    #print-page{
+      padding:20px;
+      transform: scaleX(1) scaleY(0.8);
+    }
+  `
+  /*lcBaseInfo基本信息  lcAttendance考勤记录 lcPlan护理工作计划 lcConclusion护理工作总结 lcEducation继续教育与科研 lcWard病区工作*/
+   const newOnPrint =()=>{
+     const horizontal =['lcBaseInfo','lcAttendance'].includes(queryObj.type)
+     /*默认horizontal 聊城二院的基础信息跟考勤信息外的需要另外处理*/
+     if(appStore.HOSPITAL_ID==='lcey'){
+     return  printing(refPrint.current, {
+         direction:horizontal ? "horizontal":"vertical",
+         injectGlobalCss: true,
+         scanStyles: true,
+         css: defaultPrintCss
+       });
+     }else{
+       printing(refPrint.current, {
+         direction: "horizontal",
+         injectGlobalCss: true,
+         scanStyles: true,
+         css: defaultPrintCss
+       });
+     }
   }
+  /*旧版打印不生效，原因不明*/
   const toPrint = () => {
     let iframeEl = document.getElementById("iframe") as any
     if (iframeEl && isPrint) {
@@ -357,7 +398,7 @@ export default observer(function nurseHandBookFormPage(props: any) {
     computeRow,
     signList,
     setSubmitSign,
-    submitSign, 
+    submitSign,
     setOnScroll,
     synchronousData,
   }
@@ -371,12 +412,12 @@ export default observer(function nurseHandBookFormPage(props: any) {
           {queryObj.manualType == 'lc_consultationDj' && <span className='label ml-20'>月份:</span>}
           {queryObj.manualType == 'lc_consultationDj' && <MonthPicker value={date} onChange={(val: any) => setDate(val)} />}
           {queryObj.audit != "2" && !noSaveList.includes(queryObj.manualType) && <Button onClick={handleSave} type="primary" loading={saveLoading}>保存</Button>}
-          <Button className="ml-20" loading={buttonLoading} onClick={onPrint}>打印</Button>
+          <Button className="ml-20" loading={buttonLoading} onClick={newOnPrint}>打印</Button>
           <Button className="ml-20" onClick={handleBack}>返回</Button>
         </div>
       </div>
       <div className="main">
-        <div className="formPage" onScroll={handlerScroll}>
+        <div ref={refPrint} className="formPage" onScroll={handlerScroll}>
           <NurseHandBookFormPage {...NurseHandBookFormPageProps}></NurseHandBookFormPage>
         </div>
         {!noSaveList.includes(queryObj.manualType) && <div className="rightCon">
@@ -465,6 +506,7 @@ const Wrapper = styled.div`
       max-width: 77vw; */
       overflow-x: auto;
       height: 82vh; 
+      color: #000000;
     }
     .rightCon {
       min-width: 340px;

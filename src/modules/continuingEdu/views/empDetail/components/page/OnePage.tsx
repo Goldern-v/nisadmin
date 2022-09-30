@@ -33,12 +33,12 @@ export default function OnePage(props: Props) {
       <div
         className={[
           "title",
-          appStore.HOSPITAL_ID == "hj" ? "none" : "title-1",
+          ["hj", 'nfsd'].includes(appStore.HOSPITAL_ID) ? "none" : "title-1",
         ].join(" ")}
       >
         {appStore.HOSPITAL_Name}
       </div>
-      {appStore.HOSPITAL_ID == "hj" ? (
+      {["hj", 'nfsd'].includes(appStore.HOSPITAL_ID) ? (
         <div className="title-hj">
           <div className="title">护理人员层级培训实施手册</div>
           <p className="title-bottom">(个人使用)</p>
@@ -54,7 +54,7 @@ export default function OnePage(props: Props) {
         <div className="label">科&nbsp;&nbsp;室：</div>
         <div className="input">{baseInfo.deptName}</div>
       </div>
-      {appStore.HOSPITAL_ID == "hj" && (
+      {["hj", 'nfsd'].includes(appStore.HOSPITAL_ID) && (
         <div>
           <div className="input-con">
             <div className="label">所在层级：</div>
@@ -73,7 +73,7 @@ export default function OnePage(props: Props) {
         </div>
       )}
       <div className="aside">
-        {appStore.HOSPITAL_ID == "hj" ? "护理部编制" : appStore.HOSPITAL_Name}
+        {["hj", 'nfsd'].includes(appStore.HOSPITAL_ID) ? "护理部编制" : appStore.HOSPITAL_Name}
       </div>
     </Wrapper>
   );

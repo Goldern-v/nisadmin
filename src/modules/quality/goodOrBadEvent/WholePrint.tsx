@@ -52,6 +52,10 @@ export default observer(function EventReportDetailView(props: Props) {
 			wholePrintData.master = res.data.master || {}
 			wholePrintData.rowList = res.data.rowList || []
 			wholePrintData.evaluationList = res.data.evaluationList || []
+			wholePrintData.chartMap = res.data.chartMap || {}
+			wholePrintData.currentCycleMessage = res.data.currentCycleMessage || ''
+			wholePrintData.preCycleMessage = res.data.preCycleMessage || ''
+			
 			if(res.data.evaluationList.length>0){
 				res.data.evaluationList.map((it:any)=>{
 					switch (it.evaluationCode) {
@@ -300,8 +304,8 @@ export default observer(function EventReportDetailView(props: Props) {
 		<Wrapper>
 			<HeadCon>
 				<BaseBreadcrumb data={[{ name: '全院护理质量分析', link: '/goodOrBadRouter/wholeAysi' }, { name: '报告详情', link: '' }]} />
-				{propsData.reportType == '0' && <div className='title'>{propsData.belongsYear}年{Number(propsData.belongsCycle)}月全院护理质量汇总报告</div>}
-				{/* <div className='title'>{propsData.belongsYear}年第一季度全院护理质量汇总报告</div> */}
+				{/* {propsData.reportType == '0' && <div className='title'>{propsData.belongsYear}年{Number(propsData.belongsCycle)}月全院护理质量汇总报告</div>} */}
+				<div className='title'>{wholePrintData.currentCycleMessage}全院护理质量汇总报告</div>
 				<div className='aside'>
 					<span>
 						{/* 由{currentPage.creatorName}创建于{currentPage.createDate}<span></span> */}

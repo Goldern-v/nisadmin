@@ -268,7 +268,7 @@ export default function QcThreeRouter(props: Props) {
         // route_三级质控汇总报告,
         // route_三级质控问题汇总,
         route_committeeWorkReport,
-        // route_qcThreeResult,
+        route_qcThreeResult,
         route_qcThreeProblem,
       ],
       other: [

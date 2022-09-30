@@ -42,6 +42,5 @@ export const obj = {
     (this as any).getSectionData("2").tempList = (this as any).configData.tableTempList ? (this as any)?.configData?.tableTempList?.workPlanFinishCase : [] || [];
     (this as any).getSectionData("4").list = replenishList({ data: (this as any).allData.tableDataMap, config: (this as any).configData, name: 'nextQuarterMajorWorkPlan', len: 2 });
     (this as any).getSectionData("4").tempList = (this as any).configData.tableTempList ? (this as any)?.configData?.tableTempList?.nextQuarterMajorWorkPlan : [] || [];
-   
   },
 }

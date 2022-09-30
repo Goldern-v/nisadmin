@@ -53,13 +53,14 @@ class StatisticsViewModal {
     })
     const fn = appStore.hisMatch({
       map: {
-        'sdlj': service.commonApiService.nursingUnit4Area.bind(service.commonApiService),
+        'sdlj,nfsd': service.commonApiService.nursingUnit4Area.bind(service.commonApiService),
         'other': service.commonApiService.getUintList.bind(service.commonApiService)
-      }
+      },
+      vague: true
     })
     
     await fn().then((res: any) => {
-      if (['sdlj'].includes(appStore.HOSPITAL_ID)) {
+      if (['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID)) {
         authStore.treeDeptList = res.data.deptList
       }
       if (authStore.isDepartment) {

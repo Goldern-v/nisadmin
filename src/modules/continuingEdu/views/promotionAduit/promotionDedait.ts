@@ -80,11 +80,15 @@ class PromotionApp {
    onSave() {
     this.loading = true;
     this.commitStep = '';
+    this.carePatientList.map((item: any) => {
+      item.masterId = this.master.id
+    })
     let obj = {
       master : this.master,
       itemDataMap: this.handleDifferent(),
       commitStep: this.commitStep,
       carePatientList: this.carePatientList,
+      handledSave:true
     }
     badEventReportService.getSaveOrCommit(obj).then((res) => {
       if(res.code == 200){

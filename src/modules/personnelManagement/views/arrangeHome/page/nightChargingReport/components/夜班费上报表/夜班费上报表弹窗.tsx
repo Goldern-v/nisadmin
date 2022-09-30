@@ -43,7 +43,7 @@ export default observer(function 夜班费上报表弹窗(props: Props) {
       fqfybjy: configFqfybjy.getColumns(cloneData, calBack),
       //暂时隐藏20210926
       'gzsrm': configGzsrm.getColumns(cloneData, calBack),
-      sdlj: configSdlj.getColumns(cloneData, calBack),
+      'sdlj,nfsd': configSdlj.getColumns(cloneData, calBack),
       default: configDefault.getColumns(cloneData, calBack)
     },
     vague: true,
@@ -55,7 +55,7 @@ export default observer(function 夜班费上报表弹窗(props: Props) {
         nys: configNys.moneyKeyList,
         dghl: configDghl.moneyKeyList,
         fqfybjy: configFqfybjy.moneyKeyList,
-        sdlj: configSdlj.moneyKeyList,
+        'sdlj,nfsd': configSdlj.moneyKeyList,
       },
       vague: true,
     })
@@ -71,7 +71,7 @@ export default observer(function 夜班费上报表弹窗(props: Props) {
         dghl: configDghl.item,
         fqfybjy: configFqfybjy.item,
         'gzsrm': configGzsrm.item(),
-        sdlj: configSdlj.item,
+        'sdlj,nfsd': configSdlj.item,
         default: configDefault.item
       },
     })

@@ -478,7 +478,7 @@ export default observer(function NurseFilesListView() {
   return (
     <Wrapper>
       <SelectCon />
-      {['sdlj'].includes(appStore.HOSPITAL_ID)
+      {['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID)
         ? <FilterConTree />
         : <FilterCon />}
       {/* <Spin spinning={nurseFilesListViewModel.listSpinning}>

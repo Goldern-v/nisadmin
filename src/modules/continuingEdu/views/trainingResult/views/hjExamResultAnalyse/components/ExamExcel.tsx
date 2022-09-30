@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import React from 'react'
+import React,{useState,useEffect} from 'react'
 import { Spin } from 'antd'
 import { observer } from 'mobx-react-lite'
 import { hjExamModal } from '../HjExamModal'
@@ -7,15 +7,21 @@ import DeptExamReport from './components/DeptExamReport'
 import TitleExamReport from './components/TitleExamReport'
 import HierarchyExamReport from './components/HierarchyExamReport'
 import ScoresSectionExamReport from './components/ScoresSectionExamReport'
+import QuestionsStatistics from './components/QuestionsStatistics'
 import { appStore } from 'src/stores'
+import { trainingResultService } from "./../../../api/TrainingResultService";
+import {TableTitle} from './components/styleCss'
+
 export interface Props { }
-
 export default observer(function ExamExcel() {
-
+useEffect(()=>{
+    hjExamModal.analyCorrectRate()
+},[appStore.queryObj.id])
   // 南医三根据当前页面tab值显示页面
   const getPage = () => {
     if (['hj','gxjb','whyx'].includes(appStore.HOSPITAL_ID)) {
-      return (
+      // @ts-ignore
+        return (
         <React.Fragment>
           <Report>
             <DeptExamReport />
@@ -27,6 +33,14 @@ export default observer(function ExamExcel() {
             <HierarchyExamReport />
           </Report>
           <ScoresSectionExamReport />
+        {/*  hj增加考试错题  */}
+            <Report>
+                <TableTitle >答卷答题情况分析</TableTitle>
+                <QuestionsStatistics
+                    type='view'
+                    data={hjExamModal.analyCorrectRateData?.questionList}
+                />
+            </Report>
         </React.Fragment>
       )
     } else if (appStore.HOSPITAL_ID == 'nys') {

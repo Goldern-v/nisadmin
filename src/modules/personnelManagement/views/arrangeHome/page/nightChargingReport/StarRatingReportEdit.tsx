@@ -111,7 +111,7 @@ export default observer(function StarRatingReportEdit() {
     let query = qs.parse(search.replace("?", ""));
     const params = appStore.hisMatch({
       map: {
-        'dghl,fqfybjy,sdlj': {
+        'dghl,fqfybjy,sdlj,nfsd': {
           list1: list,
           list2: data.list2,
           schNightTotalModel: data.schNightTotalModel
@@ -132,7 +132,7 @@ export default observer(function StarRatingReportEdit() {
             fileDownload(res);
           });
         },
-        'sdlj': () => {
+        'sdlj,nfsd': () => {
           starRatingReportService.exportLJ(params).then(res => {
             fileDownload(res);
           });
@@ -185,7 +185,7 @@ export default observer(function StarRatingReportEdit() {
       <ScrollCon>
         <Page
           ref={pageRef}
-          className={['nys', 'dghl', 'fqfybjy','sdlj'].includes(appStore.HOSPITAL_ID) ? "nysWidth" : ""}
+          className={['nys', 'dghl', 'fqfybjy','sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID) ? "nysWidth" : ""}
         >
           {starRatingReportEditModel.sectionList.map((item, index) => {
             if (item.sectionId) {

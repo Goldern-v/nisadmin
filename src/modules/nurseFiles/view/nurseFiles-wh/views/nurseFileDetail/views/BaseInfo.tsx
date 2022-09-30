@@ -169,7 +169,7 @@ export default observer(function BaseInfo() {
           取得护士执业证书时间: data.zyzsDate,
         },
         {
-          ...appStore.HOSPITAL_ID === 'sdlj' ? {参加护理工作时间: data.zyzsNursingPostDate} : {取得执业证书并从事护理岗位时间: data.zyzsNursingPostDate},
+          ...['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID) ? {参加护理工作时间: data.zyzsNursingPostDate} : {取得执业证书并从事护理岗位时间: data.zyzsNursingPostDate},
           护士执业证书有效截止日期: data.zyzsEffectiveUpDate,
         },
         {
@@ -200,6 +200,7 @@ export default observer(function BaseInfo() {
                 职称: data.newTitle,
               };
             case "sdlj":
+            case "nfsd":
               return {
                 夏季鞋码大小: data.shoeSize,
                 冬季鞋码大小: data?.maps.winter_shoe_size,

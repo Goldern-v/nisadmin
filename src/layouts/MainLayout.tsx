@@ -71,6 +71,7 @@ export default observer(function MainLayout(props: Props) {
   }, []);
 
   useLayoutEffect(() => {
+    // 全局弹窗实例化
     globalModal.auditModal = aduitModalRef.current;
     globalModal.groupsAduitModal = groupsAduitModalRef.current;
     globalModal.signModal = signModal;

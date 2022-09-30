@@ -1,12 +1,11 @@
-import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
-import { Modal, Row, Col, Select, DatePicker, Input } from 'antd'
-import Form from 'src/components/Form'
-import { Rules } from 'src/components/Form/interfaces'
 import Moment from 'moment'
+import Form from 'src/components/Form'
+import styled from 'styled-components'
+import React, { useLayoutEffect, useState } from 'react'
+import { Col, DatePicker, Input, Modal, Radio, Row, Select } from 'antd'
+import { Rules } from 'src/components/Form/interfaces'
 import { MonthList } from 'src/modules/quality/utils/toolCon'
-
-const Option = Select.Option
+import SelectForm from '../../qcThreeProblem/components/SelectForm'
 
 export interface Props {
   visible: boolean
@@ -26,7 +25,8 @@ export default function CreateAnalysisModal(props: Props) {
     reportYear: (val) => !!val || '请选择年度',
     reportMonth: (val) => !!val || '请选择月份',
     startDate: (val) => !!val || '请选择开始时间',
-    endDate: (val) => !!val || '请选择结束时间'
+    endDate: (val) => !!val || '请选择结束时间',
+    summaryFormCode: (val) => val.length > 0 || '请选择汇总表单'
   }
 
   const { visible, onCancel, onOk, allowClear, loading } = props
@@ -35,21 +35,19 @@ export default function CreateAnalysisModal(props: Props) {
   const [startDate, setStartDate] = useState(null as any | null)
   const [endDate, setEndDate] = useState(null as any | null)
 
-  useEffect(() => {
-    // if (!visible) setParams(initedParams)
-    if (visible && allowClear) {
+  useLayoutEffect(() => {
+    if (allowClear) {
       setTimeout(_ => {
         if (refForm.current) {
           let nowMoment = Moment();
           let month = nowMoment.format('M');
-
           refForm.current.setFields({
             reportYear: nowMoment,
             startDate: null,
             endDate: null,
             reportName: '',
-            groupRoleCode: '',
             reportMonth: month,
+            summaryFormCode: [],
           })
         }
       }, 300)
@@ -66,15 +64,15 @@ export default function CreateAnalysisModal(props: Props) {
       current
         .validateFields()
         .then((res) => {
-          let { reportName, reportYear, startDate, endDate, reportMonth } = formData
+          let { reportName, reportYear, startDate, endDate, reportMonth, summaryFormCode } = formData
           let params: any = {
             reportName,
             reportYear: reportYear ? reportYear.format('YYYY') : '',
             startDate: startDate ? startDate.format('YYYY-MM-DD') : '',
             endDate: endDate ? endDate.format('YYYY-MM-DD') : '',
-            reportMonth
+            reportMonth,
+            summaryFormCode: summaryFormCode.map((v:any) => v.qcCode).join(',')
           }
-
           onOk && onOk(params)
         })
         .catch((e) => { })
@@ -102,7 +100,6 @@ export default function CreateAnalysisModal(props: Props) {
     if (refForm.current) refForm.current.setField(key, value)
   }
 
-
   const moreThanStart = (date: any) => {
     if (!startDate) return false
 
@@ -117,7 +114,7 @@ export default function CreateAnalysisModal(props: Props) {
     return true
   }
 
-  const handleFormChange = (key: any, val: any) => {
+  const handleFormChange = (key: string, val: any) => {
     if (key == 'startDate') setStartDate(val)
 
     if (key == 'reportMonth') {
@@ -163,9 +160,10 @@ export default function CreateAnalysisModal(props: Props) {
     if (current) {
       let { reportYear, reportMonth } = current.getFields()
       if (!reportYear || !reportMonth) return
+
       let yearStr = reportYear.format('YYYY')
       let monthStr = reportMonth
-      let reportName = `${monthStr}月份护理部三级质控结果汇总表(${yearStr})`
+      let reportName = `${monthStr}月份护理部三级质控问题分析汇总（${yearStr}年）`
 
       setFormItem('reportName', reportName)
     }
@@ -227,6 +225,16 @@ export default function CreateAnalysisModal(props: Props) {
             <Col span={19}>
               <Form.Field name='reportName'>
                 <Input />
+              </Form.Field>
+            </Col>
+          </Row>
+          <Row>
+            <Col span={5} className='label'>
+              汇总表单：
+            </Col>
+            <Col span={19}>
+              <Form.Field name='summaryFormCode'>
+                <SelectForm />
               </Form.Field>
             </Col>
           </Row>

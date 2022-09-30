@@ -45,6 +45,7 @@ import { navConfig as navConfig_zzwy } from './navConfig_zzwy'
 import { navConfig as navConfig_ytll } from './navConfig_ytll'
 import { navConfig as navConfig_zhzxy } from './navConfig_zhzxy'
 import { navConfig as navConfig_whhk } from './navConfig_whhk'
+import { navConfig as navConfig_nfsd } from './navConfig_nfsd'
 
 const toNavLink = (path: string | undefined) => {
   if (path) appStore.history.push(path);
@@ -201,6 +202,8 @@ export default observer(function NavBar(props: any) {
       return navConfig_zhzxy(appStore, authStore)
     } else if (appStore.HOSPITAL_ID == 'whhk') {
       return navConfig_whhk(appStore, authStore)
+    } else if (appStore.HOSPITAL_ID == 'nfsd') {
+      return navConfig_nfsd(appStore, authStore)
     }
     return navConfig;
   })();
@@ -310,12 +313,12 @@ export default observer(function NavBar(props: any) {
                 className="logo"
                 style={{ height: 30 }}
               />
-              <img
-                src={require("../images/护理管理系统.png")}
-                alt=""
-                className="name"
-                style={{ paddingRight: 30 }}
-              />
+              {/*<img*/}
+              {/*  src={require("../images/护理管理系统.png")}*/}
+              {/*  alt=""*/}
+              {/*  className="name"*/}
+              {/*  style={{ paddingRight: 30 }}*/}
+              {/*/>*/}
             </React.Fragment>
           );
           break;

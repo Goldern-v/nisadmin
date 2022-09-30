@@ -25,7 +25,7 @@ import LearnJob from './views/LearnJob'
 import ScientificResearch from './views/ScientificResearch'
 import Monograph from './views/Monograph'
 import ContinuingEducation from './views/ContinuingEducation'
-import Leave from './views/Leave'
+// import Leave from './views/Leave'
 import PositionChange from './views/PositionChange'
 import jobChange from './views/jobChange'
 import RankChange from './views/RankChange'
@@ -34,7 +34,7 @@ import WardInnovate from './views/WardInnovate'
 import OrganizationChange from './views/OrganizationChange'
 import { ScrollBox } from 'src/components/common'
 import service from 'src/services/api'
-import qs from 'qs'
+// import qs from 'qs'
 import { nurseFilesService } from '../../services/NurseFilesService'
 import continuingEducation_sdlj from './views/continuingEducation_sdlj'
 import technologiesAndProjects_sdlj from './views/technologiesAndProjects_sdlj'
@@ -73,7 +73,7 @@ const ROUTE_LIST = [
     component: OnEducation,
     name: '外出进修'
   },
-  ...appStore.HOSPITAL_ID === 'sdlj' ? [
+  ...['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID) ? [
     {
       type: 'continuingEducation_sdlj',
       component: continuingEducation_sdlj,
@@ -143,7 +143,7 @@ const ROUTE_LIST = [
     component: WorkRegistrationForm,
     name: '在院工作情况'
   },
-  ...appStore.HOSPITAL_ID === 'sdlj' ? [
+  ...['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID) ? [
     {
       type: 'toNewPost',
       component: ToNewPost_sdlj,
@@ -161,7 +161,7 @@ const ROUTE_LIST = [
     component: PositionChange,
     name: '职称变动'
   },
-  ...appStore.HOSPITAL_ID === 'sdlj' ? [{
+  ...['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID) ? [{
     type: 'jobChange',
     component: jobChange,
     name: '职务变动'
@@ -171,12 +171,7 @@ const ROUTE_LIST = [
     component: RankChange,
     name: '层级变动'
   },
-  // {
-  //   type: 'PostChange',
-  //   component: PostChange,
-  //   name: '岗位变动'
-  // },
-  ...appStore.HOSPITAL_ID !== 'sdlj' ? [{
+  ...!['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID) ? [{
     type: 'OrganizationChange',
     component: OrganizationChange,
     name: '编制变动'

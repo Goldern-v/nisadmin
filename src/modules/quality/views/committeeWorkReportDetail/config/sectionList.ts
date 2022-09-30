@@ -6,7 +6,7 @@ import tableSection from "../components/table/section";
 import tableModal from "../components/table/modal";
 import { SectionListItem } from '../model'
  
-// 一级质控病区汇总配置
+// 三级委员会小组工作报告
 export const sectionList: SectionListItem[] = [
   // {
   //   sectionId: 'group',

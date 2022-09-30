@@ -90,7 +90,6 @@ export default observer(function 护士层级分布() {
       window.removeEventListener('resize', resizeCallBack)
     }
   }, [])
-
   return <CommonLayout
     header={<div>
       <Select
@@ -104,8 +103,8 @@ export default observer(function 护士层级分布() {
         {
           appStore.hisMatch({
             map: {
-              whyx: "",
-              other:<Option value={''}>全院</Option>
+              whyx: authStore.isDepartmentYaXin &&<Option  value={''}>全院</Option>,
+              other:<Option  value={''}>全院</Option>
             },
             vague: true
           })  

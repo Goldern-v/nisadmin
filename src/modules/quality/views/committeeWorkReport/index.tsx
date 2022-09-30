@@ -242,7 +242,6 @@ export default observer(function Analysis() {
       });
   };
   const handleChangeDate = (e: any[]) => {
-    console.log('test-e', e)
     let [startDate = '', endDate = ''] = e
     startDate && (startDate = startDate.format(dateFormat))
     endDate && (endDate = endDate.format(dateFormat))

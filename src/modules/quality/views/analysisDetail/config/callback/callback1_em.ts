@@ -156,8 +156,6 @@ export const obj = {
     (this as any).getSectionData("3_3").tempList = (this as any).configData.tableTempList ? (this as any)?.configData?.tableTempList?.dayNursingWorkStatistics : [] || [];
     (this as any).getSectionData("3_5_1").tempList = (this as any).configData.tableTempList ? (this as any)?.configData?.tableTempList?.emrMonthCareProblemImprove : [] || [];
     (this as any).getSectionData("3_5_2").tempList = (this as any).configData.tableTempList ? (this as any)?.configData?.tableTempList?.dayMonthCareProblemImprove : [] || [];
-    
-
   },
   /**初始化自动提取 */
   async initRender(reportId:number) {

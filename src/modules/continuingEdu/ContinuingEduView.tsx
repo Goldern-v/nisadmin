@@ -203,7 +203,7 @@ export default function ContinuingEdu(props: Props) {
   //晋升管理 根据医院切换
   const PromotionSettingCons = appStore.hisMatch({
     map: {
-      "hj,dgxg,lyyz,qhwy,whhk": [
+      "hj,dgxg,lyyz,qhwy,whhk,nfsd": [
         {
           title: "晋升管理",
           icon: <JSGL />,
@@ -239,7 +239,7 @@ export default function ContinuingEdu(props: Props) {
   //题库管理 根据医院切换
   const QuestionBankManagementCon = appStore.hisMatch({
     map: {
-      'hj,lyyz,qhwy,whhk': [
+      'hj,lyyz,qhwy,whhk,nfsd': [
         {
           title: "学习资源",
           icon: <TKGL />,
@@ -670,7 +670,7 @@ export default function ContinuingEdu(props: Props) {
     title: "教学质量管理",
     icon: <JXJH />,
     hide:
-      !["hj",'lyyz','qhwy', 'whhk'].includes(appStore.HOSPITAL_ID) || authStore.isOnlyInternsManage,
+      !["hj",'lyyz','qhwy', 'whhk', 'nfsd'].includes(appStore.HOSPITAL_ID) || authStore.isOnlyInternsManage,
     children: [
       {
         title: "教学质量评价详情",
@@ -726,7 +726,7 @@ export default function ContinuingEdu(props: Props) {
     component: 培训统计分析,
     // hide: () => queyMenuAuthInfo("nm_lat_teachingPlanManage") || authStore.isOnlyInternsManage
     hide: () =>
-      !["hj", "gxjb", "dgxg",'lyyz','qhwy', 'whhk'].includes(appStore.HOSPITAL_ID) ||
+      !["hj", "gxjb", "dgxg",'lyyz','qhwy', 'whhk', 'nfsd'].includes(appStore.HOSPITAL_ID) ||
       authStore.isOnlyInternsManage,
   };
   const TrainingChartAnalysisCon = {
@@ -734,7 +734,7 @@ export default function ContinuingEdu(props: Props) {
     icon: <JSGL />,
     path: "/continuingEdu/trainingChartAnalysis",
     component: TrainingChartAnalysis,
-    hide: () => !["hj", "dgxg",'lyyz','qhwy', 'whhk'].includes(appStore.HOSPITAL_ID),
+    hide: () => !["hj", "dgxg",'lyyz','qhwy', 'whhk', 'nfsd'].includes(appStore.HOSPITAL_ID),
   };
 
   const PracticalOperation = [
@@ -754,11 +754,8 @@ export default function ContinuingEdu(props: Props) {
     },
   ]
 
-
-  
-  // 菜单列表
   const LEFT_MENU_CONFIG = [
-    { 
+    {
       hide: appStore.HOSPITAL_ID != 'whyx',
       title: "培训日历",
       icon: <RYGL />,
@@ -767,7 +764,7 @@ export default function ContinuingEdu(props: Props) {
     },
     ...appStore.hisMatch({
       map: {
-        "hj,dgxg,lyyz,qhwy,whhk": [
+        "hj,dgxg,lyyz,qhwy,whhk,nfsd": [
           {
             title: "人员管理",
             icon: <RYGL />,
@@ -844,7 +841,7 @@ export default function ContinuingEdu(props: Props) {
       path: "/continuingEdu/评分管理",
       component: 评分管理,
       hide: () =>
-        !["hj",'lyyz','qhwy', 'whhk'].includes(appStore.HOSPITAL_ID)
+        !["hj",'lyyz','qhwy', 'whhk', 'nfsd'].includes(appStore.HOSPITAL_ID)
           ? queyMenuAuthInfo("nm_lat_scoremanage") ||
             authStore.isOnlyInternsManage
           : true,
@@ -875,7 +872,7 @@ export default function ContinuingEdu(props: Props) {
       path: "/continuingEdu",
       icon: <JXJH />,
       hide:
-        !["hj", "dgxg",'lyyz','qhwy', 'whhk'].includes(appStore.HOSPITAL_ID) ||
+        !["hj", "dgxg",'lyyz','qhwy', 'whhk', 'nfsd'].includes(appStore.HOSPITAL_ID) ||
         authStore.isOnlyInternsManage,
       children: [
         ...appStore.hisMatch({
@@ -891,14 +888,14 @@ export default function ContinuingEdu(props: Props) {
               },
               {
                 title: "护理人员执业/夜班准入",
-                formName: "护师人员执业/夜班准入资格申请表",
+                formName: appStore.HOSPITAL_ID==='hj'?"护理人员执业/夜班准入资格申请表":"护师人员执业/夜班准入资格申请表",
                 path: "/continuingEdu/护理人员执业/夜班准入",
                 formCode: "FQA00002",
                 component: FormApply,
               },
               {
-                title: "高风险诊疗技术操作技术人员准入",
-                formName: "高风险诊疗技术操作人员资质申请表",
+                title:appStore.HOSPITAL_ID==='hj'?"高风险高难度技术操作人员资质申请表":"高风险诊疗技术操作技术人员准入",
+                formName: appStore.HOSPITAL_ID==='hj'?"高风险高难度技术操作人员资质申请表":"高风险诊疗技术操作技术人员准入",
                 path: "/continuingEdu/高风险诊疗技术操作技术人员准入",
                 formCode: "FQA00003",
                 component: FormApply,
@@ -1072,10 +1069,10 @@ export default function ContinuingEdu(props: Props) {
       component: 类型管理,
       hide: () =>
         queyMenuAuthInfo("nm_lat_typemanage") ||
-        ["hj", "dgxg",'lyyz','qhwy', 'whhk'].includes(appStore.HOSPITAL_ID) ||
+        ["hj", "dgxg",'lyyz','qhwy', 'whhk', 'nfsd'].includes(appStore.HOSPITAL_ID) ||
         authStore.isOnlyInternsManage,
     },
-    
+
     {
       title: "菜单设置",
       icon: <KSGL />,
@@ -1083,7 +1080,7 @@ export default function ContinuingEdu(props: Props) {
       component: 菜单设置,
       hide: () =>
         queyMenuAuthInfo("nm_lat_menusetting") ||
-        ["hj", "dgxg",'lyyz','qhwy', 'whhk'].includes(appStore.HOSPITAL_ID) ||
+        ["hj", "dgxg",'lyyz','qhwy', 'whhk', 'nfsd'].includes(appStore.HOSPITAL_ID) ||
         authStore.isOnlyInternsManage,
     },
     // ...appStore.hisMatch({
@@ -1178,7 +1175,7 @@ export default function ContinuingEdu(props: Props) {
     //初始化的方法
     let initMethods = appStore.hisMatch({
       map: {
-        "hj,dgxg,lyyz,qhwy,whhk": () => {
+        "hj,dgxg,lyyz,qhwy,whhk,nfsd": () => {
           baseInitMethods();
           //初始化学习培训权限
           continuningEduAuth.initAuth();

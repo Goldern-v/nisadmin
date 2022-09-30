@@ -37,7 +37,8 @@ let dictList = {
   课题类别: 'subject_type',
   举办地域: 'host_area',
   证书名称: 'certificate_name',
-  最高职称: 'user_title'
+  最高职称: 'user_title',
+  在院情况:'file_user_status',
 }
 
 type DictList = typeof dictList

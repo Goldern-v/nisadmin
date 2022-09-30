@@ -42,7 +42,7 @@ export default observer(function Table(props: Props) {
           nys: configNys.getTable(list, otherObj),
           dghl: configDghl.getTable(list, otherObj, updateOtherObj),
           fqfybjy: configFqfybjy.getTable(list, otherObj, updateOtherObj),
-          sdlj: configSdlj.getTable(list, otherObj, updateOtherObj),
+          'sdlj,nfsd': configSdlj.getTable(list, otherObj, updateOtherObj),
           //暂时隐藏20210926
           gzsrm: configGzsrm.getTable(list),
           default: configDefault.getTable(list)

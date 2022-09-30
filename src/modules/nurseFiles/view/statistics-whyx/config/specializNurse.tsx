@@ -49,7 +49,13 @@ export const pageObj: PageObj = {
       type: 'dateRangePicker',
       name: 'dateRangePicker',
       nameList: ['cardNumberStartDate', 'cardNumberEndDate']
-    }
+    },
+    {
+      label: '在院情况',
+      type: 'multiplesSelect',
+      name: 'status',
+      dataSource: statisticsViewModal.getDict('在院情况')
+    },
   ],
   tableList: [
     {

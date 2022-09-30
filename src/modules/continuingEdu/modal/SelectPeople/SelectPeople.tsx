@@ -476,7 +476,18 @@ const CheckListCon = observer(function (props: any) {
     }
   `;
   console.log(selectPeopleViewModel.currentTreeData, 'sssssssssss')
-
+  const openSelectList =(item:any)=>{
+    const stepLabel =selectPeopleViewModel!.currentTreeData!.stepLabel
+    const  dataLabel =selectPeopleViewModel!.currentTreeData!.dataLabel
+    // selectPeopleViewModel.pushStep(
+    //     item[stepLabel]
+    //         ? `${item[stepLabel]}-${item[dataLabel]}`
+    //         : item[dataLabel||''], appStore.HOSPITAL_ID ==='lcey' ? (item.deptCode || item.level || item.job || item.title || item.year) : ''
+    // )
+    selectPeopleViewModel.pushStep(
+        item[stepLabel]||item[dataLabel], appStore.HOSPITAL_ID ==='lcey' ? (item.deptCode || item.level || item.job || item.title || item.year) : ''
+    )
+  }
   return (
     <div>
       {appStore.HOSPITAL_ID === 'lcey' && (selectPeopleViewModel!.currentTreeData!.parent === '本院' || selectPeopleViewModel!.currentTreeData!.parent === '华美院区') ? (
@@ -530,27 +541,7 @@ const CheckListCon = observer(function (props: any) {
                               open: true,
                               inChecked: inCheckedUser(item)
                             })}
-                            onClick={() =>
-                              selectPeopleViewModel.pushStep(
-                                item[
-                                  selectPeopleViewModel!.currentTreeData!.stepLabel
-                                ]
-                                  ? `${item[
-                                  selectPeopleViewModel!.currentTreeData!
-                                    .stepLabel
-                                  ]
-                                  }-${item[
-                                  selectPeopleViewModel!.currentTreeData!
-                                    .dataLabel
-                                  ]
-                                  }`
-                                  : item[
-                                  selectPeopleViewModel!.currentTreeData!
-                                    .dataLabel || ""
-                                  ], appStore.HOSPITAL_ID == 'lcey' ? (item.deptCode || item.level || item.job || item.title || item.year) : ''
-                              )
-                            }
-                          >
+                            onClick={() =>openSelectList(item)}>
                             展开
                           </span>
                         </div>

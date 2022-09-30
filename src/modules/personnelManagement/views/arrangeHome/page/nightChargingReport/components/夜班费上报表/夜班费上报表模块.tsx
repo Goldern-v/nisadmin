@@ -28,7 +28,7 @@ export default observer(function 夜班费上报表模块(props: Props) {
     const data = starRatingReportEditModel.getSectionData(sectionId);
     const params = appStore.hisMatch({
       map: {
-        'dghl,fqfybjy,sdlj': {
+        'dghl,fqfybjy,sdlj,nfsd': {
           list1: data.list,
           list2: data.list2,
           schNightTotalModel: data.schNightTotalModel

@@ -9,6 +9,9 @@ export const SectionCon = styled.div`
     top: 0px;
     right: 20px;
   }
+  td {
+    white-space: pre-wrap;
+  }
 `
 export const OperationSecCon = styled.div`
   padding-bottom: 5px;

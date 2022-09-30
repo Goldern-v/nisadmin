@@ -16,40 +16,40 @@ export function openAuditModal(title: string, row: any, callBack: any) {
               case 'fsxt':
                 return [
                   {
-                    民族: 'nation',
-                    籍贯: 'nativePlace',
+                    "民族": 'nation',
+                    "籍贯": 'nativePlace',
                   },
                   {
-                    工号: 'empNo',
-                    身份证号: 'cardNumber',
+                    "工号": 'empNo',
+                    "身份证号": 'cardNumber',
                   },
                   {
-                    政治面貌: 'politicsLook',
-                    出生年月: 'birthday',
+                    "政治面貌": 'politicsLook',
+                    "出生年月": 'birthday',
                   },
                   {
-                    年龄: 'age',
-                    手机号: 'phone',
+                    "年龄": 'age',
+                    "手机号": 'phone',
                   },
                   {
-                    参加工作时间: 'goWorkTime',
-                    来院工作时间: 'goHospitalWorkDate',
+                    "参加工作时间": 'goWorkTime',
+                    "来院工作时间": 'goHospitalWorkDate',
                   },
                   {
-                    护士执业证书编号: 'zyzsNumber',
-                    取得护士执业证书时间: 'zyzsDate',
+                    "护士执业证书编号": 'zyzsNumber',
+                    "取得护士执业证书时间": 'zyzsDate',
                   },
                   {
-                    取得执业证书并从事护理岗位时间: 'zyzsNursingPostDate',
-                    最高学历: 'highestEducation',
+                    "取得执业证书并从事护理岗位时间": 'zyzsNursingPostDate',
+                    "最高学历": 'highestEducation',
                   },
                   {
-                    职务: 'job',
-                    现职务任职起始时间: 'jobStartDate',
+                    "职务": 'job',
+                    "现职务任职起始时间": 'jobStartDate',
                   },
                   {
-                    工作护理单元: 'deptName',
-                    鞋码: 'shoeSize',
+                    "工作护理单元": 'deptName',
+                    "鞋码": 'shoeSize',
 
                   },
                   {
@@ -71,55 +71,55 @@ export function openAuditModal(title: string, row: any, callBack: any) {
               default:
                 return [
                   {
-                    姓名: 'empName',
-                    性别: 'sex'
+                    "姓名": 'empName',
+                    "性别": 'sex'
                   },
                   {
-                    民族: 'nation',
-                    籍贯: 'nativePlace'
+                    "民族": 'nation',
+                    "籍贯": 'nativePlace'
                   },
                   {
-                    工号: 'empNo',
-                    身份证号: 'cardNumber'
+                    "工号": 'empNo',
+                    "身份证号": 'cardNumber'
                   },
                   {
-                    政治面貌: 'politicsLook',
-                    出生年月: 'birthday'
+                    "政治面貌": 'politicsLook',
+                    "出生年月": 'birthday'
                   },
                   {
-                    年龄: 'age',
-                    手机号: 'phone'
+                    "年龄": 'age',
+                    "手机号": 'phone'
                   },
                   {
-                    参加工作时间:  'goWorkTime',
-                    护士执业证书编号: 'zyzsNumber'
+                    "参加工作时间":  'goWorkTime',
+                    "护士执业证书编号": 'zyzsNumber'
                   },
 
                   {
-                    取得护士执业证书时间: 'zyzsDate',
-                    ...appStore.HOSPITAL_ID === 'sdlj' ? {参加护理工作时间: 'zyzsNursingPostDate'} : {取得执业证书并从事护理岗位时间: 'zyzsNursingPostDate'},
+                    "取得护士执业证书时间": 'zyzsDate',
+                    ...['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID) ? {"参加护理工作时间": 'zyzsNursingPostDate'} : {"取得执业证书并从事护理岗位时间": 'zyzsNursingPostDate'},
                   },
                   {
-                    护士执业证书有效截止日期: 'zyzsEffectiveUpDate',
-                    初始学历: 'initialEducation'
+                    "护士执业证书有效截止日期": 'zyzsEffectiveUpDate',
+                    "初始学历": 'initialEducation'
                   },
                   {
-                    最高学历: 'highestEducation',
-                    取得最高学历时间: 'highestEducationDate'
+                    "最高学历": 'highestEducation',
+                    "取得最高学历时间": 'highestEducationDate'
                   },
                   {
-                    最高学历学位: 'highestEducationDegree',
-                    职务: 'job'
+                    "最高学历学位": 'highestEducationDegree',
+                    "职务": 'job'
                   },
                   {
-                    现职务任职起始时间: 'jobStartDate',
-                    院内工作地点: 'workAddress'
+                    "现职务任职起始时间": 'jobStartDate',
+                    "院内工作地点": 'workAddress'
                   },
                   ...appStore.hisMatch({
                     map: {
-                      'sdlj': [{
-                        工作护理单元: 'deptName',
-                        夏季鞋码大小: 'shoeSize',
+                      'sdlj,nfsd': [{
+                        "工作护理单元": 'deptName',
+                        "夏季鞋码大小": 'shoeSize',
                       }],
                       other: []
                     },
@@ -128,24 +128,24 @@ export function openAuditModal(title: string, row: any, callBack: any) {
                     switch (appStore.HOSPITAL_ID) {
                       case 'gxjb':
                         return {
-                          工作护理单元: 'deptName',
-                          家庭住址: 'address'
+                          "工作护理单元": 'deptName',
+                          "家庭住址": 'address'
                         }
                       case 'sdlj':
                         return {
-                          冬季鞋码大小: 'winter_shoe_size',
+                          "冬季鞋码大小": 'winter_shoe_size',
                         }
                       default:
                         return {
-                          工作护理单元: 'deptName',
-                          鞋码大小: 'shoeSize'
+                          "工作护理单元": 'deptName',
+                          "鞋码大小": 'shoeSize'
                         };
                     }
                   })(),
                   ...appStore.hisMatch({
                     map: {
                       'qhwy,whhk': [{
-                        护理学会会员证号: 'membershipCardNumber',
+                        "护理学会会员证号": 'membershipCardNumber',
                       }],
                       other: []
                     },
@@ -176,7 +176,7 @@ export function openAuditModal(title: string, row: any, callBack: any) {
                   ...appStore.hisMatch({
                     map: {
                       'gzsrm': [{
-                        职称: 'newTitle'
+                        "职称": 'newTitle'
                       }],
                       other: []
                     },
@@ -187,7 +187,7 @@ export function openAuditModal(title: string, row: any, callBack: any) {
           // table:,
           fileData: [
             {
-              个人头像: row.nearImageUrl
+              "个人头像": row.nearImageUrl
             },
             ...(row.zyzsUrl
               ? row.zyzsUrl.split(',').map((item: any, index: number) => {
@@ -211,28 +211,28 @@ export function openAuditModal(title: string, row: any, callBack: any) {
           title: '审核文章',
           tableFormat: [
             {
-              发表年份: `publicYear`,
-              杂志名称: `magazineName`
+              "发表年份": `publicYear`,
+              "杂志名称": `magazineName`
             },
             {
-              文章名称: `articleName`,
-              期刊号: `periodicalNumber`
+              "文章名称": `articleName`,
+              "期刊号": `periodicalNumber`
             },
             {
-              卷号: `volumeNumber`,
-              起止页码: `pageNumber`
+              "卷号": `volumeNumber`,
+              "起止页码": `pageNumber`
             },
             {
-              文章类别: `articleType`,
-              作者: `articleAuthor`,
+              "文章类别": `articleType`,
+              "作者": `articleAuthor`,
             },
             {
-              论文收录网站: `influencingFactors`
+              "论文收录网站": `influencingFactors`
             }
           ],
           fileFormat: {
-            文章扫描件: `urlImageOne`,
-            网络下载件: `urlImageTwo`
+            "文章扫描件": `urlImageOne`,
+            "网络下载件": `urlImageTwo`
           },
           fileData: row.urlImageOne
             ? row.urlImageOne.split(',').map((item: any, index: number) => {
@@ -255,15 +255,15 @@ export function openAuditModal(title: string, row: any, callBack: any) {
           title: '审核所获奖励',
           tableFormat: [
             {
-              时间: `time`,
-              获奖_推广创新项目名称: `awardWinningName`
+              "时间": `time`,
+              "获奖_推广创新项目名称": `awardWinningName`
             },
             {
-              本人排名: `rank`,
-              授奖级别: `awardlevel`
+              "本人排名": `rank`,
+              "授奖级别": `awardlevel`
             },
             {
-              批准机关: `approvalAuthority`
+              "批准机关": `approvalAuthority`
             }
           ],
           fileData: row.urlImageOne
@@ -288,29 +288,29 @@ export function openAuditModal(title: string, row: any, callBack: any) {
 
           tableFormat: [
             {
-              年份: `year`,
-              项目名称: `projectName`,
+              "年份": `year`,
+              "项目名称": `projectName`,
 
             },
             {
-              项目号: `projectNumber`,
-              项目级别: `projectLevel`,
+              "项目号": `projectNumber`,
+              "项目级别": `projectLevel`,
             },
             ...appStore.hisMatch({
               map: {
-                'sdlj': [
+                'sdlj,nfsd': [
                   {
-                    授予学分: `creditGranted`
+                    "授予学分": `creditGranted`
                   }
                 ],
                 other: [
                   {
-                    课时数: `courseHour`,
-                    学员总数: `personTotal`,
+                    "课时数": `courseHour`,
+                    "学员总数": `personTotal`,
                   },
                   {
-                    学员分布区域: `schoolArea`,
-                    学员职称分布: `personTitleArea`
+                    "学员分布区域": `schoolArea`,
+                    "学员职称分布": `personTitleArea`
                   },
                 ]
               },
@@ -337,16 +337,16 @@ export function openAuditModal(title: string, row: any, callBack: any) {
           title: '审核医学学历教育',
           tableFormat: [
             {
-              就读时间: `readTime`,
-              毕业时间: `graduationTime`
+              "就读时间": `readTime`,
+              "毕业时间": `graduationTime`
             },
             {
-              毕业学校: `graduationSchool`,
-              专业: `readProfessional`
+              "毕业学校": `graduationSchool`,
+              "专业": `readProfessional`
             },
             {
-              就读学历: `education`,
-              学位: `degree`
+              "就读学历": `education`,
+              "学位": `degree`
             }
           ],
           fileData: row.urlImageOne
@@ -370,25 +370,25 @@ export function openAuditModal(title: string, row: any, callBack: any) {
           title: '审核主持科研课题',
           tableFormat: [
             {
-              主持科研课题: `name`,
-              课题来源: `courseSource`
+              "主持科研课题": `name`,
+              "课题来源": `courseSource`
             },
             {
-              课题级别: `courseLevel`,
-              承担单位: `unit`
+              "课题级别": `courseLevel`,
+              "承担单位": `unit`
             },
             {
-              课题批文号: `approvalNumber`,
-              登记号: `registerNumber`
+              "课题批文号": `approvalNumber`,
+              "登记号": `registerNumber`
             },
             {
-              授予单位: `grantUnit`,
-              开始时间: `startDate`
+              "授予单位": `grantUnit`,
+              "开始时间": `startDate`
             },
             {
-              截止时间: `endDate`,
-              完成情况: `courseCompletion`,
-              时间: `completionDate`
+              "截止时间": `endDate`,
+              "完成情况": `courseCompletion`,
+              "时间": `completionDate`
             }
           ],
           fileData: row.urlImageOne
@@ -413,59 +413,60 @@ export function openAuditModal(title: string, row: any, callBack: any) {
           tableFormat: (() => {
             switch (appStore.HOSPITAL_ID) {
               case 'sdlj':
+              case 'nfsd':
                 return [{
-                  参于课题名称: `goName`,
-                  课题主持人姓名: `hostName`
+                  "参于课题名称": `goName`,
+                  "课题主持人姓名": `hostName`
                 },
                 {
-                  参与排名: `goRank`,
-                  课题来源: `courseSource`,
+                  "参与排名": `goRank`,
+                  "课题来源": `courseSource`,
                 },
                 {
-                  课题级别: `courseLevel`,
-                  承担单位: `unit`,
+                  "课题级别": `courseLevel`,
+                  "承担单位": `unit`,
                 },
                 {
-                  课题批文号: `approvalNumber`,
-                  登记号: `registerNumber`,
+                  "课题批文号": `approvalNumber`,
+                  "登记号": `registerNumber`,
                 },
                 {
-                  授予单位: `grantUnit`,
-                  完成情况: `courseCompletion`,
+                  "授予单位": `grantUnit`,
+                  "完成情况": `courseCompletion`,
                 },
                 {
-                  开始时间: `startDate`,
-                  截止时间: `endDate`,
+                  "开始时间": `startDate`,
+                  "截止时间": `endDate`,
                 }]
               default:
                 return [
                   {
-                    参于课题名称: `goName`,
-                    课题主持人姓名: `hostName`
+                    "参于课题名称": `goName`,
+                    "课题主持人姓名": `hostName`
                   },
                   {
-                    课题主持人工号: `hostNo`,
-                    参与排名: `goRank`
+                    "课题主持人工号": `hostNo`,
+                    "参与排名": `goRank`
                   },
                   {
-                    课题来源: `courseSource`,
-                    课题级别: `courseLevel`
+                    "课题来源": `courseSource`,
+                    "课题级别": `courseLevel`
                   },
                   {
-                    承担单位: `unit`,
-                    课题批文号: `approvalNumber`
+                    "承担单位": `unit`,
+                    "课题批文号": `approvalNumber`
                   },
                   {
-                    登记号: `registerNumber`,
-                    授予单位: `grantUnit`
+                    "登记号": `registerNumber`,
+                    "授予单位": `grantUnit`
                   },
                   {
-                    完成情况: `courseCompletion`,
-                    开始时间: `startDate`
+                    "完成情况": `courseCompletion`,
+                    "开始时间": `startDate`
                   },
                   {
-                    截止时间: `endDate`,
-                    时间: `completionDate`
+                    "截止时间": `endDate`,
+                    "时间": `completionDate`
                   }
                 ]
             }
@@ -491,15 +492,15 @@ export function openAuditModal(title: string, row: any, callBack: any) {
           title: '审核学会任职',
           tableFormat: [
             {
-              任职学会名称: `learnJobName`,
-              学会职位: `learnPosition`
+              "任职学会名称": `learnJobName`,
+              "学会职位": `learnPosition`
             },
             {
-              学会级别: `learnLevel`,
-              起始时间: `startDate`
+              "学会级别": `learnLevel`,
+              "起始时间": `startDate`
             },
             {
-              结束时间: `endDate`
+              "结束时间": `endDate`
             }
           ],
           fileData: row.urlImageOne
@@ -523,19 +524,19 @@ export function openAuditModal(title: string, row: any, callBack: any) {
           title: '审核离职',
           tableFormat: [
             {
-              职称: `title`,
-              学历: `education`
+              "职称": `title`,
+              "学历": `education`
             },
             {
-              出生日期: `birthday`,
-              年龄: `age`
+              "出生日期": `birthday`,
+              "年龄": `age`
             },
             {
-              取得护士执业证书时间并从事护理岗位时间: `zyzsDate`,
-              离职时间: `leaveDate`
+              "取得护士执业证书时间并从事护理岗位时间": `zyzsDate`,
+              "离职时间": `leaveDate`
             },
             {
-              层级: `hierarchy`
+              "层级": `hierarchy`
             }
           ],
           fileData: row.urlImageOne
@@ -559,16 +560,16 @@ export function openAuditModal(title: string, row: any, callBack: any) {
           title: '审核专著',
           tableFormat: [
             {
-              年份: 'year',
-              专著名称: `monographName`
+              "年份": 'year',
+              "专著名称": `monographName`
             },
             {
-              出版社名称: `pressName`,
-              出版号: `pressNumber`
+              "出版社名称": `pressName`,
+              "出版号": `pressNumber`
             },
             {
-              出版日期: `pressDate`,
-              著者: `participation`
+              "出版日期": `pressDate`,
+              "著者": `participation`
             }
           ],
           fileData: row.urlImageOne
@@ -592,15 +593,15 @@ export function openAuditModal(title: string, row: any, callBack: any) {
           title: '审核外出进修',
           tableFormat: [
             {
-              进修专业: `studyMajor`,
-              进修单位: `unit`
+              "进修专业": `studyMajor`,
+              "进修单位": `unit`
             },
             {
-              进修单位所属地: `unitLocal`,
-              进修开始时间: `startDate`
+              "进修单位所属地": `unitLocal`,
+              "进修开始时间": `startDate`
             },
             {
-              进修结束时间: `endDate`,
+              "进修结束时间": `endDate`,
               '进修时长(天)': `studyHour`
             }
           ],
@@ -625,11 +626,11 @@ export function openAuditModal(title: string, row: any, callBack: any) {
           title: '审核编制变动信息',
           tableFormat: [
             {
-              现编制开始时间: `startDate`,
-              原编制名称: `workConversionOld`
+              "现编制开始时间": `startDate`,
+              "原编制名称": `workConversionOld`
             },
             {
-              现编制名称: `workConversionNew`
+              "现编制名称": `workConversionNew`
             }
           ],
           fileData: row.urlImageOne
@@ -653,16 +654,16 @@ export function openAuditModal(title: string, row: any, callBack: any) {
           title: '审核专利',
           tableFormat: [
             {
-              专利名称: `patentName`,
-              专利号: `patentNumber`
+              "专利名称": `patentName`,
+              "专利号": `patentNumber`
             },
             {
-              发证单位: `cardUnit`,
-              发证时间: `cardDate`
+              "发证单位": `cardUnit`,
+              "发证时间": `cardDate`
             },
             {
-              专利类型: `patentType`,
-              是否成果转化: `isResultTransfor`
+              "专利类型": `patentType`,
+              "是否成果转化": `isResultTransfor`
             }
           ],
           fileData: row.urlImageOne
@@ -686,12 +687,12 @@ export function openAuditModal(title: string, row: any, callBack: any) {
           title: '审核个人获奖',
           tableFormat: [
             {
-              奖项名称: `winningName`,
-              获奖类别: `winningType`
+              "奖项名称": `winningName`,
+              "获奖类别": `winningType`
             },
             {
-              获奖级别: `winningLevel`,
-              获奖年份: `winningYear`
+              "获奖级别": `winningLevel`,
+              "获奖年份": `winningYear`
             }
           ],
           fileData: row.urlImageOne
@@ -714,15 +715,15 @@ export function openAuditModal(title: string, row: any, callBack: any) {
           type: 'nurseWHTitle',
           title: '审核职称变动信息',
           tableFormat: [
-            appStore.HOSPITAL_ID !== 'sdlj' ? {
-              原职称名称: `titleOld`,
-              现职称名称: `titleNew`
+            !['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID) ? {
+              "原职称名称": `titleOld`,
+              "现职称名称": `titleNew`
             } : {
-              职称名称: `titleNew`
+              "职称名称": `titleNew`
             },
             {
-              考取专业资格证书时间: `winNewTiTleDate`,
-              聘用专业技术资格时间: `employNewTiTleDate`
+              "考取专业资格证书时间": `winNewTiTleDate`,
+              "聘用专业技术资格时间": `employNewTiTleDate`
             }
           ],
           fileData: row.urlImageOne
@@ -746,12 +747,12 @@ export function openAuditModal(title: string, row: any, callBack: any) {
           title: '审核职务变动信息',
           tableFormat: [
             {
-              科室: `deptName`,
-              职务: `position`
+              "科室": `deptName`,
+              "职务": `position`
             },
             {
-              开始时间: `startDate`,
-              结束时间: `endDate`
+              "开始时间": `startDate`,
+              "结束时间": `endDate`
             }
           ],
           fileData: row.urlImageOne
@@ -774,20 +775,20 @@ export function openAuditModal(title: string, row: any, callBack: any) {
           type: 'nurseWHTransferPost',
           title: '审核岗位变动信息',
           tableFormat: [
-            appStore.HOSPITAL_ID !== 'sdlj' ? {
-              原工作科室: `oldDeptName`,
-              现工作科室: `newDeptName`
+            !['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID) ? {
+              "原工作科室": `oldDeptName`,
+              "现工作科室": `newDeptName`
             } : {
-              开始时间: `transferDate`,
-              结束时间: `endDate`
+              "开始时间": `transferDate`,
+              "结束时间": `endDate`
             },
-            appStore.HOSPITAL_ID === 'sdlj' ? {
-              科室: `newDeptCode`,
-              考核成绩: `deptBeDepartment`
+            ['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID) ? {
+              "科室": `newDeptCode`,
+              "考核成绩": `deptBeDepartment`
             } :
             {
-              现科室隶属部门: `deptBeDepartment`,
-              转岗时间: `transferDate`
+              "现科室隶属部门": `deptBeDepartment`,
+              "转岗时间": `transferDate`
             },
 
           ],
@@ -812,14 +813,14 @@ export function openAuditModal(title: string, row: any, callBack: any) {
           title: '审核层级变动信息',
           tableFormat: [
             {
-              原层级名称: `nursehierarchyOld`,
-              现层级名称: `nursehierarchyNew`
+              "原层级名称": `nursehierarchyOld`,
+              "现层级名称": `nursehierarchyNew`
             },
-            appStore.HOSPITAL_ID !== 'sdlj' ? {
-              现层级开始时间: `startDate`
+            !['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID) ? {
+              "现层级开始时间": `startDate`
             }: {
-              开始时间: `startDate`,
-              结束时间: `endDate`
+              "开始时间": `startDate`,
+              "结束时间": `endDate`
             }
           ],
           fileData: row.urlImageOne
@@ -843,15 +844,15 @@ export function openAuditModal(title: string, row: any, callBack: any) {
           title: '审核科研课题获奖',
           tableFormat: [
             {
-              获奖类别: `resultType`,
-              成果名称: `resultName`
+              "获奖类别": `resultType`,
+              "成果名称": `resultName`
             },
             {
-              授予单位: `grantUnit`,
-              授予时间: `grantDate`
+              "授予单位": `grantUnit`,
+              "授予时间": `grantDate`
             },
             {
-              奖励级别: `winningLevel`,
+              "奖励级别": `winningLevel`,
               '奖励名称、等级': `winningName`
             }
           ],
@@ -876,15 +877,15 @@ export function openAuditModal(title: string, row: any, callBack: any) {
           title: '审核专科护士信息',
           tableFormat: [
             {
-              专科护士名称: `nurseName`,
-              发证单位: `cardUnit`
+              "专科护士名称": `nurseName`,
+              "发证单位": `cardUnit`
             },
             {
-              证书编号: `cardNumber`,
-              级别: `nurseLevel`
+              "证书编号": `cardNumber`,
+              "级别": `nurseLevel`
             },
             {
-              发证时间: `cardNumberDate`
+              "发证时间": `cardNumberDate`
             }
           ],
           fileData: row.urlImageOne
@@ -908,11 +909,11 @@ export function openAuditModal(title: string, row: any, callBack: any) {
           title: '审核岗位变动信息',
           tableFormat: [
             {
-              原工作室: `oldDeptName`,
-              现工作室: `newDeptName`
+              "原工作室": `oldDeptName`,
+              "现工作室": `newDeptName`
             },
             {
-              转岗时间: `transferDate`
+              "转岗时间": `transferDate`
             }
           ],
           fileData: row.urlImageOne
@@ -936,11 +937,11 @@ export function openAuditModal(title: string, row: any, callBack: any) {
           title: '审核工作经历',
           tableFormat: [
             {
-              开始时间: `startTime`,
+              "开始时间": `startTime`,
               '结束时间(空则为至今)': `endTime`
             },
             {
-              单位: `unit`
+              "单位": `unit`
               // 专业技术工作: 'professionalWork'
             }
             // {
@@ -963,23 +964,23 @@ export function openAuditModal(title: string, row: any, callBack: any) {
           title: '审核工作情况登记',
           tableFormat: [
             {
-              年度: `year`,
-              夜班: `nightShift`
+              "年度": `year`,
+              "夜班": `nightShift`
             },
             {
-              查房: `checkOut`,
-              护理会诊: `nursingConsultation`
+              "查房": `checkOut`,
+              "护理会诊": `nursingConsultation`
             },
             {
-              病例讨论: `caseDiscussion`,
-              个案: `individualCase`
+              "病例讨论": `caseDiscussion`,
+              "个案": `individualCase`
             },
             {
-              小讲课: `lecture`,
-              带教: `teaching`
+              "小讲课": `lecture`,
+              "带教": `teaching`
             },
             {
-              证明人: `witness`
+              "证明人": `witness`
             }
           ],
           // fileData: [{}],
@@ -997,17 +998,17 @@ export function openAuditModal(title: string, row: any, callBack: any) {
           title: '审核继续教育学分统计及三基考试情况',
           tableFormat: [
             {
-              三基考核情况理论考核: `theoryAssess`,
-              三基考核情况理论补考: `theoryAssessMakeup`,
+              "三基考核情况理论考核": `theoryAssess`,
+              "三基考核情况理论补考": `theoryAssessMakeup`,
 
             },
             {
-              三基考核情况操作考核: `operateAssess`,
-              三基考核情况操作补考: `operateAssessMakeup`
+              "三基考核情况操作考核": `operateAssess`,
+              "三基考核情况操作补考": `operateAssessMakeup`
             },
             {
-              年度: `year`,
-              继续教育是否达标: `standardInfo`
+              "年度": `year`,
+              "继续教育是否达标": `standardInfo`
             }
           ],
           fileData: row.urlImageOne
@@ -1031,17 +1032,17 @@ export function openAuditModal(title: string, row: any, callBack: any) {
           title: '审核新技术新项目开展情况',
           tableFormat: [
             {
-              开展项目名称: `projectName`,
-              技术等级: `technologyLevel`,
+              "开展项目名称": `projectName`,
+              "技术等级": `technologyLevel`,
 
             },
             {
-              开始时间: `startDate`,
-              结束时间: `endDate`
+              "开始时间": `startDate`,
+              "结束时间": `endDate`
             },
             {
-              开展例数: `numberCase`,
-              项目效益: `projectBenefit`,
+              "开展例数": `numberCase`,
+              "项目效益": `projectBenefit`,
             }
           ],
           allData: row
@@ -1058,12 +1059,12 @@ export function openAuditModal(title: string, row: any, callBack: any) {
           title: '审核重差错事故及惩罚',
           tableFormat: [
             {
-              时间: `startDate`,
-              内容: `content`,
+              "时间": `startDate`,
+              "内容": `content`,
 
             },
             {
-              备注: `remark`,
+              "备注": `remark`,
             },
           ],
           allData: row
@@ -1079,15 +1080,24 @@ export function openAuditModal(title: string, row: any, callBack: any) {
         type: 'nurseWHRegistrationWork',
         title: '审核在院工作情况',
         tableFormat: [
-          appStore.HOSPITAL_ID !== 'sdlj' ? {
-            原职称名称: `titleOld`,
-            现职称名称: `titleNew`
-          } : {
-            职称名称: `titleNew`
+          {
+            "年度": `year`,
+            "夜班": `nightShift`
           },
           {
-            考取专业资格证书时间: `winNewTiTleDate`,
-            聘用专业技术资格时间: `employNewTiTleDate`
+            "查房": `checkOut`,
+            "护理会诊": `nursingConsultation`
+          },
+          {
+            "病例讨论": `caseDiscussion`,
+            "个案": `individualCase`
+          },
+          {
+            "小讲课": `lecture`,
+            "带教": `teaching`
+          },
+          {
+            "证明人": `witness`,
           }
         ],
         fileData: row.urlImageOne

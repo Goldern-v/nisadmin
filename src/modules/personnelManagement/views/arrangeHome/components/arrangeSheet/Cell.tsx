@@ -195,7 +195,7 @@ export default observer(function Cell(props: Props) {
                 }
               }
             ],
-            'sdlj': [
+            'sdlj,nfsd': [
               {
                 icon: require("../../images/修改工时.png"),
                 label: "添加备注",

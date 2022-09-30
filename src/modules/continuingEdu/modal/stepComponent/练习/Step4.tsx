@@ -12,6 +12,7 @@ import createModal from "src/libs/createModal";
 import SelectPeopleModal from "../公共/selectNurseModal/SelectPeopleModal";
 import { observer } from "mobx-react-lite";
 import UpdateTable from "./UpdateTable";
+import {quesBankView} from 'src/modules/continuingEdu/modal/stepComponent/考试/modal/QuesBankView';
 import TestPageModal from "src/modules/continuingEdu/views/trainingInfoReview/components/TestPageModal/TestPageModal";
 export interface Props { }
 
@@ -38,6 +39,7 @@ export default observer(function Step4() {
     if (allStepViewModal.stepData1.ceptId) {
       getObj.cetpId = allStepViewModal.stepData1.ceptId;
     }
+    quesBankView.importType='preview'
     testPage.show({
       obj: getObj,
       teachingMethodName: "",

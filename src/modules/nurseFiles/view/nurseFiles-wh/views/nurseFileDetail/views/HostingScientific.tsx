@@ -8,9 +8,9 @@ import { observer } from 'mobx-react-lite'
 import { ColumnProps } from 'antd/lib/table'
 import createModal from 'src/libs/createModal'
 
-import { globalModal } from 'src/global/globalModal'
-import { authStore } from 'src/stores'
-import limitUtils from '../utils/limit'
+// import { globalModal } from 'src/global/globalModal'
+// import { authStore } from 'src/stores'
+// import limitUtils from '../utils/limit'
 import Zimage from 'src/components/Zimage'
 import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
 import EditHostingScientificModal from '../modal/EditHostingScientificModal'
@@ -107,7 +107,7 @@ export default observer(function PersonWinning() {
       width: 90,
       align: 'center'
     },
-    appStore.HOSPITAL_ID !== 'sdlj' && {
+    !['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID) && {
       title: '时间',
       dataIndex: 'completionDate',
       key: 'completionDate',
