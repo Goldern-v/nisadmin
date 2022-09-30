@@ -894,8 +894,8 @@ export default function ContinuingEdu(props: Props) {
                 component: FormApply,
               },
               {
-                title: "高风险诊疗技术操作技术人员准入",
-                formName: appStore.HOSPITAL_ID==='hj'?"高风险高难度技术操作人员资质申请表":"高风险诊疗技术操作人员资质申请表",
+                title:appStore.HOSPITAL_ID==='hj'?"高风险高难度技术操作人员资质申请表":"高风险诊疗技术操作技术人员准入",
+                formName: appStore.HOSPITAL_ID==='hj'?"高风险高难度技术操作人员资质申请表":"高风险诊疗技术操作技术人员准入",
                 path: "/continuingEdu/高风险诊疗技术操作技术人员准入",
                 formCode: "FQA00003",
                 component: FormApply,

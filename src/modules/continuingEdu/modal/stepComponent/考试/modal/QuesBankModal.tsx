@@ -36,6 +36,7 @@ export default observer(function PushModal(props: Props) {
   // 习题预览弹窗
   const handlePagePreview = () => {
     if (quesBankView.questionIdList && quesBankView.questionIdList.length > 0) {
+      quesBankView.importType = 'exercisePreview'
       testPage.show({
         questionIdList: quesBankView.questionIdList,
         teachingMethodName: "",

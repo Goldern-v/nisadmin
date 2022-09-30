@@ -41,31 +41,39 @@ export default observer(function TrainingInfoReview() {
         })
     }
     const printDetail = () => {
-        console.log("scheduleStore.printELement==",scheduleStore.printELement);
         printing(scheduleStore.printELement, {
             injectGlobalCss: true,
             scanStyles: false,
             css: `
            @page {
-            size: A4;
             margin: 0mm 0mm 0mm 0mm;
            }
            #print-detail-container{
-           padding:0mm 5mm
+           padding:0mm 5mm;
+           overflow: hidden;
            }
           .main-title{
-          display:flex;
-          justify-content: center;
-          align-items: center;
-          font-weight: 800;
-          font-size:20px;
-           margin-top:10mm;
-           margin-bottom:10mm
+              display:flex;
+              justify-content: center;
+              align-items: center;
+              font-weight: 800;
+              font-size:20px;
+              margin-top:10mm;
+              margin-bottom:10mm
            }
            .content-item-title{
               font-weight: 800;
-          font-size:16px;
+              font-size:16px;
            }
+            .content-item-title::before{
+             content:'';
+             display: inline-block;
+             height: 18px;
+             width: 5px;
+             background: rgba(112, 182, 3, 1);
+             vertical-align: sub;
+             margin-right: 10px;
+            }
         `
         });
     }

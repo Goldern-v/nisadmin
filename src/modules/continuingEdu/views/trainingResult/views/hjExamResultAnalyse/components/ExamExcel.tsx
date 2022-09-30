@@ -10,12 +10,13 @@ import ScoresSectionExamReport from './components/ScoresSectionExamReport'
 import QuestionsStatistics from './components/QuestionsStatistics'
 import { appStore } from 'src/stores'
 import { trainingResultService } from "./../../../api/TrainingResultService";
+import {TableTitle} from './components/styleCss'
 
 export interface Props { }
 export default observer(function ExamExcel() {
-useEffect(()=>{
-    hjExamModal.analyCorrectRate()
-},[])
+// useEffect(()=>{
+//     hjExamModal.analyCorrectRate()
+// },[appStore.queryObj.id])
   // 南医三根据当前页面tab值显示页面
   const getPage = () => {
     if (['hj','gxjb','whyx'].includes(appStore.HOSPITAL_ID)) {
@@ -34,6 +35,7 @@ useEffect(()=>{
           <ScoresSectionExamReport />
         {/*  hj增加考试错题  */}
             <Report>
+                <TableTitle >答卷答题情况分析</TableTitle>
                 <QuestionsStatistics
                     type='view'
                     data={hjExamModal.analyCorrectRateData?.questionList}

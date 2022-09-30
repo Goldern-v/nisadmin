@@ -2,7 +2,9 @@ import styled from 'styled-components'
 import React, {useState, useEffect} from 'react'
 import {Button, InputNumber, Popover} from 'antd'
 import {hjExamModal} from '../../HjExamModal'
-import { trainingResultModel } from './../../../../models/TrainingResultModel'
+import {trainingResultModel} from './../../../../models/TrainingResultModel'
+import {TableTitle} from './styleCss'
+import printing from "printing";
 
 export interface Props {
     data?: any[],
@@ -12,9 +14,10 @@ export interface Props {
 
 export default function QuestionsStatistics(props: Props) {
     const {data, type} = props
-    const {baseInfo}=trainingResultModel
+    const {baseInfo} = trainingResultModel
     const [heard, setHeard] = useState([] as any)
     useEffect(() => {
+        hjExamModal.analyCorrectRate()
         const {
             examDuration,
             questionCount,
@@ -24,6 +27,7 @@ export default function QuestionsStatistics(props: Props) {
             endTime,
             correctRate
         } = hjExamModal.analyCorrectRateData
+        console.log('hjExamModal.analyCorrectRateData===',hjExamModal.analyCorrectRateData);
         setHeard([{name: '开始时间', value: startTime}, {name: '结束时间', value: endTime}, {
             name: "考试时间",
             value: examDuration
@@ -38,12 +42,11 @@ export default function QuestionsStatistics(props: Props) {
     const viewType = type || 'edit'
     const correctImg = <img src={require('./../../../../assets/question-correct.png')}/>
     const topic = (item: any) => {
-        console.log("item===",item);
         return (
             <div className='wrong-topic'>
                 <div style={{marginRight: "10px"}}>答对次数:{item.correctCount ? item.correctCount : 0}</div>
-                <div style={{marginRight: "10px"}}>答错次数:{item.errorCount?item.errorCount:0}</div>
-                <div style={{marginRight: "10px"}}>正确率:{item.correctRate?item.correctRate:0}%</div>
+                <div style={{marginRight: "10px"}}>答错次数:{item.errorCount ? item.errorCount : 0}</div>
+                <div style={{marginRight: "10px"}}>正确率:{item.correctRate ? item.correctRate : 0}%</div>
             </div>
         )
     }
@@ -116,63 +119,71 @@ export default function QuestionsStatistics(props: Props) {
           <span className="question-desc">
             {item.questionContent}（{item.scores}分）
           </span>
-          <Popover
-              content={<pre>{answer.suggestedAnswer}</pre>}
-              trigger="click" title="参考答案">
-            <span className="refer">参考答案</span>
-          </Popover>
-            {viewType == 'edit' && <span className="de-score">
-            答案扣
-            <InputNumber
-                className="de-score-ipt"
-                size="small"
-                value={item.deduction}
-                precision={1}
-                step={0.1}
-                max={item.scores}
-                min={0}/>
-            分
-          </span>}
         </div>
       </span>
             {/*   错题率 */}
             {topic(item)}
         </div>
     }
-
-    return <Wrapper>
-        <div className="main-title">《{baseInfo?.title}》</div>
-        <div className="question-list">
-            {/*考试详情*/}
-            <div className='question-head'>
-                {
-                    (heard || []).map((item: any, index: number) => {
-                        return (
-                            <div key={item.name} className='question-head-item'
-                                 style={{color: index === 5 ? 'red' : ''}}>
-                                <div>{item.name}</div>
-                                :
-                                <div>{item.value}{{2: '分钟', 3: '分', 4: '题', 5: '%'}[index]}</div>
-                            </div>
-                        )
-                    })
-                }
-            </div>
-            {data?.map((item: any, idx: number) => {
-                switch (item.questionType) {
-                    case 1:
-                    case 2:
-                        return choiceContent(item, idx)
-                    case 3:
-                        return fillContent(item, idx)
-                    case 4:
-                        return wendaContent(item, idx)
-                    default:
-                        return <span key={idx}></span>
-                }
-            })}
-        </div>
-    </Wrapper>
+const onPrint =()=>{
+   let dom =document.getElementById('print-answer') as any
+    printing(dom,{
+       injectGlobalCss: true,
+       scanStyles: false,
+       css: `
+      @page{
+      margin:0.0cm;
+    }
+     #print-answer{
+       overflow: hidden;
+       box-shadow:none;
+       border:none;
+     }
+ 
+      .print-button{
+      display:none
+      }
+      `,
+   })
+}
+    return (
+        <ReportQuestion >
+            <Wrapper id='print-answer' >
+                <PrintButton className='print-button' onClick={onPrint}><Button type='primary'>打印</Button></PrintButton>
+                <div className="main-title">《{baseInfo?.title}》</div>
+                <div className="question-list">
+                    {/*考试详情*/}
+                    <div className='question-head'>
+                        {
+                            (heard || []).map((item: any, index: number) => {
+                                return (
+                                    <div key={index} className='question-head-item'
+                                         style={{color: index === 5 ? 'red' : ''}}>
+                                        <div>{item.name}</div>
+                                        :
+                                        <div>{item.value}{{2: '分钟', 3: '分', 4: '题', 5: '%'}[index]}</div>
+                                    </div>
+                                )
+                            })
+                        }
+                    </div>
+                    {data?.map((item: any, idx: number) => {
+                        switch (item.questionType) {
+                            case 1:
+                            case 2:
+                                return choiceContent(item, idx)
+                            case 3:
+                                return fillContent(item, idx)
+                            case 4:
+                                return wendaContent(item, idx)
+                            default:
+                                return <span key={idx}></span>
+                        }
+                    })}
+                </div>
+            </Wrapper>
+        </ReportQuestion>
+    )
 }
 
 const pageWidth = 750
@@ -180,14 +191,27 @@ const pagePadding = 25
 const pageBorder = 1
 const contentWidth = pageWidth - pagePadding * 2 - pageBorder * 2
 
+const ReportQuestion = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-bottom: 50px;
+  margin-top: 25px;
+`
+const PrintButton = styled.div`
+  position: absolute;
+  top: -40px;
+  right: 0px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+`
 const Wrapper = styled.div`
+  position: relative;
   width: ${pageWidth}px;
-  margin: 15px auto;
   background: #fff;
   padding: ${pagePadding}px;
-  min-height: 800px;
+  box-shadow: rgba(0, 0, 0, 0.5) 0px 5px 10px 0px;
   border: ${pageBorder}px solid #e8e8e8;
-
   .main-title {
     font-size: 20px;
     color: #000;
@@ -195,7 +219,6 @@ const Wrapper = styled.div`
     text-align: center;
     margin-bottom: 15px;
   }
-
   .question-list {
     .question-head {
       display: flex;

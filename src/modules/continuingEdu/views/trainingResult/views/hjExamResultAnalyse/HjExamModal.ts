@@ -111,10 +111,13 @@ class HjExamModal {
       });
   }
   /*获取正确率报告*/
-  analyCorrectRate() {
-    hjExamApi.getAnalyCorrectRate(appStore.queryObj.id)
+ async analyCorrectRate() {
+ await   hjExamApi.getAnalyCorrectRate(appStore.queryObj.id)
         .then(res => {
-          this.analyCorrectRateData = res.data;
+
+          this.analyCorrectRateData ={...res.data};
+          console.log("1===");
+
         });
   }
   excelAll() {

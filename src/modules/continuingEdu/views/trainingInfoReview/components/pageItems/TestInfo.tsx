@@ -4,6 +4,7 @@ import { Button } from "antd";
 import createModal from "src/libs/createModal";
 import TestPageModal from "./../TestPageModal/TestPageModal";
 import { appStore } from "src/stores";
+import {quesBankView} from 'src/modules/continuingEdu/modal/stepComponent/考试/modal/QuesBankView';
 
 export interface Props {
   info?: any;
@@ -74,17 +75,17 @@ export default function TestInfo(props: Props) {
                 <div className="content" style={{ marginBottom: "15px" }}>
                   <Button
                     type="primary"
-                    onClick={() =>
-                      testPage.show({
-                        paperId: item.paperId,
-                        teachingMethodName: info.teachingMethodName,
-                        title: info.title,
-                        startTime: info.startTime,
-                        endTime: info.endTime,
-                        examDuration: info.examDuration,
-                        passScores: info.passScores
-                      })
-                    }
+                    onClick={() =>{
+                        quesBankView.importType='examinee'
+                        testPage.show({
+                            paperId: item.paperId,
+                            teachingMethodName: info.teachingMethodName,
+                            title: info.title,
+                            startTime: info.startTime,
+                            endTime: info.endTime,
+                            examDuration: info.examDuration,
+                            passScores: info.passScores
+                        })}}
                   >
                     试卷预览
                   </Button>

@@ -27,7 +27,7 @@ class QuesBankView {
   @observable public TKQuestionNum: any = 0; // 填空条数
   @observable public JDQuestionNum: any = 0; // 简答条数
   @observable public saveData: any = []; // 保存数据
-
+  @observable public  importType: 'exercisePreview'|'examinee'|'preview' ='examinee'
   @computed get checkObj() {
     return {
       keyWord: this.keyWordSelect,
