@@ -229,7 +229,7 @@ export default class CommonApiService extends BaseApiService {
     let HOSPITAL_ID = appStore.HOSPITAL_ID
     if (HOSPITAL_ID == "hj") {
       return this.get(`/nurseInformation/getByEmpNoAudite/${empNo}`);
-    } else if (HOSPITAL_ID == "wh" || HOSPITAL_ID == "gzsrm") {
+    } else if (HOSPITAL_ID == "wh" || HOSPITAL_ID == "gzsrm"||HOSPITAL_ID == "whyx" ) {
       return this.get(`/nurseWHInformation/findByEmpNoSubmit/${empNo}`);
     } else {
       return this.get(`/nurseInformation/getByEmpNoAudite/${empNo}`);
