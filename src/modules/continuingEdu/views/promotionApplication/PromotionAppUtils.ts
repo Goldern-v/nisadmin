@@ -178,6 +178,9 @@ class PromotionApp {
         // this.handleEleBorder(errEleData, "2px solid #f00")
        
       } else {
+        this.carePatientList.map((item: any) => {
+          item.masterId = this.master.id
+        })
         let obj = {
           master: this.master,
           itemDataMap: this.handleDifferent(),
@@ -197,6 +200,9 @@ class PromotionApp {
       if (isInfo) {
         return message.warning('填写六、七项还有信息未填，请确认！')
       } else {
+        this.carePatientList.map((item: any) => {
+          item.masterId = this.master.id
+        })
         let obj = {
           master: this.master,
           itemDataMap: this.handleDifferent(),

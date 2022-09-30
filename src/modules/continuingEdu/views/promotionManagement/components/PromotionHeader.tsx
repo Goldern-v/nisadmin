@@ -15,6 +15,8 @@ interface IDeucOption {
 }
 export default observer(function ApplyHeader(props: Props) {
   const [deucOption, setdeucOption] = useState([]); // 科室信息
+  const [yearPickerIsOpen, setyearPickerIsOpen] = useState(false); // 控制年份下拉打开
+  const [yearImportIsOpen, setyearImportIsOpen] = useState(false); // 控制导入年份下拉打开
 
   useEffect(()=>{
     PromotionManagementApi.getnursingAll().then((res)=>{
@@ -39,9 +41,11 @@ export default observer(function ApplyHeader(props: Props) {
   const handelInquire = ()=>{
     PromotionUtils.onload()
   }
-
- 
- 
+  const handlePanelChange = (value: any) => {
+    setyearPickerIsOpen(false)
+    PromotionUtils.year = value
+    PromotionUtils.onload()
+  }
 
   return (
     <Wrapper>
@@ -49,6 +53,19 @@ export default observer(function ApplyHeader(props: Props) {
         <PageTitle>晋升管理</PageTitle>
       </LeftIcon>
       <RightIcon>
+      <span style={{marginRight:'10px'}}>年份</span>
+        <DatePicker
+          style={{ width: 100 }}
+          value={PromotionUtils.year}
+          open={yearPickerIsOpen}
+          mode='year'
+          className='year-picker'
+          placeholder='全部'
+          format='YYYY'
+          onChange={() => PromotionUtils.year = undefined}
+          onOpenChange={(status: boolean) => setyearPickerIsOpen(status)}
+          onPanelChange={handlePanelChange}
+        />
         <span style={{marginRight:'10px'}}>科室</span>
         <Select
           style={{ width: 180 }}
