@@ -34,7 +34,6 @@ class HjExamModal {
 
   @observable public excelTableLoading = false;
   @observable public  analyCorrectRateData:any ={}
-
   @computed
   get postStatisticsObj() {
     return {
@@ -112,12 +111,9 @@ class HjExamModal {
   }
   /*获取正确率报告*/
  async analyCorrectRate() {
- await   hjExamApi.getAnalyCorrectRate(appStore.queryObj.id)
+   await hjExamApi.getAnalyCorrectRate(appStore.queryObj.id)
         .then(res => {
-
-          this.analyCorrectRateData ={...res.data};
-          console.log("1===");
-
+          this.analyCorrectRateData = res.data;
         });
   }
   excelAll() {

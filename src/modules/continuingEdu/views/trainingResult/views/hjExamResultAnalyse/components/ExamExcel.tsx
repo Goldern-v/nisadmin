@@ -14,9 +14,9 @@ import {TableTitle} from './components/styleCss'
 
 export interface Props { }
 export default observer(function ExamExcel() {
-// useEffect(()=>{
-//     hjExamModal.analyCorrectRate()
-// },[appStore.queryObj.id])
+useEffect(()=>{
+    hjExamModal.analyCorrectRate()
+},[appStore.queryObj.id])
   // 南医三根据当前页面tab值显示页面
   const getPage = () => {
     if (['hj','gxjb','whyx'].includes(appStore.HOSPITAL_ID)) {

@@ -18,26 +18,27 @@ export default function QuestionsStatistics(props: Props) {
     const [heard, setHeard] = useState([] as any)
     useEffect(() => {
         hjExamModal.analyCorrectRate()
-        const {
-            examDuration,
-            questionCount,
-            totalScores,
-            passScores,
-            startTime,
-            endTime,
-            correctRate
-        } = hjExamModal.analyCorrectRateData
-        console.log('hjExamModal.analyCorrectRateData===',hjExamModal.analyCorrectRateData);
-        setHeard([{name: '开始时间', value: startTime}, {name: '结束时间', value: endTime}, {
-            name: "考试时间",
-            value: examDuration
-        }, {name: '及格分数线', value: passScores ? passScores : 0}, {
-            name: '题目数量',
-            value: questionCount ? questionCount : 0
-        }, {
-            name: '试卷总正确率',
-            value: correctRate ? correctRate : 0
-        }])
+        setTimeout(()=>{
+            const {
+                examDuration,
+                questionCount,
+                totalScores,
+                passScores,
+                startTime,
+                endTime,
+                correctRate
+            } = hjExamModal.analyCorrectRateData
+            setHeard([{name: '开始时间', value: startTime}, {name: '结束时间', value: endTime}, {
+                name: "考试时间",
+                value: examDuration
+            }, {name: '及格分数线', value: passScores ? passScores : 0}, {
+                name: '题目数量',
+                value: questionCount ? questionCount : 0
+            }, {
+                name: '试卷总正确率',
+                value: correctRate ? correctRate : 0
+            }])
+        },1000)
     }, [])
     const viewType = type || 'edit'
     const correctImg = <img src={require('./../../../../assets/question-correct.png')}/>
@@ -125,12 +126,12 @@ export default function QuestionsStatistics(props: Props) {
             {topic(item)}
         </div>
     }
-const onPrint =()=>{
-   let dom =document.getElementById('print-answer') as any
-    printing(dom,{
-       injectGlobalCss: true,
-       scanStyles: false,
-       css: `
+    const onPrint = () => {
+        let dom = document.getElementById('print-answer') as any
+        printing(dom, {
+            injectGlobalCss: true,
+            scanStyles: false,
+            css: `
       @page{
       margin:0.0cm;
     }
@@ -144,11 +145,11 @@ const onPrint =()=>{
       display:none
       }
       `,
-   })
-}
+        })
+    }
     return (
-        <ReportQuestion >
-            <Wrapper id='print-answer' >
+        <ReportQuestion>
+            <Wrapper id='print-answer'>
                 <PrintButton className='print-button' onClick={onPrint}><Button type='primary'>打印</Button></PrintButton>
                 <div className="main-title">《{baseInfo?.title}》</div>
                 <div className="question-list">
@@ -212,6 +213,7 @@ const Wrapper = styled.div`
   padding: ${pagePadding}px;
   box-shadow: rgba(0, 0, 0, 0.5) 0px 5px 10px 0px;
   border: ${pageBorder}px solid #e8e8e8;
+
   .main-title {
     font-size: 20px;
     color: #000;
@@ -219,6 +221,7 @@ const Wrapper = styled.div`
     text-align: center;
     margin-bottom: 15px;
   }
+
   .question-list {
     .question-head {
       display: flex;

@@ -25,8 +25,8 @@ export default observer(function ApplyTable(props: Props) {
     },
     {
       title: "标题",
-      dataIndex: "title",
-      align: "center"
+      dataIndex:appStore.HOSPITAL_ID==='hj'?'formName':"title",
+      align: "center",
     },
     {
       title: "创建时间",
