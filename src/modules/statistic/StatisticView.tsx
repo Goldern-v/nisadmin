@@ -40,6 +40,8 @@ import 护士学历分布 from "./views/护士学历分布/护士学历分布";
 import 护士初始学历分布 from "./views/护士初始学历分布/护士初始学历分布";
 //护士职称统计
 import 护士职称统计 from "./views/护士职称统计/护士职称统计";
+//护士职称统计
+import 护士职务分布 from "./views/护士职务分布/护士职务分布";
 //护士男女分布
 import 护士男女分布 from "./views/护士男女分布/护士男女分布";
 //护士在职状态分析
@@ -245,7 +247,7 @@ export default function StatisticView() {
     },
     ...appStore.hisMatch({
       map: {
-        'jmfy,lcey,hj': [
+        'jmfy,lcey,hj,sdlj': [
           {
             name: "护士职称分布",
             path: "/statistic/护士职称分布",
@@ -259,6 +261,20 @@ export default function StatisticView() {
         //     component: 护士职称统计,
         //   },
         // ],
+        default: [],
+      },
+      vague:true
+    }),
+    ...appStore.hisMatch({
+      map: {
+        'sdlj': [
+          {
+            name: "护士职务分布",
+            path: "/statistic/护士职务分布",
+            component: 护士职务分布,
+          },
+        ],
+       
         default: [],
       },
       vague:true
