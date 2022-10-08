@@ -5,7 +5,7 @@ import { appStore } from "src/stores";
 import { ReactComponent as PBTJ } from "../img/PBTJ.svg";
 import { ReactComponent as HLRYTJ } from "../img/HLRYTJ.svg";
 import { ReactComponent as HZCXTJ } from "../img/HZCXTJ.svg";
-import { ReactComponent as ZZHSDA } from "../img/ZZHSDA.svg";
+import { ReactComponent as ZZHSDA } from "../img/ZZHSDA.svg"; 
 // 左侧列表数据
 const LEFT_MENU_CONFIG = [
   ...appStore.hisMatch({
@@ -145,7 +145,7 @@ const LEFT_MENU_CONFIG = [
                 {
                   title: '护理人员统计',
                   path: '/statistic/护理人员统计',
-                  hide: ['jmfy', 'nys', 'whyx'].includes(appStore.HOSPITAL_ID),
+                  hide: ['jmfy', 'nys', 'whyx','sdlj'].includes(appStore.HOSPITAL_ID),
                 },
                 {
                   title: "护士层级分布", path: "/statistic/护士层级分布",
@@ -159,7 +159,7 @@ const LEFT_MENU_CONFIG = [
                 },
                 ...appStore.hisMatch({
                   map: {
-                    'lcey,hj': [
+                    'lcey,hj,sdlj': [
                       {
                         title: "护士职称分布",
                         path: "/statistic/护士职称分布",
@@ -168,6 +168,17 @@ const LEFT_MENU_CONFIG = [
                     other: []
                   },
                   vague:true
+                }),
+                ...appStore.hisMatch({
+                  map: {
+                    'sdlj': [
+                      {
+                        title: "护士职务分布",
+                        path: "/statistic/护士职务分布",
+                      },
+                    ],
+                    other: []
+                  }
                 })
                 // {
                 //   title: "科室护士结构信息汇总表",
