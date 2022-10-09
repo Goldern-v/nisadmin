@@ -336,6 +336,10 @@ class StatisticsApi extends BaseApiService {
     return this.post('/countInformation/countTitle', query)
   }
 
+  /** 统计职务 */
+  public countJob(query: any) {
+    return this.post('/countInformation/countJob', query)
+  }
   /** 发热患者统计 */
   public countFeverPatient(query: any) {
     return this.post('/vitalSign/getOutside', query)
