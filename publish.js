@@ -124,7 +124,7 @@ let sshUpload = (localSrc = './build', folderSrc = '/crdata/webProject/manage') 
   if (process.env.npm_lifecycle_event.indexOf('9900') >= 0) {
     folderSrc = '/crdata/webProject/manage-wuhanhankou'
   }
-  if (process.env.npm_lifecycle_event.indexOf('9906') >= 0) {
+  if (process.env.npm_lifecycle_event.indexOf('9901') >= 0) {
     folderSrc = '/crdata/webProject/manage-nanfangshunde'
   }
   //护理管理文档
