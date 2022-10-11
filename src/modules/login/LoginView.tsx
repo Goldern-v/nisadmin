@@ -31,8 +31,6 @@ export default withRouter(function LoginView(props: Props) {
   const [isSavePassword, setIsSavePassword] = useState(false);
   let userRef: any = useRef<HTMLInputElement>();
   let passwordRef: any = useRef<HTMLInputElement>();
-  // 密码正则
-  const [reg, setReg]: any = useState();
 
   useEffect(() => {
     if (localStorage.lastLoginUserName) {
@@ -84,11 +82,6 @@ export default withRouter(function LoginView(props: Props) {
     if (showVerification && !verificationCode) {
       message.warning("请填写验证码！")
       return;
-    }
-    if (reg?.flag) {
-      const pattern = eval(`/${reg?.rule}/`)
-      const flag = pattern.test(_password);
-      if (!flag) return message.warning(reg.ruleMsg)
     }
     (!appStore.isDev) && (["fssdy", "sdlj","dghl"].includes(appStore.HOSPITAL_ID)) && (_password = md5(_password));
     service.authApiService
@@ -192,7 +185,7 @@ export default withRouter(function LoginView(props: Props) {
   const getPasswordRule = () => {
     service.authApiService.passwordRule().then((res: any) => {
       if (res.code == 200) {
-        setReg(res.data)
+        appStore.pwdRule = res.data
       }
     })
   }

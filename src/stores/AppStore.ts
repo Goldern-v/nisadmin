@@ -66,7 +66,13 @@ export default class AppStore {
 
   /** 医院别名（简称）*/
   @observable public hospitalOtherName: string | undefined = process.env.REACT_APP_OTHER_NAME;
-
+  /**
+   * 医院密码校验规则
+   * flag 是否开启
+   * rule 校验规则
+   * ruleMsg 失败提示
+   */
+  @observable public pwdRule: Record<string, any> = { flag: false }
   /** url 参数 */
   @computed
   public get HOSPITAL_LOGO() {
