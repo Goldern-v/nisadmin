@@ -43,12 +43,12 @@ export const navConfig = (appStore:any,authStore?:any)=>{
     {
       name: "二级质控",
       path: "/qcTwo",
-      hidden: !authStore.isRoleManage
+      hidden: !authStore.isRoleManage || !authStore.isLjyy
     },
     {
       name: "三级质控",
       path: "/qcThree",
-      hidden: !authStore.isRoleManage
+      hidden: !authStore.isRoleManage || !authStore.isLjyy
     },
     {
       name: "学习培训",

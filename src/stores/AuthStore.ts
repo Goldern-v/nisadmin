@@ -365,6 +365,17 @@ export default class AuthStore {
     return this.isZJ || this.isHL || this.isEmpNoAdmin || this.isSupervisorNurse || this.isRoleManage
   }
   
+  // 新权限 用于质控 by龙江
+  public get isLjyy() {
+    try {
+      if (!this.user) return false
+      if (this.user.roleManageCode === 'LJYY_QCR1000') return true
+      if (this.user.roleManageCodeList?.find((code: string) => code === "LJYY_QCR1000")) return true
+    } catch (e) {
+      return false
+    }
+  }
+  
 
   /** 用户初始化 */
   @action
