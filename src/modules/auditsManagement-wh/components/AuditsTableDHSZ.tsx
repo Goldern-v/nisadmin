@@ -166,7 +166,7 @@ export default observer(function AuditsTableDHSZ(props: Props) {
     },
 
     {
-      title: "提交人22222",
+      title: "提交人",
       dataIndex: "commiterName",
       key: "commiterName",
       width: 100,

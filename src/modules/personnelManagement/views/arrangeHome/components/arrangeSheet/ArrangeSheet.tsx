@@ -559,19 +559,28 @@ export default observer(function ArrangeSheet(props: Props) {
           ],
         }
       }),
-      {
-        title: (
-          <div>
-            <div>{['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID)?'工休结余':'公休结余'}</div>
-            <div>（天）</div>
-          </div>
-        ),
-        width: 70,
-        align: "center",
-        render(text: string, record: any) {
-          return <PublicHour id={record.id} />;
-        },
-      },
+        ...appStore.hisMatch({
+          map: {
+            'whyx': [
+            ],
+            other: [
+              {
+                title: (
+                    <div>
+                      <div>{['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID)?'工休结余':'公休结余'}</div>
+                      <div>（天）</div>
+                    </div>
+                ),
+                width: 70,
+                align: "center",
+                render(text: string, record: any) {
+                  return <PublicHour id={record.id} />;
+                },
+              },
+            ]
+          },
+          vague:true
+        }),
       ...appStore.hisMatch({
         map: {
           'sdlj,nfsd': [
