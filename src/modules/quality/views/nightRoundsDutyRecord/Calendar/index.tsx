@@ -21,10 +21,18 @@ export default observer((props: Props) => {
     const handleChange = (val: any, type: any) => {
       const newData = data.map((item: any) => {
         if (item.date === day.date) {
-          const findObj = nurseList.find((i: any) => i.empNo === val)
-          item[`empNo${type}`] = findObj.empNo
-          item[`empName${type}`] = findObj.empName
-          item[`empPhone${type}`] = findObj.phone
+			// console.log(val)
+          if(!val){
+            // 清空了数据
+			item[`empNo${type}`] = ''
+            item[`empName${type}`] = ''
+            item[`empPhone${type}`] = ''
+          }else{
+            const findObj = nurseList.find((i: any) => i.empNo === val)
+            item[`empNo${type}`] = findObj.empNo
+            item[`empName${type}`] = findObj.empName
+            item[`empPhone${type}`] = findObj.phone
+          }
         }
         return item
       })
@@ -85,6 +93,7 @@ export default observer((props: Props) => {
               <div>
                 <Select
                   showSearch
+                  allowClear
                   showArrow={false}
                   value={day.empNo}
                   onChange={(val: any) => handleChange(val, '')}
@@ -101,6 +110,7 @@ export default observer((props: Props) => {
                 </Select>
                 <Select
                   showSearch
+                  allowClear
                   showArrow={false}
                   value={day.empNo2}
                   onChange={(val: any) => handleChange(val, '2')}
@@ -227,6 +237,10 @@ const DayWrapper = styled.div`
     width:70% !important ;
     background: #fff;
     border-left: 1px solid #ccc;
+	/* 选择框清除按钮right改为3px */
+	.ant-select-selection__clear{
+		right: 3px;
+	}
   }
   .text{
     border-top: 1px solid #ccc;
