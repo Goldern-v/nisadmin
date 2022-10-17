@@ -1400,12 +1400,12 @@ class PrintModal {
       let newMoment = moment(timeset);
       let date = newMoment.format("D");
       let weekDay = newMoment.format("E");
-      
+
       if (i == 0) {
         appendIdx++;
         dateRowGroup.push([] as any);
       }
-      
+
       if (date == '1' && i != 0) {
         appendIdx++;
         dateRowGroup.push([] as any);
@@ -2092,34 +2092,33 @@ class PrintModal {
             onePage.className = "one-page";
             onePage.innerHTML = `
               ${newTable}
-              ${remarkEl}
               ${pageSplit}
               `;
+            //              ${remarkEl}
             printContent.appendChild(onePage);
           }
           pageNo++;
         }
         //最后一页才打印备注
-        // if ((j + 1) == sheetTableData.length) {
-        //   let printContent = document.querySelector(
-        //     `#table-0-${pageNo - 1}`
-        //   );
-        //   // let remove = document.querySelector(`#table-0-${pageNo - 1} .page-no`)
-        //   let remove2 = document.querySelector(`#table-0-${pageNo - 1} .page-split`)
-        //   let onePage = document.createElement("div");
-        //   if (printContent && remove2) {
-        //     // printContent.removeChild(remove)
-        //     printContent.removeChild(remove2)
-        //     // <div class="page-no">第 ${pageNo} 页</div> 
-        //     onePage.innerHTML = `
-        //     ${remarkEl}
-        //     `
-        //     printContent.appendChild(onePage)
-        //   }
-        // }
+        if ((j + 1) == sheetTableData.length) {
+          let printContent = document.querySelector(
+            `#table-0-${pageNo - 1}`
+          );
+          let remove = document.querySelector(`#table-0-${pageNo - 1} .page-no`) as never
+          let remove2 = document.querySelector(`#table-0-${pageNo - 1} .page-split`)
+          let onePage = document.createElement("div");
+          if (printContent && remove2) {
+            printContent.removeChild(remove)
+            printContent.removeChild(remove2)
+            let pageHtml =` <div class="page-no">第 ${pageNo} 页</div>`
+            // <div class="page-no">第 ${pageNo} 页</div>
+            onePage.innerHTML = `${remarkEl}${pageHtml}`
+            printContent.appendChild(onePage)
+          }
+        }
         //拼装行
         let tr = "";
-        if (nurse.groupNameTitle) { 
+        if (nurse.groupNameTitle) {
           let newTr = document.createElement("tr");
           let tdDom = tdEl({colSpan:nurse.colSpan,content:nurse.groupNameTitle})
           newTr.innerHTML = tdDom;
@@ -2229,7 +2228,7 @@ class PrintModal {
         groups = groups.map((item1: any) => {
           let rangeName = ''
           if (nurse.empName)
-            rangeName = item1.rangeName || "/"          
+            rangeName = item1.rangeName || "/"
           return tdEl({
             colSpan: item1.col,
             content: rangeName,

@@ -173,7 +173,7 @@ export default observer(function SelectCon() {
               map: {
                 'nfzxy':<React.Fragment>
                           <Checkbox value="empRemark">备注</Checkbox>
-                        </React.Fragment>,         
+                        </React.Fragment>,
               'wjgdszd': <React.Fragment>
                  <Checkbox value="total2">夜小时数</Checkbox>
                  <Checkbox value="balanceHour">累计结余</Checkbox>
@@ -206,7 +206,9 @@ export default observer(function SelectCon() {
             let arr = sheetViewModal.sheetTableData.filter((item:any) => {
               return group.groupName == item.groupName
             })
-            newArr = newArr.concat([{id:group.groupName,groupNameTitle:group.groupName,colSpan:settingLength}],arr)
+            if(arr.length > 0){
+              newArr = newArr.concat([{id:group.groupName,groupNameTitle:group.groupName,colSpan:settingLength}],arr)
+            }
           })
           sheetViewModal.sheetTableData.forEach((item:any) => {
             if( item.empNo.includes('试工工人')) noEmpNoArr1.push(item)
@@ -215,13 +217,29 @@ export default observer(function SelectCon() {
             if( !item.empNo || item.empNo.includes('实习护士')) noEmpNoArr4.push(item)
             if(item.empNo && !item.groupName && !['试工工人','规培护士','助理护士','实习护士'].includes(item.empNo)) {noGroupArr.push(item)}
           })
-          newArr = newArr.concat(
-            [{id:"未分组人员",groupNameTitle:"未分组人员",colSpan:settingLength}],noGroupArr,
-            [{id:"试工工人",groupNameTitle:"试工工人",colSpan:settingLength}],noEmpNoArr1,
-            [{id:"规培护士",groupNameTitle:"规培护士",colSpan:settingLength}],noEmpNoArr2,
-            [{id:"助理护士",groupNameTitle:"助理护士",colSpan:settingLength}],noEmpNoArr3,
-            [{id:"实习护士",groupNameTitle:"实习护士",colSpan:settingLength}],noEmpNoArr4,
-            )
+          /*需要判断是否有数据*/
+          if(noGroupArr.length>0){
+            newArr=newArr.concat( [{id:"未分组人员",groupNameTitle:"未分组人员",colSpan:settingLength}],noGroupArr)
+          }
+          if(noEmpNoArr1.length>0){
+            newArr=newArr.concat([{id:"试工工人",groupNameTitle:"试工工人",colSpan:settingLength}],noEmpNoArr1)
+          }
+          if(noEmpNoArr2.length>0){
+            newArr=newArr.concat([{id:"规培护士",groupNameTitle:"规培护士",colSpan:settingLength}],noEmpNoArr2,)
+          }
+          if(noEmpNoArr3.length>0){
+            newArr=newArr.concat([{id:"助理护士",groupNameTitle:"助理护士",colSpan:settingLength}],noEmpNoArr3,)
+          }
+          if(noEmpNoArr4.length>0){
+            newArr=newArr.concat([{id:"实习护士",groupNameTitle:"实习护士",colSpan:settingLength}],noEmpNoArr4,)
+          }
+          // newArr = newArr.concat(
+          //   [{id:"未分组人员",groupNameTitle:"未分组人员",colSpan:settingLength}],noGroupArr,
+          //   [{id:"试工工人",groupNameTitle:"试工工人",colSpan:settingLength}],noEmpNoArr1,
+          //   [{id:"规培护士",groupNameTitle:"规培护士",colSpan:settingLength}],noEmpNoArr2,
+          //   [{id:"助理护士",groupNameTitle:"助理护士",colSpan:settingLength}],noEmpNoArr3,
+          //   [{id:"实习护士",groupNameTitle:"实习护士",colSpan:settingLength}],noEmpNoArr4,
+          //   )
           printModal.printArrangeNew(visibleArr,newArr)
         }else {
           printModal.printArrangeDghl(visibleArr)
