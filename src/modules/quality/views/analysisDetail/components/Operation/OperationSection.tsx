@@ -18,6 +18,7 @@ export default observer(function OperationSection(props: Props) {
   const analysisDetailModal = useRef(getModal())
   let data = analysisDetailModal.current.getSectionData(sectionId) 
   let pageInfo: Report= data ? data.pageInfo : {}
+  console.log(pageInfo,99999)
   let value = data.value ? data.value : {}
   let report: Report = (data ? data.report : {}) || {}
   return (
@@ -45,7 +46,7 @@ export default observer(function OperationSection(props: Props) {
       转出病人数:<div>{value.transferredOutPatientCount}</div> 死亡人数:<div>{value.deathToll}</div>介入手术数:<div>{value.interventionalProcedureCount}</div> 外科手术数:<div>{value.numberOfSurgicalOperations}</div>
       </div>
       <div className='context'>科室护理工作量得分：:<div>{value.deptNursingWorkloadScore}</div></div>
-      <div className='context context-title'>(3) (<div>{pageInfo&&pageInfo.reportMonth}</div>月)科室DRGS情况：RW ＞2:<div>{value.rw1}</div>;RW ＜0.5:<div>{value.rw2}</div>;CMI值:<div>{value.cmi}</div>;低风险死亡率:<div>{value.lowRiskMortality}</div>。 </div>
+      <div className='context context-title'>(3) (<div>{pageInfo&&pageInfo.reportMonth&&pageInfo.reportMonth}</div>月)科室DRGS情况：RW ＞2:<div>{value.rw1}</div>;RW ＜0.5:<div>{value.rw2}</div>;CMI值:<div>{value.cmi}</div>;低风险死亡率:<div>{value.lowRiskMortality}</div>。 </div>
       <div className='context context-title'>(4)武汉市出院病人居家服务率：完成居家人数/同期武汉市出院病人数*100%=<div>{value.homeServiceRate}</div></div>
     </Wrapper>
   )
