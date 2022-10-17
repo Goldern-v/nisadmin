@@ -1,8 +1,7 @@
 import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { Button } from 'antd'
-import { getFilePrevImg, getFileType } from 'src/utils/file/file'
-import service from 'src/services/api'
+import { getFilePrevImg } from 'src/utils/file/file'
 import { getFileSize } from 'src/utils/file/file'
 import { trainingInfoReviewService } from './../../api/TrainingInfoReviewService'
 

@@ -99,7 +99,7 @@ export default function PreviewModal(props: Props) {
       } else if (fileType == "img") {
         setFinished(false);
         setFilePath(path);
-      } else if (fileType == "word" || fileType == "excel") {
+      } else if (["excel", "word", "ppt"].includes(fileType) ) {
         setFinished(false);
         setModalLoading(true);
         setNoFile(true);

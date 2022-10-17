@@ -82,8 +82,9 @@ export const getFileType = (filePath: string): FileType => {
     "tiff"
   ];
   let pdfExtList = ["pdf"];
-  let excelExtList = ["xlsx", "xls"];
-  let wordExtList = ["docx", "doc"];
+  let excelExtList = ["xlsx", "xls", 'xlsm', 'xltx', 'xltm', 'xlsb', 'xlam'];
+  let wordExtList = ["docx", "doc", "docm" , "dotx" , "dotm"];
+  let pptExtList = ['ppt', 'pptx', 'pptm', 'ppsx', 'ppsm', 'potx', 'potm', 'ppam']
   let videoExtList = [
     "avi",
     "rmvb",
@@ -108,6 +109,8 @@ export const getFileType = (filePath: string): FileType => {
     return "word";
   } else if (videoExtList.includes(ext)) {
     return "video";
+  } else if (pptExtList.includes(ext)) {
+    return "ppt";
   } else {
     return "other";
   }
