@@ -126,7 +126,7 @@ export default observer(function ArrangeSheet(props: Props) {
           {
             title: "组别",
             dataIndex: "groupNameAndNum",
-            width: 70,
+            width: 120,
             fixed: "left",
             align: "center",
             // render(text: any, record: any) {
@@ -177,7 +177,7 @@ export default observer(function ArrangeSheet(props: Props) {
     {
       title: "姓名",
       dataIndex: "empName",
-      width: 50,
+      width:appStore.HOSPITAL_ID==='whyx'?120: 50,
       fixed: "left",
       align: "center",
       render(text: any, record: any) {
@@ -213,7 +213,7 @@ export default observer(function ArrangeSheet(props: Props) {
           {
             title: "职务",
             dataIndex: "job",
-            width: 70,
+            width: 120,
             fixed: "left",
             align: "center",
           },
