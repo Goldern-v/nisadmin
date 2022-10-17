@@ -180,7 +180,7 @@ class StarRatingReportEditModel {
     }else if (['fqfybjy'].includes(appStore.HOSPITAL_ID)) {
       let res = await starRatingReportService.getReportFQ(query)
       data = res.data
-    } else if (['sdlj'].includes(appStore.HOSPITAL_ID)) {
+    } else if (['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID)) {
       let res = await starRatingReportService.getReportLJ(query)
       data = res.data
     } else {
@@ -192,7 +192,7 @@ class StarRatingReportEditModel {
 
     this.getSectionData("报告名称")!.text = appStore.queryObj.name
 
-    if (['dghl', 'fqfybjy','sdlj'].includes(appStore.HOSPITAL_ID)) {
+    if (['dghl', 'fqfybjy','sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID)) {
       this.allData = data.list1
       this.getSectionData("夜班费上报表")!.list = data.list1
       this.getSectionData("夜班费上报表")!.list2 = {

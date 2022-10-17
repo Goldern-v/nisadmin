@@ -23,6 +23,20 @@ export default class AuthApiService extends BaseApiService {
         window.location.href = '#/resetpassword'
         return
       }
+      else if (appStore.pwdRule?.flag) {
+        const pattern = eval(`/${appStore.pwdRule?.rule}/`)
+        const flag = pattern.test(orgPsd);
+        if (!flag) {
+          message.error(
+            appStore.pwdRule.ruleMsg,
+            2,
+            () => {
+              window.location.href = '#/resetpassword'
+            }
+          )
+          return
+        }
+      }
       let { adminNurse, authToken, user } = res.data
       user = { ...user, wsp: compileStr(password) }
       sessionStorage.setItem('adminNurse', adminNurse)

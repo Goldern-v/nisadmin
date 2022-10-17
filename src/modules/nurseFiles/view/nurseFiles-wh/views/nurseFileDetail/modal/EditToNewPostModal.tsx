@@ -41,7 +41,7 @@ export interface Props extends ModalComponentProps {
 const rules: Rules = {
   oldDeptCode: val => !!val || "原工作科室",
   newDeptCode: val => !!val || "现工作科室",
-  ...appStore.HOSPITAL_ID !== 'sdlj' ? {deptBeDepartment: val => !!val || "现科室隶属部门"} : {},
+  ...!['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID) ? {deptBeDepartment: val => !!val || "现科室隶属部门"} : {},
   transferDate: val => !!val || "请填写转岗时间"
   // awardWinningName: (val) => !!val || '请填写获奖/推广创新项目名称',
   // rank: (val) => !!val || '请填写本人排名',
@@ -149,7 +149,7 @@ export default function EditToNewPostModal(props: Props) {
         onChange={onFieldChange}
       >
         <Row>
-          {appStore.HOSPITAL_ID !== 'sdlj' ? <Col span={24}>
+          {!['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID) ? <Col span={24}>
             <Form.Field label={`原工作科室`} name="oldDeptCode" required>
               <Select placeholder="选择原工作科室">
                 {list.map((item: any) => (
@@ -185,7 +185,7 @@ export default function EditToNewPostModal(props: Props) {
               </Select>
             </Form.Field>
           </Col>
-          {appStore.HOSPITAL_ID !== 'sdlj' && <Col span={24}>
+          {!['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID) && <Col span={24}>
             <Form.Field
               label={`现科室隶属部门`}
               name="deptBeDepartment"

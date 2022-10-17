@@ -9,6 +9,7 @@ import QuestionList from './QuestionList'
 import AwnserInfo from './AwnserInfo'
 import { trainingInfoReviewService } from './../../api/TrainingInfoReviewService'
 import { appStore } from 'src/stores'
+import {quesBankView} from 'src/modules/continuingEdu/modal/stepComponent/考试/modal/QuesBankView';
 export interface Props extends ModalComponentProps {
   id?: number | string, //教学计划ceptId
   teachingMethodName?: string, //教学类型名称
@@ -162,8 +163,9 @@ export default observer(function TestPageModal(props: Props) {
             info={{
               ...questionInfo,
               title,
+              obj,
               teachingMethodName
-            }} 
+            }}
             />
         </div>}
     </Wrapper>

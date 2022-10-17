@@ -33,7 +33,7 @@ class HjExamModal {
   @observable public deptImg = "";
 
   @observable public excelTableLoading = false;
-
+  @observable public  analyCorrectRateData:any ={}
   @computed
   get postStatisticsObj() {
     return {
@@ -75,6 +75,7 @@ class HjExamModal {
       this.analysePageSize = res.data.pageSize;
     });
   }
+  //错题数据初始化
 
   // 报表按成绩
   excelOnloadByScoresSection() {
@@ -106,17 +107,21 @@ class HjExamModal {
       .queryExamResultAnalyseReportByDept(appStore.queryObj.id)
       .then(res => {
         this.excelTableListByDept = res.data;
-        console.log(
-          this.excelTableListByDept,
-          "this.excelTableListByDeptthis.excelTableListByDept"
-        );
       });
+  }
+  /*获取正确率报告*/
+ async analyCorrectRate() {
+   await hjExamApi.getAnalyCorrectRate(appStore.queryObj.id)
+        .then(res => {
+          this.analyCorrectRateData = res.data;
+        });
   }
   excelAll() {
     this.excelOnloadByDept();
     this.excelOnloadByTitle();
     this.excelOnloadByHierarchy();
     this.excelOnloadByScoresSection();
+    this.analyCorrectRate()
   }
   async excelInit() {
     this.excelTableLoading = true;

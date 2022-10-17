@@ -4,12 +4,12 @@ import { Button } from "antd";
 import OnePage from "./page/OnePage";
 import TwoPage from "./page/TwoPage";
 import BaseInfo from "./page/BaseInfo";
-import LevelChange from "./page/LevelChange";
-import ContinuingEducation from "./page/ContinuingEducation";
-import Writings from "./page/Writings";
-import Awards from "./page/Awards";
-import BadEvent from "./page/BadEvent";
-import ExaminationResults from "./page/ExaminationResults";
+// import LevelChange from "./page/LevelChange";
+// import ContinuingEducation from "./page/ContinuingEducation";
+// import Writings from "./page/Writings";
+// import Awards from "./page/Awards";
+// import BadEvent from "./page/BadEvent";
+// import ExaminationResults from "./page/ExaminationResults";
 import ThreeBases from "./page/ThreeBases";
 import WorkRegistrationForm from "./page/WorkRegistrationForm";
 import ManualInstructions from "./page/ManualInstructions";
@@ -165,7 +165,7 @@ export default function ExportContinuingEduFile(props: Props) {
           <PrintPage>
             <OnePage baseInfo={baseInfo} />
           </PrintPage>
-          {appStore.HOSPITAL_ID == "hj" && (
+          {["hj", 'nfsd'].includes(appStore.HOSPITAL_ID) && (
             <PrintPage>
               <ManualInstructions />
             </PrintPage>
@@ -176,7 +176,7 @@ export default function ExportContinuingEduFile(props: Props) {
           {/* <PrintPage pageIndex={2}>
             <TwoPage />
           </PrintPage> */}
-          {appStore.HOSPITAL_ID == "hj" ? (
+          {["hj", 'nfsd'].includes(appStore.HOSPITAL_ID) ? (
             <PrintPage pageIndex={1}>
               <BaseInfoHj baseInfo={baseInfo} />
             </PrintPage>
@@ -225,7 +225,7 @@ export default function ExportContinuingEduFile(props: Props) {
           <PrintPage pageIndex={9}>
             <ExaminationResults yearCheckList={yearCheckList} />
           </PrintPage> */}
-          {appStore.HOSPITAL_ID !== "hj" ? (
+          {!["hj", 'nfsd'].includes(appStore.HOSPITAL_ID) ? (
             <PrintPage pageIndex={10}>
               <ThreeBases threeBaseList={threeBaseList} />
             </PrintPage>

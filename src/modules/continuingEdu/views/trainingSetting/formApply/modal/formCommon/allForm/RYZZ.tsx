@@ -4,6 +4,7 @@ import { observer } from "mobx-react-lite";
 import { Select, Input, Button, Radio } from "antd";
 import { formApplyModal } from "../../../FormApplyModal"; // 仓库数据
 import { Wrapper, SpanMiddle } from "../common";
+import { appStore} from "src/stores";
 
 interface Props {}
 
@@ -28,12 +29,14 @@ export default observer(function RYZZ(props: Props) {
                 onChange={(e: any) => (RYZZLContent.f00005 = e.target.value)}
               />
             </td>
-            <td>年度</td>
+            <td>{appStore.HOSPITAL_ID==='hj'?'申请会诊专科':'年度'}</td>
             <td>
-              <Input
-                value={RYZZLContent.f00079}
-                onChange={(e: any) => (RYZZLContent.f00079 = e.target.value)}
-              />
+              {appStore.HOSPITAL_ID==='hj'?<Input
+                  value={RYZZLContent.f00165}
+                  onChange={(e: any) => (RYZZLContent.f00165 = e.target.value)}/>:<Input
+                  value={RYZZLContent.f00079}
+                  onChange={(e: any) => (RYZZLContent.f00079 = e.target.value)}
+              />}
             </td>
           </tr>
           <tr>
@@ -53,12 +56,14 @@ export default observer(function RYZZ(props: Props) {
             </td>
           </tr>
           <tr>
-            <td>获取职称年限</td>
+            <td>{appStore.HOSPITAL_ID==='hj'?'层级':'获取职称年限'}</td>
             <td>
-              <Input
-                value={RYZZLContent.f00080}
-                onChange={(e: any) => (RYZZLContent.f00080 = e.target.value)}
-              />
+              {appStore.HOSPITAL_ID==='hj'?<Input
+                    value={RYZZLContent.f00014}
+                    onChange={(e: any) => (RYZZLContent.f00014 = e.target.value)}/>: <Input
+                    value={RYZZLContent.f00080}
+                    onChange={(e: any) => (RYZZLContent.f00080 = e.target.value)}
+                />}
             </td>
             <td>从事本专业工作年限</td>
             <td>

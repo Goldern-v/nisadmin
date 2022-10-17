@@ -8,7 +8,7 @@ import 满意度问卷调查 from "./满意度问卷调查";
 import AnwserResultPannel from "./AnwserResultPannel";
 import { trainingResultService } from "./../../api/TrainingResultService";
 import { message } from "antd/es";
-import { appStore } from "src/stores"
+import { appStore,authStore } from "src/stores"
 import { useRef } from "src/types/react";
 import printing from "printing";
 import PrintPageNys from "./PrintPageNys";
@@ -45,7 +45,7 @@ export default observer(function AnswerSheetModal(props: Props) {
   const [questionList, setQuestionList] = useState([] as any[]);
   const [loading, setLoading] = useState(false);
   const printRef: any = useRef(null);
-
+const {user} =authStore
   const wendaQuestionList = questionList.filter(
     (question: any) => question.questionType == 4
   );
@@ -162,7 +162,7 @@ export default observer(function AnswerSheetModal(props: Props) {
   const handleExport = () => {
     const params = {
       cetpId,
-      empNo
+      empNo:empNo ? empNo:user?.empNo
     }
     trainingResultService.handleExport(params).then(res => {
       fileDownload(res)
@@ -181,11 +181,11 @@ export default observer(function AnswerSheetModal(props: Props) {
                 nys: <Button onClick={handlePrint} type='primary'>打印试卷</Button>,
                 hj: <React.Fragment>
                   <Button onClick={handlePrint} type='primary'>打印试卷</Button>
-                  <Button onClick={handleExport} type='primary'>导出</Button>
+                  {/*<Button onClick={handleExport} type='primary'>导出</Button>*/}
                 </React.Fragment>,
                 gxjb: <React.Fragment>
                     <Button onClick={handlePrint} type='primary'>打印试卷</Button>
-                    <Button onClick={handleExport} type='primary'>导出</Button>
+                    {/*<Button onClick={handleExport} type='primary'>导出</Button>*/}
                   </React.Fragment>,
                 default: <span/>
               }

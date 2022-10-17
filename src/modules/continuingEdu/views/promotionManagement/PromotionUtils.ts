@@ -35,9 +35,10 @@ class PromotionPost {
   @computed
   get postObj() {
     return {
+      year:moment(this.year).format("YYYY"),
       deptCode:this.deptCode,//科室
       promotionLevel:this.promotionLevel,//科室
-      courseName:this.keyWord, //关键字
+      keyWord:this.keyWord, //关键字
       pageIndex: this.pageIndex, //页码
       pageSize: this.pageSize, //每页大小
       total: this.total, //每页大小

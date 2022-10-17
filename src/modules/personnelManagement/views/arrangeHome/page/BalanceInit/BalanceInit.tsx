@@ -78,7 +78,7 @@ export default observer(function FollowUpRecord() {
     },
     ...appStore.hisMatch({
       map: {
-        sdlj: [
+        'sdlj,nfsd': [
           {
             title: "例假结余（天）",
             dataIndex: "periodHourNow",

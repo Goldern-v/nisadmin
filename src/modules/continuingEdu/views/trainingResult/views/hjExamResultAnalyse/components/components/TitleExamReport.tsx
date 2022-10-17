@@ -52,7 +52,7 @@ export default observer(function TitleExamReport() {
       width: 80,
       align: 'center',
       render: (text: any) => {
-        return <span>{text * 100}%</span>
+        return <span>{(text * 100).toFixed(2)}%</span>
       }
     },
     {
@@ -61,7 +61,7 @@ export default observer(function TitleExamReport() {
       width: 80,
       align: 'center',
       render: (text: any) => {
-        return <span>{text * 100}%</span>
+        return <span>{(text * 100).toFixed(2)}%</span>
       }
     },
     {
@@ -70,7 +70,7 @@ export default observer(function TitleExamReport() {
       width: 100,
       align: 'center',
       render: (text: any) => {
-        return <span>{text * 100}%</span>
+        return <span>{(text * 100).toFixed(2)}%</span>
       }
     },
     {

@@ -29,12 +29,17 @@ export default observer(function AnalysisDetail() {
   let report: Report = instance.getDataInAllData('pageInfo')
   const onPrint = (isPrint: boolean) => {
     let printFun = isPrint ? printing : printing.preview
+    // let printFun = printing.preview
     printFun(pageRef.current, {
       injectGlobalCss: true,
       scanStyles: false,
       css: `
         @page {
           margin: 0mm;
+          padding: 10mm 0mm;
+        }
+        .ant-spin-nested-loading {
+          height: auto !important;
         }
         .ant-btn {
           display: none;

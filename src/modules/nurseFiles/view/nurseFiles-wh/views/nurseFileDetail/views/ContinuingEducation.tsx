@@ -7,14 +7,14 @@ import { appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import { ColumnProps } from 'antd/lib/table'
 import createModal from 'src/libs/createModal'
-import { globalModal } from 'src/global/globalModal'
-import { authStore } from 'src/stores'
-import limitUtils from '../utils/limit'
+// import { globalModal } from 'src/global/globalModal'
+// import { authStore } from 'src/stores'
+// import limitUtils from '../utils/limit'
 import Zimage from 'src/components/Zimage'
-import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
+// import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
 import EditContinuingEducationModal from '../modal/EditContinuingEducationModal'
 import { nurseFilesService } from '../../../services/NurseFilesService'
-import { openAuditModal } from '../config/auditModalConfig'
+// import { openAuditModal } from '../config/auditModalConfig'
 import { isSelf,editFlag } from './BaseInfo'
 import Do from '../components/Do'
 export interface Props extends RouteComponentProps {}
@@ -136,8 +136,10 @@ export default observer(function PersonWinning() {
   ]
   let columns: ColumnProps<any>[]
   switch(appStore.HOSPITAL_ID) {
-    case 'sdlj': columns = columnsSDLJ 
-    break;
+    case 'sdlj':
+    case 'nfsd':
+      columns = columnsSDLJ 
+      break;
     default: columns = columnsDefault
   }
 

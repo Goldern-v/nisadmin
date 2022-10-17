@@ -177,7 +177,11 @@ const QualityControlRecordEdit = observer(function QualityControlRecordEdit() {
       }
     }
     qcModel.formSubmit({ empNo: "", password: "" }, () => {
-      message.success("提交成功", 2, () => history.goBack());
+      qcModel.loading = true
+      message.success("提交成功", 2, () => {
+        qcModel.loading = false
+        history.goBack()
+      });
     });
     // globalModal
     //   .signModal

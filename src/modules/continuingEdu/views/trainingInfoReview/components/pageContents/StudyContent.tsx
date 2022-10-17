@@ -10,6 +10,7 @@ import OperateSetting from '../pageItems/OperateSetting'
 import OuterLink from '../pageItems/OuterLink'
 import Questionnaire from '../pageItems/Questionnaire'
 import StudyNote from '../pageItems/studyNote'
+import {scheduleStore } from 'src/stores'
 
 export interface Props {
   data: any
@@ -44,17 +45,22 @@ export default function StudyContent(props: Props) {
         return <FileUploadReview info={data}/>
     }
   }
+  useEffect(()=>{
+    scheduleStore.getPrintHtml(document.getElementById('print-detail-container') as HTMLDivElement)
+  },[data.title])
   return <Wrapper>
-    <div className="main-title">
-      {data.title && <span>《{data.title}》</span>}
-    </div>
-    <BaseSetting info={data}/>
-    <Participation info={data}/>
-    {/* <FileUploadReview info={data} />
+    <div id='print-detail-container'>
+      <div className="main-title">
+        {data.title && <span>《{data.title}》</span>}
+      </div>
+      <BaseSetting info={data}/>
+      <Participation info={data}/>
+      {/* <FileUploadReview info={data} />
     <TestInfo />
     <PrecticeSetting />
     <OperateSetting /> */}
-    {otherContent()}
+      {otherContent()}
+    </div>
   </Wrapper>
 }
 const Wrapper = styled.div``

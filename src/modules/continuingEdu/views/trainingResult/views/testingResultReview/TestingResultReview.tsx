@@ -299,7 +299,7 @@ export default observer(function TestingResultReview() {
     console.log(appStore)
     return appStore.hisMatch({
       map: {
-        'hj,nys,gxjb,whyx': (
+        'hj,nys,gxjb,whyx,sdlj': (
           <BaseTabs
             config={
               [

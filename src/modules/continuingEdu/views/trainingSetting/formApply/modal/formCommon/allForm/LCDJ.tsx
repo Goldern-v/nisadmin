@@ -4,9 +4,8 @@ import { Input, Radio } from "antd";
 import { observer } from "mobx-react-lite";
 import { formApplyModal } from "../../../FormApplyModal"; // 仓库数据
 import { Wrapper, SpanMiddle, Span } from "../common";
-
+import { appStore} from "src/stores";
 interface Props {}
-
 export default observer(function LCDJ(props: Props) {
   const lCDJContent = formApplyModal.LCDJFormContent;
 
@@ -212,7 +211,7 @@ export default observer(function LCDJ(props: Props) {
             </td>
           </tr>
           <tr style={{ height: "80px" }}>
-            <td colSpan={2}>准入考评小组意见</td>
+            <td colSpan={2}>{appStore.HOSPITAL_ID==='hj'?'护理教学管理小组意见':'准入考评小组意见'} </td>
             <td colSpan={6}>
               <div className="vailgnTop godie">
                 <Input.TextArea disabled value={lCDJContent.f00030} />

@@ -107,7 +107,7 @@ export default observer(function AuditsTableDHSZ(props: Props) {
           },
         });
       })
-     
+
     }
   };
 

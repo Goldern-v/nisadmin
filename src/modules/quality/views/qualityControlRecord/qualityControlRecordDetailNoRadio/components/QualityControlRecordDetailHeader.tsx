@@ -210,8 +210,7 @@ export default function qualityControlRecordDetailHeader(props: Props) {
                   ? "/qcThree"
                   : master.qcLevel == "2"
                   ? "/qcTwo"
-                  : appStore.HOSPITAL_ID == "hj" ||
-                    appStore.HOSPITAL_ID == "gxjb"
+                  : ["hj", "gxjb", 'nfsd'].includes(appStore.HOSPITAL_ID)
                   ? "/qcOneHj"
                   : appStore.HOSPITAL_ID == "nys"
                   ? "/qcOneNys"

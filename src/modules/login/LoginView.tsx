@@ -1,8 +1,7 @@
-// import * as React from 'react'
 import React, { useState, useEffect, useRef, useLayoutEffect } from "react";
 import styled from "styled-components";
 import { RouteComponentProps } from "react-router";
-import loginViewModel from "./LoginViewModel";
+// import loginViewModel from "./LoginViewModel";
 
 import service from "src/services/api";
 import { appStore, scheduleStore } from "src/stores";
@@ -37,7 +36,7 @@ export default withRouter(function LoginView(props: Props) {
     if (localStorage.lastLoginUserName) {
       setUsername(localStorage.lastLoginUserName);
     }
-
+    setHospitalReg()
     autoLogin()
   }, []);
 
@@ -182,6 +181,20 @@ export default withRouter(function LoginView(props: Props) {
     let titlePrefix = appStore.hospitalOtherName ? appStore.hospitalOtherName : "";
     return `${titlePrefix}护理管理系统`
   }
+  //获取正则
+  const getPasswordRule = () => {
+    service.authApiService.passwordRule().then((res: any) => {
+      if (res.code == 200) {
+        appStore.pwdRule = res.data
+      }
+    })
+  }
+  // 设置正则规则
+  const setHospitalReg = () => {
+    if (appStore.HOSPITAL_ID === 'gzsrm') {
+      getPasswordRule()
+    }
+  }
 
   return (
     <Wrapper
@@ -269,7 +282,7 @@ export default withRouter(function LoginView(props: Props) {
             </div>
             {appStore.hisMatch({
               map: {
-                "whyx,sdlj,dghl": <div className="resetpassword CheckItem" onClick={() => {
+                "whyx,sdlj,dghl,gzsrm": <div className="resetpassword CheckItem" onClick={() => {
                   history.push('/resetpassword')
                 }}>
                   <span>重置密码</span>
