@@ -477,6 +477,8 @@ export default function SumMonth(props: Props) {
 										tempData = data2
 										setData2([...tempData])
 									}}
+									step='0'
+							onKeyUp={(e) => { sumData.focusNextIpt2(e) }}
 								/>
 							)
 						}
@@ -514,6 +516,8 @@ export default function SumMonth(props: Props) {
 										tempData = data2
 										setData2([...tempData])
 									}}
+									step='0'
+				onKeyUp={(e) => { sumData.focusNextIpt2(e) }}
 								/>
 							)
 						}
@@ -590,6 +594,8 @@ export default function SumMonth(props: Props) {
 					tempData = data2
 					setData2([...tempData])
 				}}
+				step='0'
+				onKeyUp={(e) => { sumData.focusNextIpt(e) }}
 			/>
 		)
 	}
@@ -638,7 +644,7 @@ export default function SumMonth(props: Props) {
 		}else{
 			params.master = {...sumData.postObj}
 		}
-		console.log(params)
+		// console.log(params)
 		// return 
 		clinicalApi.saveTableData(params).then(res=>{
 			setTableLoading(false)

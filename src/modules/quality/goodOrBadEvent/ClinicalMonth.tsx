@@ -207,6 +207,7 @@ export default function ClinicalMonth(props: Props) {
 									// console.log(data3)
 									// clinicalData.tableList=[...tempData]
 								}}
+								step='0'
 								onKeyUp={(e)=>{clinicalData.focusNextIpt(e)}}
 							/>
 						);

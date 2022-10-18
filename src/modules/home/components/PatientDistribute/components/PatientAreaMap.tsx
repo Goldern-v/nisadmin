@@ -1,11 +1,11 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Chart, Tooltip, Axis, Legend, Pie, Coord } from 'viser-react'
-import HomeApi from 'src/modules/home/api/HomeApi.ts'
+import HomeApi from 'src/modules/home/api/HomeApi'
 import { authStore } from 'src/stores/index'
 import moment from 'moment'
 import { observer } from 'mobx-react-lite'
-import HomeViewModel from 'src/modules/home/HomeViewModel.ts'
+import HomeViewModel from 'src/modules/home/HomeViewModel'
 moment.locale('zh-cn')
 export interface Props {
   patientNumSumProp: number
@@ -34,13 +34,14 @@ export default observer(function PatientAreaMap (props: Props) {
       item: byBistrict[0] && byBistrict[0].patientType,
       count: byBistrict[0] && parseInt(byBistrict[0].patientNum, 10) / sumerProp
     },
-    {
-      item: byBistrict[1] && byBistrict[1].patientType,
-      count: byBistrict[1] && parseInt(byBistrict[1].patientNum, 10) / sumerProp
-    },
+
     {
       item: byBistrict[2] && byBistrict[2].patientType,
       count: byBistrict[2] && parseInt(byBistrict[2].patientNum, 10) / sumerProp
+    },
+    {
+      item: byBistrict[1] && byBistrict[1].patientType,
+      count: byBistrict[1] && parseInt(byBistrict[1].patientNum, 10) / sumerProp
     }
   ]
 
@@ -60,6 +61,7 @@ export default observer(function PatientAreaMap (props: Props) {
     as: 'percent'
   })
   const data = dv.rows
+  console.log("data===",data);
   return (
     <div>
       <ChartCon>

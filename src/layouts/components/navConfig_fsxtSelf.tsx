@@ -75,9 +75,16 @@ const baseConfig: navConfigItem[] = [
         icon: require("../images/menu-icon/护理查房@2x.png")
       },
       {
-        name: "优良事件",
+        // 优良事件
+        name: "护理质量指标",
         path: "/goodOrBadRouter",
         icon: require("../images/menu-icon/病区登记本@2x.png")
+      },
+      {
+        name: "专科护理质量指标",
+        path: "/specialNurseRouter",
+        icon: require("../images/menu-icon/病区登记本@2x.png"),
+        hidden:!authStore.isSpecialMenu
       }
     ]
   },
