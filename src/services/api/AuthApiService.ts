@@ -9,6 +9,11 @@ import { autoLoginTnNisInfoBe } from 'src/utils/toNisInfo/toNisInfo'
 
 import BaseApiService from './BaseApiService'
 import { compileStr } from 'src/utils/encode/encode';
+import qs from 'qs'
+export interface DictItemIn {
+  dictCode: string
+  itemCode: string
+}
 
 export default class AuthApiService extends BaseApiService {
   public login(username: string, password: string, code: string, repaint: any,orgPsd?:string) {
@@ -137,5 +142,13 @@ export default class AuthApiService extends BaseApiService {
     authStore.delUser()
     statisticsViewModal.hadData = false
     window.location.href = '#/login'
+  }
+  /**
+   * 获取配置项字典
+   * @param params DictItemIn
+   * @returns 
+   */
+  public getDictItem(params: DictItemIn) {
+    return httpLoginToken.get(`/dict/common/getDictItem?${qs.stringify(params)}`)
   }
 }

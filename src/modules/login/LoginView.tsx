@@ -29,6 +29,7 @@ export default withRouter(function LoginView(props: Props) {
   const [showVerification, setShowVerification] = useState(false);
 
   const [isSavePassword, setIsSavePassword] = useState(false);
+  const [isMd5, setIsMd5] = useState(false)
   let userRef: any = useRef<HTMLInputElement>();
   let passwordRef: any = useRef<HTMLInputElement>();
 
@@ -37,6 +38,7 @@ export default withRouter(function LoginView(props: Props) {
       setUsername(localStorage.lastLoginUserName);
     }
     setHospitalReg()
+    setMd5Flag()
     autoLogin()
   }, []);
 
@@ -83,7 +85,10 @@ export default withRouter(function LoginView(props: Props) {
       message.warning("请填写验证码！")
       return;
     }
-    (!appStore.isDev) && (["fssdy", "sdlj","dghl"].includes(appStore.HOSPITAL_ID)) && (_password = md5(_password));
+    // (!appStore.isDev) && (["fssdy", "sdlj","dghl"].includes(appStore.HOSPITAL_ID)) && (_password = md5(_password));
+    if (isMd5) {
+      _password = md5(_password);
+    }
     service.authApiService
       .login(_username, _password, verificationCode, "",options?.password || password)
       .then(() => {
@@ -145,11 +150,11 @@ export default withRouter(function LoginView(props: Props) {
     }
   }
 
-  const userEnter = (e: any) => {
-    if (e.keyCode === 13) {
-      passwordRef.current.focus();
-    }
-  };
+  // const userEnter = (e: any) => {
+  //   if (e.keyCode === 13) {
+  //     passwordRef.current.focus();
+  //   }
+  // };
   const passwordEnter = (e: any) => {
     if (e.keyCode === 13) {
       login();
@@ -194,6 +199,17 @@ export default withRouter(function LoginView(props: Props) {
     if (appStore.HOSPITAL_ID === 'gzsrm') {
       getPasswordRule()
     }
+  }
+  // 是否需要MD5
+  const setMd5Flag = () => {
+    service.authApiService.getDictItem({
+      dictCode: 'propertiesConfig',
+      itemCode: 'is_md5_password',
+    }).then((res: any) => {
+      if (res.code === '200') {
+        setIsMd5(res.data === 'true')
+      }
+    })
   }
 
   return (
