@@ -19,22 +19,33 @@ class DataClinialMonth {
 	}
 
 	focusNextIpt(e?: any) {
-		if ((e.keyCode && e.keyCode == 13)) {
 			let baseTableEl = document.getElementById('baseTable')
 			if (baseTableEl) {
 				let iptList = baseTableEl.querySelectorAll('input:enabled,textarea:enabled') as any
-
-				for (let i = 0; i < iptList.length; i++) {
-					let el = iptList[i]
-					if (el == (e.target)) {
-						if (iptList[i + this.currentMonthDays]) {
-							iptList[i + this.currentMonthDays].focus && iptList[i + this.currentMonthDays].focus()
-							iptList[i + this.currentMonthDays].click && iptList[i + this.currentMonthDays].click()
+				if ((e.keyCode && (e.keyCode == 13 || e.keyCode == 37 || e.keyCode == 38 || e.keyCode == 39 || e.keyCode == 40))) {
+					for (let i = 0; i < iptList.length; i++) {
+						let el = iptList[i]
+						if (el == (e.target)) {
+							if ((e.keyCode && e.keyCode == 37) && iptList[i - 1]){
+								// ArrowLeft
+								iptList[i - 1].focus && iptList[i - 1].focus()
+							}else if ((e.keyCode && e.keyCode == 39) && iptList[i + 1]){
+								// ArrowRight
+								iptList[i + 1].focus && iptList[i + 1].focus()
+								// iptList[i + 1].click && iptList[i + 1].click()
+							}else if (iptList[i + this.currentMonthDays] && (e.keyCode == 13 || e.keyCode==40)) {
+								// down enter
+								iptList[i + this.currentMonthDays].focus && iptList[i + this.currentMonthDays].focus()
+								// iptList[i + this.currentMonthDays].click && iptList[i + this.currentMonthDays].click()
+							}else if (iptList[i - this.currentMonthDays] && e.keyCode == 38) {
+								// up
+								iptList[i - this.currentMonthDays].focus && iptList[i - this.currentMonthDays].focus()
+								// iptList[i - this.currentMonthDays].click && iptList[i - this.currentMonthDays].click()
+							}
+							break
 						}
-						break
 					}
 				}
-			}
 		}
 	}
 

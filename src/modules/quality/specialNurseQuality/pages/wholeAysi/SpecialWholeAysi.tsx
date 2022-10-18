@@ -156,7 +156,9 @@ export default function SpecialWholeAysi(props: Props) {
 
 	/**获取特殊科室 */
 	const getDeptList = ()=>{
+		setPageLoading(true)
 		apiSpecialNurse.getSpecialDeptList({type:'qualityReport'}).then(res=>{
+			setPageLoading(false)
 			if(res.code == '200'){
 				
 				// 新建时没有全部这个选项
@@ -171,7 +173,7 @@ export default function SpecialWholeAysi(props: Props) {
 				getTableList()
 			}
 		}).catch(err=>{
-			
+			setPageLoading(false)
 		})
 	}
 

@@ -298,7 +298,7 @@ export default observer(function SpecialSumMonth(props: Props) {
 					dataIndex: 'totalY',
 					width: 40,
 					render(text: any, record: any, index: number) {
-						if (index > data2.length - 3) {
+						if (record.belongWeek=='每月' || record.belongWeek=='半年') {
 							return (
 								<InputNumber
 									className='bcy-input-number'
@@ -308,6 +308,7 @@ export default observer(function SpecialSumMonth(props: Props) {
 									onChange={value => {
 										record['totalY'] = value
 									}}
+									step='0'
 									onBlur={() => {
 										// 计算及格率
 										if (record.totalY > 0 && record.totalN > 0) {
@@ -322,6 +323,7 @@ export default observer(function SpecialSumMonth(props: Props) {
 										tempData = data2
 										setData2([...tempData])
 									}}
+									onKeyUp={(e) => { datasSumMonth.focusNextIpt2(e) }}
 								/>
 							)
 						}
@@ -335,9 +337,10 @@ export default observer(function SpecialSumMonth(props: Props) {
 					dataIndex: 'totalN',
 					width: 40,
 					render(text: any, record: any, index: number) {
-						if (index > data2.length - 3) {
+						if (record.belongWeek=='每月' || record.belongWeek=='半年') {
 							return (
 								<InputNumber
+								step='0'
 									className='bcy-input-number'
 									min={0} max={100000}
 									size="small"
@@ -359,6 +362,7 @@ export default observer(function SpecialSumMonth(props: Props) {
 										tempData = data2
 										setData2([...tempData])
 									}}
+									onKeyUp={(e) => { datasSumMonth.focusNextIpt2(e) }}
 								/>
 							)
 						}
@@ -409,6 +413,7 @@ export default observer(function SpecialSumMonth(props: Props) {
 				onChange={value => {
 					record[key] = value
 				}}
+				step='0'
 				onBlur={() => {
 					let total = 0
 					// let totalN = 0
@@ -440,6 +445,7 @@ export default observer(function SpecialSumMonth(props: Props) {
 					tempData = data2
 					setData2([...tempData])
 				}}
+				onKeyUp={(e) => { datasSumMonth.focusNextIpt(e) }}
 			/>
 		)
 	}
@@ -461,6 +467,7 @@ export default observer(function SpecialSumMonth(props: Props) {
 
 	/**获取特殊科室 */
 	const getDeptList = ()=>{
+		setTableLoading(true)
 		apiSpecialNurse.getSpecialDeptList({type:'manageIndicators'}).then(res=>{
 			if(res.code == '200'){
 				setdeucOption(res.data.deptList || [])
@@ -470,7 +477,7 @@ export default observer(function SpecialSumMonth(props: Props) {
 				getTableList()
 			}
 		}).catch(err=>{
-			
+			setTableLoading(false)
 		})
 	}
 
