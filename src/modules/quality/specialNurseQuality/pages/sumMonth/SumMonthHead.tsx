@@ -3,36 +3,29 @@ import { observer } from "mobx-react-lite";
 import React, { useState, useEffect } from "react";
 import { Select, Input, Button, DatePicker, Modal, message } from "antd";
 import { PageTitle } from "src/components/common";
-import { appStore, authStore } from 'src/stores'
-import moment, { duration } from 'moment'
-import { clinicalApi } from "./ClinicalApi";
-import { clinicalData } from "./ClinicalData";
-import { values } from "mobx";
-import { quarterList } from 'src/enums/date'
-import { fileDownload } from "src/utils/file/file";
-import { keyCommandHandlers } from './../views/analysis/editor/configs/handlers';
+// import { clinicalApi } from "../ClinicalApi";
+// import { sumData } from "../tsData/SumData";
 const Option = Select.Option;
 
 interface Props {
 	title: string,
-	tableLoading:Boolean,
-	setTableLoading:Function,
-	initTableData:Function,
-	saveTableData:Function,
+	// tableLoading: Boolean,
+	// setTableLoading: Function,
+	// initTableData: Function,
+	// saveTable: Function,
+	// onPrint: Function,
 }
 interface IDeucOption {
 	value: string;
 	item: string;
 }
-export default observer(function ClinicalHeaderByVicky(props: Props) {
+export default observer(function SumMonthHead(props: Props) {
 	const [deucOption, setdeucOption] = useState([]); // 科室信息
 	const [yearPickShow, setYearPickShow] = useState(false);
 
-	const pathname = appStore.location?.pathname
-	const {tableLoading,setTableLoading,initTableData,saveTableData} = props
+	// const pathname = appStore.location?.pathname
+	// const { tableLoading, setTableLoading, initTableData, saveTable, onPrint } = props
 
-
-	// console.log(appStore.location.pathname)
 	const getMonths = () => {
 		let options = []
 		for (let i = 1; i <= 12; i++) {
@@ -42,64 +35,51 @@ export default observer(function ClinicalHeaderByVicky(props: Props) {
 		return options
 	}
 
-	useEffect(() => {
-		setTableLoading(true)
-		// 获取科室
-		clinicalApi.getnursingAll().then((res) => {
-			let deptListall = [];
-			deptListall = res.data.deptList
-			clinicalData.deptCode = res.data.defaultDept
-			clinicalData.deptName = res.data.deptName
-			setdeucOption(deptListall)
-			// clinicalData.init()
-			// 查询数据
-			onload()
-		}).catch((err) => {
-			console.log(err);
-		})
+	// useEffect(() => {
+	// 	setTableLoading(true)
+	// 	// 获取科室
+	// 	clinicalApi.getnursingAll().then((res) => {
+	// 		let deptListall = [];
+	// 		deptListall = res.data.deptList
+	// 		sumData.deptCode = res.data.defaultDept
+	// 		sumData.deptName = res.data.deptName
+	// 		setdeucOption(deptListall)
+	// 		setTableLoading(false)
+	// 		// 查询数据
+	// 		onload()
+	// 	}).catch((err) => {
+	// 		console.log(err);
+	// 	})
 
-	}, [])
+	// }, [])
 
 	/** 获取表格数据 */
-	const onload=()=> {
-		if(clinicalData.postObj.deptCode=='') return
-		clinicalApi.getMonthTable(clinicalData.postObj).then(res => {
-			let valueList = res.data.valueList || []
-			
-			if(valueList.length>0){
-				
-				initTableData(valueList,res.data)
-			}
-		  // console.log(res.data)
-		  setTableLoading(false)
+	const onload = () => {
+		// setTableLoading(true)
+		// clinicalApi.getTableData(sumData.postObj).then(res => {
+		// 	let valueList = res.data.rowList || []
+		// 	initTableData(valueList, res.data.master || {})
+		// 	setTableLoading(false)
 
-		});
-	  }
-
-	  useEffect(() => {
-		// console.log('数据变化了')
-		setTableLoading(true)
-		onload()
-	  }, [clinicalData.postObj])
-	  
+		// }).catch(err => {
+		// 	setTableLoading(false)
+		// });
+	}
 
 	// 查询
 	const handelInquire = () => {
-		setTableLoading(true)
-		onload()
+		// onload()
 	}
 
 	// 保存
-	const handlerSave=()=>{
-		saveTableData()
+	const handelSave = () => {
+		// saveTable()
 	}
 
-	// 导出
-	const handlerExport = ()=>{
-		clinicalApi.exportMonthTable(clinicalData.postObj).then(res => {
-        fileDownload(res);
-      });
+	const onPrintHead = (isPrint: boolean) => {
+		// onPrint(isPrint)
 	}
+
 
 	return (
 		<Wrapper>
@@ -116,66 +96,40 @@ export default observer(function ClinicalHeaderByVicky(props: Props) {
 							setYearPickShow(status)
 						}}
 						onPanelChange={(value, mode) => {
-							// console.log(value, mode)
-							clinicalData.year = value
+							// sumData.year = value
+							// onload()
 							setYearPickShow(false)
 						}}
 						mode="year"
 						style={{ width: 120 }}
-						value={clinicalData.year}
+						// value={sumData.year}
 						allowClear={true}
 						placeholder='选择年份'
-						format="YYYY"
-					// onChange={date => {
-					// 	clinicalData.year = date
-
-					// }} 
+						format="YYYY" 
 					/>
 				</>
 				<>
 					<span>月份：</span>
 					<Select className="mr-15"
 						style={{ width: 120 }}
-						value={clinicalData.month}
+						// value={sumData.month}
 						onChange={(val: number) => {
-							clinicalData.month = val
-							// console.log('yuefen', val)
-							// clinicalData.onload()
+							// sumData.month = val
+							// onload()
 						}}
 					>
 						{getMonths()}
 					</Select>
 				</>
-				{pathname.indexOf('quarter')>-1 && 
-					<>
-						<span>季度：</span>
-						<Select className="mr-15"
-							style={{ width: 120 }}
-							value={clinicalData.quarter}
-							onChange={(val: any) => {
-								clinicalData.quarter = val
-								// console.log('quarter', val)
-								// clinicalData.onload()
-							}}
-						>
-							{
-								quarterList.map((v:any, i:number) => (
-									<Option key={i} value={i + 1}>{v}</Option>
-								))
-							}
-						</Select>
-					</>
-				}
 				<span>科室：</span>
 				<Select className="mr-15"
-					style={{ width: 180 }}
 					labelInValue
-					value={{key:clinicalData.deptCode}}
+					style={{ width: 180 }}
+					// value={{ key: sumData.deptCode }}
 					onChange={(val: any) => {
-						// console.log(val)
-						clinicalData.deptCode = val.key
-						clinicalData.deptName = val.label
-						// clinicalData.onload()
+						// sumData.deptCode = val.key
+						// sumData.deptName = val.label
+						// onload()
 					}}
 				>
 					{deucOption.map((item: any) => {
@@ -190,17 +144,17 @@ export default observer(function ClinicalHeaderByVicky(props: Props) {
 					查询
 				</Button>
 				<Button
-					type="primary"
 					className="span"
-					onClick={handlerSave}
+					type="primary"
+					onClick={handelSave}
 				>
 					保存
 				</Button>
 				<Button
 					className="span"
-					onClick={handlerExport}
+					onClick={() => onPrintHead(true)}
 				>
-					导出
+					打印
 				</Button>
 			</RightIcon>
 		</Wrapper>
@@ -213,6 +167,7 @@ const Wrapper = styled.div`
   font-size: 13px;
   color: #333;
   padding: 12px 15px 0 15px;
+  box-sizing: border-box;
   .mr-15{
     margin-right: 15px;
   }
@@ -225,7 +180,7 @@ const RightIcon = styled.div`
   padding: 0 0 0 15px;
   float: right;
   .span {
-    font-size:13px;
+    font-size:16px;
     margin-left: 15px;
   }
 `;

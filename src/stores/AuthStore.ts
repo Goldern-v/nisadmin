@@ -113,6 +113,34 @@ export default class AuthStore {
     }
   }
 
+  /**是否有专科护理质量--佛山杏坛 */
+  public get isSpecialMenu(){
+    let specialMenuStr = sessionStorage.getItem('specialmenu')
+    try{
+      if(!specialMenuStr){
+        return false
+      }
+      let specialMenu = JSON.parse(specialMenuStr || '')
+      if(specialMenu.clinicalIndicators || specialMenu.manageIndicators || specialMenu.qualityReport) return true
+    }catch(err){
+      return false
+    }
+  }
+
+  /**菜单对象 专科护理质量--佛山杏坛 */
+  public get specialMenuObj(){
+    let specialMenuStr = sessionStorage.getItem('specialmenu')
+    try{
+      if(!specialMenuStr){
+        return false
+      }
+      let specialMenu = JSON.parse(specialMenuStr || '')
+      return specialMenu
+    }catch(err){
+      return false
+    }
+  }
+
 
   /** 是否是肖瑞芬护士长 */
   public get isXiaoRuiFen() {

@@ -54,7 +54,12 @@ const toNavLink = (path: string | undefined) => {
 
 export interface Props extends RouteComponentProps {}
 
-const itemHidden = (hidden?: any) => {
+const itemHidden = (hidden?: any,item?:any) => {
+  // console.log(item)
+  if(appStore.HOSPITAL_ID == "fsxt" && item?.path.indexOf('specialNurseRouter')>-1){
+    // 是否有专科护理质量--佛山杏坛
+    return !authStore.isSpecialMenu
+  }
   if (!hidden) return false;
   if (Object.prototype.toString.call(hidden) == "[object Function]") {
     return !!hidden();
@@ -105,7 +110,7 @@ const MenuCon = observer(function(props: {
       <Menu>
         {list.map((item, index) => (
           <Menu.Item
-            style={itemHidden(item.hidden) ? { display: "none" } : {}}
+            style={itemHidden(item.hidden,item) ? { display: "none" } : {}}
             key={index}
             onClick={() => {
               toNavLink(item.path);
@@ -387,7 +392,7 @@ export default observer(function NavBar(props: any) {
             <Dropdown
               overlay={
                 item.children ? (
-                  <MenuCon list={item.children} style={item.menuStyle} />
+                  <MenuCon list={item.children} style={item.menuStyle}/>
                 ) : (
                   <div />
                 )
