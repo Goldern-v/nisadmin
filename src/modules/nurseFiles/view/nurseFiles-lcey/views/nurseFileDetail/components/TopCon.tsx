@@ -3,12 +3,12 @@ import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 import { Breadcrumb, Button } from 'antd'
 import store, { appStore } from 'src/stores'
+import {authStore} from  'src/stores'
 import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
 import { observer } from 'mobx-react-lite'
 import createModal from 'src/libs/createModal'
 import DeptChangeModal from '../modal/DeptChangeModal'
 import LeaveModal from '../modal/LeaveModal'
-
 import qs from 'qs'
 import { nurseFilesService } from '../../../services/NurseFilesService'
 import ExportNurseFile from '../../exportNurseFile/ExportNurseFile'
@@ -61,18 +61,14 @@ export default observer(function TopCon() {
       <Info>
         {post} | {nurseHierarchy} | {deptName}
       </Info>
-
-      <DeptChangeBtn3 onClick={() => setInPrint(true)} loading={inPrint}>
-        导出档案
-      </DeptChangeBtn3>
-
-      <DeptChangeBtn1 onClick={() => openLeaveModalModal()}>离职/退休</DeptChangeBtn1>
-
-      <DeptChangeBtn2 onClick={() => openDeptChangeModal()}>科室调动</DeptChangeBtn2>
+        <DeptChangeBtn3 onClick={() => setInPrint(true)} loading={inPrint}>
+            导出档案
+        </DeptChangeBtn3>
+        {['SYS0001','QCR0001'].includes(authStore?.user?.roleManageCode||'')&&<DeptChangeBtn1 onClick={() => openLeaveModalModal()}>离职/退休</DeptChangeBtn1>}
+        {['SYS0001','QCR0001'].includes(authStore?.user?.roleManageCode||'')&& <DeptChangeBtn2 onClick={() => openDeptChangeModal()}>科室调动</DeptChangeBtn2>}
       {nurseFileDetailViewModal.badgeTotal ? (
         <Tip>
           <img src={WARNNING_ICON} alt='' />
-
           <span>
             {' '}
             注意：{empName}有{nurseFileDetailViewModal.badgeTotal}条未审核信息，点击
