@@ -76,6 +76,10 @@ export default class AuthApiService extends BaseApiService {
     })
   }
   public logout(stopComfirm?: boolean) {
+    
+    // 退出就删除专科护理质量--佛山杏坛
+    sessionStorage.removeItem('specialmenu')
+
     const userLoginInfoMap: any = JSON.parse(
       localStorage.userLoginInfoMap || "{}"
     );

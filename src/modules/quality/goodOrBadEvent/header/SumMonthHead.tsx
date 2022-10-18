@@ -181,7 +181,7 @@ const RightIcon = styled.div`
   padding: 0 0 0 15px;
   float: right;
   .span {
-    font-size:16px;
+    font-size:13px;
     margin-left: 15px;
   }
 `;

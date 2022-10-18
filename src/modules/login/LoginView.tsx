@@ -84,9 +84,13 @@ export default withRouter(function LoginView(props: Props) {
       return;
     }
     (!appStore.isDev) && (["fssdy", "sdlj","dghl"].includes(appStore.HOSPITAL_ID)) && (_password = md5(_password));
-    service.authApiService
+	service.authApiService
       .login(_username, _password, verificationCode, "",options?.password || password)
       .then(() => {
+		if(["fsxt"].includes(appStore.HOSPITAL_ID)){
+			// 如果是佛山杏坛 要获取调另外一个接口，查询专科护理质量的菜单
+			getSpecialMenu()
+		}
         if (isSavePassword) {
           const userLoginInfoMap = JSON.parse(
             localStorage.userLoginInfoMap || "{}"
@@ -143,6 +147,17 @@ export default withRouter(function LoginView(props: Props) {
       //     .replace(window.location.origin + '/crNursing/badevents/')
       // }
     }
+  }
+
+  /**佛山杏坛，专科护理质量 */
+  const getSpecialMenu = ()=>{
+	service.userApiService.getSpecialMenu().then(res=>{
+		if(res.code == '200'){
+			sessionStorage.setItem('specialmenu',JSON.stringify(res.data))
+		}
+	}).catch(err=>{
+
+	})
   }
 
   const userEnter = (e: any) => {
