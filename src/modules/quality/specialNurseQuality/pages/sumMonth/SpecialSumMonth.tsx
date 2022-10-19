@@ -413,6 +413,7 @@ export default observer(function SpecialSumMonth(props: Props) {
 				onChange={value => {
 					record[key] = value
 				}}
+				key={record.id}
 				step='0'
 				onBlur={() => {
 					let total = 0

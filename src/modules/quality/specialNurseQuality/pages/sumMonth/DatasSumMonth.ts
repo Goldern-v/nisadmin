@@ -80,6 +80,6 @@ focusNextIpt2(e?: any) {
 		}
 }
 }
-// document.querySelector(`[position="${x},${y},${z}"]`).focus()
+
 }
 export const datasSumMonth = new DatasSumMonth();
