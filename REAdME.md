@@ -61,9 +61,19 @@ printing(ref, {
   `
 }
 ```
+在config-overrides.js做项目配置
 
+## 配置新医院
+1. .env.cmdrc 增加新医院配置
+2. package.json 增加脚本
+3. src/stores/AppStore.ts 的 hisIds 增加类型声明 REACT_APP_HOSPITAL_ID的值
+4. src/layouts/components 文件夹增加标签栏配置文件
+5. src/layouts/components/NavBar.tsx 引入新配置
+6. [在下面] (#specialConfig)
+7. 如果知道测试服务器上的端口和地址名称，可以在 publish.js 加上判断
+  
 ## 配置新医院， /home路由白屏
-
+<div name='specialConfig'>在这</div>
 需要在src/configs/routerConfig/specialModule.ts 页面进行新医院的配置
 
 ## 审核模块档案
