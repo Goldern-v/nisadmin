@@ -143,7 +143,7 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
       return "http://192.168.1.54:9897"
     // 烟台玲珑医院
     case 'ytll':
-      return "http://192.168.1.54:9866"
+      return "http://192.168.1.54:9893"
     // 925
     case '925':
       return "http://192.168.1.54:9904"
