@@ -65,6 +65,7 @@ printing(ref, {
 
 ## 配置新医院
 1. .env.cmdrc 增加新医院配置
+<<<<<<< HEAD
 2. package.json 增加脚本 
   dev: start: build: 必须加
   publish: 不知道测试服务器端口可以不加
@@ -75,6 +76,14 @@ printing(ref, {
 7. 若知道新医院在测试服务器上的端口和存放文件路径，可以在 publish.js 加上判断
 8. 在相同版本的地方加上新医院的HOSPITAL_ID，xx模块需要xx医院的版本
 9. 下面为注意事项
+=======
+2. package.json 增加脚本
+3. src/stores/AppStore.ts 的 hisIds 增加类型声明 REACT_APP_HOSPITAL_ID的值
+4. src/layouts/components 文件夹增加标签栏配置文件
+5. src/layouts/components/NavBar.tsx 引入新配置
+6. [在下面] (#specialConfig)
+7. 如果知道测试服务器上的端口和地址名称，可以在 publish.js 加上判断
+>>>>>>> 236e253ef0af4d8f0afc3a42950422d7fb2f0261
   
 ## 配置新医院， /home路由白屏
 <div name='specialConfig'>在这</div>
