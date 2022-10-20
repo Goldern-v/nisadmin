@@ -230,7 +230,8 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
         {
           isWhyx
             ? <div className="boxRight">
-                <div>总项数：{detailData?.master?.evalSize}</div>
+                {/*<div>总项数：{detailData?.master?.evalSize}</div>*/}
+                <div>总项数：{itemCount.allSize}</div>
                 <div>合格项数：{itemCount.yesSize}</div>
                 <div>合格率：{itemCount.allSize ? parseFloat((itemCount.yesSize * 100 / itemCount.allSize).toFixed(2)) + '%' : '' }</div>
                 <div>得分：{itemCount.netTotalScore}</div>
