@@ -35,4 +35,14 @@ export default abstract class BaseApiService {
   protected stringify (obj: any, option?: qs.IStringifyOptions) {
     return qs.stringify(obj, option)
   }
+  protected getResponseData = (res: any) => {
+    if (res.code === '200') {
+      if (res.data) {
+        return res.data
+      } else {
+        return {}
+      }
+    }
+    throw new Error(res)
+  }
 }

@@ -91,3 +91,10 @@ export const Pre = styled.pre`
   white-space: pre-wrap;
   text-align: left;
 `
+// 页面主体
+export const PageContainer: any = styled.div`
+  background: #fff;
+  padding: 10px;
+  margin: 0 15px 15px;
+  /* border-radius: 5px; */
+`
