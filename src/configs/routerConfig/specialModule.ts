@@ -184,7 +184,7 @@ if (process.env.REACT_APP_HOSPITAL_ID == "hj") {
     setLayout("/auditsManagement", AuditsManagementView_wh, layouts.MainLayout),
     setLayout("/wh_single_point_login", SingleSignOnWh),
     // ...homeRouter(HomeView_wh),
-    ...homeRouter(['fssdy','fsxt'].includes(appStore.HOSPITAL_ID)?HomeView:HomeView_wh),
+    ...homeRouter(['fssdy','fsxt','zzwy'].includes(appStore.HOSPITAL_ID)?HomeView:HomeView_wh),
   ];
 
   //武汉护理制度

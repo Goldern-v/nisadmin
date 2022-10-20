@@ -309,6 +309,7 @@ export default observer(function SpecialSumMonth(props: Props) {
 										record['totalY'] = value
 									}}
 									step='0'
+									key={record.id}
 									onBlur={() => {
 										// 计算及格率
 										if (record.totalY > 0 && record.totalN > 0) {
@@ -348,6 +349,7 @@ export default observer(function SpecialSumMonth(props: Props) {
 									onChange={value => {
 										record['totalN'] = value
 									}}
+									key={record.id}
 									onBlur={() => {
 										// 计算及格率
 										if (record.totalY > 0 && record.totalN > 0) {
