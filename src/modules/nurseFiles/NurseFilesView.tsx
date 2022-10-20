@@ -60,6 +60,7 @@ export default observer(function NurseFilesView(props: Props) {
       case 'qhwy':
       case 'zhzxy':
       case 'whhk':
+      case 'zzwy':
         return NurseFilesListView_wh;
       case "hj":
         return NurseFilesListView_hj;
@@ -691,6 +692,7 @@ export default observer(function NurseFilesView(props: Props) {
       case 'ytll':
       case 'wjgdszd':
       case 'whhk':
+      case 'zzwy':
       return LEFT_MENU_CONFIG_WH;
       case "nys":
         return LEFT_MENU_CONFIG_NYS;
@@ -745,6 +747,7 @@ export default observer(function NurseFilesView(props: Props) {
         "nfzxy",
         "qhwy",
         'whhk',
+        'zzwy',
         appStore.isDev ? "wh" : "wh_production",
       ].indexOf(appStore.HOSPITAL_ID) >= 0
     )
