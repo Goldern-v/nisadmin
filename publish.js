@@ -120,6 +120,10 @@ let sshUpload = (localSrc = './build', folderSrc = '/crdata/webProject/manage') 
   if (process.env.npm_lifecycle_event.indexOf('9898') >= 0) {
     folderSrc = '/crdata/webProject/manage-zhuhaizhongxiyi'
   }
+  // 烟台玲珑医院
+  if (process.env.npm_lifecycle_event.indexOf('9893') >= 0) {
+    folderSrc = '/crdata/webProject/manage-yantailinglong'
+  }
   // 武汉汉口医院
   if (process.env.npm_lifecycle_event.indexOf('9900') >= 0) {
     folderSrc = '/crdata/webProject/manage-wuhanhankou'
