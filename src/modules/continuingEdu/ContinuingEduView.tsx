@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import React, { useState, useLayoutEffect, lazy, Suspense } from "react";
+import React, { useState, useLayoutEffect, lazy, Suspense, useEffect } from "react";
 import { RouteComponentProps } from "react-router";
 import LeftMenu from "src/components/LeftMenu";
 import { meunSettingApi } from "./views/menuSettings/api/MeunSettingApi";
@@ -186,6 +186,7 @@ const CourseLibrary = lazy(() => import("./views/courseLibrary/CourseLibrary"));
 import { appStore, authStore } from "src/stores";
 import NavBar from "src/layouts/components/NavBar";
 import { Icon } from "antd";
+import { use } from "echarts";
 
 export default function ContinuingEdu(props: Props) {
   const [dataList, setDataList] = useState([] as any); // 动态菜单树
@@ -750,7 +751,7 @@ export default function ContinuingEdu(props: Props) {
       icon: <TKGL />,
       path: "/continuingEdu/PracticalOperationScorFSXT",
       component: PracticalOperationScoreFSXT,
-      hide: !['fsxt'].includes(appStore.HOSPITAL_ID)
+      hide: !['fsxt','925'].includes(appStore.HOSPITAL_ID)
     },
   ]
 
@@ -1165,29 +1166,6 @@ export default function ContinuingEdu(props: Props) {
   //   appStore.history.push(url);
   // };
 
-  // 初始化动态菜单 菜单权限
-  useLayoutEffect(() => {
-    let baseInitMethods = () => {
-      getAuth();
-      getList();
-    };
-
-    //初始化的方法
-    let initMethods = appStore.hisMatch({
-      map: {
-        "hj,dgxg,lyyz,qhwy,whhk,nfsd": () => {
-          baseInitMethods();
-          //初始化学习培训权限
-          continuningEduAuth.initAuth();
-        },
-        other: () => baseInitMethods(),
-      },
-      vague: true,
-    });
-
-    initMethods();
-  }, [props.history.location.pathname]);
-
   // 获取icon
   const getIcon = (icon: any) => {
     switch (icon) {
@@ -1207,11 +1185,36 @@ export default function ContinuingEdu(props: Props) {
         return <JXJH />;
     }
   };
+  
+  let baseInitMethods = () => {
+    getAuth();
+    getList();
+  };
+  //初始化的方法
+  let initMethods = appStore.hisMatch({
+    map: {
+      "hj,dgxg,lyyz,qhwy,whhk,nfsd": () => {
+        baseInitMethods();
+        //初始化学习培训权限
+        continuningEduAuth.initAuth();
+      },
+      other: () => baseInitMethods(),
+    },
+    vague: true,
+  });
+  useLayoutEffect(() => {
+    // 初始化动态菜单 菜单权限
+    initMethods();
+  }, [])
+  useLayoutEffect(() => {
+    setCurrentRoutePath(`${props.history.location.pathname}${props.history.location.search}`)
+  }, [props.history.location.pathname]);
 
-  let currentRoutePath =
-    `${props.history.location.pathname}${props.history.location.search}` || "";
-  let currentRoute = getTargetObj(LEFT_MENU_CONFIG, "path", currentRoutePath);
-
+  const [currentRoutePath, setCurrentRoutePath] = useState('')
+  const [currentRoute, setCurrentRoute] = useState<any>(null)
+  useEffect(() => {
+    setCurrentRoute(getTargetObj(LEFT_MENU_CONFIG, "path", currentRoutePath));
+  }, [currentRoutePath])
   // 筛选目标对象
   function getTargetObj(listDate: any, targetKey: string, targetName: string) {
     let chooseRoute = listDate.find((item: any) => {

@@ -15,7 +15,7 @@ import WholeAysi from './WholeAysi'
 
 const LEFT_MENU_CONFIG: any = appStore.hisMatch({
 	map: {
-		fsxt: [
+		'fsxt,925': [
 			// 科室临床护理质量指标
 			{
 				title: '临床护理质量指标',

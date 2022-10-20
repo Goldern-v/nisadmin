@@ -207,7 +207,7 @@ class SheetViewModal {
       isExpectedScheduling: cellObj.statusType == "1",
       isAddWordTime: appStore.hisMatch({
         map: {
-          "dghl,fqfybjy,wh,gxjb,fssdy,fsxt,whyx,lyyz,qhwy,whsl,ytll,whhk":
+          "dghl,fqfybjy,wh,gxjb,fssdy,fsxt,925,whyx,lyyz,qhwy,whsl,ytll,whhk":
             (cellObj.schAddOrSubs &&
               cellObj.schAddOrSubs.length &&
               cellObj.schAddOrSubs[0].statusType) == "1",
@@ -220,7 +220,7 @@ class SheetViewModal {
       }),
       isReduceWordTime: appStore.hisMatch({
         map: {
-          "wh,gxjb,fssdy,fsxt,whyx,lyyz,whsl,qhwy,ytll,whhk":
+          "wh,gxjb,fssdy,fsxt,925,whyx,lyyz,whsl,qhwy,ytll,whhk":
             (cellObj.schAddOrSubs &&
               cellObj.schAddOrSubs.length &&
               cellObj.schAddOrSubs[0].statusType) == "2",

@@ -60,6 +60,7 @@ export default observer(function NurseFilesView(props: Props) {
       case 'qhwy':
       case 'zhzxy':
       case 'whhk':
+      case 'zzwy':
         return NurseFilesListView_wh;
       case "hj":
         return NurseFilesListView_hj;
@@ -88,6 +89,7 @@ export default observer(function NurseFilesView(props: Props) {
       case "gxjb":
         return NurseFilesListView_wh;
       case "fsxt":
+      case "925":
         return NurseFilesListView_wh;
       case "whyx":
         return NurseFilesListView_whyx;
@@ -135,7 +137,7 @@ export default observer(function NurseFilesView(props: Props) {
     icon: <TXHSCX />,
     hide: appStore.hisMatch({
       map: {
-        "hj,lyrm,qhwy,fsxt,ytll,whhk": false, 
+        "hj,lyrm,qhwy,fsxt,ytll,whhk,925": false, 
         other: !appStore.isDev,
       },
       vague: true,
@@ -690,6 +692,7 @@ export default observer(function NurseFilesView(props: Props) {
       case 'ytll':
       case 'wjgdszd':
       case 'whhk':
+      case 'zzwy':
       return LEFT_MENU_CONFIG_WH;
       case "nys":
         return LEFT_MENU_CONFIG_NYS;
@@ -736,6 +739,7 @@ export default observer(function NurseFilesView(props: Props) {
         "gxjb",
         "fssdy",
         "fsxt",
+        '925',
         "gzsrm",
         "jmfy",
         "gzsrm",
@@ -743,6 +747,7 @@ export default observer(function NurseFilesView(props: Props) {
         "nfzxy",
         "qhwy",
         'whhk',
+        'zzwy',
         appStore.isDev ? "wh" : "wh_production",
       ].indexOf(appStore.HOSPITAL_ID) >= 0
     )

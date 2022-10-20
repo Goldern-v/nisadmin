@@ -229,7 +229,7 @@ export default observer(function TrainingResultReview() {
   // columns = appStore.HOSPITAL_ID === 'fsxt' ? fsxtColumns : columns
   columns = appStore.hisMatch({
     map: {
-      fsxt: fsxtColumns,
+      'fsxt,925': fsxtColumns,
       other: columns,
     }
   })
@@ -386,7 +386,7 @@ export default observer(function TrainingResultReview() {
         {appStore.hisMatch({
           map: {
             wh: <span></span>,
-            fsxt: 
+            'fsxt,925': 
             <React.Fragment>
               {isSignType &&
               <Button onClick={() => trainingResultModel.handleSignExportXingtan()}>导出签到信息</Button>}

@@ -269,7 +269,7 @@ export default observer(function Step1() {
               </Form.Field>
             </Col>
           )}
-          {stepViewModal.stepData2.organizationWay == "2" && appStore.HOSPITAL_ID === "fsxt" && (
+          {stepViewModal.stepData2.organizationWay == "2" && (appStore.HOSPITAL_ID === "fsxt"||appStore.HOSPITAL_ID === "925") && (
             <Col span={24}>
               <Form.Field
                 label={`标准出勤率`}

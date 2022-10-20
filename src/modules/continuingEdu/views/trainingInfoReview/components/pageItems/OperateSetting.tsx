@@ -107,7 +107,7 @@ export default function OperateSetting(props: Props) {
             )}
         </Wrapper>,
       ],
-      fsxt: [
+      'fsxt,925': [
         <Wrapper>
           <div className="content-item-title">实操设置</div>
           <div className="row">

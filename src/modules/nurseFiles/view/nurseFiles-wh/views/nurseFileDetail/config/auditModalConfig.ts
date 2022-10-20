@@ -14,6 +14,7 @@ export function openAuditModal(title: string, row: any, callBack: any) {
           tableFormat: (() => {
             switch(appStore.HOSPITAL_ID) {
               case 'fsxt':
+              case '925':
                 return [
                   {
                     "民族": 'nation',
@@ -153,7 +154,7 @@ export function openAuditModal(title: string, row: any, callBack: any) {
                   }),
                   ...appStore.hisMatch({
                     map: {
-                      'fsxt': [
+                      'fsxt,925': [
                         {
                           "夏装-裤子": "summer_trousers_size",
                           "冬装-上衣": "winter_jacket_size",

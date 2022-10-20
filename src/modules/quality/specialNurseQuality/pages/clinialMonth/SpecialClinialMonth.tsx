@@ -134,7 +134,7 @@ export default observer(function SpecialClinialMonth(props: Props) {
 									let total = 0
 									for (let k in record) {
 										if (k.split('_')[3] == '0') {
-											total += record[k]
+											total += Number(record[k])
 										}
 									}
 									record["total"] = total
@@ -144,6 +144,7 @@ export default observer(function SpecialClinialMonth(props: Props) {
 									// console.log(data3)
 									// dataClinialMonth.tableList=[...tempData]
 								}}
+								step='0'
 								onKeyUp={(e) => { dataClinialMonth.focusNextIpt(e) }}
 							/>
 						);
@@ -222,7 +223,9 @@ export default observer(function SpecialClinialMonth(props: Props) {
 	}, [])
 	/**获取特殊科室 */
 	const getDeptList = ()=>{
+		setTableLoading(true)
 		apiSpecialNurse.getSpecialDeptList({type:'clinicalIndicators'}).then(res=>{
+			setTableLoading(false)
 			if(res.code == '200'){
 				// setModalDeptCode(res.data.defaultDept || '')
 				setdeucOption(res.data.deptList || [])
@@ -232,7 +235,7 @@ export default observer(function SpecialClinialMonth(props: Props) {
 				getTableList()
 			}
 		}).catch(err=>{
-			
+			setTableLoading(false)
 		})
 	}
 	

@@ -15,5 +15,71 @@ class DatasSumMonth {
 			year: this.year?.year(),
 		};
 	}
+
+	focusNextIpt(e?: any) {
+		let baseTableEl = document.getElementById('baseTable')
+		if (baseTableEl) {
+			let iptList = baseTableEl.querySelectorAll('input:enabled') as any  //只计算了；input框
+			if ((e.keyCode && (e.keyCode == 13 || e.keyCode == 37 || e.keyCode == 38 || e.keyCode == 39 || e.keyCode == 40))) {
+				for (let i = 0; i < iptList.length; i++) {
+					let el = iptList[i]
+					if (el == (e.target)) {
+						if ((e.keyCode && e.keyCode == 37) && iptList[i - 1]){
+							// ArrowLeft
+							iptList[i - 1].focus && iptList[i - 1].focus()
+							// iptList[i - 1].click && iptList[i - 1].click()
+						}else if ((e.keyCode && e.keyCode == 39) && iptList[i + 1]){
+							// ArrowRight
+							iptList[i + 1].focus && iptList[i + 1].focus()
+							// iptList[i + 1].click && iptList[i + 1].click()
+						}else if (iptList[i + 8] && (e.keyCode == 13 || e.keyCode==40)) {
+							// down enter
+							iptList[i + 8].focus && iptList[i + 8].focus()
+							// iptList[i + 8].click && iptList[i + 8].click()
+						}else if (iptList[i - 8] && e.keyCode == 38) {
+							// up
+							iptList[i - 8].focus && iptList[i - 8].focus()
+							// iptList[i - 8].click && iptList[i - 8].click()
+						}
+						break
+					}
+				}
+			}
+	}
+}
+
+// 合计的方向键盘 一行只有2个
+focusNextIpt2(e?: any) {
+	let baseTableEl = document.getElementById('baseTable')
+	if (baseTableEl) {
+		let iptList = baseTableEl.querySelectorAll('input:enabled') as any  //只计算了；input框
+		if ((e.keyCode && (e.keyCode == 13 || e.keyCode == 37 || e.keyCode == 38 || e.keyCode == 39 || e.keyCode == 40))) {
+			for (let i = 0; i < iptList.length; i++) {
+				let el = iptList[i]
+				if (el == (e.target)) {
+					if ((e.keyCode && e.keyCode == 37) && iptList[i - 1]){
+						// ArrowLeft
+						iptList[i - 1].focus && iptList[i - 1].focus()
+						// iptList[i - 1].click && iptList[i - 1].click()
+					}else if ((e.keyCode && e.keyCode == 39) && iptList[i + 1]){
+						// ArrowRight
+						iptList[i + 1].focus && iptList[i + 1].focus()
+						// iptList[i + 1].click && iptList[i + 1].click()
+					}else if (iptList[i + 2] && (e.keyCode == 13 || e.keyCode==40)) {
+						// down enter
+						iptList[i + 2].focus && iptList[i + 2].focus()
+						// iptList[i + 8].click && iptList[i + 8].click()
+					}else if (iptList[i - 2] && e.keyCode == 38) {
+						// up
+						iptList[i - 2].focus && iptList[i - 2].focus()
+						// iptList[i - 8].click && iptList[i - 8].click()
+					}
+					break
+				}
+			}
+		}
+}
+}
+
 }
 export const datasSumMonth = new DatasSumMonth();

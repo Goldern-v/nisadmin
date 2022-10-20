@@ -228,7 +228,7 @@ export default function BadEventsRouters(props: Props) {
       <LeftMenuCon>
         <LeftMenu
           config={LEFT_MENU_CONFIG}
-          beforRouter={(payload: any) => {
+          beforeRouter={(payload: any) => {
             if (payload.key === `${baseRouter}/不良事件上报`) {
               autoLoginTnNisInfoBe(autoLoginInfo)
               return false

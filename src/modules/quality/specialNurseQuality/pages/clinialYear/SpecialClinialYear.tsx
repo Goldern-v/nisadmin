@@ -91,6 +91,7 @@ export default observer(function SpecialClinialYear(props: Props) {
 
 		/**获取特殊科室 */
 	const getDeptList = ()=>{
+		setTableLoading(true)
 		apiSpecialNurse.getSpecialDeptList({type:'clinicalIndicators'}).then(res=>{
 			if(res.code == '200'){
 				setdeucOption(res.data.deptList || [])
@@ -100,7 +101,7 @@ export default observer(function SpecialClinialYear(props: Props) {
 				getTableList()
 			}
 		}).catch(err=>{
-			
+			setTableLoading(false)
 		})
 	}
 

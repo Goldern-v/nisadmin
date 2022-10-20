@@ -2,17 +2,16 @@
 import React, { useState, useEffect, useRef, useLayoutEffect } from "react";
 import styled from "styled-components";
 import { RouteComponentProps } from "react-router";
-import loginViewModel from "./LoginViewModel";
+// import loginViewModel from "./LoginViewModel";
 import { to } from 'src/libs/fns'
 import service from "src/services/api";
 import { appStore, scheduleStore } from "src/stores";
-import { Button, Icon } from "src/vendors/antd";
-import { AutoComplete, message, Input, Tooltip } from "antd";
+import { Button } from "src/vendors/antd";
+import { message, Input, Tooltip } from "antd";
 import { withRouter } from 'react-router-dom'
 import { Rules } from 'src/components/Form/interfaces'
-import { compileStr, uncompileStr } from 'src/utils/encode/encode'
-import qs from "qs";
-import md5 from 'js-md5';
+// import qs from "qs";
+// import md5 from 'js-md5';
 import Form from 'src/components/Form'
 export interface Props extends RouteComponentProps { }
 

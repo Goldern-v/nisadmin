@@ -254,7 +254,9 @@ export default observer(function SpecialSumYear(props: Props) {
 
 	/**获取特殊科室 */
 	const getDeptList = () => {
+		setPageLoading(true)
 		apiSpecialNurse.getSpecialDeptList({ type: 'manageIndicators' }).then(res => {
+			setPageLoading(false)
 			if (res.code == '200') {
 				setdeucOption(res.data.deptList || [])
 				datasSumYear.deptCode = res.data.defaultDept || ''
@@ -263,7 +265,7 @@ export default observer(function SpecialSumYear(props: Props) {
 				getTableList()
 			}
 		}).catch(err => {
-
+			setPageLoading(false)
 		})
 	}
 

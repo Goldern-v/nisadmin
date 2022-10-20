@@ -197,7 +197,7 @@ export default function ClinicalMonth(props: Props) {
 									let total = 0
 									for (let k in record) {
 										if (k.split('_')[3] == '0') {
-											total += record[k]
+											total += Number(record[k])
 										}
 									}
 									record["total"] = total
@@ -207,6 +207,7 @@ export default function ClinicalMonth(props: Props) {
 									// console.log(data3)
 									// clinicalData.tableList=[...tempData]
 								}}
+								step='0'
 								onKeyUp={(e)=>{clinicalData.focusNextIpt(e)}}
 							/>
 						);

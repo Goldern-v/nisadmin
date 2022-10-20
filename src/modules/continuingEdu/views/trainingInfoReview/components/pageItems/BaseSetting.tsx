@@ -186,7 +186,7 @@ export default function BaseSetting(props: Props) {
             </div>
             <div className="content">{info.signInEndTime}</div>
           </div>
-          {appStore.HOSPITAL_ID == 'fsxt' && <div className="row">
+          {(appStore.HOSPITAL_ID == 'fsxt'||appStore.HOSPITAL_ID == '925') && <div className="row">
             <div className="label" style={{ width: _labelWidth }}>
               标准出勤率：
             </div>

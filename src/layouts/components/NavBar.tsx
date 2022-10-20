@@ -56,7 +56,7 @@ export interface Props extends RouteComponentProps {}
 
 const itemHidden = (hidden?: any,item?:any) => {
   // console.log(item)
-  if(appStore.HOSPITAL_ID == "fsxt" && item?.path.indexOf('specialNurseRouter')>-1){
+  if((appStore.HOSPITAL_ID == "fsxt"||appStore.HOSPITAL_ID == "925") && item?.path.indexOf('specialNurseRouter')>-1){
     // 是否有专科护理质量--佛山杏坛
     return !authStore.isSpecialMenu
   }
@@ -177,7 +177,7 @@ export default observer(function NavBar(props: any) {
       // return navConfig_gxjb
       if (authStore.isRoleManage) return navConfig_gxjb;
       else return navConfig_gxjbSelf;
-    } else if (appStore.HOSPITAL_ID == "fsxt") {
+    } else if (appStore.HOSPITAL_ID == "fsxt"||appStore.HOSPITAL_ID == "925") {
       // return navConfig_fssdy
       if (authStore.isRoleManage) return navConfig_fsxt;
       else return navConfig_fsxtSelf;

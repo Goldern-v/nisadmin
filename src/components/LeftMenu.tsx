@@ -15,7 +15,7 @@ export interface Props {
   menuTitle?: string;
   /**菜单项目为hidden时是否匹配下一个项目 */
   stopActiveNext?: boolean;
-  beforRouter?: (payload: any) => boolean; //跳转前方法 返回boolean代表是否跳转
+  beforeRouter?: (payload: any) => boolean; //跳转前方法 返回boolean代表是否跳转
 }
 
 export default observer(function LeftMenu(props: Props) {
@@ -23,8 +23,8 @@ export default observer(function LeftMenu(props: Props) {
 
   const handleSelect = (e: any) => {
 
-    if (props.beforRouter) {
-      if (props.beforRouter(e)) {
+    if (props.beforeRouter) {
+      if (props.beforeRouter(e)) {
         appStore.history.push(e.key);
         if (e.item.props.level === 1) {
           setOpenKeys("");

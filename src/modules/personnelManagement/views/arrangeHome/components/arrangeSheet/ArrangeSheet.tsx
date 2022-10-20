@@ -52,7 +52,7 @@ export default observer(function ArrangeSheet(props: Props) {
   let editEffectiveTimeModal = createModal(
     appStore.hisMatch({
       map: {
-        'wjgdszd,wh,gxjb,lcey,dghl,fqfybjy,jmfy,nys,gzsrm,fssdy,fsxt,sdlj,whyx,gdtj,lyyz,qhwy,whsl,ytll,zhzxy,whhk,nfsd': EditVacationCountModal_wh,
+        'wjgdszd,wh,gxjb,lcey,dghl,fqfybjy,jmfy,nys,gzsrm,fssdy,fsxt,925,sdlj,whyx,gdtj,lyyz,qhwy,whsl,ytll,zhzxy,whhk,nfsd': EditVacationCountModal_wh,
         other: EditEffectiveTimeModal,
       },
       vague: true
@@ -404,7 +404,7 @@ export default observer(function ArrangeSheet(props: Props) {
   ];
 
   /** 东莞横沥特殊字段 */
-  if (["dghl", "fsxt", 'fssdy'].includes(appStore.HOSPITAL_ID)) {
+  if (["dghl", "fsxt",'925', 'fssdy'].includes(appStore.HOSPITAL_ID)) {
     columns.push({
       title: (
         <div>
@@ -511,7 +511,7 @@ export default observer(function ArrangeSheet(props: Props) {
   };
 
   /** 武汉特殊字段*/
-  if (["wh", "gzsrm", "gxjb", "fsxt", "sdlj", "whyx", 'fssdy',"gdtj", "lyyz", "qhwy","whsl","wjgdszd", 'ytll','zhzxy', 'nfsd'].includes(appStore.HOSPITAL_ID)) {
+  if (["wh", "gzsrm", "gxjb", "fsxt", '925', "sdlj", "whyx", 'fssdy',"gdtj", "lyyz", "qhwy","whsl","wjgdszd", 'ytll','zhzxy', 'nfsd'].includes(appStore.HOSPITAL_ID)) {
     columns.push(
       {
         title: (
@@ -541,7 +541,7 @@ export default observer(function ArrangeSheet(props: Props) {
       // },
       ...appStore.hisMatch({
         map: {
-          fsxt: [],//佛山杏坛去除累计结余添加本周结余
+          'fsxt,925': [],//佛山杏坛去除累计结余添加本周结余
           other: [
             {
               title: (
@@ -785,7 +785,7 @@ export default observer(function ArrangeSheet(props: Props) {
                   hj: 3,
                   fqfybjy: 5,
                   nys: (isEdit ? 6 : 5),
-                  'wjgdszd,wh,gxjb,jmfy,dghl,gzsrm,fsxt,whyx,sdlj,gdtj,lyyz,qhwy,whsl,ytll,zhzxy,whhk,nfsd': 6,
+                  'wjgdszd,wh,gxjb,jmfy,dghl,gzsrm,fsxt,925,whyx,sdlj,gdtj,lyyz,qhwy,whsl,ytll,zhzxy,whhk,nfsd': 6,
                   fssdy: 7,
                   other: 2
                 },
