@@ -55,6 +55,7 @@ export default function PersonnelManagementView() {
       // if (authStore.isRoleManage) return menuConfig_gxjb;
       // return menuConfig_gxjbSelf
       case 'fsxt':
+      case '925':
         return menuConfig_wh;
       case 'dgxg':
         return menuConfig_dgxg;

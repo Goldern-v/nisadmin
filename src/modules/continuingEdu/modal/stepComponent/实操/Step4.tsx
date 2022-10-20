@@ -36,7 +36,7 @@ export default observer(function Step4() {
     Object.assign(stepViewModal.stepData2, data);
   };
   const handleonvaluechange = () => {
-    if (["whyx","fsxt"].includes(appStore.HOSPITAL_ID)) {
+    if (["whyx","fsxt",'925'].includes(appStore.HOSPITAL_ID)) {
       let list = pratical.find((item: any) => {
         return stepViewModal.stepData2.adminTable == item.code;
       });
@@ -124,7 +124,7 @@ export default observer(function Step4() {
             </Col>
           ) : (
             <Col span={24} >
-              {["whyx","fsxt"].includes(appStore.HOSPITAL_ID)?
+              {["whyx","fsxt",'925'].includes(appStore.HOSPITAL_ID)?
               <Form.Field
                 label={`选择实操评分管理表`}
                 name="adminTable"

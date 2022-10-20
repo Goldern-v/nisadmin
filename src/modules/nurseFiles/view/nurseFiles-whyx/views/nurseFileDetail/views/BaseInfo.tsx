@@ -226,7 +226,7 @@ export default observer(function BaseInfo() {
             lastItem[name] = val
           }
         }
-        if (['fsxt'].includes(appStore.HOSPITAL_ID)) {
+        if (['fsxt','925'].includes(appStore.HOSPITAL_ID)) {
           setTableData(newTableData)
         }
       }

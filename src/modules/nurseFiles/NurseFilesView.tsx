@@ -88,6 +88,7 @@ export default observer(function NurseFilesView(props: Props) {
       case "gxjb":
         return NurseFilesListView_wh;
       case "fsxt":
+      case "925":
         return NurseFilesListView_wh;
       case "whyx":
         return NurseFilesListView_whyx;
@@ -135,7 +136,7 @@ export default observer(function NurseFilesView(props: Props) {
     icon: <TXHSCX />,
     hide: appStore.hisMatch({
       map: {
-        "hj,lyrm,qhwy,fsxt,ytll,whhk": false, 
+        "hj,lyrm,qhwy,fsxt,ytll,whhk,925": false, 
         other: !appStore.isDev,
       },
       vague: true,
@@ -736,6 +737,7 @@ export default observer(function NurseFilesView(props: Props) {
         "gxjb",
         "fssdy",
         "fsxt",
+        '925',
         "gzsrm",
         "jmfy",
         "gzsrm",

@@ -305,7 +305,7 @@ export default function EditWorkHistoryModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={12}>
-            <Form.Field label={`参加工作时间`} name={appStore.HOSPITAL_ID === 'fsxt' ? 'goWorkTime' : 'takeWorkTime'}>
+            <Form.Field label={`参加工作时间`} name={(appStore.HOSPITAL_ID === 'fsxt'|| appStore.HOSPITAL_ID === '925') ? 'goWorkTime' : 'takeWorkTime'}>
               <DatePicker />
             </Form.Field>
           </Col>
@@ -340,7 +340,7 @@ export default function EditWorkHistoryModal(props: Props) {
               <DatePicker />
             </Form.Field>
           </Col>
-          {appStore.HOSPITAL_ID !== 'fsxt' && <Col span={12}>
+          {(appStore.HOSPITAL_ID !== 'fsxt'&& appStore.HOSPITAL_ID !== '925') && <Col span={12}>
             <Form.Field label={`初始学历`} name="initialEducation">
               <Select>
                 {nurseFileDetailViewModal.getDict("初始学历").map((item) => (
@@ -369,7 +369,7 @@ export default function EditWorkHistoryModal(props: Props) {
               <DatePicker />
             </Form.Field>
           </Col>}
-          {appStore.HOSPITAL_ID !== 'fsxt' && <Col span={12}>
+          {(appStore.HOSPITAL_ID !== 'fsxt'&& appStore.HOSPITAL_ID !== '925') && <Col span={12}>
             <Form.Field label={`最高学历学位`} name="highestEducationDegree">
               <AutoComplete
                 dataSource={nurseFileDetailViewModal
@@ -388,7 +388,7 @@ export default function EditWorkHistoryModal(props: Props) {
               <DatePicker />
             </Form.Field>
           </Col>
-          {appStore.HOSPITAL_ID !== 'fsxt' && <Col span={12} style={{height: ['qhwy', 'whhk'].includes(appStore.HOSPITAL_ID) ? '52px' : '53px' }}>
+          {appStore.HOSPITAL_ID !== 'fsxt'&& appStore.HOSPITAL_ID !== '925' && <Col span={12} style={{height: ['qhwy', 'whhk'].includes(appStore.HOSPITAL_ID) ? '52px' : '53px' }}>
             <Form.Field label={`院内工作地点`} name="workAddress">
               <SelectOrAutoInput dict="院内工作地点" />
             </Form.Field>

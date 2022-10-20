@@ -246,7 +246,7 @@ export default observer(function Step5() {
                 .join("，")}
             </td>
           </tr>
-          {['whyx','fsxt'].includes(appStore.HOSPITAL_ID) ? 
+          {['whyx','fsxt','925'].includes(appStore.HOSPITAL_ID) ? 
               <tr>
                 <td className="key">实操评分管理表：</td>
                 <td className="value">{scStepViewModal.stepData2.selectPrcaticalOperation}<Button onClick={handlePreview} loading={btnLoading} >预览</Button></td>

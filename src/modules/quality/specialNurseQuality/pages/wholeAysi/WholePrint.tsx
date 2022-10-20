@@ -35,7 +35,7 @@ export default observer(function EventReportDetailView(props: Props) {
 	const [quarterRate, setQuarterRate] = useState("")
 	const [defaultDept, setDefaultDept] = useState("")
 	const [text, setText] = useState('')
-	const showText = ['fsxt'].includes(appStore.HOSPITAL_ID)
+	const showText = ['fsxt','925'].includes(appStore.HOSPITAL_ID)
 
 	const [propsData, setPropsData] = useState({} as any);
 	useEffect(() => {

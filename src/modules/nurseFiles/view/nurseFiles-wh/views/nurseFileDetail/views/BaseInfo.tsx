@@ -160,7 +160,7 @@ export default observer(function BaseInfo() {
           手机号: data.phone,
         },
         {
-          参加工作时间: appStore.HOSPITAL_ID === 'fsxt' ? data.goWorkTime : data.takeWorkTime,
+          参加工作时间: (appStore.HOSPITAL_ID === 'fsxt'||appStore.HOSPITAL_ID === '925') ? data.goWorkTime : data.takeWorkTime,
           来院工作时间: data.goHospitalWorkDate,
         },
 
@@ -261,7 +261,8 @@ export default observer(function BaseInfo() {
       ]
       let newTableData = (() => {
         switch(appStore.HOSPITAL_ID) {
-          case "fsxt" : return newTableDataFxst
+          case "fsxt" :
+           case "925" : return newTableDataFxst
           default : return newTableDataDefault
         }
       })()
@@ -312,7 +313,7 @@ export default observer(function BaseInfo() {
             if (name) lastItem[name] = val
           }
         }
-        if (['fsxt'].includes(appStore.HOSPITAL_ID)) {
+        if (['fsxt','925'].includes(appStore.HOSPITAL_ID)) {
           console.log(newTableData, 9998)
           setTableData(newTableData)
 

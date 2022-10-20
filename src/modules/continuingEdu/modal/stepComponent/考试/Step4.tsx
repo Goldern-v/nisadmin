@@ -229,6 +229,7 @@ export default observer(function Step4() {
       </div>)*/
       case 'nys':
       case 'fsxt':
+      case '925':
         return (
           <Col span={24}>
             <Form.Field label='上传题库' name="questionStatList">

@@ -61,7 +61,7 @@ const QualityControlRecordEdit = observer(function QualityControlRecordEdit() {
           });
           // 非贵州
           if (
-            !["gzsrm", "gzhd", "whyx", "fsxt"].includes(appStore.HOSPITAL_ID) &&
+            !["gzsrm", "gzhd", "whyx", "fsxt",'925'].includes(appStore.HOSPITAL_ID) &&
             (isNaN(inpNo) || inpNoLengthArr.indexOf(master[x].length) < 0)
           ) {
             //if (isNaN(inpNo) || inpNoLengthArr.indexOf(master[x].length) < 0) {

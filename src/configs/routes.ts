@@ -681,7 +681,7 @@ const routes: RouteItem[] = [
         nys: BadEventsNewDetailNys,
         gzsrm: BadEventsNewDetailGzsrm,
         hj: BadEventsNewDetail,
-        fsxt: BadEventsNewDetailFsxt,
+        'fsxt,925': BadEventsNewDetailFsxt,
         other: BadEventsNewDetailCommon
         // fqfybjy: BadEventsNewDetailCommon,
         // yczyy: BadEventsNewDetailCommon,
@@ -698,7 +698,7 @@ const routes: RouteItem[] = [
         // fqfybjy: BadEventsNewDetailCommon,
         // yczyy: BadEventsNewDetailCommon,
         // other: BadEventsNewDetail
-        fsxt: BadEventsNewDetailFsxt,
+        'fsxt,925': BadEventsNewDetailFsxt,
         nys: BadEventsNewDetail,
         hj: BadEventsNewDetail,
         other: BadEventsNewDetailCommon

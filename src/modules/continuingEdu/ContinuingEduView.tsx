@@ -750,7 +750,7 @@ export default function ContinuingEdu(props: Props) {
       icon: <TKGL />,
       path: "/continuingEdu/PracticalOperationScorFSXT",
       component: PracticalOperationScoreFSXT,
-      hide: !['fsxt'].includes(appStore.HOSPITAL_ID)
+      hide: !['fsxt','925'].includes(appStore.HOSPITAL_ID)
     },
   ]
 
