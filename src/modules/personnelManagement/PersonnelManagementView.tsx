@@ -19,6 +19,7 @@ import { meunConfig as menuConfig_whsl } from "./config/menuConfig_whsl";
 import { meunConfig as menuConfig_wjgdszd } from "./config/menuConfig_wjgdszd";
 import { meunConfig as menuConfig_nfzxy } from "./config/menuConfig_nfzxy";
 import { meunConfig as menuConfig_zhzxy } from "./config/menuConfig_zhzxy";
+import { meunConfig as menuConfig_ytll } from "./config/menuConfig_ytll";
 
 export interface Props {
 }
@@ -28,7 +29,6 @@ export default function PersonnelManagementView() {
     switch (appStore.HOSPITAL_ID) {
       case 'wh':
       case 'lyyz':
-      case 'ytll':
         return menuConfig_wh;
       case 'qhwy':
       case 'whhk':
@@ -73,6 +73,8 @@ export default function PersonnelManagementView() {
         return menuConfig_wjgdszd
       case 'zhzxy':
         return menuConfig_zhzxy
+      case 'ytll':
+        return menuConfig_ytll;
       default:
         return menuConfig_hj;
     }
