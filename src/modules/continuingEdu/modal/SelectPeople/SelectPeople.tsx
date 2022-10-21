@@ -443,6 +443,20 @@ const CheckListCon = observer(function (props: any) {
       deleteUser(item);
     }
   };
+  /**武汉亚心增加层级选择 */
+  const onCheckWhyx = (e: CheckboxChangeEvent, item: any,index:number) => {
+    selectPeopleViewModel.currentTreeData!.NTypeList[index].checked = e.target.checked
+    let users = selectPeopleViewModel.currentTreeData!.list;
+    let newArr = users.filter((it:any) => {
+      return it.currentLevel == item.currentLevel;
+    }); 
+    if (e.target.checked) {
+      
+      insertUser(newArr);
+    } else {
+      deleteUser(newArr);
+    }
+  };
   const onCheckAll = (e: CheckboxChangeEvent) => {
     let users = selectPeopleViewModel.currentTreeData!.list;
     if (e.target.checked) {
@@ -454,6 +468,10 @@ const CheckListCon = observer(function (props: any) {
   const Con = styled.div`
     .ant-checkbox-group {
       width: 100%;
+    }
+    .whyx-checkbox{
+      margin: 0;
+      margin-right:8px;
     }
     .check-row {
       padding: 5px 0;
@@ -509,6 +527,15 @@ const CheckListCon = observer(function (props: any) {
         </FileList>
       ) :
         (<Con>
+          {/* 武汉亚心增加片区——层级选择 */}
+          {appStore.HOSPITAL_ID === 'whyx' && selectPeopleViewModel.currentTreeData!.NTypeList?.map((it:any,idx:number)=>{
+            return (<Checkbox className="whyx-checkbox" key={idx} checked={it.checked}
+              value={it.label} onChange={e => onCheckWhyx(e, it,idx)}
+            >
+              {it.label}
+            </Checkbox>)
+          })
+            }
           <div className="check-row">
             <Checkbox
               checked={checkAll}
