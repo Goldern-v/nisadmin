@@ -113,9 +113,9 @@ const PrintContent = (props: Props) => {
 
 		} as any
 		
-		if(dataWholeAysi.chartMap[dataWholeAysi.chartMapKey[index]][1].length<5){
+		if(dataWholeAysi.chartMap[dataWholeAysi.chartMapKey[index]][1].length<3){
 			// 标题上移一点
-			titleMode.subtext = ''
+			titleMode.subtext = ' '
 		}
 		return titleMode
 
@@ -200,6 +200,22 @@ const PrintContent = (props: Props) => {
 			},
 		}
 		
+	}
+
+	/**计算标题向下移的距离 */
+	const getEchartsGrid = (index:number)=>{
+		let grids = {
+			right: gridRight
+		} as any
+		if(dataWholeAysi.chartMap[dataWholeAysi.chartMapKey[index]][1].length>4){
+
+			// if(dataWholeAysi.chartMap[dataWholeAysi.chartMapKey[index]][1])
+			if(dataWholeAysi.chartMap[dataWholeAysi.chartMapKey[index]][1].some((item:any) => {return item.length > 7*3;})){
+				// 判断字数是否超出那个范围，7是每行几个字符，3是行数
+				grids.bottom='80px'
+			}
+		}
+		return grids
 	}
 
 
@@ -287,7 +303,7 @@ const mergeCells = (text: string, data: any, key: string, index: number) => {
 							if(record.itemType=='1'){
 								return ''
 							}else{
-								return <>{Number(text)>0?Number(text)*10000/100+'%':0}</>
+								return <>{Number(text)>0?Math.trunc(Number(text)*10000)/100+'%':0}</>
 							}
 						},
 						onCell(record: any, rowIndex: any) {
@@ -341,7 +357,7 @@ const mergeCells = (text: string, data: any, key: string, index: number) => {
 							if(record.itemType=='1'){
 								return ''
 							}else{
-								return <>{Number(text)>0?Number(text)*10000/100+'%':0}</>
+								return <>{Number(text)>0?Math.trunc(Number(text)*10000)/100+'%':0}</>
 							}
 						},
 						onCell(record: any, rowIndex: any) {
@@ -380,7 +396,8 @@ const mergeCells = (text: string, data: any, key: string, index: number) => {
 				// left:gridLeft,
 				// bottom: '100px',
 				// containLabel: false,
-				right: gridRight,
+				...getEchartsGrid(index),
+				
 			},
 			xAxis: [
 				{
@@ -411,7 +428,7 @@ const mergeCells = (text: string, data: any, key: string, index: number) => {
 		<div className="first-content-box">
 			<div className='first-title'>{`${propsData.title}`}</div>
 			<div className='title-m'>一、计划阶段</div>
-			<div className='title-s'>(一)通过{dataWholeAysi.currentCycleMessage}及{dataWholeAysi.preCycleMessage}专科临床护理及护理工作质量/管理指标的数据对比（见表1，图1-图{dataWholeAysi.chartMapKey.length}），发现主要存在问题：</div>
+			<div className='title-s'>(一)通过{dataWholeAysi.preCycleMessage}及{dataWholeAysi.currentCycleMessage}专科临床护理及护理工作质量/管理指标的数据对比（见表1，图1-图{dataWholeAysi.chartMapKey.length}），发现主要存在问题：</div>
 			{(!isPrint && authStore.isDepartment) && <Input.TextArea onChange={(e: any) => setTextArea1_1(e.target.value)} disabled={!authStore.isDepartment} className='print-page__ipt' value={textArea1_1} placeholder='字数上限2000字' autosize={{ minRows: 3 }} maxLength={2000} />}
 			{(isPrint || !authStore.isDepartment) && <p className='print-page__ptext print-page__ipt' style={{ 'whiteSpace': 'pre-wrap' }}>{textArea1_1}</p>}
 			<div className='second-content-box'>
@@ -422,7 +439,7 @@ const mergeCells = (text: string, data: any, key: string, index: number) => {
 							bordered dataSource={getTableData()}
 							columns={getTableColumns2(pageData)} pagination={false} />
 					</div>
-					<p style={{ textAlign: 'center', fontSize: '12px', marginTop: '10px' }}>表1 全年临床护理及护理工作质量/管理指标数情况汇总表</p>
+					<p style={{ textAlign: 'center', fontSize: '12px', marginTop: '10px' }}>表1 {dataWholeAysi.preCycleMessage}及{dataWholeAysi.currentCycleMessage}临床护理及护理工作质量/管理指标数据情况</p>
 				</div>
 			</div>
 		</div>
