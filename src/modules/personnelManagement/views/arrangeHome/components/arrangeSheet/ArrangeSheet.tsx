@@ -557,7 +557,8 @@ export default observer(function ArrangeSheet(props: Props) {
               },
             },
           ],
-        }
+        },
+        vague:true,
       }),
         ...appStore.hisMatch({
           map: {

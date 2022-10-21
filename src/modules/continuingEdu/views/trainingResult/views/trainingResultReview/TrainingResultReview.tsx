@@ -231,7 +231,8 @@ export default observer(function TrainingResultReview() {
     map: {
       'fsxt,925': fsxtColumns,
       other: columns,
-    }
+    },
+    vague:true,
   })
   if (baseInfo.questionStat) {
     columns = columns.concat([
@@ -398,7 +399,8 @@ export default observer(function TrainingResultReview() {
                 <Button onClick={() => trainingResultModel.handleSignExport()}>导出签到信息</Button>}
               <Button onClick={() => trainingResultModel.handleAttendanceExport()}>导出出勤率统计</Button>
             </React.Fragment>
-          }
+          },
+          vague:true,
         })}
         <Button onClick={() => trainingResultModel.handleExportResults()}>导出</Button>
         <Button onClick={() => history.goBack()}>返回</Button>

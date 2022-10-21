@@ -65,7 +65,8 @@ const LEFT_MENU_CONFIG: any = appStore.hisMatch({
 		],
 		default: [
 		]
-	}
+	},
+	vague:true,
 })
 
 

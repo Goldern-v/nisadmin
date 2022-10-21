@@ -173,6 +173,7 @@ export function openAuditModal(title: string, row: any, callBack: any) {
                       ],
                       other: []
                     },
+                    vague:true,
                   }),
                   ...appStore.hisMatch({
                     map: {
