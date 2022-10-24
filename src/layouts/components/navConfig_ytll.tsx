@@ -1,5 +1,5 @@
 import React from "react";
-import { appStore } from "src/stores";
+import { appStore,authStore } from "src/stores";
 
 export interface navConfigItem {
   onClick?: any;
@@ -19,6 +19,7 @@ const baseConfig: navConfigItem[] = [
   {
     name: "审核管理",
     path: "/auditsManagement",
+    hidden: !authStore.isRoleManage
   },
   // {
   //   name: "病区日志",
@@ -28,6 +29,7 @@ const baseConfig: navConfigItem[] = [
   {
     name: "档案管理",
     path: "/nurseFile",
+    hidden: !authStore.isRoleManage
   },
   {
     name: "我的档案",
