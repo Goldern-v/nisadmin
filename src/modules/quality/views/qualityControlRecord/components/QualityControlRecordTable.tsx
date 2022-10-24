@@ -200,11 +200,26 @@ export default observer(function qualityControlRecordTable(props: Props) {
     // },
     ...appStore.hisMatch({
       map: {
+        whyx: [
+          {
+            title: "质控过程",
+            dataIndex: "qcDuring",
+            width: 80,
+            align: "center",
+            render(text: any, record: any) {
+              return `${record.yesSize}/${record.evalSize}`;
+            },
+          },
+        ],
+        other: []
+      }
+    }),
+    ...appStore.hisMatch({
+      map: {
         gzsrm: [
           {
             title: "质量结果",
             dataIndex: "netTotalScore",
-
             width: 80,
             align: "center",
             render(text: any) {
