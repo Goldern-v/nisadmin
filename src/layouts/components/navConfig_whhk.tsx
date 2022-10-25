@@ -28,24 +28,14 @@ export const navConfig = (appStore:any,authStore?:any)=>{
       hidden: !authStore.isNotANormalNurse,
     },
     {
+      name: "排班管理",
+      path: "/personnelManagement",
+    },
+    {
       name: "学习培训",
       path: "/continuingEdu",
       // hidden: !appStore.isDev
     },
-    {
-      name: "病区日志",
-      path: "/wardLog",
-      // hidden: !appStore.isDev
-    },
-    {
-      name: "病区登记本",
-      path: "/wardRegister",
-      // hidden: !appStore.isDev,
-    },
-    // {
-    //   name: '不良事件分析报告',
-    //   path: '/badEvents/alanysis/1/1'
-    // },
     {
       name: "质量管理",
       children: [
@@ -64,11 +54,11 @@ export const navConfig = (appStore:any,authStore?:any)=>{
           path: "/qcOneWhyx",
           icon: require("../images/menu-icon/一级质控@2x.png"),
         },
-        {
-          name: "护理部职能督导",
-          path: "/qcFun",
-          icon: require("../images/menu-icon/functional.png"),
-        },
+        // {
+        //   name: "护理部职能督导",
+        //   path: "/qcFun",
+        //   icon: require("../images/menu-icon/functional.png"),
+        // },
         //     {
         //       name: '病区登记本',
         //       path: '',
@@ -87,9 +77,27 @@ export const navConfig = (appStore:any,authStore?:any)=>{
       ],
     },
     {
-      name: "敏感指标",
-      path: "/indicator",
+      name: "护理制度",
+      path: "/nursingRulesNew",
     },
+    {
+      name: "病区日志",
+      path: "/wardLog",
+      // hidden: !appStore.isDev
+    },
+    // {
+    //   name: "病区登记本",
+    //   path: "/wardRegister",
+    // },
+    // {
+    //   name: '不良事件分析报告',
+    //   path: '/badEvents/alanysis/1/1'
+    // },
+    
+    // {
+    //   name: "敏感指标",
+    //   path: "/indicator",
+    // },
     // {
     //   name: "敏感指标登记本",
     //   path: "/sensitiveRegister",
@@ -99,10 +107,7 @@ export const navConfig = (appStore:any,authStore?:any)=>{
       name: "统计查询",
       path: "/statistic",
     },
-    {
-      name: "排班管理",
-      path: "/personnelManagement",
-    },
+    
     // {
     //   name: "健康宣教",
     //   path: "/setting/typeDict",
@@ -114,10 +119,7 @@ export const navConfig = (appStore:any,authStore?:any)=>{
     //     }
     //   ]
     // },
-    {
-      name: "护理制度",
-      path: "/nursingRulesNew",
-    },
+    
     {
       name: "我的档案",
       path: "/selfNurseFile",
