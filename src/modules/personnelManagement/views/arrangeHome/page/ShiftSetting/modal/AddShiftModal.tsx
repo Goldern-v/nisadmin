@@ -247,7 +247,7 @@ switch (appStore.HOSPITAL_ID) {
               workTime4: moment("18:00", "HH:mm"),
               effectiveTime: "8",
               winterEffectiveTime: '8',
-              nameColor: appStore.HOSPITAL_ID == 'whyx' ? '#333333' : "",
+              nameColor: ['whyx','whhk'].includes(appStore.HOSPITAL_ID) ? '#333333' : "",
               status: true,
               rangeLimit: "",
               settingNightHour: "0",
@@ -387,7 +387,7 @@ switch (appStore.HOSPITAL_ID) {
                   </Select>
                 </Form.Field>
               </Col>
-              {appStore.HOSPITAL_ID == "whyx" && (
+              {['whyx','whhk'].includes(appStore.HOSPITAL_ID) && (
                 <Col span={24}>
                   <Form.Field label={`班次岗位系数`} name="coefficient">
                     {/* <Input/> */}
@@ -514,7 +514,7 @@ switch (appStore.HOSPITAL_ID) {
                   </Form.Field>
                 </Col>
               </div>}
-              {['whyx'].includes(appStore.HOSPITAL_ID) &&
+              {['whyx','whhk'].includes(appStore.HOSPITAL_ID) &&
                 <Col span={24}>
                   <Form.Field label={`列入患者比`} name="npProportion">
                     <Select>
@@ -524,7 +524,7 @@ switch (appStore.HOSPITAL_ID) {
                   </Form.Field>
                 </Col>
               }
-              {['whyx', 'fssdy'].includes(appStore.HOSPITAL_ID) &&
+              {['whyx', 'fssdy','whhk'].includes(appStore.HOSPITAL_ID) &&
                 <React.Fragment>
                   <Col span={12} className="color-lump">
                     <Form.Field label={`色块标记`} name="backgroundColor">
@@ -560,7 +560,7 @@ switch (appStore.HOSPITAL_ID) {
                   </Col>
                 </React.Fragment>
               }
-              {!['whyx', 'fssdy'].includes(appStore.HOSPITAL_ID) &&
+              {!['whyx', 'fssdy','whhk'].includes(appStore.HOSPITAL_ID) &&
                 <Col span={24}>
                   <Form.Field
                     label={`颜色标记`}

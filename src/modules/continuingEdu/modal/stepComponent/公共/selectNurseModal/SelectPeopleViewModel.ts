@@ -210,11 +210,12 @@ class SelectPeopleViewModel {
           }
         })
         return {
+          NTypeList:[],
           parent: authStore.selectedDeptName,
           list:containN.sort((a:any,b:any)=>a.currentLevel.substr(1) - b.currentLevel.substr(1)).concat(noContainN).map((item: any) => ({
             ...item,
             /*whyx需要增加层级*/
-            label:`${appStore.HOSPITAL_ID==='whyx'?`${item.currentLevel} ${item.empName}`:`${item.empName}`}` ,
+            label:`${["whyx","whhk"].includes(appStore.HOSPITAL_ID)?`${item.currentLevel} ${item.empName}`:`${item.empName}`}` ,
             key: item.empNo,
             userList: [item]
           })),
@@ -255,19 +256,32 @@ class SelectPeopleViewModel {
               (item: any) => item[dataLabel || ""] == this.stepState[1]
           ) || {};
       /*不包含N层级的数据*/
-      let containN:any=[],noContainN:any=[] ;
+      let containN:any=[],noContainN:any=[],NType:any=[],NTypeList:any=[];//NType--N1，N2...分类
       (userData.userList || []).map((item:any)=>{
         if(item.currentLevel&&item.currentLevel.includes('N')){
           containN.push(item)
+          // 武汉亚心增加层级选择
+          NType.push({
+            label:item.currentLevel,
+            currentLevel:item.currentLevel,
+            empName:''
+          })
         }else{
           noContainN.push(item)
         }
       })
+      // 武汉亚心增加层级选择
+      if(NType.length>0){
+        const res = new Map()
+        NTypeList =  NType.filter((it:any) => !res.has(it.currentLevel) && res.set(it.currentLevel, 1))//去重
+        NTypeList.sort((a:any,b:any)=>a.currentLevel.substr(1) - b.currentLevel.substr(1))//排序
+      }
       return {
+        NTypeList:NTypeList,
         parent: userData[dataLabel || ""],
         list: containN.sort((a:any,b:any)=>a.currentLevel.substr(1) - b.currentLevel.substr(1)).concat(noContainN).map((item: any) => ({
           ...item,
-          label:`${appStore.HOSPITAL_ID==='whyx'?`${item.currentLevel} ${item.empName}`:`${item.empName}`}` ,
+          label:`${["whyx","whhk"].includes(appStore.HOSPITAL_ID)?`${item.currentLevel} ${item.empName}`:`${item.empName}`}` ,
           key: item.empNo,
           userList: [item]
         })),

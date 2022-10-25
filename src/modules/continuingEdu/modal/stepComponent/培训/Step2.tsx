@@ -79,7 +79,7 @@ export default observer(function Step1() {
   const selectNurseModal = createModal(SelectPeopleModal);
   let refForm = React.createRef<Form>();
   const getStudentCreditTypeList = () => {
-    if (['wh' ,'gxjb', 'whyx', 'ytll'].includes(appStore.HOSPITAL_ID)) {
+    if (['wh' ,'gxjb', 'whyx', 'ytll','whhk'].includes(appStore.HOSPITAL_ID)) {
       // setStudentCreditTypeList([
       //   { name: "国家级", code: 1 },
       //   { name: "省级", code: 2 },

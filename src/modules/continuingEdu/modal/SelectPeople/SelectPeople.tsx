@@ -528,7 +528,7 @@ const CheckListCon = observer(function (props: any) {
       ) :
         (<Con>
           {/* 武汉亚心增加片区——层级选择 */}
-          {appStore.HOSPITAL_ID === 'whyx' && selectPeopleViewModel.currentTreeData!.NTypeList?.map((it:any,idx:number)=>{
+          {["whyx","whhk"].includes(appStore.HOSPITAL_ID) && selectPeopleViewModel.currentTreeData!.NTypeList?.map((it:any,idx:number)=>{
             return (<Checkbox className="whyx-checkbox" key={idx} checked={it.checked}
               value={it.label} onChange={e => onCheckWhyx(e, it,idx)}
             >

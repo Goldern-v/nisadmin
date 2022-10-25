@@ -19,7 +19,7 @@ export default observer(function StatisticMIdHeader() {
   useEffect(() => {
     let getTitleByAuthStore = statisticViewModel.deptName + '护士休假统计'
     setTitle(getTitleByAuthStore)
-    if (['whyx'].includes(appStore.HOSPITAL_ID)) {
+    if (['whyx','whhk'].includes(appStore.HOSPITAL_ID)) {
       setIsDate(!/(按月份)/.test(authStore.selectedDeptNameAdd))
     }
     // emitter.removeAllListeners('设置统计页标题')

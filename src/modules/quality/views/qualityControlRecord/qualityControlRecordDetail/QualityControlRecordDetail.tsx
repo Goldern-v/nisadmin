@@ -51,7 +51,7 @@ function QualityControlRecordDetail() {
     setLoading(true)
     let fn = appStore.hisMatch({
       map: {
-        whyx: qualityControlRecordApi.qcItemInstanceGetYX,
+        "whyx,whhk": qualityControlRecordApi.qcItemInstanceGetYX,
         default: qualityControlRecordApi.qcItemInstanceGet
       },
       vague: true

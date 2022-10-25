@@ -123,7 +123,7 @@ export default observer(function QcItemGroup(props: Props) {
               全否
             </Button>
           )}
-          {['lcey', 'whyx'].includes(appStore.HOSPITAL_ID) && (
+          {['lcey', 'whyx','whhk'].includes(appStore.HOSPITAL_ID) && (
             <Button
               style={{ marginLeft: '10px', backgroundColor: '#FFA500', color: '#FFFFFF' }}
               type="default"
@@ -147,11 +147,12 @@ export default observer(function QcItemGroup(props: Props) {
           {item.fixedScore &&
             appStore.hisMatch({
               map: {
-                whyx: '',
+                "whyx,whhk": '',
                 other: (
                   <span style={{ color: '#999' }}>（{item.fixedScore}分）</span>
                 )
-              }
+              },
+              vague:true,
             })
           }
           {item.inspectionMethod && (
@@ -247,7 +248,7 @@ export default observer(function QcItemGroup(props: Props) {
             {
               appStore.hisMatch({
                 map: {
-                  whyx: '',
+                  "whyx,whhk": '',
                   other: (<div>
                     <span
                       style={{
@@ -302,7 +303,8 @@ export default observer(function QcItemGroup(props: Props) {
                       }
                     />}
                   </div>)
-                }
+                },
+                vague:true,
               })
             }
 
@@ -311,7 +313,7 @@ export default observer(function QcItemGroup(props: Props) {
                 value={item.remark}
                 autosize={{ minRows: 2 }}
                 placeholder="备注"
-                disabled={['whyx'].includes(appStore.HOSPITAL_ID) && (item.qcItemValue == '是' || item.qcItemValue == '')}
+                disabled={['whyx','whhk'].includes(appStore.HOSPITAL_ID) && (item.qcItemValue == '是' || item.qcItemValue == '')}
                 onChange={(e) => handleItemChange({
                   ...item,
                   remark: e.target.value,
@@ -320,7 +322,7 @@ export default observer(function QcItemGroup(props: Props) {
           </div>}
           {appStore.hisMatch({
             map: {
-              whyx: '',
+              "whyx,whhk": '',
               other: <div className="img-upload">
                 <MultipleImageUploader
                   tip={"(最多上传三张图片)"}
@@ -335,7 +337,8 @@ export default observer(function QcItemGroup(props: Props) {
                   }
                   onChange={(urls: any, ids: any) => handleAttachUrlsChange(urls, ids, itemIndex)} />
               </div>
-            }
+            },
+            vague:true
           })
           }
 
@@ -398,7 +401,7 @@ export default observer(function QcItemGroup(props: Props) {
     ))}
     {appStore.hisMatch({
       map: {
-        'nys,whyx,gxjb': '',
+        'nys,whyx,gxjb,whhk': '',
         // lcey: '',
         other: <div className='notesCon'>
           <div className='notesLeftCon'>备注</div>

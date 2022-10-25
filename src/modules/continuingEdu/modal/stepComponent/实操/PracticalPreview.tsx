@@ -53,7 +53,7 @@ export default observer(function PracticalImportModal(props: props) {
       ]}
     >
       {params && (
-        appStore.HOSPITAL_ID == 'whyx'?(
+        ['whyx','whhk'].includes(appStore.HOSPITAL_ID)?(
           <PracticalTablewhyx params={params} modalTitle={modalTitle}></PracticalTablewhyx>
         ):(
           <PracticalTablefsxt params={params} modalTitle={modalTitle}></PracticalTablefsxt>

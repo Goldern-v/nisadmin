@@ -46,11 +46,12 @@ export default function ToolBar() {
         {
           appStore.hisMatch({
             map: {
-              'whyx': <Button onClick={(e: any) => {
+              'whyx,whhk': <Button onClick={(e: any) => {
                 emitter.emit("全部列入排班");
               }} style={{ marginLeft: 3, marginRight: 3 }}> 全部列入排班</Button>,
               default: ""
             },
+            vague:true
           })
         }
 
@@ -73,10 +74,10 @@ export default function ToolBar() {
           {
             appStore.hisMatch({
               map: {
-                'wh,gzsrm,lyyz,qhwy,whsl,ytll,whhk': '添加',
+                'wh,gzsrm,lyyz,qhwy,whsl,ytll': '添加',
                 hj: '添加实习护士',
                 "nys,lcey": '添加排班人员',
-                whyx: "添加实习/进修生护士",
+                'whyx,whhk': "添加实习/进修生护士",
                 default: '添加实习护士',
               },
               vague: true

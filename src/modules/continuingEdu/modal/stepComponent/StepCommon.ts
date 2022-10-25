@@ -22,7 +22,7 @@ export const newStudentCreditTypeList: Array<IStudentCreditType> = appStore.hisM
       { name: "科级", code: 5 },
       { name: "病区", code: 6 },
     ],
-    whyx: [
+    'whyx,whhk': [
       { name: "I级学分", code: 1 },
       { name: "II级学分", code: 2 },
     ],
@@ -31,7 +31,8 @@ export const newStudentCreditTypeList: Array<IStudentCreditType> = appStore.hisM
       { name: "片区学分", code: 2 },
       { name: "病区学分", code: 3 },
     ],
-  }
+  },
+  vague:true
 })
 /**
  * 学习学分类型map
@@ -51,7 +52,7 @@ export const newStudentCreditTypeMap: any = appStore.hisMatch({
       5: "科级",
       6: "病区"
     },
-    whyx: { 
+    'whyx,whhk': { 
       1: "I级学分", 
       2: "II级学分",
     },
@@ -60,5 +61,6 @@ export const newStudentCreditTypeMap: any = appStore.hisMatch({
       2: "省级",
       3: "市级"
     },
-  }
+  },
+  vague:true
 });

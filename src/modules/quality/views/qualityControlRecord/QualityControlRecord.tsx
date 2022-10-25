@@ -82,7 +82,7 @@ export default observer(function QualityControlRecord() {
         });
     } else {
       let level = qualityControlRecordVM.level;
-      if (["whyx"].includes(appStore.HOSPITAL_ID)) {
+      if (["whyx","whhk"].includes(appStore.HOSPITAL_ID)) {
         const obj = {
           4: "护理部职能督导",
         };

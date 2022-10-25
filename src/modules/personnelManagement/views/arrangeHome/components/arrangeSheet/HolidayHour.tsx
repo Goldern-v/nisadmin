@@ -22,7 +22,7 @@ export const holidayHour = (id: any) => {
 /** 计算总节修 */
 let real_holidayHour = 0
 for (let j = 0; j < (user.settingDtos || []).length; j++) {
-  if (['whyx'].includes(appStore.HOSPITAL_ID)) {
+  if (['whyx','whhk'].includes(appStore.HOSPITAL_ID)) {
     real_holidayHour += user.settingDtos[j].shiftType == '节休' ? 1 : 0
   } else {
     real_holidayHour += user.settingDtos[j].rangeName == '节休' ? 1 : 0

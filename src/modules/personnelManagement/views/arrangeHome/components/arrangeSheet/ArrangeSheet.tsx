@@ -52,7 +52,7 @@ export default observer(function ArrangeSheet(props: Props) {
   let editEffectiveTimeModal = createModal(
     appStore.hisMatch({
       map: {
-        'wjgdszd,wh,gxjb,lcey,dghl,fqfybjy,jmfy,nys,gzsrm,fssdy,fsxt,925,sdlj,whyx,gdtj,lyyz,qhwy,whsl,ytll,zhzxy,whhk,nfsd': EditVacationCountModal_wh,
+        'wjgdszd,wh,gxjb,lcey,dghl,fqfybjy,jmfy,nys,gzsrm,fssdy,fsxt,925,sdlj,whyx,gdtj,lyyz,qhwy,whsl,ytll,zhzxy,whhk,nfsd,whhk': EditVacationCountModal_wh,
         other: EditEffectiveTimeModal,
       },
       vague: true
@@ -122,7 +122,7 @@ export default observer(function ArrangeSheet(props: Props) {
     ...nysGroupName,
     ...appStore.hisMatch({
       map: {
-        'whyx': [
+        'whyx,whhk': [
           {
             title: "组别",
             dataIndex: "groupNameAndNum",
@@ -140,6 +140,7 @@ export default observer(function ArrangeSheet(props: Props) {
         ],
         default: [],
       },
+      vague:true
     }),
     ...appStore.hisMatch({map:{
         'wjgdszd':[],
@@ -177,11 +178,11 @@ export default observer(function ArrangeSheet(props: Props) {
     {
       title: "姓名",
       dataIndex: "empName",
-      width:appStore.HOSPITAL_ID==='whyx'?120: 50,
+      width:['whyx','whhk'].includes(appStore.HOSPITAL_ID)?120: 50,
       fixed: "left",
       align: "center",
       render(text: any, record: any) {
-        if (['whyx'].includes(appStore.HOSPITAL_ID)) {
+        if (['whyx','whhk'].includes(appStore.HOSPITAL_ID)) {
           return <div style={{ background: !!record.resignationFlag ? '#fff58a' : '' }}>
             <span style={{ color: record.empNo == '实习' ? "#ff3030" : record.empNo == '进修' ? "#007aff" : "" }}>{record.empName}</span>
             {record.extraUser && <React.Fragment>
@@ -209,7 +210,7 @@ export default observer(function ArrangeSheet(props: Props) {
     }),
     ...appStore.hisMatch({
       map: {
-        whyx: [
+        'whyx,whhk': [
           {
             title: "职务",
             dataIndex: "job",
@@ -234,7 +235,8 @@ export default observer(function ArrangeSheet(props: Props) {
             align: "center",
           },
         ]
-      }
+      },
+      vague:true
     }),
     // ...appStore.hisMatch({
     //   map: {
@@ -511,7 +513,7 @@ export default observer(function ArrangeSheet(props: Props) {
   };
 
   /** 武汉特殊字段*/
-  if (["wh", "gzsrm", "gxjb", "fsxt", '925', "sdlj", "whyx", 'fssdy',"gdtj", "lyyz", "qhwy","whsl","wjgdszd", 'ytll','zhzxy', 'nfsd'].includes(appStore.HOSPITAL_ID)) {
+  if (["wh", "gzsrm", "gxjb", "fsxt", '925', "sdlj", "whyx",'whhk', 'fssdy',"gdtj", "lyyz", "qhwy","whsl","wjgdszd", 'ytll','zhzxy', 'nfsd'].includes(appStore.HOSPITAL_ID)) {
     columns.push(
       {
         title: (
@@ -562,7 +564,7 @@ export default observer(function ArrangeSheet(props: Props) {
       }),
         ...appStore.hisMatch({
           map: {
-            'whyx': [
+            'whyx,whhk': [
             ],
             other: [
               {
@@ -712,7 +714,7 @@ export default observer(function ArrangeSheet(props: Props) {
   }
 
   // 武汉亚心特殊字段
-  if (["whyx"].includes(appStore.HOSPITAL_ID)) {
+  if (["whyx","whhk"].includes(appStore.HOSPITAL_ID)) {
     columns.push(
       {
         title: (
@@ -764,7 +766,7 @@ export default observer(function ArrangeSheet(props: Props) {
           let widthNys =
             appStore.HOSPITAL_ID == "nys"
               ? 210 : 250;
-          if (appStore.HOSPITAL_ID == 'whyx') {
+          if (['whyx','whhk'].includes(appStore.HOSPITAL_ID)) {
             widthNys += 170
           }
           if (appStore.HOSPITAL_ID == 'wjgdszd') {
@@ -786,7 +788,7 @@ export default observer(function ArrangeSheet(props: Props) {
                   hj: 3,
                   fqfybjy: 5,
                   nys: (isEdit ? 6 : 5),
-                  'wjgdszd,wh,gxjb,jmfy,dghl,gzsrm,fsxt,925,whyx,sdlj,gdtj,lyyz,qhwy,whsl,ytll,zhzxy,whhk,nfsd': 6,
+                  'wjgdszd,wh,gxjb,jmfy,dghl,gzsrm,fsxt,925,whyx,whhk,sdlj,gdtj,lyyz,qhwy,whsl,ytll,zhzxy,whhk,nfsd': 6,
                   fssdy: 7,
                   other: 2
                 },
@@ -896,7 +898,7 @@ export default observer(function ArrangeSheet(props: Props) {
                 {
                   appStore.hisMatch({
                     map: {
-                      'qhwy,whhk':
+                      'qhwy':
                         <div className='remark-con system'>
                           <div className="remark-title">
                             系统标注:
@@ -905,7 +907,7 @@ export default observer(function ArrangeSheet(props: Props) {
                             <p>1.符号标识："▲" 代表全院应急；"★" 代表科室应急班；"<span style={{color:"red",fontSize:"18px"}}>➁</span>"代表二线；"<span style={{color:"red",fontSize:"18px"}}>➂</span>"代表三线；</p>
                           </div>
                       </div>,
-                      'whyx':
+                      'whyx,whhk':
                         <div className="remark-con system">
                           <div className="remark-title">
                             系统标注:

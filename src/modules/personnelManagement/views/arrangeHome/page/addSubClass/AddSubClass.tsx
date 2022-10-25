@@ -165,7 +165,7 @@ export default observer(function AddSubClass() {
       endDate: date[1] ? moment(date[1]).format("YYYY-MM-DD") : ""
     }
 
-    if (['whyx'].includes(appStore.HOSPITAL_ID)) {
+    if (['whyx','whhk'].includes(appStore.HOSPITAL_ID)) {
       data.deptCode = authStore.selectedDeptCode
     } else {
       data.wardCode = authStore.selectedDeptCode

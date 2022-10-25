@@ -509,7 +509,7 @@ export default observer(function TrainingResultReview() {
               }
             </TabPane>
           )}
-          {appStore.HOSPITAL_ID === "whyx" && 
+          {["whyx","whhk"].includes(appStore.HOSPITAL_ID) && 
             <TabPane tab="培训实施记录" key="2">
               <TrainingRecordTable />
             </TabPane>}

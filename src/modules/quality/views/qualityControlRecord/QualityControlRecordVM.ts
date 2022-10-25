@@ -51,13 +51,14 @@ class QualityControlRecordVM {
     let dictChainNodeFn: any = null
     let fn = appStore.hisMatch({
       map: {
-        whyx: () => {
+        "whyx,whhk": () => {
           dictChainNodeFn = qualityControlRecordApi.dictChainNodeYX.bind(qualityControlRecordApi)
         },
         other: () => {
           dictChainNodeFn = qualityControlRecordApi.dictChainNode.bind(qualityControlRecordApi)
         }
-      }
+      },
+      vague:true,
     })
     fn()
     await Promise.all([

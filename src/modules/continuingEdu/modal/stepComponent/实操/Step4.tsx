@@ -36,7 +36,7 @@ export default observer(function Step4() {
     Object.assign(stepViewModal.stepData2, data);
   };
   const handleonvaluechange = () => {
-    if (["whyx","fsxt",'925'].includes(appStore.HOSPITAL_ID)) {
+    if (["whyx","fsxt",'925','whhk'].includes(appStore.HOSPITAL_ID)) {
       let list = pratical.find((item: any) => {
         return stepViewModal.stepData2.adminTable == item.code;
       });

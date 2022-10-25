@@ -153,7 +153,7 @@ export default observer(function qualityControlRecordTable(props: Props) {
     ...appStore.hisMatch({
       map: {
         gzsrm: [],
-        whyx: [
+        "whyx,whhk": [
           {
             title: "病案号",
             // dataIndex: 'zyh',
@@ -179,6 +179,7 @@ export default observer(function qualityControlRecordTable(props: Props) {
           },
         ],
       },
+      vague:true
     }),
     // {
     //   title: '管床护士',
@@ -200,7 +201,7 @@ export default observer(function qualityControlRecordTable(props: Props) {
     // },
     ...appStore.hisMatch({
       map: {
-        whyx: [
+        "whyx,whhk": [
           {
             title: "质控过程",
             dataIndex: "qcDuring",
@@ -212,7 +213,8 @@ export default observer(function qualityControlRecordTable(props: Props) {
           },
         ],
         other: []
-      }
+      },
+      vague:true
     }),
     ...appStore.hisMatch({
       map: {

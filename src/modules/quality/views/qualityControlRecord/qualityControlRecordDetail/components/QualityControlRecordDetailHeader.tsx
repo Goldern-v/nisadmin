@@ -177,7 +177,7 @@ export default function qualityControlRecordDetailHeader(props: Props) {
       .exportQcItemDetail(master.id)
       .then((res) => fileDownload(res));
   };
-  const isWhyx = ['whyx'].includes(appStore.HOSPITAL_ID)
+  const isWhyx = ['whyx','whhk'].includes(appStore.HOSPITAL_ID)
   const [btnRoleYX, setBtnRoleYX] = useState(false)
   useEffect(() => {
     if (isWhyx) {
@@ -229,7 +229,7 @@ export default function qualityControlRecordDetailHeader(props: Props) {
             {nextNode.nodeName && (
               appStore.hisMatch({
                 map: {
-                  whyx: <Button
+                  "whyx,whhk": <Button
                   onClick={() => onAudit(nextNode.handleType)}
                   type="primary"
                   disabled={btnRoleYX}
@@ -243,7 +243,8 @@ export default function qualityControlRecordDetailHeader(props: Props) {
               >
                 {nextNode.nodeName}
               </Button>
-                }
+                },
+                vague:true
               })
               
             )}

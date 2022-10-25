@@ -152,7 +152,7 @@ export default function Step1() {
               <Input readOnly />
             </Form.Field>
           </Col>
-          {appStore.HOSPITAL_ID == 'whyx' && stepViewModal.stepData1.teachingMethodName == '培训' &&
+          {["whyx","whhk"].includes(appStore.HOSPITAL_ID) && stepViewModal.stepData1.teachingMethodName == '培训' &&
           <Row>
           <Col span={24}>
             <Form.Field label={`二级类型`} name="secondType">

@@ -232,7 +232,7 @@ class SelectPeopleViewModel {
           list:containN.sort((a:any,b:any)=>a.currentLevel.substr(1) - b.currentLevel.substr(1)).concat(noContainN).map((item: any) => ({
             ...item,
             /*whyx需要增加层级*/
-            label:`${appStore.HOSPITAL_ID==='whyx'?`${item.currentLevel} ${item.empName}`:`${item.empName}`}` ,
+            label:`${["whyx","whhk"].includes(appStore.HOSPITAL_ID)?`${item.currentLevel} ${item.empName}`:`${item.empName}`}` ,
             key: item.empNo,
             userList: [item]
           })),
@@ -313,7 +313,7 @@ class SelectPeopleViewModel {
         list: containN.sort((a:any,b:any)=>a.currentLevel.substr(1) - b.currentLevel.substr(1)).concat(noContainN).map((item: any) => ({
           ...item,
           /*whyx需要增加层级*/
-          label:`${appStore.HOSPITAL_ID==='whyx'?`${item.currentLevel || ''} ${item.empName}`:`${item.empName}`}` ,
+          label:`${["whyx","whhk"].includes(appStore.HOSPITAL_ID)?`${item.currentLevel || ''} ${item.empName}`:`${item.empName}`}` ,
           key: item.empNo,
           userList: [item]
         })),

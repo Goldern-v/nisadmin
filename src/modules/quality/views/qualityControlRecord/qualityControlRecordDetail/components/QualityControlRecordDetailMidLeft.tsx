@@ -164,7 +164,7 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
   }
 
   // 当前医院是否为亚心
-  const isWhyx = ['whyx'].includes(appStore.HOSPITAL_ID)
+  const isWhyx = ['whyx','whhk'].includes(appStore.HOSPITAL_ID)
 
   return (
     <Con ref={pageRef} className="print-page">
@@ -178,17 +178,18 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
           <div>质控病区：{messageBoxData.wardName}</div>
           {appStore.hisMatch({
             map: {
-              whyx: detailData?.master?.isBedNumber === '是'
+              'whyx,whhk': detailData?.master?.isBedNumber === '是'
                 ? <div>
                     病人姓名：{messageBoxData && messageBoxData.patientName}
                   </div>
                 : <span></span>
             },
+            vague:true,
             currentHospitalId: qcMatchCode
           })}
           {appStore.hisMatch({
             map: {
-              whyx: detailData?.master?.isBedNumber === '是'
+              "whyx,whhk": detailData?.master?.isBedNumber === '是'
                 ? <div>
                     床号：{messageBoxData.bedLabel && messageBoxData.bedLabel + "床"}
                   </div>
@@ -197,14 +198,16 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
                 床号：{messageBoxData.bedLabel && messageBoxData.bedLabel + "床"}
               </div>
             },
+            vague:true,
             currentHospitalId: qcMatchCode
           })}
           {appStore.hisMatch({
             map: {
               gzsrm: <span></span>,
-              whyx: detailData?.master?.isPatientNumber === '是' ? <div>病案号：{messageBoxData.inpNo}</div> : <span></span>,
+              "whyx,whhk": detailData?.master?.isPatientNumber === '是' ? <div>病案号：{messageBoxData.inpNo}</div> : <span></span>,
               other: <div>需要跟踪评价：{messageBoxData.followEvaluate ? "是" : "否"}</div>
             },
+            vague:true,
             currentHospitalId: qcMatchCode
           })}
           {/* <div>需要跟踪评价：{messageBoxData.followEvaluate ? "是" : "否"}</div> */}
@@ -456,7 +459,7 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
             ))}
             {appStore.hisMatch({
               map: {
-                'nys,whyx,gxjb': '',
+                'nys,whyx,gxjb,whhk': '',
                 other: ((onlyReadError && itemGroup.remark) || !onlyReadError) && (
                   <div className="notesCon">
                     <div className="notesLeftCon">备注</div>
@@ -477,7 +480,7 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
         ))}
         {appStore.hisMatch({
           map: {
-            'gzsrm,whyx': <span></span>,
+            'gzsrm,whyx,whhk': <span></span>,
             other: <React.Fragment>
               {!onlyReadError && (
                 <QuestionBottomCon>

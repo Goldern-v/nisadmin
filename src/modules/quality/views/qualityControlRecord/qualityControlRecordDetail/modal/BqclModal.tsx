@@ -76,7 +76,7 @@ export default function BqclModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={['whyx'].includes(appStore.HOSPITAL_ID) ? '改进措施及整改结果' : `整改措施`} name='handleContent' required>
+            <Form.Field label={['whyx','whhk'].includes(appStore.HOSPITAL_ID) ? '改进措施及整改结果' : `整改措施`} name='handleContent' required>
               <Input.TextArea />
             </Form.Field>
           </Col>

@@ -16,7 +16,7 @@ export default function QcFunRouter(props: Props) {
 
   let extra_menu: any = appStore.hisMatch({
     map: {
-      whyx: [],
+      "whyx,whhk": [],
       other: [],
     },
     vague: true,

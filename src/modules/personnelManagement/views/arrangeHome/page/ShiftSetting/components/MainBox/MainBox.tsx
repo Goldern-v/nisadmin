@@ -68,7 +68,7 @@ export default function MainBox() {
   const addShiftModal = createModal(
     appStore.hisMatch({
       map: {
-        'wh,lyyz,qhwy,wjgdszd,ytll,zhzxy,whhk': AddShiftModal_wh,
+        'wh,lyyz,qhwy,wjgdszd,ytll,zhzxy': AddShiftModal_wh,
         // gxjb: AddShiftModal_wh,
         other: AddShiftModal
       },
@@ -151,7 +151,7 @@ export default function MainBox() {
       render: (text: string, record: any) =>
         text && text.length > 0 ? (
           <span>
-            {['whyx', 'fssdy'].includes(appStore.HOSPITAL_ID) ?
+            {['whyx', 'fssdy','whhk'].includes(appStore.HOSPITAL_ID) ?
               <Tag color={record.backgroundColor} key={text}>
                 <span style={{ color: record.nameColor }}>{colorMapCN[text]}</span>
               </Tag> :
@@ -204,7 +204,7 @@ export default function MainBox() {
     }),
     ...appStore.hisMatch({
       map: {
-        whyx: [
+        'whyx,whhk': [
           {
             title: "班次岗位系数",
             width: 70,
@@ -233,6 +233,7 @@ export default function MainBox() {
 
         other: []
       },
+      vague:true,
     }),
     ...appStore.hisMatch({
       map: {
@@ -364,14 +365,14 @@ export default function MainBox() {
   ];
   // new:南医三护士长可以编辑排班设置
   let promise =
-    (["wh", 'gxjb', "lyyz","qhwy", "ytll", 'whhk'].includes(appStore.HOSPITAL_ID))
+    (["wh", 'gxjb', "lyyz","qhwy", "ytll"].includes(appStore.HOSPITAL_ID))
       ? authStore.isRoleManage
       : (authStore.user && authStore.user.post) == "护理部" ||
       (authStore.user && authStore.user.empName) == "管理员" ||
       authStore.isRoleManage;
 
   if (promise) {
-    if (appStore.HOSPITAL_ID == 'whyx' && authStore.isSuperAdmin) {
+    if (['whyx','whhk'].includes(appStore.HOSPITAL_ID) && authStore.isSuperAdmin) {
       columns.push({
         title: "操作",
         dataIndex: "title",
@@ -448,7 +449,7 @@ export default function MainBox() {
           </DoCon>;
         }
       });
-    } else if (appStore.HOSPITAL_ID != 'whyx') {
+    } else if (!['whyx','whhk'].includes(appStore.HOSPITAL_ID)) {
       columns.push({
         title: "操作",
         dataIndex: "title",
@@ -529,7 +530,7 @@ export default function MainBox() {
     }
   }
   // new: 武汉市一增加是否为责护
-  let isWh = ['wh', 'lyyz', 'qhwy', "ytll", 'whhk'].includes(appStore.HOSPITAL_ID)
+  let isWh = ['wh', 'lyyz', 'qhwy', "ytll"].includes(appStore.HOSPITAL_ID)
   if (isWh) {
     columns.splice(4, 0, {
       title: "是否为责护",

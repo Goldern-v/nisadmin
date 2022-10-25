@@ -24,13 +24,13 @@ export const publicHour = (id: any) => {
   /** 计算总公修 */
   let real_publicHour = 0;
   for (let j = 0; j < (user.settingDtos || []).length; j++) {
-    if (['whyx'].includes(appStore.HOSPITAL_ID)) {
+    if (['whyx','whhk'].includes(appStore.HOSPITAL_ID)) {
       real_publicHour += user.settingDtos[j].shiftType == "公休" ? 1 : 0;
     } else {
       real_publicHour += user.settingDtos[j].rangeName == "公休" ? 1 : 0;
     }
     if (user.settingDtos[j]!.workDate.includes("-01-01")) {
-      if (['whyx'].includes(appStore.HOSPITAL_ID)) {
+      if (['whyx','whhk'].includes(appStore.HOSPITAL_ID)) {
         real_publicHour = user.settingDtos[j].shiftType == "公休" ? 1 : 0;
       } else {
         real_publicHour = user.settingDtos[j].rangeName == "公休" ? 1 : 0;

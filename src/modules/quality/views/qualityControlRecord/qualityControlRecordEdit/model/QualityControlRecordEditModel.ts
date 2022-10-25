@@ -198,7 +198,7 @@ class QualityControlRecordEditModel {
     if (!this.query.id) {
       let fn = appStore.hisMatch({
         map: {
-          whyx: qualityControlRecordApi.formTemplateDetailYX,
+          "whyx,whhk": qualityControlRecordApi.formTemplateDetailYX,
           default: qualityControlRecordApi.formTemplateDetail
         },
         vague: true
@@ -248,7 +248,7 @@ class QualityControlRecordEditModel {
     } else {
       let fn = appStore.hisMatch({
         map: {
-          whyx: qualityControlRecordApi.qcItemInstanceGetYX,
+          "whyx,whhk": qualityControlRecordApi.qcItemInstanceGetYX,
           default: qualityControlRecordApi.qcItemInstanceGet
         },
         vague: true
@@ -563,7 +563,7 @@ class QualityControlRecordEditModel {
     if (!this.checkSaveGZSRM(params)) return
     let fn = appStore.hisMatch({
       map: {
-        whyx: qualityControlRecordApi.formSaveYX,
+        "whyx,whhk": qualityControlRecordApi.formSaveYX,
         default: qualityControlRecordApi.formSave
       },
       vague: true
@@ -598,7 +598,7 @@ class QualityControlRecordEditModel {
     if (!this.checkSaveGZSRM(params)) return
     let fn = appStore.hisMatch({
       map: {
-        whyx: qualityControlRecordApi.formSaveYX,
+        "whyx,whhk": qualityControlRecordApi.formSaveYX,
         default: qualityControlRecordApi.formSave
       },
       vague: true
@@ -622,7 +622,7 @@ class QualityControlRecordEditModel {
     this.auditList = [...auditList]
   }
   @computed get yxGradeObj(): Record<string, any> {
-    if (appStore.HOSPITAL_ID !== 'whyx') return {}
+    if (!['whyx','whhk'].includes(appStore.HOSPITAL_ID)) return {}
 
     let right = 0;
     let fault = 0;

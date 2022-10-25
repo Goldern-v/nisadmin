@@ -95,7 +95,7 @@ export default observer(function Cell(props: Props) {
             icon: require("../../images/修改工时.png"),
             label: "加/减班",
             type: "text",
-            disabled:['whyx'].includes(appStore.HOSPITAL_ID) ?  false: disableByName,
+            disabled:['whyx','whhk'].includes(appStore.HOSPITAL_ID) ?  false: disableByName,
             onClick: () => {
               editEffectiveTimeModal.show({
                 data: sheetViewModal.selectedCell,
@@ -180,7 +180,7 @@ export default observer(function Cell(props: Props) {
                 }
               }
             ],
-            'fssdy,nfzxy,whyx': [
+            'fssdy,nfzxy,whyx,whhk': [
               {
                 icon: require("../../images/修改工时.png"),
                 label: "添加备注",
@@ -403,7 +403,7 @@ export default observer(function Cell(props: Props) {
         // 亚心同步
         ...appStore.hisMatch({
           map: {
-            'whyx': [
+            'whyx,whhk': [
               {
                 icon: require("../../images/粘贴行.png"),
                 label: "同步同组排班",
@@ -416,7 +416,8 @@ export default observer(function Cell(props: Props) {
               },
             ],
             other: []
-          }
+          },
+          vague:true
         }),
         // {
         //   icon: require("../../images/复制行.png"),
@@ -549,7 +550,7 @@ export default observer(function Cell(props: Props) {
           "天积假"
         );
       },
-      'wh,wjgdszd,gxjb,lcey,dghl,fqfybjy,fssdy,fsxt,925,whyx,lyyz,ytll': () => {
+      'wh,wjgdszd,gxjb,lcey,dghl,fqfybjy,fssdy,fsxt,925,whyx,whhk,lyyz,ytll': () => {
         return (
           (cellObj.schAddOrSubs &&
             cellObj.schAddOrSubs.length &&
@@ -574,7 +575,7 @@ export default observer(function Cell(props: Props) {
           0}h`
         )
       },
-      'qhwy,whsl,whhk':() => {
+      'qhwy,whsl':() => {
         return (
           (cellObj.schAddOrSubs &&
             cellObj.schAddOrSubs.length &&
@@ -620,7 +621,7 @@ export default observer(function Cell(props: Props) {
         onContextMenu={onContextMenu}
         onClick={onClick}
         className={classNames(cellConfig)}
-        backgroundColor={ ['whyx'].includes(appStore.HOSPITAL_ID) ? cellObj.backgroundColor : ''}
+        backgroundColor={ ['whyx','whhk'].includes(appStore.HOSPITAL_ID) ? cellObj.backgroundColor : ''}
       >
         {/* backgroundColor={['whyx', 'fssdy'].includes(appStore.HOSPITAL_ID) ? cellObj.backgroundColor : ""} */}
         {appStore.isDev && (
@@ -676,13 +677,13 @@ function formatCell(cellObj: ArrangeItem, isEdit = false) {
     return (
       <React.Fragment>
         <Con color={cellObj.nameColor}>
-          {appStore.HOSPITAL_ID != 'whyx' && <span style={{ color: symbol.symbolColor || "#333" }}>
+          {!['whyx','whhk'].includes(appStore.HOSPITAL_ID) && <span style={{ color: symbol.symbolColor || "#333" }}>
             {symbol.symbol || ""}
           </span>}
           {sheetViewModal.countArrangeNameList.includes(cellObj.rangeName)
             ? (cellObj.rangeName || "") + (cellObj.rangeNameCode || "")
             : cellObj.rangeName}
-          {appStore.HOSPITAL_ID == 'whyx' && <span style={{ color: symbol.symbolColor || "#333" }}>
+          {['whyx','whhk'].includes(appStore.HOSPITAL_ID) && <span style={{ color: symbol.symbolColor || "#333" }}>
             {symbol.symbol || ""}
           </span>
           }
