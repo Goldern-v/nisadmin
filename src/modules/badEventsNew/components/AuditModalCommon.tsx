@@ -1,7 +1,7 @@
 import React, { useState, useEffect, Fragment } from 'react'
 import styled from 'styled-components'
 import { Modal, Input, Select, Button, message as Message, Row, Col, Radio, message, DatePicker } from 'antd'
-import { authStore } from 'src/stores'
+import { appStore, authStore } from 'src/stores'
 import services from 'src/services/api'
 import { observer } from 'mobx-react-lite'
 import { badEventsNewService } from '../api/badEventsNewService'
@@ -40,12 +40,6 @@ export default observer(function AduitModal(props: Props) {
   const [userCheckVisible, setUserCheckVisible] = useState(false)
 
   const [confirmLoading, setConfirmLoading] = useState(false)
-
-  // useEffect(() => {
-  //   if (visible) {
-
-  //   }
-  // }, [visible])
 
   const handleOkBtn = () => {
     setUserCheckVisible(true)
@@ -108,6 +102,12 @@ export default observer(function AduitModal(props: Props) {
         // 意见和日期
         saveParams['B0002059'] = auditInfo.handleContent
         saveParams['B0002058'] = auditInfo.auditDate
+        break
+        // 追踪评论
+        case 'nursing_minister_flowcomment':
+        saveParams['B0009023'] = auditInfo.handleContent
+        saveParams['B0009024'] = userInfo.empName
+        saveParams['B0009025'] = auditInfo.auditDate
         break
       default:
     }
@@ -179,6 +179,7 @@ export default observer(function AduitModal(props: Props) {
         if (auditInfo.noPass)
           opionTitle = ' 回退原因'
         auditDateTitle = '审核日期'
+        if (appStore.HOSPITAL_ID === 'fqfybjy') auditTimeEditable = true
         break
       case 'dept_handle':
         opionTitle = '整改情况'
@@ -191,6 +192,14 @@ export default observer(function AduitModal(props: Props) {
           opionTitle = ' 回退原因'
         auditDateTitle = ' 护理部确认日期'
         break
+      case 'nursing_minister_flowcomment':
+        opionTitle = nodeInfo?.nodeName
+        if (auditInfo.noPass)
+          opionTitle = ' 回退原因'
+        auditDateTitle = nodeInfo?.nodeName + '日期'
+        if (appStore.HOSPITAL_ID === 'fqfybjy') auditTimeEditable = true
+        break
+        
       default:
     }
 
