@@ -208,7 +208,7 @@ export default observer(function qualityControlRecordTable(props: Props) {
             width: 80,
             align: "center",
             render(text: any, record: any) {
-              return `${record.yesSize}/${record.evalSize}`;
+              return `${record.yesSize}/${record.yesSize + record.noSize}`;
             },
           },
         ],
