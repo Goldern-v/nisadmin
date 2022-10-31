@@ -78,7 +78,7 @@ export default observer(function ApplicationN1(props: Props) {
           setupLoading(false)
           PromotionAppUtils.attachmentList = PromotionAppUtils.attachmentList.filter((item:any) => item.id != data.id)
         }
-      
+
     })
   }
 
@@ -94,7 +94,7 @@ export default observer(function ApplicationN1(props: Props) {
     },
     maxCount: 1,
     showUploadList:false,
-    
+
      //文件上传之前的操作
     beforeUpload: (file) => {
       const isExceed =  PromotionAppUtils.attachmentList.length >= 5
@@ -108,7 +108,7 @@ export default observer(function ApplicationN1(props: Props) {
       return isLt5M && !isExceed
     },
     // defaultFileList: PromotionAppUtils.attachmentList,
-   
+
     onChange:(file)=>{
       file.fileList = PromotionAppUtils.attachmentList;
       if (file.file.status === 'uploading' || file.fileList.length >= 5) {
@@ -119,11 +119,11 @@ export default observer(function ApplicationN1(props: Props) {
           message.success(file.file?.response?.desc)
           const data:any = file.file.response.data
           let allDataList:any = PromotionAppUtils.attachmentList
-          data.status = data.status == 1 ? 'done' : 'error' 
+          data.status = data.status == 1 ? 'done' : 'error'
           data.url = data.path
           allDataList.push({...data})
           PromotionAppUtils.attachmentList = allDataList
-          
+
           // PromotionAppUtils.attachmentList.push()
         }else {
           message.error(file.file?.response?.desc)
@@ -359,7 +359,7 @@ export default observer(function ApplicationN1(props: Props) {
                 <div className="base-item">
                   <span>
                     3、三基理论考核：
-                    <DateModal 
+                    <DateModal
                       value={tableObjN1.JS0000038}
                       keys={"JS0000038"}
                     />
@@ -385,11 +385,11 @@ export default observer(function ApplicationN1(props: Props) {
                 <div className="base-item">
                   <span>
                     4、专科理论考核：
-                    <DateModal 
+                    <DateModal
                       value={tableObjN1.JS0000041}
                       keys={"JS0000041"}
                     />
-                    年度 
+                    年度
                   </span>
                   <SelectBox
                     type="radio"
@@ -641,18 +641,20 @@ export default observer(function ApplicationN1(props: Props) {
                   <input
                     className="border mar-btom acc-time"
                     type="text"
+                     style={{...appStore.HOSPITAL_ID==='whyx'&&Number(tableObjN1.JS0000047)<60? {color: 'red'}:null}}
                     value={tableObjN1.JS0000047}
                     onChange={(e) => {
                       handleInput(e, "JS0000047");
                     }}
                   />{" "}
-                  分<span style={{ marginLeft: 40 }}>（标准分60分）</span>
+                  分<span style={{ marginLeft: 40 }}>（标准分60分）{tableObjN1.JS0000047}</span>
                 </div>
                 <div className="base-item">
                   <span>2.床边综合能力考核：</span>
                   <input
                     className="border mar-btom acc-time"
                     type="text"
+                    style={{...appStore.HOSPITAL_ID==='whyx'&&Number(tableObjN1.JS0000048)<60? {color: 'red'}:null}}
                     value={tableObjN1.JS0000048}
                     onChange={(e) => {
                       handleInput(e, "JS0000048");
@@ -665,6 +667,7 @@ export default observer(function ApplicationN1(props: Props) {
                   <input
                     className="border mar-btom acc-time"
                     type="text"
+                    style={{...appStore.HOSPITAL_ID==='whyx'&&Number(tableObjN1.JS0000049)<60? {color: 'red'}:null}}
                     value={tableObjN1.JS0000049}
                     onChange={(e) => {
                       handleInput(e, "JS0000049");

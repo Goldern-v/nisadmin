@@ -101,7 +101,7 @@ export default observer(function ApplicationN1(props: Props) {
     },
     maxCount: 1,
     showUploadList:false,
-    
+
      //文件上传之前的操作
     beforeUpload: (file) => {
       const isExceed =  PromotionAppUtils.attachmentList.length >= 5
@@ -115,7 +115,7 @@ export default observer(function ApplicationN1(props: Props) {
       return isLt5M && !isExceed
     },
     // defaultFileList: PromotionAppUtils.attachmentList,
-   
+
     onChange:(file)=>{
       file.fileList = PromotionAppUtils.attachmentList;
       if (file.file.status === 'uploading' || file.fileList.length >= 5) {
@@ -126,12 +126,12 @@ export default observer(function ApplicationN1(props: Props) {
           message.success(file.file?.response?.desc)
           const data:any = file.file.response.data
           let allDataList:any = PromotionAppUtils.attachmentList
-          data.status = data.status == 1 ? 'done' : 'error' 
+          data.status = data.status == 1 ? 'done' : 'error'
           data.url = data.path
           allDataList.push({...data})
           PromotionAppUtils.attachmentList = allDataList
           console.log(PromotionAppUtils.attachmentList);
-          
+
           // PromotionAppUtils.attachmentList.push()
         }else {
           message.error(file.file?.response?.desc)
@@ -298,7 +298,7 @@ export default observer(function ApplicationN1(props: Props) {
                       { label: "初级（师）", value: "A" },
                     ]}
                   />
-                  （<DateModal 
+                  （<DateModal
                       value={tableObjN3.JS0000008}
                       keys={"JS0000008"}
                     />年获得）
@@ -313,7 +313,7 @@ export default observer(function ApplicationN1(props: Props) {
                   />
                   <span style={{ marginLeft: 15 }}>
                   （标准：主管及以上职称或获得护师职称5年以上）
-                  </span> 
+                  </span>
                   </div>
               </td>
             </tr>
@@ -331,7 +331,7 @@ export default observer(function ApplicationN1(props: Props) {
                   （标准：{moment().subtract(1,'year').format('YYYY年MM月DD日')}前）
                 </div>
               </td>
-             
+
             </tr>
             <tr>
               <td rowSpan={5} style={{ textAlign: "center" }}>
@@ -403,7 +403,7 @@ export default observer(function ApplicationN1(props: Props) {
                       onChange={(e) => {
                         handleInput(e, "JS0000095");
                       }}
-                    /> <span>专长护理资质证（气道护理、IABP护理、CRRT护理、心衰/心衰超滤、</span> 
+                    /> <span>专长护理资质证（气道护理、IABP护理、CRRT护理、心衰/心衰超滤、</span>
                     <span>皮肤、糖尿病、健康教育讲师、疼痛、静疗、康复）</span>
                 </div>
                 <div className="base-item" style={{marginLeft:77}}>
@@ -423,7 +423,7 @@ export default observer(function ApplicationN1(props: Props) {
                       onChange={(e) => {
                         handleInput(e, "JS0000096");
                       }}
-                    /> <span style={{marginRight:'20px'}}>委员会或小组联络员</span> 
+                    /> <span style={{marginRight:'20px'}}>委员会或小组联络员</span>
                     <SelectBox
                       type="checkbox"
                       disabled={false}
@@ -444,7 +444,7 @@ export default observer(function ApplicationN1(props: Props) {
                 <div className="base-item">
                   <span id="JS0000097">
                   3、三基理论考核：
-                  <DateModal 
+                  <DateModal
                       value={tableObjN3.JS0000097}
                       keys={"JS0000097"}
                     />年度
@@ -460,7 +460,7 @@ export default observer(function ApplicationN1(props: Props) {
                     ]}
                   />
                   <span style={{marginLeft:40}} id="JS0000100">
-                  <DateModal 
+                  <DateModal
                       value={tableObjN3.JS0000100}
                       keys={"JS0000100"}
                     />年度
@@ -485,7 +485,7 @@ export default observer(function ApplicationN1(props: Props) {
                 <div className="base-item">
                   <span id="JS0000041">
                   4、专科理论考核：
-                  <DateModal 
+                  <DateModal
                       value={tableObjN3.JS0000041}
                       keys={"JS0000041"}
                     />年度
@@ -593,12 +593,12 @@ export default observer(function ApplicationN1(props: Props) {
             <tr>
               <td colSpan={3}>
                 <div className="base-item" id="JS0000067">
-                  <span id="JS0000065">3、<DateModal 
+                  <span id="JS0000065">3、<DateModal
                       value={tableObjN3.JS0000065}
                       keys={"JS0000065"}
                     />-</span>
                     <span id="JS0000066">
-                    <DateModal 
+                    <DateModal
                     value={tableObjN3.JS0000066}
                     keys={"JS0000066"}
                     />年N班班次：
@@ -770,7 +770,7 @@ export default observer(function ApplicationN1(props: Props) {
               <td colSpan={3} id="JS0000118">
                 <div className="base-item">
                   <span>7、参与管理：（标准：N2阶段参与病房管理、QCC或专科小组/委员会，三选二）</span>
-                  
+
                 </div>
                 <div className="base-item" style={{marginLeft:77}} >
                 <SelectBox
@@ -970,6 +970,7 @@ export default observer(function ApplicationN1(props: Props) {
                     className="border mar-btom acc-time"
                     type="text"
                     defaultValue={tableObjN3.JS0000047}
+                    style={{...appStore.HOSPITAL_ID==='whyx'&&Number(tableObjN3.JS0000047)<60? {color: 'red'}:null}}
                     onChange={(e) => {
                       handleInput(e, "JS0000047");
                     }}
@@ -982,6 +983,7 @@ export default observer(function ApplicationN1(props: Props) {
                     className="border mar-btom acc-time"
                     type="text"
                     defaultValue={tableObjN3.JS0000048}
+                    style={{...appStore.HOSPITAL_ID==='whyx'&&Number(tableObjN3.JS0000048)<80? {color: 'red'}:null}}
                     onChange={(e) => {
                       handleInput(e, "JS0000048");
                     }}
@@ -993,6 +995,7 @@ export default observer(function ApplicationN1(props: Props) {
                   <input
                     className="border mar-btom acc-time"
                     type="text"
+                    style={{...appStore.HOSPITAL_ID==='whyx'&&Number(tableObjN3.JS0000128)<85? {color: 'red'}:null}}
                     defaultValue={tableObjN3.JS0000128}
                     onChange={(e) => {
                       handleInput(e, "JS0000128");
@@ -1011,8 +1014,8 @@ export default observer(function ApplicationN1(props: Props) {
               <td colSpan={4}>
                 <div className="base-item">
                   <span style={{ marginRight: 99 }} id="JS0000129">
-                  1.护理服务投诉： 
-                  <DateModal 
+                  1.护理服务投诉：
+                  <DateModal
                     value={tableObjN3.JS0000129}
                     keys={"JS0000129"}
                     />年
@@ -1030,7 +1033,7 @@ export default observer(function ApplicationN1(props: Props) {
                   />
                   </span>
                   <span id="JS0000131">
-                  <DateModal 
+                  <DateModal
                     value={tableObjN3.JS0000131}
                     keys={"JS0000131"}
                     />年
@@ -1052,7 +1055,7 @@ export default observer(function ApplicationN1(props: Props) {
                 <div className="base-item">
                   <span style={{ marginRight: 117 }} id="JS0000079">
                   2. 年度绩效考核结果：
-                  <DateModal 
+                  <DateModal
                     value={tableObjN3.JS0000079}
                     keys={"JS0000079"}
                     />年
@@ -1069,7 +1072,7 @@ export default observer(function ApplicationN1(props: Props) {
                       />
                   </span>
                   <span id="JS0000081">
-                    <DateModal 
+                    <DateModal
                     value={tableObjN3.JS0000081}
                     keys={"JS0000081"}
                     />年
@@ -1089,7 +1092,7 @@ export default observer(function ApplicationN1(props: Props) {
                 <div className="base-item">
                   <span style={{ marginRight: 20 }} id="JS0000083">
                   3.无个人原因导致的III级护理不良事件：
-                  <DateModal 
+                  <DateModal
                     value={tableObjN3.JS0000083}
                     keys={"JS0000083"}
                     />年
@@ -1107,7 +1110,7 @@ export default observer(function ApplicationN1(props: Props) {
                     />;
                   </span>
                   <span id="JS0000085">
-                    <DateModal 
+                    <DateModal
                       value={tableObjN3.JS0000085}
                       keys={"JS0000085"}
                       />年
@@ -1129,7 +1132,7 @@ export default observer(function ApplicationN1(props: Props) {
                 <div className="base-item">
                   <span style={{ marginRight: 125 }} id="JS0000087">
                   4.年度学分达标：
-                  <DateModal 
+                  <DateModal
                     value={tableObjN3.JS0000087}
                     keys={"JS0000087"}
                     />年
@@ -1147,7 +1150,7 @@ export default observer(function ApplicationN1(props: Props) {
                     />
                   </span>
                   <span id="JS0000089">
-                    <DateModal 
+                    <DateModal
                       value={tableObjN3.JS0000089}
                       keys={"JS0000089"}
                       />年
@@ -1279,7 +1282,7 @@ export default observer(function ApplicationN1(props: Props) {
               <td>患者姓名</td>
               <td>病案号</td>
               <td>总结患者危险点或<br />发现异常病情主动上报 </td>
-              <td>护理的具体时间（N1期间）</td> 
+              <td>护理的具体时间（N1期间）</td>
             </tr>
           </thead>
           <tbody>
@@ -1317,7 +1320,7 @@ export default observer(function ApplicationN1(props: Props) {
               </td>
             </tr>
             )}
-            
+
           </tbody>
         </table>
       </div>
