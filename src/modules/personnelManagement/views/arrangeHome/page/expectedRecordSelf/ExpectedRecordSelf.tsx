@@ -4,24 +4,17 @@ import { Button } from "antd";
 import { PageHeader, PageTitle, Place } from "src/components/common";
 import {
   DatePicker,
-  Select,
   ColumnProps,
   PaginationConfig,
-  Input,
   message
 } from "src/vendors/antd";
 import DeptSelect from "src/components/DeptSelect";
-import { appStore, authStore } from "src/stores";
+import {appStore, authStore} from "src/stores";
 import BaseTable from "src/components/BaseTable";
-
-import { useCallback } from "src/types/react";
 import { DoCon } from "src/components/BaseTable";
 import { observer } from "mobx-react-lite";
-import { DictItem } from "src/services/api/CommonApiService";
 import { arrangeService } from "../../services/ArrangeService";
 import { getCurrentMonth } from "src/utils/date/currentMonth";
-import service from "src/services/api";
-import User from "src/models/User";
 import moment from "moment";
 import createModal from "src/libs/createModal";
 
@@ -32,12 +25,7 @@ export default observer(function ExpectedRecord() {
   const [dataSource, setDataSource] = useState([]);
   const [date, setDate]: any = useState(getCurrentMonth());
   const selectedNurse = authStore.user && authStore.user.empNo;
-
   const [pageLoading, setPageLoading] = useState(false);
-
-  const updateDataSource = () => {
-    setDataSource([...dataSource]);
-  };
   const columns: ColumnProps<any>[] = [
     {
       title: "科室",
@@ -172,7 +160,7 @@ export default observer(function ExpectedRecord() {
         <PageTitle>我的期望排班</PageTitle>
         <Place />
 
-        <span className="label">休假日期:</span>
+        <span className="label">{appStore.HOSPITAL_ID==='fssdy'?'日期':'休假日期'}:</span>
         <DatePicker.RangePicker
           value={date}
           onChange={(value: any) => setDate(value)}

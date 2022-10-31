@@ -63,7 +63,10 @@ export function getAddArrangeMenuList(
             selectedCellObj!.effectiveTime = item.dataSource.effectiveTime;
             selectedCellObj!.effectiveTimeOld = item.dataSource.effectiveTime;
             selectedCellObj!.shiftType = item.dataSource.shiftType;
-            selectedCellObj!.backgroundColor = item.dataSource.backgroundColor
+            selectedCellObj!.backgroundColor = item.dataSource.backgroundColor;
+            if(appStore.HOSPITAL_ID==='fssdy'){
+              selectedCellObj!.settingNightHour=item.dataSource.settingNightHour
+            }
             // 添加班次时间段
             if (['qhwy'].includes(appStore.HOSPITAL_ID)) {
               selectedCellObj!.workTime = item.dataSource.workTime
