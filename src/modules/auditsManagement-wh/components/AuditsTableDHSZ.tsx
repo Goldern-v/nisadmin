@@ -1,14 +1,14 @@
 import styled from "styled-components";
-import React, { useState, useEffect } from "react";
-import { RouteComponentProps } from "react-router";
+import React, { useState, useEffect, useContext } from "react";
+// import { RouteComponentProps } from "react-router";
 import BaseTable, { DoCon } from "src/components/BaseTable";
-import windowHeight from "src/hooks/windowHeight";
+// import windowHeight from "src/hooks/windowHeight";
 
 import store, { appStore, authStore } from "src/stores";
 
 import emitter from "src/libs/ev";
 import { Button } from "antd";
-import { globalModal } from "src/global/globalModal";
+// import { globalModZal } from "src/global/globalModal";
 import { aMServices } from "../services/AMServices";
 
 import service from "src/services/api";
@@ -16,29 +16,27 @@ import qs from "qs";
 import { observer } from "src/vendors/mobx-react-lite";
 import createModal from "src/libs/createModal";
 import GroupsEmpNoAduitModal from "../modal/GroupsEmpNoAduitModal";
-import { type } from "os";
+// import { type } from "os";
 import GroupsHlbModal from "../modal/GroupsHlbModal";
 import { message } from "src/vendors/antd";
 import { statisticsViewModal } from "src/modules/nurseFiles/view/statistics/StatisticsViewModal";
 import GroupsSrAduitModal from "../modal/GroupsSrAduitModal";
 import GroupsqhwyAduitModal from "../modal/GroupsqhwyAduitModal";
+import { ContextCon } from "../AuditsManagementView";
 export interface Props {
-  showType: string;
-  keyword: string;
   needAudit: boolean;
   active: boolean;
-  selectedDate: any;
 }
 
 export default observer(function AuditsTableDHSZ(props: Props) {
-  let { showType, needAudit, active, keyword } = props;
-  let {
-    empName,
-    post,
-    deptName,
-    nurseHierarchy,
-    nearImageUrl,
-  } = store.appStore.queryObj;
+  let { needAudit, active } = props;
+  // let {
+  //   empName,
+  //   post,
+  //   deptName,
+  //   nurseHierarchy,
+  //   nearImageUrl,
+  // } = store.appStore.queryObj;
   const [tableData, setTableData] = useState([]);
   const [current, setCurrent] = useState(1);
   const [total, setTotal] = useState(0);
@@ -53,8 +51,10 @@ export default observer(function AuditsTableDHSZ(props: Props) {
   const goupsSrAduitModal = createModal(GroupsSrAduitModal);
   const goupsqhwyAduitModal = createModal(GroupsqhwyAduitModal);
 
+  const {showTypeName, keyword, showType, selectedDate } = useContext(ContextCon)
+
   const toDetails = (row: any) => {
-    console.log("ok",showType,props.needAudit);
+    console.log("ok",showType,needAudit);
     if (showType == "qc" || showType == "qcTwoLevel") {
       window.open(
         `/crNursing/manage/#/qualityControlRecordDetail/${
@@ -93,14 +93,14 @@ export default observer(function AuditsTableDHSZ(props: Props) {
         }`
       )
     }else if(showType === 'nursePromotion'){
-      row.needAudit = props.needAudit;
+      row.needAudit = needAudit;
       appStore.history.push(`/PromotionAduit?${qs.stringify(row)}`);
     }else if(showType == 'nurseSecond'){
       aMServices.getDetail(row.othersMessage.id).then((res)=>{
         goupsqhwyAduitModal.show({
           type:'audited',
           title:"护士临时借调审核",
-          needAudit:props.needAudit,
+          needAudit,
           detail:res.data,
           getTableData: () => {
             emitter.emit("refreshNurseAuditTable");
@@ -128,19 +128,20 @@ export default observer(function AuditsTableDHSZ(props: Props) {
       align: "center",
       width: 90,
       render(text: string, record: any) {
-        return text == "nurseFile"
-          ? "护士档案"
-          : text == "qc"
-          ? "三级质控"
-          : text == "qcTwoLevel"
-          ? "二级质控"
-          : text == "sr"
-          ? "特殊时段查房"
-          : text == "badEventMaster"
-          ? "不良事件"
-          : text == "nurseSecond"
-          ? "护士临时借调"
-          : "";
+        return showTypeName
+        // return text == "nurseFile"
+        //   ? "护士档案"
+        //   : text == "qc"
+        //   ? "三级质控"
+        //   : text == "qcTwoLevel"
+        //   ? "二级质控"
+        //   : text == "sr"
+        //   ? "特殊时段查房"
+        //   : text == "badEventMaster"
+        //   ? "不良事件"
+        //   : text == "nurseSecond"
+        //   ? "护士临时借调"
+        //   : "";
       },
     },
     {
@@ -189,13 +190,8 @@ export default observer(function AuditsTableDHSZ(props: Props) {
         return (
           <DoCon>
             <span onClick={() => toDetails(row)}>
-              {props.needAudit ? "审核" : "查看"}
+              {needAudit ? "审核" : "查看"}
             </span>
-            {/* <AuditText
-              needAudit={props.needAudit}
-              row={row}
-              getTableData={() => emitter.emit('refreshNurseAuditTable')}
-            /> */}
           </DoCon>
         );
       },
@@ -209,7 +205,7 @@ export default observer(function AuditsTableDHSZ(props: Props) {
       onload(
         pagination.current,
         searchText,
-        props.selectedDate,
+        selectedDate,
         pagination.pageSize
       );
   };
@@ -222,7 +218,7 @@ export default observer(function AuditsTableDHSZ(props: Props) {
   ) => {
     setCurrent(current);
     setLoading(true);
-    let getDataFun = props.needAudit
+    let getDataFun = needAudit
       ? aMServices.pendingPage(current, pageSize, showType, keyword)
       : aMServices.solvedPage(
           current,
@@ -319,7 +315,7 @@ export default observer(function AuditsTableDHSZ(props: Props) {
 
   emitter.removeAllListeners("refreshNurseAuditTable");
   emitter.addListener("refreshNurseAuditTable", () => {
-    onload(current, searchText, props.selectedDate);
+    onload(current, searchText, selectedDate);
   });
 
   //table数据变化后清除勾选
@@ -329,7 +325,7 @@ export default observer(function AuditsTableDHSZ(props: Props) {
   }, [tableData]);
 
   useEffect(() => {
-    showType && onload(current, searchText, props.selectedDate, pageSize);
+    showType && onload(current, searchText, selectedDate, pageSize);
   }, [active, authStore.selectedDeptCode, showType, statisticsViewModal.selectedDeptCode]);
 
   return (
@@ -337,7 +333,7 @@ export default observer(function AuditsTableDHSZ(props: Props) {
       <GroupPostBtn onClick={() => onload(current, searchText, pageSize)}>
         刷新
       </GroupPostBtn>
-      {props.needAudit && showType !== 'nursePromotion' && (
+      {needAudit && showType !== 'nursePromotion' && (
         <GroupPostBtn style={{ right: 110 }} onClick={openGroupModal}>
           批量审核
         </GroupPostBtn>

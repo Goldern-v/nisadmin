@@ -1,16 +1,17 @@
 import styled from "styled-components";
-import React, { useState, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import { Place } from "src/components/common";
 import { Select, Input, Button } from "antd";
-import DeptSelect from "src/components/DeptSelect";
+// import DeptSelect from "src/components/DeptSelect";
 import emitter from "src/libs/ev";
 import store, { authStore, appStore } from "src/stores";
-import service from "src/services/api";
+// import service from "src/services/api";
 import MultipleDeptSelect from "src/components/MultipleDeptSelect";
 import { DatePicker } from "src/vendors/antd";
-
+import { Obj } from "src/libs/types";
+import { ContextCon } from "../AuditsManagementView";
 const Option = Select.Option;
-interface Props {
+interface Props extends Obj {
   showType: any;
   setShowType: any;
   keyword: any;
@@ -21,16 +22,17 @@ interface Props {
   setSelectedDate: any;
 }
 export default function SelectCon(props: Props) {
+  const { showTypeDict } = useContext(ContextCon)
   const [visible, setVisible] = useState(false);
-  const [showTypeDict, setShowTypeDict] = useState([]);
+  // const [showTypeDict, setShowTypeDict] = useState([]);
   let { showType, setShowType, keyword, setKeyword } = props;
-  const handleOk = () => {
-    setVisible(false);
-  };
+  // const handleOk = () => {
+  //   setVisible(false);
+  // };
 
-  const handleCancel = () => {
-    setVisible(false);
-  };
+  // const handleCancel = () => {
+  //   setVisible(false);
+  // };
 
   // const onChange = (value: string) => {
   //   emitter.emit('refreshNurseAuditTable', searchText)
@@ -42,14 +44,8 @@ export default function SelectCon(props: Props) {
   const onSearch = () => {
     emitter.emit("refreshNurseAuditTable");
   };
-  const SearchByText = (e: React.ChangeEvent<HTMLInputElement>) => { };
+  // const SearchByText = (e: React.ChangeEvent<HTMLInputElement>) => { };
 
-  useEffect(() => {
-    service.commonApiService.dictInfo("audit_type").then(res => {
-      setShowTypeDict(res.data);
-      setShowType(res.data[0] ? res.data[0].code : "");
-    });
-  }, []);
   return (
     <React.Fragment>
       <Wrapper>
@@ -81,9 +77,9 @@ export default function SelectCon(props: Props) {
           style={{ minWidth: 120 }}
         >
           {showTypeDict.map((item: any) => (
-            <Select.Option value={item.code} key={item.code}>
+            <Option value={item.code} key={item.code}>
               {item.name}
-            </Select.Option>
+            </Option>
           ))}
         </Select>
 
