@@ -179,6 +179,8 @@ export default function qualityControlRecordDetailHeader(props: Props) {
   };
   const isWhyx = ['whyx','whhk'].includes(appStore.HOSPITAL_ID)
   const [btnRoleYX, setBtnRoleYX] = useState(false)
+  // 贵州护理部三级质控详情权限
+  const gzDepRule = appStore.HOSPITAL_ID === 'gzsrm' && authStore.isDepartment && master.qcLevel == 3
   useEffect(() => {
     if (isWhyx) {
       let { nodeCode = '', chainCode = '' } = nextNode
@@ -261,26 +263,19 @@ export default function qualityControlRecordDetailHeader(props: Props) {
                   <Button onClick={handleEdit} disabled={deleteLoading}>
                     编辑
                   </Button>
-                  {/* <Button
-                    onClick={handleDelete}
-                    type="danger"
-                    ghost
-                    disabled={deleteLoading}
-                  >
-                    删除
-                  </Button> */}
                 </React.Fragment>
               )}
-            {(master &&
-              appStore.hisMatch({
+            {(appStore.hisMatch({
                 map: {
                   wh: master.qcLevel == "2",
                   other: true,
                 },
               }) &&
-              master.status == "-1" &&
-              master.creatorNo == (authStore.user && authStore.user.empNo)
-                || (currentNode.canUpdate && currentNode.nodeCode === "commit"))
+              master?.status == "-1" &&
+              master?.creatorNo == (authStore.user && authStore.user.empNo)
+                || (currentNode.canUpdate && currentNode.nodeCode === "commit")
+                || ( gzDepRule && master?.status != -1 )
+                )
                   && 
                   <Button
                     onClick={handleDelete}
@@ -291,18 +286,8 @@ export default function qualityControlRecordDetailHeader(props: Props) {
                     删除
                   </Button>
             }
-            {currentNode.canUpdate && (
+            {(currentNode.canUpdate || ( gzDepRule && master?.status != -1 )) && (
               <React.Fragment>
-                {/* {currentNode.nodeCode === "commit" && (
-                  <Button
-                    onClick={handleDelete}
-                    type="danger"
-                    ghost
-                    disabled={deleteLoading}
-                  >
-                    删除
-                  </Button>
-                )} */}
                 <Button
                   onClick={handleCancel}
                   type="danger"
@@ -313,34 +298,6 @@ export default function qualityControlRecordDetailHeader(props: Props) {
                 </Button>
               </React.Fragment>
             )}
-            {/* {master &&
-              master.canUpdate &&
-              appStore.hisMatch({
-                map: {
-                  wh: master.qcLevel == "2" && master.creatorNo == authStore.user?.empNo,
-                  other: true
-                }
-              }) && (
-                <React.Fragment>
-                  <Button
-                    onClick={handleDelete}
-                    type="danger"
-                    ghost
-                    disabled={deleteLoading}
-                  >
-                    删除
-                  </Button>
-                  <Button
-                    onClick={handleCancel}
-                    type="danger"
-                    ghost
-                    disabled={deleteLoading}
-                  >
-                    撤销
-                  </Button>
-                </React.Fragment>
-              )
-            } */}
             {master && authStore.isSupervisorNurse && nextNode.nodeName && appStore.hisMatch({
               map: {
                 gzsrm: master.qcLevel === '3' && nextNode?.nodeName === '科护士长审核' && nextNode.canHandle ,
