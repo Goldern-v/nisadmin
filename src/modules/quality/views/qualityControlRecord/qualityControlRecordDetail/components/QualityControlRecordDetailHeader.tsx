@@ -274,7 +274,7 @@ export default function qualityControlRecordDetailHeader(props: Props) {
               master?.status == "-1" &&
               master?.creatorNo == (authStore.user && authStore.user.empNo)
                 || (currentNode.canUpdate && currentNode.nodeCode === "commit")
-                || ( gzDepRule && master?.status != -1 )
+                || gzDepRule
                 )
                   && 
                   <Button
