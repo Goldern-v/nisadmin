@@ -218,7 +218,6 @@ export default observer(function NursingWorkPlainList() {
   };
 
   const handleExport = (record: any) => {
-    // console.log(record)
     setLoading(true);
     // starRatingReportService.exportData({
     //   deptCode: record.deptCode,
@@ -284,10 +283,9 @@ export default observer(function NursingWorkPlainList() {
               </Option>
             ))}
           </Select>
-
           <span>科室:</span>
-          <DeptSelect hasAllDept onChange={deptCode => setQuery({ ...query, deptCode })} />
-
+          {appStore.HOSPITAL_ID==='fssdy'?<DeptSelect   onChange={deptCode => setQuery({ ...query, deptCode })} />:
+           <DeptSelect  hasAllDept onChange={deptCode => setQuery({ ...query, deptCode })} />}
           <span>标准:</span>
           <Text
             onClick={() =>
