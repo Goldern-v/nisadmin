@@ -61,7 +61,7 @@ const QualityControlRecordEdit = observer(function QualityControlRecordEdit() {
           });
           // 非贵州
           if (
-            !["gzsrm", "gzhd", "whyx", "fsxt",'925'].includes(appStore.HOSPITAL_ID) &&
+            !["gzsrm", "gzhd", "whyx", "fsxt",'925',"lyrm","whhk","whsl"].includes(appStore.HOSPITAL_ID) &&
             (isNaN(inpNo) || inpNoLengthArr.indexOf(master[x].length) < 0)
           ) {
             //if (isNaN(inpNo) || inpNoLengthArr.indexOf(master[x].length) < 0) {
@@ -81,7 +81,7 @@ const QualityControlRecordEdit = observer(function QualityControlRecordEdit() {
           masterErr = true;
           errMsg = `住院号不能为空`;
         } else if (
-          ["whyx"].includes(appStore.HOSPITAL_ID) &&
+          ["whyx","whhk"].includes(appStore.HOSPITAL_ID) &&
           baseInfo.isPatientNumber !== "否" &&
           (!master[x] || master[x].length === 0)
         ) {
@@ -89,7 +89,7 @@ const QualityControlRecordEdit = observer(function QualityControlRecordEdit() {
           masterErr = true;
         }
       } else if (x == "bedLabel") {
-        if (appStore.HOSPITAL_ID == "whyx" && baseInfo.isBedNumber == "否") {
+        if (['whyx','whhk'].includes(appStore.HOSPITAL_ID) && baseInfo.isBedNumber == "否") {
         } else if (["gzsrm", "nys"].includes(appStore.HOSPITAL_ID)) {
         } else if (
           master[x].length <= 0 &&
@@ -268,9 +268,10 @@ const QualityControlRecordEdit = observer(function QualityControlRecordEdit() {
               {step === 1 &&
                 appStore.hisMatch({
                   map: {
-                    whyx: <FormPanelYx />,
+                    "whyx,whhk": <FormPanelYx />,
                     other: <FormPannel />,
                   },
+                  vague:true,
                 })}
               {step === 2 && (
                 <PreviewPannel setpChange={(step) => setStep(step)} />

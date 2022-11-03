@@ -114,7 +114,7 @@ export default observer(function Step5() {
             <td className="key">培训地址：</td>
             <td className="value">{pxStepViewModal.stepData2.address}</td>
           </tr>
-          {appStore.HOSPITAL_ID == 'whyx' && 
+          {['whyx','whhk'].includes(appStore.HOSPITAL_ID) && 
           <tr>
             <td className="key">二级类型：</td>
             <td className="value">{pxStepViewModal.stepData2.secondaryType}</td>

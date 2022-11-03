@@ -47,7 +47,7 @@ export default function midRightQualityControlRecordDetail(props: Props) {
                         }
                         {item.handleContent && (
                           <div className='text-box' style={item.noPass ? { color: 'red' } : {}}>
-                            {item.nodeCode == 'dept_handle' && <div className='text-box-title'>{['whyx'].includes(appStore.HOSPITAL_ID) ? '改进措施及整改结果：' : '整改措施：'}</div>}
+                            {item.nodeCode == 'dept_handle' && <div className='text-box-title'>{['whyx','whhk'].includes(appStore.HOSPITAL_ID) ? '改进措施及整改结果：' : '整改措施：'}</div>}
                             {item.handleContent}
                           </div>
                         )}

@@ -38,7 +38,7 @@ export function getAddArrangeMenuList(
         async onClick(item: any) {
           sheetViewModal.tableLoading = true
           sheetViewModal.tableLoading = true
-          if (['wh', 'lyyz', 'qhwy',"whsl", 'ytll', 'whhk'].includes(appStore.HOSPITAL_ID)) {
+          if (['wh', 'lyyz', 'qhwy',"whsl", 'ytll'].includes(appStore.HOSPITAL_ID)) {
             let res = await service.scheduleMealApiService.check(item.dataSource.id)
           }
           if (selectedCellObj!.rangeName) {
@@ -63,9 +63,12 @@ export function getAddArrangeMenuList(
             selectedCellObj!.effectiveTime = item.dataSource.effectiveTime;
             selectedCellObj!.effectiveTimeOld = item.dataSource.effectiveTime;
             selectedCellObj!.shiftType = item.dataSource.shiftType;
-            selectedCellObj!.backgroundColor = item.dataSource.backgroundColor
+            selectedCellObj!.backgroundColor = item.dataSource.backgroundColor;
+            if(appStore.HOSPITAL_ID==='fssdy'){
+              selectedCellObj!.settingNightHour=item.dataSource.settingNightHour
+            }
             // 添加班次时间段
-            if (['qhwy', 'whhk'].includes(appStore.HOSPITAL_ID)) {
+            if (['qhwy'].includes(appStore.HOSPITAL_ID)) {
               selectedCellObj!.workTime = item.dataSource.workTime
             }
           }
@@ -91,14 +94,14 @@ export function copyRowClick(list: any, copyRow: any, isClean: boolean) {
       list[i].settingNightHour = copyRow[i].settingNightHour;
       list[i].settings = cloneJson(copyRow[i].settings);
       list[i].backgroundColor = copyRow[i].backgroundColor;
-      if (["wh", 'gxjb', "lyyz","qhwy","whsl", "ytll", 'whhk'].includes(appStore.HOSPITAL_ID)) {
+      if (["wh", 'gxjb', "lyyz","qhwy","whsl", "ytll"].includes(appStore.HOSPITAL_ID)) {
         list[i].schAddOrSubs = cloneJson(copyRow[i].schAddOrSubs);
       }
-      if (['whyx'].includes(appStore.HOSPITAL_ID)) {
+      if (['whyx','whhk'].includes(appStore.HOSPITAL_ID)) {
         list[i].coefficient = copyRow[i].coefficient;
       }
       // 添加班次时间段
-      if (['qhwy', 'whhk'].includes(appStore.HOSPITAL_ID)) {
+      if (['qhwy'].includes(appStore.HOSPITAL_ID)) {
         list[i].workTime = copyRow[i].workTime
       }
       if (isClean) {
@@ -115,10 +118,10 @@ export function copyRowClick(list: any, copyRow: any, isClean: boolean) {
         copyRow[i].backgroundColor = "";
 
 
-        if (["wh", 'gxjb', "lyyz","qhwy", "ytll", 'whhk'].includes(appStore.HOSPITAL_ID)) {
+        if (["wh", 'gxjb', "lyyz","qhwy", "ytll"].includes(appStore.HOSPITAL_ID)) {
           copyRow[i].schAddOrSubs = [];
         }
-        if (['whyx'].includes(appStore.HOSPITAL_ID)) {
+        if (['whyx', 'whhk'].includes(appStore.HOSPITAL_ID)) {
           copyRow[i].coefficient = 0;
         }
       } /** 序号同步 */
@@ -158,15 +161,15 @@ export function copyCellClick(cell: ArrangeItem, copyCell: any) {
     cell.backgroundColor = copyCell.backgroundColor;
     cell.schSpecial = cloneJson(copyCell.schSpecial);
 
-    if (["wh", 'gxjb', "lyyz","qhwy", "ytll", 'whhk'].includes(appStore.HOSPITAL_ID)) {
+    if (["wh", 'gxjb', "lyyz","qhwy", "ytll"].includes(appStore.HOSPITAL_ID)) {
       cell.schAddOrSubs = cell.schAddOrSubs;
     }
-    if (['whyx'].includes(appStore.HOSPITAL_ID)) {
+    if (['whyx', 'whhk'].includes(appStore.HOSPITAL_ID)) {
       cell.coefficient = copyCell.coefficient;
     }
 
     // 添加班次时间段
-    if (['qhwy', 'whhk'].includes(appStore.HOSPITAL_ID)) {
+    if (['qhwy'].includes(appStore.HOSPITAL_ID)) {
       cell!.workTime = copyCell.workTime
     }
 
@@ -206,13 +209,13 @@ export function cleanCell(cellObj: ArrangeItem) {
   cellObj.schJiJias = [];
   cellObj.schSpecial = [];
   cellObj.backgroundColor = ""
-  if (["wh", 'gxjb', "lyyz","qhwy", "ytll", 'whhk'].includes(appStore.HOSPITAL_ID)) {
+  if (["wh", 'gxjb', "lyyz","qhwy", "ytll"].includes(appStore.HOSPITAL_ID)) {
     cellObj.schAddOrSubs = [];
     cellObj.settingMorningHour = 0;
     cellObj.settingNightHour = 0;
     cellObj.rangeNameCodeList = null;
   }
-  if (['whyx'].includes(appStore.HOSPITAL_ID)) {
+  if (['whyx', 'whhk'].includes(appStore.HOSPITAL_ID)) {
     cellObj.coefficient = 0;
   }
 

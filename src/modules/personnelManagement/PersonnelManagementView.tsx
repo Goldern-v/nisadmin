@@ -31,7 +31,6 @@ export default function PersonnelManagementView() {
       case 'lyyz':
         return menuConfig_wh;
       case 'qhwy':
-      case 'whhk':
         return menuConfig_qhwy;
       case 'gzsrm':
         return menuConfig_gzsrm;
@@ -60,6 +59,7 @@ export default function PersonnelManagementView() {
       case 'dgxg':
         return menuConfig_dgxg;
       case 'whyx'://武汉亚心
+      case 'whhk':
         return menuConfig_whyx;
       case 'sdlj'://顺德龙江
       case 'nfsd':

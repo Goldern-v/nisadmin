@@ -79,7 +79,7 @@ export default function InputRender(props: Props) {
   }
 
   const shiftColor = (record:any) => {
-    if (['whyx'].includes(appStore.HOSPITAL_ID) && record['班次'] && itemCode=='班次') {
+    if (['whyx','whhk'].includes(appStore.HOSPITAL_ID) && record['班次'] && itemCode=='班次') {
       if (editValue == 'A班') { 
         return 'green'
       } else if (editValue == 'P班') {

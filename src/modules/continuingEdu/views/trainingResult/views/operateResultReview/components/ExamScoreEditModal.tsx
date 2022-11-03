@@ -66,7 +66,7 @@ export default observer(function ExamScoreEditModal(props: Props) {
 
   const getOperateScoreList = () => {
     setLoading(true)
-    if(['whyx','fsxt','925'].includes(appStore.HOSPITAL_ID)){
+    if(['whyx','fsxt','925','whhk'].includes(appStore.HOSPITAL_ID)){
       trainingResultService.reviewPaperScoreItemsByCetpId({
         cetpId,
         empNo
@@ -96,7 +96,7 @@ export default observer(function ExamScoreEditModal(props: Props) {
     if (visible) getOperateScoreList()
   }, [visible])
 
-  return (!['whyx','fsxt','925'].includes(appStore.HOSPITAL_ID) ? <Modal
+  return (!['whyx','fsxt','925','whhk'].includes(appStore.HOSPITAL_ID) ? <Modal
     width={500}
     confirmLoading={loading}
     visible={visible}
@@ -148,7 +148,7 @@ export default observer(function ExamScoreEditModal(props: Props) {
     centered
     title={`${empName}的成绩`}>
       {
-        ['whyx'].includes(appStore.HOSPITAL_ID) ?
+        ['whyx','whhk'].includes(appStore.HOSPITAL_ID) ?
       <Wrapper>
       <div className='total-points'><span>总得分：</span>{parcalList && parcalList.studentTotalScore} <span>成绩：</span><span style={{color:isValidResult == 1?'#04a580':'#a50804'}}>{isValidResult == 1 ? '有效':'无效'}</span></div>
       <table className="modal-table">

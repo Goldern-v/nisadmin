@@ -18,7 +18,7 @@ export interface Props { }
 export default observer(function 护士学历分布() {
   const { deptList } = authStore
   const [query, setQuery] = useState({
-    deptCode:['whyx'].includes(appStore.HOSPITAL_ID) ? authStore.defaultDeptCode:""
+    deptCode:['whyx','whhk'].includes(appStore.HOSPITAL_ID) ? authStore.defaultDeptCode:""
   })
   const [data, setData] = useState([] as any[])
   const [chartData, setChartData] = useState([] as { type: string, value: number }[])
@@ -105,7 +105,7 @@ export default observer(function 护士学历分布() {
         {
           appStore.hisMatch({
             map: {
-              whyx: authStore.isDepartmentYaXin &&<Option  value={''}>全院</Option>,
+              "whyx,whhk": authStore.isDepartmentYaXin &&<Option  value={''}>全院</Option>,
               other:<Option value={''}>全院</Option>
             },
             vague: true

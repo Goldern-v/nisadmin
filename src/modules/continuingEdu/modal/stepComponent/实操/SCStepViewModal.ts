@@ -225,7 +225,7 @@ class StepViewModal {
         )
       }
     };
-    if(['whyx', 'fsxt','925'].includes(appStore.HOSPITAL_ID)){
+    if(['whyx', 'fsxt','925','whhk'].includes(appStore.HOSPITAL_ID)){
       result.detailInfo.paperId = this.stepData2.adminTable
     }
     return result;

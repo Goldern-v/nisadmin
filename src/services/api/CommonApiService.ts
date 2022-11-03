@@ -229,7 +229,7 @@ export default class CommonApiService extends BaseApiService {
     let HOSPITAL_ID = appStore.HOSPITAL_ID
     if (HOSPITAL_ID == "hj") {
       return this.get(`/nurseInformation/getByEmpNoAudite/${empNo}`);
-    } else if (HOSPITAL_ID == "wh" || HOSPITAL_ID == "gzsrm"||HOSPITAL_ID == "whyx" ) {
+    } else if (HOSPITAL_ID == "wh" || HOSPITAL_ID == "gzsrm"||HOSPITAL_ID == "whyx"|| HOSPITAL_ID == "whhk" ) {
       return this.get(`/nurseWHInformation/findByEmpNoSubmit/${empNo}`);
     } else {
       return this.get(`/nurseInformation/getByEmpNoAudite/${empNo}`);
@@ -268,7 +268,7 @@ export default class CommonApiService extends BaseApiService {
   }
   // 武汉亚心获取实操评分表下拉内容
   public getPraticalGradeManage(){
-    if(appStore.HOSPITAL_ID == 'whyx'){
+    if(['whyx','whhk'].includes(appStore.HOSPITAL_ID)){
       return this.post(`/studyAndTrain/praticalGradeManage/getPage`,{})
     }else{
       return this.post(`/studyAndTrain/praticalGradeManageForFSXT/getPage`,{})
@@ -276,7 +276,7 @@ export default class CommonApiService extends BaseApiService {
   }
   // 武汉亚心获取实操评分表下拉内容
   public getDetailByPaperId(paperId:any){
-    if(appStore.HOSPITAL_ID == 'whyx'){
+    if(['whyx','whhk'].includes(appStore.HOSPITAL_ID)){
       return this.post(`/studyAndTrain/praticalGradeManage/getDetailByPaperId`,qs.stringify({paperId}))
     }else{
       return this.post(`/studyAndTrain/praticalGradeManageForFSXT/getDetailByPaperId`,qs.stringify({paperId}))

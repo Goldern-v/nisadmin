@@ -522,7 +522,7 @@ if (process.env.REACT_APP_HOSPITAL_ID == "hj") {
   specialModule = [...homeRouter(SettingView)]
 } else if (appStore.HOSPITAL_ID == 'qzxyy') {
   specialModule = [...homeRouter(SettingView)]
-} else if (process.env.REACT_APP_HOSPITAL_ID == "whyx") {//武汉亚心
+} else if (['whyx','whhk'].includes(appStore.HOSPITAL_ID)) {//武汉亚心、武汉汉口
   specialModule = [
     setLayout("/indicator/:name", IndicatorNew, layouts.MainLayout),
     setLayout("/indicator", IndicatorNew, layouts.MainLayout),
@@ -553,7 +553,7 @@ if (process.env.REACT_APP_HOSPITAL_ID == "hj") {
     ),
     setLayout("/nursingRulesNewEdit", NursingRulesNewEdit, layouts.MainLayout)
   ];
-} else if (['lyyz','qhwy','whsl', 'whhk'].includes(appStore.HOSPITAL_ID)) {
+} else if (['lyyz','qhwy','whsl'].includes(appStore.HOSPITAL_ID)) {
   specialModule = [
     ...homeRouter(HomeView),
     // 档案

@@ -19,7 +19,7 @@ useEffect(()=>{
 },[appStore.queryObj.id])
   // 南医三根据当前页面tab值显示页面
   const getPage = () => {
-    if (['hj','gxjb','whyx'].includes(appStore.HOSPITAL_ID)) {
+    if (['hj','gxjb','whyx','whhk'].includes(appStore.HOSPITAL_ID)) {
       // @ts-ignore
         return (
         <React.Fragment>

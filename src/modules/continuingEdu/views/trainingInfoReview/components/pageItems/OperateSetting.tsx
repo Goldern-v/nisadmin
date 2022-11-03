@@ -285,6 +285,7 @@ export default function OperateSetting(props: Props) {
         </Wrapper>,
       ],
     },
+	vague:true,
   });
 }
 const Wrapper = styled.div`

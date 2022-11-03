@@ -161,7 +161,7 @@ function MenuCon(props: { dataSource: any[] }) {
         resetArrangeCount(cell.userId, cell.rangeName)
       }
       // 添加班次时间段
-      if (['qhwy', 'whhk'].includes(appStore.HOSPITAL_ID)) {
+      if (['qhwy'].includes(appStore.HOSPITAL_ID)) {
         cell!.workTime = item.workTime
       }
       // if (
@@ -198,7 +198,7 @@ function MenuCon(props: { dataSource: any[] }) {
     <Contain>
       {props.dataSource.map((item, index) => (
         <div className="menu-box" key={index}>
-          {appStore.HOSPITAL_ID == 'whyx' ?
+          {['whyx','whhk'].includes(appStore.HOSPITAL_ID) ?
             <BoxInner color={item.nameColor} backgroundColor={item.backgroundColor} onClick={() => onClick(item)}>
               {item.name}
             </BoxInner> :

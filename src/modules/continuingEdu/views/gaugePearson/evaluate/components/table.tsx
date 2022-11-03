@@ -133,6 +133,42 @@ export default observer(function ApplyTable(props: Props) {
       }
     },
     {
+      title: "理论成绩",
+      dataIndex: "theoryScore",
+      align: "center",
+      width: 100,
+      render(text: any, record: any) {
+        // console.log(record, text, 888)
+        return (
+          <InputNumber step="0.1" min={0.0} value={record.theoryScore} disabled style={{color:'#000'}}/>
+        );
+      }
+    },
+    {
+      title: "操作成绩",
+      dataIndex: "operationScore",
+      align: "center",
+      width: 100,
+      render(text: any, record: any) {
+        // console.log(record, text, 888)
+        return (
+          <InputNumber step="0.1" min={0.0} value={record.operationScore} disabled style={{color:'#000'}}/>
+        );
+      }
+    },
+    {
+      title: "床边综合能力",
+      dataIndex: "bedMultipleScore",
+      align: "center",
+      width: 100,
+      render(text: any, record: any) {
+        // console.log(record, text, 888)
+        return (
+          <InputNumber step="0.1" min={0.0} value={record.bedMultipleScore} disabled style={{color:'#000'}}/>
+        );
+      }
+    },
+    {
       title: "平均分",
       dataIndex: "averageScore",
       align: "center",

@@ -26,7 +26,7 @@ const rules: Rules = {
   empName: (val) => !!val || "请输入姓名",
 };
 
-if (["wh", "gzsrm","lyyz","qhwy", "ytll", 'whhk'].includes(appStore.HOSPITAL_ID)) {
+if (["wh", "gzsrm","lyyz","qhwy", "ytll"].includes(appStore.HOSPITAL_ID)) {
   rules.userType = (val) => !!val || "请选择类型";
 }
 
@@ -118,14 +118,14 @@ export default observer(function AddScheduleNursingModal(props: Props) {
             startDate: moment(),
           });
         },
-        whhk: () => {
-          refForm!.current!.setFields({
-            empName: "",
-            sex: "1",
-            userType: "",
-            startDate: moment(),
-          });
-        },
+        // whhk: () => {
+        //   refForm!.current!.setFields({
+        //     empName: "",
+        //     sex: "1",
+        //     userType: "",
+        //     startDate: moment(),
+        //   });
+        // },
       });
 
       setTitle("添加排班人员");
@@ -133,7 +133,7 @@ export default observer(function AddScheduleNursingModal(props: Props) {
 
       const getDictInfo = appStore.hisMatch({
         map: {
-          'wh,lyyz,qhwy,ytll,whhk': () => {
+          'wh,lyyz,qhwy,ytll,': () => {
             statisticsViewModal.initDict().then((res) => {
               setTitleList(statisticsViewModal.getDict("技术职称"));
               setPostList(statisticsViewModal.getDict("职务"));
@@ -232,7 +232,7 @@ export default observer(function AddScheduleNursingModal(props: Props) {
           rules={rules}
         >
           <Row>
-            {appStore.HOSPITAL_ID == 'whyx' && <Col span={24}>
+            {['whyx','whhk'].includes(appStore.HOSPITAL_ID) && <Col span={24}>
               <Form.Field label={`类型`} name="userType" required>
                 <Select>
                   {userTypeList.map((item: DictItem) => (
@@ -374,7 +374,7 @@ export default observer(function AddScheduleNursingModal(props: Props) {
                   </Col>
                 </React.Fragment>
               ),
-              'wh,gzsrm,lyyz,qhwy,ytll,whhk': () => (
+              'wh,gzsrm,lyyz,qhwy,ytll': () => (
                 <React.Fragment>
                   <Col span={24}>
                     <Form.Field label={`类型`} name="userType" required>
@@ -465,7 +465,7 @@ export default observer(function AddScheduleNursingModal(props: Props) {
             type="info-circle"
             style={{ color: "#fa8c16", marginRight: "5px" }}
           />
-          {["wh", "gzsrm","lyyz","qhwy", "ytll", 'whhk'].includes(appStore.HOSPITAL_ID)
+          {["wh", "gzsrm","lyyz","qhwy", "ytll"].includes(appStore.HOSPITAL_ID)
             ? "注：只能添加没有工号的人员，有工号的正式人员请联系管理员进行添加"
             : "注：只能添加没有工号的进修人员，有工号的正式人员请联系管理员进行添加"}
         </Aside>

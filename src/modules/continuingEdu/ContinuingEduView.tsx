@@ -215,7 +215,7 @@ export default function ContinuingEdu(props: Props) {
             authStore.isOnlyInternsManage,
         },
       ],
-      "whyx":[
+      "whyx,whhk":[
         {
           title: "晋升管理",
           icon: <JSGL />,
@@ -744,7 +744,7 @@ export default function ContinuingEdu(props: Props) {
       icon: <TKGL />,
       path: "/continuingEdu/PracticalOperationScore",
       component: PracticalOperationScore,
-      hide: !['whyx'].includes(appStore.HOSPITAL_ID)
+      hide: !['whyx','whhk'].includes(appStore.HOSPITAL_ID)
     },
     {
       title: "实操评分管理",
@@ -757,7 +757,7 @@ export default function ContinuingEdu(props: Props) {
 
   const LEFT_MENU_CONFIG = [
     {
-      hide: appStore.HOSPITAL_ID != 'whyx',
+      hide: !["whyx","whhk"].includes(appStore.HOSPITAL_ID),
       title: "培训日历",
       icon: <RYGL />,
       path: "/continuingEdu/TariningCalendars",
@@ -948,7 +948,7 @@ export default function ContinuingEdu(props: Props) {
       title: "实习生管理",
       path: "/continuingEdu",
       icon: <JXJH />,
-      hide:!["whyx"].includes(appStore.HOSPITAL_ID),
+      hide:!["whyx","whhk"].includes(appStore.HOSPITAL_ID),
       children: [
         ...appStore.hisMatch({
           map: {
@@ -983,7 +983,7 @@ export default function ContinuingEdu(props: Props) {
       title: "规培生管理",
       path: "/continuingEdu",
       icon: <JXJH />,
-      hide:!["whyx"].includes(appStore.HOSPITAL_ID),
+      hide:!["whyx","whhk"].includes(appStore.HOSPITAL_ID),
       children: [
         {
           title: "规培生基本信息汇总表",
@@ -1006,7 +1006,7 @@ export default function ContinuingEdu(props: Props) {
       title: "进修生管理",
       path: "/continuingEdu",
       icon: <JXJH />,
-      hide:!["whyx"].includes(appStore.HOSPITAL_ID),
+      hide:!["whyx","whhk"].includes(appStore.HOSPITAL_ID),
       children: [
         ...appStore.hisMatch({
           map: {
@@ -1061,7 +1061,7 @@ export default function ContinuingEdu(props: Props) {
       icon: <JSGL />,
       path: "/continuingEdu/PromotionApplication",
       component: PromotionApplication,
-      hide: !['whyx'].includes(appStore.HOSPITAL_ID)
+      hide: !['whyx','whhk'].includes(appStore.HOSPITAL_ID)
     },
     {
       title: "类型管理",

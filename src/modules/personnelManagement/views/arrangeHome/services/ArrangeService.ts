@@ -121,9 +121,10 @@ export default class ArrangeService extends BaseApiService {
       map: {
         lcey: '/schedulingLc/export',
         jmfy: '/schedulingJm/export',
-        whyx: '/schedulingYaXin/export',
+        'whyx,whhk': '/schedulingYaXin/export',
         default: '/scheduling/export',
-      }
+      },
+      vague:true,
     })
     return this.post(url, postData, { responseType: "blob" });
   }
@@ -272,7 +273,7 @@ export default class ArrangeService extends BaseApiService {
 
   //加减班查询
   public findBylist(obj: PageObj) {
-    if (['whyx'].includes(appStore.HOSPITAL_ID)) {
+    if (['whyx','whhk'].includes(appStore.HOSPITAL_ID)) {
       return this.post(`/schExpectAddOrSub/getByDeptCodeAndDatePC`, obj);
     }
     return this.post(`/schAddOrSub/findBylist`, obj);

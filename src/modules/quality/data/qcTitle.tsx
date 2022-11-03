@@ -32,7 +32,7 @@ export const qcThreeTitle = appStore.hisMatch({
 // 护理部职能督导 by亚心
 export const qcFunTitle = appStore.hisMatch({
   map: {
-    whyx: {
+    "whyx,whhk": {
       leftNavTitle: "护理部职能督导",
       listViewTitle: "护理部职能督导",
       detailViewTitle: "质控记录",
@@ -43,6 +43,7 @@ export const qcFunTitle = appStore.hisMatch({
       detailViewTitle: "质控记录",
     },
   },
+  vague:true,
 });
 
 export const navTitle = (qcLevel: string) => {

@@ -103,7 +103,7 @@ export default observer(function ApplicationN1(props: Props) {
     },
     maxCount: 1,
     showUploadList:false,
-    
+
      //文件上传之前的操作
     beforeUpload: (file) => {
       const isExceed =  PromotionAppUtils.attachmentList.length >= 5
@@ -117,7 +117,7 @@ export default observer(function ApplicationN1(props: Props) {
       return isLt5M && !isExceed
     },
     // defaultFileList: PromotionAppUtils.attachmentList,
-   
+
     onChange:(file)=>{
       file.fileList = PromotionAppUtils.attachmentList;
       if (file.file.status === 'uploading' || file.fileList.length >= 5) {
@@ -128,12 +128,12 @@ export default observer(function ApplicationN1(props: Props) {
           message.success(file.file?.response?.desc)
           const data:any = file.file.response.data
           let allDataList:any = PromotionAppUtils.attachmentList
-          data.status = data.status == 1 ? 'done' : 'error' 
+          data.status = data.status == 1 ? 'done' : 'error'
           data.url = data.path
           allDataList.push({...data})
           PromotionAppUtils.attachmentList = allDataList
           console.log(PromotionAppUtils.attachmentList);
-          
+
           // PromotionAppUtils.attachmentList.push()
         }else {
           message.error(file.file?.response?.desc)
@@ -151,67 +151,67 @@ export default observer(function ApplicationN1(props: Props) {
 
   return (
     <Wrapper ref={props.printRef} id="formPrintPage">
-      <div
-        className="zindex-form"
-        style={{
-          display:
-            PromotionAppUtils.edit == true &&
-            PromotionAppUtils.editStatus == "取消编辑"
-              ? "none"
-              : "",
-            backgroundColor: PromotionAppUtils.editStatus == "创建" ? "rgba(204, 204, 204, 0.5)" : ""
-        }}
-        onClick={() => {
-          message.warning("当前不是编辑状态，如需修改请点击编辑按钮！");
-        }}
-      >
-         { isAduit.noPass == true && (
-          <img
-            src={require("../image/审批不通过.png")}
-            className="form-status-img"
-          />
-        )}
-        {isAduit.nodeCode == "withdraw" && (
-          <img
-            src={require("../image/已撤销.png")}
-            className="form-status-img"
-          />
-        )}
-        { isAduit.noPass == false && !DotPass && PromotionAppUtils.handlenodeDto.length &&  (
-          <img
-            src={require("../image/审批通过.png")}
-            className="form-status-img"
-          />
-        )}
-        {isAduit.nodeCode != "withdraw" &&
-          isAduit.noPass != true &&
-          DotPass &&
-          Number(PromotionAppUtils.flowStatus) > 0 &&
-          PromotionAppUtils.master.status != "" && (
-            <img
-              src={require("../image/待审批.png")}
-              className="form-status-img"
-            />
-          )}
-      </div>
-      <div
-        className="first-form"
-        style={{
-          top:
-            PromotionAppUtils.editStatus == "取消编辑" &&
-            Number(PromotionAppUtils.flowStatus) > 0  
-              ? "23px"
-              : "1118px",
-          height:
-            PromotionAppUtils.editStatus == "取消编辑" &&
-            Number(PromotionAppUtils.flowStatus) > 0
-              ? "1080px"
-              : "2213px",
-        }}
-        onClick={() => {
-          message.warning("当前暂不可编辑，请根据流程进行修改！");
-        }}
-      ></div>
+      {/*<div*/}
+      {/*  className="zindex-form"*/}
+      {/*  style={{*/}
+      {/*    display:*/}
+      {/*      PromotionAppUtils.edit == true &&*/}
+      {/*      PromotionAppUtils.editStatus == "取消编辑"*/}
+      {/*        ? "none"*/}
+      {/*        : "",*/}
+      {/*      backgroundColor: PromotionAppUtils.editStatus == "创建" ? "rgba(204, 204, 204, 0.5)" : ""*/}
+      {/*  }}*/}
+      {/*  onClick={() => {*/}
+      {/*    message.warning("当前不是编辑状态，如需修改请点击编辑按钮！");*/}
+      {/*  }}*/}
+      {/*>*/}
+      {/*   { isAduit.noPass == true && (*/}
+      {/*    <img*/}
+      {/*      src={require("../image/审批不通过.png")}*/}
+      {/*      className="form-status-img"*/}
+      {/*    />*/}
+      {/*  )}*/}
+      {/*  {isAduit.nodeCode == "withdraw" && (*/}
+      {/*    <img*/}
+      {/*      src={require("../image/已撤销.png")}*/}
+      {/*      className="form-status-img"*/}
+      {/*    />*/}
+      {/*  )}*/}
+      {/*  { isAduit.noPass == false && !DotPass && PromotionAppUtils.handlenodeDto.length &&  (*/}
+      {/*    <img*/}
+      {/*      src={require("../image/审批通过.png")}*/}
+      {/*      className="form-status-img"*/}
+      {/*    />*/}
+      {/*  )}*/}
+      {/*  {isAduit.nodeCode != "withdraw" &&*/}
+      {/*    isAduit.noPass != true &&*/}
+      {/*    DotPass &&*/}
+      {/*    Number(PromotionAppUtils.flowStatus) > 0 &&*/}
+      {/*    PromotionAppUtils.master.status != "" && (*/}
+      {/*      <img*/}
+      {/*        src={require("../image/待审批.png")}*/}
+      {/*        className="form-status-img"*/}
+      {/*      />*/}
+      {/*    )}*/}
+      {/*</div>*/}
+      {/*<div*/}
+      {/*  className="first-form"*/}
+      {/*  style={{*/}
+      {/*    top:*/}
+      {/*      PromotionAppUtils.editStatus == "取消编辑" &&*/}
+      {/*      Number(PromotionAppUtils.flowStatus) > 0  */}
+      {/*        ? "23px"*/}
+      {/*        : "1118px",*/}
+      {/*    height:*/}
+      {/*      PromotionAppUtils.editStatus == "取消编辑" &&*/}
+      {/*      Number(PromotionAppUtils.flowStatus) > 0*/}
+      {/*        ? "1080px"*/}
+      {/*        : "2213px",*/}
+      {/*  }}*/}
+      {/*  onClick={() => {*/}
+      {/*    message.warning("当前暂不可编辑，请根据流程进行修改！");*/}
+      {/*  }}*/}
+      {/*></div>*/}
      <div className="wrapper-pages-form">
         <div className="form-title">
           临床护理人员晋升申请表（N1→N2）（{moment().format("YYYY")}版）
@@ -306,7 +306,7 @@ export default observer(function ApplicationN1(props: Props) {
                   />
                   <span style={{ marginLeft: 15 }}>
                     （标准：护师及以上职称或获得护士职称5年以上）
-                  </span> 
+                  </span>
                   </div>
               </td>
             </tr>
@@ -370,7 +370,7 @@ export default observer(function ApplicationN1(props: Props) {
                 <div className="base-item">
                   <span>
                     3、三基理论考核：
-                    <DateModal 
+                    <DateModal
                       value={tableObjN2.JS0000057}
                       keys={"JS0000057"}
                     />
@@ -386,7 +386,7 @@ export default observer(function ApplicationN1(props: Props) {
                       { label: "不合格", value: "B" },
                     ]}
                   />
-                  <DateModal 
+                  <DateModal
                       value={tableObjN2.JS0000060}
                       keys={"JS0000060"}
                     />
@@ -409,7 +409,7 @@ export default observer(function ApplicationN1(props: Props) {
                 <div className="base-item">
                   <span>
                     4、专科理论考核：
-                    <DateModal 
+                    <DateModal
                       value={tableObjN2.JS0000041}
                       keys={"JS0000041"}
                     />
@@ -472,12 +472,12 @@ export default observer(function ApplicationN1(props: Props) {
               <td colSpan={3}>
                 <div className="base-item">
                   <span>3、</span>
-                  <DateModal 
+                  <DateModal
                       value={tableObjN2.JS0000065}
                       keys={"JS0000065"}
                     />
                     -
-                    <DateModal 
+                    <DateModal
                       value={tableObjN2.JS0000066}
                       keys={"JS0000066"}
                     />年N班班次：
@@ -543,7 +543,7 @@ export default observer(function ApplicationN1(props: Props) {
                     onChange={(e) => {
                       handleInput(e, "JS0000069");
                     }}
-                  />次；  授课时间及课题 
+                  />次；  授课时间及课题
                    <input
                     className=" border mar-btom"
                     type="text"
@@ -571,7 +571,7 @@ export default observer(function ApplicationN1(props: Props) {
                     onChange={(e) => {
                       handleInput(e, "JS0000072");
                     }}
-                  />次；  授课时间及课题 
+                  />次；  授课时间及课题
                    <input
                     className=" border mar-btom"
                     type="text"
@@ -737,6 +737,7 @@ export default observer(function ApplicationN1(props: Props) {
                     className="border mar-btom acc-time"
                     type="text"
                     value={tableObjN2.JS0000047}
+                    style={{...appStore.HOSPITAL_ID==='whyx'&&Number(tableObjN2.JS0000047)<60? {color: 'red'}:null}}
                     onChange={(e) => {
                       handleInput(e, "JS0000047");
                     }}
@@ -749,6 +750,7 @@ export default observer(function ApplicationN1(props: Props) {
                     className="border mar-btom acc-time"
                     type="text"
                     value={tableObjN2.JS0000048}
+                    style={{...appStore.HOSPITAL_ID==='whyx'&&Number(tableObjN2.JS0000048)<60? {color: 'red'}:null}}
                     onChange={(e) => {
                       handleInput(e, "JS0000048");
                     }}
@@ -761,6 +763,7 @@ export default observer(function ApplicationN1(props: Props) {
                     className="border mar-btom acc-time"
                     type="text"
                     value={tableObjN2.JS0000074}
+                    style={{...appStore.HOSPITAL_ID==='whyx'&&Number(tableObjN2.JS0000074)<3? {color: 'red'}:null}}
                     onChange={(e) => {
                       handleInput(e, "JS0000074");
                     }}
@@ -778,9 +781,9 @@ export default observer(function ApplicationN1(props: Props) {
               <td colSpan={4}>
                 <div className="base-item">
                   <span style={{ marginRight: 99 }}>
-                  1.近两年无护理服务投诉： 
+                  1.近两年无护理服务投诉：
                   </span>
-                  <DateModal 
+                  <DateModal
                       value={tableObjN2.JS0000075}
                       keys={"JS0000075"}
                     />年
@@ -794,7 +797,7 @@ export default observer(function ApplicationN1(props: Props) {
                       { label: "有", value: "B" },
                     ]}
                   />
-                  <DateModal 
+                  <DateModal
                       value={tableObjN2.JS0000077}
                       keys={"JS0000077"}
                     />年
@@ -814,7 +817,7 @@ export default observer(function ApplicationN1(props: Props) {
                   <span style={{ marginRight: 117 }}>
                   2. 年度绩效考核结果：
                   </span>
-                  <DateModal 
+                  <DateModal
                       value={tableObjN2.JS0000079}
                       keys={"JS0000079"}
                     />年
@@ -827,7 +830,7 @@ export default observer(function ApplicationN1(props: Props) {
                           handleInput(e, "JS0000080");
                         }}
                       />
-                      <DateModal 
+                      <DateModal
                       value={tableObjN2.JS0000081}
                       keys={"JS0000081"}
                     />年
@@ -846,7 +849,7 @@ export default observer(function ApplicationN1(props: Props) {
                   <span style={{ marginRight: 20 }}>
                   3.无个人原因导致的III级护理不良事件：
                   </span>
-                  <DateModal 
+                  <DateModal
                       value={tableObjN2.JS0000083}
                       keys={"JS0000083"}
                     />年
@@ -860,7 +863,7 @@ export default observer(function ApplicationN1(props: Props) {
                       { label: "有", value: "B" },
                     ]}
                   />
-                  <DateModal 
+                  <DateModal
                       value={tableObjN2.JS0000085}
                       keys={"JS0000085"}
                     />年
@@ -878,9 +881,9 @@ export default observer(function ApplicationN1(props: Props) {
                 </div>
                 <div className="base-item">
                   <span style={{ marginRight: 125 }}>
-                  4.年度学分达标： 
+                  4.年度学分达标：
                   </span>
-                  <DateModal 
+                  <DateModal
                       value={tableObjN2.JS0000087}
                       keys={"JS0000087"}
                     />年
@@ -894,7 +897,7 @@ export default observer(function ApplicationN1(props: Props) {
                       { label: "不达标", value: "B" },
                     ]}
                   />
-                  <DateModal 
+                  <DateModal
                       value={tableObjN2.JS0000089}
                       keys={"JS0000089"}
                     />年
@@ -1061,7 +1064,7 @@ export default observer(function ApplicationN1(props: Props) {
               </td>
             </tr>
             )}
-            
+
           </tbody>
         </table>
       </div>

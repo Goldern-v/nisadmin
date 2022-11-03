@@ -134,6 +134,8 @@ export default class AppStore {
         break;
       case "zhzxy":
         logoUrl = require(`src/assets/images/${this.HOSPITAL_ID}Logo.png`);
+      case "whhk":
+        logoUrl = require(`src/assets/images/${this.HOSPITAL_ID}Logo.png`);
       default:
         break;
     }

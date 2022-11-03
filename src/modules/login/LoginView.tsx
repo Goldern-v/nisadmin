@@ -313,7 +313,7 @@ export default withRouter(function LoginView(props: Props) {
             </div>
             {appStore.hisMatch({
               map: {
-                "whyx,sdlj,dghl,gzsrm": <div className="resetpassword CheckItem" onClick={() => {
+                "whyx,sdlj,dghl,gzsrm,whhk": <div className="resetpassword CheckItem" onClick={() => {
                   history.push('/resetpassword')
                 }}>
                   <span>重置密码</span>

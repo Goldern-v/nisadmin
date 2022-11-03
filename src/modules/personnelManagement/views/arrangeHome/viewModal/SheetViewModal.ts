@@ -244,7 +244,7 @@ class SheetViewModal {
       // 是否存在排班
       isWorkTime: appStore.hisMatch({
         map: {
-          "qhwy,whhk": !!cellObj.workTime,
+          "qhwy": !!cellObj.workTime,
           default: false,
         },
         vague: true,
@@ -313,7 +313,6 @@ class SheetViewModal {
           "qhwy",
           "whsl",
           "zhzxy",
-          'whhk',
         ].includes(appStore.HOSPITAL_ID)
       ) {
         let { data: countObj } = await arrangeService.listRangeNameCode(
@@ -336,7 +335,7 @@ class SheetViewModal {
       } else {
         this.sheetTableData = this.handleSheetTableData(res.data.setting, {});
       }
-      if (["whyx"].includes(appStore.HOSPITAL_ID)) {
+      if (["whyx","whhk"].includes(appStore.HOSPITAL_ID)) {
         this.sheetTableDataCopy = _.cloneDeep(this.sheetTableData);
         this.searchNurseId();
       }

@@ -528,7 +528,7 @@ export default observer(function SelectCon() {
           </div>
         </div>
         {
-          ['whyx'].includes(appStore.HOSPITAL_ID)
+          ['whyx','whhk'].includes(appStore.HOSPITAL_ID)
           && <div className="item item-nurse">
             <Select value={sheetViewModal.nurseId} placeholder="输入护士姓名或工号"
             showSearch
@@ -603,7 +603,7 @@ export default observer(function SelectCon() {
                 }}
                 onCancel={() => setModalVisible(false)} />
             </React.Fragment>,
-            whyx: <React.Fragment>
+            'whyx,whhk': <React.Fragment>
               <div className="item">
                 <Button className="statistics getExcel" onClick={exportExcel}>
                   导出排班
@@ -644,7 +644,8 @@ export default observer(function SelectCon() {
                 导出科室
               </Button>
             </div>
-          }
+          },
+          vague:true
         })}
         {appStore.HOSPITAL_ID == "nys" &&
           (authStore.isDepartment || authStore.isSupervisorNurse) && (

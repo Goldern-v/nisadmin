@@ -56,7 +56,7 @@ const LEFT_MENU_CONFIG = [
             {
               title: "护士节假日排班表",
               path: "/statistic/护士节假日排班表",
-              hide: ['nys','whyx'].includes(appStore.HOSPITAL_ID)
+              hide: ['nys','whyx','whhk'].includes(appStore.HOSPITAL_ID)
             },
             {
               title: `科室排班统计（按班次${appStore.HOSPITAL_ID === "lcey" ? '/按工时' : ''}）`,
@@ -89,7 +89,7 @@ const LEFT_MENU_CONFIG = [
             {
               title: "科室节假日排班表",
               path: "/statistic/科室节假日排班表",
-              hide: ['nys','whyx'].includes(appStore.HOSPITAL_ID)
+              hide: ['nys','whyx','whhk'].includes(appStore.HOSPITAL_ID)
             }
           ]
         },
@@ -145,7 +145,7 @@ const LEFT_MENU_CONFIG = [
                 {
                   title: '护理人员统计',
                   path: '/statistic/护理人员统计',
-                  hide: ['jmfy', 'nys', 'whyx','sdlj'].includes(appStore.HOSPITAL_ID),
+                  hide: ['jmfy', 'nys', 'whyx','sdlj','whhk'].includes(appStore.HOSPITAL_ID),
                 },
                 {
                   title: "护士层级分布", path: "/statistic/护士层级分布",

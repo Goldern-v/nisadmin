@@ -28,7 +28,7 @@ export default observer(function 护士在职状态分析() {
 
   const { deptList } = authStore
   const [query, setQuery] = useState({
-    deptCode:['whyx'].includes(appStore.HOSPITAL_ID) ? authStore.defaultDeptCode:"",
+    deptCode:['whyx','whhk'].includes(appStore.HOSPITAL_ID) ? authStore.defaultDeptCode:"",
     startDate: _currentMonth[0].format('YYYY-MM-DD'),
     endDate: _currentMonth[1].format('YYYY-MM-DD'),
   })
@@ -117,7 +117,7 @@ export default observer(function 护士在职状态分析() {
         {
           appStore.hisMatch({
             map: {
-              whyx:authStore.isDepartmentYaXin &&<Option  value={''}>全院</Option>,
+              "whyx,whhk":authStore.isDepartmentYaXin &&<Option  value={''}>全院</Option>,
               other:<Option value={''}>全院</Option>
             },
             vague: true

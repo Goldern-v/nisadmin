@@ -115,6 +115,7 @@ export default function CreateAnalysisModal(props: Props) {
   }
 
   const handleFormChange = (key: string, val: any) => {
+    if (key == 'summaryFormCode') return
     if (key == 'startDate') setStartDate(val)
 
     if (key == 'reportMonth') {

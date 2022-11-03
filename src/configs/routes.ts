@@ -810,7 +810,7 @@ const routes: RouteItem[] = [
   ),
   setLayout(
     "/qualityAnalysisReport",
-    ['whyx'].includes(appStore.HOSPITAL_ID)?QualityAnalysisReportViewwhyx: QualityAnalysisReportView,
+    ['whyx','whhk'].includes(appStore.HOSPITAL_ID)?QualityAnalysisReportViewwhyx: QualityAnalysisReportView,
     // QualityAnalysisReportView,
     layouts.MainLayout
   ),

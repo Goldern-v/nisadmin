@@ -459,7 +459,7 @@ export default observer(function 敏感指标登记本(props: Props) {
     return false;
   }
   //registerName
-  const isWhyx = ['whyx','lyyz','qhwy'].includes(appStore.HOSPITAL_ID)
+  const isWhyx = ['whyx','lyyz','qhwy','whhk'].includes(appStore.HOSPITAL_ID)
 
   const columns: ColumnProps<any>[] | any = [
     ...appStore.hisMatch({
@@ -710,7 +710,7 @@ export default observer(function 敏感指标登记本(props: Props) {
     ] : [],
     ...appStore.hisMatch({
       map: {
-        'whyx,lyyz,qhwy': [],
+        'whyx,lyyz,qhwy,whhk': [],
         other: (config.signList || []).map((signItem: any) =>
           signRowObj({
             title: signItem.title,
@@ -821,12 +821,12 @@ export default observer(function 敏感指标登记本(props: Props) {
   /**批量按钮 */
   const SelectedBtnCon = observer(function(props: Record<string, any>) {
     const { config, customSign, customBatch } = props;    
-    const general =['whyx'].includes(appStore.HOSPITAL_ID) && !!customSign?.length // && customSign.find((item: any) => item.itemCode == '护士签名')// && customBatch.length != 0
+    const general =['whyx','whhk'].includes(appStore.HOSPITAL_ID) && !!customSign?.length // && customSign.find((item: any) => item.itemCode == '护士签名')// && customBatch.length != 0
     return (<Fragment>
       {
         appStore.hisMatch({
           map: {
-            'whyx,lyyz,qhwy': (
+            'whyx,lyyz,qhwy,whhk': (
               <Fragment>
                 {customSign && customSign.map((item: any) => (
                   <Button
@@ -1088,7 +1088,7 @@ export default observer(function 敏感指标登记本(props: Props) {
             {
               appStore.hisMatch({
                 map: {
-                  'whyx,lyyz,qhwy': authStore.isAdmin ? (
+                  'whyx,lyyz,qhwy,whhk': authStore.isAdmin ? (
                     <Button onClick={onDelete}>版本删除</Button>
                   ) : '',
                   other: authStore.isNotANormalNurse ? (
@@ -1106,7 +1106,7 @@ export default observer(function 敏感指标登记本(props: Props) {
         }
       </NewPageHeader>
       <TableCon
-      className={[['whyx'].includes(appStore.HOSPITAL_ID) ? 'whyxTable':''].join(' ')}
+      className={[['whyx','whhk'].includes(appStore.HOSPITAL_ID) ? 'whyxTable':''].join(' ')}
       >
         {selectedBlockId ? (
           <React.Fragment>
@@ -1149,7 +1149,7 @@ export default observer(function 敏感指标登记本(props: Props) {
             {
               appStore.hisMatch({
                 map: {
-                  'whyx':<div className="search-box">
+                  'whyx,whhk':<div className="search-box">
                     <InputNumber onChange={(value) => {
                       setPageOptions({ ...pageOptions, pageSize:value || 20, pageIndex: 1 })
                     }} placeholder="请输入条数" />

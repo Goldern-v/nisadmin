@@ -166,7 +166,7 @@ export default observer(function TopPart() {
     let startTime = new Date(selectViewModal.params.startTime).getTime()
     let flag =false
     if (currentTime >= today) {
-      flag = (startTime<todayOne) && ['whyx'].includes(appStore.HOSPITAL_ID)
+      flag = (startTime<todayOne) && ['whyx','whhk'].includes(appStore.HOSPITAL_ID)
     }
     setShowLock(!flag)
   }, [selectViewModal.params.startTime])
@@ -317,7 +317,7 @@ export default observer(function TopPart() {
           </div>
         </div>
         {
-          ['whyx'].includes(appStore.HOSPITAL_ID)
+          ['whyx','whhk'].includes(appStore.HOSPITAL_ID)
           && <div className="item item-nurse">
             <Select value={sheetViewModal.nurseId} placeholder="输入护士姓名或工号"
             showSearch
@@ -374,7 +374,7 @@ export default observer(function TopPart() {
           <Button onClick={appStore.HOSPITAL_ID! == 'gzsrm' ? gzsrmhandleCopy : handleCopy}>{appStore.HOSPITAL_ID == 'nys' ? '复制上周排班' : "复制排班"}</Button>
         </div>
 
-        {['whyx'].includes(appStore.HOSPITAL_ID) && <div className="item">
+        {['whyx','whhk'].includes(appStore.HOSPITAL_ID) && <div className="item">
           <Button
             className="statistics"
             onClick={() => {

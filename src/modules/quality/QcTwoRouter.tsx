@@ -217,7 +217,7 @@ export default observer(function QcTwoRouter(props: Props) {
         },
         route_福清二级质控问题原因措施汇总,
       ],
-      whyx: [route_analysis],
+      'whyx,whhk': [route_analysis],
       // whyx: [route_analysis, route_summaryReport, route_problemSummary],
       default: [
         {

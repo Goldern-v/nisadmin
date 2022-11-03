@@ -44,7 +44,7 @@ export default observer(function TopCon(props: any) {
               return defaultTitle;
           }
         })(),
-        whyx: (() => {
+        "whyx,whhk": (() => {
           if (qualityControlRecordVM.level == 4) {
             return qcFunTitle.listViewTitle;
           }
@@ -52,6 +52,7 @@ export default observer(function TopCon(props: any) {
         })(),
         other: defaultTitle,
       },
+      vague:true
     });
   };
 
@@ -89,7 +90,7 @@ export default observer(function TopCon(props: any) {
         wh: qualityControlRecordVM.level == 2 ? defaultCreateCon : <span />,
         'hj,nfsd': defaultCreateCon,
         gxjb: defaultCreateCon,
-        whyx: createBtn ? withOutAuditCreateCon : "",
+        "whyx,whhk": createBtn ? withOutAuditCreateCon : "",
         other: withOutAuditCreateCon,
       },
       vague: true,
@@ -125,7 +126,7 @@ export default observer(function TopCon(props: any) {
         setQcCodeList([{ qcCode: "", qcName: "全部" }, ...res.data]);
     } catch (err) {}
   };
-  const isWhyx = ["whyx"].includes(appStore.HOSPITAL_ID);
+  const isWhyx = ["whyx","whhk"].includes(appStore.HOSPITAL_ID);
   const qcCodeCon = useCallback(() => {
     if (isWhyx||['gzsrm'].includes(appStore.HOSPITAL_ID)) {
       return (
@@ -260,7 +261,7 @@ export default observer(function TopCon(props: any) {
                 </Radio.Group>
               </div>
             ),
-          whyx: "",
+          "whyx,whhk": "",
           default: qualityControlRecordVM.formSelectList.length >= 1 &&
             qualityControlRecordVM.level != 2 && (
               <div className="radio-con">

@@ -64,7 +64,7 @@ export default class QualityControlRecordApi extends BaseApiService {
   }
   //质控记录单处理
   public handleNode(obj: any) {
-    if (appStore.HOSPITAL_ID == 'whyx') {
+    if (['whyx','whhk'].includes(appStore.HOSPITAL_ID)) {
       return this.handleNodeYX(obj)
     }
     return this.post(`/qcItem/instance/handleNode`, obj)
@@ -123,7 +123,7 @@ export default class QualityControlRecordApi extends BaseApiService {
 
   /**质控详情导出 */
   public exportQcItemDetail(id: string) {
-    if (appStore.HOSPITAL_ID == 'whyx') {
+    if (['whyx','whhk'].includes(appStore.HOSPITAL_ID)) {
       return this.exportQcItemDetailYX(id)
     }
     return this.get(`/qcItem/instance/export/${id}`, { responseType: 'blob' })
@@ -131,7 +131,7 @@ export default class QualityControlRecordApi extends BaseApiService {
 
   /**质控详情批量导出 */
   public exportList(list: any[]) {
-    if (appStore.HOSPITAL_ID == 'whyx') {
+    if (['whyx','whhk'].includes(appStore.HOSPITAL_ID)) {
       return this.exportListYX(list)
     }
     return this.post(`/qcItem/instance/exportList`, { list }, { responseType: 'blob' })

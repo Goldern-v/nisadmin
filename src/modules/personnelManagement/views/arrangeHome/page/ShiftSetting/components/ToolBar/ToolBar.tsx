@@ -525,7 +525,7 @@ export default function ToolBar() {
                 }
               });
             }}
-            disabled={(appStore.HOSPITAL_ID == 'whyx' && !authStore.isSuperAdmin) || (['jmfy','nys'].includes(appStore.HOSPITAL_ID) && !authStore.isDepartment)}
+            disabled={(['whyx','whhk'].includes(appStore.HOSPITAL_ID) && !authStore.isSuperAdmin) || (['jmfy','nys'].includes(appStore.HOSPITAL_ID) && !authStore.isDepartment)}
             style={{ marginLeft: 6, marginRight: 3 }}
           >
             添加新班次

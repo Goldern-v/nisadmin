@@ -117,9 +117,9 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
     // return 'http://220.202.32.51:9091'  //正式环境
     /**临邑人民医院 */
     case "lyrm":
-      return "http://192.168.1.54:9885"; // 测试环境
-      return "https://info.cr-health.com:20203"; // 公司-厚街测试-外网
-      return "https://info.cr-health.com:20203"; // 武汉测试
+      return "http://192.168.1.54:9890"; // 测试环境
+      // return "https://info.cr-health.com:20203"; // 公司-厚街测试-外网
+      // return "https://info.cr-health.com:20203"; // 武汉测试
 
     // 广东同江
     case "gdtj":
@@ -151,6 +151,9 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
     case 'dgxg':
       return "http://183.234.1.124:9093"  //正式
       // return "http://192.168.1.54:9882"
+    // 武汉汉口医院
+    case 'whhk':
+      return "http://192.168.1.54:9900"
     default:
       return "http://192.168.1.54:9866";
   }

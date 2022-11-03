@@ -258,10 +258,16 @@ class TrainingResultModel {
       this.teacher = res.data.latTpTeachingTaskList[0].empName;
       this.time = res.data.baseInfo.startTime;
       this.address = res.data.baseInfo.address;
+
+      // 培训实施记录 显示科室
+      this.trainingDepartment = res.data.latTrainImplementationResult.trainingDepartment || ''
+      this.trainingPhotos = res.data.latTrainImplementationResult.trainingPhotos || '' //培训照片
+      this.comments = res.data.latTrainImplementationResult.comments || '' //效果评价/培训考核
+
       let empNameList = res.data.personList.map((item:any) => {
           return item.empName
       });
-      console.log(empNameList);
+      // console.log(empNameList);
       
       this.people = empNameList.join(',')
     })

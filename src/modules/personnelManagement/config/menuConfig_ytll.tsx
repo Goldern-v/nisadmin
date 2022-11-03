@@ -77,13 +77,13 @@ export const meunConfig: meunConfigItem[] = [
         title: "排班套餐设置",
         path: "/personnelManagement/MealSettingViewNew",
         component: MealSettingViewNew,
-        iSlimit: false,
+        iSlimit: true,
       },
       {
         title: "结余设置",
         path: "/personnelManagement/balanceInit",
         component: BalanceInit,
-        iSlimit: false,
+        iSlimit: true,
       },
       {
         title: "标准工时设置",

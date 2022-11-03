@@ -262,6 +262,7 @@ class SelectPeopleViewModel {
         stepLabel: ""
       };
       return {
+        NTypeList:[],
         parent: this.stepState[1],
         list: (this.currentData.list || []).map(
           (item: any, index: number, arr: any[]) => ({
@@ -286,6 +287,7 @@ class SelectPeopleViewModel {
           (item: any) => item[dataLabel || ""] == this.stepState[2]
         ) || {};
       return {
+        NTypeList:[],
         parent: isGroupName ? this.stepState[1] : userData[dataLabel || ""],
         list: ((isGroupName ? this.currentData.list : userData.userList) || []).map((item: any) => ({
           ...item,

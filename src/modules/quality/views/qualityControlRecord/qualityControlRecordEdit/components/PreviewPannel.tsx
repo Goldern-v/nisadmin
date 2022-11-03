@@ -163,11 +163,11 @@ export default observer(function PreviewPannel(props: Props) {
           {baseInfo.useScore ? (
             <div>
               本次评估结果为：得分(
-              {["whyx"].includes(appStore.HOSPITAL_ID)
+              {["whyx","whhk"].includes(appStore.HOSPITAL_ID)
                 ? yxGradeObj.totalScore - yxGradeObj.deductScore
                 : result.totalScore - result.deductScore}
               ) 总分(
-              {["whyx"].includes(appStore.HOSPITAL_ID)
+              {["whyx","whhk"].includes(appStore.HOSPITAL_ID)
                 ? 100
                 : result.totalScore}
               )
@@ -175,11 +175,11 @@ export default observer(function PreviewPannel(props: Props) {
           ) : (
             <div>
               本次评估结果为：是(
-              {["whyx"].includes(appStore.HOSPITAL_ID)
+              {["whyx","whhk"].includes(appStore.HOSPITAL_ID)
                 ? yxGradeObj.right
                 : result.shi}
               ) 否(
-              {["whyx"].includes(appStore.HOSPITAL_ID)
+              {["whyx","whhk"].includes(appStore.HOSPITAL_ID)
                 ? yxGradeObj.fault
                 : result.fou}
               ){" "}
@@ -190,7 +190,7 @@ export default observer(function PreviewPannel(props: Props) {
           <br />
           {!["gzsrm"].includes(appStore.HOSPITAL_ID) && <div>
             通过率为：
-            {["whyx"].includes(appStore.HOSPITAL_ID)
+            {["whyx","whhk"].includes(appStore.HOSPITAL_ID)
               ? `${yxGradeObj.right} / ${yxGradeObj.total} × 100% = ${
                   yxGradeObj.rate
                 }`

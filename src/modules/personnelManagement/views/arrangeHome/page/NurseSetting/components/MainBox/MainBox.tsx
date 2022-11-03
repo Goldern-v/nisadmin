@@ -80,7 +80,7 @@ export default observer(function MainBox() {
           );
           if (target && target.name) usetTypeName = target.name;
         }
-        if (['whyx'].includes(appStore.HOSPITAL_ID)) {
+        if (['whyx','whhk'].includes(appStore.HOSPITAL_ID)) {
           return <span style={{ color: record.userType == 1 ? '#ff3030' : record.userType == 2 ? "#007aff" : "" }}>{empNo || usetTypeName}</span>
         }
         return empNo || usetTypeName;
@@ -158,7 +158,7 @@ export default observer(function MainBox() {
             width: 70,
           },
         ],
-        'wh,gzsrm,gxjb,lyyz,qhwy,ytll,whhk': [
+        'wh,gzsrm,gxjb,lyyz,qhwy,ytll': [
           {
             title: "开始时间",
             dataIndex: "startDate",
@@ -182,7 +182,7 @@ export default observer(function MainBox() {
       render(text: any, row: any) {
         return (
           <DoCon>
-            {appStore.HOSPITAL_ID == 'whyx' && <>
+            {['whyx','whhk'].includes(appStore.HOSPITAL_ID) && <>
               <span
                 onClick={() => {
                   let usetTypeName = "";
