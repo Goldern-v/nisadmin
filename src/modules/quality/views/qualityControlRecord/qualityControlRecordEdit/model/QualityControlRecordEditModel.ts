@@ -179,6 +179,8 @@ class QualityControlRecordEditModel {
         this.master[x] = false
       } else if (x == 'evalDate') {
         this.master[x] = moment().format('YYYY-MM-DD HH:mm')
+      } else if (x == 'wardCode' && appStore.HOSPITAL_ID === 'whyx') {
+        this.master[x] = authStore.defaultDeptCode
       } else {
         this.master[x] = ''
       }
@@ -232,6 +234,8 @@ class QualityControlRecordEditModel {
             this.causeList = [...res.data.causeList]
 
           if (this.baseInfo.qcGroupRoles) this.getUserList();
+          // 科室存在请求检查人
+          if (this.master.wardCode) this.getBedNurseList(true);
 
           //赋值人员指定列表
           (res?.data?.nodeAppointList && res.data.nodeAppointList.length > 0) && (this.auditList = res.data.nodeAppointList);
@@ -386,14 +390,25 @@ class QualityControlRecordEditModel {
       })
   }
 
-  //获取管床护士列表
-  @action public getBedNurseList = () => {
+  /**
+   * 获取管床护士列表
+   * @param isInit 是否初始化检查人
+   */
+  @action public getBedNurseList = (isInit = false) => {
     this.bedNurseList = []
     if (this.master.wardCode)
       qualityControlRecordApi
         .getBedNurseList(this.master.wardCode)
         .then(res => {
-          if (res.data) this.bedNurseList = res.data
+          if (res.data) {
+            this.bedNurseList = res.data || []
+            if (isInit) {
+              console.log('test-res', res,authStore.user)
+              const item = this.bedNurseList.find(v => v.empNo === authStore.user?.empNo)
+              console.log('test-item', item)
+              item && (this.master.bedNurseList = [item])
+            }
+          }
         })
   }
 

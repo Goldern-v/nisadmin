@@ -29,7 +29,9 @@ export interface State { }
 const NavBar2: any = NavBar
 export class App extends React.Component<Props, State> {
   componentDidMount(): void {
-    console.log('test-version', version)
+    if (process.env.NODE_ENV === 'production') {
+      console.log('test-version', version)
+    }
   }
   public render() {
     return (
