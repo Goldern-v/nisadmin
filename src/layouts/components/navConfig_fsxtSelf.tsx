@@ -32,6 +32,11 @@ const baseConfig: navConfigItem[] = [
   //   path: "/nurseFile",
   //   hidden: !authStore.isRoleManage
   // },
+  {
+    name: "我的档案",
+    path: "/selfNurseFile",
+    hidden: appStore.HOSPITAL_ID !== '925'
+  },
   // {
   //   name: '不良事件',
   //   path: '/badEventsNewList',

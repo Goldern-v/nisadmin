@@ -1,4 +1,5 @@
 const path = require('path')
+const version = require('version.js')
 const { override, fixBabelImports, addLessLoader, addBabelPlugin } = require('customize-cra')
 const otherLoader = (loaderOptions = {}) => (config) => {
   //解决Critical dependency: require function is used in a way in which dependencies cannot be statically extracted的问题

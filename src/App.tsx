@@ -20,6 +20,7 @@ import NavBar from './layouts/components/NavBar'
 import { Provider as KeepAliveProvider } from 'react-keep-alive'
 moment.locale('zh-cn')
 import {initAstrict} from "src/utils/loginTimeOut/astrict"
+import version from './version.json'
 //登录超时
 initAstrict();
 export interface Props { }
@@ -27,7 +28,9 @@ export interface Props { }
 export interface State { }
 const NavBar2: any = NavBar
 export class App extends React.Component<Props, State> {
-
+  componentDidMount(): void {
+    console.log('test-version', version)
+  }
   public render() {
     return (
       <ComponentDidCatch>

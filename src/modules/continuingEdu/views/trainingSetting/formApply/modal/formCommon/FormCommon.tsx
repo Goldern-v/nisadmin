@@ -67,7 +67,7 @@ export default observer(function FormApply(props: Props) {
 
   return (
     <Wrapper ref={props.printRef} id="wardLogPrintPage">
-      <Hospital>东莞市厚街医院</Hospital>
+      <Hospital>{appStore.HOSPITAL_Name}</Hospital>
       <Title>{name ? name : formApplyModal.getTitle}</Title>
       <FromContent>
         {code
