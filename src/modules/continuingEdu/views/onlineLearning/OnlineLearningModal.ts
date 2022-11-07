@@ -63,7 +63,7 @@ class OnlineLearningModal {
   async onload() {
     this.tableLoading = true;
     let res = null
-    if (appStore.HOSPITAL_ID === 'hj' && this.teachingMethod === 6) {
+    if (['hj', 'lyyz'].includes(appStore.HOSPITAL_ID) && this.teachingMethod === 6) {
       const params = { ...this.postObj }
       params.taskStatus = this.taskStatus2
       res = await onlineLearningApi.getMyWorkList(params)
