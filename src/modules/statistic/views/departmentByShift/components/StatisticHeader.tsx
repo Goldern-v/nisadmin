@@ -1,14 +1,14 @@
 import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 // import SelectDepartment from '../common/SelectDepartment'
-import DeptSelect from 'src/components/DeptSelect'
+// import DeptSelect from 'src/components/DeptSelect'
 import SelectData from 'src/modules/statistic/common/SelectData'
-import StatisticsApi from 'src/modules/statistic/api/StatisticsApi'
-import statisticViewModel from 'src/modules/statistic/StatisticViewModel'
-import { Button, message, Radio, Select } from 'antd'
-import emitter from 'src/libs/ev'
+// import StatisticsApi from 'src/modules/statistic/api/StatisticsApi'
+// import statisticViewModel from 'src/modules/statistic/StatisticViewModel'
+import { Button, Radio, Select } from 'antd'
+// import emitter from 'src/libs/ev'
 import { appStore } from "src/stores";
-import { fileDownload } from 'src/utils/file/file'
+// import { fileDownload } from 'src/utils/file/file'
 // import { observer } from 'mobx-react-lite'
 
 const { Option } = Select;
@@ -44,22 +44,22 @@ export default function BedSituation(props: Props) {
           endTime: payload[1],
         })
       }} />
-      {appStore.HOSPITAL_ID==='lcey' && <span style={{marginLeft: '20px'}}>时令状态：</span>}
-      {appStore.HOSPITAL_ID==='lcey' && 
-        <Select defaultValue="summer" style={{ width: 120 }} onChange={(value: string) => onChange && onChange({
-          ...query, 
-          season: value
-        })
-        }>
-          <Option value="summer">夏令时</Option>
-          <Option value="winter">冬令时</Option>
-        </Select>
-      }
-      {appStore.HOSPITAL_ID === 'lcey' && 
-        <Radio.Group className='radio' value={state} onChange={stateChange}>
-          <Radio.Button value="1">按班次</Radio.Button>
-          <Radio.Button value="2">按工时</Radio.Button>
-        </Radio.Group>
+      {['lcey', 'lyyz'].includes(appStore.HOSPITAL_ID) && 
+        <>
+          <span style={{marginLeft: '20px'}}>时令状态：</span>
+          <Select defaultValue="summer" style={{ width: 120 }} onChange={(value: string) => onChange && onChange({
+              ...query, 
+              season: value
+            })
+          }>
+            <Option value="summer">夏令时</Option>
+            <Option value="winter">冬令时</Option>
+          </Select>
+          <Radio.Group className='radio' value={state} onChange={stateChange}>
+            <Radio.Button value="1">按班次</Radio.Button>
+            <Radio.Button value="2">按工时</Radio.Button>
+          </Radio.Group>
+        </>
       }
       <Button type='primary' style={{ margin: '0 0 0 60px', width: '90px' }} onClick={searchButtonClick}>
         查询

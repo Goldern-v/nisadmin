@@ -60,6 +60,7 @@ switch (appStore.HOSPITAL_ID) {
     }
     break;
   case 'lcey':
+  case 'lyyz':
     rules = {
       name: (val) => !!val || "请填写班次名称",
       shiftType: (val) => !!val || "请填写班次类别",
@@ -167,7 +168,7 @@ switch (appStore.HOSPITAL_ID) {
       ? data.settingMorningHour
       : (data.settingMorningHour = 0);
     data.settingNightHour ? data.settingNightHour : (data.settingNightHour = 0);
-    if (appStore.HOSPITAL_ID === 'lcey') {
+    if (['lcey', 'lyyz'].includes(appStore.HOSPITAL_ID)) {
       data.settingWinNightHour ? data.settingWinNightHour : (data.settingWinNightHour = 0);
       data.settingWinMorningHour ? data.settingWinMorningHour : (data.settingWinMorningHour = 0);
       data.winWorkTime = getTimeStr(
@@ -231,7 +232,7 @@ switch (appStore.HOSPITAL_ID) {
               backgroundColor: props.editData.backgroundColor,
               npProportion: props.editData.npProportion == 1 ? '1' : '0',
               deductionDay: props.editData.deductionDay
-            }, appStore.HOSPITAL_ID === 'lcey' ? {
+            }, ['lcey', 'lyyz'].includes(appStore.HOSPITAL_ID) ? {
               ...winterTime(props.editData.winWorkTime),
               settingWinNightHour: props.editData.settingWinNightHour,
               settingWinMorningHour: props.editData.settingWinMorningHour
@@ -251,12 +252,12 @@ switch (appStore.HOSPITAL_ID) {
               status: true,
               rangeLimit: "",
               settingNightHour: "0",
-              settingMorningHour: appStore.HOSPITAL_ID == 'lcey' ? "8" : '0',
+              settingMorningHour: ['lcey', 'lyyz'].includes(appStore.HOSPITAL_ID) ? "8" : '0',
               coefficient: "",
               backgroundColor: "#ffffff",
               npProportion: "0",
               deductionDay: "0",
-            }, appStore.HOSPITAL_ID === 'lcey' ? {
+            }, ['lcey', 'lyyz'].includes(appStore.HOSPITAL_ID) ? {
               workTime5: moment("8:00", "HH:mm"),
               workTime6: moment("12:00", "HH:mm"),
               workTime7: moment("14:00", "HH:mm"),
@@ -268,7 +269,7 @@ switch (appStore.HOSPITAL_ID) {
         });
     }
   }, [visible]);
-  if (appStore.HOSPITAL_ID === 'lcey') {
+  if (['lcey', 'lyyz'].includes(appStore.HOSPITAL_ID)) {
     useLayoutEffect(()=>{
       const from = refForm.current;
       // 如果是添加班次，就计算时间工时总和  如果是编辑，直接显示后端返回的值
@@ -306,7 +307,7 @@ switch (appStore.HOSPITAL_ID) {
         form.setField('deductionDay',Math.floor(num)*0.5)
       }
     }
-    if (appStore.HOSPITAL_ID === "lcey") {
+    if (['lcey', 'lyyz'].includes(appStore.HOSPITAL_ID)) {
       if (["workTime1", "workTime2", "workTime3", "workTime4"].includes(name)) {
         const { workTime1, workTime2, workTime3, workTime4 } = form.getFields();
         setTime1(workTime1 && workTime2 ? workTime2.diff(workTime1, "h",true) : 0)
@@ -351,7 +352,7 @@ switch (appStore.HOSPITAL_ID) {
       onOk={onSave}
       okText="保存"
       forceRender
-      maskClosable={appStore.HOSPITAL_ID === "lcey" ? false : true}
+      maskClosable={['lcey', 'lyyz'].includes(appStore.HOSPITAL_ID) ? false : true}
     >
       <Wrapper>
         <Spin spinning={modalLoading}>
@@ -398,7 +399,7 @@ switch (appStore.HOSPITAL_ID) {
               {/*<div style={tips}>例如：多个上班时间段可用;隔开，如08:00-12:00;02:00-18:00</div>*/}
               {/* 时间段1 */}
               <Col span={13}>
-                <Form.Field label={appStore.HOSPITAL_ID == "lcey" ? `夏令上班时间` : '上班时间'} name="workTime1" required={(['nfzxy'].includes(appStore.HOSPITAL_ID) && holiday)?false:true}>
+                <Form.Field label={['lcey', 'lyyz'].includes(appStore.HOSPITAL_ID) ? `夏令上班时间` : '上班时间'} name="workTime1" required={(['nfzxy'].includes(appStore.HOSPITAL_ID) && holiday)?false:true}>
                   <TimePicker format={"HH:mm"} />
                 </Form.Field>
               </Col>
@@ -424,7 +425,7 @@ switch (appStore.HOSPITAL_ID) {
                   <TimePicker format={"HH:mm"} />
                 </Form.Field>
               </Col>
-              {appStore.HOSPITAL_ID == "lcey" &&
+              {['lcey', 'lyyz'].includes(appStore.HOSPITAL_ID) &&
                 <React.Fragment>
                   <Col span={13}>
                     <Form.Field label={`冬令上班时间`} name="workTime5" required>
@@ -460,7 +461,7 @@ switch (appStore.HOSPITAL_ID) {
               {
                 appStore.hisMatch({
                   map: {
-                    lcey: <div>
+                    'lcey,lyyz': <div>
                       <Col span={24}>
                         <Form.Field label={`夏标准工时`} name="effectiveTime" required>
                           <Input />
@@ -479,7 +480,8 @@ switch (appStore.HOSPITAL_ID) {
                         </Form.Field>
                       </Col>
                     </div>
-                  }
+                  },
+                  vague: true
                 })
               }
               {/* <Col span={24}>
@@ -493,16 +495,16 @@ switch (appStore.HOSPITAL_ID) {
                 </Form.Field>
               </Col> */}
               <Col span={24}>
-                <Form.Field label={appStore.HOSPITAL_ID == "lcey" ? '夏令白工时' : `白工时`} name="settingMorningHour">
+                <Form.Field label={['lcey', 'lyyz'].includes(appStore.HOSPITAL_ID) ? '夏令白工时' : `白工时`} name="settingMorningHour">
                   <Input />
                 </Form.Field>
               </Col>
               <Col span={24}>
-                <Form.Field label={appStore.HOSPITAL_ID == "lcey" ? '夏令夜工时' : `夜工时`} name="settingNightHour">
+                <Form.Field label={['lcey', 'lyyz'].includes(appStore.HOSPITAL_ID) ? '夏令夜工时' : `夜工时`} name="settingNightHour">
                   <Input />
                 </Form.Field>
               </Col>
-              {appStore.HOSPITAL_ID === 'lcey' && <div>
+              {['lcey', 'lyyz'].includes(appStore.HOSPITAL_ID) && <div>
                 <Col span={24}>
                   <Form.Field label={`冬令白工时`} name="settingWinMorningHour">
                     <Input />

@@ -1,9 +1,9 @@
 import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
-import emitter from 'src/libs/ev'
-import service from 'src/services/api'
-import StatisticsApi from 'src/modules/statistic/api/StatisticsApi'
-import statisticViewModel from 'src/modules/statistic/StatisticViewModel'
+import React from 'react'
+// import emitter from 'src/libs/ev'
+// import service from 'src/services/api'
+// import StatisticsApi from 'src/modules/statistic/api/StatisticsApi'
+// import statisticViewModel from 'src/modules/statistic/StatisticViewModel'
 import { appStore } from 'src/stores'
 export interface Props {
   tableData: any[],
@@ -61,7 +61,7 @@ export default function BedSituation(props: Props) {
         }
       })
     })
-    if(appStore.HOSPITAL_ID === 'lcey') {
+    if(['lcey', 'lyyz'].includes(appStore.HOSPITAL_ID)) {
       if (statusRadio === '1') {
         visibleData.push(sumupRow, nightMap, morningMap, hourMap)
       } else {

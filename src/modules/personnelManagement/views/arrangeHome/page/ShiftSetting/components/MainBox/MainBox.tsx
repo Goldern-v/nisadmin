@@ -94,7 +94,7 @@ export default function MainBox() {
     setSelectAll(checked)
   }
 
-  const columns = appStore.HOSPITAL_ID !== "lcey" ?
+  const columns =  !['lcey', 'lyyz'].includes(appStore.HOSPITAL_ID) ?
   [
     {
       title: "序号",

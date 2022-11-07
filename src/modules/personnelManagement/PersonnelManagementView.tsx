@@ -29,6 +29,12 @@ export default function PersonnelManagementView() {
     switch (appStore.HOSPITAL_ID) {
       case 'wh':
       case 'lyyz':
+      case 'fssdy':
+      case 'fsxt':
+      case '925':
+      case 'sdlj'://顺德龙江
+      case 'nfsd':
+      case 'gdtj':
         return menuConfig_wh;
       case 'qhwy':
         return menuConfig_qhwy;
@@ -47,27 +53,17 @@ export default function PersonnelManagementView() {
         return menuConfig_nfzxy;
       case 'lcey':
         return menuConfig_lcey;
-      case 'fssdy':
-        return menuConfig_wh;
       case 'gxjb':
         return menuConfig_gxjb;
       // if (authStore.isRoleManage) return menuConfig_gxjb;
       // return menuConfig_gxjbSelf
-      case 'fsxt':
-      case '925':
-        return menuConfig_wh;
       case 'dgxg':
         return menuConfig_dgxg;
       case 'whyx'://武汉亚心
       case 'whhk':
         return menuConfig_whyx;
-      case 'sdlj'://顺德龙江
-      case 'nfsd':
-        return menuConfig_wh;
       case 'lyrm'://临邑人民
         return menuConfig_lyrm;
-      case 'gdtj':
-        return menuConfig_wh;
       case 'whsl':
         return menuConfig_whsl
       case 'wjgdszd':

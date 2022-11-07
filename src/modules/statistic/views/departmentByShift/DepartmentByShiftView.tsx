@@ -35,7 +35,7 @@ export default function StatisticView() {
         type: 'shift_type',
         startTime: moment(new Date().setDate(1)).format('YYYY-MM-DD'),
         endTime: moment(new Date().setDate(7)).format('YYYY-MM-DD'),
-    }, appStore.HOSPITAL_ID === 'lcey' ? {season: 'summer'} : {}))
+    }, ['lcey', 'lyyz'].includes(appStore.HOSPITAL_ID) ? {season: 'summer'} : {}))
 
     const [tableData, setTableData] = useState([] as any[])
     const [hourMap, setHourMap] = useState({})
@@ -91,7 +91,7 @@ export default function StatisticView() {
         let reqQuery = {..._query || query}
         let currentFilterObj = _filterObj || filterObj
         let filterTypes = Object.keys(filterObj)
-        if (appStore.HOSPITAL_ID !== 'lcey') reqQuery = {...reqQuery, season: 'summer'}
+        if (['lcey', 'lyyz'].includes(appStore.HOSPITAL_ID)) reqQuery = {...reqQuery, season: 'summer'}
         if (reqQuery.type) {
             let filterList = currentFilterObj[reqQuery.type].list
                 .filter((item: any) => item.checked)
@@ -264,7 +264,6 @@ export default function StatisticView() {
                             statusRadio={statusRadio}
                             filterObj={filterObj}
                             onFilterObjChange={handleFilterObjChange}/>}
-                        }
                     </div>
                 </RigthCon>
             </MidMidCon>
