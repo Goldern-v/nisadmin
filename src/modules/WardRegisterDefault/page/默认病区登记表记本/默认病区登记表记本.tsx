@@ -26,6 +26,7 @@ import { signRowObj } from "../../utils/signRowObj";
 import { NullBox } from "../../components/NullBox";
 import { TableCon, Wrapper } from "../../utils/style/style";
 import { getFun, ItemConfigItem } from "../../utils/fun/fun";
+import { numberFormat } from "src/utils/number/numberFormat";
 import { createFilterItem } from "../../components/Render.v1/FilterItem";
 import classNames from "classnames";
 import { createFilterInput } from "../../components/Render.v1/FilterInput";
@@ -39,6 +40,8 @@ import reactZmage from 'react-zmage'
 import FileUploadColumnRender from '../../components/Render.v1/FileUploadColumnRender'
 import DatePickerColumnRender from '../../components/Render.v1/DatePickerColumnRender'
 import InputColumnRender from '../../components/Render.v1/InputColumnRender'
+import InputRender from '../../components/Render.v1/InputRender'
+
 import PatientDialog from "src/modules/indicator/selfDeclaration/components/patientDialog";
 import SignColumnRender from "../../components/Render.v1/SignColumnRender";
 import SettingShiftModal from "./modal/SettingShiftModal";
@@ -458,6 +461,95 @@ export default observer(function 敏感指标登记本(props: Props) {
     if (registerName==="新生儿科空气消毒登记本") return  true;
     return false;
   }
+
+//   计算器
+  const getTrueVal = (item:any,record:any)=>{
+	console.log(record[item.timeEndCode].length)
+	let deval = null
+	let incremental = false //记录是否要递增
+	if(item.calculationType == 'hour'){
+		deval = moment(record[item.timeEndCode],"hh:mm").diff(moment(record[item.timeBeginCode],"hh:mm"),'hours',true)
+	}else if(item.calculationType == 'dayTime'){
+		// 日期时间，天数+1，保留小数
+		incremental = true
+		deval = moment(record[item.timeEndCode]).diff(moment(record[item.timeBeginCode]),'days',true)
+	}else{
+		incremental = true
+		// 是否保留小数，天数+1
+		deval = moment(record[item.timeEndCode]).diff(moment(record[item.timeBeginCode]),'days')
+	}				
+	if(isNaN(deval)){
+		return ''
+	}else{
+		// 如果是天数，就要+1
+		if(incremental){
+			return numberFormat(deval+1,1)
+		}
+		return numberFormat(deval,1)
+	}
+  }
+//   叠加器
+  const getTrueIderate = (item:any,record:any,index:number)=>{
+	// console.log('计算叠加器啦')
+	if(index == dataSource.length-1){
+		// 改的是组后一条数据
+		return isNaN(Number(record[item.cumulativeTarget]))?'':record[item.cumulativeTarget] || ''
+	}else{
+		if(isNaN(Number(record[item.cumulativeTarget]))){
+			// 当输入非数字
+			return dataSource[index+1][item.itemCode] || ''
+		}
+		if(isNaN(Number(dataSource[index+1][item.itemCode]))){
+			// 下一条数据是空的
+			return record[item.cumulativeTarget] || ''
+		}
+		return numberFormat(Number(dataSource[index+1][item.itemCode])+Number(record[item.cumulativeTarget]),1)
+	}
+  }
+
+  /**继续计算 */
+  const gotoContiun = (itemConfig:any,record:any,index:number)=>{
+	if(itemConfig.linkList.length>0){
+		// 计算使用时间
+		// console.log('计算器')
+		itemConfig.linkList.forEach((element:any) => {
+			// if(element.itemType == 'timeCalculation'){
+				// 自动计算
+				record[element.itemCode] = String(getTrueVal(element,record))
+				// 这个计算器实体可能有叠加器和计算器,就是会联动第三级计算
+				if(element.linkList.length>0 || element.iderateList.length>0){
+					gotoContiun(element,record,index)
+				}
+			// }
+		});
+	}
+	if(itemConfig.iderateList.length>0){
+		// 计算使用时间
+		// console.log('叠加器')
+		itemConfig.iderateList.forEach((element:any) => {
+				// 自动计算
+				record[element.itemCode] = String(getTrueIderate(element,record,index)) || ''
+				if(element.linkList.length>0 || element.iderateList.length>0){
+					gotoContiun(element,record,index)
+				}
+		});
+	}
+
+  }
+
+/**
+ * 
+ * @param calculationType dayTime、day单位都是天，hour单位是小时
+ */
+  const getDayOrHours = (calculationType:string)=>{
+	if(['qhwy'].includes(appStore.HOSPITAL_ID)){
+		if(['dayTime','day'].includes(calculationType)) return '(天)'
+		if(['hour'].includes(calculationType)) return '(时)'
+		return ''
+	}
+	return ''
+	
+  }
   //registerName
   const isWhyx = ['whyx','lyyz','qhwy','whhk'].includes(appStore.HOSPITAL_ID)
 
@@ -603,7 +695,7 @@ export default observer(function 敏感指标登记本(props: Props) {
           )
         ) : (
           <pre>
-            {item.label || item.itemCode}
+            {item.label || item.itemCode+getDayOrHours(item.calculationType)}
           </pre>
         ),
         align: "center",
@@ -640,8 +732,12 @@ export default observer(function 敏感指标登记本(props: Props) {
                 handleNextIptFocus,
                 updateDataSource,
                 registerCode,
-                onChangeDate: (newVal: string) => {
-                  watchRecord(item.itemCode, record)
+                onChangeDate: (newVal: string) => {	
+			if(['qhwy'].includes(appStore.HOSPITAL_ID)){
+				// 时间改变 时间关联的有计算器和叠加器
+				gotoContiun(item,record,index)
+			}		
+                  watchRecord(item.itemCode, record)	  
                 },
               }}
             />
@@ -660,7 +756,49 @@ export default observer(function 敏感指标登记本(props: Props) {
                 updateDataSource
               }} />
 
-          } else {
+          } else if(item.itemType == "timeCalculation"){
+			
+			// 自动计算项
+			children = <InputRender
+			{...{
+			  cellDisabled,
+			  options: item.options ? item.options.split(";").map((itemCfg: any) => itemCfg || " ") : undefined,
+			  record,
+			  className: childrenClassName,
+			  itemCode: item.itemCode,
+			  updateDataSource,
+			  handleNextIptFocus,
+			  onBlur: (newVal: string, oldVal: any) => {
+				// 失去焦点,判断是否有影响项
+				gotoContiun(item,record,index)
+			  },
+			}}
+		  />
+		  }else if(item.itemType == "cumulative" || item.itemType == ""){
+			// 累计时间
+			// 不初始化数据
+			children = <InputRender
+			{...{
+			  cellDisabled,
+			  options: item.options ? item.options.split(";").map((itemCfg: any) => itemCfg || " ") : undefined,
+			  record,
+			  className: childrenClassName,
+			  itemCode: item.itemCode,
+			  updateDataSource,
+			  handleNextIptFocus,
+			  onBlur: (newVal: string, oldVal: any) => {
+				if(['qhwy'].includes(appStore.HOSPITAL_ID)){
+					if(item.itemType == ""){
+						// 时间改变 时间关联的有计算器和叠加器
+						gotoContiun(item,record,index)
+					}
+				}
+				
+				
+			  },
+			}}
+		  />
+		  }else {
             const multiple = (() => {
               if (item.itemType == "multiple_select")
                 return true

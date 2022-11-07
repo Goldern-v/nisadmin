@@ -175,6 +175,29 @@ export function getFun(context: any) {
         let newList = res.data.itemDataPage.list || []
 
         setTotal(res.data.itemDataPage.totalCount);
+        
+        // 所有计算的项
+        let auto_cal = res.data.itemConfigList.filter((it:any)=>{return it.itemType=='timeCalculation'}) || []
+        if(auto_cal.length>0){
+          // element.linkList = []
+          res.data.itemConfigList.forEach((element:any) => {
+            // 增加linkList存放有关系的列，便于计算
+            element.linkList = auto_cal.filter((ii:any)=>{
+              return [ii.timeBeginCode,ii.timeEndCode].includes(element.itemCode)
+            })
+          });
+        }
+        // 所有叠加项
+        let auto_iderate = res.data.itemConfigList.filter((it:any)=>{return it.itemType=='cumulative'}) || []
+        if(auto_iderate.length>0){
+          res.data.itemConfigList.forEach((element:any) => {
+            // 增加iderateList存放有关系的列，便于计算
+            element.iderateList = auto_iderate.filter((ii:any)=>{
+              return [ii.cumulativeTarget].includes(element.itemCode)
+            })
+          });
+        }
+        
         setItemConfigList(thMerge(res.data.itemConfigList));
         setConfig(res.data.config || {})
         setRangeConfigList(res.data.rangeConfigList);
