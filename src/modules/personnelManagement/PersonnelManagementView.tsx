@@ -37,6 +37,7 @@ export default function PersonnelManagementView() {
       case 'gdtj':
         return menuConfig_wh;
       case 'qhwy':
+      case 'dglb':
         return menuConfig_qhwy;
       case 'gzsrm':
         return menuConfig_gzsrm;

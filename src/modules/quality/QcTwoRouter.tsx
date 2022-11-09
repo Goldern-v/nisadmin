@@ -1,23 +1,23 @@
 import LeftMenu from 'src/components/LeftMenu'
 import styled from 'styled-components'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { RouteComponentProps } from 'src/components/RouterView'
-import { KeepAlive, Provider } from 'react-keep-alive'
+import { KeepAlive } from 'react-keep-alive'
 import { appStore, authStore } from 'src/stores'
 import { observer } from 'src/vendors/mobx-react-lite'
 
 import AdministrativeWard from './views/administrativeWard'
 import Analysis from './views/analysisWhyx/Analysis'
-import ProblemSummary from './views/problemSummary/ProblemSummary'
+// import ProblemSummary from './views/problemSummary/ProblemSummary'
 import QualityControlKey from './views/qualityControlKey/QualityControlKey'
 import QualityControlRecord from './views/qualityControlRecord/QualityControlRecord'
 import SafetyChecklist from './views/safetyChecklist'
-import SummaryReport from './views/summaryReport/SummaryReport'
+// import SummaryReport from './views/summaryReport/SummaryReport'
 import WorkSummaryReportList from './views/workSummaryReportList/WorkSummaryReportList'
 import { ReactComponent as HZBG } from './images/icon/HZBG.svg'
 import { ReactComponent as EJZK } from './images/icon/EJZK.svg'
 import { ReactComponent as YDBG } from './images/icon/YDBG2.svg'
-import { ReactComponent as WTBG } from './images/icon/WTBG.svg'
+// import { ReactComponent as WTBG } from './images/icon/WTBG.svg'
 import { ReactComponent as JCTJ } from './images/icon/JCTJ.svg'
 
 import 护理质量巡查情况汇总表 from "./views/qcFormHj/护理质量巡查情况汇总表";
@@ -95,24 +95,24 @@ export default observer(function QcTwoRouter(props: Props) {
     disabledKeepAlive: true,
   };
 
-  const route_summaryReport = {
-    title: "二级质控汇总报告",
-    icon: <HZBG />,
-    path: "/qcTwo/summaryReport?level=2",
-    component: SummaryReport,
-    keepAlive: true,
-    disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP",
-  };
-  const route_problemSummary = {
-    title: "二级质控问题汇总",
-    icon: <WTBG />,
-    path: "/qcTwo/problemSummary?level=2",
-    component: ProblemSummary,
-  };
+  // const route_summaryReport = {
+  //   title: "二级质控汇总报告",
+  //   icon: <HZBG />,
+  //   path: "/qcTwo/summaryReport?level=2",
+  //   component: SummaryReport,
+  //   keepAlive: true,
+  //   disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP",
+  // };
+  // const route_problemSummary = {
+  //   title: "二级质控问题汇总",
+  //   icon: <WTBG />,
+  //   path: "/qcTwo/problemSummary?level=2",
+  //   component: ProblemSummary,
+  // };
 
   const extra_menu = appStore.hisMatch({
     map: {
-      "hj,gxjb,lyyz,qhwy,lyrm,whhk,nfsd": [
+      "hj,gxjb,lyyz,qhwy,lyrm,whhk,nfsd,dglb": [
         {
           title: "护理质量巡查情况汇总表",
           icon: <YDBG />,

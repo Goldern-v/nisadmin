@@ -5,8 +5,6 @@ import { message, Modal } from "src/vendors/antd";
 import moment from "moment";
 import service from "src/services/api";
 import { fileDownload } from "src/utils/file/file";
-import Item from "antd/lib/list/Item";
-// import Item from "antd/lib/list/Item";
 
 export interface ItemConfigItem {
   blockId: number;
@@ -648,7 +646,7 @@ export function getFun(context: any) {
           selectedRowKeys.indexOf(item.key) >= 0)
         // 自定义签名不需要复制
         let customSignObj: Record<string,any> = {}
-        if (['whyx','lyyz','qhwy', 'whhk'].includes(appStore.HOSPITAL_ID)) {
+        if (['whyx','lyyz','qhwy', 'whhk', 'dglb'].includes(appStore.HOSPITAL_ID)) {
           customSign.map((v:any) => {
             customSignObj[v.itemCode] = ''
           })

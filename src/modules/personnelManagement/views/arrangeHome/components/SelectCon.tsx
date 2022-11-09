@@ -8,7 +8,6 @@ import { observer } from 'mobx-react-lite'
 import { Button, Checkbox, DatePicker, Dropdown, Menu, message, Modal, Select, Upload } from 'src/vendors/antd'
 import { fileDownload } from 'src/utils/file/file'
 import { appStore, authStore } from 'src/stores'
-import { scheduleStore } from 'src/stores'
 import { DictItem } from 'src/services/api/CommonApiService'
 
 import ShowStandardTimeModal from '../modal/ShowStandardTimeModal'
@@ -676,7 +675,7 @@ export default observer(function SelectCon() {
               <span onClick={() => handleExport()}>批量导出</span>
             </div>
           )}
-        {(["wh", "gxjb", "fsxt",'925', "whyx", "fssdy","lyyz","qhwy","whsl", 'ytll', 'whhk'].includes(appStore.HOSPITAL_ID)) &&
+        {(["wh", "gxjb", "fsxt",'925', "whyx", "fssdy","lyyz","qhwy","whsl", 'ytll', 'whhk', 'dglb'].includes(appStore.HOSPITAL_ID)) &&
           (authStore.isDepartment || authStore.isSupervisorNurse) && (
             <div className="item">
               <Dropdown.Button
@@ -687,7 +686,7 @@ export default observer(function SelectCon() {
               </Dropdown.Button>
             </div>
           )}
-        {(["wh", "gxjb", "fsxt", '925',"whyx","lyyz","qhwy","whsl", 'ytll','nfzxy', 'whhk'].includes(appStore.HOSPITAL_ID)) && (
+        {(["wh", "gxjb", "fsxt", '925',"whyx","lyyz","qhwy","whsl", 'ytll','nfzxy', 'whhk', 'dglb'].includes(appStore.HOSPITAL_ID)) && (
           <div className="item">
             <Button
               className="item"

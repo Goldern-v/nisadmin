@@ -1,11 +1,10 @@
 import styled from 'styled-components'
-import React, { useState, useEffect, useLayoutEffect } from 'react'
-import { Modal, Input, Button, Radio, DatePicker, Select, Row, Col, message, Spin,InputNumber } from 'antd'
+import React, { useState, useLayoutEffect } from 'react'
+import { Modal, Input, DatePicker, Select, Row, Col, message, Spin,InputNumber } from 'antd'
 import { ModalComponentProps } from 'src/libs/createModal'
 import Form from 'src/components/Form'
 import { to } from 'src/libs/fns'
 import { Rules } from 'src/components/Form/interfaces'
-import { Checkbox } from 'src/vendors/antd'
 import service from 'src/services/api'
 import moment from 'moment'
 import { authStore,appStore } from 'src/stores'
@@ -51,7 +50,7 @@ export default function PersonelSecondModal(props: Props) {
     data.startDate = moment(data.startDate).format('YYYY-MM-DD')
     /** 保存接口 */
     globalModal.confirm('确定要保存吗？', '保存后，该护士会在指定日期自动借出。').then((res) => {
-     if(appStore.HOSPITAL_ID == "qhwy"){
+     if(['qhwy', 'dglb'].includes(appStore.HOSPITAL_ID)){
       personelSecondServices.saveOrUpdateByAudit(data).then((res: any) => {
         message.success('保存成功')
         props.onOkCallBack && props.onOkCallBack()
@@ -102,7 +101,6 @@ export default function PersonelSecondModal(props: Props) {
           detailTransferTo: ''
         })
       }
-     
     }
   }, [visible])
 
@@ -111,7 +109,7 @@ export default function PersonelSecondModal(props: Props) {
       <Spin spinning={modalLoading}>
         <Form ref={refForm} rules={rules} labelWidth={80}>
           <Row>
-          {appStore.HOSPITAL_ID === 'qhwy' && (
+          {['qhwy', 'dglb'].includes(appStore.HOSPITAL_ID) && (
               <React.Fragment>
                 <Col span={24}>
                   <Form.Field label={`护士总数`} name="nurseNum" required>
@@ -134,9 +132,9 @@ export default function PersonelSecondModal(props: Props) {
                   }
                 >
                   {deptList.map((item: any, index: number) => (
-                    <Select.Option value={item.code} key={index}>
+                    <Option value={item.code} key={index}>
                       {item.name} 
-                    </Select.Option>
+                    </Option>
                   ))}
                 </Select>
               </Form.Field>
@@ -151,9 +149,9 @@ export default function PersonelSecondModal(props: Props) {
                   }
                 >
                   {nurseList.map((item: any, index: number) => (
-                    <Select.Option value={item.empNo} key={item.empNo + index + item.empName + index}>
+                    <Option value={item.empNo} key={item.empNo + index + item.empName + index}>
                       {item.empName}
-                    </Select.Option>
+                    </Option>
                   ))}
                 </Select>
               </Form.Field>

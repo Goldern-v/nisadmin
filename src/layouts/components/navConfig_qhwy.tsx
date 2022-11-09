@@ -42,6 +42,11 @@ export const navConfig = (appStore:any,authStore?:any)=>{
       // hidden: !appStore.isDev
     },
     {
+      name: "护理随访",
+      path: "/nursingFollowUp",
+      hidden: !['dglb'].includes(appStore.HOSPITAL_ID),
+    },
+    {
       name: "质量管理",
       children: [
         {

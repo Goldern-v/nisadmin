@@ -1,12 +1,7 @@
 import classNames from 'classnames'
-import moment from 'moment'
-import monnet from 'src/vendors/moment'
 import styled from 'styled-components'
-import React, { useEffect, useRef, useState } from 'react'
-import { Button } from 'antd'
-import { observer, toJS } from 'src/vendors/mobx-react-lite'
-import { dateDiff } from 'src/utils/date/dateDiff'
-import { type } from 'os'
+import React, { useState } from 'react'
+import { observer } from 'src/vendors/mobx-react-lite'
 import { message, Popover } from 'src/vendors/antd'
 import { cloneJson } from 'src/utils/json/clone'
 import { appStore, authStore } from 'src/stores'
@@ -90,7 +85,7 @@ export default observer(function Cell(props: Props) {
         {
           type: "line"
         },
-        ['wh', 'gxjb', 'whyx', 'gzsrm', 'fssdy', 'fsxt','925', 'nys', 'jmfy', 'lcey', 'dghl', 'fqfybjy', 'lyyz', 'qhwy',"whsl","wjgdszd", 'ytll', 'whhk'].includes(appStore.HOSPITAL_ID)
+        ['wh', 'gxjb', 'whyx', 'gzsrm', 'fssdy', 'fsxt','925', 'nys', 'jmfy', 'lcey', 'dghl', 'fqfybjy', 'lyyz', 'qhwy',"whsl","wjgdszd", 'ytll', 'whhk', 'dglb'].includes(appStore.HOSPITAL_ID)
           ? {
             icon: require("../../images/修改工时.png"),
             label: "加/减班",
@@ -575,7 +570,7 @@ export default observer(function Cell(props: Props) {
           0}h`
         )
       },
-      'qhwy,whsl':() => {
+      'qhwy,whsl,dglb':() => {
         return (
           (cellObj.schAddOrSubs &&
             cellObj.schAddOrSubs.length &&

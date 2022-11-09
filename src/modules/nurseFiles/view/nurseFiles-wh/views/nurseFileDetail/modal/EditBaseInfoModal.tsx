@@ -1,11 +1,9 @@
 import styled from "styled-components";
-import React, { useState, useEffect, useLayoutEffect } from "react";
-import { RouteComponentProps } from "react-router";
+import React, { useState, useLayoutEffect } from "react";
 import {
   Modal,
   Input,
   Button,
-  Radio,
   DatePicker,
   Select,
   Row,
@@ -16,10 +14,7 @@ import { ModalComponentProps } from "src/libs/createModal";
 import Form from "src/components/Form";
 import { nurseFilesService } from "../../../services/NurseFilesService";
 import { nurseFileDetailViewModal } from "../NurseFileDetailViewModal";
-import {
-  TITLE_LIST,
-  POST_LIST,
-} from "../../nurseFilesList/modal/AddNursingModal";
+
 import { to } from "src/libs/fns";
 import { Rules } from "src/components/Form/interfaces";
 import moment from "moment";
@@ -33,7 +28,7 @@ import { AutoComplete } from "src/vendors/antd";
 import { formatIdCord, formatAge } from "src/utils/idCard/idCard";
 import SelectOrAutoInput from "../components/SelectOrAutoInput";
 import tinyPic from "src/utils/img/tinyPic";
-const Option = Select.Option;
+
 export interface Props extends ModalComponentProps {
   id?: number;
   data?: any;
@@ -378,7 +373,7 @@ export default function EditWorkHistoryModal(props: Props) {
               />
             </Form.Field>
           </Col>}
-          <Col span={12} style={{height: ['qhwy', 'whhk'].includes(appStore.HOSPITAL_ID) ? '52px' : '53px' }}>
+          <Col span={12} style={{height: ['qhwy', 'whhk', 'dglb'].includes(appStore.HOSPITAL_ID) ? '52px' : '53px' }}>
             <Form.Field label={`职务`} name="job">
               <SelectOrAutoInput dict="职务" />
             </Form.Field>
@@ -388,7 +383,7 @@ export default function EditWorkHistoryModal(props: Props) {
               <DatePicker />
             </Form.Field>
           </Col>
-          {appStore.HOSPITAL_ID !== 'fsxt'&& appStore.HOSPITAL_ID !== '925' && <Col span={12} style={{height: ['qhwy', 'whhk'].includes(appStore.HOSPITAL_ID) ? '52px' : '53px' }}>
+          {appStore.HOSPITAL_ID !== 'fsxt'&& appStore.HOSPITAL_ID !== '925' && <Col span={12} style={{height: ['qhwy', 'whhk', 'dglb'].includes(appStore.HOSPITAL_ID) ? '52px' : '53px' }}>
             <Form.Field label={`院内工作地点`} name="workAddress">
               <SelectOrAutoInput dict="院内工作地点" />
             </Form.Field>
@@ -433,7 +428,7 @@ export default function EditWorkHistoryModal(props: Props) {
           ) : (
             ""
           )}
-          {['qhwy', 'whhk'].includes(appStore.HOSPITAL_ID) && <Col span={12}>
+          {['qhwy', 'whhk', 'dglb'].includes(appStore.HOSPITAL_ID) && <Col span={12}>
             <Form.Field label={`护理学会会员证号`} name="membershipCardNumber">
               <Input />
             </Form.Field>

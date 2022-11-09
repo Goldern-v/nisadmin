@@ -1,6 +1,6 @@
 import _ from 'lodash'
 import service from 'src/services/api'
-import React, { useEffect, useRef, useState } from 'react'
+import React from 'react'
 import { cloneJson } from 'src/utils/json/clone'
 import { message } from 'src/vendors/antd'
 import { appStore } from 'src/stores'
@@ -38,7 +38,7 @@ export function getAddArrangeMenuList(
         async onClick(item: any) {
           sheetViewModal.tableLoading = true
           sheetViewModal.tableLoading = true
-          if (['wh', 'lyyz', 'qhwy',"whsl", 'ytll'].includes(appStore.HOSPITAL_ID)) {
+          if (['wh', 'lyyz', 'qhwy',"whsl", 'ytll', 'dglb'].includes(appStore.HOSPITAL_ID)) {
             let res = await service.scheduleMealApiService.check(item.dataSource.id)
           }
           if (selectedCellObj!.rangeName) {
@@ -68,7 +68,7 @@ export function getAddArrangeMenuList(
               selectedCellObj!.settingNightHour=item.dataSource.settingNightHour
             }
             // 添加班次时间段
-            if (['qhwy'].includes(appStore.HOSPITAL_ID)) {
+            if (['qhwy', 'dglb'].includes(appStore.HOSPITAL_ID)) {
               selectedCellObj!.workTime = item.dataSource.workTime
             }
           }
@@ -94,14 +94,14 @@ export function copyRowClick(list: any, copyRow: any, isClean: boolean) {
       list[i].settingNightHour = copyRow[i].settingNightHour;
       list[i].settings = cloneJson(copyRow[i].settings);
       list[i].backgroundColor = copyRow[i].backgroundColor;
-      if (["wh", 'gxjb', "lyyz","qhwy","whsl", "ytll"].includes(appStore.HOSPITAL_ID)) {
+      if (["wh", 'gxjb', "lyyz","qhwy","whsl", "ytll", 'dglb'].includes(appStore.HOSPITAL_ID)) {
         list[i].schAddOrSubs = cloneJson(copyRow[i].schAddOrSubs);
       }
       if (['whyx','whhk'].includes(appStore.HOSPITAL_ID)) {
         list[i].coefficient = copyRow[i].coefficient;
       }
       // 添加班次时间段
-      if (['qhwy'].includes(appStore.HOSPITAL_ID)) {
+      if (['qhwy', 'dglb'].includes(appStore.HOSPITAL_ID)) {
         list[i].workTime = copyRow[i].workTime
       }
       if (isClean) {
@@ -118,7 +118,7 @@ export function copyRowClick(list: any, copyRow: any, isClean: boolean) {
         copyRow[i].backgroundColor = "";
 
 
-        if (["wh", 'gxjb', "lyyz","qhwy", "ytll"].includes(appStore.HOSPITAL_ID)) {
+        if (["wh", 'gxjb', "lyyz","qhwy", "ytll", 'dglb'].includes(appStore.HOSPITAL_ID)) {
           copyRow[i].schAddOrSubs = [];
         }
         if (['whyx', 'whhk'].includes(appStore.HOSPITAL_ID)) {
@@ -161,7 +161,7 @@ export function copyCellClick(cell: ArrangeItem, copyCell: any) {
     cell.backgroundColor = copyCell.backgroundColor;
     cell.schSpecial = cloneJson(copyCell.schSpecial);
 
-    if (["wh", 'gxjb', "lyyz","qhwy", "ytll"].includes(appStore.HOSPITAL_ID)) {
+    if (["wh", 'gxjb', "lyyz","qhwy", "ytll", 'dglb'].includes(appStore.HOSPITAL_ID)) {
       cell.schAddOrSubs = cell.schAddOrSubs;
     }
     if (['whyx', 'whhk'].includes(appStore.HOSPITAL_ID)) {
@@ -169,7 +169,7 @@ export function copyCellClick(cell: ArrangeItem, copyCell: any) {
     }
 
     // 添加班次时间段
-    if (['qhwy'].includes(appStore.HOSPITAL_ID)) {
+    if (['qhwy', 'dglb'].includes(appStore.HOSPITAL_ID)) {
       cell!.workTime = copyCell.workTime
     }
 
@@ -209,7 +209,7 @@ export function cleanCell(cellObj: ArrangeItem) {
   cellObj.schJiJias = [];
   cellObj.schSpecial = [];
   cellObj.backgroundColor = ""
-  if (["wh", 'gxjb', "lyyz","qhwy", "ytll"].includes(appStore.HOSPITAL_ID)) {
+  if (["wh", 'gxjb', "lyyz","qhwy", "ytll", 'dglb'].includes(appStore.HOSPITAL_ID)) {
     cellObj.schAddOrSubs = [];
     cellObj.settingMorningHour = 0;
     cellObj.settingNightHour = 0;
@@ -218,7 +218,6 @@ export function cleanCell(cellObj: ArrangeItem) {
   if (['whyx', 'whhk'].includes(appStore.HOSPITAL_ID)) {
     cellObj.coefficient = 0;
   }
-
 }
 
 export function cleanCellList(cellList: ArrangeItem[]) {

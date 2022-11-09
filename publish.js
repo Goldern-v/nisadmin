@@ -134,6 +134,9 @@ let sshUpload = (localSrc = './build', folderSrc = '/crdata/webProject/manage') 
   if (process.env.npm_lifecycle_event.indexOf('9901') >= 0) {
     folderSrc = '/crdata/webProject/manage-nanfangshunde'
   }
+  if (process.env.npm_lifecycle_event.indexOf('9906') >= 0) {
+    folderSrc = '/crdata/webProject/manage-dongguanliaobu'
+  }
   //护理管理文档
   if (process.env.npm_lifecycle_event.indexOf('docs') >= 0) {
     localSrc = './docs/.vuepress/dist'

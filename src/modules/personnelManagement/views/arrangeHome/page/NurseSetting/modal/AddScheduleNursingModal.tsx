@@ -2,8 +2,8 @@ import moment from 'moment'
 import Form from 'src/components/Form'
 import service from 'src/services/api'
 import styled from 'styled-components'
-import React, { useEffect, useLayoutEffect, useState } from 'react'
-import { Button, Col, DatePicker, Icon, Input, message, Modal, Radio, Row, Select } from 'antd'
+import React, { useLayoutEffect, useState } from 'react'
+import { Col, DatePicker, Icon, Input, message, Modal, Row, Select } from 'antd'
 import { ModalComponentProps } from 'src/libs/createModal'
 import { observer } from 'mobx-react-lite'
 import { to } from 'src/libs/fns'
@@ -15,22 +15,19 @@ import { DictItem } from 'src/services/api/CommonApiService'
 
 import { sheetViewModal } from '../../../viewModal/SheetViewModal'
 
-// 加附件
 const Option = Select.Option;
 export interface Props extends ModalComponentProps {
   getTableData?: () => void;
   init?: boolean;
 }
-const uploadCard = () => Promise.resolve("123");
 const rules: Rules = {
   empName: (val) => !!val || "请输入姓名",
 };
 
-if (["wh", "gzsrm","lyyz","qhwy", "ytll"].includes(appStore.HOSPITAL_ID)) {
+if (["wh", "gzsrm","lyyz","qhwy", "ytll", 'dglb', 'dglb'].includes(appStore.HOSPITAL_ID)) {
   rules.userType = (val) => !!val || "请选择类型";
 }
 
-const TYPE_LIST = ["实习", "进修"];
 export default observer(function AddScheduleNursingModal(props: Props) {
   let { visible, onCancel, onOk, getTableData, init } = props;
   const [title, setTitle]: any = useState("");
@@ -133,7 +130,7 @@ export default observer(function AddScheduleNursingModal(props: Props) {
 
       const getDictInfo = appStore.hisMatch({
         map: {
-          'wh,lyyz,qhwy,ytll,': () => {
+          'wh,lyyz,qhwy,ytll,dglb': () => {
             statisticsViewModal.initDict().then((res) => {
               setTitleList(statisticsViewModal.getDict("技术职称"));
               setPostList(statisticsViewModal.getDict("职务"));
@@ -236,9 +233,9 @@ export default observer(function AddScheduleNursingModal(props: Props) {
               <Form.Field label={`类型`} name="userType" required>
                 <Select>
                   {userTypeList.map((item: DictItem) => (
-                    <Select.Option value={item.code} key={item.name}>
+                    <Option value={item.code} key={item.name}>
                       {item.name}
-                    </Select.Option>
+                    </Option>
                   ))}
                 </Select>
               </Form.Field>
@@ -252,8 +249,8 @@ export default observer(function AddScheduleNursingModal(props: Props) {
               ) : (
                 <Form.Field label={`姓名`} name="empName">
                   <Select>
-                    <Select.Option value="实习">实习</Select.Option>
-                    <Select.Option value="进修">进修</Select.Option>
+                    <Option value="实习">实习</Option>
+                    <Option value="进修">进修</Option>
                   </Select>
                 </Form.Field>
               )}
@@ -261,12 +258,12 @@ export default observer(function AddScheduleNursingModal(props: Props) {
             <Col span={24}>
               <Form.Field label={`姓别`} name="sex">
                 <Select>
-                  <Select.Option value="0" key={0}>
+                  <Option value="0" key={0}>
                     男
-                  </Select.Option>
-                  <Select.Option value="1" key={1}>
+                  </Option>
+                  <Option value="1" key={1}>
                     女
-                  </Select.Option>
+                  </Option>
                 </Select>
               </Form.Field>
             </Col>
@@ -278,9 +275,9 @@ export default observer(function AddScheduleNursingModal(props: Props) {
                     <Form.Field label={`职称`} name="newTitle">
                       <Select>
                         {titleList.map((item: any) => (
-                          <Select.Option value={item.code} key={item.code}>
+                          <Option value={item.code} key={item.code}>
                             {item.name}
-                          </Select.Option>
+                          </Option>
                         ))}
                       </Select>
                     </Form.Field>
@@ -298,9 +295,9 @@ export default observer(function AddScheduleNursingModal(props: Props) {
                         placeholder="选择层级"
                       >
                         {levelList.map((item: any) => (
-                          <Select.Option value={item.code} key={item.code}>
+                          <Option value={item.code} key={item.code}>
                             {item.name}
-                          </Select.Option>
+                          </Option>
                         ))}
                       </Select>
                     </Form.Field>
@@ -309,9 +306,9 @@ export default observer(function AddScheduleNursingModal(props: Props) {
                     <Form.Field label={`职务`} name="job">
                       <Select>
                         {postList.map((item: any) => (
-                          <Select.Option value={item.code} key={item.code}>
+                          <Option value={item.code} key={item.code}>
                             {item.name}
-                          </Select.Option>
+                          </Option>
                         ))}
                       </Select>
                     </Form.Field>
@@ -329,9 +326,9 @@ export default observer(function AddScheduleNursingModal(props: Props) {
                     <Form.Field label={`职称`} name="newTitle">
                       <Select>
                         {titleList.map((item: any) => (
-                          <Select.Option value={item.code} key={item.code}>
+                          <Option value={item.code} key={item.code}>
                             {item.name}
-                          </Select.Option>
+                          </Option>
                         ))}
                       </Select>
                     </Form.Field>
@@ -349,9 +346,9 @@ export default observer(function AddScheduleNursingModal(props: Props) {
                         placeholder="选择类型"
                       >
                         {nansanTypeList.map((item: any) => (
-                          <Select.Option value={item.code} key={item.code}>
+                          <Option value={item.code} key={item.code}>
                             {item.name}
-                          </Select.Option>
+                          </Option>
                         ))}
                       </Select>
                     </Form.Field>
@@ -360,9 +357,9 @@ export default observer(function AddScheduleNursingModal(props: Props) {
                     <Form.Field label={`职务`} name="job">
                       <Select>
                         {postList.map((item: any) => (
-                          <Select.Option value={item.code} key={item.code}>
+                          <Option value={item.code} key={item.code}>
                             {item.name}
-                          </Select.Option>
+                          </Option>
                         ))}
                       </Select>
                     </Form.Field>
@@ -374,15 +371,15 @@ export default observer(function AddScheduleNursingModal(props: Props) {
                   </Col>
                 </React.Fragment>
               ),
-              'wh,gzsrm,lyyz,qhwy,ytll': () => (
+              'wh,gzsrm,lyyz,qhwy,ytll,dglb': () => (
                 <React.Fragment>
                   <Col span={24}>
                     <Form.Field label={`类型`} name="userType" required>
                       <Select>
                         {userTypeList.map((item: DictItem) => (
-                          <Select.Option value={item.code} key={item.name}>
+                          <Option value={item.code} key={item.name}>
                             {item.name}
-                          </Select.Option>
+                          </Option>
                         ))}
                       </Select>
                     </Form.Field>
@@ -405,9 +402,9 @@ export default observer(function AddScheduleNursingModal(props: Props) {
                     <Form.Field label={`职称`} name="newTitle">
                       <Select>
                         {titleList.map((item: any) => (
-                          <Select.Option value={item.code} key={item.code}>
+                          <Option value={item.code} key={item.code}>
                             {item.name}
-                          </Select.Option>
+                          </Option>
                         ))}
                       </Select>
                     </Form.Field>
@@ -425,9 +422,9 @@ export default observer(function AddScheduleNursingModal(props: Props) {
                         placeholder="选择层级"
                       >
                         {levelList.map((item: any) => (
-                          <Select.Option value={item.code} key={item.code}>
+                          <Option value={item.code} key={item.code}>
                             {item.name}
-                          </Select.Option>
+                          </Option>
                         ))}
                       </Select>
                     </Form.Field>
@@ -436,9 +433,9 @@ export default observer(function AddScheduleNursingModal(props: Props) {
                     <Form.Field label={`职务`} name="job">
                       <Select>
                         {postList.map((item: any) => (
-                          <Select.Option value={item.code} key={item.code}>
+                          <Option value={item.code} key={item.code}>
                             {item.name}
-                          </Select.Option>
+                          </Option>
                         ))}
                       </Select>
                     </Form.Field>
@@ -447,9 +444,9 @@ export default observer(function AddScheduleNursingModal(props: Props) {
                     <Form.Field label={`类型`} name="userType" required>
                       <Select>
                         {userTypeList.map((item: DictItem) => (
-                          <Select.Option value={item.code} key={item.name}>
+                          <Option value={item.code} key={item.name}>
                             {item.name}
-                          </Select.Option>
+                          </Option>
                         ))}
                       </Select>
                     </Form.Field>
@@ -465,7 +462,7 @@ export default observer(function AddScheduleNursingModal(props: Props) {
             type="info-circle"
             style={{ color: "#fa8c16", marginRight: "5px" }}
           />
-          {["wh", "gzsrm","lyyz","qhwy", "ytll"].includes(appStore.HOSPITAL_ID)
+          {["wh", "gzsrm","lyyz","qhwy", "ytll", 'dglb'].includes(appStore.HOSPITAL_ID)
             ? "注：只能添加没有工号的人员，有工号的正式人员请联系管理员进行添加"
             : "注：只能添加没有工号的进修人员，有工号的正式人员请联系管理员进行添加"}
         </Aside>

@@ -3,22 +3,16 @@ import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 // import { Link } from 'react-router-dom'
 
-// import ModalBox from 'src/modules/schedule/views/components/Modal/ModalBox'
-
 // BaseTreeSelect
 import BaseTreeSelect from 'src/components/BaseTreeSelect'
 import emitter from 'src/libs/ev'
 
-import { Button, message, Modal, Form, Input, TreeSelect, Switch, Select, Cascader } from 'antd'
-// import { authStore, scheduleStore } from 'src/stores'
+import { Button, message, Modal, Form, Input, Switch, Select } from 'antd'
 import service from 'src/services/api'
-// import moment from 'moment'
 import { scheduleStore, appStore } from 'src/stores'
 import BreadcrumbBox from 'src/layouts/components/BreadcrumbBox'
 import DeptSelect from "src/modules/statistic/common/DeptSelect";
 import { arrangeService } from "src/modules/personnelManagement/views/arrangeHome/services/ArrangeService";
-
-// import emitter from 'src/libs/ev'
 
 const Option = Select.Option
 export interface Props extends RouteComponentProps { }
@@ -227,7 +221,6 @@ export default function ToolBar() {
                 }
               ]
             })
-            //
             // ;(treeExpandedKeys as any).push(s.shiftType)
           }
         })
@@ -659,7 +652,7 @@ export default function ToolBar() {
       sundaySymbolId: fields.sundaySymbolId.value || '',
 
     }
-    if (['wh', 'lyyz', 'qhwy','whsl', 'ytll', 'whhk'].includes(appStore.HOSPITAL_ID)) {
+    if (['wh', 'lyyz', 'qhwy','whsl', 'ytll', 'whhk', 'dglb'].includes(appStore.HOSPITAL_ID)) {
       for (let key in postData) {
         if (key == 'monday' || key == 'tuesday' || key == 'wednesday' || key == 'thursday' || key == 'friday' || key == 'saturday' || key == 'sunday') {
           if (postData[key]) {
@@ -686,7 +679,6 @@ export default function ToolBar() {
 
   const addMeal = (title: string) => {
     // message.success('添加班次套餐')
-    // console.log('Modal', Modal)
 
     if (title === '添加排班套餐' || title === '添加排班') {
       fields = {
@@ -745,7 +737,6 @@ export default function ToolBar() {
         sundaySymbolColor: { value: ''}, 
       }
     }
-    // if (!modalInfo) {
     Modal.confirm({
       title: title + '',
       centered: true,
@@ -769,12 +760,7 @@ export default function ToolBar() {
        </div>
       )
     })
-    // } else {
-    //   modalInfo.update({ visible: true })
-    // }
   }
-
-  // {/* <ModalBox title={'添加排班/编辑排班'} /> */}
 
   return (
     <div>
@@ -824,8 +810,6 @@ export default function ToolBar() {
   )
 }
 const Wrapper = styled.div`
-  /* background: #eee; */
-  /* height: 100%; */
   padding: 0 20px 20px 20px;
   display: inline-flex;
   width: 100%;
@@ -845,18 +829,6 @@ const FormFlexLayoutStyle = (offset: string = '60px') => ({
   marginBottom: 0,
   justifyContent: 'flex-end'
 })
-
-// const TimePicker = styled.div`
-//   width: '200px';
-// `
-
-// const BreakLine = styled.div`
-//   padding: 0 10px;
-// `
-
-// const LinkText = styled.div`
-//   cursor: pointer;
-// `
 
 const Title = styled.div`
   font-size: 20px;

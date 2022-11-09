@@ -4,10 +4,9 @@ import moment from 'moment'
 import createModal from 'src/libs/createModal'
 import service from 'src/services/api'
 import styled from 'styled-components'
-import React, { useEffect, useLayoutEffect, useState } from 'react'
+import React, { useLayoutEffect, useState } from 'react'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
-import { Button } from 'antd'
-import { ColumnProps, Input, message, Modal, Tooltip } from 'src/vendors/antd'
+import { Input, message, Modal, Tooltip } from 'src/vendors/antd'
 import { getWeekString, getWeekString2 } from 'src/utils/date/week'
 import { observer } from 'mobx-react-lite'
 import { appStore } from 'src/stores'
@@ -18,21 +17,17 @@ import AddRemakeModal from '../../modal/AddRemakeModal'
 import EditEffectiveTimeModal from '../../modal/EditEffectiveTimeModal'
 import EditVacationCountModal_wh from '../../modal/EditEffectiveTimeModal_wh'
 import EditVacationCountModal from '../../modal/EditVacationCountModal'
-import AddUpHourCell from './AddUpHourCell'
 import BalanceHour from './BalanceHour'
 import Cell from './Cell'
 import HolidayHour from './HolidayHour'
-import HolidayHourNys from './HolidayHourNys'
 import NightHourCell from './NightHourCell'
 import PostScoreCell from './postScoreCell'
 import PublicHour from './PublicHour'
 import TotalCell from './TotalCell'
 import TotalHoliday from './TotalHoliday'
-import TotalHolidayHourNys from './TotalHolidayHourNys'
 import PeriodHour from './PeriodHour'
 import { createContextMenu } from './ContextMenu'
 import { sheetViewModal } from '../../viewModal/SheetViewModal'
-import { ArrangeItem } from '../../types/Sheet'
 
 // import CellLeft from './CellLeft'  // 产品提的新需求  等待产品整理好再做
 import WeekBalanceHour from "./WeekBalanceHour"; //本周结余时数
@@ -52,7 +47,7 @@ export default observer(function ArrangeSheet(props: Props) {
   let editEffectiveTimeModal = createModal(
     appStore.hisMatch({
       map: {
-        'wjgdszd,wh,gxjb,lcey,dghl,fqfybjy,jmfy,nys,gzsrm,fssdy,fsxt,925,sdlj,whyx,gdtj,lyyz,qhwy,whsl,ytll,zhzxy,whhk,nfsd,whhk': EditVacationCountModal_wh,
+        'wjgdszd,wh,gxjb,lcey,dghl,fqfybjy,jmfy,nys,gzsrm,fssdy,fsxt,925,sdlj,whyx,gdtj,lyyz,qhwy,whsl,ytll,zhzxy,whhk,nfsd,whhk,dglb': EditVacationCountModal_wh,
         other: EditEffectiveTimeModal,
       },
       vague: true
@@ -334,7 +329,7 @@ export default observer(function ArrangeSheet(props: Props) {
     }),
     ...appStore.hisMatch({
       map: {
-        "whyx,qhwy,whhk": [
+        "whyx,qhwy,whhk,dglb": [
           {
             title: "备注",
             dataIndex: "empRemark",
@@ -513,7 +508,7 @@ export default observer(function ArrangeSheet(props: Props) {
   };
 
   /** 武汉特殊字段*/
-  if (["wh", "gzsrm", "gxjb", "fsxt", '925', "sdlj", "whyx",'whhk', 'fssdy',"gdtj", "lyyz", "qhwy","whsl","wjgdszd", 'ytll','zhzxy', 'nfsd'].includes(appStore.HOSPITAL_ID)) {
+  if (["wh", "gzsrm", "gxjb", "fsxt", '925', "sdlj", "whyx",'whhk', 'fssdy',"gdtj", "lyyz", "qhwy","whsl","wjgdszd", 'ytll','zhzxy', 'nfsd', 'dglb'].includes(appStore.HOSPITAL_ID)) {
     columns.push(
       {
         title: (
@@ -775,7 +770,7 @@ export default observer(function ArrangeSheet(props: Props) {
           if (appStore.HOSPITAL_ID == 'fssdy') {
             widthNys += 200
           }
-          if (['qhwy','nfzxy', 'whhk'].includes(appStore.HOSPITAL_ID)) {
+          if (['qhwy','nfzxy', 'whhk', 'dglb'].includes(appStore.HOSPITAL_ID)) {
             widthNys += 100
           }
           /** noscorll */
@@ -788,7 +783,7 @@ export default observer(function ArrangeSheet(props: Props) {
                   hj: 3,
                   fqfybjy: 5,
                   nys: (isEdit ? 6 : 5),
-                  'wjgdszd,wh,gxjb,jmfy,dghl,gzsrm,fsxt,925,whyx,whhk,sdlj,gdtj,lyyz,qhwy,whsl,ytll,zhzxy,whhk,nfsd': 6,
+                  'wjgdszd,wh,gxjb,jmfy,dghl,gzsrm,fsxt,925,whyx,whhk,sdlj,gdtj,lyyz,qhwy,whsl,ytll,zhzxy,whhk,nfsd,dglb': 6,
                   fssdy: 7,
                   other: 2
                 },
@@ -830,6 +825,7 @@ export default observer(function ArrangeSheet(props: Props) {
       case "whyx":
       case "qhwy":
       case 'whhk':
+      case 'dglb':
         const dragRowWhyx = sheetViewModal.sheetTableData[dragIndex];
         if (!dragRowWhyx) return;
         sheetViewModal.sheetTableData = update(sheetViewModal.sheetTableData, {
@@ -898,7 +894,7 @@ export default observer(function ArrangeSheet(props: Props) {
                 {
                   appStore.hisMatch({
                     map: {
-                      'qhwy':
+                      'qhwy,dglb':
                         <div className='remark-con system'>
                           <div className="remark-title">
                             系统标注:

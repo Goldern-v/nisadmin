@@ -15,7 +15,6 @@ import {
 import BaseTable, { DoCon } from "src/components/BaseTable";
 import { wardRegisterDefaultService } from "src/modules/WardRegisterDefault/services/WardRegisterDefaultService";
 import { authStore, appStore } from "src/stores";
-// import emitter from "src/libs/ev";
 import { globalModal } from "src/global/globalModal";
 import update from "immutability-helper";
 import { Place } from "src/components/common";
@@ -33,109 +32,95 @@ export interface Props {
 }
 
 export default observer(function SetTittle(props: Props) {
-  const [oldData, setOldData]: any = useState({});
   const [dataSource, setDataSource]: any[] = useState([]);
   const [pageLoading, setPageLoading] = useState(false);
   const [moveAble, setMoveAble] = useState(false);
   const [empNameList, setEmpNameList] = useState([]);
   const { blockId, registerCode, onOkCallBack, selectedBlockObj } = props;
-  const [iderateList, setIderateList]:any[] = useState([]);
-  const [calculationList, setCalculationList]:any[] = useState([]);
-  const calLabel = ['date','date_time','time']// 自动计算项
-  const calLabel2 = ['','timeCalculation']// 累加
+  const [iderateList, setIderateList]: any[] = useState([]);
+  const [calculationList, setCalculationList]: any[] = useState([]);
+  const calLabel = ['date', 'date_time', 'time']// 自动计算项
+  const calLabel2 = ['', 'timeCalculation']// 累加
 
-  // const showEmpName = [
-  //   "责任护士",
-  //   "人员调配",
-  //   "责任组长",
-  //   "签名",
-  //   "检查者签名",
-  //   "责任人",
-  //   "责护名字",
-  //   "消毒液擦拭床单位执行者",
-  //   "床单位消毒机消毒执行者",
-  //   "带教老师签名",
-  //   "带教组长签名"
-  // ];
-	 let value = [] as any
-	//  const [cascaderOptions, setCascaderOptions]:any = useState([
-		let cascaderOptions:any = [{
-		  value: '',
-		  label: '文本框',
-		},
-		{
-		  value: 'radio',
-		  label: '下拉选项',
-		},
-		{
-		  value: 'multiple_select',
-		  label: '多项选择',
-		},
-		{
-		  value: 'ward_user',
-		  label: '科室护士',
-		},
-		{
-		  value: 'attachment',
-		  label: '附件上传',
-		},
-		{
-		  value: 'date',
-		  label: '日期选择',
-		},
-		{
-		  value: 'date_time',
-		  label: '日期时间选择',
-		},
-		{
-		  value: 'time',
-		  label: '时间选择',
-		},
-		{
-		  value: 'timeCalculation',
-		  label: '自动计算项',
-		  multiple:true,
-		//   isLeaf:false,
-		  children:[...calculationList],
-		// children:[
-		// 	{value: '时间选择',
-		// 	label: '时间选择',}
-		// ],
-		 //这里的内容要动态计算
-		},
-		{
-		  value: 'cumulative',
-		  label: '自动累加项',
-		//   children:[
-		// 	{value: '时间选择',
-		// 	label: '时间选择',}
-		// ],
-		//   isLeaf:false,
-		  children:[...iderateList],
-		},
-	  ];
+  let value = [] as any
+  //  const [cascaderOptions, setCascaderOptions]:any = useState([
+  let cascaderOptions: any = [{
+    value: '',
+    label: '文本框',
+  },
+  {
+    value: 'radio',
+    label: '下拉选项',
+  },
+  {
+    value: 'multiple_select',
+    label: '多项选择',
+  },
+  {
+    value: 'ward_user',
+    label: '科室护士',
+  },
+  {
+    value: 'attachment',
+    label: '附件上传',
+  },
+  {
+    value: 'date',
+    label: '日期选择',
+  },
+  {
+    value: 'date_time',
+    label: '日期时间选择',
+  },
+  {
+    value: 'time',
+    label: '时间选择',
+  },
+  {
+    value: 'timeCalculation',
+    label: '自动计算项',
+    multiple: true,
+    //   isLeaf:false,
+    children: [...calculationList],
+    // children:[
+    // 	{value: '时间选择',
+    // 	label: '时间选择',}
+    // ],
+    //这里的内容要动态计算
+  },
+  {
+    value: 'cumulative',
+    label: '自动累加项',
+    //   children:[
+    // 	{value: '时间选择',
+    // 	label: '时间选择',}
+    // ],
+    //   isLeaf:false,
+    children: [...iderateList],
+  },
+  ];
 
-	  /**计算定时器和叠加器 */
-	  const updateCascaderOptions = ()=>{
-		let calculationList2 = []as any
-		let iderateList2 = [] as any
-		dataSource.map((it:any)=>{
-			if(calLabel.includes(it.itemType)){
-				calculationList2.push({
-					value: it.itemCode,
-					label: it.itemCode,
-				})
-			}
-			if(calLabel2.includes(it.itemType)){
-				iderateList2.push({
-					value: it.itemCode,
-					label: it.itemCode,
-				})
-			}
-	  })
-	  setCalculationList(calculationList2)
-		setIderateList(iderateList2)
-	}
+  /**计算定时器和叠加器 */
+  const updateCascaderOptions = () => {
+    let calculationList2 = [] as any
+    let iderateList2 = [] as any
+    dataSource.map((it: any) => {
+      if (calLabel.includes(it.itemType)) {
+        calculationList2.push({
+          value: it.itemCode,
+          label: it.itemCode,
+        })
+      }
+      if (calLabel2.includes(it.itemType)) {
+        iderateList2.push({
+          value: it.itemCode,
+          label: it.itemCode,
+        })
+      }
+    })
+    setCalculationList(calculationList2)
+    setIderateList(iderateList2)
+  }
 
   //不允许删除的选项
   const staticOptions: { [p: string]: string[] } =
@@ -210,143 +195,143 @@ export default observer(function SetTittle(props: Props) {
             width: 300,
             render: (text: any, record: any, index: any) => {
               return <>
-			  {["qhwy"].includes(appStore.HOSPITAL_ID)? <Cascader changeOnSelect={true}
-              options={cascaderOptions} 
-			//   expandTrigger="click"
-			  style={{width:'100%',textAlign:'center'}}
-              expandTrigger="hover"
-			  defaultValue={record.cascaderCode || ['']}
-              displayRender={(label:any,selectedOptions:any)=>{
-				
-				// 多选
-				if(selectedOptions[0].multiple){
-					if(record.itemType==''){
-						return <span>文本框</span>
-					}
-					// 是给多选
-					// else if(record.timeBeginCode!='' || record.timeEndCode!=''){
-						return <div className="tag-list">
-						{record.timeBeginCode&& <Tag color="lime" closable onClose={() => {
-							record.timeBeginCode = ''
-							if(record.timeBeginCode=="" && record.timeEndCode==""){
-								// 默认
-								record.cascaderCode = ['']
-								record.itemType = ''
-							}
-							}}
-							>
-							开始:{record.timeBeginCode}
-						</Tag>}
-						{record.timeEndCode&& <Tag color="lime" closable onClose={() => {
-							record.timeEndCode = ""
-							if(record.timeBeginCode=="" && record.timeEndCode==""){
-								record.cascaderCode = ['']
-								record.itemType = ''
-							}
-							}}
-							>
-							结束:{record.timeEndCode}
-							</Tag>
-						}
-						</div>
-					// }
-					
-				}else if(selectedOptions[0].value == 'cumulative'){
-					// console.log('444===',record)
-					// 累计
-					if(record.cumulativeTarget && record.cumulativeTarget!=''){
-						return <span style={{color:'#10c8ff'}}>{record.cumulativeTarget}</span>
-					}
-				}
-				return label[label.length - 1]
-              }}
+                {["qhwy", 'dglb'].includes(appStore.HOSPITAL_ID) ? <Cascader changeOnSelect={true}
+                  options={cascaderOptions}
+                  //   expandTrigger="click"
+                  style={{ width: '100%', textAlign: 'center' }}
+                  expandTrigger="hover"
+                  defaultValue={record.cascaderCode || ['']}
+                  displayRender={(label: any, selectedOptions: any) => {
 
-              onChange={(value:any, l:any)=>{
-				if(record.itemCode == l[l.length-1].label){
-					message.warning('不可选择自己')
-					return
-				}
-				record.itemType = value[0] //提交给后端的主要看第一级value
-				record.cascaderCode = value//记录级联选择的code
-				if(value[0]=='cumulative' || value[0]=='timeCalculation'){
-					// console.log('first')
-					// getNextList(l[l.length-1])
-				}
-				
-				if(value[0]=='cumulative' && value.length>1){//累加
-					// 累加目标列
-					// console.log('222')
-					record.cumulativeTarget = value[1]
-				}else{
-					// console.log('111')
-					record.cumulativeTarget = ''
-				}
-				if(l[0].multiple && value.length>1){
-					// 自动计算项 记录2个计算项
-					if([record.timeBeginCode,record.timeEndCode].includes(l[l.length-1].label)){
-						// 选择的值已经被选择过，就反选
-						if([record.timeBeginCode].includes(l[l.length-1].label)){
-							record.timeBeginCode = ''
-							record.itemType = ''
-							record.cascaderCode = ['']
-						}else{
-							record.timeEndCode = ''
-							record.itemType = ''
-							record.cascaderCode = ['']
-						}
-					}else{
-						if(record.timeBeginCode==''){
-							// 开始时间为空，设置开始时间
-							// 为什么用l[1].label,不用l[l.length-1].label,因为l[l.length-1].label会把第一层级填充
-							// if(l.length>1){
-								record.timeBeginCode = l[l.length-1].label
-							// }
-						}else{
-							if(record.timeEndCode==''){
-								// 已有开始时间，结束时间为空 设置结束时间
-								record.timeEndCode = l[l.length-1].label
-							}else{
-								message.warning('只能选择2个项目')
-								// 开始时间，结束时间都有值，提示
-							}
-						}
-					}
-				}else{
-					record.timeBeginCode = ''
-					record.timeEndCode = ''
-				}
-				setDataSource([...dataSource])
-				
-              }}
-            /> :<Select
-			value={text}
-			onChange={(val: string) => {
-			  let oldType = record.itemType
-			  record.itemType = val
+                    // 多选
+                    if (selectedOptions[0].multiple) {
+                      if (record.itemType == '') {
+                        return <span>文本框</span>
+                      }
+                      // 是给多选
+                      // else if(record.timeBeginCode!='' || record.timeEndCode!=''){
+                      return <div className="tag-list">
+                        {record.timeBeginCode && <Tag color="lime" closable onClose={() => {
+                          record.timeBeginCode = ''
+                          if (record.timeBeginCode == "" && record.timeEndCode == "") {
+                            // 默认
+                            record.cascaderCode = ['']
+                            record.itemType = ''
+                          }
+                        }}
+                        >
+                          开始:{record.timeBeginCode}
+                        </Tag>}
+                        {record.timeEndCode && <Tag color="lime" closable onClose={() => {
+                          record.timeEndCode = ""
+                          if (record.timeBeginCode == "" && record.timeEndCode == "") {
+                            record.cascaderCode = ['']
+                            record.itemType = ''
+                          }
+                        }}
+                        >
+                          结束:{record.timeEndCode}
+                        </Tag>
+                        }
+                      </div>
+                      // }
 
-			  let ignoreTypes = ['multiple_select']
+                    } else if (selectedOptions[0].value == 'cumulative') {
+                      // console.log('444===',record)
+                      // 累计
+                      if (record.cumulativeTarget && record.cumulativeTarget != '') {
+                        return <span style={{ color: '#10c8ff' }}>{record.cumulativeTarget}</span>
+                      }
+                    }
+                    return label[label.length - 1]
+                  }}
 
-			  if (
-				(ignoreTypes.indexOf(oldType) >= 0 || !oldType) &&
-				(ignoreTypes.indexOf(val) >= 0 || !val)
-			  ) {
+                  onChange={(value: any, l: any) => {
+                    if (record.itemCode == l[l.length - 1].label) {
+                      message.warning('不可选择自己')
+                      return
+                    }
+                    record.itemType = value[0] //提交给后端的主要看第一级value
+                    record.cascaderCode = value//记录级联选择的code
+                    if (value[0] == 'cumulative' || value[0] == 'timeCalculation') {
+                      // console.log('first')
+                      // getNextList(l[l.length-1])
+                    }
 
-			  } else {
-				record.options = ''
-			  }
+                    if (value[0] == 'cumulative' && value.length > 1) {//累加
+                      // 累加目标列
+                      // console.log('222')
+                      record.cumulativeTarget = value[1]
+                    } else {
+                      // console.log('111')
+                      record.cumulativeTarget = ''
+                    }
+                    if (l[0].multiple && value.length > 1) {
+                      // 自动计算项 记录2个计算项
+                      if ([record.timeBeginCode, record.timeEndCode].includes(l[l.length - 1].label)) {
+                        // 选择的值已经被选择过，就反选
+                        if ([record.timeBeginCode].includes(l[l.length - 1].label)) {
+                          record.timeBeginCode = ''
+                          record.itemType = ''
+                          record.cascaderCode = ['']
+                        } else {
+                          record.timeEndCode = ''
+                          record.itemType = ''
+                          record.cascaderCode = ['']
+                        }
+                      } else {
+                        if (record.timeBeginCode == '') {
+                          // 开始时间为空，设置开始时间
+                          // 为什么用l[1].label,不用l[l.length-1].label,因为l[l.length-1].label会把第一层级填充
+                          // if(l.length>1){
+                          record.timeBeginCode = l[l.length - 1].label
+                          // }
+                        } else {
+                          if (record.timeEndCode == '') {
+                            // 已有开始时间，结束时间为空 设置结束时间
+                            record.timeEndCode = l[l.length - 1].label
+                          } else {
+                            message.warning('只能选择2个项目')
+                            // 开始时间，结束时间都有值，提示
+                          }
+                        }
+                      }
+                    } else {
+                      record.timeBeginCode = ''
+                      record.timeEndCode = ''
+                    }
+                    setDataSource([...dataSource])
 
-			  updateDataSource()
-			}}>
-			<Option value="">下拉选项</Option>
-			<Option value="multiple_select">多项选择</Option>
-			<Option value="ward_user">科室护士</Option>
-			<Option value="attachment">附件上传</Option>
-			<Option value="date">日期选择</Option>
-			<Option value="date_time">日期时间选择</Option>
-			<Option value="time">时间选择</Option>
-		  </Select>}
-			  </>
-			  
+                  }}
+                /> : <Select
+                  value={text}
+                  onChange={(val: string) => {
+                    let oldType = record.itemType
+                    record.itemType = val
+
+                    let ignoreTypes = ['multiple_select']
+
+                    if (
+                      (ignoreTypes.indexOf(oldType) >= 0 || !oldType) &&
+                      (ignoreTypes.indexOf(val) >= 0 || !val)
+                    ) {
+
+                    } else {
+                      record.options = ''
+                    }
+
+                    updateDataSource()
+                  }}>
+                  <Option value="">下拉选项</Option>
+                  <Option value="multiple_select">多项选择</Option>
+                  <Option value="ward_user">科室护士</Option>
+                  <Option value="attachment">附件上传</Option>
+                  <Option value="date">日期选择</Option>
+                  <Option value="date_time">日期时间选择</Option>
+                  <Option value="time">时间选择</Option>
+                </Select>}
+              </>
+
             }
           },
         ]
@@ -385,7 +370,7 @@ export default observer(function SetTittle(props: Props) {
         // if (['date_time','date','time','','timeCalculation','cumulative'].includes(record.itemType)) {
         //   return <span></span>
         // } else 
-		if (record.itemType == 'attachment') {
+        if (record.itemType == 'attachment') {
           return <Select
             mode="tags"
             style={{ width: "100%" }}
@@ -433,7 +418,7 @@ export default observer(function SetTittle(props: Props) {
             <Option value="全选">全选</Option>
             {empNameOptions()}
           </Select>
-        } else if(record.itemType=='radio' || record.itemType == 'multiple_select') {
+        } else if (record.itemType == 'radio' || record.itemType == 'multiple_select') {
           return defaultOptions.length > 0 ?
             <Select
               mode="tags"
@@ -498,22 +483,22 @@ export default observer(function SetTittle(props: Props) {
                   {item.name}
                 </Option>)}
             </Select>
-        }else{
-			return <span></span>
-		}
+        } else {
+          return <span></span>
+        }
       }
     },
-	{
-		title: "必填项 ",
-      	width: 80,
-		align: "center",
-		dataIndex:'notNull',
-		render(text: boolean, record: any, index: number){
-			return <Switch defaultChecked={text} onChange={(checked:boolean)=>{
-				record.notNull = checked
-			}} />
-		}
-	},
+    {
+      title: "必填项 ",
+      width: 80,
+      align: "center",
+      dataIndex: 'notNull',
+      render(text: boolean, record: any, index: number) {
+        return <Switch defaultChecked={text} onChange={(checked: boolean) => {
+          record.notNull = checked
+        }} />
+      }
+    },
     {
       title: " 操作 ",
       width: 80,
@@ -572,8 +557,8 @@ export default observer(function SetTittle(props: Props) {
   };
 
   const onSave = () => {
-	// console.log(registerCode, blockId, dataSource)
-	// return
+    // console.log(registerCode, blockId, dataSource)
+    // return
     setPageLoading(true);
     wardRegisterDefaultService
       .saveOrUpdateItemConfig(registerCode, blockId, dataSource)
@@ -588,18 +573,18 @@ export default observer(function SetTittle(props: Props) {
     wardRegisterDefaultService
       .getItemConfigByBlockId(registerCode, blockId)
       .then(res => {
-		
-		
-		res.data.itemList.map((it:any)=>{
-			if(it.itemType !=''){
-				it.cascaderCode = [it.itemType]
-			}
-			
-		})
-		
+
+
+        res.data.itemList.map((it: any) => {
+          if (it.itemType != '') {
+            it.cascaderCode = [it.itemType]
+          }
+
+        })
+
         setDataSource(res.data.itemList);
         setPageLoading(false);
-		// updateCascaderOptions()
+        // updateCascaderOptions()
       });
     service.commonApiService
       .userDictInfo(authStore.selectedDeptCode)
@@ -611,9 +596,9 @@ export default observer(function SetTittle(props: Props) {
   }, []);
 
   useEffect(() => {
-	updateCascaderOptions()
+    updateCascaderOptions()
   }, [dataSource])
-  
+
 
   const empNameOptions = () =>
     empNameList.map((item: any) => (

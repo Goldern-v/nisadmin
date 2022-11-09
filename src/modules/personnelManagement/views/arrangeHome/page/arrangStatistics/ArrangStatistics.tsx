@@ -6,12 +6,10 @@ import {
   DatePicker,
   Select,
   ColumnProps,
-  PaginationConfig
 } from "src/vendors/antd";
 import DeptSelect from "src/components/DeptSelect";
 import { observer } from "mobx-react-lite";
 import { DictItem } from "src/services/api/CommonApiService";
-import BaseTabs, { ConfigItem } from "src/components/BaseTabs";
 import { getCurrentMonth } from "src/utils/date/currentMonth";
 import { appStore, authStore } from "src/stores";
 import { arrangStatisticsService } from "./services/ArrangStatisticsService";
@@ -101,7 +99,7 @@ export default observer(function ArrangStatistics() {
           total += record[current];
           return total;
         }, 0);
-        return ['wh', 'lyyz', 'qhwy', "ytll", 'whhk'].includes(appStore.HOSPITAL_ID) ? Number(sum) : Number(
+        return ['wh', 'lyyz', 'qhwy', "ytll", 'whhk', 'dglb'].includes(appStore.HOSPITAL_ID) ? Number(sum) : Number(
           sum + Number(record["加班"]) - Number(record["减班"])
         ).toFixed(2);
       }

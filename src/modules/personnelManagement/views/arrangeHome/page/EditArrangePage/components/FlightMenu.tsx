@@ -2,10 +2,8 @@ import moment from 'moment'
 import BaseTabs from 'src/components/BaseTabs'
 import service from 'src/services/api'
 import styled from 'styled-components'
-import React, { useEffect, useState } from 'react'
-import { Button } from 'antd'
+import React from 'react'
 import { observer } from 'mobx-react-lite'
-import { cloneJson } from 'src/utils/json/clone'
 import { appStore } from 'src/stores'
 
 import { sheetViewModal } from '../../../viewModal/SheetViewModal'
@@ -161,7 +159,7 @@ function MenuCon(props: { dataSource: any[] }) {
         resetArrangeCount(cell.userId, cell.rangeName)
       }
       // 添加班次时间段
-      if (['qhwy'].includes(appStore.HOSPITAL_ID)) {
+      if (['qhwy', 'dglb'].includes(appStore.HOSPITAL_ID)) {
         cell!.workTime = item.workTime
       }
       // if (

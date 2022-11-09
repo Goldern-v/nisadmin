@@ -1,4 +1,3 @@
-// import styled from 'styled-components'
 import React, { useState, useEffect, useLayoutEffect } from 'react'
 import { AutoComplete, Input } from 'antd'
 import styled from 'styled-components'
@@ -66,7 +65,7 @@ export default function InputRender(props: Props) {
   }, [editVisible])
 
   const handleSearch = (val: string) => {
-    if (_options && _options.length > 0 && ['whyx','lyyz','qhwy', 'whhk'].includes(appStore.HOSPITAL_ID)) {
+    if (_options && _options.length > 0 && ['whyx','lyyz','qhwy', 'whhk', 'dglb'].includes(appStore.HOSPITAL_ID)) {
       
       if (multiple) {
         val = val.slice(val.lastIndexOf(';') + 1)

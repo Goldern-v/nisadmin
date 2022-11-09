@@ -608,7 +608,7 @@ export default function EidtModal(props: Props) {
               </Select>
             </Col>
             {
-              !['qhwy', 'whhk'].includes(appStore.HOSPITAL_ID) &&
+              !['qhwy', 'whhk', 'dglb'].includes(appStore.HOSPITAL_ID) &&
                 (<>
                   <Col span={4}>进修科室二：</Col>
                   <Col span={8}>
