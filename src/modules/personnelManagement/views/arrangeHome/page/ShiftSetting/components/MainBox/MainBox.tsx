@@ -1,5 +1,4 @@
 import update from 'immutability-helper'
-import moment from 'moment'
 import createModal from 'src/libs/createModal'
 import emitter from 'src/libs/ev'
 import service from 'src/services/api'
@@ -18,7 +17,6 @@ import AddShiftModal_wh from '../../modal/AddShiftModal_wh'
 export interface Props extends RouteComponentProps {
 }
 
-
 let colorLumpMap: any = {
   red: '红色', //#F23D35
   green: '绿色', //#32B378
@@ -32,8 +30,6 @@ export default function MainBox() {
   const [tableLoading, setTableLoading] = useState(false);
   const [shiftList, setShiftList] = useState(new Array());
 
-  const [selectAll, setSelectAll] = useState(false);
-
   /** 禁用的班次 */
   const [disableArrangeList, setDisableArrangeList]: any = useState([]);
 
@@ -44,31 +40,13 @@ export default function MainBox() {
   const addShiftModal = createModal(
     appStore.hisMatch({
       map: {
-        'wh,lyyz,qhwy,wjgdszd,ytll,zhzxy,dglb': AddShiftModal_wh,
+        'wh,qhwy,wjgdszd,ytll,zhzxy,dglb': AddShiftModal_wh,
         // gxjb: AddShiftModal_wh,
         other: AddShiftModal
       },
       vague: true
     }),
   );
-
-
-  const dstTime = ():boolean => {
-    const nowTime=moment().format('YYYY-MM-D HH:mm:ss')
-    const year=moment().year()
-    const dstTimeStart=moment(`${year}-05-01`)
-    const dstTimeEnd=moment(`${year}-09-30`)
-    return moment(nowTime).isBetween(dstTimeStart,dstTimeEnd)
-
-  }
-  const handleSwitchClick = (checked: boolean) => {
-    const newArr = shiftList.map((item: any) => {
-      item.status = checked
-      return item
-    })
-    setShiftList(newArr)
-    setSelectAll(checked)
-  }
 
   const columns =  !['lcey', 'lyyz'].includes(appStore.HOSPITAL_ID) ?
   [
@@ -341,7 +319,7 @@ export default function MainBox() {
   ];
   // new:南医三护士长可以编辑排班设置
   let promise =
-    (["wh", 'gxjb', "lyyz","qhwy", "ytll", 'dglb'].includes(appStore.HOSPITAL_ID))
+    (["wh", 'gxjb',"qhwy", "ytll", 'dglb'].includes(appStore.HOSPITAL_ID))
       ? authStore.isRoleManage
       : (authStore.user && authStore.user.post) == "护理部" ||
       (authStore.user && authStore.user.empName) == "管理员" ||
@@ -506,7 +484,7 @@ export default function MainBox() {
     }
   }
   // new: 武汉市一增加是否为责护
-  let isWh = ['wh', 'lyyz', 'qhwy', "ytll", 'dglb'].includes(appStore.HOSPITAL_ID)
+  let isWh = ['wh', 'qhwy', "ytll", 'dglb'].includes(appStore.HOSPITAL_ID)
   if (isWh) {
     columns.splice(4, 0, {
       title: "是否为责护",

@@ -20,14 +20,12 @@ export default function ToolBar() {
   const addShiftModal = createModal(
     appStore.hisMatch({
       map: {
-        'wh,lyyz,qhwy,whsl,wjgdszd,ytll,zhzxy,whhk,dglb': AddShiftModal_wh,
-        // gxjb: AddShiftModal_wh,
+        'wh,qhwy,whsl,wjgdszd,ytll,zhzxy,whhk,dglb': AddShiftModal_wh,
         other: AddShiftModal
       },
       vague: true
     }),
   );
-
 
   const [bangci, setBangci]: [any, any] = useState([]);
   const [dataSourceColorCN, setDataSourceColorCN]: [any, any] = useState([]);
