@@ -98,7 +98,7 @@ export default observer(function TypeEditModal(props: Props) {
               newParams.id = params.id;
               delete newParams.teachingMethod;
               setEditLoading(true);
-              if (appStore.HOSPITAL_ID == 'hj') {
+              if (['hj', 'lyyz'].includes(appStore.HOSPITAL_ID)) {
                 updateTypeDataHJ(newParams)
               } else {
                 mainPageApi.updateTypeData(newParams).then(res => {
@@ -114,7 +114,7 @@ export default observer(function TypeEditModal(props: Props) {
               }
               newParams.pId = Number(params.Pid);
               newParams.teachingMethod = Number(newParams.teachingMethod);
-              if (appStore.HOSPITAL_ID == 'hj') {
+              if (['hj', 'lyyz'].includes(appStore.HOSPITAL_ID)) {
                 updateTypeDataHJ(newParams)
               } else {
                 mainPageApi.addTypeData(newParams).then(res => {
@@ -159,7 +159,7 @@ export default observer(function TypeEditModal(props: Props) {
     >
       <Wrapper>
         <Form ref={formRef} rules={rules}>
-          {appStore.HOSPITAL_ID == 'hj' &&
+          {['hj', 'lyyz'].includes(appStore.HOSPITAL_ID) &&
             <Row>
               <Col span={5} className="label">
                 名称:
@@ -171,7 +171,7 @@ export default observer(function TypeEditModal(props: Props) {
               </Col>
             </Row>
           }
-          {appStore.HOSPITAL_ID != 'hj' &&
+          {!['hj', 'lyyz'].includes(appStore.HOSPITAL_ID) &&
             <Row>
               <Col span={5} className="label">
                 名称:
@@ -209,94 +209,6 @@ export default observer(function TypeEditModal(props: Props) {
               </Form.Field>
             </Col>
           </Row>
-          {/* {appStore.HOSPITAL_ID == 'hj' && (
-            <div>
-              <Row>
-                <Col span={5} className="label">
-                  类型名称:
-                </Col>
-                <Col span={19}>
-                  <Form.Field name="">
-                    <Select
-                      value={mainPageModal.trainingKeyPointTreeId}
-                      style={{ width: 120 }}
-                      onChange={(id: any) => {
-                        mainPageModal.trainingKeyPointTreeId = id;
-                        mainPageModal.knowledgePointDivisionTreeId = "";
-                        let target: any = mainPageModal.trainingKeyPointTree.find(
-                          (item: any) => item.id == id
-                        );
-                        if (target && target.childList)
-                          mainPageModal.knowledgePointDivisionTree = target.childList;
-                      }}
-                    >
-                      {mainPageModal.trainingKeyPointTree.map(
-                        (item: any, idx: number) => (
-                          <Select.Option value={item.id} key={idx}>
-                            {item.name}
-                          </Select.Option>
-                        )
-                      )}
-                    </Select>
-                  </Form.Field>
-                </Col>
-              </Row>
-              <Row>
-                <Col span={5} className="label">
-                  知识划分点:
-                </Col>
-                <Col span={19}>
-                  <Form.Field name="">
-                    <Select
-                      value={mainPageModal.knowledgePointDivisionTreeId}
-                      style={{ width: 120 }}
-                      onChange={(id: any) => {
-                        mainPageModal.knowledgePointDivisionTreeId = id;
-                        mainPageModal.learningFormTreeId = "";
-                        let target: any = mainPageModal.knowledgePointDivisionTree.find(
-                          (item: any) => item.id == id
-                        );
-                        if (target && target.childList)
-                          mainPageModal.learningFormTree = target.childList;
-                      }}
-                    >
-                      {mainPageModal.knowledgePointDivisionTree.map(
-                        (item: any, idx: number) => (
-                          <Select.Option value={item.id} key={idx}>
-                            {item.name}
-                          </Select.Option>
-                        )
-                      )}
-                    </Select>
-                  </Form.Field>
-                </Col>
-              </Row>
-              <Row>
-                <Col span={5} className="label">
-                  教学:
-                </Col>
-                <Col span={19}>
-                  <Form.Field name="">
-                    <Select
-                      value={mainPageModal.learningFormTreeId}
-                      style={{ width: 120 }}
-                      onChange={(id: any) =>
-                        mainPageModal.learningFormTreeId = id
-                      }
-                    >
-                      {mainPageModal.learningFormTree.map(
-                        (item: any, idx: number) => (
-                          <Select.Option value={item.id} key={idx}>
-                            {item.name}
-                          </Select.Option>
-                        )
-                      )}
-                    </Select>
-                  </Form.Field>
-                </Col>
-              </Row>
-            </div>
-          )} */}
         </Form>
       </Wrapper>
     </Modal>

@@ -32,7 +32,7 @@ class MainPageModal {
     return {
       secondLevelMenuId: this.id, //二级菜单id
       thirdLevelMenuId:
-        appStore.HOSPITAL_ID === "hj" &&
+      ['hj', 'lyyz'].includes(appStore.HOSPITAL_ID) &&
           stepViewModal.getParentsName == "在线学习"
           ? this.hjSelectedType
           : stepViewModal.getParentsName == "集中培训"
@@ -52,7 +52,7 @@ class MainPageModal {
       //类型
       mainPageApi.getTypeData(this.id).then(res => {
         const nameList = ["集中培训", "在线学习"];
-        if (appStore.HOSPITAL_ID === "hj" && nameList.includes(stepViewModal.getParentsName)) {
+        if (['hj', 'lyyz'].includes(appStore.HOSPITAL_ID) && nameList.includes(stepViewModal.getParentsName)) {
           this.hjSelectedType = res.data[this.key]?.id || res.data[0]?.id || '';
         }
         this.selectTypeList = res.data;

@@ -36,27 +36,7 @@ export default observer(function Header(props: Props) {
     let dept = authStore.deptList.find(
       (dept: any) => dept.code == authStore.defaultDeptCode
     );
-    // if (appStore.HOSPITAL_ID == "hj" && Title == "科级") {
-    //   selectPeopleViewModel.selectTreeDataAll = [
-    //     {
-    //       step: "默认科室",
-    //       label: "",
-    //       data: []
-    //     },
-    //     {
-    //       step: "按实习生选择",
-    //       label: "按实习生选择",
-    //       data: [],
-    //       dataLabel: "year"
-    //     },
-    //     {
-    //       step: "按进修生选择",
-    //       label: "按进修生选择",
-    //       data: [],
-    //       dataLabel: "year"
-    //     }
-    //   ];
-    // } else {
+
     selectPeopleViewModel.selectTreeDataAll = [
       {
         step: "按片区选择",
@@ -95,67 +75,66 @@ export default observer(function Header(props: Props) {
         data: [],
         dataLabel: "level"
       },
-      ...appStore.hisAdapter({
-        hj: () => [
-          {
-            step: "按实习生选择",
-            label: "按实习生选择",
-            data: [],
-            dataLabel: "year"
-          },
-          {
-            step: "按进修生选择",
-            label: "按进修生选择",
-            data: [],
-            dataLabel: "year"
-          }
-        ],
-        wh: () => [],
-        ytll: () => [],
-        gxjb: () => [],
-        nys: () => [
-          {
-            step: "按实习生选择",
-            label: "按实习生选择",
-            data: [],
-            dataLabel: "year"
-          }
-        ],
-        lcey: () => [
-          {
-            step: "按实习生选择",
-            label: "按实习生选择",
-            data: [],
-            dataLabel: "year"
-          },
-          {
-            step: "按进修生选择",
-            label: "按进修生选择",
-            data: [],
-            dataLabel: "year"
-          },
-          {
-            step: "科室总带教",
-            label: "科室总带教",
-            data: [],
-            dataLabel: "year"
-          },
-          {
-            step: "院级培训师",
-            label: "院级培训师",
-            data: [],
-            dataLabel: "year"
-          },
-          {
-            step: "护理专业小组",
-            label: "护理专业小组",
-            data: [],
-            dataLabel: "year"
-          }
-        ],
+      ...appStore.hisMatch({
+        map: {
+          other: [
+            {
+              step: "按实习生选择",
+              label: "按实习生选择",
+              data: [],
+              dataLabel: "year"
+            },
+            {
+              step: "按进修生选择",
+              label: "按进修生选择",
+              data: [],
+              dataLabel: "year"
+            }
+          ],
+          'wh,ytll,gxjb': [],
+          nys: [
+            {
+              step: "按实习生选择",
+              label: "按实习生选择",
+              data: [],
+              dataLabel: "year"
+            }
+          ],
+          lcey: [
+            {
+              step: "按实习生选择",
+              label: "按实习生选择",
+              data: [],
+              dataLabel: "year"
+            },
+            {
+              step: "按进修生选择",
+              label: "按进修生选择",
+              data: [],
+              dataLabel: "year"
+            },
+            {
+              step: "科室总带教",
+              label: "科室总带教",
+              data: [],
+              dataLabel: "year"
+            },
+            {
+              step: "院级培训师",
+              label: "院级培训师",
+              data: [],
+              dataLabel: "year"
+            },
+            {
+              step: "护理专业小组",
+              label: "护理专业小组",
+              data: [],
+              dataLabel: "year"
+            }
+          ],
+        }
       })
     ];
-    // }
     selectPeopleViewModel.selectTreeDataAll.map((item: any) => {
       if (item.step == "默认科室") {
         item.label = dept ? dept.name : authStore.defaultDeptCodeName;
@@ -166,7 +145,7 @@ export default observer(function Header(props: Props) {
   /** 根据医院、一级菜单名动态渲染头部类型 */
   const getType = () => {
     const nameList = ["集中培训", "在线学习"];
-    if (appStore.HOSPITAL_ID === "hj" && nameList.includes(stepViewModal.getParentsName)) {
+    if (['hj', 'lyyz'].includes(appStore.HOSPITAL_ID) && nameList.includes(stepViewModal.getParentsName)) {
       return ''
     } else {
       return (
