@@ -219,7 +219,7 @@ export default observer(function 其他人员(props: Props) {
     },
     ...appStore.hisMatch({
       map: {
-        'qhwy,whhk': [],
+        'qhwy,whhk,dglb': [],
         other: [
           {
             title: "进修科室二",

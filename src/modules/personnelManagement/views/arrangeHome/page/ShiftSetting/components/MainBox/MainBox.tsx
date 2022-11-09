@@ -1,5 +1,4 @@
 import update from 'immutability-helper'
-import moment from 'moment'
 import createModal from 'src/libs/createModal'
 import emitter from 'src/libs/ev'
 import service from 'src/services/api'
@@ -7,42 +6,17 @@ import styled from 'styled-components'
 import React, { useEffect, useState } from 'react'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
 import { RouteComponentProps } from 'react-router'
-import { Divider, message, Popconfirm, Switch, Table, Tag } from 'antd'
+import { message, Switch, Tag } from 'antd'
 import { appStore, authStore, scheduleStore } from 'src/stores'
 import { globalModal } from 'src/global/globalModal'
 import { Icon } from 'src/vendors/antd'
-import { overflow } from 'html2canvas/dist/types/css/property-descriptors/overflow'
 
-import PostScoreCell from '../../../../components/arrangeSheet/postScoreCell'
 import AddShiftModal from '../../modal/AddShiftModal'
 import AddShiftModal_wh from '../../modal/AddShiftModal_wh'
 
-// import { Link } from 'react-router-dom'
-
-// import { authStore, scheduleStore } from 'src/stores'
-// import emitter from 'src/libs/ev'
-
-// const Option = Select.Option
 export interface Props extends RouteComponentProps {
 }
 
-// let colorMap: any = {
-//   red: '红色',
-//   green: '绿色',
-//   blue: '蓝色',
-//   yellow: '黄色',
-//   black: '黑色',
-//   gray: '灰色'
-// }
-
-// let colorMapCN: any = {
-//   红色: 'red',
-//   绿色: 'green',
-//   蓝色: 'blue',
-//   黄色: 'yellow',
-//   黑色: 'black',
-//   灰色: 'gray'
-// }
 let colorLumpMap: any = {
   red: '红色', //#F23D35
   green: '绿色', //#32B378
@@ -56,8 +30,6 @@ export default function MainBox() {
   const [tableLoading, setTableLoading] = useState(false);
   const [shiftList, setShiftList] = useState(new Array());
 
-  const [selectAll, setSelectAll] = useState(false);
-
   /** 禁用的班次 */
   const [disableArrangeList, setDisableArrangeList]: any = useState([]);
 
@@ -68,31 +40,13 @@ export default function MainBox() {
   const addShiftModal = createModal(
     appStore.hisMatch({
       map: {
-        'wh,lyyz,qhwy,wjgdszd,ytll,zhzxy': AddShiftModal_wh,
+        'wh,qhwy,wjgdszd,ytll,zhzxy,dglb': AddShiftModal_wh,
         // gxjb: AddShiftModal_wh,
         other: AddShiftModal
       },
       vague: true
     }),
   );
-
-
-  const dstTime = ():boolean => {
-    const nowTime=moment().format('YYYY-MM-D HH:mm:ss')
-    const year=moment().year()
-    const dstTimeStart=moment(`${year}-05-01`)
-    const dstTimeEnd=moment(`${year}-09-30`)
-    return moment(nowTime).isBetween(dstTimeStart,dstTimeEnd)
-
-  }
-  const handleSwitchClick = (checked: boolean) => {
-    const newArr = shiftList.map((item: any) => {
-      item.status = checked
-      return item
-    })
-    setShiftList(newArr)
-    setSelectAll(checked)
-  }
 
   const columns =  !['lcey', 'lyyz'].includes(appStore.HOSPITAL_ID) ?
   [
@@ -365,7 +319,7 @@ export default function MainBox() {
   ];
   // new:南医三护士长可以编辑排班设置
   let promise =
-    (["wh", 'gxjb', "lyyz","qhwy", "ytll"].includes(appStore.HOSPITAL_ID))
+    (["wh", 'gxjb',"qhwy", "ytll", 'dglb'].includes(appStore.HOSPITAL_ID))
       ? authStore.isRoleManage
       : (authStore.user && authStore.user.post) == "护理部" ||
       (authStore.user && authStore.user.empName) == "管理员" ||
@@ -498,39 +452,39 @@ export default function MainBox() {
               </DoCon>
             );
           }
-          <DoCon>
-            <span
-              onClick={(e: any) => {
-                addShiftModal.show({
-                  editData: record,
-                  onOkCallBack: () => {
-                    getShiftList();
-                  }
-                });
-                // emitter.emit('弹窗编辑排班', record)
-              }}
-            >
-              编辑
-            </span>
-            <span
-              onClick={() => {
-                globalModal.confirm("确认删除", "确认删除该套餐？").then(res => {
-                  service.scheduleShiftApiService.delete(record.id).then(res => {
-                    emitter.emit("更新班次列表");
-                  });
-                  message.success(`删除${record.name}成功`);
-                });
-              }}
-            >
-              删除
-            </span>
-          </DoCon>;
+          // <DoCon>
+          //   <span
+          //     onClick={(e: any) => {
+          //       addShiftModal.show({
+          //         editData: record,
+          //         onOkCallBack: () => {
+          //           getShiftList();
+          //         }
+          //       });
+          //       // emitter.emit('弹窗编辑排班', record)
+          //     }}
+          //   >
+          //     编辑
+          //   </span>
+          //   <span
+          //     onClick={() => {
+          //       globalModal.confirm("确认删除", "确认删除该套餐？").then(res => {
+          //         service.scheduleShiftApiService.delete(record.id).then(res => {
+          //           emitter.emit("更新班次列表");
+          //         });
+          //         message.success(`删除${record.name}成功`);
+          //       });
+          //     }}
+          //   >
+          //     删除
+          //   </span>
+          // </DoCon>;
         }
       });
     }
   }
   // new: 武汉市一增加是否为责护
-  let isWh = ['wh', 'lyyz', 'qhwy', "ytll"].includes(appStore.HOSPITAL_ID)
+  let isWh = ['wh', 'qhwy', "ytll", 'dglb'].includes(appStore.HOSPITAL_ID)
   if (isWh) {
     columns.splice(4, 0, {
       title: "是否为责护",
@@ -614,7 +568,6 @@ export default function MainBox() {
       let oneUser = new Object();
       allUser = new Array();
       selectedRowsArray = new Array();
-      // columns
 
       if (res && res.data) {
         tableData = res.data;

@@ -1,4 +1,3 @@
-// import styled from 'styled-components'
 import React, { useState, useEffect, useLayoutEffect } from 'react'
 import { AutoComplete, Input } from 'antd'
 import styled from 'styled-components'
@@ -38,7 +37,7 @@ export default function InputColumnRender(props: Props) {
     onSelect,
     multiple,
   } = props
-  
+
   const [editValue, setEditValue] = useState('')
   const [editVisible, setEditVisible] = useState(false)
   const [open, setOpen] = useState(false)
@@ -55,7 +54,7 @@ export default function InputColumnRender(props: Props) {
     if (multiple && selectAll && options.length > 0) _options = ['全部', ...options]
     else _options = options
   }
-  const [newOptions, setNewOptions] = useState(_options) 
+  const [newOptions, setNewOptions] = useState(_options)
   const [multiSearchFlag, setMultiSearchFlag] = useState(false)
   useLayoutEffect(() => {
     if (editVisible) {
@@ -66,8 +65,8 @@ export default function InputColumnRender(props: Props) {
   }, [editVisible])
 
   const handleSearch = (val: string) => {
-    if (_options && _options.length > 0 && ['whyx','lyyz','qhwy', 'whhk'].includes(appStore.HOSPITAL_ID)) {
-      
+    if (_options && _options.length > 0 && ['whyx', 'lyyz', 'qhwy', 'whhk', 'dglb'].includes(appStore.HOSPITAL_ID)) {
+
       if (multiple) {
         val = val.slice(val.lastIndexOf(';') + 1)
         if (val) {
@@ -75,12 +74,12 @@ export default function InputColumnRender(props: Props) {
         }
       }
       setNewOptions(val ? _options?.filter(v => v.indexOf(val) > -1) : _options)
-    }  
+    }
   }
 
-  const shiftColor = (record:any) => {
-    if (['whyx','whhk'].includes(appStore.HOSPITAL_ID) && record['班次'] && itemCode=='班次') {
-      if (editValue == 'A班') { 
+  const shiftColor = (record: any) => {
+    if (['whyx', 'whhk'].includes(appStore.HOSPITAL_ID) && record['班次'] && itemCode == '班次') {
+      if (editValue == 'A班') {
         return 'green'
       } else if (editValue == 'P班') {
         return 'blue'
@@ -176,8 +175,8 @@ export default function InputColumnRender(props: Props) {
     <TextRender
       className={[
         className || '',
-          !cellDisabled(record) ? 'focus-allow' : 'focus-disabled',
-          shiftColor(record)
+        !cellDisabled(record) ? 'focus-allow' : 'focus-disabled',
+        shiftColor(record)
       ].join(' ')}
       onClick={() => {
         if (!cellDisabled(record)) {

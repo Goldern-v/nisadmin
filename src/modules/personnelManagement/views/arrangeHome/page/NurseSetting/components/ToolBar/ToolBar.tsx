@@ -3,25 +3,15 @@ import BreadcrumbBox from 'src/layouts/components/BreadcrumbBox'
 import emitter from 'src/libs/ev'
 import service from 'src/services/api'
 import styled from 'styled-components'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { RouteComponentProps } from 'react-router'
 import { Button, message } from 'antd'
-import { appStore, authStore } from 'src/stores'
+import { appStore } from 'src/stores'
 
-// import { Link } from 'react-router-dom'
-
-// import { authStore, scheduleStore } from 'src/stores'
-// import emitter from 'src/libs/ev'
-
-// const Option = Select.Option
 export interface Props extends RouteComponentProps {
 }
 
 export default function ToolBar() {
-  // Similar to componentDidMount and componentDidUpdate:
-  useEffect(() => {
-    //
-  }, []); // <= 执行初始化操作，需要注意的是，如果你只是想在渲染的时候初始化一次数据，那么第二个参数必须传空数组。
 
   return (
     <div>
@@ -64,17 +54,10 @@ export default function ToolBar() {
             marginRight: 3,
           }}
         >
-          {/*{appStore.HOSPITAL_ID == "wh"*/}
-          {/*  ? "添加"*/}
-          {/*  : appStore.HOSPITAL_ID == "hj"*/}
-          {/*    ? "添加实习护士"*/}
-          {/*    : appStore.HOSPITAL_ID == "nys"*/}
-          {/*      ? "添加排班人员"*/}
-          {/*      : "添加实习护士"}*/}
           {
             appStore.hisMatch({
               map: {
-                'wh,gzsrm,lyyz,qhwy,whsl,ytll': '添加',
+                'wh,gzsrm,lyyz,qhwy,whsl,ytll,dglb': '添加',
                 hj: '添加实习护士',
                 "nys,lcey": '添加排班人员',
                 'whyx,whhk': "添加实习/进修生护士",
@@ -84,14 +67,6 @@ export default function ToolBar() {
             })
           }
         </Button>
-        {/* <Button
-        onClick={(e: any) => {
-          emitter.emit('删除排班人员')
-        }}
-        style={{ marginLeft: 20, marginRight: 0 }}
-      >
-        删除
-      </Button> */}
 
         <Button
           onClick={(e: any) => {

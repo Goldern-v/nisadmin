@@ -1,53 +1,18 @@
 import styled from "styled-components";
 import React, { useEffect, useState } from "react";
-// import { Button } from "antd";
 import LeftMenuPage from "src/components/LeftMenuPage";
-import { appStore, authStore } from "src/stores";
-// import { ReactComponent as WPJJ } from "./images/icon/WPJJ.svg";
-// import { ReactComponent as TSWP } from "./images/icon/TSWP.svg";
+import { appStore } from "src/stores";
 import { ReactComponent as ZDHZ } from "./images/icon/ZDHZ.svg";
-// import { ReactComponent as YZHD } from "./images/icon/YZHD.svg";
-// import { ReactComponent as CDWXD } from "./images/icon/CDWXD.svg";
-// import { ReactComponent as ZWXKQ } from "./images/icon/ZWXKQ.svg";
-// import { ReactComponent as XDGL } from "./images/icon/XDGL.svg";
-// import { ReactComponent as CYHZ } from "./images/icon/CYHZ.svg";
-import { ReactComponent as BYYP } from "./images/icon/BYYP.svg";
-// import { ReactComponent as YQSB } from "./images/icon/YQSB.svg";
-// import { ReactComponent as JJCSY } from "./images/icon/JJCSY.svg";
-// import { ReactComponent as DMYP } from "./images/icon/DMYP.svg";
-// import { ReactComponent as KFWP } from "./images/icon/KFWP.svg";
-// import { ReactComponent as ZYHL } from "./images/icon/ZYHL.svg";
-// import { ReactComponent as JMZL } from "./images/icon/JMZL.svg";
-// import { ReactComponent as HHGT } from "./images/icon/HHGT.svg";
-// import { ReactComponent as JKJY } from "./images/icon/JKJY.svg";
-// import { ReactComponent as SXJX } from "./images/icon/SXJX.svg";
-// import { ReactComponent as SMZC } from "./images/icon/SMZC.svg";
 import 默认病区登记表记本 from "./page/默认病区登记表记本/默认病区登记表记本";
-// import 登记本全科室导出 from "./page/登记本全科室导出/登记本全科室导出"
 import IndexPage from './page/IndexPage'
 import { wardRegisterDefaultService } from './services/WardRegisterDefaultService'
-// import 基础模板登记本 from './page/基础模板登记本/基础模板登记本'
-
 import { observer } from "mobx-react-lite";
-
-// export interface Props { }
 
 function WardRegisterDefaultRouter() {
 
   const [registerList, setRegisterList] = useState([] as any)
   const [loading, setLoading] = useState(false)
-
-  // let leftMenuConfig = [
-  //   {
-  //     title: "缺少权限",
-  //     path: "/wardRegister",
-  //     component: function Nope() {
-  //       appStore.history.replace('/login')
-  //       return <div></div>
-  //     },
-  //     icon: <BYYP />,
-  //   }
-  // ] as any[]
+  const HOSPITAL_FLAG = ['whyx', 'fsxt', '925', 'lyyz', 'qhwy', 'wjgdszd', 'whhk', 'dglb'].includes(appStore.HOSPITAL_ID)
 
   const leftMenuConfig = [
     {
@@ -60,18 +25,18 @@ function WardRegisterDefaultRouter() {
       title: item.registerName,
       path: `/wardRegister/${item.registerCode}`,
       component: { ...默认病区登记表记本 },
-      hide: ['whyx', 'fsxt','925','lyyz','qhwy','wjgdszd', 'whhk'].includes(appStore.HOSPITAL_ID) ? false : !item.menu,
+      hide: HOSPITAL_FLAG ? false : !item.menu,
       icon: <ZDHZ />,
       payload: {
         registerCode: item.registerCode,
         registerName: item.registerName
       },
       custom: {
-        textColor: ['whyx', 'fsxt','925','lyyz','qhwy','wjgdszd', 'whhk'].includes(appStore.HOSPITAL_ID) ? item.color : ''
+        textColor: HOSPITAL_FLAG ? item.color : ''
       }
     }))
   ]
-  // 1：日 2：周 3：月 4：班次）
+  // 1：日 2：周 3：月 4：班次
   const colorList = [
     '',
     '#00c8ff',
@@ -81,7 +46,7 @@ function WardRegisterDefaultRouter() {
   ]
   const initNavList = () => {
     setLoading(true)
-    if (['wjgdszd','whyx', 'fsxt','925','lyyz','qhwy', 'whhk'].includes(appStore.HOSPITAL_ID)) {
+    if (HOSPITAL_FLAG) {
       wardRegisterDefaultService.getMenuByDeptCode()
         .then(res => {
           if (res.data) setRegisterList(res.data.map((item: any) => ({

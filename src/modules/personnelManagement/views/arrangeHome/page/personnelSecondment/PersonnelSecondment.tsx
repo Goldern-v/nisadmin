@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "antd";
 import BreadcrumbBox from "src/layouts/components/BreadcrumbBox";
 import { Place } from "src/components/common";
@@ -13,7 +13,7 @@ import { appStore, authStore } from "src/stores";
 import DeptSelect from "src/components/DeptSelect";
 export interface Props { }
 
-export default function PersonnelSecondment() { 
+export default function PersonnelSecondment() {
   const [dataSource, setDataSource] = useState([]);
   const [status, setStatus] = useState("1");
   const [pageLoading, setPageLoading] = useState(false);
@@ -51,63 +51,69 @@ export default function PersonnelSecondment() {
       dataIndex: "detailTransferTo",
       width: 300
     },
-    ...appStore.hisMatch({map:{
-      'qhwy':[
-        {
-          title: "护士总数",
-          dataIndex: "nurseNum",
-          width: 100,
-          align: "center"
-        },
-        {
-          title: "患者总数",
-          dataIndex: "patientNum",
-          width: 100,
-          align: "center"
-        },
-        {
-          title: "审核状态",
-          dataIndex: "status",
-          width: 100,
-          align: "center"
-        },
-      ],
-      other:[],
-    }}),
+    ...appStore.hisMatch({
+      map: {
+        'qhwy,dglb': [
+          {
+            title: "护士总数",
+            dataIndex: "nurseNum",
+            width: 100,
+            align: "center"
+          },
+          {
+            title: "患者总数",
+            dataIndex: "patientNum",
+            width: 100,
+            align: "center"
+          },
+          {
+            title: "审核状态",
+            dataIndex: "status",
+            width: 100,
+            align: "center"
+          },
+        ],
+        other: [],
+      },
+      vague: true
+    }),
     {
       title: "操作人",
       dataIndex: "empName",
       width: 150,
       align: "center",
-     
+
     },
-    ...appStore.hisMatch({map:{
-      'qhwy':[
-        {
-          title: "操作",
-          dataIndex: "",
-          width: 100,
-          align: "center",
-          render(text: any, record: any) {
-            return (
-              <DoCon>
-                { record.status=='驳回' && <span 
-                  onClick={() => {
-                    personelSecondModal.show({ 
-                      onOkCallBack: getData,
-                      recordData:record
-                     })
-                  }}
-                >
-                  编辑
-                </span>}
-              </DoCon>
-            );
-          }
-        },
-      ],
-        other:[],
-      }}),
+    ...appStore.hisMatch({
+      map: {
+        'qhwy,dglb': [
+          {
+            title: "操作",
+            dataIndex: "",
+            width: 100,
+            align: "center",
+            render(text: any, record: any) {
+              return (
+                <DoCon>
+                  {record.status == '驳回' && <span
+                    onClick={() => {
+                      personelSecondModal.show({
+                        onOkCallBack: getData,
+                        recordData: record
+                      })
+                    }}
+                  >
+                    编辑
+                  </span>}
+                </DoCon>
+              );
+            }
+          },
+        ],
+        other: [],
+      },
+      vague: true
+    }),
   ];
 
   const getData = () => {

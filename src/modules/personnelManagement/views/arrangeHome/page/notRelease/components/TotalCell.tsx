@@ -1,9 +1,7 @@
 import moment from 'moment'
 import styled from 'styled-components'
-import React, { useEffect, useState } from 'react'
-import { Button } from 'antd'
+import React from 'react'
 import { observer } from 'mobx-react-lite'
-import { cloneJson } from 'src/utils/json/clone'
 import { message as Message } from 'antd'
 import { appStore } from 'src/stores'
 
@@ -53,7 +51,7 @@ export const totalCellContent = (id: any) => {
   // 武汉
   let total = list.reduce((total: any, current: ArrangeItem | any) => {
     let isOk: any = arr.find((item: any) => item === current.rangeName);
-    return isOk && (["wh", 'gxjb', "lyyz","qhwy", 'ytll', 'whhk'].includes(appStore.HOSPITAL_ID))
+    return isOk && (["wh", 'gxjb', "lyyz","qhwy", 'ytll', 'whhk', 'dglb'].includes(appStore.HOSPITAL_ID))
       ? total
       : total + Number(current.effectiveTime);
   }, 0);

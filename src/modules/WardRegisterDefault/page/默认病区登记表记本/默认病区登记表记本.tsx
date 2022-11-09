@@ -27,14 +27,13 @@ import { NullBox } from "../../components/NullBox";
 import { TableCon, Wrapper } from "../../utils/style/style";
 import { getFun, ItemConfigItem } from "../../utils/fun/fun";
 import { numberFormat } from "src/utils/number/numberFormat";
-import { createFilterItem } from "../../components/Render.v1/FilterItem";
+// import { createFilterItem } from "../../components/Render.v1/FilterItem";
 import classNames from "classnames";
-import { createFilterInput } from "../../components/Render.v1/FilterInput";
+// import { createFilterInput } from "../../components/Render.v1/FilterInput";
 // import TextArea from "antd/lib/input/TextArea";
 // import { wardRegisterDefaultService } from "../../services/WardRegisterDefaultService";
 // import { globalModal } from "src/global/globalModal";
-import { getFileSize, getFileType, getFilePrevImg } from 'src/utils/file/file'
-import { getCurrentMonth } from 'src/utils/date/currentMonth'
+import { getFileType } from 'src/utils/file/file'
 import PreviewModal from 'src/utils/file/modal/PreviewModal'
 import reactZmage from 'react-zmage'
 import FileUploadColumnRender from '../../components/Render.v1/FileUploadColumnRender'
@@ -542,7 +541,7 @@ export default observer(function 敏感指标登记本(props: Props) {
  * @param calculationType dayTime、day单位都是天，hour单位是小时
  */
   const getDayOrHours = (calculationType:string)=>{
-	if(['qhwy'].includes(appStore.HOSPITAL_ID)){
+	if(['qhwy', 'dglb'].includes(appStore.HOSPITAL_ID)){
 		if(['dayTime','day'].includes(calculationType)) return '(天)'
 		if(['hour'].includes(calculationType)) return '(时)'
 		return ''
@@ -551,7 +550,7 @@ export default observer(function 敏感指标登记本(props: Props) {
 	
   }
   //registerName
-  const isWhyx = ['whyx','lyyz','qhwy','whhk'].includes(appStore.HOSPITAL_ID)
+  const isWhyx = ['whyx','lyyz','qhwy','whhk', 'dglb'].includes(appStore.HOSPITAL_ID)
 
   const columns: ColumnProps<any>[] | any = [
     ...appStore.hisMatch({
@@ -733,7 +732,7 @@ export default observer(function 敏感指标登记本(props: Props) {
                 updateDataSource,
                 registerCode,
                 onChangeDate: (newVal: string) => {	
-			if(['qhwy'].includes(appStore.HOSPITAL_ID)){
+			if(['qhwy', 'dglb'].includes(appStore.HOSPITAL_ID)){
 				// 时间改变 时间关联的有计算器和叠加器
 				gotoContiun(item,record,index)
 			}		
@@ -787,7 +786,7 @@ export default observer(function 敏感指标登记本(props: Props) {
 			  updateDataSource,
 			  handleNextIptFocus,
 			  onBlur: (newVal: string, oldVal: any) => {
-				if(['qhwy'].includes(appStore.HOSPITAL_ID)){
+				if(['qhwy', 'dglb'].includes(appStore.HOSPITAL_ID)){
 					if(item.itemType == ""){
 						// 时间改变 时间关联的有计算器和叠加器
 						gotoContiun(item,record,index)
@@ -848,7 +847,7 @@ export default observer(function 敏感指标登记本(props: Props) {
     ] : [],
     ...appStore.hisMatch({
       map: {
-        'whyx,lyyz,qhwy,whhk': [],
+        'whyx,lyyz,qhwy,whhk,dglb': [],
         other: (config.signList || []).map((signItem: any) =>
           signRowObj({
             title: signItem.title,
@@ -958,13 +957,13 @@ export default observer(function 敏感指标登记本(props: Props) {
 
   /**批量按钮 */
   const SelectedBtnCon = observer(function(props: Record<string, any>) {
-    const { config, customSign, customBatch } = props;    
+    const { config, customSign } = props;    
     const general =['whyx','whhk'].includes(appStore.HOSPITAL_ID) && !!customSign?.length // && customSign.find((item: any) => item.itemCode == '护士签名')// && customBatch.length != 0
     return (<Fragment>
       {
         appStore.hisMatch({
           map: {
-            'whyx,lyyz,qhwy,whhk': (
+            'whyx,lyyz,qhwy,whhk,dglb': (
               <Fragment>
                 {customSign && customSign.map((item: any) => (
                   <Button
@@ -1226,7 +1225,7 @@ export default observer(function 敏感指标登记本(props: Props) {
             {
               appStore.hisMatch({
                 map: {
-                  'whyx,lyyz,qhwy,whhk': authStore.isAdmin ? (
+                  'whyx,lyyz,qhwy,whhk,dglb': authStore.isAdmin ? (
                     <Button onClick={onDelete}>版本删除</Button>
                   ) : '',
                   other: authStore.isNotANormalNurse ? (

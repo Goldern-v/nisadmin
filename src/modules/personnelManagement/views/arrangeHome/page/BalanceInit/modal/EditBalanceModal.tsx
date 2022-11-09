@@ -1,10 +1,8 @@
 import styled from "styled-components";
-import React, { useState, useEffect, useLayoutEffect } from "react";
+import React, { useState, useLayoutEffect } from "react";
 import {
   Modal,
   Input,
-  Button,
-  Radio,
   DatePicker,
   Select,
   Row,
@@ -15,7 +13,6 @@ import { ModalComponentProps } from "src/libs/createModal";
 import Form from "src/components/Form";
 import { to } from "src/libs/fns";
 import { Rules } from "src/components/Form/interfaces";
-import { DictItem } from "src/services/api/CommonApiService";
 import { InputNumber } from "src/vendors/antd";
 import { arrangeService } from "../../../services/ArrangeService";
 import moment from "moment";
@@ -227,7 +224,7 @@ export default function EditBalanceModal(props: Props) {
             })
           }
           {
-            appStore.HOSPITAL_ID === 'qhwy' && (
+            ['qhwy', 'dglb'].includes(appStore.HOSPITAL_ID) && (
               <React.Fragment>
                 <Col span={24}>
                   <Form.Field label={`产假结余`} name="maternityHourNow">
@@ -269,4 +266,3 @@ export default function EditBalanceModal(props: Props) {
     </Modal>
   );
 }
-const Wrapper = styled.div``;

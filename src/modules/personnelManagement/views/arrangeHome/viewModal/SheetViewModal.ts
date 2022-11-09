@@ -2,8 +2,7 @@ import _ from "lodash";
 import moment from "moment";
 import service from "src/services/api/index";
 import api from "src/services/api/index";
-// import monnet from "src/vendors/moment";
-import { action, autorun, computed, observable } from "mobx";
+import { action, computed, observable } from "mobx";
 import { dateDiff } from "src/utils/date/dateDiff";
 import { message } from "src/vendors/antd";
 
@@ -207,7 +206,7 @@ class SheetViewModal {
       isExpectedScheduling: cellObj.statusType == "1",
       isAddWordTime: appStore.hisMatch({
         map: {
-          "dghl,fqfybjy,wh,gxjb,fssdy,fsxt,925,whyx,lyyz,qhwy,whsl,ytll,whhk":
+          "dghl,fqfybjy,wh,gxjb,fssdy,fsxt,925,whyx,lyyz,qhwy,whsl,ytll,whhk,dglb":
             (cellObj.schAddOrSubs &&
               cellObj.schAddOrSubs.length &&
               cellObj.schAddOrSubs[0].statusType) == "1",
@@ -220,7 +219,7 @@ class SheetViewModal {
       }),
       isReduceWordTime: appStore.hisMatch({
         map: {
-          "wh,gxjb,fssdy,fsxt,925,whyx,lyyz,whsl,qhwy,ytll,whhk":
+          "wh,gxjb,fssdy,fsxt,925,whyx,lyyz,whsl,qhwy,ytll,whhk,dglb":
             (cellObj.schAddOrSubs &&
               cellObj.schAddOrSubs.length &&
               cellObj.schAddOrSubs[0].statusType) == "2",
@@ -244,7 +243,7 @@ class SheetViewModal {
       // 是否存在排班
       isWorkTime: appStore.hisMatch({
         map: {
-          "qhwy": !!cellObj.workTime,
+          "qhwy,dglb": !!cellObj.workTime,
           default: false,
         },
         vague: true,
@@ -312,7 +311,7 @@ class SheetViewModal {
           "lyyz",
           "qhwy",
           "whsl",
-          "zhzxy",
+          "zhzxy", 'dglb',
         ].includes(appStore.HOSPITAL_ID)
       ) {
         let { data: countObj } = await arrangeService.listRangeNameCode(

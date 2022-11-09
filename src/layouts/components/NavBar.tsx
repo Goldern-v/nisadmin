@@ -195,7 +195,7 @@ export default observer(function NavBar(props: any) {
       return navConfig_whfk(appStore, authStore)
     } else if (appStore.HOSPITAL_ID == 'lyyz') {
       return navConfig_lyyz(appStore, authStore)
-    } else if (appStore.HOSPITAL_ID == 'qhwy') {
+    } else if (['qhwy', 'dglb'].includes(appStore.HOSPITAL_ID)) {
       return navConfig_qhwy(appStore, authStore)
     } else if (appStore.HOSPITAL_ID == 'whsl') {
       return navConfig_whsl(appStore, authStore)

@@ -2,25 +2,18 @@ import update from 'immutability-helper'
 import createModal from 'src/libs/createModal'
 import emitter from 'src/libs/ev'
 import service from 'src/services/api'
-import AppStore from 'src/stores/AppStore'
 import styled from 'styled-components'
 import React, { useEffect, useState } from 'react'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
 import { RouteComponentProps } from 'react-router'
-import { Icon, Input, message, Modal, Switch, Table } from 'antd'
+import { Icon, message, Modal, Switch, Table } from 'antd'
 import { appStore, authStore, scheduleStore } from 'src/stores'
-import { DragDropContext } from 'react-dnd'
 import { globalModal } from 'src/global/globalModal'
 import { observer } from 'mobx-react-lite'
 
 import AddScheduleNursingModal from '../../modal/AddScheduleNursingModal'
 import addTutorModal from '../../modal/AddTutorModal'
 
-// import { Link } from 'react-router-dom'
-
-// import { authStore, scheduleStore } from 'src/stores'
-import HTML5Backend from "react-dnd-html5-backend";
-// const Option = Select.Option
 export interface Props extends RouteComponentProps { }
 
 export default observer(function MainBox() {
@@ -51,7 +44,6 @@ export default observer(function MainBox() {
               size="small"
               onChange={(check: any) => {
                 record.rangeShow = check;
-                // console.log(record, userList, 'chekc')
                 setUserList([...userList]);
               }}
               checked={text}
@@ -103,12 +95,6 @@ export default observer(function MainBox() {
         return text;
       },
     },
-    // {
-    //   title: '年龄',
-    //   dataIndex: 'age',
-    //   key: 'age',
-    //   width: 35
-    // },
 
     ...appStore.hisMatch({
       map: {
@@ -158,7 +144,7 @@ export default observer(function MainBox() {
             width: 70,
           },
         ],
-        'wh,gzsrm,gxjb,lyyz,qhwy,ytll': [
+        'wh,gzsrm,gxjb,lyyz,qhwy,ytll,dglb': [
           {
             title: "开始时间",
             dataIndex: "startDate",
@@ -377,9 +363,6 @@ export default observer(function MainBox() {
 });
 
 const Wrapper = styled.div`
-  /* background: #eee; */
-  /* height: 100%; */
-  /* padding: 0 20px 20px 20px; */
   width: 100%;
   table,
   tr,

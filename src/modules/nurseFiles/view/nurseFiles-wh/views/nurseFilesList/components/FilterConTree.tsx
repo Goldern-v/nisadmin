@@ -263,8 +263,8 @@ export default observer(function FilterCon() {
                 </Select>
               </Form.Field>
             </Col>
-           { ['qhwy', 'whhk'].includes(appStore.HOSPITAL_ID) && 
-            <Col span={4} className="longqhwy">
+           { ['qhwy', 'whhk', 'dglb'].includes(appStore.HOSPITAL_ID) && 
+            <Col span={4} className="long--static">
               <Form.Field label={"护理学会会员证号"} name={"membershipCardNumber"}>
                 <Input />
               </Form.Field>
@@ -309,7 +309,7 @@ const Inner = styled.div`
       width: 100px;
     }
   }
-  .longqhwy {
+  .long--static {
     .label {
       width: 120px;
     }

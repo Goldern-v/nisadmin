@@ -1,16 +1,15 @@
 import styled from "styled-components";
 import React, { useState, useEffect } from "react";
-import { Button, DatePicker, Modal, message, Input } from "antd";
+import { Button, DatePicker, Modal, message } from "antd";
 import BreadcrumbBox from "src/layouts/components/BreadcrumbBox";
-import { Place } from "src/components/common";
+// import { Place } from "src/components/common";
 import { observer } from "mobx-react-lite";
-import { arrangeService } from "../../../services/ArrangeService";
+// import { arrangeService } from "../../../services/ArrangeService";
 import { sheetViewModal } from "../../../viewModal/SheetViewModal";
 import { selectViewModal } from "../../../viewModal/SelectViewModal";
 import ExpectSettingModal from "../../../modal/ExpectSettingModal";
 import createModal from "src/libs/createModal";
 import { appStore, authStore } from "src/stores";
-import emitter from "src/libs/ev";
 import { getCurrentMonth } from "src/utils/date/currentMonth";
 import moment from "moment";
 import { Select } from "src/vendors/antd";
@@ -342,7 +341,7 @@ export default observer(function TopPart() {
         <div className="item">
           <Button onClick={handleReset}>重置排班</Button>
         </div>
-        {['wh', 'gzsrm', 'gxjb', 'lyyz', 'qhwy','whsl', "ytll", 'whhk'].includes(appStore.HOSPITAL_ID) && (
+        {['wh', 'gzsrm', 'gxjb', 'lyyz', 'qhwy','whsl', "ytll", 'whhk', 'dglb'].includes(appStore.HOSPITAL_ID) && (
           <div className="item">
             <Button
               onClick={exchange}
@@ -355,15 +354,15 @@ export default observer(function TopPart() {
 
         <div className="item">
           <Button onClick={() => expectSettingModal.show()}>期望排班</Button>
-          {['whyx','qhwy', 'whhk'].includes(appStore.HOSPITAL_ID) && <div className="number">
+          {['whyx','qhwy', 'whhk', 'dglb'].includes(appStore.HOSPITAL_ID) && <div className="number">
             <img src={require('./images/yuan.png')} alt='' className='yuan' />
             <span>{sheetViewModal.experNumber} </span>
           </div>}
         </div>
-        {['wh', 'gzsrm', 'gxjb', 'whyx', 'fssdy', 'lyyz', 'qhwy','whsl', 'ytll', 'whhk'].includes(appStore.HOSPITAL_ID) && (
+        {['wh', 'gzsrm', 'gxjb', 'whyx', 'fssdy', 'lyyz', 'qhwy','whsl', 'ytll', 'whhk', 'dglb'].includes(appStore.HOSPITAL_ID) && (
           <div className="item">
             <Button onClick={() => asClassModal.show()}>申请加减班</Button>
-            {['whyx','qhwy', 'whhk'].includes(appStore.HOSPITAL_ID) && <div className="number">
+            {['whyx','qhwy', 'whhk', 'dglb'].includes(appStore.HOSPITAL_ID) && <div className="number">
               <img src={require('./images/yuan.png')} alt='' className='yuan' />
               <span>{sheetViewModal.ExpectAsNumber}</span>
             </div>}
@@ -428,7 +427,7 @@ export default observer(function TopPart() {
             {appStore.HOSPITAL_ID == 'nys' ? '审核发布' : ' 发布'}
           </Button>
         </div>
-        {['wh', 'gzsrm', 'gxjb', 'fssdy', 'lyyz', 'qhwy','whsl', 'ytll', 'whhk'].includes(appStore.HOSPITAL_ID) && (
+        {['wh', 'gzsrm', 'gxjb', 'fssdy', 'lyyz', 'qhwy','whsl', 'ytll', 'whhk', 'dglb'].includes(appStore.HOSPITAL_ID) && (
           <div className="item">
             <Button
               className="statistics"

@@ -18,7 +18,7 @@ const baseConfig:ConfigType = (app, auth) => ([
   },
   ...appStore.hisMatch({
     map: {
-      'qhwy,whhk': [
+      'qhwy,whhk,dglb': [
         {
           name: "排班管理",
           path: "/personnelManagement"

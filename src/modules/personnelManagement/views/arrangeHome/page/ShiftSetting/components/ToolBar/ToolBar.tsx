@@ -1,4 +1,3 @@
-import moment from 'moment'
 import BreadcrumbBox from 'src/layouts/components/BreadcrumbBox'
 import createModal from 'src/libs/createModal'
 import emitter from 'src/libs/ev'
@@ -7,21 +6,13 @@ import service from 'src/services/api'
 import styled from 'styled-components'
 import React, { useEffect, useState } from 'react'
 import { RouteComponentProps } from 'react-router'
-import { AutoComplete, Button, Form, Input, message, Modal, Select, Switch, TimePicker } from 'antd'
+import { AutoComplete, Button, Form, Input, message, Modal, Select, Switch } from 'antd'
 import { appStore, authStore, scheduleStore } from 'src/stores'
 
 import AddShiftModal from '../../modal/AddShiftModal'
 import AddShiftModal_wh from '../../modal/AddShiftModal_wh'
-
-// import { Link } from 'react-router-dom'
-// import ModalBox from 'src/modules/schedule/views/components/Modal/ModalBox'
-
-// import { authStore, scheduleStore } from 'src/stores'
 import UpdateAllModal from "../../modal/UpdateAllModal"; // 一级菜单弹窗
 
-// import emitter from 'src/libs/ev'
-
-// const Option = Select.Option
 export interface Props extends RouteComponentProps {
 }
 
@@ -29,37 +20,13 @@ export default function ToolBar() {
   const addShiftModal = createModal(
     appStore.hisMatch({
       map: {
-        'wh,lyyz,qhwy,whsl,wjgdszd,ytll,zhzxy,whhk': AddShiftModal_wh,
-        // gxjb: AddShiftModal_wh,
+        'wh,qhwy,whsl,wjgdszd,ytll,zhzxy,whhk,dglb': AddShiftModal_wh,
         other: AddShiftModal
       },
       vague: true
     }),
   );
 
-  let dataSource = ["A班", "P班", "N班", "休假", "进修学习", "其他123"];
-  // let bangci = ['A班', 'P班', 'N班', '休假', '进修学习', '其他123']
-  let dataSourceColor = ["red", "green", "blue", "yellow", "black", "gray"];
-
-  // let dataSourceColorCN = ['红色', '绿色', '蓝色', '黄色', '黑色', '灰色']
-
-  // let colorMap: any = {
-  //   red: '红色',
-  //   green: '绿色',
-  //   blue: '蓝色',
-  //   yellow: '黄色',
-  //   black: '黑色',
-  //   gray: '灰色'
-  // }
-
-  // let colorMapCN: any = {
-  //   红色: 'red',
-  //   绿色: 'green',
-  //   蓝色: 'blue',
-  //   黄色: 'yellow',
-  //   黑色: 'black',
-  //   灰色: 'gray'
-  // }
   const [bangci, setBangci]: [any, any] = useState([]);
   const [dataSourceColorCN, setDataSourceColorCN]: [any, any] = useState([]);
   const [colorMap, setColorMap]: [any, any] = useState({});
@@ -165,14 +132,6 @@ export default function ToolBar() {
           ...props.workTime,
           value: props.workTime.value
         }),
-        // startTime: Form.createFormField({
-        //   ...props.startTime,
-        //   value: props.startTime.value
-        // }),
-        // endTime: Form.createFormField({
-        //   ...props.endTime,
-        //   value: props.endTime.value
-        // }),
         workHour: Form.createFormField({
           ...props.workHour,
           value: props.workHour.value
@@ -296,12 +255,6 @@ export default function ToolBar() {
     type: {
       value: ""
     },
-    // startTime: {
-    //   value: moment(new Date(), 'HH:mm:ss')
-    // },
-    // endTime: {
-    //   value: moment(new Date(), 'HH:mm:ss').add(8, 'h')
-    // },
     workTime: {
       value: "8:00 - 16:00"
     },
@@ -371,12 +324,6 @@ export default function ToolBar() {
       };
     }
 
-    // startTime: {
-    //   value: moment(new Date(), 'HH:mm:ss')
-    // },
-    // endTime: {
-    //   value: moment(new Date(), 'HH:mm:ss').add(8, 'h')
-    // },
     // if (!modalInfo) {
     Modal.confirm({
       title: title + "",
@@ -400,7 +347,6 @@ export default function ToolBar() {
     // }
   };
 
-  // {/* <ModalBox title={'添加排班/编辑排班'} /> */}
   // 添加班次权限设置
   const isOk = () => {
     switch (appStore.HOSPITAL_ID) {
@@ -409,9 +355,8 @@ export default function ToolBar() {
       case "qhwy":
       case "ytll":
       case 'whhk':
+      case 'dglb':
         return authStore.isRoleManage;
-      // case "gxjb":
-      //   return authStore.isRoleManage;
       case "dghl":
       case "fqfybjy":
         return true;
@@ -505,16 +450,6 @@ export default function ToolBar() {
             emitter.emit("更新班次列表");
           }}
         />
-        {/* {promise && (
-          <Button
-            onClick={() => {
-              addShift('添加排班')
-            }}
-            style={{ marginLeft: 6, marginRight: 3 }}
-          >
-            添加班次
-          </Button>
-        )} */}
         {isOk() && (
           <Button
             onClick={() => {
@@ -553,13 +488,6 @@ export default function ToolBar() {
         >
           保存
         </Button>
-        {/* <Button
-          style={{ marginLeft: 3, marginRight: 3 }}
-          onClick={() => appStore.history.push('/personnelManagement/arrangeHome')}
-          className='button-tools'
-        >
-          返回
-        </Button> */}
         <UpdateAllModal
           visible={editVisible}
           onCancel={() => setEditVisible(false)}
@@ -589,17 +517,6 @@ const Wrapper = styled.div`
     margin: 0 10px 5px;
   }
 `;
-// const TimePicker = styled.div`
-//   width: '200px';
-// `
-
-// const BreakLine = styled.div`
-//   padding: 0 10px;
-// `
-
-// const LinkText = styled.div`
-//   cursor: pointer;
-// `
 
 const Title = styled.div`
   font-size: 20px;

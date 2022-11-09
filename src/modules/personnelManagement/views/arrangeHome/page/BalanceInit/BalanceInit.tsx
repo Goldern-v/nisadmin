@@ -7,21 +7,17 @@ import {
   Select,
   ColumnProps,
   PaginationConfig,
-  Input,
   message
 } from "src/vendors/antd";
 import DeptSelect from "src/components/DeptSelect";
 import { appStore, authStore } from "src/stores";
 import BaseTable from "src/components/BaseTable";
 
-import { useCallback } from "src/types/react";
 import { DoCon } from "src/components/BaseTable";
 import { observer } from "mobx-react-lite";
-import { DictItem } from "src/services/api/CommonApiService";
 import { arrangeService } from "../../services/ArrangeService";
 import { getCurrentMonth } from "src/utils/date/currentMonth";
 import service from "src/services/api";
-import User from "src/models/User";
 import moment from "moment";
 import createModal from "src/libs/createModal";
 import EditBalanceModal from "./modal/EditBalanceModal";
@@ -56,15 +52,17 @@ export default observer(function FollowUpRecord() {
       align: "center",
       width: 100
     },
-    ...appStore.hisMatch({map:{
-        'wjgdszd':[],
-        other:[{
+    ...appStore.hisMatch({
+      map: {
+        'wjgdszd': [],
+        other: [{
           title: "工号",
           dataIndex: "empNo",
           width: 50,
           align: "center",
         }],
-      }}),
+      }
+    }),
     {
       title: "科室",
       dataIndex: "deptName",
@@ -112,29 +110,32 @@ export default observer(function FollowUpRecord() {
       dataIndex: "totalHoliday",
       width: 100
     },
-    ...appStore.hisMatch({map:{
-      'qhwy':[
-        {
-          title: "产假结余",
-          dataIndex: "maternityHourNow",
-          width: 100,
-          align: "center",
-        },
-        {
-          title: "探亲假",
-          dataIndex: "homeHourNow",
-          width: 100,
-          align: "center",
-        },
-        {
-          title: "公差结余",
-          dataIndex: "toleranceHourNow",
-          width: 100,
-          align: "center",
-        },
-    ],
-      other:[],
-    }}),
+    ...appStore.hisMatch({
+      map: {
+        'qhwy,dglb': [
+          {
+            title: "产假结余",
+            dataIndex: "maternityHourNow",
+            width: 100,
+            align: "center",
+          },
+          {
+            title: "探亲假",
+            dataIndex: "homeHourNow",
+            width: 100,
+            align: "center",
+          },
+          {
+            title: "公差结余",
+            dataIndex: "toleranceHourNow",
+            width: 100,
+            align: "center",
+          },
+        ],
+        other: [],
+      },
+      vague: true
+    }),
     {
       title: "备注",
       dataIndex: "remark",
@@ -212,7 +213,7 @@ export default observer(function FollowUpRecord() {
       .then(res => {
         setDataSource(res.data.list);
         setPageLoading(false);
-        setTotal(res.data.totalCount); 
+        setTotal(res.data.totalCount);
       });
     // qcOneService.qcSafetyCheckGetPage({ ...pageOptions, wardCode: authStore.selectedDeptCode }).then((res) => {
     //   setDataSource(res.data.list)
@@ -233,7 +234,7 @@ export default observer(function FollowUpRecord() {
     <Wrapper>
       <PageHeader>
         <PageTitle>结余设置</PageTitle>
-        <Place/>
+        <Place />
 
         <span className="label">结余类型:</span>
         <Select
@@ -251,7 +252,7 @@ export default observer(function FollowUpRecord() {
         />
         <span className="label">科室:</span>
         <DeptSelect onChange={() => {
-        }}/>
+        }} />
         <span className="label">护士:</span>
         <Select
           value={selectedNurse}
@@ -303,7 +304,7 @@ export default observer(function FollowUpRecord() {
           return { onDoubleClick: () => onDetail(record) };
         }}
       />
-      <editBalanceModal.Component/>
+      <editBalanceModal.Component />
     </Wrapper>
   );
 });
