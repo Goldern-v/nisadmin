@@ -11,7 +11,8 @@ export interface navConfigItem {
   menuStyle?: React.CSSProperties;
 }
 
-const baseConfig: navConfigItem[] = [
+
+export const navConfig: (appStore:any,authStore?:any) => navConfigItem[] = (appStore,authStore) => ([
   {
     name: "首页",
     path: "/home",
@@ -87,7 +88,7 @@ const baseConfig: navConfigItem[] = [
     name: "敏感指标",
     onClick: () => {
       let [http, host, port] = location.origin.split(':');
-      let url = `http://120.224.211.7:61026/bcyNursingQuality/ssoLogin?token=${authStore.authToken}`
+      let url = `http://10.10.10.75:9091/bcyNursingQuality/ssoLogin?token=${authStore.authToken}`
       window.open(url)
     }
   },
@@ -116,10 +117,4 @@ const baseConfig: navConfigItem[] = [
     name: "护理排班",
     path: "/personnelManagement",
   },
-];
-
-const beConfig: navConfigItem[] = [];
-
-export const navConfig: navConfigItem[] = appStore.onlyBadEvent
-  ? beConfig
-  : baseConfig;
+]);

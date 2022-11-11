@@ -148,7 +148,7 @@ export default observer(function NavBar(props: any) {
     } else if (appStore.HOSPITAL_ID == "gzhd") {
       return navConfig_gzhd;
     } else if (appStore.HOSPITAL_ID == "lcey") {
-      return navConfig_lcey;
+      return navConfig_lcey(appStore, authStore);
     } else if (appStore.HOSPITAL_ID == "gzsrm") {
       return navConfig_gzsrm;
     } else if (appStore.HOSPITAL_ID == "jmfy") {
