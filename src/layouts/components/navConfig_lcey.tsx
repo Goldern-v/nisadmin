@@ -85,7 +85,11 @@ const baseConfig: navConfigItem[] = [
   },
   {
     name: "敏感指标",
-    path: "/indicator",
+    onClick: () => {
+      let [http, host, port] = location.origin.split(':');
+      let url = `http://120.224.211.7:61026/bcyNursingQuality/ssoLogin?token=${authStore.authToken}`
+      window.open(url)
+    }
   },
   {
     name: "敏感指标登记本",
