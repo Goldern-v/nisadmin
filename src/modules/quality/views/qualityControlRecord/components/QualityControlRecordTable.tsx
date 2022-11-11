@@ -4,6 +4,7 @@ import BaseTable, { DoCon } from "src/components/BaseTable";
 import store from "src/stores";
 import { appStore } from "src/stores";
 import { observer } from "mobx-react-lite";
+import { numberFormat } from "src/utils/number/numberFormat";
 // import PaginationCon from './PaginationCon'
 import qs from "qs";
 import { qualityControlRecordApi } from "src/modules/quality/views/qualityControlRecord/api/QualityControlRecordApi";
@@ -238,7 +239,7 @@ export default observer(function qualityControlRecordTable(props: Props) {
             width: 80,
             align: "center",
             render(text: any) {
-              return typeof text == "number" && text.toFixed(2) + "%";
+              return typeof text == "number" && numberFormat(text,2) + "%";
             },
           },
         ],
