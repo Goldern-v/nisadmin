@@ -69,7 +69,7 @@ const baseConfig: navConfigItem[] = [
       },
       {
         name: "一级质量",
-        path: "/qcOneHj",
+        path: "/qcOneDghl",
         icon: require("../images/menu-icon/一级质控@2x.png"),
       },
       // {
@@ -98,7 +98,7 @@ const baseConfig: navConfigItem[] = [
         icon: require("../images/menu-icon/病区登记本@2x.png"),
         hidden:!authStore.isSpecialMenu,
       }
-      
+
     ],
   },
   {
