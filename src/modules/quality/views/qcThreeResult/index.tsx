@@ -216,7 +216,7 @@ export default observer(function QcThreeResult(props) {
         >
           {MonthList()}
         </Select>
-        
+
         <Select
           value={id}
           onChange={(e: any) => {
