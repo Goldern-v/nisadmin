@@ -43,7 +43,8 @@ export const routePath = () => {
   let { id, level, type } = appStore.queryObj
   if (level == 1) return '/qcOneWhyx/analysis?level=1'
   if (level == 2) return '/qcTwo/analysis?level=2'
-  if (level == 3.1) return 'qcThree/committeeWorkReport'
+  if (level == 3.1) return '/qcThree/committeeWorkReport'
+  if (level == 3) return '/qcThree/qcThreeResult'
   return ''
 }
 

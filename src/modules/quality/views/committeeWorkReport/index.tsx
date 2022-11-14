@@ -115,6 +115,7 @@ export default observer(function Analysis() {
       title: '发布人',
       key: 'publisherName',
       dataIndex: 'publisherName',
+      align: "center",
       width: 120,
     },
     {

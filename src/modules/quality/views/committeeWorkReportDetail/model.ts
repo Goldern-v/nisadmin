@@ -55,7 +55,7 @@ export class ReportDetail {
   @observable public configData: Record<string, any> = {}
   private formatData: Function = () => { }
   private getData: Function = () => { }
-  private initRender: Function = () => { }
+  @observable public initRender: Function = () => { }
   public id: string = ''
 
   constructor({

@@ -1,25 +1,21 @@
-import { Button, DatePicker, Empty, Icon, Input, message, Radio, Select } from "antd";
+import { Button, message, Select } from "antd";
 import { observer } from "mobx-react";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { PageHeader, PageTitle, Place } from "src/components/common";
 import styled from "styled-components";
 import moment from "moment";
+import { ColumnProps } from "antd/es/table";
+import qs from 'qs'
 import { MonthList } from "../../utils/toolCon";
 import YearPicker from "src/components/YearPicker";
-import TextareaSection from "../../components/editor/textarea";
-import TableSection from "../../components/editor/table";
-import TableInput from "../../components/editor/common/TableInput";
 import CreateAnalysisModal from "./components/CreateAnalysisModal";
-import AnalysisService, { analysisService } from "src/modules/quality/views/analysisWhyx/api/index";
-import { getSearchTempName, getTempName } from "../analysisWhyx/utils";
-import { fileDownload } from "src/utils/file/file";
-import { analysisDetailApi } from "../analysisDetail/api";
-import { PUBLISH_STATUS_ARR } from "../../utils/enums";
-import { authStore } from "src/stores";
-import { globalModal } from "src/global/globalModal";
+import { analysisService } from "src/modules/quality/views/analysisWhyx/api/index";
+import { getSearchTempName } from "../analysisWhyx/utils";
+import { appStore, authStore } from "src/stores";
 import { useInstance } from "../committeeWorkReportDetail/hook/useModel";
+import BaseTable, { DoCon } from 'src/components/BaseTable'
+import { Obj } from "src/libs/types";
 
-const api = new AnalysisService();
 const reportLevel = 3;
 const templateName = getSearchTempName(reportLevel);
 /**
@@ -30,11 +26,103 @@ export default observer(function QcThreeResult(props) {
     reportYear: moment() as null | moment.Moment,
     reportMonth: moment().month() + 1 + "",
   } as any);
-  const {instance} = useInstance()
+  const { instance } = useInstance()
 
-  const [data, setData] = useState<Record<string, any>>({})
+  const [tableData, setTableData] = useState<Obj[]>([])
+  const [dataTotal, setDataTotal] = useState(0 as number);
   const [loading, setLoading] = useState(false);
   const [createAnalysisVisible, setCreateAnalysisVisible] = useState(false);
+  const columns: ColumnProps<any>[] = [
+    {
+      title: "序号",
+      key: "index",
+      width: 50,
+      align: "center",
+      render: (text: string, record: any, index: any) => index + 1,
+    },
+    {
+      title: "报告名称",
+      key: "reportName",
+      dataIndex: "reportName",
+      align: "left",
+      width: 200,
+      render: (name: string) => <div title={name}>{name}</div>,
+    },
+    {
+      title: "片区",
+      key: "wardName",
+      dataIndex: 'wardName',
+      align: "left",
+      width: 120,
+    },
+
+    {
+      title: "质控开始日期",
+      key: "startDate",
+      dataIndex: "startDate",
+      width: 90,
+      align: "center",
+    },
+    {
+      title: "质控结束日期",
+      key: "endDate",
+      dataIndex: "endDate",
+      width: 90,
+      align: "center",
+    },
+    {
+      title: "创建人",
+      key: "creatorName",
+      dataIndex: "creatorName",
+      width: 90,
+      align: "center",
+    },
+    {
+      title: "创建时间",
+      key: "createTime",
+      dataIndex: "createTime",
+      width: 120,
+      align: "center",
+    },
+    {
+      title: '发布人',
+      key: 'publisherName',
+      dataIndex: 'publisherName',
+      align: "center",
+      width: 120,
+    },
+    {
+      title: "状态",
+      key: "status",
+      dataIndex: "status",
+      width: 80,
+      align: "center",
+      render: (status: any) => {
+        switch (status) {
+          case 0:
+            return <span style={{ color: "red" }}>保存</span>;
+          case 1:
+            return <span style={{ color: "rgb(74,164,234)" }}>发布</span>;
+          default:
+            return "-";
+        }
+      },
+    },
+    {
+      title: "操作",
+      key: "operation",
+      width: 80,
+      align: "center",
+      render: (text: string, record: any) => {
+        return (
+          <DoCon>
+            <span onClick={() => handleReview(record)}>查看</span>
+          </DoCon>
+        );
+      },
+    },
+  ];
+
   const handleYearClear = (e: any) => {
     setQuery({ ...query, reportYear: e });
   };
@@ -53,52 +141,27 @@ export default observer(function QcThreeResult(props) {
       reportYear,
       templateName,
     };
-    api.getOneReport(reqQuery).then(res => {
-      if (authStore.level3Check || (res.data && res.data.status === 1)) {
-        setData(res.data || {});
-        instance.init(res.data.id)
-      } else {
-        setData({});
-      }
+    analysisService.getPage(reqQuery).then(res => {
       setLoading(false);
+      if (res.data.totalCount) setDataTotal(res.data.totalCount);
+      else setDataTotal(0);
+      if (res.data.list instanceof Array)
+        setTableData(
+          res.data.list.map((item: any, key: number) => {
+            return {
+              key,
+              ...item,
+            };
+          })
+        );
     })
-    .catch((e) => setLoading(false));
-  };
-  const handleExport = () => {
-    setLoading(true)
-    analysisDetailApi.exportReport(data.id)
-      .then((res: any) => {
-        fileDownload(res)
-        setLoading(false)
-      })
-      .catch(err => {
-        setLoading(false)
-      })
+      .catch((e) => setLoading(false));
   };
 
-  /**发布/撤销 */
-  const handlePublishOrCancel = () => {
-    let fn = analysisDetailApi.revokeReport
-    let text = PUBLISH_STATUS_ARR[data.status].btn
-    if (data.status == 0) {
-      fn = analysisDetailApi.publishReport
-    }
-    fn.call(analysisDetailApi, data.id)
-      .then(res => {
-        message.success(text + '成功')
-        getData()
-      })
-      .catch(e => {})
-  }
   useEffect(() => {
     handleSearch();
-    return () => {};
   }, [query]);
-  /**
-   * 撤销、发布、保存权限
-   */
-  const btnRules = useMemo(() => authStore.level3Check && data.id, [data])
-  
+
   const handleCreate = () => {
     setCreateAnalysisVisible(true);
   };
@@ -111,18 +174,19 @@ export default observer(function QcThreeResult(props) {
         reportLevel,
         templateName,
       })
-      .then(async(res) => {
+      .then(async (res) => {
         if (res.code == "200") {
-          let { reportYear, reportMonth } = params;
           setLoading(false);
           setCreateAnalysisVisible(false)
           /**初始化 */
           const { reportTemplateDto, renderTableDataMap: renderData = {} } = res.data
           await instance.initRender(res.data.id, { renderData, tableTempList: reportTemplateDto?.reportTableFieldTemplateList || {} })
-          setQuery({
-            reportYear: moment(reportYear),
-            reportMonth,
-          });
+          
+          appStore.history.push(`/qcThreeResultDetail?${qs.stringify({ id: res.data.id, level: reportLevel })}`)
+          // setQuery({
+          //   reportYear: moment(reportYear),
+          //   reportMonth,
+          // });
           return;
         }
         setLoading(false);
@@ -136,23 +200,13 @@ export default observer(function QcThreeResult(props) {
   const handleCreateCancel = () => {
     setCreateAnalysisVisible(false);
   };
-  const handleDel = () => {
-    globalModal.confirm('删除确认', '你确定要删除该报告吗？').then((res) => {
-      analysisDetailApi.deleteReport(data.id).then((res) => {
-        message.success('删除成功')
-        setTimeout(() => {
-          getData()
-        }, 500)
-      })
-    })
-  }
 
-  const [activeTab, setActiveTab] = useState(0);
-  
-  const handleShow: (id: string)=> boolean = (id) => {
-    if (id === '2') return activeTab === 0
-    if (id === '3') return activeTab === 1
-    return true
+  const handleReview = (record: Obj) => {
+    const obj = {
+      id: record.id,
+      level: reportLevel
+    };
+    appStore.history.push(`/qcThreeResultDetail?${qs.stringify(obj)}`)
   }
 
   return (
@@ -177,77 +231,38 @@ export default observer(function QcThreeResult(props) {
         >
           {MonthList()}
         </Select>
-        
         <Button onClick={handleSearch}>查询</Button>
 
         {authStore.level3Check && <Button onClick={handleCreate} type="primary">
           创建
         </Button>}
-        {btnRules && <Button onClick={handlePublishOrCancel}>{PUBLISH_STATUS_ARR[data.status].btn}</Button>}
-        {authStore.level3Check && data.id && <Button onClick={handleDel}>删除</Button>}
-        <Button disabled={!data.id} onClick={handleExport}>导出</Button>
       </PageHeader>
-      {!data.id ? (
-        <div className="contain--empty">
-          <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
-        </div>
-      )
-      :
       <Main>
-        <div className={`contain${data.status == 1 || !authStore.level3Check ? ' contain--published' : '' }`}>
-          <Radio.Group
-            className="contain__tabs"
-            value={activeTab}
-            buttonStyle="solid"
-            onChange={(e) => setActiveTab(e.target.value)}
-          >
-            <Radio.Button value={0}>科室问题汇总表</Radio.Button>
-            <Radio.Button value={1}>指标监测结果表</Radio.Button>
-          </Radio.Group>
-          <div className="contain__title">
-            <p>{data.reportName}</p>
-            {PUBLISH_STATUS_ARR[data.status] && <span style={{color: PUBLISH_STATUS_ARR[data.status].color}}>{PUBLISH_STATUS_ARR[data.status].text}</span>}
-          </div>
-          {instance.sectionList.map((item: any, index: number) => {
-            if (item.sectionId) {
-              let Components = instance.getSection(item.sectionId)
-              if (Components && Components.section && handleShow(item.sectionId)) {
-                return (
-                  <Components.section
-                    key={item.sectionId}
-                    sectionId={item.sectionId}
-                    modalTitle={item.modalTitle}
-                    sectionTitle={item.sectionTitle}
-                    keyName={item.keyName}
-                  />
-                )
-              }
-            }
-          })}
-          {instance.baseModal && <instance.baseModal.Component />}
-          {/* <TextareaSection
-            text={val}
-            onSave={(text: any) => setVal(text)}
-            sectionTitle="上月问题"
-          />
-          {activeTab == 0 && (
-            <TableSection
-              list={tab}
-              getColumns={getColumns1}
-              onSave={(val: any) => setTab(val)}
-              modalTitle="编辑"
-            />
-          )}
-          {activeTab == 1 && (
-            <TableSection
-              list={tab1}
-              getColumns={getColumns2}
-              onSave={(val: any) => setTab1(val)}
-              modalTitle="编辑"
-            />
-          )} */}
-        </div>
-      </Main>}
+        <BaseTable
+          columns={columns}
+          dataSource={tableData}
+          loading={loading}
+          surplusHeight={230}
+          surplusWidth={30}
+          onRow={(record: any) => {
+            return {
+              onDoubleClick: () => record.reportName && handleReview(record),
+            };
+          }}
+          pagination={{
+            pageSizeOptions: ["10", "20", "30", "40", "50"],
+            onShowSizeChange: (pageIndex, pageSize) =>
+              setQuery({ ...query, pageSize }),
+            onChange: (pageIndex, pageSize) =>
+              setQuery({ ...query, pageIndex }),
+            total: dataTotal,
+            showSizeChanger: true,
+            showQuickJumper: true,
+            pageSize: query.pageSize,
+            current: query.pageIndex,
+          }}
+        />
+      </Main>
       <CreateAnalysisModal
         allowClear={true}
         visible={createAnalysisVisible}
@@ -260,14 +275,6 @@ export default observer(function QcThreeResult(props) {
 
 const Wrapper = styled.div`
   height: 100%;
-  .contain--empty {
-    margin: 0 15px;
-    height: calc(100% - 65px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #fff;
-  }
   .ant-spin-container {
     height: 100%;
   }
@@ -275,34 +282,4 @@ const Wrapper = styled.div`
 const Main = styled.div`
   height: calc(100% - 50px);
   overflow-y: auto;
-  .contain {
-    margin: 0px 15px 15px;
-    padding: 10px;
-    min-height: calc(100% - 15px);
-    background: #fff;
-
-    .contain__title {
-      position: relative;
-      p {
-        text-align: center;
-        font-size: 22px;
-        font-weight: bold;
-      }
-      span {
-        position: absolute;
-        right: 0;
-        top: 0;
-        line-height: 33px;
-      }
-    }
-    &.contain--published  button{
-      display: none;
-      pointer-events: none;
-    }
-    .contain__footer {
-      line-height: 40px;
-      border: 1px solid #eee;
-      border-top: none;
-    }
-  }
 `;
