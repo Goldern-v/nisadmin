@@ -1,4 +1,4 @@
-import { Button, DatePicker, Empty, Icon, Input, message, Radio, Select } from "antd";
+import { Button, Empty, Icon, Input, message, Radio, Select } from "antd";
 import { observer } from "mobx-react";
 import React, { useEffect, useMemo, useState } from "react";
 import { PageHeader, PageTitle, Place } from "src/components/common";
@@ -10,7 +10,7 @@ import TextareaSection from "../../components/editor/textarea";
 import TableSection from "../../components/editor/table";
 import TableInput from "../../components/editor/common/TableInput";
 import CreateAnalysisModal from "./components/CreateAnalysisModal";
-import AnalysisService, { analysisService } from "src/modules/quality/views/analysisWhyx/api/index";
+import { analysisService } from "src/modules/quality/views/analysisWhyx/api/index";
 import { getSearchTempName, getTempName } from "../analysisWhyx/utils";
 import { fileDownload } from "src/utils/file/file";
 import { analysisDetailApi } from "../analysisDetail/api";
@@ -18,8 +18,9 @@ import { PUBLISH_STATUS_ARR } from "../../utils/enums";
 import { authStore } from "src/stores";
 import { globalModal } from "src/global/globalModal";
 import { useInstance } from "../committeeWorkReportDetail/hook/useModel";
+import { Obj } from "src/libs/types";
+import { Report } from "../analysisDetail/types";
 
-const api = new AnalysisService();
 const reportLevel = 3;
 const templateName = getSearchTempName(reportLevel);
 /**
@@ -32,7 +33,9 @@ export default observer(function QcThreeResult(props) {
   } as any);
   const {instance} = useInstance()
 
-  const [data, setData] = useState<Record<string, any>>({})
+  const [data, setData] = useState<Obj>({})
+  const [list, setList] = useState<Obj[]>([])
+  const [id, setId] = useState('')
   const [loading, setLoading] = useState(false);
   const [createAnalysisVisible, setCreateAnalysisVisible] = useState(false);
   const handleYearClear = (e: any) => {
@@ -40,9 +43,10 @@ export default observer(function QcThreeResult(props) {
   };
 
   const handleSearch = () => {
-    getData();
+    // getData();
+    getList()
   };
-  const getData = () => {
+  const getList = () => {
     setLoading(true);
     let reportYear = "";
     if (query.reportYear !== null) reportYear = query.reportYear.format("YYYY");
@@ -53,20 +57,51 @@ export default observer(function QcThreeResult(props) {
       reportYear,
       templateName,
     };
-    api.getOneReport(reqQuery).then(res => {
-      if (authStore.level3Check || (res.data && res.data.status === 1)) {
-        setData(res.data || {});
-        instance.init(res.data.id)
-      } else {
-        setData({});
-      }
+    analysisService.getPage(reqQuery).then(res => {
+      setList(res?.data?.list || [])
+      if (res?.data?.list?.length) {
+        setId(res?.data?.list[0].id)
+      } else (
+        setId('')
+      )
       setLoading(false);
     })
     .catch((e) => setLoading(false));
+  }
+  const getData = async() => {
+    if (!id) {
+      setData({})
+      return
+    }
+    await instance.init(id)
+    setData(instance.getDataInAllData('pageInfo'))
+
+    console.log('test-id', id)
+
+    // setLoading(true);
+    // let reportYear = "";
+    // if (query.reportYear !== null) reportYear = query.reportYear.format("YYYY");
+
+    // let reqQuery = {
+    //   ...query,
+    //   reportLevel,
+    //   reportYear,
+    //   templateName,
+    // };
+    // api.getOneReport(reqQuery).then(res => {
+    //   if (authStore.level3Check || (res.data && res.data.status === 1)) {
+    //     setData(res.data || {});
+    //     instance.init(res.data.id)
+    //   } else {
+    //     setData({});
+    //   }
+    //   setLoading(false);
+    // })
+    // .catch((e) => setLoading(false));
   };
   const handleExport = () => {
     setLoading(true)
-    analysisDetailApi.exportReport(data.id)
+    analysisDetailApi.exportReport(id)
       .then((res: any) => {
         fileDownload(res)
         setLoading(false)
@@ -80,10 +115,10 @@ export default observer(function QcThreeResult(props) {
   const handlePublishOrCancel = () => {
     let fn = analysisDetailApi.revokeReport
     let text = PUBLISH_STATUS_ARR[data.status].btn
-    if (data.status == 0) {
+    if (data.status == '0') {
       fn = analysisDetailApi.publishReport
     }
-    fn.call(analysisDetailApi, data.id)
+    fn.call(analysisDetailApi, id)
       .then(res => {
         message.success(text + '成功')
         getData()
@@ -94,10 +129,14 @@ export default observer(function QcThreeResult(props) {
     handleSearch();
     return () => {};
   }, [query]);
+  useEffect(() => {
+    getData()
+  }, [id])
+  
   /**
    * 撤销、发布、保存权限
    */
-  const btnRules = useMemo(() => authStore.level3Check && data.id, [data])
+  const btnRules = useMemo(() => authStore.level3Check && id, [data])
   
   const handleCreate = () => {
     setCreateAnalysisVisible(true);
@@ -138,7 +177,7 @@ export default observer(function QcThreeResult(props) {
   };
   const handleDel = () => {
     globalModal.confirm('删除确认', '你确定要删除该报告吗？').then((res) => {
-      analysisDetailApi.deleteReport(data.id).then((res) => {
+      analysisDetailApi.deleteReport(id).then((res) => {
         message.success('删除成功')
         setTimeout(() => {
           getData()
@@ -169,8 +208,8 @@ export default observer(function QcThreeResult(props) {
 
         <div className="label">报告月份：</div>
         <Select
-          className="month-select"
           value={query.reportMonth}
+          className="month-select"
           onChange={(month: any) => {
             setQuery({ ...query, reportMonth: month });
           }}
@@ -178,23 +217,36 @@ export default observer(function QcThreeResult(props) {
           {MonthList()}
         </Select>
         
+        <Select
+          value={id}
+          onChange={(e: any) => {
+            setId(e)
+          }}
+        >
+          {
+            list.map(v => (
+              <Select.Option value={v.id}>{v.reportName}</Select.Option>
+            ))
+          }
+        </Select>
+        
         <Button onClick={handleSearch}>查询</Button>
 
         {authStore.level3Check && <Button onClick={handleCreate} type="primary">
           创建
         </Button>}
-        {btnRules && <Button onClick={handlePublishOrCancel}>{PUBLISH_STATUS_ARR[data.status].btn}</Button>}
-        {authStore.level3Check && data.id && <Button onClick={handleDel}>删除</Button>}
-        <Button disabled={!data.id} onClick={handleExport}>导出</Button>
+        {btnRules && <Button onClick={handlePublishOrCancel}>{PUBLISH_STATUS_ARR[data.status]?.btn}</Button>}
+        {authStore.level3Check && id && <Button onClick={handleDel}>删除</Button>}
+        <Button disabled={!id} onClick={handleExport}>导出</Button>
       </PageHeader>
-      {!data.id ? (
+      {!id ? (
         <div className="contain--empty">
           <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
         </div>
       )
       :
       <Main>
-        <div className={`contain${data.status == 1 || !authStore.level3Check ? ' contain--published' : '' }`}>
+        <div className={`contain${data.status == '1' || !authStore.level3Check ? ' contain--published' : '' }`}>
           <Radio.Group
             className="contain__tabs"
             value={activeTab}
@@ -270,6 +322,9 @@ const Wrapper = styled.div`
   }
   .ant-spin-container {
     height: 100%;
+  }
+  .month-select {
+    margin-right: 15px;
   }
 `;
 const Main = styled.div`

@@ -403,9 +403,7 @@ class QualityControlRecordEditModel {
           if (res.data) {
             this.bedNurseList = res.data || []
             if (isInit) {
-              console.log('test-res', res,authStore.user)
               const item = this.bedNurseList.find(v => v.empNo === authStore.user?.empNo)
-              console.log('test-item', item)
               item && (this.master.bedNurseList = [item])
             }
           }

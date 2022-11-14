@@ -33,7 +33,7 @@ const formatStatus2 = (obj: Record<string, any>) => {
 export const obj = {
   getData() {
     return {
-      fieldData1:{
+      fieldData1: {
         lastProblem: '',
         item: '',
         checkPeople: '',
@@ -48,7 +48,7 @@ export const obj = {
     (this as any).getSectionData("3").tempList = (this as any).configData.tableTempList ? (this as any)?.configData?.tableTempList?.indexMonitoringResults : [] || [];
   },
   /**初始化自动提取 */
-  async initRender(reportId:number, data: Record<string, any>) {
+  async initRender(reportId: number, data: Record<string, any>) {
     const { renderData, tableTempList } = data
     const obj: Record<string, any> = {}
     Object.keys(renderData).forEach((v: string) => {
@@ -68,7 +68,7 @@ export const obj = {
         obj[v].push({ ...blank, ...v3 })
       })
     });
-    
+
     let proList: any[] = []
     if (Object.keys(obj).length == 0) return
     Object.keys(obj).map((v4: string) => {

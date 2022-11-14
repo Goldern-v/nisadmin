@@ -820,6 +820,14 @@ const routes: RouteItem[] = [
     AnalysisDetail,
     layouts.MainLayout
   ),
+  // 三级质控汇总详情
+  setLayout(
+    "/qcThreeResultDetail",
+    lazy(() =>
+    import("src/modules/quality/views/qcThreeResult/detail/index")
+  ),
+    layouts.MainLayout
+  ),
   setLayout(
     "/committeeWorkReportDetail",
     committeeWorkReportDetail,
