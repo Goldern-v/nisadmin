@@ -92,6 +92,7 @@ export default observer(function EventReportDetailView(props: Props) {
 
 		// 卸载函数
 		return ()=>{
+			sessionStorage.removeItem('myreport')
 		}
 
 	}, [])

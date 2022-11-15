@@ -8,11 +8,11 @@ import { ScrollBox } from 'src/components/common'
 import printing from 'printing'
 import { useRef } from 'src/types/react'
 import { appStore, authStore } from 'src/stores'
-import { goodOrBadApi } from './GoodOrBadApi'
+// import { goodOrBadApi } from './GoodOrBadApi'
 import PrintContent from "./PrintContent"
 import qs from 'qs'
-import { clinicalApi } from './ClinicalApi'
-import { wholePrintData } from './tsData/WholePrintData'
+import { clinicalApi } from '../ClinicalApi'
+import { wholePrintData } from './WholePrintData'
 import { globalModal } from 'src/global/globalModal'
 // export interface Props extends RouteComponentProps { }
 export interface Props extends RouteComponentProps<{ name?: string }> { }
@@ -303,9 +303,9 @@ export default observer(function EventReportDetailView(props: Props) {
 	return (
 		<Wrapper>
 			<HeadCon>
-				<BaseBreadcrumb data={[{ name: '全院护理质量分析', link: '/goodOrBadRouter/wholeAysi' }, { name: '报告详情', link: '' }]} />
+				<BaseBreadcrumb data={[{ name: '科室护理质量分析', link: '/goodOrBadRouter/deptAysi' }, { name: '报告详情', link: '' }]} />
 				{/* {propsData.reportType == '0' && <div className='title'>{propsData.belongsYear}年{Number(propsData.belongsCycle)}月全院护理质量汇总报告</div>} */}
-				<div className='title'>{wholePrintData.currentCycleMessage}全院护理质量汇总报告</div>
+				<div className='title'>{wholePrintData.currentCycleMessage}科室护理质量汇总报告</div>
 				<div className='aside'>
 					<span>
 						{/* 由{currentPage.creatorName}创建于{currentPage.createDate}<span></span> */}
@@ -313,12 +313,12 @@ export default observer(function EventReportDetailView(props: Props) {
 					</span>
 				</div>
 				<div className='tool-con'>
-					{authStore.isDepartment &&
+					{/* {authStore.isDepartment && */}
 						<>
 							<Button onClick={() => turnToDel()}>删除</Button>
 							<Button onClick={() => onSave()} loading={spinning}>保存</Button>
 						</>
-					}
+					{/* } */}
 					
 					<Button onClick={() => onPrint(true)} loading={spinning}>打印</Button>
 					<Button onClick={() => appStore.history.goBack()}>返回</Button>

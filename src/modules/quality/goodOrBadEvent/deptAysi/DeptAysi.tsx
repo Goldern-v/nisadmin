@@ -1,14 +1,12 @@
 import React, { useEffect, useState, useRef, MutableRefObject } from 'react'
-import LeftMenu from 'src/components/LeftMenu'
+// import LeftMenu from 'src/components/LeftMenu'
 import styled from 'styled-components'
 import moment from "moment";
 import { RouteComponentProps } from 'src/components/RouterView'
 import BaseTable, { DoCon } from "src/components/BaseTable";
-import { clinicalData } from "./ClinicalData";
 import { PageTitle } from "src/components/common";
 import store, { authStore, appStore } from 'src/stores';
 import qs from 'qs'
-// import { quarterList } from 'src/enums/date'
 
 import {
 	ColumnProps,
@@ -22,19 +20,14 @@ import {
 	InputNumber,
 	Row, Col,
 } from "src/vendors/antd";
-import { KeepAlive, Provider } from 'react-keep-alive'
-import ClinicalHeaderByVicky from './ClinicalHeaderByVicky';
-import { clinicalApi } from './ClinicalApi';
-// import { ReactComponent as CFJL } from "./images/icon/CFJL.svg";
-// pimport { type } from 'os';
+import { clinicalApi } from '../ClinicalApi';
 const Option = Select.Option;
 const RangePicker = DatePicker.RangePicker
-// const { MonthPicker, RangePicker } = DatePicker;
 export interface Props {
 	payload: any;
 }
 export interface Props extends RouteComponentProps<{ name?: string }> { }
-export default function WholeAysi(props: Props) {
+export default function DeptAysi(props: Props) {
 
 	// 搬运start
 	const [pageLoading, setPageLoading] = useState(false);
@@ -49,48 +42,26 @@ export default function WholeAysi(props: Props) {
 		{ title: "年度", type: '2' }
 	]);
 
+  // 科室
+  const [deptList, setDeptList] = useState([] as any) ;
+	const [modalDeptList, setModalDeptList] = useState([]);
+  const [deptCode, setDeptCode] = useState('');
+  const [deptName, setDeptName] = useState('');
+
 	const [tableList, setTableList] = useState([]);
 	const [selectYear, setSelectYear] = useState(moment() as undefined | moment.Moment);
 	// modal
 	const [modalVisible, setModalVisible] = useState(false);
 	const [modalReportType, setModalReportType] = useState('0');
 	const [modalDate, setModalDate] = useState(['','']);
+  // modal 科室
+  const [modalDeptCode, setModalDeptCode] = useState('');
+  const [modalDeptName, setModalDeptName] = useState('');
+
 	const { history } = appStore
 
 	const reportName: MutableRefObject<any> = useRef('');
-
-	const getPage = () => {
-		console.log('firstgetPage')
-		return 2
-	}
 	// end
-
-
-
-	const dataSource = [
-		{
-			"id": 61,
-			"title": "年度报告111",
-			"createName": "admin",
-			"createDate": "2022-08-11",
-			"reportType": "0",
-			"beginDateStr": "2022-07-01",
-			"endDateStr": "2022-07-31",
-			"belongsYear": "2022",
-			"belongsCycle": "07"
-		},
-		{
-			"id": 61,
-			"title": "年度报告222",
-			"createName": "admin",
-			"createDate": "2022-08-11",
-			"reportType": "0",
-			"beginDateStr": "2022-07-01",
-			"endDateStr": "2022-07-31",
-			"belongsYear": "2022",
-			"belongsCycle": "07"
-		}
-	]
 
 	const columns3: ColumnProps<any>[] | any = [
 		{
@@ -103,6 +74,12 @@ export default function WholeAysi(props: Props) {
 		{
 			title: "名称",
 			dataIndex: "title",
+			align: "center",
+			width: 120
+		},
+		{
+			title: "科室",
+			dataIndex: "deptName",
 			align: "center",
 			width: 120
 		},
@@ -138,7 +115,7 @@ export default function WholeAysi(props: Props) {
 		},
 	]
 	let columns: ColumnProps<any>[] | any =[]
-	if(authStore.isDepartment){
+	// if(authStore.isDepartment){
 		columns = [
 			...columns3,
 			{
@@ -161,33 +138,35 @@ export default function WholeAysi(props: Props) {
 			},
 	
 		]
-	}else{
-		columns = [
-			...columns3,
-			{
-				title: "操作",
-				render: (text: any, record: any, index: number) => {
-					return (
-						<DoCon>
-							<span onClick={() => onDoubleClick(record)}>查看</span>
-						</DoCon>
-					)
-				},
-				align: "center",
-				width: 60
-			},
+	// }else{
+	// 	columns = [
+	// 		...columns3,
+	// 		{
+	// 			title: "操作",
+	// 			render: (text: any, record: any, index: number) => {
+	// 				return (
+	// 					<DoCon>
+	// 						<span onClick={() => onDoubleClick(record)}>查看</span>
+	// 					</DoCon>
+	// 				)
+	// 			},
+	// 			align: "center",
+	// 			width: 60
+	// 		},
 	
-		]
-	}
+	// 	]
+	// }
 	useEffect(() => {
 		getTableList()
+    getDeptList()
 	}, [])
 
-	const getTableList = (toYear?: undefined | moment.Moment, toType?: string) => {
+	const getTableList = (toYear?: undefined | moment.Moment, toType?: string,toDeptCode?:string) => {
 		setPageLoading(true)
-		clinicalApi.getTableDataWholeAysi({
+		clinicalApi.getTableDataWhole({
 			year: toYear?.year() || selectYear?.year(),
-			type: toType || selectType
+			type: toType || selectType,
+      deptCode:toDeptCode==undefined?deptCode : toDeptCode
 		}).then(res => {
 			setTableList(res.data || [])
 			setPageLoading(false)
@@ -196,12 +175,42 @@ export default function WholeAysi(props: Props) {
 		})
 	}
 
+  /**获取特殊科室 */
+	const getDeptList = ()=>{
+		// setPageLoading(true)
+		clinicalApi.getnursingAll().then(res=>{
+			// setPageLoading(false)
+			if(res.code == '200'){
+				
+				
+        // setDeptCode('')
+        // setDeptName(res.data.deptName || '')
+        setModalDeptList(res.data.deptList || []) //新建科室选择
+        setModalDeptCode(res.data.defaultDept || '')
+        setModalDeptName(res.data.deptName || '')
+
+				// 查询数据有‘全部’科室
+				setDeptList([{code:'',name:'全部'},...res.data.deptList])
+				// dataWholeAysi.deptCode = ''
+
+				// 有获取到科室再获取表格数据
+				// getTableList()
+			}
+		}).catch(err=>{
+			// setPageLoading(false)
+		})
+	}
+
+  /**查询 */
+  const searchData = ()=>{
+    getTableList()
+  }
+
 
 	// 点击查看
 	const onDoubleClick = (record: any) => {
-		// localStorage.setItem('empName', record.empName)
 		sessionStorage.setItem('myreport',qs.stringify(record))
-		store.appStore.history.push(`/goodOrBadWholePrint`)
+		store.appStore.history.push(`/goodOrBadDeptPrint`)
 	}
 
 	// 点击新建
@@ -254,13 +263,15 @@ export default function WholeAysi(props: Props) {
 			"beginDateStr": modalDate[0],
 			"endDateStr": modalDate[1],
 			"belongsCycle": belongsCycle,
-			"belongsYear": moment(modalDate[0]).format('YYYY')
+			"belongsYear": moment(modalDate[0]).format('YYYY'),
+      "deptCode":modalDeptCode,
+      "deptName":modalDeptName,
 		}
 		clinicalApi.createNewReport(params).then(res=>{
 			// console.log(res)
 			setModalVisible(false)
 			sessionStorage.setItem('myreport',qs.stringify(res.data))
-			history.push(`/goodOrBadWholePrint?${qs.stringify(res.data)}`)
+			history.push(`/goodOrBadDeptPrint?${qs.stringify(res.data)}`)
 		}).catch(err=>{
 			setModalVisible(false)
 		})
@@ -276,7 +287,7 @@ export default function WholeAysi(props: Props) {
 			{/* <ClinicalHeaderByVicky title='科室临床护理质量指标季度汇总' /> */}
 			<div className='clinical-header'>
 				<LeftIcon className='clinical-title'>
-					<PageTitle>全院护理质量分析</PageTitle>
+					<PageTitle>科室护理质量分析</PageTitle>
 				</LeftIcon>
 				<RightIcon className='clinical-head-right'>
 					<>
@@ -320,20 +331,41 @@ export default function WholeAysi(props: Props) {
 							}
 						</Select>
 					</>
+          <span>科室：</span>
+				<Select
+					labelInValue
+					style={{ width: 180 }}
+					value={{ key: deptCode }}
+					onChange={(val: any) => {
+						// setSelectDeptCode(val.key)
+						// dataWholeAysi.deptCode = val.key
+            setDeptCode(val.key)
+            setDeptName(val.label)
+						// datasSumMonth.deptName = val.label
+						getTableList(selectYear,selectType,val.key)
+					}}
+				>
+					{deptList.map((item: any) => {
+						return <Option value={item.code} key={item.code}>{item.name}</Option>
+					})}
+				</Select>
 
 
 					<Button
 						className="span"
+            onClick={searchData}
 					>
 						查询
 					</Button>
-					{authStore.isDepartment && <Button
+					{/* {authStore.isDepartment &&  */}
+					<Button
 						type="primary"
 						className="span"
 						onClick={handelNewModal}
 					>
 						新建
-					</Button>}
+					</Button>
+					 {/* } */}
 				</RightIcon>
 			</div>
 
@@ -349,7 +381,7 @@ export default function WholeAysi(props: Props) {
 			</ScrollCon>
 			<MModal>
 				<Modal
-					title="新建全院质量分析报告"
+					title="新建科室护理质量分析报告"
 					visible={modalVisible}
 					onOk={handleOk}
 					onCancel={handleCancel}
@@ -392,6 +424,28 @@ export default function WholeAysi(props: Props) {
 								<RangePicker onChange={(dates: any, dateStrings: any) => {
 									setModalDate(dateStrings)
 								}} />
+							</Col>
+						</Row>
+            <Row className="item-row" style={{ marginTop: '15px' }}>
+							<Col span={4}>
+								<div className="label">报告科室:</div>
+							</Col>
+							<Col span={16}>
+								<Select
+									labelInValue
+									style={{ width: '100%' }}
+									value={{ key: modalDeptCode }}
+									onChange={(val: any) => {
+										// modalDeptCode.deptCode = val.key
+										setModalDeptCode(val.key)
+                    setModalDeptName(val.label)
+										// dataClinialMonth.deptName = val.label
+									}}
+								>
+									{modalDeptList.map((item: any) => {
+										return <Option value={item.code} key={item.code}>{item.name}</Option>
+									})}
+								</Select>
 							</Col>
 						</Row>
 						<Row className="item-row" style={{ marginTop: '15px' }}>
@@ -476,9 +530,6 @@ const Wrapper = styled.div`
   .disabled-row .color-orange *[disabled] {
     color: orange !important;
   }
-
-
-
   .bcy-input-number{
 	width: 100%;
 	border:none;
@@ -501,11 +552,6 @@ const Wrapper = styled.div`
   #baseTable .ant-table-row:hover{
 	background: transparent;
   }
-
-  
-	
-  
-
 `;
 
 const MModal = styled.div`

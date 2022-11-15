@@ -11,6 +11,7 @@ import ClinicalQuarter from './ClinicalQuarter'
 import SumMonth from './SumMonth'
 import SumYear from './SumYear'
 import WholeAysi from './WholeAysi'
+import DeptAysi from './deptAysi/DeptAysi'
 
 
 const LEFT_MENU_CONFIG: any = appStore.hisMatch({
@@ -55,6 +56,12 @@ const LEFT_MENU_CONFIG: any = appStore.hisMatch({
 					},
 					
 				]
+			},
+			{
+				title: "科室护理质量分析",
+				// hide:!authStore.level3publishedWatch,
+				path: "/goodOrBadRouter/deptAysi",
+				component: DeptAysi,
 			},
 			{
 				title: "全院护理质量分析",

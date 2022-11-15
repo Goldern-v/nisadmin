@@ -294,6 +294,7 @@ const SpecialNurseRouter = lazy(()=> import("src/modules/quality/specialNurseQua
 const WholePrint = lazy(()=> import("src/modules/quality/goodOrBadEvent/WholePrint"));
 // 专科护理质量指标报告
 const SpecialWholeAysiPrint = lazy(()=> import("src/modules/quality/specialNurseQuality/pages/wholeAysi/WholePrint"));
+const DeptPrint = lazy(()=> import("src/modules/quality/goodOrBadEvent/deptAysi/DeptPrint"));
 // const SpecialWholePrint = lazy(()=> import("src/modules/quality/specialNurseQuality/WholePrint"));
 // F:\baichenyuan\nisadmin\src\modules\quality\specialNurseQuality\pages\wholeAysi\WholePrint.tsx
 //护士长手册
@@ -905,6 +906,7 @@ const routes: RouteItem[] = [
   setLayout("/goodOrBadRouter", GoodOrBadRouter, layouts.MainLayout),
   setLayout("/specialNurseRouter", SpecialNurseRouter, layouts.MainLayout),
   setLayout("/goodOrBadWholePrint", WholePrint,layouts.MainLayout),
+  setLayout("/goodOrBadDeptPrint", DeptPrint,layouts.MainLayout),
   setLayout("/specialAysiPrint", SpecialWholeAysiPrint,layouts.MainLayout),
   setLayout("/administrative/qcTwo/recordView", administrativeWardView, layouts.MainLayout),
   setLayout("/safetyChecklist/qcTwo/checkView", safetyChecklistView, layouts.MainLayout),

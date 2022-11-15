@@ -78,6 +78,9 @@ export default class ClinicalApi extends BaseApiService {
 	public getTableDataWhole(obj?: any) {
     return this.get(`/goodEvent/qualityReport/getReportList?${qs.stringify(obj)}`, )
   }
+	public getTableDataWholeAysi(obj?: any) {
+    return this.get(`/goodEvent/qualityReport/getReportAll?${qs.stringify(obj)}`, )
+  }
 	// 全院 创建质量报告
 	public async createNewReport(obj: any) {
 		return this.post(`/goodEvent/qualityReport/createReport`,obj);
