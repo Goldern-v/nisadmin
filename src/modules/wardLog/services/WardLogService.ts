@@ -1,6 +1,7 @@
 import BaseApiService from 'src/services/api/BaseApiService'
 import { PageOptions } from 'src/components/BaseTable'
 import { fileDownload } from 'src/utils/file/file'
+import { Obj } from 'src/libs/types'
 export default class WardLogService extends BaseApiService {
   public findLog(obj: PageOptions | any) {
     return this.post(`/InpatientAreaLog/findLog`, obj)
@@ -13,8 +14,8 @@ export default class WardLogService extends BaseApiService {
     return this.get(`/InpatientAreaLog/getDetail/${instanceId}`)
   }
   /** 新建记录时获取模板详情 */
-  public templateDetail(templateId: string) {
-    return this.post(`/InpatientAreaLog/addRecord`, { templateId })
+  public addRecord(params: Obj) {
+    return this.post(`/InpatientAreaLog/addRecord`, params)
   }
   /** 添加或修改病区记录 */
   public saveRecord(params: any) {

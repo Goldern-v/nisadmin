@@ -11,7 +11,7 @@ import {
   Select,
   message
 } from 'antd'
-import store, { authStore, appStore } from 'src/stores'
+import { appStore, authStore } from 'src/stores'
 import { wardLogService } from './../../services/WardLogService'
 import MultiFileUploader, { FileItem } from 'src/components/MultiFileUploader'
 import service from 'src/services/api'
@@ -20,11 +20,13 @@ import qs from 'qs'
 import createModal from 'src/libs/createModal'
 import SelectPeopleModal from './../../components/selectNurseModal/SelectPeopleModal'
 import moment from 'moment'
+import { Obj } from 'src/libs/types'
 
 const Option = Select.Option
 
 export interface Props { }
-
+// 使用病区作为标题
+const USE_WARD_AS_TITLE = 'fsxt' === appStore.HOSPITAL_ID
 export default observer(function WardLogEdit(props: any) {
   const { location, history } = props
   const search = qs.parse(location.search.replace('?', ''))
@@ -44,18 +46,18 @@ export default observer(function WardLogEdit(props: any) {
   const initAuth = () => {
     service.homeDataApiServices.getListDepartment().then((res) => {
       if (res && res.data && res.data.deptList) {
-        store.authStore.deptList = res.data.deptList || []
-        if (!store.authStore.defaultDeptCode) {
-          store.authStore.defaultDeptCode = store.authStore.deptList[0].code
-          store.authStore.selectedDeptCode = store.authStore.deptList[0].code
+        authStore.deptList = res.data.deptList || []
+        if (!authStore.defaultDeptCode) {
+          authStore.defaultDeptCode = authStore.deptList[0].code
+          authStore.selectedDeptCode = authStore.deptList[0].code
         }
       }
     })
-    if (appStore.HOSPITAL_ID === 'wh') {
-      if (!authStore.user || (authStore.user && authStore.user.roleManage !== '1')) {
-        // appStore.history.push('/login')
-      }
-    }
+    // if (appStore.HOSPITAL_ID === 'wh') {
+    //   if (!authStore.user || (authStore.user && authStore.user.roleManage !== '1')) {
+    //     // appStore.history.push('/login')
+    //   }
+    // }
   }
 
   const saveEdit = (tempSave?: boolean) => {
@@ -97,9 +99,14 @@ export default observer(function WardLogEdit(props: any) {
 
   const initEdit = () => {
     setLoading(true)
-
+    const params: Obj = {
+      templateId: search.templateId
+    }
+    if (USE_WARD_AS_TITLE) {
+      params.deptName = authStore.deptList.find(v => v.code === search.deptCode)?.name || '全院'
+    }
     wardLogService
-      .templateDetail(search.templateId)
+      .addRecord(params)
       .then(res => {
         setLoading(false)
 
@@ -108,7 +115,11 @@ export default observer(function WardLogEdit(props: any) {
 
           if (templateDto) {
             setInfo(templateDto)
-            setTitle(`${templateDto.creatorName}的${templateDto.name}`)
+            if (USE_WARD_AS_TITLE) {
+              setTitle(`${templateDto.deptName}的${templateDto.name}`)
+            } else {
+              setTitle(`${templateDto.creatorName}的${templateDto.name}`)
+            }
 
             if (templateDto?.defaultReciever) {
               let newRecievers = (res.data.recievers || [])
