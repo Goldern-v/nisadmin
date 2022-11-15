@@ -8,14 +8,9 @@ import { observer } from 'mobx-react-lite'
 import { ColumnProps } from 'antd/lib/table'
 import createModal from 'src/libs/createModal'
 
-import { globalModal } from 'src/global/globalModal'
-import { authStore } from 'src/stores'
-import limitUtils from '../utils/limit'
 import Zimage from 'src/components/Zimage'
-import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
 import EditPositionChangeModal from '../modal/EditPositionChangeModal'
 import { nurseFilesService } from '../../../services/NurseFilesService'
-import { openAuditModal } from '../config/auditModalConfig'
 import { isSelf,editFlag } from './BaseInfo'
 import Do from '../components/Do'
 export interface Props extends RouteComponentProps {}
@@ -43,20 +38,7 @@ export default observer(function PersonWinning() {
       align: 'center',
       width: 55
     },
-    // {
-    //   title: '开始时间',
-    //   dataIndex: 'startDate',
-    //   key: 'startDate',
-    //   width: 120,
-    //   align: 'center'
-    // },
-    // {
-    //   title: '结束时间',
-    //   dataIndex: 'endDate',
-    //   key: 'endDate',
-    //   width: 120,
-    //   align: 'center'
-    // },
+
     ...!['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID) ? [{
       title: '原职称名称',
       dataIndex: 'titleOld',
@@ -79,6 +61,20 @@ export default observer(function PersonWinning() {
         align: 'center'
       }
     ],
+    ...appStore.hisMatch({
+      map: {
+        sdlj: [
+          {
+            title: '证书标号',
+            dataIndex: 'titleNumber',
+            key: 'titleNumber',
+            width: 100,
+            align: 'center'
+          },
+        ],
+        other: []
+      }
+    }),
     {
       title: '考取专业技术资格证书时间',
       dataIndex: 'winNewTiTleDate',
