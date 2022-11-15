@@ -138,6 +138,9 @@ export default observer(function Step1() {
         labelWidth={120}
         onChange={onFormChange}
       >
+        {appStore.HOSPITAL_ID === 'fsxt' && <div className="tip">
+          实操任务通过后，请在护士助手app对学院进行评分操作
+        </div>}
         <Row>
           <Col span={24}>
             <Form.Field label={`实操考核名称`} name="title">
@@ -459,7 +462,13 @@ export default observer(function Step1() {
   );
 });
 const Wrapper = styled.div`
-  margin: 40px 100px 20px;
+  margin: 5px 100px 20px;
+  .tip {
+    text-align: right;
+    font-size: 12px;
+    color: #999;
+    padding-bottom: 20px;
+  }
 `;
 
 const DateSelectCon = styled.div`
