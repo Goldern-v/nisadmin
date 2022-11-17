@@ -39,7 +39,7 @@ export default function BedSituation() {
       .pendingPage(1, 100,
         appStore.hisMatch({
           map: {
-            'hj,ys,dzlc,gyd,jmfy': "nurseFile",
+            'hj,ys,dzlc,gyd': "nurseFile",
             'wh,gzsrm': "nurseFileWh",
             other: "nurseFileNys"
           },
