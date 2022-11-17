@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useLayoutEffect } from "react";
 import { AxiosRequestConfig, AxiosResponse } from "axios";
+import { decrypt, encrypt } from "./ZzSecurityHelper";
 import { message, notification } from "antd";
 // import commonConfig from '../../configs/common'
 import ResponseError from "./ResponseError";
@@ -20,8 +21,51 @@ export const loginURL = "#/login";
  * 请求登陆成功拦截
  */
 export function onRequestLoginFilled(config: AxiosRequestConfig) {
+
   config.headers.common["App-Token-Nursing"] = appStore.getAppToken();
+
+  // 加密start -----
+  // if(appStore.HOSPITAL_ID == "fssdy"){
+  //   let type = config.headers["post"]["Content-Type"];
+  //   const isUploadFile = config.headers['Content-Type'] === 'multipart/form-data';
+  //   if (type == "application/x-www-form-urlencoded" && config.data.toString().indexOf("=") > 0 && !isUploadFile) {
+  //     config!.headers!["Req-Token-Nursing"] = "FORM";
+  //     let json = changeFormToJson(config.data?.toString())
+  //     // @ts-ignore
+  //     let mi = config.originData || encrypt(json);
+  //     config.data = `p=${mi}`;;
+  //     // @ts-ignore，记录一下加密后的数据，避免网络框架内部重试时的重复加密
+  //     config.originData = mi;
+
+  //   } else if ((type == "application/json" ||
+  //     (type == "application/x-www-form-urlencoded" &&
+  //       config.data.toString().indexOf("=") < 0)) &&
+  //     !isUploadFile) {
+  //     config.headers!["post"]["Content-Type"] = "application/json"
+  //     config!.headers!["Req-Token-Nursing"] = "JSON";
+  //     // @ts-ignore
+  //     config.data = encrypt(JSON.stringify(config.data));
+  //     // @ts-ignore，记录一下加密后的数据，避免网络框架内部重试时的重复加密
+  //     config.originData = config.data.toString();
+  //   }
+  // }
+  // 加密 end---
+
   return config;
+}
+
+function changeFormToJson(fromStr: string) {
+	let content = decodeURIComponent(fromStr || "")
+	let array = content.split("&")
+	// if (!isEmptyArray(array)) {
+		let json = {};
+		array.forEach((item) => {
+			let kv = item.split("=");
+			if (kv && kv.length > 1) {
+				json[kv[0]] = kv[1]
+			}
+		})
+		return JSON.stringify(json);
 }
 
 /**
@@ -30,6 +74,35 @@ export function onRequestLoginFilled(config: AxiosRequestConfig) {
 export function onRequestFulfilled(config: AxiosRequestConfig) {
   config.headers.common["App-Token-Nursing"] = appStore.getAppToken();
   config.headers.common["Auth-Token-Nursing"] = authStore.getAuthToken();
+// 加密start -----
+  // if(appStore.HOSPITAL_ID == "fssdy"){
+  //   if (config.method == 'post'){
+  //     let type = config.headers["post"]["Content-Type"];
+  //     const isUploadFile = config.headers['Content-Type'] === 'multipart/form-data';
+  //     if (type == "application/x-www-form-urlencoded" && config.data.toString().indexOf("=") > 0 && !isUploadFile) {
+  //       config!.headers!["Req-Token-Nursing"] = "FORM";
+  //       let json = changeFormToJson(config.data?.toString())
+  //       // @ts-ignore
+  //       let mi = encrypt(json);
+  //       config.data = `p=${mi}`;
+  //       // @ts-ignore，记录一下加密后的数据，避免网络框架内部重试时的重复加密
+  //       config.originData = mi;
+  //     } else if ((type == "application/json" ||
+  //       (type == "application/x-www-form-urlencoded" &&
+  //         config.data.toString().indexOf("=") < 0)) &&
+  //       !isUploadFile) {
+  //       config.headers!["post"]["Content-Type"] = "application/json"
+  //       config!.headers!["Req-Token-Nursing"] = "JSON";
+  //       // @ts-ignore
+  //       config.data = `${config.originData || encrypt(JSON.stringify(config.data))}`;
+  //       // @ts-ignore，记录一下加密后的数据，避免网络框架内部重试时的重复加密
+  //       config.originData = config.data.toString();
+  //     }
+  //   }else if (config.method == 'get') {
+  //     config!.headers!["Req-Token-Nursing"] = "QUERY";
+  //   }
+  // }
+  // 加密 end---
   return config;
 }
 
@@ -38,7 +111,7 @@ export function onRequestFulfilled(config: AxiosRequestConfig) {
  */
 export function onRequestRejected(error: Error) {
   return Promise.reject(error);
-}
+} 
 
 enum StatusCode {
   error = "300",
@@ -53,6 +126,14 @@ enum StatusCode {
  * 响应成功拦截
  */
 export function onResponseFulfilled(response: AxiosResponse) {
+  // 加密start -----
+  // if(appStore.HOSPITAL_ID == "fssdy"){
+  //   if(response.data && response.config.headers["Req-Token-Nursing"]){
+  //     response.data = decrypt(response.data)
+  //     response.data = JSON.parse(response.data==""?"{}":response.data)
+  //   } 
+  // }
+  // 加密 end---
   let { code, desc, data } = response.data;
   let status = code;
   let { url } = response.config;
@@ -78,7 +159,6 @@ export function onResponseFulfilled(response: AxiosResponse) {
       } else {
         message.error(desc || "未知异常");
       }
-      // console.log(desc, desc.indexOf('\n'), 'desc')
       scheduleStore.setErrorData(response.data);
       return Promise.reject(response.data.desc || desc);
     }
