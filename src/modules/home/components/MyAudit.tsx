@@ -39,11 +39,11 @@ export default function BedSituation() {
       .pendingPage(1, 100,
         appStore.hisMatch({
           map: {
-            'hj,ys,dzlc,gyd': "nurseFile",
+            'hj,ys,dzlc,gyd,whsl': "nurseFile",
             'wh,gzsrm': "nurseFileWh",
             other: "nurseFileNys"
           },
-          vague:true
+          vague: true
         }), '')
       .then(res => {
         setLoadingTable(false);

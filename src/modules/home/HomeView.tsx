@@ -1,7 +1,5 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-// import { RouteComponentProps } from 'react-router'
-// import { Select, Button } from 'antd'
 import SelectCommon from './common/SelectCommon'
 import BedSituation from './components/BedSituation'
 import MissionToday from './components/MissionToday'
@@ -17,14 +15,6 @@ import emitter from 'src/libs/ev'
 import { appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import BedSituationJmfy from './components/BedSituationJmfy'
-// import FullPageLoading from 'src/components/loading/FullPageLoading'
-// export interface Props extends RouteComponentProps {}
-
-// const Option = Select.Option
-
-// function handleChange (value: any) {
-//   console.log(`selected ${value}`)
-// }
 
 interface PannelItem {
   name: string,
@@ -45,7 +35,7 @@ export default observer(function HomeView() {
       name: '床位情况',
       component: appStore.hisMatch({
         map: {
-          jmfy: <BedSituationJmfy/>,
+          jmfy: <BedSituationJmfy />,
           other: <BedSituation />
         }
       })
@@ -133,7 +123,6 @@ export default observer(function HomeView() {
 })
 const Wrapper = styled.div`
   padding:20px 10px;
-  /* padding: ${(p) => p.theme.$mcp}; */
   /* 全局背景 */
   background-color:  ${(p) => p.theme.$bgBody};
 `
@@ -146,7 +135,6 @@ const HomeDetail = styled.div`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  /* background-color: red; */
 `
 const HomeDetailItem = styled.div`
   box-sizing: border-box;
@@ -156,7 +144,6 @@ const HomeDetailItem = styled.div`
   height: 320px;
   background: rgba(255, 255, 255, 1);
   border-radius: 5px;
-  /* border: 1px solid rgba(161, 175, 179, 1); */
   box-shadow: ${(p) => p.theme.$shadow};
   overflow: hidden;
 `

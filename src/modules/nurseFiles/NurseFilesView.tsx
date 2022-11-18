@@ -16,7 +16,7 @@ import NurseFilesListView_dghl from "./view/nurseFiles-dghl/views/nurseFilesList
 import NurseFilesListView_dgxg from "./view/nurseFiles-dgxg/views/nurseFilesList/NurseFilesListView";
 import NurseFilesListView_yczyy from "./view/nurseFiles-yczyy/views/nurseFilesList/NurseFilesListView";
 import NurseFilesListView_fqfybjy from "./view/nurseFiles-fqfybjy/views/nurseFilesList/NurseFilesListView";
-import NurseFilesListView_wjgdszd from "./view/nurseFiles-wjgdszd/views/nurseFilesList/NurseFilesListView";
+// import NurseFilesListView_wjgdszd from "./view/nurseFiles-wjgdszd/views/nurseFilesList/NurseFilesListView";
 
 import RetiredRetirees from "./view/retiredRetirees/RetiredRetireesView";
 import RetiredRetireesNys from "./view/retiredRetirees-nys/RetiredRetireesView";
@@ -61,9 +61,18 @@ export default observer(function NurseFilesView(props: Props) {
       case 'zhzxy':
       case 'zzwy':
       case 'dglb':
+      case "wjgdszd":
+      case "fssdy":
+      case "gxjb":
+      case "fsxt":
+      case "925":
+      case "sdlj":
+      case "nfsd":
+      case "lyrm":
+      case "nfzxy":
+      case "gdtj":
+      case "ytll":
         return NurseFilesListView_wh;
-      case "hj":
-        return NurseFilesListView_hj;
       case "nys":
         return NurseFilesListView_nys;
       case "gzhd":
@@ -82,29 +91,9 @@ export default observer(function NurseFilesView(props: Props) {
         return NurseFilesListView_yczyy;
       case "fqfybjy":
         return NurseFilesListView_fqfybjy;
-      case "wjgdszd":
-        return NurseFilesListView_wh;
-      case "fssdy":
-        return NurseFilesListView_wh;
-      case "gxjb":
-        return NurseFilesListView_wh;
-      case "fsxt":
-      case "925":
-        return NurseFilesListView_wh;
       case "whyx":
       case 'whhk':
         return NurseFilesListView_whyx;
-      case "sdlj":
-      case "nfsd":
-        return NurseFilesListView_wh;
-      case "lyrm":
-        return NurseFilesListView_wh;
-      case "nfzxy":
-        return NurseFilesListView_wh;
-      case "gdtj":
-        return NurseFilesListView_wh;
-      case "ytll":
-        return NurseFilesListView_wh;
       default:
         return NurseFilesListView_hj;
     }
@@ -410,6 +399,111 @@ export default observer(function NurseFilesView(props: Props) {
   const LEFT_MENU_CONFIG_HJ = [
     onTheJobCon,
     retiredRetireesCon,
+    ...appStore.hisMatch({
+      map: {
+        'whsl': [
+          {
+            title: "查询统计",
+            icon: <CXTJ />,
+            children: [
+              {
+                title: "文章",
+                path: "/nurseFile/article",
+                component: StatisticsView,
+              },
+              {
+                title: "个人获奖",
+                path: "/nurseFile/personWinning",
+                component: StatisticsView,
+              },
+              {
+                title: "专科护士",
+                path: "/nurseFile/specializNurse",
+                component: StatisticsView,
+              },
+              {
+                title: "外出进修",
+                path: "/nurseFile/outStudy",
+                component: StatisticsView,
+              },
+              {
+                title: "主持科研课题",
+                path: "/nurseFile/hostScienceCourse",
+                component: StatisticsView,
+              },
+              {
+                title: "参与科研课题",
+                path: "/nurseFile/goScienceCourse",
+                component: StatisticsView,
+              },
+              {
+                title: "科研课题获奖",
+                path: "/nurseFile/scienceResult",
+                component: StatisticsView,
+              },
+      
+              {
+                title: "专利",
+                path: "/nurseFile/patent",
+                component: StatisticsView,
+              },
+              {
+                title: "学会任职",
+                path: "/nurseFile/learnJob",
+                component: StatisticsView,
+              },
+              {
+                title: "专著",
+                path: "/nurseFile/monograph",
+                component: StatisticsView,
+              },
+              {
+                title: "举办继续教育培训班",
+                path: "/nurseFile/continueStudy",
+                component: StatisticsView,
+              },
+              {
+                title: "工作经历",
+                path: "/nurseFile/workExperience",
+                component: StatisticsView,
+              },
+              {
+                title: "医学学历教育",
+                path: "/nurseFile/medicalEducation",
+                component: StatisticsView,
+              },
+              {
+                title: "岗位变动",
+                path: "/nurseFile/transferPost",
+                component: StatisticsView,
+              },
+              {
+                title: "职称变动",
+                path: "/nurseFile/title",
+                component: StatisticsView,
+              },
+              {
+                title: "层级变动",
+                path: "/nurseFile/hierarchy",
+                component: StatisticsView,
+              },
+              {
+                title: "编制变动",
+                path: "/nurseFile/workConversion",
+                component: StatisticsView,
+              },
+              {
+                title: "科室创新",
+                path: "/nurseFile/科室创新",
+                hide: !appStore.isDev,
+                component: 科室创新,
+              },
+            ],
+          },
+        ],
+        'other': []
+      }
+    }),
     nursingEduFilesCon,
     traineeFilesCon,
     ...appStore.hisMatch({
