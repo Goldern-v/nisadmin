@@ -170,7 +170,7 @@ export default function EditEffectiveTimeModal(props: Props) {
           </Col>
           <Col span={24}>
             <Form.Field label={`工时`} name="effectiveTime" required>
-              <InputNumber readOnly={!['dghl', 'fqfybjy'].includes(appStore.HOSPITAL_ID)} />
+              <InputNumber readOnly={!['dghl', 'fqfybjy','whsl'].includes(appStore.HOSPITAL_ID)} />
             </Form.Field>
           </Col>
           <Col span={24}>
