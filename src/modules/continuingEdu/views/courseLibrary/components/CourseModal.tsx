@@ -324,7 +324,7 @@ export default observer(function courseModal(props: Prop) {
       centered
     >
       <Wrapper>
-        <Form ref={refForm} labelWidth={70} onChange={onFormChange}>
+        <Form ref={refForm} labelWidth={90} onChange={onFormChange}>
           <Row>
             {modalType < 2 ? (
               <Col span={24}>

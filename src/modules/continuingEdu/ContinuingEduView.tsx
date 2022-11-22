@@ -858,7 +858,7 @@ export default function ContinuingEdu(props: Props) {
       icon: <JSGL />,
       path: "/continuingEdu/courseLibrary",
       component: CourseLibrary,
-      hide: () => !["lcey"].includes(appStore.HOSPITAL_ID),
+      hide: () => !["lcey","zzwy"].includes(appStore.HOSPITAL_ID),
     },
 
     ...dataList,
