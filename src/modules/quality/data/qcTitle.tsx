@@ -22,6 +22,11 @@ export const qcThreeTitle = appStore.hisMatch({
       listViewTitle: " 院级质量控制",
       detailViewTitle: "院级质量控制",
     },
+    fssdy: {
+      leftNavTitle: "专项检查记录",
+      listViewTitle: "专项检查控制",
+      detailViewTitle: "专项检查控制",
+    },
     other: {
       leftNavTitle: "三级质控记录",
       listViewTitle: "三级质控",

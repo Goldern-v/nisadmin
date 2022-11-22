@@ -221,7 +221,7 @@ export default observer(function QcTwoRouter(props: Props) {
       // whyx: [route_analysis, route_summaryReport, route_problemSummary],
       default: [
         {
-          title: "二级质控月度报告",
+          title: ['fssdy'].includes(appStore.HOSPITAL_ID)?"交叉检查月度报告":"二级质控月度报告",
           icon: <YDBG />,
           path: "/qcTwo/workSummaryReportList",
           component: WorkSummaryReportList,
@@ -256,7 +256,7 @@ export default observer(function QcTwoRouter(props: Props) {
 
   const LEFT_MENU_CONFIG: any = [
     {
-      title: "二级质控记录",
+      title: ['fssdy'].includes(appStore.HOSPITAL_ID)?"交叉检查记录":"二级质控记录",
       path: "/qcTwo",
       icon: <EJZK />,
       component: { ...QualityControlRecord },

@@ -94,14 +94,14 @@ export default observer(function WorkSummaryReportList() {
       render: (month: string) => `${month}月`
     },
     {
-      title: '质控开始日期',
+      title: ['fssdy'].includes(appStore.HOSPITAL_ID)?'检查开始日期':'质控开始日期',
       key: 'beginDate',
       dataIndex: 'beginDate',
       width: 90,
       align: 'center'
     },
     {
-      title: '质控结束日期',
+      title: ['fssdy'].includes(appStore.HOSPITAL_ID)?'检查结束日期':'质控结束日期',
       key: 'endDate',
       dataIndex: 'endDate',
       width: 90,

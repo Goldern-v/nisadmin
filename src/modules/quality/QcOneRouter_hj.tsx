@@ -25,7 +25,7 @@ import { ReactComponent as JCTJ } from "./images/icon/JCTJ.svg";
 export default function QcOneRouterHj(props: Props) {
 
   const route_质控记录 = {
-    title: '一级质控记录',
+    title: ['fssdy'].includes(appStore.HOSPITAL_ID)?'科室自查记录':'一级质控记录',
     path: '/qcOneHj',
     icon: <EJZK />,
     component: { ...QualityControlRecord },
