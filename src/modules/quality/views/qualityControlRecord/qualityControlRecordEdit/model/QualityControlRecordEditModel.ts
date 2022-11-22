@@ -428,18 +428,36 @@ class QualityControlRecordEditModel {
         for (let j = 0; j < itemList.length; j++) {
           let item = itemList[j]
           item.qcItemValue = val
-
-          if (this.baseInfo.useScore) {
-            if (val === '否' && !item.subItemList) {
-              if (item.remarkDeductScore === null || item.remarkDeductScore === '') {
-                item.remarkDeductScore = item.fixedScore.toString()
+          if(appStore.HOSPITAL_ID == "fssdy"){
+            if (this.baseInfo.useScore) {
+              if (val === '不符合' && !item.subItemList) {
+                // if (item.remarkDeductScore === null || item.remarkDeductScore === '') {
+                  item.remarkDeductScore = item.fixedScore.toString()
+                // }
+              }else if (val === '部分符合' && !item.subItemList) {
+                // if (item.remarkDeductScore === null || item.remarkDeductScore === '') {
+                  item.remarkDeductScore = item.partialMatchScore.toString()
+                // }
+              } else if (val === '符合') {
+                item.remarkDeductScore = ''
+                if (item.subItemList)
+                  item.subItemList = item.subItemList.map((subItem: any) => ({ ...subItem, checked: false }))
               }
-            } else if (val === '是') {
-              item.remarkDeductScore = ''
-              if (item.subItemList)
-                item.subItemList = item.subItemList.map((subItem: any) => ({ ...subItem, checked: false }))
+            }
+          }else{
+            if (this.baseInfo.useScore) {
+              if (val === '否' && !item.subItemList) {
+                if (item.remarkDeductScore === null || item.remarkDeductScore === '') {
+                  item.remarkDeductScore = item.fixedScore.toString()
+                }
+              } else if (val === '是') {
+                item.remarkDeductScore = ''
+                if (item.subItemList)
+                  item.subItemList = item.subItemList.map((subItem: any) => ({ ...subItem, checked: false }))
+              }
             }
           }
+          
 
           this.setItemListErrObj(item.qcItemCode, false)
         }

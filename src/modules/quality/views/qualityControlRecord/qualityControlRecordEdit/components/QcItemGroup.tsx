@@ -56,22 +56,36 @@ export default observer(function QcItemGroup(props: Props) {
       item.qcItemValue = val
 
       if (qcModel.baseInfo.useScore) {
-        if (val === '否' && !item.subItemList) {
-          if (item.remarkDeductScore === null || item.remarkDeductScore === '') {
-            item.remarkDeductScore = item.fixedScore.toString()
+        if(appStore.HOSPITAL_ID == 'fssdy'){
+         if (val === '不符合' && !item.subItemList) {
+              item.remarkDeductScore = item.fixedScore.toString()
+          }else if (val === '部分符合' && !item.subItemList) {
+              item.remarkDeductScore= item.partialMatchScore.toString()
+          } else if (val === '符合') {
+            item.remarkDeductScore = ''
+            if (item.subItemList)
+              item.subItemList = item.subItemList.map((subItem: any) => ({ ...subItem, checked: false }))
+          } else if (val === '不适用') {
+            item.remarkDeductScore = ''
+            if (item.subItemList)
+              item.subItemList = item.subItemList.map((subItem: any) => ({ ...subItem, checked: false }))
           }
-        } else if (val === '是') {
-          item.remarkDeductScore = ''
-          if (item.subItemList)
-            item.subItemList = item.subItemList.map((subItem: any) => ({ ...subItem, checked: false }))
-        } else if (val === '不适用') {
-          item.remarkDeductScore = ''
-          if (item.subItemList)
-            item.subItemList = item.subItemList.map((subItem: any) => ({ ...subItem, checked: false }))
+        }else{
+          if (val === '否' && !item.subItemList) {
+            if (item.remarkDeductScore === null || item.remarkDeductScore === '') {
+              item.remarkDeductScore = item.fixedScore.toString()
+            }
+          }else if (val === '是') {
+            item.remarkDeductScore = ''
+            if (item.subItemList)
+              item.subItemList = item.subItemList.map((subItem: any) => ({ ...subItem, checked: false }))
+          } else if (val === '不适用') {
+            item.remarkDeductScore = ''
+            if (item.subItemList)
+              item.subItemList = item.subItemList.map((subItem: any) => ({ ...subItem, checked: false }))
+          }
         }
-
       }
-
       qcModel.setItemListErrObj(newItemGroup.itemList[i].qcItemCode, false)
     }
     qcModel.upadteItemGroup(newItemGroup, index)
@@ -114,9 +128,21 @@ export default observer(function QcItemGroup(props: Props) {
       <div className='titleLeftCon'>
         {`${numToChinese(index + 1)}、${itemGroup.qcItemTypeName}`}
         <div className="fl-right">
-          <Button type="primary" size="small" style={{ marginRight: '10px' }} onClick={() => setAllQcItemValue('是')}>全是</Button>
-          {appStore.HOSPITAL_ID !== 'nys' && (
-            <Button
+          {appStore.HOSPITAL_ID == 'fssdy'?
+          <Button type="primary" size="small" style={{ marginRight: '10px' }} onClick={() => setAllQcItemValue('符合')}>全符合</Button>:
+          <Button type="primary" size="small" style={{ marginRight: '10px' }} onClick={() => setAllQcItemValue('是')}>全是</Button>}
+          {appStore.HOSPITAL_ID == 'fssdy'&&<Button
+              type='default'
+              size="small" style={{ marginRight: '10px' }}
+              onClick={() => setAllQcItemValue('部分符合')}>
+              全部分符合
+            </Button>}
+          {appStore.HOSPITAL_ID !== 'nys' && (appStore.HOSPITAL_ID == 'fssdy'?<Button
+              type="danger"
+              size="small"
+              onClick={() => setAllQcItemValue('不符合')}>
+              全不符合
+            </Button>:<Button
               type="danger"
               size="small"
               onClick={() => setAllQcItemValue('否')}>
@@ -184,7 +210,46 @@ export default observer(function QcItemGroup(props: Props) {
           </Row>
         )}
         <div className='itemMidCon'>
-          <Radio.Group
+          {['fssdy'].includes(appStore.HOSPITAL_ID)?<Radio.Group
+            value={item.qcItemValue}
+            buttonStyle='solid'
+            onChange={(e: any) => {
+              qcModel.setItemListErrObj(item.qcItemCode, false)
+
+              let newItem = { ...item, qcItemValue: e.target.value }
+
+              if (qcModel.baseInfo.useScore) {
+                if (e.target.value === '不符合' && !newItem.subItemList) {
+                  // if (newItem.remarkDeductScore === null || newItem.remarkDeductScore === '') {
+                    newItem.remarkDeductScore = newItem.fixedScore.toString()
+                  // }
+                } else if (e.target.value === '部分符合' && !newItem.subItemList) {
+                  // if (newItem.remarkDeductScore === null || newItem.remarkDeductScore === '') {
+                    newItem.remarkDeductScore = newItem.partialMatchScore.toString()
+                  // }
+                } else if (e.target.value === '符合') {
+                  newItem.remarkDeductScore = ''
+                  if (newItem.subItemList)
+                    newItem.subItemList = newItem.subItemList.map((subItem: any) => ({ ...subItem, checked: false }))
+                }
+              }
+              console.log('newItem', newItem)
+              console.log('itemIndex', itemIndex)
+              handleItemChange({ ...newItem }, itemIndex)
+            }}>
+            <Radio value={'符合'} style={{ marginLeft: '20px', marginRight: '30px' }}>
+            符合
+            </Radio>
+            <Radio value={'部分符合'} style={{ marginLeft: '20px', marginRight: '30px' }}>
+            部分符合
+            </Radio>
+            <Radio value={'不符合'} style={{ marginLeft: '20px', marginRight: '30px' }}>
+            不符合
+            </Radio>
+            <Radio value={'不适用'} style={{ marginLeft: '20px', marginRight: '30px' }}>
+              不适用
+            </Radio>
+          </Radio.Group>:<Radio.Group
             value={item.qcItemValue}
             buttonStyle='solid'
             onChange={(e: any) => {
@@ -216,7 +281,8 @@ export default observer(function QcItemGroup(props: Props) {
             {!['gzsrm'].includes(appStore.HOSPITAL_ID) && <Radio value={'不适用'} style={{ marginLeft: '20px', marginRight: '30px' }}>
               不适用
             </Radio>}
-          </Radio.Group>
+          </Radio.Group>}
+          
           {qcModel.baseInfo.useScore && <div className="sub-item-list">
             {(item.subItemList || []).map((subItem: any, subItemIdx: number) => (
               <div

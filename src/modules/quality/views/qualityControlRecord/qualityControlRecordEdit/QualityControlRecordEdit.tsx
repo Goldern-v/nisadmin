@@ -230,19 +230,36 @@ const QualityControlRecordEdit = observer(function QualityControlRecordEdit() {
             <div className="topHeaderButton">
               {step === 1 && !loading && (
                 <React.Fragment>
-                  <Button
+                  {appStore.HOSPITAL_ID == "fssdy"?<Button
+                    onClick={() => qcModel.setAllQcItemValue("符合")}
+                    type="primary"
+                  >
+                    全符合
+                  </Button>:<Button
                     onClick={() => qcModel.setAllQcItemValue("是")}
                     type="primary"
                   >
                     全是
-                  </Button>
+                  </Button>}
+                  {appStore.HOSPITAL_ID == "fssdy"&&<Button
+                    onClick={() => qcModel.setAllQcItemValue("部分符合")}
+                    
+                  >
+                    全部分符合
+                  </Button>}
                   {appStore.HOSPITAL_ID !== "nys" && (
-                    <Button
+                    appStore.HOSPITAL_ID == "fssdy"?<Button
+                    onClick={() => qcModel.setAllQcItemValue("不符合")}
+                    type="danger"
+                  >
+                    全不符合
+                  </Button>:<Button
                       onClick={() => qcModel.setAllQcItemValue("否")}
                       type="danger"
                     >
                       全否
                     </Button>
+                    
                   )}
                   <Button onClick={handleCache}>暂存</Button>
                   <Button onClick={handleNext}>下一步</Button>
