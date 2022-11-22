@@ -86,6 +86,10 @@ export const navConfig: (AppStore: any, authStore: any) => navConfigItem[] = (ap
         }
       ]
     },
+    {
+      name: "护士长手册",
+      path: "/nurseHandBookNew",
+    },
     // {
     //   name: "学习培训",
     //   path: "/continuingEdu"
