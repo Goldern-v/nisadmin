@@ -91,14 +91,14 @@ export default observer(function 防疫专项检查片区汇总列表() {
       render: (year: string) => `${year}年`
     },
     {
-      title: ['fssdy'].includes(appStore.HOSPITAL_ID)?'检查开始日期':'质控开始日期',
+      title: '质控开始日期',
       key: 'beginDate',
       dataIndex: 'beginDate',
       width: 90,
       align: 'center'
     },
     {
-      title: ['fssdy'].includes(appStore.HOSPITAL_ID)?'检查结束日期':'质控结束日期',
+      title: '质控结束日期',
       key: 'endDate',
       dataIndex: 'endDate',
       width: 90,

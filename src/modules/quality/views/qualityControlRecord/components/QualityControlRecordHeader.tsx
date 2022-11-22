@@ -274,7 +274,7 @@ export default observer(function TopCon(props: any) {
                   }}
                 >
                   <Radio value={1}>按科室查看</Radio>
-                  <Radio value={2}>{['fssdy'].includes(appStore.HOSPITAL_ID)?"按检查组查看":"按质控组查看"}</Radio>
+                  <Radio value={2}>按质控组查看</Radio>
                 </Radio.Group>
               </div>
             ),

@@ -45,7 +45,7 @@ export default observer(function qualityControlRecordTable(props: Props) {
     //   align: 'left'
     // },
     {
-      title: ['fssdy'].includes(appStore.HOSPITAL_ID)?"检查日期":"质控日期",
+      title: "质控日期",
       dataIndex: "evalDate",
 
       width: 130,
@@ -71,7 +71,7 @@ export default observer(function qualityControlRecordTable(props: Props) {
         ],
         other: [
           {
-            title: ['fssdy'].includes(appStore.HOSPITAL_ID)?"检查病区":"质控病区",
+            title: "质控病区",
             dataIndex: "wardName",
 
             width: 160,
@@ -102,7 +102,7 @@ export default observer(function qualityControlRecordTable(props: Props) {
         ],
         other: [
           {
-            title: ['fssdy'].includes(appStore.HOSPITAL_ID)?"检查表单":"质控表单",
+            title: "质控表单",
             // dataIndex: 'zkbq',
             dataIndex: "qcName",
 
@@ -113,7 +113,7 @@ export default observer(function qualityControlRecordTable(props: Props) {
       },
     }),
     {
-      title: ['fssdy'].includes(appStore.HOSPITAL_ID)?"检查人员":"质控人员",
+      title: "质控人员",
       // dataIndex: 'zkry',
       dataIndex: "creatorName",
 
