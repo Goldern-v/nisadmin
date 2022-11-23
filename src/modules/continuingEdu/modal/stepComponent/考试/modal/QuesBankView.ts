@@ -50,7 +50,7 @@ class QuesBankView {
       pageIndex: this.pageIndex,
       pageSize: this.pageSize,
       bankType: this.bankType,
-      deptCode: appStore.HOSPITAL_ID == "hj" ? this.deptCode : null,
+      deptCode: (appStore.HOSPITAL_ID == "hj" || appStore.HOSPITAL_ID == "dgxg") ? this.deptCode : null,
       questionType: this.questionType,
       keyWord: this.keyWord,
       questionLabelIdList: this.selectedLabel
