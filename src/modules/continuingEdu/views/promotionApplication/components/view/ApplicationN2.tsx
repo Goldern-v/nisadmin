@@ -737,7 +737,7 @@ export default observer(function ApplicationN1(props: Props) {
                     className="border mar-btom acc-time"
                     type="text"
                     value={tableObjN2.JS0000047}
-                    style={{...appStore.HOSPITAL_ID==='whyx'&&Number(tableObjN2.JS0000047)<60? {color: 'red'}:null}}
+                    style={{...['whyx', 'whhk'].includes(appStore.HOSPITAL_ID)&&Number(tableObjN2.JS0000047)<60? {color: 'red'}:null}}
                     onChange={(e) => {
                       handleInput(e, "JS0000047");
                     }}
@@ -750,7 +750,7 @@ export default observer(function ApplicationN1(props: Props) {
                     className="border mar-btom acc-time"
                     type="text"
                     value={tableObjN2.JS0000048}
-                    style={{...appStore.HOSPITAL_ID==='whyx'&&Number(tableObjN2.JS0000048)<60? {color: 'red'}:null}}
+                    style={{...['whyx', 'whhk'].includes(appStore.HOSPITAL_ID)&&Number(tableObjN2.JS0000048)<60? {color: 'red'}:null}}
                     onChange={(e) => {
                       handleInput(e, "JS0000048");
                     }}
@@ -763,7 +763,7 @@ export default observer(function ApplicationN1(props: Props) {
                     className="border mar-btom acc-time"
                     type="text"
                     value={tableObjN2.JS0000074}
-                    style={{...appStore.HOSPITAL_ID==='whyx'&&Number(tableObjN2.JS0000074)<3? {color: 'red'}:null}}
+                    style={{...['whyx', 'whhk'].includes(appStore.HOSPITAL_ID)&&Number(tableObjN2.JS0000074)<3? {color: 'red'}:null}}
                     onChange={(e) => {
                       handleInput(e, "JS0000074");
                     }}

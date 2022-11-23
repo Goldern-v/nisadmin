@@ -60,7 +60,7 @@ export default observer(function Step4() {
       let praticalList: any = [];
       res.data.list.map((item: any) => {
         let operObj = {
-          value: appStore.HOSPITAL_ID == "whyx" ? `${item.paperName}/${item.chapter}` : `${item.paperName}`,
+          value: ['whyx', 'whhk'].includes(appStore.HOSPITAL_ID) ? `${item.paperName}/${item.chapter}` : `${item.paperName}`,
           code: item.id,
           paperName: item.paperName,
           chapter: item.chapter,
@@ -124,7 +124,7 @@ export default observer(function Step4() {
             </Col>
           ) : (
             <Col span={24} >
-              {["whyx","fsxt",'925'].includes(appStore.HOSPITAL_ID)?
+              {["whyx","whhk","fsxt",'925'].includes(appStore.HOSPITAL_ID)?
               <Form.Field
                 label={`选择实操评分管理表`}
                 name="adminTable"
@@ -143,7 +143,7 @@ export default observer(function Step4() {
               <Form.Field label={`上传题库`} name="scoreItems">
                 <UpdateTable type="sc" />
               </Form.Field>
-              }     
+              }
             </Col>
           )}
         </Row>

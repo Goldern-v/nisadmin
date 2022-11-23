@@ -32,16 +32,16 @@ export default observer(function SelectBox(props: Props) {
     }
     const judgeColor = (e: string) => {
         /*对每个阶段划分判断*/
-        if (appStore.HOSPITAL_ID === 'whyx' && PromotionAppUtils.master.formCode === 'HSJS_0001' && standardN1.includes(inputKey)) {
+        if (['whyx', 'whhk'].includes(appStore.HOSPITAL_ID) && PromotionAppUtils.master.formCode === 'HSJS_0001' && standardN1.includes(inputKey)) {
             setFun(e)
         }
-        if (appStore.HOSPITAL_ID === 'whyx' && PromotionAppUtils.master.formCode === 'HSJS_0002' && standardN2.includes(inputKey)) {
+        if (['whyx', 'whhk'].includes(appStore.HOSPITAL_ID) && PromotionAppUtils.master.formCode === 'HSJS_0002' && standardN2.includes(inputKey)) {
             setFun(e)
         }
-        if (appStore.HOSPITAL_ID === 'whyx' && PromotionAppUtils.master.formCode === 'HSJS_0003' && standardN3.includes(inputKey)) {
+        if (['whyx', 'whhk'].includes(appStore.HOSPITAL_ID) && PromotionAppUtils.master.formCode === 'HSJS_0003' && standardN3.includes(inputKey)) {
             setFun(e)
         }
-        if (appStore.HOSPITAL_ID === 'whyx' && PromotionAppUtils.master.formCode === 'HSJS_0004' && standardN4.includes(inputKey)) {
+        if (['whyx', 'whhk'].includes(appStore.HOSPITAL_ID) && PromotionAppUtils.master.formCode === 'HSJS_0004' && standardN4.includes(inputKey)) {
             setFun(e)
         }
     }
