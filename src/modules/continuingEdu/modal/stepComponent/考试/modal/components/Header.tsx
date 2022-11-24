@@ -62,7 +62,7 @@ export default observer(function Header() {
           <Radio.Button value={2}>科室题库</Radio.Button>
           <Radio.Button value={3}>我的收藏</Radio.Button>
         </Radio.Group>
-        {quesBankView.bankType == 2 && appStore.HOSPITAL_ID == 'hj' && (
+        {quesBankView.bankType == 2 && (appStore.HOSPITAL_ID == 'hj' || appStore.HOSPITAL_ID=='dgxg') && (
           <span>
             <span>科室：</span>
             <Select

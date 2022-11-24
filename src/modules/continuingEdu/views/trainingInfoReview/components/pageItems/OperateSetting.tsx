@@ -20,7 +20,7 @@ export default function OperateSetting(props: Props) {
   }
   return appStore.hisMatch({
     map: {
-      whyx: [
+      'whyx,whhk': [
         <Wrapper>
           <div className="content-item-title">实操设置</div>
           <div className="row">

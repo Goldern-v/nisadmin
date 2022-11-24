@@ -85,7 +85,7 @@ export default function QcThreeRouter(props: Props) {
   };
 
   const route_三级质控问题汇总 = {
-    title: "三级质控问题汇总",
+    title: ['fssdy'].includes(appStore.HOSPITAL_ID)?"专项检查问题汇总":"三级质控问题汇总",
     icon: <WTBG />,
     path: "/qcThree/problemSummary",
     component: ProblemSummary,
@@ -115,7 +115,7 @@ export default function QcThreeRouter(props: Props) {
     component: 福清三级质控问题原因措施汇总,
   };
   const route_三级质控月度报告 = {
-    title: "三级质控月度报告",
+    title: ['fssdy'].includes(appStore.HOSPITAL_ID)?"专项检查月度报告":"三级质控月度报告",
     icon: <YDBG />,
     path: "/qcThree/analysis",
     component: Analysis,
@@ -124,7 +124,7 @@ export default function QcThreeRouter(props: Props) {
   };
 
   const route_三级质控汇总报告 = {
-    title: "三级质控汇总报告",
+    title: ['fssdy'].includes(appStore.HOSPITAL_ID)?"专项检查汇总报告":"三级质控汇总报告",
     icon: <HZBG />,
     path: "/qcThree/summaryReport",
     component: SummaryReport,

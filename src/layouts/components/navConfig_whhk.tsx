@@ -81,6 +81,11 @@ export const navConfig = (appStore:any,authStore?:any)=>{
       path: "/nursingRulesNew",
     },
     {
+        name: "病区登记本",
+        path: "/wardRegister"
+        // hidden: !appStore.isDev,
+    },
+    {
       name: "病区日志",
       path: "/wardLog",
       // hidden: !appStore.isDev
@@ -93,7 +98,7 @@ export const navConfig = (appStore:any,authStore?:any)=>{
     //   name: '不良事件分析报告',
     //   path: '/badEvents/alanysis/1/1'
     // },
-    
+
     // {
     //   name: "敏感指标",
     //   path: "/indicator",
@@ -107,7 +112,7 @@ export const navConfig = (appStore:any,authStore?:any)=>{
       name: "统计查询",
       path: "/statistic",
     },
-    
+
     // {
     //   name: "健康宣教",
     //   path: "/setting/typeDict",
@@ -119,7 +124,7 @@ export const navConfig = (appStore:any,authStore?:any)=>{
     //     }
     //   ]
     // },
-    
+
     {
       name: "我的档案",
       path: "/selfNurseFile",
@@ -138,8 +143,9 @@ export const navConfig = (appStore:any,authStore?:any)=>{
           icon: require("../images/menu-icon/三级质控@2x.png"),
         },
       ],
-    },
+    }
+
   ];
-	
+
 	return  navList
 }
