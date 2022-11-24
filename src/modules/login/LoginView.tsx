@@ -86,7 +86,8 @@ export default withRouter(function LoginView(props: Props) {
       return;
     }
     // (!appStore.isDev) && (["fssdy", "sdlj","dghl"].includes(appStore.HOSPITAL_ID)) && (_password = md5(_password));
-    if (isMd5) {
+    // 龙江固定加密
+    if (isMd5 || ["sdlj"].includes(appStore.HOSPITAL_ID)) {
       _password = md5(_password);
     }
     service.authApiService
