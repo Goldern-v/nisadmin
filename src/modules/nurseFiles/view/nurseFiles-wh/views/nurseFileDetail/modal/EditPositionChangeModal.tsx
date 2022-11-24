@@ -1,6 +1,5 @@
 import styled from "styled-components";
-import React, { useState, useEffect, useLayoutEffect } from "react";
-import { RouteComponentProps } from "react-router";
+import React, { useState, useLayoutEffect } from "react";
 import {
   Modal,
   Input,
@@ -11,27 +10,17 @@ import {
   Row,
   Col,
   message,
-  AutoComplete
 } from "antd";
 import { ModalComponentProps } from "src/libs/createModal";
 import Form from "src/components/Form";
 import { nurseFilesService } from "../../../services/NurseFilesService";
 import { nurseFileDetailViewModal } from "../NurseFileDetailViewModal";
-import {
-  TITLE_LIST,
-  POST_LIST
-} from "../../nurseFilesList/modal/AddNursingModal";
 import { to } from "src/libs/fns";
 import { Rules } from "src/components/Form/interfaces";
 import moment from "moment";
-import loginViewModel from "src/modules/login/LoginViewModel";
-// 加附件
-import ImageUploader from "src/components/ImageUploader";
 import { authStore, appStore } from "src/stores";
-import service from "src/services/api";
 import emitter from "src/libs/ev";
 import MultipleImageUploader from "src/components/ImageUploader/MultipleImageUploader";
-import YearPicker from "src/components/YearPicker";
 const Option = Select.Option;
 export interface Props extends ModalComponentProps {
   data?: any;
@@ -44,8 +33,10 @@ export interface Props extends ModalComponentProps {
 // titleOld: data.titleOld,
 // titleNew: data.titleNew,
 const rules: Rules = {
-  ...!['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID) ? {titleOld: val => !!val || "请填写原职称名称",
-  titleNew: val => !!val || "请填写现职称名称"} : {titleNew: val => !!val || "请填写职称名称"},
+  ...!['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID) ? {
+    titleOld: val => !!val || "请填写原职称名称",
+    titleNew: val => !!val || "请填写现职称名称"
+  } : { titleNew: val => !!val || "请填写职称名称" },
   winNewTiTleDate: val => !!val || "请选择考取专业技术资格证书时间",
   employNewTiTleDate: val => !!val || "请选择聘用专业技术资格时间"
 };
@@ -55,7 +46,7 @@ export default function EditPositionChangeModal(props: Props) {
   let { visible, onCancel, onOk, data, signShow } = props;
   let refForm = React.createRef<Form>();
 
-  const onFieldChange = () => {};
+  const onFieldChange = () => { };
 
   const onSave = async (sign: boolean) => {
     let obj = {
@@ -111,7 +102,16 @@ export default function EditPositionChangeModal(props: Props) {
           : null,
         titleOld: data.titleOld,
         titleNew: data.titleNew,
-        urlImageOne: data.urlImageOne ? data.urlImageOne.split(",") : []
+        urlImageOne: data.urlImageOne ? data.urlImageOne.split(",") : [],
+        ...appStore.hisMatch({
+          map: {
+            'sdlj,nfsd': {
+              titleNumber: data.titleNumber
+            },
+            other: {}
+          },
+          vague: true
+        })
       });
     }
     if (signShow === "修改") {
@@ -183,6 +183,11 @@ export default function EditPositionChangeModal(props: Props) {
               </Select>
             </Form.Field>
           </Col>
+          {['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID) && <Col span={24}>
+            <Form.Field label="证书编号" name="titleNumber">
+              <Input />
+            </Form.Field>
+          </Col>}
           <Col span={24}>
             <Form.Field
               label={`考取专业技术资格证书时间`}

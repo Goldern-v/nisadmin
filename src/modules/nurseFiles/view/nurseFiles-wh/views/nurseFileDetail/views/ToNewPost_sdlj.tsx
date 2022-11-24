@@ -11,6 +11,7 @@ import EditToNewPostModal_sdlj from '../modal/EditToNewPostModal_sdlj'
 import { nurseFilesService } from '../../../services/NurseFilesService'
 import { isSelf,editFlag } from './BaseInfo'
 import Do from '../components/Do'
+import { Obj } from 'src/libs/types'
 export interface Props extends RouteComponentProps {}
 export default observer(function PersonWinning() {
   const editToNewPostModal = createModal(EditToNewPostModal_sdlj)
@@ -55,9 +56,10 @@ export default observer(function PersonWinning() {
     {
       title: '科室',
       dataIndex: 'newDeptCode',
-      key: 'newDeptCode',
+      key: 'newDeptName',
       width: 110,
-      align: 'center'
+      align: 'center',
+      render: (text: string, row: Obj) => row.newDeptName || row.newDeptCode
     },
     {
       title: '考核成绩',

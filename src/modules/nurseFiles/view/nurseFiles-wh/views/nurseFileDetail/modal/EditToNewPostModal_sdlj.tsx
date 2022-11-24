@@ -1,11 +1,8 @@
 import styled from "styled-components";
-import React, { useState, useEffect, useLayoutEffect } from "react";
-import { RouteComponentProps } from "react-router";
+import React, { useState, useLayoutEffect } from "react";
 import {
   Modal,
-  Input,
   Button,
-  Radio,
   DatePicker,
   Select,
   Row,
@@ -21,6 +18,8 @@ import { to } from "src/libs/fns";
 import { Rules } from "src/components/Form/interfaces";
 import moment from "moment";
 import { authStore } from "src/stores";
+import { Obj } from "src/libs/types";
+const Option = Select.Option
 export interface Props extends ModalComponentProps {
   data?: any;
   signShow?: string;
@@ -56,7 +55,6 @@ export default function EditToNewPostModal(props: Props) {
     if (!Object.keys(value).length) {
       return message.warning("数据不能为空");
     }
-
     /** 补全科室名称 */
     value.newDeptName = (nurseFileDetailViewModal
       .getDict("全部科室")
@@ -139,22 +137,35 @@ export default function EditToNewPostModal(props: Props) {
           </Col>
           <Col span={24}>
             <Form.Field label={`科室`} name="newDeptCode" required>
-              <AutoComplete
+              {/* <AutoComplete
                 dataSource={list.map((item: any) => item.name)}
                 placeholder="请选择或者输入科室"
                 filterOption={(inputValue: any, option: any) =>
                   option.props.children.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
                 }
-              />
+              /> */}
+              <Select
+                placeholder="请选择科室"
+                showSearch
+                filterOption={(input, option: Obj) =>
+                  option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                }
+              >
+                {
+                  list.map((item: any) => (
+                    <Option key={item.code} value={item.code}>{item.name}</Option>
+                  ))
+                }
+              </Select>
             </Form.Field>
           </Col>
           <Col span={24}>
             <Form.Field label={`考核成绩`} name='deptBeDepartment' required>
               <Select>
                 {['合格', '不合格'].map((item) => (
-                  <Select.Option value={item} key={item}>
+                  <Option value={item} key={item}>
                     {item}
-                  </Select.Option>
+                  </Option>
                 ))}
               </Select>
             </Form.Field>

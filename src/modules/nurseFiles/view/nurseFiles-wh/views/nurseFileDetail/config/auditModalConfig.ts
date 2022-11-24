@@ -1,4 +1,5 @@
 import { globalModal } from 'src/global/globalModal'
+import { Obj } from 'src/libs/types'
 import { appStore } from 'src/stores'
 
 export function openAuditModal(title: string, row: any, callBack: any) {
@@ -721,7 +722,8 @@ export function openAuditModal(title: string, row: any, callBack: any) {
               "原职称名称": `titleOld`,
               "现职称名称": `titleNew`
             } : {
-              "职称名称": `titleNew`
+              "职称名称": `titleNew`,
+              '证书编号': `titleNumber`
             },
             {
               "考取专业资格证书时间": `winNewTiTleDate`,
@@ -785,7 +787,9 @@ export function openAuditModal(title: string, row: any, callBack: any) {
               "结束时间": `endDate`
             },
             ['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID) ? {
-              "科室": `newDeptCode`,
+              "科室": (data: Obj) => {
+                return data.newDeptName || data.newDeptCode
+              },
               "考核成绩": `deptBeDepartment`
             } :
             {
