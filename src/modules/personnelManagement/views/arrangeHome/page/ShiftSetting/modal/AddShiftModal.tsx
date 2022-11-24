@@ -1,11 +1,8 @@
 import styled from "styled-components";
-import React, { useState, useEffect, useLayoutEffect } from "react";
+import React, { useState,useLayoutEffect } from "react";
 import {
   Modal,
   Input,
-  Button,
-  Radio,
-  DatePicker,
   Select,
   Row,
   Col,
@@ -18,7 +15,7 @@ import Form from "src/components/Form";
 import { to } from "src/libs/fns";
 import { Rules } from "src/components/Form/interfaces";
 import service from "src/services/api";
-import { Spin, Switch } from "src/vendors/antd";
+import { Spin } from "src/vendors/antd";
 import { authStore, appStore } from "src/stores";
 import SwitchField from "src/components/Swich";
 import { arrangeService } from "../../../services/ArrangeService";
@@ -47,7 +44,7 @@ export default function AddShiftModal(props: Props) {
   const [isSpecial, setSpecial] = useState<boolean>(false)
 /** 设置规则 */
 let rules: Rules
-switch (appStore.HOSPITAL_ID) {  
+switch (appStore.HOSPITAL_ID) {
   case 'hj':
     rules = {
       name: (val) => !!val || "请填写班次名称",
@@ -93,7 +90,7 @@ switch (appStore.HOSPITAL_ID) {
       effectiveTime: (val) => (!!val || val == "0" ? "" : "请填写标准工时"),
     }
     break;
-    
+
 }
 
 
@@ -289,10 +286,10 @@ switch (appStore.HOSPITAL_ID) {
           from.setField("settingWinMorningHour", (time3 + winter_daytime).toFixed(2))
         }
         from.setField("settingWinNightHour", winter_nightTime.toFixed(2))
-      } 
+      }
     },[time1,time2,time3,time4])
 
-      
+
   }
   const onFormChange = (name: string, value: any, form: Form<any>) => {
     if (name == 'shiftType') {
@@ -304,7 +301,7 @@ switch (appStore.HOSPITAL_ID) {
     if (name == 'deductionDay') {
       let num = (value || 0) / 0.5
       if (num.toString().indexOf('.') != -1) {
-        form.setField('deductionDay',Math.floor(num)*0.5)
+        form.setField('deductionDay',appStore.HOSPITAL_ID==='sdlj'? 0 :Math.floor(num)*0.5)
       }
     }
     if (['lcey', 'lyyz'].includes(appStore.HOSPITAL_ID)) {
@@ -314,7 +311,7 @@ switch (appStore.HOSPITAL_ID) {
         setTime2(workTime3 && workTime4 ? workTime4.diff(workTime3, "h",true) : 0)
 
         let summer_nightTime = workTime4 && workTime4.diff(moment("18:00", "HH:mm"), "h", true)
-        if (summer_nightTime >= 0) { 
+        if (summer_nightTime >= 0) {
           setSummer_daytime(workTime3 ? moment("18:00", "HH:mm").diff(workTime3, "h", true) : 0)
           setSummer_nightTime(workTime4 ? summer_nightTime : 0)
         } else{
@@ -326,7 +323,7 @@ switch (appStore.HOSPITAL_ID) {
         const { workTime5, workTime6, workTime7, workTime8 } = form.getFields();
         setTime3(workTime5 && workTime6 ? workTime6.diff(workTime5, "h",true) : 0)
         setTime4(workTime7 && workTime8 ? workTime8.diff(workTime7, "h",true) : 0)
-        
+
         let winter_nightTime = workTime8 && workTime8.diff(moment("17:30", "HH:mm"), 'h', true)
         if (winter_nightTime >= 0) {
           setWinter_daytime(workTime7 ? moment("17:30", "HH:mm").diff(workTime7, "h", true) : 0)
@@ -587,10 +584,17 @@ switch (appStore.HOSPITAL_ID) {
               {
                 appStore.hisMatch({
                   map: {
-                    'sdlj,nfsd': isSpecial && <React.Fragment>
+                    'nfsd': isSpecial && <React.Fragment>
                       <Col span={24}>
                         <Form.Field label={`扣减天数`} name="deductionDay">
                           <InputNumber min={0.5} step={0.5} precision={1} />
+                        </Form.Field>
+                      </Col>
+                    </React.Fragment>,
+                    'sdlj':<React.Fragment>
+                      <Col span={24}>
+                        <Form.Field label={`扣减天数2`} name="deductionDay">
+                          <InputNumber min={0} step={0.5} precision={1} />
                         </Form.Field>
                       </Col>
                     </React.Fragment>,

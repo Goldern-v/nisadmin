@@ -3,12 +3,10 @@ import styled from 'styled-components'
 import React, { useState } from 'react'
 import { observer } from 'src/vendors/mobx-react-lite'
 import { message, Popover } from 'src/vendors/antd'
-import { cloneJson } from 'src/utils/json/clone'
 import { appStore, authStore } from 'src/stores'
-
 import { ContextMenu } from '../../types/contextMenu'
 import { sheetViewModal } from '../../viewModal/SheetViewModal'
-import { ArrangeItem, SymbolItem } from '../../types/Sheet'
+import { ArrangeItem } from '../../types/Sheet'
 import { cleanCell, cleanCellList, copyCellClick, copyRowClick, getAddArrangeMenuList } from './cellClickEvent'
 import { resetArrangeCount } from '../../page/EditArrangePage/components/FlightMenu'
 
@@ -190,7 +188,7 @@ export default observer(function Cell(props: Props) {
                 }
               }
             ],
-            'sdlj,nfsd': [
+            'nfsd':[
               {
                 icon: require("../../images/修改工时.png"),
                 label: "添加备注",
@@ -210,6 +208,53 @@ export default observer(function Cell(props: Props) {
                 type: "text",
                 onClick: () => {
                   sheetViewModal.selectedCell.schSpecial = [{ type: 1,typeName:"二值" }]
+                }
+              },
+              {
+                icon: require("../../images/修改工时.png"),
+                label: "送病人",
+                type: "text",
+                onClick: () => {
+                  sheetViewModal.selectedCell.schSpecial = [{ type: 2,typeName:"送病人" }]
+                }
+              },
+              {
+                icon: require("../../images/修改工时.png"),
+                label: "总值",
+                type: "text",
+                onClick: () => {
+                  sheetViewModal.selectedCell.schSpecial = [{ type: 3,typeName:"总值" }]
+                }
+              }
+            ],
+            'sdlj': [
+              {
+                icon: require("../../images/修改工时.png"),
+                label: "添加备注",
+                type: "text",
+                onClick: () => {
+                  addRemakeModal.show({
+                    data: sheetViewModal.selectedCell,
+                    onOkCallBack(value: any) {
+                      sheetViewModal.selectedCell.schRemarks = [{ remark: value.detail }]
+                    }
+                  });
+                }
+              },
+              {
+                icon: require("../../images/修改工时.png"),
+                label: "二值",
+                type: "text",
+                onClick: () => {
+                  sheetViewModal.selectedCell.schSpecial = [{ type: 1,typeName:"二值" }]
+                }
+              },
+              {
+                icon: require("../../images/修改工时.png"),
+                label: "三值",
+                type: "text",
+                onClick: () => {
+                  sheetViewModal.selectedCell.schSpecial = [{ type: 4,typeName:"三值" }]
                 }
               },
               {
@@ -602,7 +647,7 @@ export default observer(function Cell(props: Props) {
     },
     vague:true,
   })
-  
+
   return (
     <Popover
       content={content}

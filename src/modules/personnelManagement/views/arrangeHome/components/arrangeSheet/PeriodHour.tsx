@@ -1,10 +1,8 @@
 import styled from "styled-components";
-import React, { useState, useEffect } from "react";
-import { Button } from "antd";
+import React from "react";
 import { observer } from "mobx-react-lite";
 import { sheetViewModal } from "../../viewModal/SheetViewModal";
-import { ArrangeItem } from "../../types/Sheet";
-import { Input, message } from "src/vendors/antd";
+import { message } from "src/vendors/antd";
 import { appStore } from "src/stores";
 export interface Props {
   id: any;
@@ -28,14 +26,14 @@ export const periodHour = (id: any) => {
     if (user.settingDtos[j]!.workDate.includes("-01-01")) {
       real_periodHour = user.settingDtos[j].shiftType == "例假" ? user.settingDtos[j].deductionDay : 0;
     }
-  }  
+  }
   let total =
     Number(user.periodHour) -
     Number(real_periodHour) +
     Number(user.current_periodHour);
-  if (total < 0) {
+  if (total < 0 && appStore.HOSPITAL_ID!=='sdlj') {
     message.warning(`${user.empName}的例假天数小于0，请修正`);
-  }  
+  }
   return Number(total)
 }
 const Wrapper = styled.div`
