@@ -24,7 +24,6 @@ import { getFun, ItemConfigItem } from "../../utils/fun/fun";
 import { createFilterItem } from "../../components/Render.v1/FilterItem";
 import classNames from "classnames";
 // import { getCurrentMonth } from 'src/utils/date/currentMonth'
-// import { getSeaonsStartAndEnd } from 'src/utils/date/season'
 import InputColumnRender from '../../components/Render.v1/InputColumnRender'
 import SubTable from './components/SubTable'
 import { wardRegisterService } from '../../services/WardRegisterService';
@@ -53,7 +52,6 @@ export default observer(function 中医护理方案季度评价总结表(props: 
   const [selectedBlockId, setSelectedBlockId]: any = useState(null);
   const [popoverVisible, setPopoverVisible]: any = useState(false);
   const [surplusHeight, setSurplusHeight]: any = useState(540);
-  // const [date, setDate]: any = useState(getSeaonsStartAndEnd());
   const [date, setDate]: any = useState([]);
   const [pageOptions, setPageOptions]: any = useState({
     pageIndex: 1,

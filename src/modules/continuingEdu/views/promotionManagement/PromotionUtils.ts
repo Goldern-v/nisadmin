@@ -87,5 +87,12 @@ class PromotionPost {
   init() {
     this.onload();
   }
+  // 导出
+  handleExport() {
+    PromotionManagementApi.export().then(res => {
+      fileDownload(res)
+    })
+
+  }
 }
 export const PromotionUtils = new PromotionPost();

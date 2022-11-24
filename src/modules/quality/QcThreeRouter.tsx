@@ -47,6 +47,7 @@ import 福清三级质控问题原因措施汇总 from "./views/qcFormFqfybjy/�
 
 import 质控表单汇总 from "./views/qcDghl/质控表单汇总";
 import 三级质控护理质量统计汇总 from "./views/qcFormGzsrm/三级质控护理质量统计汇总";
+import qcThreeMQSummary from './views/qcThreeMQSummary/index'
 export interface Props extends RouteComponentProps<{ name?: string }> {}
 export default function QcThreeRouter(props: Props) {
   useEffect(() => {}, [props.history.location.pathname]);
@@ -262,6 +263,16 @@ export default function QcThreeRouter(props: Props) {
         route_三级质控问题汇总,
         route_检查表单统计表,
         route_福清三级质控问题原因措施汇总,
+        {
+
+          title: "三级质控月季度汇总报告",
+          icon: <HZBG />,
+          path: "/qcThree/qcThreeMQSummary",
+          component: qcThreeMQSummary,
+          keepAlive: true,
+          disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP",
+
+        }
       ],
       "whyx,whhk": [
         // route_三级质控月度报告,

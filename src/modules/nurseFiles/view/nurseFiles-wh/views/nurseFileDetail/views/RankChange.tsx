@@ -28,7 +28,6 @@ export default observer(function PersonWinning() {
       onClick: () => editRankChangeModal.show({ signShow: '添加' })
     }
   ]
-  console.log('test-only-1')
 
   const columns: ColumnProps<any>[] = [
     {

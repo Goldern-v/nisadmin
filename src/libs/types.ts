@@ -1,4 +1,3 @@
-import { type } from 'os';
 export type Fallible<T> = [null | Error, T]
 
 /**

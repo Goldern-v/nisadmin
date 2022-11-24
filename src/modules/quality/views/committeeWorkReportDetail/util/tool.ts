@@ -45,6 +45,10 @@ export const routePath = () => {
   if (level == 2) return '/qcTwo/analysis?level=2'
   if (level == 3.1) return '/qcThree/committeeWorkReport'
   if (level == 3) return '/qcThree/qcThreeResult'
+  // 三级月度汇总 by福清
+  if (level == 3.4) return '/qcThree/qcThreeMQSummary'
+  // 三级季度汇总 by福清
+  if (level == 3.5) return '/qcThree/qcThreeMQSummary'
   return ''
 }
 

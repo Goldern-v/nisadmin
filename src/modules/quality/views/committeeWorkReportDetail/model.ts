@@ -105,33 +105,45 @@ export class ReportDetail {
   }
   /** 设置组件数据 */
   @action
-  async setSectionData(sectionId: string, data: any) {
+  async setSectionData(sectionId: string, data: any, formatFun?: Function) {
     let obj = this.getSection(sectionId)
     if (obj) {
-      Object.assign(obj.data, data)
       //保存数据
-      if (obj.data.value) {
-        const saveData: ReportFieldData = {
-          reportId: appStore.queryObj.id || this.id,
-          data: obj.data.value
+      try {
+        if (obj.data.value) {
+          const value = formatFun ? formatFun(data.value) : data.value
+          const saveData: ReportFieldData = {
+            reportId: appStore.queryObj.id || this.id,
+            data: value,
+          }
+          await this.saveReportFieldData(saveData)
         }
-        await this.saveReportFieldData(saveData)
-      }
-      if (obj.data.list) {
-        const saveData: ReportFieldData = {
-          reportId: appStore.queryObj.id || this.id,
-          tableName: obj.data.tableName || '',
-          data: obj.data.list
+        else if (obj.data.list) {
+          const value = formatFun ? formatFun(data.list) : data.list
+          const saveData: ReportFieldData = {
+            reportId: appStore.queryObj.id || this.id,
+            tableName: obj.data.tableName || '',
+            data: value,
+          }
+          await this.saveReportTableData(saveData)
         }
-        await this.saveReportTableData(saveData)
+        Object.assign(obj.data, data)
+        return true
+      } catch (e) {
+        return false
       }
-
-      return true
     } else {
       return false
     }
   }
-
+  /*设置组件数据 不做请求 */
+  @action
+  async setStaticSectionData(sectionId: string, data: any) {
+    let obj = this.getSection(sectionId)
+    if (obj) {
+      Object.assign(obj.data, data)
+    }
+  }
   /** 提取总数据 */
   getDataInAllData(key: string) {
     return this.allData[key] || {}
@@ -170,7 +182,10 @@ export class ReportDetail {
         updateTime,
         tableDataMap,
         reportYear,
-        reportTemplateDto
+        reportTemplateDto,
+        summaryFormCode = '',
+        summaryFormName = '',
+        reportQuarter = '',
       } = res.data
       for (let keys of Object.keys(this.allData)) {
         for (let item of Object.keys(this.allData[keys])) {
@@ -188,7 +203,11 @@ export class ReportDetail {
         reportMonth,
         reportYear,
         reportName,
-        updateTime
+        updateTime,
+        summaryFormCode,
+        summaryFormName,
+        reportQuarter,
+        templateName: reportTemplateDto?.name || ''
       }
       this.allData.tableDataMap = tableDataMap
       this.configData = {

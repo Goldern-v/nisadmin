@@ -3,20 +3,15 @@ import { observer } from "mobx-react-lite";
 import React, { useState, useEffect } from "react";
 import { Select, Input, Button, DatePicker,Modal,message } from "antd";
 import { PageTitle } from "src/components/common";
-import moment, { duration } from 'moment'
 import {PromotionUtils} from "../PromotionUtils"
 import {PromotionManagementApi} from "../api/PromotionManagement";
 const Option = Select.Option;
 
 interface Props {}
-interface IDeucOption {
-  value: string;
-  item: string;
-}
+
 export default observer(function ApplyHeader(props: Props) {
   const [deucOption, setdeucOption] = useState([]); // 科室信息
   const [yearPickerIsOpen, setyearPickerIsOpen] = useState(false); // 控制年份下拉打开
-  const [yearImportIsOpen, setyearImportIsOpen] = useState(false); // 控制导入年份下拉打开
 
   useEffect(()=>{
     PromotionManagementApi.getnursingAll().then((res)=>{
@@ -45,6 +40,9 @@ export default observer(function ApplyHeader(props: Props) {
     setyearPickerIsOpen(false)
     PromotionUtils.year = value
     PromotionUtils.onload()
+  }
+  const handleExport = () => {
+    PromotionUtils.handleExport()
   }
 
   return (
@@ -108,6 +106,12 @@ export default observer(function ApplyHeader(props: Props) {
           onClick={handelInquire}
         >
           查询
+        </Button>
+        <Button
+         className="span"
+          onClick={handleExport}
+        >
+          导出
         </Button>
       </RightIcon>
     </Wrapper>

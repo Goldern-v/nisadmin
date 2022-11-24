@@ -65,7 +65,7 @@ export default observer(function PersonWinning() {
       map: {
         sdlj: [
           {
-            title: '证书标号',
+            title: '证书编号',
             dataIndex: 'titleNumber',
             key: 'titleNumber',
             width: 100,
