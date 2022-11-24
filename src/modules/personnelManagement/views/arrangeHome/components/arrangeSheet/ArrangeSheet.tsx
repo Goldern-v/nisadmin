@@ -121,7 +121,7 @@ export default observer(function ArrangeSheet(props: Props) {
           {
             title: "组别",
             dataIndex: "groupNameAndNum",
-            width: 120,
+            width: appStore.HOSPITAL_ID==='whyx'?120:70,
             fixed: "left",
             align: "center",
             // render(text: any, record: any) {
@@ -209,7 +209,7 @@ export default observer(function ArrangeSheet(props: Props) {
           {
             title: "职务",
             dataIndex: "job",
-            width: 120,
+            width:appStore.HOSPITAL_ID==='whyx' ? 120 : 70,
             fixed: "left",
             align: "center",
           },
@@ -356,19 +356,27 @@ export default observer(function ArrangeSheet(props: Props) {
       },
       vague:true
     }),
-    {
-      title: (
-        <div>
-          <div>{manHourTitle()}</div>
-          <div>（小时）</div>
-        </div>
-      ),
-      width: 70,
-      align: "center",
-      render(text: string, record: any) {
-        return <TotalCell id={record.id} />;
+    ...appStore.hisMatch({
+      map: {
+        'sdlj': [],//
+        other: [
+          {
+            title: (
+                <div>
+                  <div>{manHourTitle()}</div>
+                  <div>（小时）</div>
+                </div>
+            ),
+            width: 70,
+            align: "center",
+            render(text: string, record: any) {
+              return <TotalCell id={record.id} />;
+            },
+          },
+        ],
       },
-    },
+      vague:true,
+    }),
     ...appStore.hisMatch({
       map: {
         "nfzxy": [
@@ -508,21 +516,31 @@ export default observer(function ArrangeSheet(props: Props) {
   };
 
   /** 武汉特殊字段*/
-  if (["wh", "gzsrm", "gxjb", "fsxt", '925', "sdlj", "whyx",'whhk', 'fssdy',"gdtj", "lyyz", "qhwy","whsl","wjgdszd", 'ytll','zhzxy', 'nfsd', 'dglb'].includes(appStore.HOSPITAL_ID)) {
+  if (["wh", "gzsrm", "gxjb", "fsxt", '925', "whyx",'whhk','sdlj', 'fssdy',"gdtj", "lyyz", "qhwy","whsl","wjgdszd", 'ytll','zhzxy', 'nfsd', 'dglb'].includes(appStore.HOSPITAL_ID)) {
     columns.push(
-      {
-        title: (
-          <div>
-            <div>夜小时数</div>
-            <div>（小时）</div>
-          </div>
-        ),
-        width: 70,
-        align: "center",
-        render(text: string, record: any) {
-          return <NightHourCell id={record.id} />;
-        },
-      },
+        ...appStore.hisMatch({
+          map: {
+            //,sdlj
+            'sdlj': [],//佛山杏坛去除累计结余添加本周结余
+            other: [
+              {
+                title: (
+                    <div>
+                      <div>夜小时数</div>
+                      <div>（小时）</div>
+                    </div>
+                ),
+                width: 70,
+                align: "center",
+                render(text: string, record: any) {
+                  return <NightHourCell id={record.id} />;
+                },
+              },
+            ],
+          },
+          vague:true,
+        }),
+
       // {
       //   title: (
       //     <div>
@@ -538,7 +556,8 @@ export default observer(function ArrangeSheet(props: Props) {
       // },
       ...appStore.hisMatch({
         map: {
-          'fsxt,925': [],//佛山杏坛去除累计结余添加本周结余
+          //,sdlj
+          'fsxt,925,sdlj': [],//佛山杏坛去除累计结余添加本周结余
           other: [
             {
               title: (
@@ -783,15 +802,16 @@ export default observer(function ArrangeSheet(props: Props) {
                   hj: 3,
                   fqfybjy: 5,
                   nys: (isEdit ? 6 : 5),
-                  'wjgdszd,wh,gxjb,jmfy,dghl,gzsrm,fsxt,925,whyx,whhk,sdlj,gdtj,lyyz,qhwy,whsl,ytll,zhzxy,whhk,nfsd,dglb': 6,
+                  'wjgdszd,wh,gxjb,jmfy,dghl,gzsrm,fsxt,925,whyx,whhk,gdtj,lyyz,qhwy,whsl,ytll,zhzxy,whhk,nfsd,dglb': 6,
                   fssdy: 7,
+                  sdlj:3,
                   other: 2
                 },
                 vague: true
               })) *
             70 +
             widthNys +
-            10 +
+            10 + (appStore.HOSPITAL_ID==='whyx'? 170 : 0) +
             "px";
           setSurplusWidth(false);
         } else {
