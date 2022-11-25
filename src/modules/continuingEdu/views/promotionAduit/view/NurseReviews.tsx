@@ -63,7 +63,7 @@ export default function NurseReviews(props: Props) {
     className="badevent-user-check-modal">
     <Wrapper>
       {
-        (aduitData.nodeCode == 'nurse_handle' || aduitData.nodeCode == 'big_head_nurse') && <Row>
+        (aduitData.nodeCode == 'nurse_handle' || aduitData.nodeCode == 'big_head_nurse' || aduitData.nodeCode=='nursing_minister_audit_first') && <Row>
         <Col span={18}>
         <Radio.Group onChange={(e)=>{onRadioChange(e)}} value={userAudit.noPass}>
           <Radio value={false}>合格</Radio>

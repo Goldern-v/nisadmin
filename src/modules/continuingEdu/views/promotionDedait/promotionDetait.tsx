@@ -56,6 +56,7 @@ export default observer(function NursingReportDetailView() {
       PromotionDetaitUtils.getUesrPromotionList()
     }else if(value == "HSJS_0004"){
       PromotionDetaitUtils.master.formCode = "HSJS_0004"
+      PromotionDetaitUtils.master.chainCode = "HSJS_N3-N4"
       PromotionDetaitUtils.master.formName = value
       setprintwih('3200px')
       PromotionDetaitUtils.getUesrPromotionList()

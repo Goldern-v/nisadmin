@@ -1050,6 +1050,33 @@ export default observer(function ApplicationN1(props: Props) {
                     readOnly
                   />
                 </div>
+                <div className="base-item">
+                  <span style={{ marginRight: 40 }}>3.护理部审核</span>
+                  <SelectBox
+                    type="radio"
+                    disabled={true}
+                    values={tableObjN4.JS0000172}
+                    inputKey={"JS0000172"}
+                    option={[
+                      { label: "合格", value: "A" },
+                      { label: "不合格", value: "B" },
+                    ]}
+                  />
+                  <span style={{ marginLeft: 40 }}>护理部签名：</span>
+                  <input
+                    type="text"
+                    className="mar-btom"
+                    defaultValue={tableObjN4.JS0000173}
+                    readOnly
+                  />
+                  <span>日期：</span>
+                  <input
+                    type="text"
+                    className="wih-150"
+                    defaultValue={tableObjN4.JS0000175}
+                    readOnly
+                  />
+                </div>
               </td>
             </tr>
             <tr>
