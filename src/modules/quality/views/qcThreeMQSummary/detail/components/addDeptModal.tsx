@@ -51,7 +51,7 @@ export default function CreateAnalysisModal(props: Props) {
   }
 
   return (
-    <Modal title='添加分数' visible={visible} onCancel={onCancel} onOk={handleOk} confirmLoading={loading || false} centered>
+    <Modal title='添加科室' visible={visible} onCancel={onCancel} onOk={handleOk} confirmLoading={loading || false} centered>
       <Wrapper>
         <Form ref={refForm} onChange={handleFormChange} rules={rules}>
           <Row>

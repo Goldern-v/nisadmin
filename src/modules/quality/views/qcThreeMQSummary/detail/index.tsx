@@ -1,4 +1,4 @@
-import { Button, message } from "antd";
+import { Button, message, Spin } from "antd";
 import { observer } from "mobx-react";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import styled from "styled-components";
@@ -28,7 +28,6 @@ export default observer(function (props) {
 
   const { instance } = useInstance()
 
-  const [loading, setLoading] = useState(false);
   const printRef: any = useRef<HTMLElement>()
   useEffect(() => {
     instance.init()
@@ -95,7 +94,6 @@ export default observer(function (props) {
     });
     wideTraversal(instance.getSectionData("2").tempList, 'children').forEach((v: Obj) => {
       obj2[v.key] = ''
-
     });
     const { deptName, deptCode } = data
     obj1.deptName = deptName
@@ -115,53 +113,55 @@ export default observer(function (props) {
 
   return (
     <Wrapper>
-      <HeadCon>
-        {/* check: 需要修改 */}
-        <BaseBreadcrumb data={[{ name: '分析汇总', link: routePath() }, { name: '汇总详情', link: '' }]} />
-        <div className='title'>{report.reportName}</div>
-        <div className='aside'>
-          <span>
-            由{report.creatorName}创建{report.updateTime && <span>，最后修改于{report.updateTime}{PUBLISH_STATUS_ARR[report.status] && <span style={{ color: PUBLISH_STATUS_ARR[report.status].color }}>{PUBLISH_STATUS_ARR[report.status].text}</span>}</span>}
-          </span>
-        </div>
-        <div className='tool-con'>
-          {btnRules && <Button loading={loading} onClick={onPublishOrCancel}>{PUBLISH_STATUS_ARR[report?.status]?.btn}</Button>}
-          {btnRules && report?.status == '0' && <Button loading={loading} onClick={addDept}>添加分数</Button>}
-          {authStore.level3Check && queryObj.id && <Button loading={loading} onClick={handleDel}>删除</Button>}
-          <Button loading={loading} disabled={!queryObj.id} onClick={onPrint}>打印</Button>
-          <Button loading={loading} onClick={() => appStore.history.goBack()}>返回</Button>
-        </div>
-      </HeadCon>
-      <ScrollCon status={report.status}>
-        <Page className='contain' ref={printRef}>
-
-          <div className="contain__title">
-            <p>{report.reportName}</p>
+      <Spin spinning={instance.loading}>
+        <HeadCon>
+          {/* check: 需要修改 */}
+          <BaseBreadcrumb data={[{ name: '分析汇总', link: routePath() }, { name: '汇总详情', link: '' }]} />
+          <div className='title'>{report.reportName}</div>
+          <div className='aside'>
+            <span>
+              由{report.creatorName}创建{report.updateTime && <span>，最后修改于{report.updateTime}{PUBLISH_STATUS_ARR[report.status] && <span style={{ color: PUBLISH_STATUS_ARR[report.status].color }}>{PUBLISH_STATUS_ARR[report.status].text}</span>}</span>}
+            </span>
           </div>
-          {instance.sectionList.map((item: any, index: number) => {
-            if (item.sectionId) {
-              let Components = instance.getSection(item.sectionId)
-              if (Components && Components.section) {
-                return (
-                  <Components.section
-                    key={item.sectionId}
-                    sectionId={item.sectionId}
-                    modalTitle={item.modalTitle}
-                    sectionTitle={item.sectionTitle}
-                    keyName={item.keyName}
-                  />
-                )
+          <div className='tool-con'>
+            {btnRules && <Button loading={instance.loading} onClick={onPublishOrCancel}>{PUBLISH_STATUS_ARR[report?.status]?.btn}</Button>}
+            {btnRules && report?.status == '0' && <Button loading={instance.loading} onClick={addDept}>添加科室</Button>}
+            {authStore.level3Check && queryObj.id && <Button loading={instance.loading} onClick={handleDel}>删除</Button>}
+            <Button loading={instance.loading} disabled={!queryObj.id} onClick={onPrint}>打印</Button>
+            <Button loading={instance.loading} onClick={() => appStore.history.goBack()}>返回</Button>
+          </div>
+        </HeadCon>
+        <ScrollCon status={report.status}>
+          <Page className='contain' ref={printRef}>
+
+            <div className="contain__title">
+              <p>{report.reportName}</p>
+            </div>
+            {instance.sectionList.map((item: any, index: number) => {
+              if (item.sectionId) {
+                let Components = instance.getSection(item.sectionId)
+                if (Components && Components.section) {
+                  return (
+                    <Components.section
+                      key={item.sectionId}
+                      sectionId={item.sectionId}
+                      modalTitle={item.modalTitle}
+                      sectionTitle={item.sectionTitle}
+                      keyName={item.keyName}
+                    />
+                  )
+                }
               }
-            }
-          })}
-          {instance.baseModal && <instance.baseModal.Component />}
-        </Page>
-        <AddDeptModal
-          allowClear={true}
-          visible={addDeptVisible}
-          onOk={handleAddOk}
-          onCancel={handleAddCancel} />
-      </ScrollCon>
+            })}
+            {instance.baseModal && <instance.baseModal.Component />}
+          </Page>
+          <AddDeptModal
+            allowClear={true}
+            visible={addDeptVisible}
+            onOk={handleAddOk}
+            onCancel={handleAddCancel} />
+        </ScrollCon>
+      </Spin>
     </Wrapper>
   );
 });

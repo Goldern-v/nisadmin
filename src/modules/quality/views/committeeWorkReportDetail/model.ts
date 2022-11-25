@@ -57,6 +57,7 @@ export class ReportDetail {
   private getData: Function = () => { }
   @observable public initRender: Function = () => { }
   public id: string = ''
+  @observable public loading = false
 
   constructor({
     sectionList,
@@ -110,6 +111,7 @@ export class ReportDetail {
     if (obj) {
       //保存数据
       try {
+        this.loading = true
         if (obj.data.value) {
           const value = formatFun ? formatFun(data.value) : data.value
           const saveData: ReportFieldData = {
@@ -128,8 +130,10 @@ export class ReportDetail {
           await this.saveReportTableData(saveData)
         }
         Object.assign(obj.data, data)
+        this.loading = false
         return true
       } catch (e) {
+        this.loading = false
         return false
       }
     } else {
@@ -165,6 +169,7 @@ export class ReportDetail {
   /** 数据初始化 */
   async initData() {
     try {
+      this.loading = true
       // 实例化并使用bind绑定数据
       this.allData = this.getData()
       const res = await analysisDetailApi.getPageDetaile(appStore.queryObj.id || this.id)
@@ -214,8 +219,9 @@ export class ReportDetail {
         tableTempList: reportTemplateDto?.reportTableFieldTemplateList || ({} as Record<string, any>)
       }
       this.formatData()
+      this.loading = false
     } catch (error) {
-
+      this.loading = false
     }
   }
   async init(id?: string) {
