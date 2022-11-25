@@ -50,8 +50,12 @@ export default class PromotionManagement extends BaseApiService {
     return this.post(`/studyAndTrain/teachPlanAdvancedStu//uploadPictures`, newFormData);
   }
   // 晋升管理-导出
-  public async export() {
-    return this.post(`/nurse/promotion/exportPromotion`, {});
+  public async export(obj: any) {
+    return this.get(`/nurse/promotion/exportPromotion?${qs.stringify(obj)}`, 
+      {
+        responseType: "blob"
+      }
+    );
   }
 }
 export const PromotionManagementApi = new PromotionManagement();
