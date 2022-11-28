@@ -830,6 +830,13 @@ const routes: RouteItem[] = [
     layouts.MainLayout
   ),
   setLayout(
+    "/qcThreeMQSummaryDetail",
+    lazy(() =>
+    import("src/modules/quality/views/qcThreeMQSummary/detail/index")
+  ),
+    layouts.MainLayout
+  ),
+  setLayout(
     "/committeeWorkReportDetail",
     committeeWorkReportDetail,
     layouts.MainLayout

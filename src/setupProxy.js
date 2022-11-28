@@ -75,6 +75,7 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
     case "fqfybjy":
       // return 'http://183.63.206.194:9091' // 东莞横沥正式
       // return 'http://110.90.211.113:9091/' // 正式
+      // return "http://192.168.20.112:8080"; // 公司-东莞横沥测试-内网
       return "http://192.168.1.54:9874"; // 公司-东莞横沥测试-内网
     // return 'http://192.168.20.61:9091' // 宏群本地
 
@@ -102,6 +103,7 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
       // return "http://192.168.1.54:9866"; //
       return "http://192.168.1.54:9885";
     case "sdlj": //顺德龙江
+      return 'http://218.13.34.230:9094'
       // return 'http://192.168.20.83:8080'//
       return "http://192.168.1.54:9887"; //
 

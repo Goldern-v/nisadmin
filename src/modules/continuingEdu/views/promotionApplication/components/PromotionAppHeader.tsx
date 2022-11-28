@@ -120,6 +120,7 @@ export default observer(function PromotionAppHeader() {
       PromotionAppUtils.createOnload()
     }else if(key == 4){
       PromotionAppUtils.master.formCode = "HSJS_0004"
+      PromotionAppUtils.master.chainCode = "HSJS_N3-N4"
       PromotionAppUtils.master.formName = "N3->N4"
       setprintwih('3200px')
       PromotionAppUtils.createOnload()

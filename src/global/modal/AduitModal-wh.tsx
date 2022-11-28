@@ -1,6 +1,5 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { RouteComponentProps } from 'react-router'
 import { Input, message } from 'antd'
 import { ReactComponent as AgreeIcon } from '../images/morengouxuan.svg'
 import { authStore } from 'src/stores'
@@ -102,8 +101,18 @@ export default function AduitModal(props: Props) {
           let data = res.data
           setResData(data)
           let tableData = props.tableFormat.map((item: any) => {
+            let obj = {}
             let keys = Object.keys(item)
             if (!keys[1]) keys[1] = ''
+            // 调整为可传入方法
+            keys.forEach((v: any) => {
+              if (v) {
+                obj[v] = item[v] instanceof Function ? item[v](data) : data[item[v]]
+              } else {
+                obj[v] = ''
+              }
+            });
+            return obj
             return {
               [keys[0]]: data[item[keys[0]]],
               [keys[1]]: data[item[keys[1]]]

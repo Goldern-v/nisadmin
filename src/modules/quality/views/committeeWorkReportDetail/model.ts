@@ -57,6 +57,7 @@ export class ReportDetail {
   private getData: Function = () => { }
   @observable public initRender: Function = () => { }
   public id: string = ''
+  @observable public loading = false
 
   constructor({
     sectionList,
@@ -105,33 +106,48 @@ export class ReportDetail {
   }
   /** 设置组件数据 */
   @action
-  async setSectionData(sectionId: string, data: any) {
+  async setSectionData(sectionId: string, data: any, formatFun?: Function) {
     let obj = this.getSection(sectionId)
     if (obj) {
-      Object.assign(obj.data, data)
       //保存数据
-      if (obj.data.value) {
-        const saveData: ReportFieldData = {
-          reportId: appStore.queryObj.id || this.id,
-          data: obj.data.value
+      try {
+        this.loading = true
+        if (obj.data.value) {
+          const value = formatFun ? formatFun(data.value) : data.value
+          const saveData: ReportFieldData = {
+            reportId: appStore.queryObj.id || this.id,
+            data: value,
+          }
+          await this.saveReportFieldData(saveData)
         }
-        await this.saveReportFieldData(saveData)
-      }
-      if (obj.data.list) {
-        const saveData: ReportFieldData = {
-          reportId: appStore.queryObj.id || this.id,
-          tableName: obj.data.tableName || '',
-          data: obj.data.list
+        else if (obj.data.list) {
+          const value = formatFun ? formatFun(data.list) : data.list
+          const saveData: ReportFieldData = {
+            reportId: appStore.queryObj.id || this.id,
+            tableName: obj.data.tableName || '',
+            data: value,
+          }
+          await this.saveReportTableData(saveData)
         }
-        await this.saveReportTableData(saveData)
+        Object.assign(obj.data, data)
+        this.loading = false
+        return true
+      } catch (e) {
+        this.loading = false
+        return false
       }
-
-      return true
     } else {
       return false
     }
   }
-
+  /*设置组件数据 不做请求 */
+  @action
+  async setStaticSectionData(sectionId: string, data: any) {
+    let obj = this.getSection(sectionId)
+    if (obj) {
+      Object.assign(obj.data, data)
+    }
+  }
   /** 提取总数据 */
   getDataInAllData(key: string) {
     return this.allData[key] || {}
@@ -153,6 +169,7 @@ export class ReportDetail {
   /** 数据初始化 */
   async initData() {
     try {
+      this.loading = true
       // 实例化并使用bind绑定数据
       this.allData = this.getData()
       const res = await analysisDetailApi.getPageDetaile(appStore.queryObj.id || this.id)
@@ -170,7 +187,10 @@ export class ReportDetail {
         updateTime,
         tableDataMap,
         reportYear,
-        reportTemplateDto
+        reportTemplateDto,
+        summaryFormCode = '',
+        summaryFormName = '',
+        reportQuarter = '',
       } = res.data
       for (let keys of Object.keys(this.allData)) {
         for (let item of Object.keys(this.allData[keys])) {
@@ -188,15 +208,20 @@ export class ReportDetail {
         reportMonth,
         reportYear,
         reportName,
-        updateTime
+        updateTime,
+        summaryFormCode,
+        summaryFormName,
+        reportQuarter,
+        templateName: reportTemplateDto?.name || ''
       }
       this.allData.tableDataMap = tableDataMap
       this.configData = {
         tableTempList: reportTemplateDto?.reportTableFieldTemplateList || ({} as Record<string, any>)
       }
       this.formatData()
+      this.loading = false
     } catch (error) {
-
+      this.loading = false
     }
   }
   async init(id?: string) {

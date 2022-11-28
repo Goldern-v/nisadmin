@@ -33,8 +33,17 @@ export default observer(function NursingReportDetailView() {
   }, [])
 
   const handleUserCheckOk = (data: any) => {
-    let nurseCodeList = {'HSJS_0001':'tableObjN1','HSJS_0002':'tableObjN2','HSJS_0003':'tableObjN3','HSJS_0004':'tableObjN4'};
-    let nodeCodeList = {'nurse_handle':['JS0000012','JS0000014','JS0000016'],'big_head_nurse':['JS0000017','JS0000019','JS0000021'],'promotion_team_audit':['JS0000022','JS0000024','JS0000026'],'nursing_minister_audit':['JS0000027','JS0000029','JS0000031']};
+    let nurseCodeList = {
+      'HSJS_0001':'tableObjN1',
+    'HSJS_0002':'tableObjN2',
+    'HSJS_0003':'tableObjN3',
+    'HSJS_0004':'tableObjN4'};
+    let nodeCodeList = {
+      'nurse_handle':['JS0000012','JS0000014','JS0000016'],
+    'big_head_nurse':['JS0000017','JS0000019','JS0000021'],
+    'nursing_minister_audit_first':['JS0000172','JS0000173','JS0000175'],
+    'promotion_team_audit':['JS0000022','JS0000024','JS0000026'],
+    'nursing_minister_audit':['JS0000027','JS0000029','JS0000031']};
     Object.keys(nurseCodeList).map((item:string)=>{
       if(data.fromCode == item){
         Object.keys(nodeCodeList).map((key:string)=>{

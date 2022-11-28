@@ -87,5 +87,16 @@ class PromotionPost {
   init() {
     this.onload();
   }
+  // 导出 
+  handleExport() { 
+    PromotionManagementApi.export({
+      year:moment(this.year).format("YYYY"),
+      deptCode:this.deptCode,//科室
+      promotionLevel:this.promotionLevel,//科室
+      keyWord:this.keyWord, //关键字
+    }).then(res => {
+			fileDownload(res) 
+		});
+  } 
 }
 export const PromotionUtils = new PromotionPost();

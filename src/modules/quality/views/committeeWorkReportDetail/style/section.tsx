@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const SectionCon = styled.div`
+export const SectionCon: any = styled.div`
   min-height: 60px;
   position: relative;
 

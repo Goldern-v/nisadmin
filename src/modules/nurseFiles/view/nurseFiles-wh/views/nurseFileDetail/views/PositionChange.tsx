@@ -63,9 +63,9 @@ export default observer(function PersonWinning() {
     ],
     ...appStore.hisMatch({
       map: {
-        sdlj: [
+        'sdlj,nfsd': [
           {
-            title: '证书标号',
+            title: '证书编号',
             dataIndex: 'titleNumber',
             key: 'titleNumber',
             width: 100,
@@ -73,7 +73,8 @@ export default observer(function PersonWinning() {
           },
         ],
         other: []
-      }
+      },
+      vague: true,
     }),
     {
       title: '考取专业技术资格证书时间',

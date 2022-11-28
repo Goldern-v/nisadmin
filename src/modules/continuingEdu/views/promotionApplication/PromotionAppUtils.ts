@@ -380,31 +380,59 @@ class PromotionApp {
         } else {
           this.handlenodeDto = []
         }
-
-        switch (res.data.master.status) {
-          case '0':
-            this.flowStatus = '0'
-            break;
-          case '1':
-          case '2':
-            this.flowStatus = '1'
-            break;
-          case '3':
-            this.flowStatus = '2'
-            break;
-          case '4':
-            this.flowStatus = '3'
-            break;
-          case '5':
-            this.flowStatus = '3'
-            break;
-          case '6':
-            this.flowStatus = '4'
-            break;
-          default:
-            this.flowStatus = ''
-            break;
+        if(this.master.formCode == 'HSJS_0004'){
+          // N3升级N4的状态要特殊处理
+          switch (res.data.master.status) {
+            case '0':
+            case '-2':
+              this.flowStatus = '0'
+              break;
+            case '1':
+            case '2':
+            case '3':
+              this.flowStatus = '1'
+              break;
+            case '4':
+              this.flowStatus = '2'
+              break;
+            case '5':
+            case '6':
+              this.flowStatus = '3'
+              break;
+            case '7':
+              this.flowStatus = '4'
+              break;
+            default:
+              this.flowStatus = ''
+              break;
+          }
+        }else{
+          switch (res.data.master.status) {
+            case '0':
+              this.flowStatus = '0'
+              break;
+            case '1':
+            case '2':
+              this.flowStatus = '1'
+              break;
+            case '3':
+              this.flowStatus = '2'
+              break;
+            case '4':
+              this.flowStatus = '3'
+              break;
+            case '5':
+              this.flowStatus = '3'
+              break;
+            case '6':
+              this.flowStatus = '4'
+              break;
+            default:
+              this.flowStatus = ''
+              break;
+          }
         }
+        
         if (this.editStatus == '编辑' || this.editStatus == '取消编辑' || this.master.id) {
           this.editStatus = '编辑'
         } else {
