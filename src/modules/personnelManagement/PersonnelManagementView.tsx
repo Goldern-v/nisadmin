@@ -35,6 +35,7 @@ export default function PersonnelManagementView() {
       case 'sdlj'://顺德龙江
       case 'nfsd':
       case 'gdtj':
+      case 'zzwy':
         return menuConfig_wh;
       case 'qhwy':
       case 'dglb':

@@ -16,7 +16,7 @@ import DeptAysi from './deptAysi/DeptAysi'
 
 const LEFT_MENU_CONFIG: any = appStore.hisMatch({
 	map: {
-		'fsxt,925': [
+		'fsxt,925,zzwy': [
 			// 科室临床护理质量指标
 			{
 				title: '临床护理质量指标',

@@ -47,7 +47,7 @@ export default observer(function ArrangeSheet(props: Props) {
   let editEffectiveTimeModal = createModal(
     appStore.hisMatch({
       map: {
-        'wjgdszd,wh,gxjb,lcey,dghl,fqfybjy,jmfy,nys,gzsrm,fssdy,fsxt,925,sdlj,whyx,gdtj,lyyz,qhwy,whsl,ytll,zhzxy,whhk,nfsd,whhk,dglb': EditVacationCountModal_wh,
+        'wjgdszd,wh,gxjb,lcey,dghl,fqfybjy,jmfy,nys,gzsrm,fssdy,fsxt,925,sdlj,whyx,gdtj,lyyz,qhwy,whsl,ytll,zhzxy,whhk,nfsd,whhk,dglb,zzwy': EditVacationCountModal_wh,
         other: EditEffectiveTimeModal,
       },
       vague: true
@@ -409,7 +409,7 @@ export default observer(function ArrangeSheet(props: Props) {
   ];
 
   /** 东莞横沥特殊字段 */
-  if (["dghl", "fsxt",'925', 'fssdy'].includes(appStore.HOSPITAL_ID)) {
+  if (["dghl", "fsxt",'925', 'fssdy', 'zzwy'].includes(appStore.HOSPITAL_ID)) {
     columns.push({
       title: (
         <div>
@@ -516,7 +516,7 @@ export default observer(function ArrangeSheet(props: Props) {
   };
 
   /** 武汉特殊字段*/
-  if (["wh", "gzsrm", "gxjb", "fsxt", '925', "whyx",'whhk','sdlj', 'fssdy',"gdtj", "lyyz", "qhwy","whsl","wjgdszd", 'ytll','zhzxy', 'nfsd', 'dglb'].includes(appStore.HOSPITAL_ID)) {
+  if (["wh", "gzsrm", "gxjb", "fsxt", '925', "whyx",'whhk','sdlj', 'fssdy',"gdtj", "lyyz", "qhwy","whsl","wjgdszd", 'ytll','zhzxy', 'nfsd', 'dglb', 'zzwy'].includes(appStore.HOSPITAL_ID)) {
     columns.push(
         ...appStore.hisMatch({
           map: {
@@ -557,7 +557,7 @@ export default observer(function ArrangeSheet(props: Props) {
       ...appStore.hisMatch({
         map: {
           //,sdlj
-          'fsxt,925,sdlj': [],//佛山杏坛去除累计结余添加本周结余
+          'fsxt,925,sdlj,zzwy': [],//佛山杏坛去除累计结余添加本周结余
           other: [
             {
               title: (
@@ -802,7 +802,7 @@ export default observer(function ArrangeSheet(props: Props) {
                   hj: 3,
                   fqfybjy: 5,
                   nys: (isEdit ? 6 : 5),
-                  'wjgdszd,wh,gxjb,jmfy,dghl,gzsrm,fsxt,925,whyx,whhk,gdtj,lyyz,qhwy,whsl,ytll,zhzxy,whhk,nfsd,dglb': 6,
+                  'wjgdszd,wh,gxjb,jmfy,dghl,gzsrm,fsxt,925,whyx,whhk,gdtj,lyyz,qhwy,whsl,ytll,zhzxy,whhk,nfsd,dglb,zzwy': 6,
                   fssdy: 7,
                   sdlj:3,
                   other: 2
