@@ -156,6 +156,10 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
     // 武汉汉口医院
     case 'whhk':
       return "http://192.168.1.54:9900"
+    // 南方医科大学顺德医院
+    case 'nfsd':
+      return "http://info.cr-health.com:20111"
+      return "http://192.168.1.54:9901"
     default:
       return "http://192.168.1.54:9866";
   }
