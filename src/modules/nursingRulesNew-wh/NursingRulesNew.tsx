@@ -10,7 +10,7 @@ import qs from 'qs'
 import RevisonRecordModal from './components/listPage/RevisonRecordModal'
 export interface Props { }
 
-console.log(process.env.REACT_APP_HOSPITAL_ID)
+// console.log(process.env.REACT_APP_HOSPITAL_ID)
 
 export default observer(function nursingRulesNew() {
   const { history } = appStore
