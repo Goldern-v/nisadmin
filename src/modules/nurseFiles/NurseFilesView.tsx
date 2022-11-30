@@ -127,7 +127,7 @@ export default observer(function NurseFilesView(props: Props) {
     icon: <TXHSCX />,
     hide: appStore.hisMatch({
       map: {
-        "hj,lyrm,qhwy,fsxt,ytll,whhk,925,dglb,sdlj": false,
+        "hj,lyrm,qhwy,fsxt,ytll,whhk,925,dglb": false,
         other: !appStore.isDev,
       },
       vague: true,
@@ -285,7 +285,7 @@ export default observer(function NurseFilesView(props: Props) {
       path: "/nurseFile/traineeFiles",
       hide: appStore.hisMatch({
         map: {
-          "qhwy,whhk,dglb": false,
+          "qhwy,whhk,dglb,sdlj": false,
           other: !appStore.isDev,
         },
         vague: true,
