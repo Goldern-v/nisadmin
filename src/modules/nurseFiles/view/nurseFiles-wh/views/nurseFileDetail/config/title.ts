@@ -10,6 +10,7 @@ let titleEC: any = {
   nurseWHScienceResult: '科研课题获奖',
   nurseWHPatent: '专利',
   nurseWHLearnJob: '学会任职',
+  nurseWHSocialJob: '社会兼职',
   nurseWHMonograph: '专著',
   nurseWHContinueStudy: '举办继续教育培训班',
   nurseWHLeave: '离职',

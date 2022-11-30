@@ -517,7 +517,37 @@ export function openAuditModal(title: string, row: any, callBack: any) {
         })
       }
       break
-    case '离职':
+    case '社会兼职':
+      {
+        globalModal.auditModal.show({
+          getTableData: callBack,
+          id: row.id,
+          empNo: row.empNo || row.commiterNo,
+          type: 'nurseWHSocialJob',
+          title: '审核社会兼职',
+          tableFormat: [
+            {
+              "社会兼职名称": `socialJobName`,
+              "兼职级别": `socialLevel`,
+            },
+            {
+              "起始时间": `startDate`,
+              "结束时间": `endDate`
+            },
+          ],
+          fileData: row.urlImageOne
+            ? row.urlImageOne.split(',').map((item: any, index: number) => {
+              return {
+                ['附件' + (index + 1)]: item
+              }
+            })
+            : [],
+          allData: row
+        })
+      }
+      break
+     
+      case '离职':
       {
         globalModal.auditModal.show({
           getTableData: callBack,

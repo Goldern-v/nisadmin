@@ -40,6 +40,7 @@ import continuingEducation_sdlj from './views/continuingEducation_sdlj'
 import technologiesAndProjects_sdlj from './views/technologiesAndProjects_sdlj'
 import MajorErrors from './views/MajorErrors'
 import ToNewPost_sdlj from './views/ToNewPost_sdlj'
+import SocialNurse from './views/SocialNurse'
 export interface Props extends RouteComponentProps<{ type?: string }> {
   payload: HorizontalMenuItem[]
 }
@@ -116,6 +117,11 @@ const ROUTE_LIST = [
     type: 'learnJob',
     component: LearnJob,
     name: '学会任职'
+  },
+  {
+    type: 'socialNurse',
+    component: SocialNurse,
+    name: '社会兼职'
   },
   {
     type: 'monograph',
