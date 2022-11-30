@@ -127,7 +127,7 @@ export default observer(function NurseFilesView(props: Props) {
     icon: <TXHSCX />,
     hide: appStore.hisMatch({
       map: {
-        "hj,lyrm,qhwy,fsxt,ytll,whhk,925,dglb": false,
+        "hj,lyrm,qhwy,fsxt,ytll,whhk,925,dglb,sdlj": false,
         other: !appStore.isDev,
       },
       vague: true,
@@ -255,6 +255,13 @@ export default observer(function NurseFilesView(props: Props) {
           title: "编制变动",
           path: "/nurseFile/workConversion",
           component: StatisticsView,
+          hide: appStore.hisMatch({
+              map: {
+                  "sdlj": true,
+                  other: false,
+              },
+              vague: true
+          })
         },
         {
           title: "科室创新",
@@ -266,7 +273,7 @@ export default observer(function NurseFilesView(props: Props) {
     },
     ...appStore.hisMatch({
       map: {
-        "qhwy,ytll,whhk,dglb": [
+        "qhwy,ytll,whhk,dglb,sdlj": [
           nursingEduFilesCon
         ],
         other: [],
@@ -441,7 +448,7 @@ export default observer(function NurseFilesView(props: Props) {
                 path: "/nurseFile/scienceResult",
                 component: StatisticsView,
               },
-      
+
               {
                 title: "专利",
                 path: "/nurseFile/patent",
@@ -788,7 +795,8 @@ export default observer(function NurseFilesView(props: Props) {
       case 'wjgdszd':
       case 'zzwy':
       case 'dglb':
-      return LEFT_MENU_CONFIG_WH;
+      case 'sdlj':
+        return LEFT_MENU_CONFIG_WH;
       case "nys":
         return LEFT_MENU_CONFIG_NYS;
       case "whyx":
