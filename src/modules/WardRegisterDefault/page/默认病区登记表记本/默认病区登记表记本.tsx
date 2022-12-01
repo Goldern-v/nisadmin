@@ -10,7 +10,7 @@ import {
   Input,
   Select,
   DatePicker,
-  Popover,
+  // Popover,
   InputNumber
 } from "src/vendors/antd";
 import { authStore, appStore } from "src/stores";
@@ -29,10 +29,6 @@ import { getFun, ItemConfigItem } from "../../utils/fun/fun";
 import { numberFormat } from "src/utils/number/numberFormat";
 // import { createFilterItem } from "../../components/Render.v1/FilterItem";
 import classNames from "classnames";
-// import { createFilterInput } from "../../components/Render.v1/FilterInput";
-// import TextArea from "antd/lib/input/TextArea";
-// import { wardRegisterDefaultService } from "../../services/WardRegisterDefaultService";
-// import { globalModal } from "src/global/globalModal";
 import { getFileType } from 'src/utils/file/file'
 import PreviewModal from 'src/utils/file/modal/PreviewModal'
 import reactZmage from 'react-zmage'
@@ -45,30 +41,53 @@ import PatientDialog from "src/modules/indicator/selfDeclaration/components/pati
 import SignColumnRender from "../../components/Render.v1/SignColumnRender";
 import SettingShiftModal from "./modal/SettingShiftModal";
 import SettingGeneralModal from "./modal/SettingGeneralModal";
+import { Obj } from "src/libs/types";
 export interface Props {
   payload: any;
 }
 
 const throttler = throttle(500);
 const throttler2 = throttle();
-
+const configListByPatientSelect = {
+  QCRG_GSY_07: (item: Obj) => ({
+      '床号': item.bedLabel,
+      '患者姓名': item.name,
+  }),
+  QCRG_GSY_12: (item: Obj) => ({
+      '床号': item.bedLabel,
+      '姓名': item.name,
+      '疾病诊断': item.diagnosis,
+      '电话号码': item.phone,
+      '入院日期': item.admissionDate,
+      '出院日期': item.dischargeDate,
+  }),
+}
 export default observer(function 敏感指标登记本(props: Props) {
+  const { location } = appStore
   const [patientVisible, setPatientVisible] = useState(false)
-  const handlePatientSelect = (item: any) => {
+  // 保存添加患者时所在的表code值
+  const [curCode, setCurCode] = useState('')
+  // 选择患者
+  const handlePatientSelect = (arr: any[]) => {
     setPatientVisible(false)
-    setDataSource([...dataSource, {
+    setDataSource([...dataSource, ...arr.map((item: Obj, i: number) => ({
       blockId: selectedBlockId,
       description: "",
       editType: "new",
       modified: true,
       range: "",
       rangeIndexNo: 0,
-      recordDate: item.admissionDate.format('YYYY-MM-DD'),
-      key: 'key0',
-      '床号': item.bedLabel,
-      '患者姓名': item.patientName,
-      registerCode: "QCRG_GSY_07"
-    }])
+      recordDate: item.admissionDate,
+      key: 'key' + i,
+      registerCode: curCode,
+      ...configListByPatientSelect[curCode](item)
+    }))])
+  }
+  // 添加患者
+  const onAddPatient = () => {
+    setPatientVisible(true)
+    const list: string[] = location.pathname.split('/')
+    setCurCode(list.pop() || '')
   }
   const registerCode = props.payload && props.payload.registerCode;
   const registerName = props.payload && props.payload.registerName;
@@ -81,7 +100,7 @@ export default observer(function 敏感指标登记本(props: Props) {
   const [blockList, setBlockList] = useState([]);
   const [selectedBlockId, setSelectedBlockId]: any = useState(null);
   const [date, setDate]: any = useState('');
-  const [popoverVisible, setPopoverVisible]: any = useState(false);
+  // const [popoverVisible, setPopoverVisible]: any = useState(false);
   const [surplusHeight, setSurplusHeight]: any = useState(220);
   const [pageOptions, setPageOptions]: any = useState({
     pageIndex: 1,
@@ -111,296 +130,11 @@ export default observer(function 敏感指标登记本(props: Props) {
     }
   };
 
-  // 贵州-科室加全部选项 location.href.includes('QCRG_GSY_09')
-  let isAllDepartments = location.href.includes('QCRG_GSY_09') || location.href.includes('QCRG_GSY_10') || location.href.includes('QCRG_GSY_11')
- 
-  // const flFilterItem = createFilterItem(
-  //   "分类",
-  //   itemConfigList,
-  //   rangeConfigList,
-  //   () => {
-  //     setPopoverVisible(false)
-  //     setPageOptions({ ...pageOptions, pageIndex: 1 })
-  //   }
-  // );
-
-  // const bcFilterItem = createFilterItem(
-  //   "班次",
-  //   itemConfigList,
-  //   rangeConfigList,
-  //   () => {
-  //     setPopoverVisible(false)
-  //     setPageOptions({ ...pageOptions, pageIndex: 1 })
-  //   }
-  // );
-  // const wzcdFilterItem = createFilterItem(
-  //   "危重程度",
-  //   itemConfigList,
-  //   rangeConfigList,
-  //   () => {
-  //     setPopoverVisible(false)
-  //     setPageOptions({ ...pageOptions, pageIndex: 1 })
-  //   }
-  // );
-
-  // const hljbFilterItem = createFilterItem(
-  //   "护理级别",
-  //   itemConfigList,
-  //   rangeConfigList,
-  //   () => {
-  //     setPopoverVisible(false)
-  //     setPageOptions({ ...pageOptions, pageIndex: 1 })
-  //   }
-  // );
-
-  // const zlnlFilterItem = createFilterItem(
-  //   "自理能力",
-  //   itemConfigList,
-  //   rangeConfigList,
-  //   () => {
-  //     setPopoverVisible(false)
-  //     setPageOptions({ ...pageOptions, pageIndex: 1 })
-  //   }
-  // );
-  // const yzlxFilterItem = createFilterItem(
-  //   "医嘱类型",
-  //   itemConfigList,
-  //   rangeConfigList,
-  //   () => {
-  //     setPopoverVisible(false)
-  //     setPageOptions({ ...pageOptions, pageIndex: 1 })
-  //   }
-  // );
-  // const zgFilterItem = createFilterItem(
-  //   "转归",
-  //   itemConfigList,
-  //   rangeConfigList,
-  //   () => {
-  //     setPopoverVisible(false)
-  //     setPageOptions({ ...pageOptions, pageIndex: 1 })
-  //   }
-  // );
-  // const ypglflFilterItem = createFilterItem(
-  //   "药品管理分类",
-  //   itemConfigList,
-  //   rangeConfigList,
-  //   () => {
-  //     setPopoverVisible(false)
-  //     setPageOptions({ ...pageOptions, pageIndex: 1 })
-  //   }
-  // );
-  // const ymFilterItem = createFilterItem(
-  //   "药名",
-  //   itemConfigList,
-  //   rangeConfigList,
-  //   () => {
-  //     setPopoverVisible(false)
-  //     setPageOptions({ ...pageOptions, pageIndex: 1 })
-  //   }
-  // );
-  // const wpmcFilterItem = createFilterItem(
-  //   "物品名称",
-  //   itemConfigList,
-  //   rangeConfigList,
-  //   () => {
-  //     setPopoverVisible(false);
-  //     setPageOptions({ ...pageOptions, pageIndex: 1 })
-  //   }
-  // );
-  // const bfzlxFilterItem = createFilterItem(
-  //   "并发症类型",
-  //   itemConfigList,
-  //   rangeConfigList,
-  //   () => {
-  //     setPopoverVisible(false);
-  //     setPageOptions({ ...pageOptions, pageIndex: 1 })
-  //   }
-  // );
-  // const jmlxFilterItem = createFilterItem(
-  //   "静脉类型",
-  //   itemConfigList,
-  //   rangeConfigList,
-  //   () => {
-  //     setPopoverVisible(false);
-  //     setPageOptions({ ...pageOptions, pageIndex: 1 })
-  //   }
-  // );
-  // const zhpjlxFilterItem = createFilterItem(
-  //   "综合评价类型",
-  //   itemConfigList,
-  //   rangeConfigList,
-  //   () => {
-  //     setPopoverVisible(false);
-  //     setPageOptions({ ...pageOptions, pageIndex: 1 })
-  //   }
-  // );
-  // const rylxFilterItem = createFilterItem(
-  //   "人员类别",
-  //   itemConfigList,
-  //   rangeConfigList,
-  //   () => {
-  //     setPopoverVisible(false);
-  //     setPageOptions({ ...pageOptions, pageIndex: 1 })
-  //   }
-  // );
-  // const yqmcFilterItem = createFilterItem(
-  //   "仪器名称",
-  //   itemConfigList,
-  //   rangeConfigList,
-  //   () => {
-  //     setPopoverVisible(false);
-  //     setPageOptions({ ...pageOptions, pageIndex: 1 })
-  //   }
-  // );
-  // const sbztFilterItem = createFilterItem(
-  //   "设备状态",
-  //   itemConfigList,
-  //   rangeConfigList,
-  //   () => {
-  //     setPopoverVisible(false);
-  //     setPageOptions({ ...pageOptions, pageIndex: 1 })
-  //   }
-  // );
-  // const chFilterItem = createFilterInput(
-  //   "床号",
-  //   () => {
-  //     setPopoverVisible(false);
-  //     setPageOptions({ ...pageOptions, pageIndex: 1 })
-  //   });
-
-  // const xmFilterItem = createFilterInput(
-  //   "姓名",
-  //   () => {
-  //     setPopoverVisible(false);
-  //     setPageOptions({ ...pageOptions, pageIndex: 1 })
-  //   });
-  // const zyzdFilterItem = createFilterItem(
-  //   "中医诊断",
-  //   itemConfigList,
-  //   rangeConfigList,
-  //   () => {
-  //     setPopoverVisible(false);
-  //     setPageOptions({ ...pageOptions, pageIndex: 1 })
-  //   }
-  // )
-
-  // const popoverContent = codeAdapter(
-  //   {
-  //     QCRG_03: (
-  //       <div>
-  //         <wzcdFilterItem.Component />
-  //         <hljbFilterItem.Component />
-  //         <zlnlFilterItem.Component />
-  //       </div>
-  //     ),
-  //     QCRG_04: (
-  //       <div>
-  //         <bcFilterItem.Component />
-  //         <yzlxFilterItem.Component />
-  //       </div>
-  //     ),
-  //     QCRG_05: null,
-  //     QCRG_08: (
-  //       <div>
-  //         <zgFilterItem.Component />
-  //       </div>
-  //     ),
-  //     QCRG_10: (
-  //       <div>
-  //         <ypglflFilterItem.Component />
-  //       </div>
-  //     ),
-  //     QCRG_13: (
-  //       <div>
-  //         <ymFilterItem.Component />
-  //       </div>
-  //     ),
-  //     QCRG_14_1: (
-  //       <div>
-  //         <wpmcFilterItem.Component />
-  //       </div>
-  //     ),
-  //     QCRG_14_2: (
-  //       <div>
-  //         <wpmcFilterItem.Component />
-  //       </div>
-  //     ),
-  //     QCRG_16_1: (
-  //       <div>
-  //         <bfzlxFilterItem.Component />
-  //       </div>
-  //     ),
-  //     QCRG_16_2: (
-  //       <div>
-  //         <jmlxFilterItem.Component />
-  //         <bfzlxFilterItem.Component />
-  //       </div>
-  //     ),
-  //     // QCRG_19_1: (
-  //     //   <div>
-  //     //     <jmlxFilterItem.Component />
-  //     //   </div>
-  //     // ),
-  //     QCRG_19_2: (
-  //       <div>
-  //         <rylxFilterItem.Component />
-  //         {/* <jmlxFilterItem.Component /> */}
-  //       </div>
-  //     ),
-  //     QCRG_19_3: (
-  //       <div>
-  //         <jmlxFilterItem.Component />
-  //       </div>
-  //     ),
-  //     QCRG_20_2: (
-  //       <div>
-  //         <yqmcFilterItem.Component />
-  //         <sbztFilterItem.Component />
-  //       </div>
-  //     ),
-  //     QCRG_15_1: (
-  //       <div>
-  //         <chFilterItem.Component />
-  //         <xmFilterItem.Component />
-  //         <zyzdFilterItem.Component />
-  //       </div>
-  //     ),
-  //     QCRG_12_2: (
-  //       <div>
-  //         <flFilterItem.Component />
-  //       </div>
-  //     ),
-  //     QCRG_21: (
-  //       <div>
-  //         <wpmcFilterItem.Component />
-  //       </div>
-  //     ),
-  //   },
-  //   registerCode
-  // );
+  // 贵州-科室加全部选项
+  let isAllDepartments = location.pathname.includes('QCRG_GSY_09') || location.pathname.includes('QCRG_GSY_10') || location.pathname.includes('QCRG_GSY_11')
 
   /** 查询参数 */
   const paramMap = {
-    // ...wzcdFilterItem.value,
-    // ...hljbFilterItem.value,
-    // ...zlnlFilterItem.value,
-    // ...bcFilterItem.value,
-    // ...hljbFilterItem.value,
-    // ...yzlxFilterItem.value,
-    // ...zgFilterItem.value,
-    // ...ypglflFilterItem.value,
-    // ...ymFilterItem.value,
-    // ...wpmcFilterItem.value,
-    // ...bfzlxFilterItem.value,
-    // ...jmlxFilterItem.value,
-    // ...zhpjlxFilterItem.value,
-    // ...rylxFilterItem.value,
-    // ...yqmcFilterItem.value,
-    // ...sbztFilterItem.value,
-    // ...flFilterItem.value,
-    // ...chFilterItem.value,
-    // ...xmFilterItem.value,
-    // ...zyzdFilterItem.value,
     '班次': selectedRange,
   };
 
@@ -434,128 +168,110 @@ export default observer(function 敏感指标登记本(props: Props) {
     return "";
   };
 
-  // const isEndTimeQCRG_12_2 = (record: any, item: any) => {
-  //   const { itemCode, itemType } = item
-
-  //   if (itemType == 'date' && record[itemCode]) {
-  //     var currentDate = moment()
-  //     var endDate = moment(record[itemCode])
-  //     if (
-  //       currentDate.isValid() &&
-  //       endDate.isValid()
-  //     ) {
-  //       let m = endDate.diff(currentDate, "d");
-  //       if (m <= 90) return "color-red";
-  //     }
-  //   }
-
-  //   return ''
-  // }
-
   //是否显示护理单元
-  const isShowWardCode = ():boolean =>{
+  const isShowWardCode = (): boolean => {
     // && ["gzsrm"].includes(appStore.HOSPITAL_ID)
     // console.log(authStore.deptList)
     // console.log(authStore.selectedDeptCode)
-    if (registerName==="新生儿科空气消毒登记本") return  true;
+    if (registerName === "新生儿科空气消毒登记本") return true;
     return false;
   }
 
-//   计算器
-  const getTrueVal = (item:any,record:any)=>{
-	console.log(record[item.timeEndCode].length)
-	let deval = null
-	let incremental = false //记录是否要递增
-	if(item.calculationType == 'hour'){
-		deval = moment(record[item.timeEndCode],"hh:mm").diff(moment(record[item.timeBeginCode],"hh:mm"),'hours',true)
-	}else if(item.calculationType == 'dayTime'){
-		// 日期时间，天数+1，保留小数
-		incremental = true
-		deval = moment(record[item.timeEndCode]).diff(moment(record[item.timeBeginCode]),'days',true)
-	}else{
-		incremental = true
-		// 是否保留小数，天数+1
-		deval = moment(record[item.timeEndCode]).diff(moment(record[item.timeBeginCode]),'days')
-	}				
-	if(isNaN(deval)){
-		return ''
-	}else{
-		// 如果是天数，就要+1
-		if(incremental){
-			return numberFormat(deval+1,1)
-		}
-		return numberFormat(deval,1)
-	}
+  // 计算器
+  const getTrueVal = (item: any, record: any) => {
+    console.log(record[item.timeEndCode].length)
+    let deval = null
+    let incremental = false //记录是否要递增
+    if (item.calculationType == 'hour') {
+      deval = moment(record[item.timeEndCode], "hh:mm").diff(moment(record[item.timeBeginCode], "hh:mm"), 'hours', true)
+    } else if (item.calculationType == 'dayTime') {
+      // 日期时间，天数+1，保留小数
+      incremental = true
+      deval = moment(record[item.timeEndCode]).diff(moment(record[item.timeBeginCode]), 'days', true)
+    } else {
+      incremental = true
+      // 是否保留小数，天数+1
+      deval = moment(record[item.timeEndCode]).diff(moment(record[item.timeBeginCode]), 'days')
+    }
+    if (isNaN(deval)) {
+      return ''
+    } else {
+      // 如果是天数，就要+1
+      if (incremental) {
+        return numberFormat(deval + 1, 1)
+      }
+      return numberFormat(deval, 1)
+    }
   }
-//   叠加器
-  const getTrueIderate = (item:any,record:any,index:number)=>{
-	// console.log('计算叠加器啦')
-	if(index == dataSource.length-1){
-		// 改的是组后一条数据
-		return isNaN(Number(record[item.cumulativeTarget]))?'':record[item.cumulativeTarget] || ''
-	}else{
-		if(isNaN(Number(record[item.cumulativeTarget]))){
-			// 当输入非数字
-			return dataSource[index+1][item.itemCode] || ''
-		}
-		if(isNaN(Number(dataSource[index+1][item.itemCode]))){
-			// 下一条数据是空的
-			return record[item.cumulativeTarget] || ''
-		}
-		return numberFormat(Number(dataSource[index+1][item.itemCode])+Number(record[item.cumulativeTarget]),1)
-	}
+  // 叠加器
+  const getTrueIderate = (item: any, record: any, index: number) => {
+    // console.log('计算叠加器啦')
+    if (index == dataSource.length - 1) {
+      // 改的是组后一条数据
+      return isNaN(Number(record[item.cumulativeTarget])) ? '' : record[item.cumulativeTarget] || ''
+    } else {
+      if (isNaN(Number(record[item.cumulativeTarget]))) {
+        // 当输入非数字
+        return dataSource[index + 1][item.itemCode] || ''
+      }
+      if (isNaN(Number(dataSource[index + 1][item.itemCode]))) {
+        // 下一条数据是空的
+        return record[item.cumulativeTarget] || ''
+      }
+      return numberFormat(Number(dataSource[index + 1][item.itemCode]) + Number(record[item.cumulativeTarget]), 1)
+    }
   }
 
   /**继续计算 */
-  const gotoContiun = (itemConfig:any,record:any,index:number)=>{
-	if(itemConfig.linkList.length>0){
-		// 计算使用时间
-		// console.log('计算器')
-		itemConfig.linkList.forEach((element:any) => {
-			// if(element.itemType == 'timeCalculation'){
-				// 自动计算
-				record[element.itemCode] = String(getTrueVal(element,record))
-				// 这个计算器实体可能有叠加器和计算器,就是会联动第三级计算
-				if(element.linkList.length>0 || element.iderateList.length>0){
-					gotoContiun(element,record,index)
-				}
-			// }
-		});
-	}
-	if(itemConfig.iderateList.length>0){
-		// 计算使用时间
-		// console.log('叠加器')
-		itemConfig.iderateList.forEach((element:any) => {
-				// 自动计算
-				record[element.itemCode] = String(getTrueIderate(element,record,index)) || ''
-				if(element.linkList.length>0 || element.iderateList.length>0){
-					gotoContiun(element,record,index)
-				}
-		});
-	}
+  const gotoContiun = (itemConfig: any, record: any, index: number) => {
+    if (itemConfig.linkList.length > 0) {
+      // 计算使用时间
+      // console.log('计算器')
+      itemConfig.linkList.forEach((element: any) => {
+        // if(element.itemType == 'timeCalculation'){
+        // 自动计算
+        record[element.itemCode] = String(getTrueVal(element, record))
+        // 这个计算器实体可能有叠加器和计算器,就是会联动第三级计算
+        if (element.linkList.length > 0 || element.iderateList.length > 0) {
+          gotoContiun(element, record, index)
+        }
+        // }
+      });
+    }
+    if (itemConfig.iderateList.length > 0) {
+      // 计算使用时间
+      // console.log('叠加器')
+      itemConfig.iderateList.forEach((element: any) => {
+        // 自动计算
+        record[element.itemCode] = String(getTrueIderate(element, record, index)) || ''
+        if (element.linkList.length > 0 || element.iderateList.length > 0) {
+          gotoContiun(element, record, index)
+        }
+      });
+    }
 
   }
 
-/**
- * 
- * @param calculationType dayTime、day单位都是天，hour单位是小时
- */
-  const getDayOrHours = (calculationType:string)=>{
-	if(['qhwy', 'dglb'].includes(appStore.HOSPITAL_ID)){
-		if(['dayTime','day'].includes(calculationType)) return '(天)'
-		if(['hour'].includes(calculationType)) return '(时)'
-		return ''
-	}
-	return ''
-	
+  /**
+   * 
+   * @param calculationType dayTime、day单位都是天，hour单位是小时
+   */
+  const getDayOrHours = (calculationType: string) => {
+    if (['qhwy', 'dglb'].includes(appStore.HOSPITAL_ID)) {
+      if (['dayTime', 'day'].includes(calculationType)) return '(天)'
+      if (['hour'].includes(calculationType)) return '(时)'
+      return ''
+    }
+    return ''
+
   }
   //registerName
-  const isWhyx = ['whyx','lyyz','qhwy','whhk', 'dglb'].includes(appStore.HOSPITAL_ID)
+  const isWhyx = ['whyx', 'lyyz', 'qhwy', 'whhk', 'dglb'].includes(appStore.HOSPITAL_ID)
 
   const columns: ColumnProps<any>[] | any = [
     ...appStore.hisMatch({
-      map: { 
-        gzsrm:[
+      map: {
+        gzsrm: [
           isShowWardCode() && {
             title: "护理单元",
             dataIndex: "wardCode",
@@ -563,7 +279,7 @@ export default observer(function 敏感指标登记本(props: Props) {
             className: "input-cell",
             width: 100,
             render(text: string, record: any, index: number) {
-              return <>{(authStore.deptList?.find(item=> item?.code==authStore.selectedDeptCode))?.name}</>
+              return <>{(authStore.deptList?.find(item => item?.code == authStore.selectedDeptCode))?.name}</>
               //return <>{(authStore.deptList?.find(item=> item?.code==authStore.defaultDeptCode))?.name}</>
             }
           },
@@ -637,7 +353,7 @@ export default observer(function 敏感指标登记本(props: Props) {
                 selectedBlockId,
                 getPage,
               }
-            }/>
+            } />
           }
         }
       }
@@ -694,7 +410,7 @@ export default observer(function 敏感指标登记本(props: Props) {
           )
         ) : (
           <pre>
-            {item.label || item.itemCode+getDayOrHours(item.calculationType)}
+            {item.label || item.itemCode + getDayOrHours(item.calculationType)}
           </pre>
         ),
         align: "center",
@@ -731,12 +447,12 @@ export default observer(function 敏感指标登记本(props: Props) {
                 handleNextIptFocus,
                 updateDataSource,
                 registerCode,
-                onChangeDate: (newVal: string) => {	
-			if(['qhwy', 'dglb'].includes(appStore.HOSPITAL_ID)){
-				// 时间改变 时间关联的有计算器和叠加器
-				gotoContiun(item,record,index)
-			}		
-                  watchRecord(item.itemCode, record)	  
+                onChangeDate: (newVal: string) => {
+                  if (['qhwy', 'dglb'].includes(appStore.HOSPITAL_ID)) {
+                    // 时间改变 时间关联的有计算器和叠加器
+                    gotoContiun(item, record, index)
+                  }
+                  watchRecord(item.itemCode, record)
                 },
               }}
             />
@@ -755,49 +471,49 @@ export default observer(function 敏感指标登记本(props: Props) {
                 updateDataSource
               }} />
 
-          } else if(item.itemType == "timeCalculation"){
-			
-			// 自动计算项
-			children = <InputRender
-			{...{
-			  cellDisabled,
-			  options: item.options ? item.options.split(";").map((itemCfg: any) => itemCfg || " ") : undefined,
-			  record,
-			  className: childrenClassName,
-			  itemCode: item.itemCode,
-			  updateDataSource,
-			  handleNextIptFocus,
-			  onBlur: (newVal: string, oldVal: any) => {
-				// 失去焦点,判断是否有影响项
-				gotoContiun(item,record,index)
-			  },
-			}}
-		  />
-		  }else if(item.itemType == "cumulative" || item.itemType == ""){
-			// 累计时间
-			// 不初始化数据
-			children = <InputRender
-			{...{
-			  cellDisabled,
-			  options: item.options ? item.options.split(";").map((itemCfg: any) => itemCfg || " ") : undefined,
-			  record,
-			  className: childrenClassName,
-			  itemCode: item.itemCode,
-			  updateDataSource,
-			  handleNextIptFocus,
-			  onBlur: (newVal: string, oldVal: any) => {
-				if(['qhwy', 'dglb'].includes(appStore.HOSPITAL_ID)){
-					if(item.itemType == ""){
-						// 时间改变 时间关联的有计算器和叠加器
-						gotoContiun(item,record,index)
-					}
-				}
-				
-				
-			  },
-			}}
-		  />
-		  }else {
+          } else if (item.itemType == "timeCalculation") {
+
+            // 自动计算项
+            children = <InputRender
+              {...{
+                cellDisabled,
+                options: item.options ? item.options.split(";").map((itemCfg: any) => itemCfg || " ") : undefined,
+                record,
+                className: childrenClassName,
+                itemCode: item.itemCode,
+                updateDataSource,
+                handleNextIptFocus,
+                onBlur: (newVal: string, oldVal: any) => {
+                  // 失去焦点,判断是否有影响项
+                  gotoContiun(item, record, index)
+                },
+              }}
+            />
+          } else if (item.itemType == "cumulative" || item.itemType == "") {
+            // 累计时间
+            // 不初始化数据
+            children = <InputRender
+              {...{
+                cellDisabled,
+                options: item.options ? item.options.split(";").map((itemCfg: any) => itemCfg || " ") : undefined,
+                record,
+                className: childrenClassName,
+                itemCode: item.itemCode,
+                updateDataSource,
+                handleNextIptFocus,
+                onBlur: (newVal: string, oldVal: any) => {
+                  if (['qhwy', 'dglb'].includes(appStore.HOSPITAL_ID)) {
+                    if (item.itemType == "") {
+                      // 时间改变 时间关联的有计算器和叠加器
+                      gotoContiun(item, record, index)
+                    }
+                  }
+
+
+                },
+              }}
+            />
+          } else {
             const multiple = (() => {
               if (item.itemType == "multiple_select")
                 return true
@@ -815,7 +531,7 @@ export default observer(function 敏感指标登记本(props: Props) {
                 updateDataSource,
                 handleNextIptFocus,
                 multiple,
-                onBlur: (newVal: string, oldVal: any) => {},
+                onBlur: (newVal: string, oldVal: any) => { },
                 selectAll: multiple,
               }}
             />
@@ -888,8 +604,8 @@ export default observer(function 敏感指标登记本(props: Props) {
       let endDate = moment(moment(data[arr[1]]).format('YYYY-MM-DD HH:MM'))
       const m = startDate && endDate ? endDate.diff(startDate, "m") : 0;
       hours = Math.floor(m / 30) * 0.5 + '小时';
-      console.log(startDate,endDate);
-      
+      console.log(startDate, endDate);
+
     }
     data[arr[2]] = String(hours)
   }
@@ -921,10 +637,10 @@ export default observer(function 敏感指标登记本(props: Props) {
     setSelectedRowKeys(payload)
     // console.log(payload)
   }
-  /**自定义签名按钮配置 */ 
+  /**自定义签名按钮配置 */
   const [customSign, setCustomSign] = useState<any[]>([])
   // 自定义批量按钮
-  const [customBatch,setCustomBatch] = useState<any[]>([])
+  const [customBatch, setCustomBatch] = useState<any[]>([])
   useEffect(() => {
     setCustomSign(itemConfigList.filter((v: any) => v.itemType.indexOf('autograph') == 0))
     setCustomBatch(itemConfigList.filter((v: any) => v.itemCode == '班次'))
@@ -934,20 +650,20 @@ export default observer(function 敏感指标登记本(props: Props) {
     let options: any = itemConfigList.find((item: any) => item.itemCode == "班次") || {}
     let optionList = (options.options as any).split(";").map((itemCfg: any) => itemCfg || " ")
     settingShiftModal.show({
-      data:optionList,
+      data: optionList,
       onOkCallBack: (value) => {
         handleBatchSet(value)
       }
     })
   }
 
-  const setGeneral = (data:any) => {
+  const setGeneral = (data: any) => {
     let options: any = itemConfigList.find((item: any) => item.itemCode == "班次") || {}
     let optionList = (options.options as any)?.split(";").map((itemCfg: any) => itemCfg || " ")
     settingGeneralModal.show({
       data: {
         optionList,
-        signName:data.itemCode
+        signName: data.itemCode
       },
       onOkCallBack: (value) => {
         handleGeneralSet(value)
@@ -956,9 +672,9 @@ export default observer(function 敏感指标登记本(props: Props) {
   }
 
   /**批量按钮 */
-  const SelectedBtnCon = observer(function(props: Record<string, any>) {
-    const { config, customSign } = props;    
-    const general =['whyx','whhk'].includes(appStore.HOSPITAL_ID) && !!customSign?.length // && customSign.find((item: any) => item.itemCode == '护士签名')// && customBatch.length != 0
+  const SelectedBtnCon = observer(function (props: Record<string, any>) {
+    const { config, customSign } = props;
+    const general = ['whyx', 'whhk'].includes(appStore.HOSPITAL_ID) && !!customSign?.length // && customSign.find((item: any) => item.itemCode == '护士签名')// && customBatch.length != 0
     return (<Fragment>
       {
         appStore.hisMatch({
@@ -973,8 +689,8 @@ export default observer(function 敏感指标登记本(props: Props) {
                       selectedRowKeys.length <= 0
                     }
                     type="primary"
-                    onClick={() => {handleBatchSign(item.itemCode)}}>
-                      {item.itemCode}签名
+                    onClick={() => { handleBatchSign(item.itemCode) }}>
+                    {item.itemCode}签名
                   </Button>
                 ))}
                 {/* {customBatch && customBatch.map((item: any) => (
@@ -996,8 +712,8 @@ export default observer(function 敏感指标登记本(props: Props) {
                       selectedRowKeys.length <= 0
                     }
                     type="primary"
-                    onClick={() => {setGeneral(customSign[0])}}>
-                      批量修改
+                    onClick={() => { setGeneral(customSign[0]) }}>
+                    批量修改
                   </Button>
                 }
               </Fragment>
@@ -1023,33 +739,36 @@ export default observer(function 敏感指标登记本(props: Props) {
           vague: true
         })
       }
-      
+
       {isWhyx && !general ? (
         <Button
           disabled={
             (pageLoading ||
-            selectedRowKeys.length <= 0)
+              selectedRowKeys.length <= 0)
           }
           type="primary"
           onClick={() => handleCopyCreateRow()}>
           复制新增
-        </Button>):""}
-        <Button
-          disabled={
-            pageLoading ||
-            selectedRowKeys.length <= 0
-          } type="primary"
-          onClick={() => deleteSelectedRows(isWhyx ? {beforeReqCB: (arr: any) =>{
+        </Button>) : ""}
+      <Button
+        disabled={
+          pageLoading ||
+          selectedRowKeys.length <= 0
+        } type="primary"
+        onClick={() => deleteSelectedRows(isWhyx ? {
+          beforeReqCB: (arr: any) => {
             let index = arr.findIndex((v: any) => customSign.filter((v1: any) => v[v1.itemCode]).length > 0)
             if (index > -1) {
               Modal.warn({
                 centered: true,
                 title: '提示',
-                content: `第${index + 1}条已签名,不能删除`})
+                content: `第${index + 1}条已签名,不能删除`
+              })
               return false
             }
-          }}: {})}>
-          删除
+          }
+        } : {})}>
+        删除
       </Button>
     </Fragment>)
   })
@@ -1155,7 +874,7 @@ export default observer(function 敏感指标登记本(props: Props) {
           style={{ width: 220 }}
         />
         <span className="label">科室</span>
-        <DeptSelect hasAllDept={ appStore.HOSPITAL_ID === 'gzsrm' ? isAllDepartments: false} onChange={() => { }} style={{ width: 150 }} />
+        <DeptSelect hasAllDept={appStore.HOSPITAL_ID === 'gzsrm' ? isAllDepartments : false} onChange={() => { }} style={{ width: 150 }} />
         {/* {popoverContent && (
           <Popover
             placement="bottom"
@@ -1189,8 +908,8 @@ export default observer(function 敏感指标登记本(props: Props) {
           </Select>
         </React.Fragment>}
         {
-          location.href.includes('QCRG_GSY_07') && (
-            <Button onClick={() => setPatientVisible(true)}>添加患者</Button>
+          (location.pathname.includes('QCRG_GSY_07') || location.pathname.includes('QCRG_GSY_12')) && (
+            <Button onClick={() => onAddPatient()}>添加患者</Button>
           )
         }
         {selectedBlockId && (
@@ -1205,7 +924,7 @@ export default observer(function 敏感指标登记本(props: Props) {
             <Button onClick={exportExcel}>导出</Button>
             {authStore.isAdmin && (
               <Button
-                onClick={() =>{
+                onClick={() => {
                   if (appStore.HOSPITAL_ID === 'gzsrm' && authStore.selectedDeptCode === '全院') {
                     message.warning('科室全院情况下不可以设置，请选择科室！')
                     return
@@ -1239,11 +958,11 @@ export default observer(function 敏感指标登记本(props: Props) {
         )}
         {
           isWhyx &&
-          <SelectedBtnCon {...{config,customSign,customBatch}}/>
+          <SelectedBtnCon {...{ config, customSign, customBatch }} />
         }
       </NewPageHeader>
       <TableCon
-      className={[['whyx','whhk'].includes(appStore.HOSPITAL_ID) ? 'whyxTable':''].join(' ')}
+        className={[['whyx', 'whhk'].includes(appStore.HOSPITAL_ID) ? 'whyxTable' : ''].join(' ')}
       >
         {selectedBlockId ? (
           <React.Fragment>
@@ -1280,17 +999,17 @@ export default observer(function 敏感指标登记本(props: Props) {
             {
               !isWhyx &&
               <div className="selected-operate-con">
-                <SelectedBtnCon {...{config,customSign}}/>
+                <SelectedBtnCon {...{ config, customSign }} />
               </div>
             }
             {
               appStore.hisMatch({
                 map: {
-                  'whyx,whhk':<div className="search-box">
+                  'whyx,whhk': <div className="search-box">
                     <InputNumber onChange={(value) => {
-                      setPageOptions({ ...pageOptions, pageSize:value || 20, pageIndex: 1 })
+                      setPageOptions({ ...pageOptions, pageSize: value || 20, pageIndex: 1 })
                     }} placeholder="请输入条数" />
-                </div>
+                  </div>
                 },
                 vague: true
               })
@@ -1311,6 +1030,7 @@ export default observer(function 敏感指标登记本(props: Props) {
       <settingGeneralModal.Component />
       {/* 患者弹窗 */}
       <PatientDialog
+        isMulti={true}
         visible={patientVisible}
         onOk={handlePatientSelect}
         onCancel={() => setPatientVisible(false)}
@@ -1353,7 +1073,7 @@ const Container = styled(Wrapper)`
     color: orange !important;
   }
 `;
-const  NewPageHeader = styled(PageHeader)`
+const NewPageHeader = styled(PageHeader)`
 height: auto;
 min-height: 50px;
 flex-wrap: wrap;
@@ -1362,42 +1082,6 @@ padding-top: 5px;
 .ant-btn {
   margin-bottom: 5px;
 }`;
-
-const LineCon = styled.div`
-  width: 100%;
-  height: 100%;
-  position: relative;
-  min-height: 100px;
-  &.height-50{
-    min-height: 50px;
-  }
-`;
-
-const SvgCon = styled.svg`
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  left: 0;
-  top: 0;
-  line {
-    stroke: #e8e8e8;
-    stroke-width: 1;
-  }
-`;
-const TextCon = styled.div`
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  left: 0;
-  top: 0;
-`;
-const Text = styled.div<{ x: string; y: string; deg: string }>`
-  position: absolute;
-  left: ${p => p.x};
-  top: ${p => p.y};
-  white-space: nowrap;
-  transform: rotate(${p => p.deg}deg);
-`;
 
 const ThBox = styled.div`
   height: 100%;
@@ -1449,9 +1133,3 @@ const MergeTitle = styled.div`
   padding: 4px 0;
   border-bottom: 1px solid #e8e8e8;
 `;
-
-const DisableSpan = styled.div`
-  width: 100%;
-  height: 100%;
-  background: #eee;
-`

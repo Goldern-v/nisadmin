@@ -645,14 +645,27 @@ export default function ExportNurseFileWh(props: Props) {
       data: title,
       minRow: 4,
       columns: [
-        {
-          title: '原职称名称',
-          dataKey: 'titleOld',
-        },
-        {
-          title: '现职称名称',
-          dataKey: 'titleNew',
-        },
+        ...appStore.hisMatch({
+          map: {
+            [isSdljText]: [
+              {
+                title: '职称名称',
+                dataKey: 'titleNew',
+              },
+            ],
+            other: [
+              {
+                title: '原职称名称',
+                dataKey: 'titleOld',
+              },
+              {
+                title: '现职称名称',
+                dataKey: 'titleNew',
+              },
+            ]
+          },
+          vague: true
+        }),
         {
           title: '考取专业技术资格证书时间',
           dataKey: 'winNewTiTleDate',
@@ -698,20 +711,39 @@ export default function ExportNurseFileWh(props: Props) {
       mainTitle: '层级变动',
       data: hierarchy,
       minRow: 4,
-      columns: [
-        {
-          title: '原层级名称',
-          dataKey: 'nursehierarchyOld',
+      columns: appStore.hisMatch({
+        map: {
+          [isSdljText]: [
+            {
+              title: "层级名称",
+              dataKey: `nursehierarchyNew`
+            },
+            {
+              title: "开始时间",
+              dataKey: `startDate`,
+            },
+            {
+              title: "结束时间",
+              dataKey: `endDate`
+            }
+          ],
+          other: [
+            {
+              title: "原层级名称",
+              dataKey: `nursehierarchyOld`,
+            },
+            {
+              title: "现层级名称",
+              dataKey: `nursehierarchyNew`
+            },
+            {
+              title: "现层级开始时间",
+              dataKey: `startDate`
+            }
+          ]
         },
-        {
-          title: '现层级名称',
-          dataKey: 'nursehierarchyNew',
-        },
-        {
-          title: '现层级开始时间',
-          dataKey: 'startDate',
-        },
-      ]
+        vague: true
+      }),
     },
     ...appStore.hisMatch({
       map: {
