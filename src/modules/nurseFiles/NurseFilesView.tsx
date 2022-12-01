@@ -217,6 +217,11 @@ export default observer(function NurseFilesView(props: Props) {
           component: StatisticsView,
         },
         {
+          title: "社会兼职",
+          path: "/nurseFile/socialJob",
+          component: StatisticsView,
+        },
+        {
           title: "专著",
           path: "/nurseFile/monograph",
           component: StatisticsView,

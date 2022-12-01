@@ -119,7 +119,7 @@ const ROUTE_LIST = [
     name: '学会任职'
   },
   {
-    type: 'socialNurse',
+    type: 'socialJob',
     component: SocialNurse,
     name: '社会兼职'
   },
