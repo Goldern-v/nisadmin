@@ -269,6 +269,7 @@ export default function QcThreeRouter(props: Props) {
           icon: <HZBG />,
           path: "/qcThree/qcThreeMQSummary",
           component: qcThreeMQSummary,
+          hide: !authStore.level3publishedWatch,
           keepAlive: true,
           disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP",
 

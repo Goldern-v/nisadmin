@@ -1,20 +1,20 @@
 import qs from 'qs'
 import styled from 'styled-components'
 import moment from 'moment'
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import BaseTable, { DoCon } from 'src/components/BaseTable'
-import { Button, Select } from 'antd'
-import { ColumnProps } from 'antd/lib/table'
-import { appStore, authStore } from 'src/stores'
-import { observer } from 'mobx-react-lite'
-import { PageHeader, PageTitle, Place } from 'src/components/common'
+import React, {useCallback, useEffect, useMemo, useState} from 'react'
+import BaseTable, {DoCon} from 'src/components/BaseTable'
+import {Button, Select} from 'antd'
+import {ColumnProps} from 'antd/lib/table'
+import {appStore, authStore} from 'src/stores'
+import {observer} from 'mobx-react-lite'
+import {PageHeader, PageTitle, Place} from 'src/components/common'
 
-import AnalysisService, { getPageIn } from '../analysisWhyx/api'
+import AnalysisService, {getPageIn} from '../analysisWhyx/api'
 import CreateAnalysisModal from './components/CreateAnalysisModal'
-import { EXTRA_QUARTER, TYPE_LIST } from './enums'
-import { Obj } from 'src/libs/types'
+import {EXTRA_QUARTER, TYPE_LIST} from './enums'
+import {Obj} from 'src/libs/types'
 import YearPicker from 'src/components/YearPicker'
-import { useInstance } from '../committeeWorkReportDetail/hook/useModel'
+import {useInstance} from '../committeeWorkReportDetail/hook/useModel'
 
 const api = new AnalysisService();
 const Option = Select.Option;
@@ -28,13 +28,11 @@ export default observer(function QcThreeMQSummary() {
 
   const [createLoading, setCreateLoading] = useState("");
   const statusList = useMemo(() => {
-    const arr = [
-      { label: '全部', value: '' },
-      { label: '保存', value: '0' },
-      { label: '发布', value: '1' },
+    return [
+      {label: '全部', value: ''},
+      {label: '保存', value: '0'},
+      {label: '发布', value: '1'},
     ]
-    return authStore.level3Check
-      ? arr : arr.filter(v => v.value == '1')
   }, [authStore.level3Check])
   const defQuery = useCallback(() => {
     return {
@@ -276,9 +274,7 @@ export default observer(function QcThreeMQSummary() {
         </Select>
 
         <Button onClick={handleSearch}>查询</Button>
-        {authStore.level3Check && <Button onClick={handleCreate} type="primary">
-          创建
-        </Button>}
+        <Button onClick={handleCreate} type="primary">创建</Button>
       </PageHeader>
       <div className="main-contain">
         <BaseTable
