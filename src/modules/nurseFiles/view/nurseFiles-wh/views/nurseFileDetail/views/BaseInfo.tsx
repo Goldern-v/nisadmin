@@ -5,9 +5,7 @@ import React, { useEffect, useState } from "react";
 import { RouteComponentProps } from "react-router";
 import { nurseFilesService } from "../../../services/NurseFilesService";
 import { appStore, authStore } from "src/stores";
-import { sexEnum } from "src/libs/enum/common";
 import { observer } from "mobx-react-lite";
-import { globalModal } from "src/global/globalModal";
 import service from 'src/services/api'
 import BaseLayout from "../components/BaseLayout";
 import EditBaseInfoModal from "../modal/EditBaseInfoModal";
@@ -17,13 +15,12 @@ import { openAuditModal } from "../config/auditModalConfig";
 export interface Props extends RouteComponentProps { }
 /* 判断是否本人 */
 export const isSelf = () => {
-  // return appStore.queryObj.empNo == authStore!.user!.empNo
   return appStore.match.path == "/selfNurseFile/:type";
 };
-export  const editFlag=()=>{
-  if((authStore.isAdmin||authStore.isRoleManage||authStore.isAd||JSON.parse(sessionStorage.getItem('user')||'').empNo===appStore.queryObj.empNo)&&['gxjb'].includes(appStore.HOSPITAL_ID)){
+export const editFlag = () => {
+  if ((authStore.isAdmin || authStore.isRoleManage || authStore.isAd || JSON.parse(sessionStorage.getItem('user') || '').empNo === appStore.queryObj.empNo) && ['gxjb'].includes(appStore.HOSPITAL_ID)) {
     return true
-  }else{
+  } else {
     false
   }
 }
@@ -35,7 +32,7 @@ export default observer(function BaseInfo() {
   let [info, setInfo]: [any, any] = useState(
     nurseFileDetailViewModal.nurserInfo
   );
-  const [idData, setIdData] = useState(0);
+  // const [idData, setIdData] = useState(0);
   const [id, setId] = useState(0);
   let clothingInfo = [
     {
@@ -72,35 +69,9 @@ export default observer(function BaseInfo() {
     // },
   ]
   const limitsComponent = () => {
-    let btnList:Array<object> = [];
-      if(['gxjb'].includes(appStore.HOSPITAL_ID)){
-        btnList = editFlag()?[
-          {
-            label: "修改",
-            onClick: () => {
-              editBaseInfoModal.show({
-                id: id,
-                data: info,
-              });
-            },
-          },
-          {
-            label: "查看",
-            onClick: () => {
-              openAuditModal("基本信息", info, getTableData);
-            },
-          },
-        ]:[
-          {
-            label: "查看",
-            onClick: () => {
-              openAuditModal("基本信息", info, getTableData);
-            },
-          },
-        ];
-      }else{
-    if (isSelf()) {
-      btnList = [
+    let btnList: Array<object> = [];
+    if (['gxjb'].includes(appStore.HOSPITAL_ID)) {
+      btnList = editFlag() ? [
         {
           label: "修改",
           onClick: () => {
@@ -116,18 +87,44 @@ export default observer(function BaseInfo() {
             openAuditModal("基本信息", info, getTableData);
           },
         },
-      ];
-    } else {
-      btnList = [
+      ] : [
         {
-          label: info.statusColor === "1" ? "审核" : "查看",
+          label: "查看",
           onClick: () => {
             openAuditModal("基本信息", info, getTableData);
           },
         },
       ];
+    } else {
+      if (isSelf()) {
+        btnList = [
+          {
+            label: "修改",
+            onClick: () => {
+              editBaseInfoModal.show({
+                id: id,
+                data: info,
+              });
+            },
+          },
+          {
+            label: "查看",
+            onClick: () => {
+              openAuditModal("基本信息", info, getTableData);
+            },
+          },
+        ];
+      } else {
+        btnList = [
+          {
+            label: info.statusColor === "1" ? "审核" : "查看",
+            onClick: () => {
+              openAuditModal("基本信息", info, getTableData);
+            },
+          },
+        ];
+      }
     }
-  }
     return btnList;
   };
 
@@ -140,7 +137,7 @@ export default observer(function BaseInfo() {
       let data = res.data || info;
       let maps = res.data.maps || {}
       setInfo(data);
-      setIdData(data.empNo);
+      // setIdData(data.empNo);
       setId(data.id);
       let newTableDataDefault = [
         {
@@ -160,7 +157,7 @@ export default observer(function BaseInfo() {
           手机号: data.phone,
         },
         {
-          参加工作时间: (appStore.HOSPITAL_ID === 'fsxt'||appStore.HOSPITAL_ID === '925') ? data.goWorkTime : data.takeWorkTime,
+          参加工作时间: (appStore.HOSPITAL_ID === 'fsxt' || appStore.HOSPITAL_ID === '925') ? data.goWorkTime : data.takeWorkTime,
           来院工作时间: data.goHospitalWorkDate,
         },
 
@@ -169,7 +166,7 @@ export default observer(function BaseInfo() {
           取得护士执业证书时间: data.zyzsDate,
         },
         {
-          ...['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID) ? {参加护理工作时间: data.zyzsNursingPostDate} : {取得执业证书并从事护理岗位时间: data.zyzsNursingPostDate},
+          ...['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID) ? { 参加护理工作时间: data.zyzsNursingPostDate } : { 取得执业证书并从事护理岗位时间: data.zyzsNursingPostDate },
           护士执业证书有效截止日期: data.zyzsEffectiveUpDate,
         },
         {
@@ -212,6 +209,11 @@ export default observer(function BaseInfo() {
                 鞋码大小: data.shoeSize,
                 护理学会会员证号: data.membershipCardNumber,
               };
+            case 'lyrm':
+              return {
+                鞋码大小: data.shoeSize,
+                个人住址: data.address,
+              };
             default:
               return {
                 鞋码大小: data.shoeSize,
@@ -249,7 +251,7 @@ export default observer(function BaseInfo() {
           // 护士执业证书有效截止日期: data.zyzsEffectiveUpDate,
           最高学历: data.highestEducation,
         },
-        { 
+        {
           // 最高学历: data.highestEducation,
           职务: data.job,
           现职务任职起始时间: data.jobStartDate,
@@ -261,10 +263,10 @@ export default observer(function BaseInfo() {
         },
       ]
       let newTableData = (() => {
-        switch(appStore.HOSPITAL_ID) {
-          case "fsxt" :
-           case "925" : return newTableDataFxst
-          default : return newTableDataDefault
+        switch (appStore.HOSPITAL_ID) {
+          case "fsxt":
+          case "925": return newTableDataFxst
+          default: return newTableDataDefault
         }
       })()
 
@@ -314,11 +316,9 @@ export default observer(function BaseInfo() {
             if (name) lastItem[name] = val
           }
         }
-        if (['fsxt','925'].includes(appStore.HOSPITAL_ID)) {
+        if (['fsxt', '925'].includes(appStore.HOSPITAL_ID)) {
           console.log(newTableData, 9998)
           setTableData(newTableData)
-
-
         }
       }
     }, e => { })

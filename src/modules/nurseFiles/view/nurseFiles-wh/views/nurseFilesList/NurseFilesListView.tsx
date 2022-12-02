@@ -1,32 +1,20 @@
-import qs from 'qs'
 import BaseTable from 'src/components/BaseTable'
 import store, { appStore } from 'src/stores'
 import styled from 'styled-components'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { RouteComponentProps } from 'react-router'
-import { numberToArray } from 'src/utils/array/array'
 import { observer } from 'mobx-react-lite'
-import { Spin } from 'antd'
 import { ColumnProps } from 'antd/lib/table'
 import { theme } from 'src/styles/theme'
 
 import FilterCon from './components/FilterCon'
 import FilterConTree from './components/FilterConTree'
 
-import PaginationCon from './components/PaginationCon'
 import SelectCon from './components/SelectCon'
 
 import { nurseFilesListViewModel } from './NurseFilesListViewModel'
 
 export interface Props extends RouteComponentProps { }
-/** 一行的列数 */
-let rowNum: number = 5
-const ThemeContext = React.createContext({
-  theme: 'dark'
-})
-const value = {
-  theme: 'red'
-}
 
 const columns1: ColumnProps<any>[] = [
   // {
@@ -265,19 +253,11 @@ const columns1: ColumnProps<any>[] = [
 ]
 
 const columns: ColumnProps<any>[] = [
-  // {
-  //   title: '序号',
-  //   dataIndex: '1',
-  //   key: '1',
-  //   render: (text: any, row: any, index: number) => index + 1,
-  //   align: 'center',
-  //   width: 50
-  // },
   {
     title: '科室',
     dataIndex: 'deptName',
     key: 'deptName',
-    width: 200,
+    width: appStore.HOSPITAL_ID === 'lyrm' ? 120 : 200,
     align: 'left'
   },
   {
@@ -458,7 +438,6 @@ const columns: ColumnProps<any>[] = [
     key: '6',
     width: 70,
     align: 'center',
-    // fixed: 'right',
     render(text: any, row: any) {
       return (
         <DoCon>
@@ -481,13 +460,6 @@ export default observer(function NurseFilesListView() {
       {['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID)
         ? <FilterConTree />
         : <FilterCon />}
-      {/* <Spin spinning={nurseFilesListViewModel.listSpinning}>
-        <NurseCardCon>
-          {nurseFilesListViewModel.nurseList.map((item: any, index: number) => (
-            <NurseCard rowNum={rowNum} key={index} data={item} />
-          ))}
-        </NurseCardCon>
-      </Spin> */}
       <div style={{ height: 10 }} />
       <BaseTable
         wrapperStyle={{
@@ -516,7 +488,6 @@ export default observer(function NurseFilesListView() {
         }}
         loading={nurseFilesListViewModel.listSpinning}
       />
-      {/* <PaginationCon rowNum={rowNum} /> */}
     </Wrapper>
   )
 })
@@ -538,11 +509,6 @@ const Wrapper = styled.div`
       bottom: 0;
     }
   }
-`
-const NurseCardCon = styled.div`
-  margin: 10px -10px;
-  min-height: 440px;
-  /* box-shadow: 0px -2px 4px #000000; */
 `
 
 export const DoCon = styled.div`

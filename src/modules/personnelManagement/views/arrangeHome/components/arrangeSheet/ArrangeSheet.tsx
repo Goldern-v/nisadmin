@@ -423,7 +423,7 @@ export default observer(function ArrangeSheet(props: Props) {
   ];
 
   /** 东莞横沥特殊字段 */
-  if (["dghl", "fsxt",'925', 'fssdy', 'zzwy'].includes(appStore.HOSPITAL_ID)) {
+  if (["dghl", "fsxt",'925', 'fssdy'].includes(appStore.HOSPITAL_ID)) {
     columns.push({
       title: (
         <div>
