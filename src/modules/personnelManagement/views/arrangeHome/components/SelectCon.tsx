@@ -119,7 +119,8 @@ export default observer(function SelectCon() {
     let data = {
       deptCode: selectViewModal.params.deptCode,
       startTime: selectViewModal.params.startTime,
-      endTime: selectViewModal.params.endTime
+      endTime: selectViewModal.params.endTime,
+      nurseGroup: selectViewModal.params.group,
     };
     arrangeService.export(data).then(res => {
       fileDownload(res);

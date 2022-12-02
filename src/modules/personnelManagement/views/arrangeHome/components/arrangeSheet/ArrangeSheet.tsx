@@ -109,10 +109,24 @@ export default observer(function ArrangeSheet(props: Props) {
   let columns: any = [
     {
       title: "序号",
-      render: (text: string, row: any, index: number) => index + 1,
+      dataIndex: "sortValue",
       fixed: "left",
       width: 40,
       align: "center",
+      render: (text: string, record: any) => {
+        return isEditable ? (
+            <Input
+                type="text"
+                style={{ background: "#fff" }}
+                defaultValue={text}
+                onChange={(e: any) => {
+                  record.sortValue = e.target.value;
+                }}
+                max={100}
+                min={-100}
+            />
+        ) : <span>{text}</span>;
+      }
     },
     ...nysGroupName,
     ...appStore.hisMatch({
