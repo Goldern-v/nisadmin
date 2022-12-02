@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import React, { useState, useEffect, MutableRefObject } from 'react'
+import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 import BaseBreadcrumb from 'src/components/BaseBreadcrumb'
 import { Button, message, Spin } from 'src/vendors/antd'
@@ -33,9 +33,8 @@ export default observer(function EventReportDetailView(props: Props) {
 	const [isPrint, setIsPrint] = useState(false)
 	const [spinning, setSpinning] = useState(false)
 	const [quarterRate, setQuarterRate] = useState("")
-	const [defaultDept, setDefaultDept] = useState("")
 	const [text, setText] = useState('')
-	const showText = ['fsxt','925'].includes(appStore.HOSPITAL_ID)
+	const showText = ['fsxt','925', 'zzwy'].includes(appStore.HOSPITAL_ID)
 
 	const [propsData, setPropsData] = useState({} as any);
 	useEffect(() => {

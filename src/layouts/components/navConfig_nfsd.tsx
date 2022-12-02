@@ -23,6 +23,11 @@ export const navConfig = (appStore:any,authStore?:any)=>{
       hidden: !authStore.isRoleManage
     },
     {
+      name: "病区日志",
+      path: "/wardLog"
+      // hidden: !appStore.isDev
+    },
+    {
       name: "排班管理",
       path: "/personnelManagement"
     },
@@ -68,6 +73,26 @@ export const navConfig = (appStore:any,authStore?:any)=>{
     {
       name: "我的档案",
       path: "/selfNurseFile"
+    },
+    {
+      name: "病区管理",
+      path: "/wardManagement",
+    },
+    {
+      name: "统计查询",
+      path: "/statistic"
+    },
+    {
+      name: "通知公告",
+      path: "/notice"
+    },
+    {
+      name: "护理制度",
+      path: "/nursingRulesNew"
+    },
+    {
+      name: "系统设置",
+      path: "/setting"
     },
   ];
 	

@@ -85,3 +85,11 @@ printing(ref, {
 需要在src\layouts\MainLayout.tsx页面进行新医院的配置
 
 ## .env.cmdrc 最后一项不要加上逗号，会报错
+
+## 我的档案/档案详情 左侧菜单栏增减以及具体表格列的增减需修改的文件位置
+以下是文件夹关键字
+菜单栏
+表格: /views/nurseFileDetail/views/
+编辑弹窗: /views/nurseFileDetail/modal/
+审核弹窗: /views/nurseFileDetail/config/auditModalConfig.ts
+导出档案: ExportNurseFile

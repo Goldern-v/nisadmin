@@ -83,6 +83,11 @@ export const navConfig: (AppStore: any, authStore: any) => navConfigItem[] = (ap
           name: "护理查房",
           path: "/checkWard",
           icon: require("../images/menu-icon/护理查房@2x.png")
+        },
+        {
+          name: "护士对护理工作满意度调查表",
+          path: "/nurseSatisfactionSurvey",
+          icon: require("../images/menu-icon/护理查房@2x.png"),
         }
       ]
     },

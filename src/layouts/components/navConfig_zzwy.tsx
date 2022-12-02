@@ -83,10 +83,21 @@ export const navConfig = (appStore:any,authStore?:any)=>{
                 icon: require("../images/menu-icon/护理查房@2x.png"),
             },
             {
-                name: "护士长满意度调查表",
-                path: "/nurseSatisfactionSurvey",
-                icon: require("../images/menu-icon/护理查房@2x.png"),
+              name: "护理质量指标",
+              path: "/goodOrBadRouter",
+              icon: require("../images/menu-icon/病区登记本@2x.png")
+            },
+            {
+              name: "专科护理质量指标",
+              path: "/specialNurseRouter",//path如果有改动，./NavBar也要改动
+              icon: require("../images/menu-icon/病区登记本@2x.png"),
+              hidden:!authStore.isSpecialMenu,
             }
+            // {
+            //     name: "护士长满意度调查表",
+            //     path: "/nurseSatisfactionSurvey",
+            //     icon: require("../images/menu-icon/护理查房@2x.png"),
+            // }
         ]
     },
     // {

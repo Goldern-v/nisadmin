@@ -1,7 +1,7 @@
 import styled from "styled-components"
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useLayoutEffect, useState } from "react"
 import { observer } from "mobx-react-lite"
-import { Button, Input, Modal, Select, Steps, Table } from "antd"
+import { Button, Input, Modal, Select } from "antd"
 import DeptSelect from "src/components/DeptSelect"
 import { DatePicker } from "src/vendors/antd"
 import moment from "moment"
@@ -9,15 +9,18 @@ import { getCurrentMonth } from "src/utils/date/currentMonth"
 import api from "./api"
 import BaseTable from "src/components/BaseTable";
 import { authStore } from "src/stores";
+import { Obj } from "src/libs/types"
 
 
 interface Props {
   visible: boolean
   onOk: Function
   onCancel: Function
+  isMulti?: boolean
 }
 
 export default observer((props: Props) => {
+  const { visible, onOk, onCancel, isMulti = false } = props
   const [loading, setLoading] = useState(false)
   const [form, setForm]: any = useState({
     status: '1',
@@ -26,15 +29,13 @@ export default observer((props: Props) => {
   const setFormItem = (item: {}) => {
     setForm({ ...form, ...item })
   }
-  const [tableData, setTableData] = useState([])
-  const [selected, setSelected]: any = useState({})
+  const [tableData, setTableData] = useState<Obj[]>([])
+  const [selected, setSelected] = useState<string[]>([])
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: 20
   })
   const [pages, setPages] = useState(1)
-
-  const { visible, onOk, onCancel } = props
 
   const columns: any = [
     {
@@ -108,32 +109,45 @@ export default observer((props: Props) => {
     setLoading(false)
     setTableData(data.list)
     setPages(data.page)
+    setSelected([])
   }
 
-  const handleSelect = async (changeableRowKeys: any) => {
-    setSelected(changeableRowKeys)
+  const handleChange = async (keys: any[]) => {
+    console.log('test-', keys)
+    if (!isMulti) {
+      if (keys.length > 1) {
+        setSelected([keys[keys.length - 1]])
+        return
+      }
+    }
+    setSelected(keys)
   }
 
   const handleOk = async () => {
-    const { data } = await api.getPatientItem(selected.patientId, selected.visitId)
-    const obj = {
-      patientId: data.patientId,
-      patientName: data.name,
-      wardCode: data.wardCode,
-      wardName: data.wardName,
-      inpNo: data.inpNo,
-      visitId: data.visitId,
-      bedLabel: data.bedLabel,
-      admissionDate: moment(data.admissionDate),
-      sex: data.sex,
-      birthday: data.birthday
-    }
-    onOk(obj)
+    const arr = selected.map(v => tableData.find((v1: Obj) => v1.patientId === v))
+    // const { data } = await api.getPatientItem(selected.patientId, selected.visitId)
+    // const obj = {
+    //   patientId: data.patientId,
+    //   patientName: data.name,
+    //   wardCode: data.wardCode,
+    //   wardName: data.wardName,
+    //   inpNo: data.inpNo,
+    //   visitId: data.visitId,
+    //   bedLabel: data.bedLabel,
+    //   admissionDate: moment(data.admissionDate),
+    //   sex: data.sex,
+    //   birthday: data.birthday
+    // }
+    onOk(arr)
   }
 
   useEffect(() => {
-    const promise = getData()
+    getData()
   }, [form, pagination])
+  useLayoutEffect(() => {
+    if (visible)
+      setSelected([])
+  }, [visible])
 
   return (
     <Modal
@@ -147,7 +161,7 @@ export default observer((props: Props) => {
           <Button onClick={() => onCancel()}>
             取消
           </Button>
-          <Button type='primary' disabled={!selected.patientId} onClick={handleOk}>
+          <Button type='primary' disabled={!selected.length} onClick={handleOk}>
             确定
           </Button>
         </div>
@@ -159,18 +173,13 @@ export default observer((props: Props) => {
             loading={loading}
             columns={columns}
             dataSource={tableData}
-            surplusHeight={300}
+            surplusHeight={200}
             wrapperStyle={{ padding: 0 }}
             rowKey="patientId"
             rowSelection={{
               type: 'checkbox',
-              selectedRowKeys: [selected].map(i => i.patientId),
-              onSelect: handleSelect
-            }}
-            onRow={(record) => {
-              return {
-                onClick: () => handleSelect(record).then()
-              }
+              selectedRowKeys: selected,
+              onChange: handleChange
             }}
             pagination={{
               current: pagination.current,
@@ -190,11 +199,11 @@ export default observer((props: Props) => {
           <div className='label'>护理单元:</div>
           <div className='item'>
             <DeptSelect hasAllDept deptCode={authStore.defaultDeptCode} style={{ width: '100%' }}
-                        onChange={deptCode => setFormItem({ 'wardCode': deptCode })}/>
+              onChange={deptCode => setFormItem({ 'wardCode': deptCode })} />
           </div>
           <div className='label'>出入院:</div>
           <Select value={form.status} className='item'
-                  onChange={(val: string) => setFormItem({ 'status': val })}>
+            onChange={(val: string) => setFormItem({ 'status': val })}>
             <Select.Option value="1">在院</Select.Option>
             <Select.Option value="2">出院</Select.Option>
           </Select>
@@ -202,16 +211,16 @@ export default observer((props: Props) => {
           <DatePicker.RangePicker
             className='item'
             value={form.time}
-            onChange={(dates) => setFormItem({ 'time': dates })}/>
+            onChange={(dates) => setFormItem({ 'time': dates })} />
           <div className='label'>病人信息:</div>
           <Input value={form.name} className='item' placeholder='姓名'
-                 onChange={(event => setFormItem({ 'name': event.target.value }))}/>
+            onChange={(event => setFormItem({ 'name': event.target.value }))} />
           <Input value={form.patientId} className='item' placeholder='病人ID'
-                 onChange={(event => setFormItem({ 'patientId': event.target.value }))}/>
+            onChange={(event => setFormItem({ 'patientId': event.target.value }))} />
           <Input value={form.inpNo} className='item' placeholder='住院号'
-                 onChange={(event => setFormItem({ 'inpNo': event.target.value }))}/>
+            onChange={(event => setFormItem({ 'inpNo': event.target.value }))} />
           <Input value={form.bedLabel} className='item' placeholder='床号'
-                 onChange={(event => setFormItem({ 'bedLabel': event.target.value }))}/>
+            onChange={(event => setFormItem({ 'bedLabel': event.target.value }))} />
 
           <Button type='primary' className='item' onClick={() => getData()}>查询</Button>
         </SearchWrapper>

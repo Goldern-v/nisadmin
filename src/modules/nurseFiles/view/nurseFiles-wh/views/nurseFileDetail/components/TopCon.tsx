@@ -8,7 +8,6 @@ import { observer } from 'mobx-react-lite'
 import createModal from 'src/libs/createModal'
 import DeptChangeModal from '../modal/DeptChangeModal'
 import LeaveModal from '../modal/LeaveModal'
-import qs from 'qs'
 import { nurseFilesService } from '../../../services/NurseFilesService'
 import { isSelf } from '../views/BaseInfo'
 import ExportNurseFileWh from './../../exportNurseFileWh/ExportNurseFileWh'
@@ -16,8 +15,6 @@ import ExportNurseFileWh from './../../exportNurseFileWh/ExportNurseFileWh'
 export interface Props extends RouteComponentProps { }
 
 const BG = require('../../../images/顶部背景.png')
-
-const DEFAULT_HEADIMG = require('../../../images/护士默认头像.png')
 
 const WARNNING_ICON = require('../../../images/注意.png')
 
@@ -75,7 +72,6 @@ export default observer(function TopCon() {
           <Breadcrumb.Item>档案详情</Breadcrumb.Item>
         </Breadcrumb>
       </BreadcrumbCon>
-      {/* <HeadImg src={nearImageUrl || DEFAULT_HEADIMG} /> */}
       <Name>
         {empName}{' '}
         <Info>
@@ -102,7 +98,6 @@ export default observer(function TopCon() {
       {authStore.isRoleManage && !isSelf() && (
         <div style={{width: '100%', display: 'flex', justifyContent: 'flex-end', marginTop: '-10px'}}>
           <React.Fragment>
-            {/* <ExportBtn onClick={() => setExportVisible(true)}>导出档案</ExportBtn> */}
             <ExportBtn className={["gzsrm"].includes(appStore.HOSPITAL_ID) ? "gzsrmExportBtn" : ""} onClick={() => setExportVisible(true)}>导出档案</ExportBtn>
             {
               !["gzsrm"].includes(appStore.HOSPITAL_ID) ?

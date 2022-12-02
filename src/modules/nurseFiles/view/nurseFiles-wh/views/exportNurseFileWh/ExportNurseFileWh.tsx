@@ -13,12 +13,14 @@ import BaseInfoTable from './pages/BaseInfoTable'
 // import SpecializNurseTable from './pages/SpecializNurseTable'
 import { visibleList } from './utils/visibleList'
 import { TableCon } from './components/TableCon'
+import { Obj } from 'src/libs/types'
 
 export interface Props {
   empNo: string | number
   callback: (success: boolean) => any
 }
-
+const isSdljText = 'sdlj,nfsd'
+const isSdlj = ['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID)
 export default function ExportNurseFileWh(props: Props) {
   const { empNo, callback } = props
   const exportId = 'exportNurserFileWh'
@@ -35,10 +37,18 @@ export default function ExportNurseFileWh(props: Props) {
   const [specializNurseList, setSpecializNurseList] = useState([] as any[])
   /** 外出进修 */
   const [outStudyList, setOutStudyList] = useState([] as any[])
+  /**继续教育及三基考试 */
+  const [studyList, setStudyList] = useState<Obj[]>([])
+  /**新技术、新项目情况 */
+  const [technologiesAndProjects, setTechnologiesAndProjects] = useState<Obj[]>([])
+  /**重大差错事故及惩罚 */
+  const [majorErrors, setMajorErrors] = useState<Obj[]>([])
   /** 主持科研课题 */
   const [hostScienceCourse, setHostScienceCourse] = useState([] as any[])
   /** 参与科研课题 */
   const [goScienceCourse, setGoScienceCourse] = useState([] as any[])
+  /**科研课题获奖 */
+  const [scientificResearch, setScientificResearch] = useState<Obj[]>([])
   /** 专利 */
   const [patent, setPatent] = useState([] as any[])
   /** 学会任职 */
@@ -51,6 +61,10 @@ export default function ExportNurseFileWh(props: Props) {
   const [workExperience, setWorkExperience] = useState([] as any[])
   /** 医学学历教育 */
   const [medicalEducation, setMedicalEducation] = useState([] as any[])
+  /**在院工作情况 */
+  const [workRegistrationForm, setWorkRegistrationForm] = useState<Obj[]>([])
+  /**职务变动 */
+  const [jobChange, setJobChange] = useState<Obj[]>([])
   /** 职称变动 */
   const [title, setTitle] = useState([] as any[])
   // 岗位变动
@@ -171,6 +185,95 @@ export default function ExportNurseFileWh(props: Props) {
         },
       ]
     },
+    ...appStore.hisMatch({
+      map: {
+        [isSdljText]: [
+          {
+            mainTitle: '继续教育及三基考试',
+            data: studyList,
+            minRow: 3,
+            columns: [
+              {
+                title: '年度',
+                dataKey: 'year',
+              },
+              {
+                title: '达标情况',
+                dataKey: 'standardInfo',
+              },
+              {
+                title: '理论合格',
+                dataKey: 'theoryAssess',
+              },
+              {
+                title: '理论补考合格',
+                dataKey: 'theoryAssessMakeup',
+              },
+              {
+                title: '操作合格',
+                dataKey: 'operateAssess',
+              },
+              {
+                title: '操作补考合格',
+                dataKey: 'operateAssessMakeup',
+              },
+            ]
+          },
+          {
+            mainTitle: '新技术、新项目情况',
+            data: technologiesAndProjects,
+            minRow: 3,
+            columns: [
+              {
+                title: '开展项目名称',
+                dataKey: 'projectName',
+              },
+              {
+                title: '技术等级',
+                dataKey: 'technologyLevel',
+              },
+              {
+                title: '开始时间',
+                dataKey: 'startDate',
+              },
+              {
+                title: '结束时间',
+                dataKey: 'endDate',
+              },
+              {
+                title: '开展例数',
+                dataKey: 'numberCase',
+              },
+              {
+                title: '项目效益',
+                dataKey: 'projectBenefit',
+              }
+            ]
+          },
+          {
+            mainTitle: '重大差错事故及惩罚',
+            data: majorErrors,
+            minRow: 3,
+            columns: [
+              {
+                title: '时间',
+                dataKey: 'startDate',
+              },
+              {
+                title: '内容',
+                dataKey: 'content',
+              },
+              {
+                title: '备注',
+                dataKey: 'remark',
+              },
+            ]
+          },
+        ],
+        other: []
+      },
+      vague: true
+    }),
     {
       mainTitle: '主持科研课题',
       data: hostScienceCourse,
@@ -235,7 +338,7 @@ export default function ExportNurseFileWh(props: Props) {
           title: '课题主持人姓名',
           dataKey: 'hostName',
         },
-        !['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID) && {
+        !isSdlj && {
           title: '课题主持人工号',
           dataKey: 'hostNo',
         },
@@ -270,6 +373,37 @@ export default function ExportNurseFileWh(props: Props) {
         {
           title: '完成时间',
           dataKey: 'completionDate',
+        },
+      ]
+    },
+    {
+      mainTitle: '科研课题获奖',
+      data: scientificResearch,
+      minRow: 4,
+      columns: [
+        {
+          title: '主持/参与排名',
+          dataKey: 'resultType',
+        },
+        {
+          title: '项目名称',
+          dataKey: 'resultName',
+        },
+        {
+          title: '授予单位',
+          dataKey: 'grantUnit',
+        },
+        {
+          title: '授予时间',
+          dataKey: 'grantDate',
+        },
+        {
+          title: '奖励级别',
+          dataKey: 'winningLevel',
+        },
+        {
+          title: '奖励名称、等级',
+          dataKey: 'winningName',
         },
       ]
     },
@@ -332,6 +466,37 @@ export default function ExportNurseFileWh(props: Props) {
       ]
     },
     {
+      mainTitle: '专著',
+      data: monograph,
+      minRow: 5,
+      columns: [
+        {
+          title: '年份',
+          dataKey: 'year',
+        },
+        {
+          title: '专著名称',
+          dataKey: 'monographName',
+        },
+        {
+          title: '出版社名称',
+          dataKey: 'pressName',
+        },
+        {
+          title: '出版号',
+          dataKey: 'pressNumber',
+        },
+        {
+          title: '出版日期',
+          dataKey: 'pressDate',
+        },
+        {
+          title: '著者',
+          dataKey: 'participation',
+        },
+      ]
+    },
+    {
       mainTitle: '举办继续教育培训班',
       data: continueStudy,
       minRow: 7,
@@ -367,37 +532,6 @@ export default function ExportNurseFileWh(props: Props) {
       ]
     },
     {
-      mainTitle: '专著',
-      data: monograph,
-      minRow: 5,
-      columns: [
-        {
-          title: '年份',
-          dataKey: 'year',
-        },
-        {
-          title: '专著名称',
-          dataKey: 'monographName',
-        },
-        {
-          title: '出版社名称',
-          dataKey: 'pressName',
-        },
-        {
-          title: '出版号',
-          dataKey: 'pressNumber',
-        },
-        {
-          title: '出版日期',
-          dataKey: 'pressDate',
-        },
-        {
-          title: '著者',
-          dataKey: 'participation',
-        },
-      ]
-    },
-    {
       mainTitle: '工作经历',
       data: workExperience,
       minRow: 3,
@@ -416,29 +550,7 @@ export default function ExportNurseFileWh(props: Props) {
         },
       ]
     },
-    {
-      mainTitle: "职称变动",
-      data: title,
-      minRow: 4,
-      columns: [
-        {
-          title: '原职称名称',
-          dataKey: 'titleOld',
-        },
-        {
-          title: '现职称名称',
-          dataKey: 'titleNew',
-        },
-        {
-          title: '考取专业技术资格证书时间',
-          dataKey: 'winNewTiTleDate',
-        },
-        {
-          title: '聘用专业技术资格时间',
-          dataKey: "employNewTiTleDate"
-        }
-      ]
-    },
+    
     {
       mainTitle: '医学学历教育',
       data: medicalEducation,
@@ -467,6 +579,49 @@ export default function ExportNurseFileWh(props: Props) {
       ]
     },
     {
+      mainTitle: '在院工作情况',
+      data: workRegistrationForm,
+      minRow: 4,
+      columns: [
+        {
+          title: '年度',
+          dataKey: 'year',
+        },
+        {
+          title: '夜班',
+          dataKey: 'nightShift',
+        },
+        {
+          title: '查房',
+          dataKey: 'checkOut',
+        },
+        {
+          title: '护理会诊',
+          dataKey: 'nursingConsultation',
+        },
+        {
+          title: '病例讨论',
+          dataKey: 'caseDiscussion',
+        },
+        {
+          title: '个案',
+          dataKey: 'individualCase',
+        },
+        {
+          title: '小讲课',
+          dataKey: 'lecture',
+        },
+        {
+          title: '带教',
+          dataKey: 'teaching',
+        },
+        {
+          title: '证明人',
+          dataKey: 'witness',
+        },
+      ],
+    },
+    {
       mainTitle: '岗位变动',
       data: transferPost,
       minRow: 4,
@@ -486,49 +641,143 @@ export default function ExportNurseFileWh(props: Props) {
       ]
     },
     {
+      mainTitle: "职称变动",
+      data: title,
+      minRow: 4,
+      columns: [
+        ...appStore.hisMatch({
+          map: {
+            [isSdljText]: [
+              {
+                title: '职称名称',
+                dataKey: 'titleNew',
+              },
+            ],
+            other: [
+              {
+                title: '原职称名称',
+                dataKey: 'titleOld',
+              },
+              {
+                title: '现职称名称',
+                dataKey: 'titleNew',
+              },
+            ]
+          },
+          vague: true
+        }),
+        {
+          title: '考取专业技术资格证书时间',
+          dataKey: 'winNewTiTleDate',
+        },
+        {
+          title: '聘用专业技术资格时间',
+          dataKey: "employNewTiTleDate"
+        }
+      ]
+    },
+    ...appStore.hisMatch({
+      map: {
+        [isSdljText]: [
+          {
+            mainTitle: '职务变动',
+            data: jobChange,
+            minRow: 4,
+            columns: [
+              {
+                title: '科室',
+                dataKey: 'deptName',
+              },
+              {
+                title: '职务',
+                dataKey: 'position',
+              },
+              {
+                title: '开始时间',
+                dataKey: 'startDate',
+              },
+              {
+                title: '结束时间',
+                dataKey: 'endDate',
+              },
+            ]
+          }
+        ],
+        other: []
+      },
+      vague: true
+    }),
+    {
       mainTitle: '层级变动',
       data: hierarchy,
       minRow: 4,
-      columns: [
-        {
-          title: '原层级名称',
-          dataKey: 'nursehierarchyOld',
+      columns: appStore.hisMatch({
+        map: {
+          [isSdljText]: [
+            {
+              title: "层级名称",
+              dataKey: `nursehierarchyNew`
+            },
+            {
+              title: "开始时间",
+              dataKey: `startDate`,
+            },
+            {
+              title: "结束时间",
+              dataKey: `endDate`
+            }
+          ],
+          other: [
+            {
+              title: "原层级名称",
+              dataKey: `nursehierarchyOld`,
+            },
+            {
+              title: "现层级名称",
+              dataKey: `nursehierarchyNew`
+            },
+            {
+              title: "现层级开始时间",
+              dataKey: `startDate`
+            }
+          ]
         },
-        {
-          title: '现层级名称',
-          dataKey: 'nursehierarchyNew',
-        },
-        {
-          title: '现层级开始时间',
-          dataKey: 'startDate',
-        },
-      ]
+        vague: true
+      }),
     },
-    {
-      mainTitle: '编制变动',
-      data: workConversion,
-      minRow: 3,
-      columns: [
-        {
-          title: '原编制名称',
-          dataKey: 'workConversionOld',
-        },
-        {
-          title: '现编制名称',
-          dataKey: 'workConversionNew',
-        },
-        {
-          title: '现编制开始时间',
-          dataKey: 'startDate',
-        },
-      ]
-    },
+    ...appStore.hisMatch({
+      map: {
+        [isSdljText]: [],
+        other: [
+          {
+            mainTitle: '编制变动',
+            data: workConversion,
+            minRow: 3,
+            columns: [
+              {
+                title: '原编制名称',
+                dataKey: 'workConversionOld',
+              },
+              {
+                title: '现编制名称',
+                dataKey: 'workConversionNew',
+              },
+              {
+                title: '现编制开始时间',
+                dataKey: 'startDate',
+              },
+            ]
+          },
+        ]
+      },
+      vague: true
+    }),
   ]
 
   const handlePrint = () => {
     let printEl = document.getElementById(exportId)
     let documentTitle = window.document.title
-    window.document.title = `${['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID) ? localStorage.getItem('empName') + '-': ''}护理人员信息档案`
+    window.document.title = `${isSdlj ? localStorage.getItem('empName') + '-' : ''}护理人员信息档案`
 
     if (printEl) printing(printEl, {
       injectGlobalCss: true,
@@ -566,12 +815,32 @@ export default function ExportNurseFileWh(props: Props) {
       nurseFilesService
         .commonfindByEmpNoSubmit('nurseWHOutStudy', empNo)
         .then(res => setOutStudyList(res.data)),
+      ...appStore.hisMatch({
+        map: {
+          [isSdljText]: [
+            nurseFilesService.commonfindByEmpNoSubmit('nurseWHEduSanki', empNo).then((res) => {
+              setStudyList(res.data)
+            }),
+            nurseFilesService.commonfindByEmpNoSubmit('nurseWHCarryOut', empNo).then((res) => {
+              setTechnologiesAndProjects(res.data)
+            }),
+            nurseFilesService.commonfindByEmpNoSubmit('nurseWHPunishment', empNo).then((res) => {
+              setMajorErrors(res.data)
+            }),
+          ],
+          other: []
+        },
+        vague: true
+      }),
       nurseFilesService
         .commonfindByEmpNoSubmit('nurseWHHostScienceCourse', empNo)
         .then(res => setHostScienceCourse(res.data)),
       nurseFilesService
         .commonfindByEmpNoSubmit('nurseWHGoScienceCourse', empNo)
         .then(res => setGoScienceCourse(res.data)),
+      nurseFilesService
+        .commonfindByEmpNoSubmit('nurseWHScienceResult', empNo)
+        .then(res => setScientificResearch(res.data)),
       nurseFilesService
         .commonfindByEmpNoSubmit('nurseWHPatent', empNo)
         .then(res => setPatent(res.data)),
@@ -590,6 +859,12 @@ export default function ExportNurseFileWh(props: Props) {
       nurseFilesService
         .commonfindByEmpNoSubmit('nurseWHMedicalEducation', empNo)
         .then(res => setMedicalEducation(res.data)),
+      nurseFilesService
+        .commonfindByEmpNoSubmit('nurseWHRegistrationWork', empNo)
+        .then(res => setWorkRegistrationForm(res.data)),
+      nurseFilesService
+        .commonfindByEmpNoSubmit('nurseWHChanges', empNo)
+        .then(res => setJobChange(res.data)),
       nurseFilesService
         .commonfindByEmpNoSubmit('nurseWHTitle', empNo)
         .then(res => setTitle(res.data)),
@@ -630,17 +905,17 @@ export default function ExportNurseFileWh(props: Props) {
             key={tableIdx}
           >
             <colgroup>
-              {cfg.columns.filter((it:any) => it != false).map((column: any, columnIdx: number) => (
+              {cfg.columns.filter((it: any) => it != false).map((column: any, columnIdx: number) => (
                 <col width={column.col || ''} key={`${tableIdx}-${columnIdx}-col`} />
               ))}
             </colgroup>
             <thead></thead>
             <tbody>
               <tr className="main-title-row">
-                <td colSpan={cfg.columns.filter((it:any) => it != false).length}>{cfg.mainTitle}</td>
+                <td colSpan={cfg.columns.filter((it: any) => it != false).length}>{cfg.mainTitle}</td>
               </tr>
               <tr className="title-row">
-                {cfg.columns.filter((it:any) => it != false).map((column: any, columnIdx: number) => (
+                {cfg.columns.filter((it: any) => it != false).map((column: any, columnIdx: number) => (
                   <td key={`${tableIdx}-${columnIdx}-title`}>{column.title}</td>
                 ))}
               </tr>
@@ -648,7 +923,7 @@ export default function ExportNurseFileWh(props: Props) {
                 <tr
                   className="content-row"
                   key={`${tableIdx}-${itemIdx}-row`}>
-                  {cfg.columns.filter((it:any) => it != false).map((column: any, columnIdx: number) => (
+                  {cfg.columns.filter((it: any) => it != false).map((column: any, columnIdx: number) => (
                     <td
                       key={`${tableIdx}-${columnIdx}-${itemIdx}-content`}>
                       {item[column.dataKey]}

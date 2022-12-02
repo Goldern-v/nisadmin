@@ -115,7 +115,7 @@ export const sectionList: SectionListItem[] = [
   },
   {
     sectionId: "4",
-    sectionTitle: "二）检查科室",
+    sectionTitle: "（二）检查科室",
     modalTitle: "编辑检查科室",
     data: {},
     keyName: "checkDept",

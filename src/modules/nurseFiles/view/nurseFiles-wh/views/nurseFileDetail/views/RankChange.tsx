@@ -40,7 +40,7 @@ export default observer(function PersonWinning() {
     },
     ...appStore.hisMatch({
       map: {
-        sdlj: [
+        'sdlj,nfsd': [
           {
             title: '层级名称',
             dataIndex: 'nursehierarchyNew',
@@ -48,6 +48,19 @@ export default observer(function PersonWinning() {
             width: 100,
             align: 'center'
           },
+          {
+            title: '开始时间',
+            dataIndex: 'startDate',
+            key: 'startDate',
+            width: 120,
+            align: 'center'
+          }, {
+            title: '结束时间',
+            dataIndex: 'endDate',
+            key: 'endDate',
+            width: 120,
+            align: 'center'
+          }
         ],
         other: [
           {
@@ -64,28 +77,17 @@ export default observer(function PersonWinning() {
             width: 100,
             align: 'center'
           },
+          {
+            title: '现层级开始时间',
+            dataIndex: 'startDate',
+            key: 'startDate',
+            width: 120,
+            align: 'center'
+          }
         ]
-      }
+      },
+      vague: true
     }),
-    ...!['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID) ? [{
-      title: '现层级开始时间',
-      dataIndex: 'startDate',
-      key: 'startDate',
-      width: 120,
-      align: 'center'
-    }] : [{
-      title: '开始时间',
-      dataIndex: 'startDate',
-      key: 'startDate',
-      width: 120,
-      align: 'center'
-    }, {
-      title: '结束时间',
-      dataIndex: 'endDate',
-      key: 'endDate',
-      width: 120,
-      align: 'center'
-    }],
     {
       title: '附件',
       dataIndex: 'fj',

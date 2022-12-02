@@ -43,6 +43,8 @@ export default function ExportNurseFileWh(props: Props) {
   const [patent, setPatent] = useState([] as any[])
   /** 学会任职 */
   const [learnJob, setLearnJob] = useState([] as any[])
+  // 社会兼职
+  const [socialJob, setSocialJob] = useState([] as any[])
   /** 举办继续教育培训班 */
   const [continueStudy, setContinueStudy] = useState([] as any[])
   /** 专著 */
@@ -818,6 +820,9 @@ export default function ExportNurseFileWh(props: Props) {
       nurseFilesService
         .commonfindByEmpNoSubmit('nurseWHLearnJob', empNo)
         .then(res => setLearnJob(res.data)),
+        nurseFilesService
+        .commonfindByEmpNoSubmit('nurseWHSocialJob', empNo)
+        .then(res => setSocialJob(res.data)),
       nurseFilesService
         .commonfindByEmpNoSubmit('nurseWHContinueStudy', empNo)
         .then(res => setContinueStudy(res.data)),
