@@ -194,8 +194,8 @@ export default function EditWorkHistoryModal(props: Props) {
           zyzsEffectiveUpDate: data.zyzsEffectiveUpDate || null,
           zyzsUrl: data.zyzsUrl ? data.zyzsUrl.split(",") : [],
         },
-        "highesteducation_url":data.maps.highesteducation_url,
-        "newtitle_url":data.maps.newtitle_url,
+        "highesteducation_url":data.maps != null ? data.maps.highesteducation_url : null,
+        "newtitle_url": data.maps != null ?  data.maps.newtitle_url : null,
       });
     }
   }, [visible]);
