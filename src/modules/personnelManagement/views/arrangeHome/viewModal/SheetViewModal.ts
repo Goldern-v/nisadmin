@@ -486,7 +486,7 @@ class SheetViewModal {
   }
 
   saveSheetTableData(status: "0" | "1" | undefined) {
-    if (document.querySelector(".public-hour-warning")) {
+    if (document.querySelector(".public-hour-warning")&&appStore.HOSPITAL_ID!=='sdlj') {
       return message.warning("存在公休天数小于0的护士，请修正");
     }
     if (document.querySelector(".period-hour-warning")&&appStore.HOSPITAL_ID!=='sdlj') {
