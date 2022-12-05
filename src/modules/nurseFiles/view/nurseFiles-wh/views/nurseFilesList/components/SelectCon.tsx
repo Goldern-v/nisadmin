@@ -1,15 +1,12 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Place } from 'src/components/common'
-import { Select, Input, Button } from 'antd'
+import { Button } from 'antd'
 import { nurseFilesListViewModel } from '../NurseFilesListViewModel'
 import AddNursingModal from '../modal/AddNursingModal'
-import DeptSelect from 'src/components/DeptSelect'
 import { observer } from 'mobx-react-lite'
 import { appStore, authStore } from 'src/stores'
 import emitter from 'src/libs/ev'
-
-const Option = Select.Option
 
 export default observer(function SelectCon(props: any, context: any) {
   const [visible, setVisible] = useState(false)
@@ -21,13 +18,6 @@ export default observer(function SelectCon(props: any, context: any) {
     setVisible(false)
   }
 
-  const onChange = (value: string) => {
-    nurseFilesListViewModel.loadNursingList()
-  }
-  const onSearch = () => {
-    nurseFilesListViewModel.loadNursingList()
-  }
-
   useEffect(() => {
     return () => {}
   }, [])
@@ -37,12 +27,6 @@ export default observer(function SelectCon(props: any, context: any) {
       <Wrapper>
         <Title>护士档案</Title>
         <Place />
-        {/* <span>科室：</span>
-        <DeptSelect onChange={onChange} /> */}
-
-        {/* <Button type='primary' onClick={onSearch}>
-          搜索
-        </Button> */}
         <Button
           onClick={() => {
             emitter.emit('nurseFileResize')
@@ -52,7 +36,6 @@ export default observer(function SelectCon(props: any, context: any) {
         </Button>
         <Button
           type='primary'
-          // style={{ marginLeft: 40, marginBottom: 20 }}
           onClick={() => nurseFilesListViewModel.loadNursingList()}
         >
           查询

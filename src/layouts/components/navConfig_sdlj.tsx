@@ -58,6 +58,15 @@ export const navConfig = (appStore:any,authStore?:any)=>{
       name: "学习培训",
       path: "/continuingEdu"
     },
+    {
+        name: "敏感指标",
+        path: "/indicator"
+    },
+    {
+        name: "敏感指标登记本",
+        path: "/sensitiveRegister",
+        // hidden: !appStore.isDev
+    },
     // {
     //   name: "不良事件",
     //   path: "/wardRegister",
@@ -94,6 +103,6 @@ export const navConfig = (appStore:any,authStore?:any)=>{
       path: "/setting",
     },
   ];
-	
+
 	return  navList
 }

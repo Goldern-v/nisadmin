@@ -46,14 +46,6 @@ function AddNursingModal(props: Props) {
     form: { getFieldDecorator, validateFields, setFieldsValue, resetFields }
   } = props
 
-  // const handleSubmit = (e: any) => {
-  //   validateFields((err, value) => {
-  //     if (err) {
-  //       return
-  //     }
-  //   })
-  // }
-
   const onSave = () => {
     validateFields((err, value) => {
       if (err) {
@@ -130,7 +122,8 @@ const blurSetForm =(e:ChangeEvent<HTMLInputElement>)=>{
 
         <Form.Item {...formItemLayout} label='所属科室'>
           {getFieldDecorator('deptCode', {
-            initialValue: authStore.selectedDeptCode
+            rules: [{ required: true, message: '科室不能为空' }],
+            initialValue: authStore.selectedDeptCode === '全院' ? '' : authStore.selectedDeptCode,
           })(
             ['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID)
             ? <TreeSelectCom
@@ -236,16 +229,8 @@ const blurSetForm =(e:ChangeEvent<HTMLInputElement>)=>{
             </Select>
           )}
         </Form.Item>
-
-        {/*
-        <Form.Item {...formItemLayout}>
-          <Button type='primary' htmlType='submit'>
-            Register
-          </Button>
-        </Form.Item> */}
       </Form>
     </Modal>
   )
 }
 export default Form.create()(observer(AddNursingModal)) as any
-// const Wrapper = styled.div``
