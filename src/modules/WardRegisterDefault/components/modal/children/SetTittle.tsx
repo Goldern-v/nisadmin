@@ -43,7 +43,6 @@ export default observer(function SetTittle(props: Props) {
   const calLabel2 = ['', 'timeCalculation']// 累加
 
   let value = [] as any
-  //  const [cascaderOptions, setCascaderOptions]:any = useState([
   let cascaderOptions: any = [{
     value: '',
     label: '文本框',
@@ -80,22 +79,12 @@ export default observer(function SetTittle(props: Props) {
     value: 'timeCalculation',
     label: '自动计算项',
     multiple: true,
-    //   isLeaf:false,
     children: [...calculationList],
-    // children:[
-    // 	{value: '时间选择',
-    // 	label: '时间选择',}
-    // ],
     //这里的内容要动态计算
   },
   {
     value: 'cumulative',
     label: '自动累加项',
-    //   children:[
-    // 	{value: '时间选择',
-    // 	label: '时间选择',}
-    // ],
-    //   isLeaf:false,
     children: [...iderateList],
   },
   ];
@@ -195,9 +184,8 @@ export default observer(function SetTittle(props: Props) {
             width: 300,
             render: (text: any, record: any, index: any) => {
               return <>
-                {["qhwy", 'dglb'].includes(appStore.HOSPITAL_ID) ? <Cascader changeOnSelect={true}
+                {["qhwy", 'dglb','whyx'].includes(appStore.HOSPITAL_ID) ? <Cascader changeOnSelect={true}
                   options={cascaderOptions}
-                  //   expandTrigger="click"
                   style={{ width: '100%', textAlign: 'center' }}
                   expandTrigger="hover"
                   defaultValue={record.cascaderCode || ['']}
@@ -209,7 +197,6 @@ export default observer(function SetTittle(props: Props) {
                         return <span>文本框</span>
                       }
                       // 是给多选
-                      // else if(record.timeBeginCode!='' || record.timeEndCode!=''){
                       return <div className="tag-list">
                         {record.timeBeginCode && <Tag color="lime" closable onClose={() => {
                           record.timeBeginCode = ''
@@ -237,7 +224,6 @@ export default observer(function SetTittle(props: Props) {
                       // }
 
                     } else if (selectedOptions[0].value == 'cumulative') {
-                      // console.log('444===',record)
                       // 累计
                       if (record.cumulativeTarget && record.cumulativeTarget != '') {
                         return <span style={{ color: '#10c8ff' }}>{record.cumulativeTarget}</span>
@@ -254,16 +240,12 @@ export default observer(function SetTittle(props: Props) {
                     record.itemType = value[0] //提交给后端的主要看第一级value
                     record.cascaderCode = value//记录级联选择的code
                     if (value[0] == 'cumulative' || value[0] == 'timeCalculation') {
-                      // console.log('first')
-                      // getNextList(l[l.length-1])
                     }
 
                     if (value[0] == 'cumulative' && value.length > 1) {//累加
                       // 累加目标列
-                      // console.log('222')
                       record.cumulativeTarget = value[1]
                     } else {
-                      // console.log('111')
                       record.cumulativeTarget = ''
                     }
                     if (l[0].multiple && value.length > 1) {
@@ -283,9 +265,7 @@ export default observer(function SetTittle(props: Props) {
                         if (record.timeBeginCode == '') {
                           // 开始时间为空，设置开始时间
                           // 为什么用l[1].label,不用l[l.length-1].label,因为l[l.length-1].label会把第一层级填充
-                          // if(l.length>1){
                           record.timeBeginCode = l[l.length - 1].label
-                          // }
                         } else {
                           if (record.timeEndCode == '') {
                             // 已有开始时间，结束时间为空 设置结束时间
