@@ -76,8 +76,6 @@ export default observer(function QcThreeResult(props) {
     await instance.init(id)
     setData(instance.getDataInAllData('pageInfo'))
 
-    console.log('test-id', id)
-
     // setLoading(true);
     // let reportYear = "";
     // if (query.reportYear !== null) reportYear = query.reportYear.format("YYYY");

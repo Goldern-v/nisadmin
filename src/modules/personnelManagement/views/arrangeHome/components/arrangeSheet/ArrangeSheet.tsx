@@ -112,20 +112,22 @@ export default observer(function ArrangeSheet(props: Props) {
       dataIndex: "sortValue",
       fixed: "left",
       width: 40,
+      key:'sortValue',
       align: "center",
       render: (text: string, record: any) => {
         return isEditable ? (
             <Input
                 type="text"
                 style={{ background: "#fff" }}
-                defaultValue={text}
-                onChange={(e: any) => {
+                defaultValue={record.sortValue}
+                key={record.sortValue}
+                onChange={(e:any) => {
                   record.sortValue = e.target.value;
                 }}
                 max={100}
                 min={-100}
             />
-        ) : <span>{text}</span>;
+        ) : <span>{record.sortValue}</span>;
       }
     },
     ...nysGroupName,
@@ -423,7 +425,7 @@ export default observer(function ArrangeSheet(props: Props) {
   ];
 
   /** 东莞横沥特殊字段 */
-  if (["dghl", "fsxt",'925', 'fssdy', 'zzwy'].includes(appStore.HOSPITAL_ID)) {
+  if (["dghl", "fsxt",'925', 'fssdy'].includes(appStore.HOSPITAL_ID)) {
     columns.push({
       title: (
         <div>
@@ -761,6 +763,7 @@ export default observer(function ArrangeSheet(props: Props) {
   }
 
   useLayoutEffect(() => {
+    console.log("====",sheetViewModal.sheetTableData.map((item:any)=>item.sortValue))
     try {
       (document as any)
         .getElementById("baseTable")!
@@ -914,96 +917,82 @@ export default observer(function ArrangeSheet(props: Props) {
 
   return (
     <Wrapper className={classNames({ isEdit })} id="arrangeSheet">
-      {sheetViewModal.sheetTableData.length > 0 && (
-        <BaseTable
+      <BaseTable
           loading={sheetViewModal.tableLoading}
           surplusHeight={surplusHeight}
           surplusWidth={surplusWidth}
           columns={columns}
           // fixedFooter={true}
-          dataSource={sheetViewModal.sheetTableData}
+          dataSource={sheetViewModal.sheetTableData.concat([])}
           footer={() => {
             return (
-              <React.Fragment>
-                {
-                  appStore.hisMatch({
-                    map: {
-                      'qhwy,dglb':
-                        <div className='remark-con system'>
-                          <div className="remark-title">
-                            系统标注:
-                          </div>
-                          <div>
-                            <p>1.符号标识："▲" 代表全院应急；"★" 代表科室应急班；"<span style={{color:"red",fontSize:"18px"}}>➁</span>"代表二线；"<span style={{color:"red",fontSize:"18px"}}>➂</span>"代表三线；</p>
-                          </div>
-                      </div>,
-                      'whyx,whhk':
-                        <div className="remark-con system">
-                          <div className="remark-title">
-                            系统标注:
-                          </div>
-                          <div>
-                            <p>
-                              1.符号标识：“▲”代表<span className="underline">白班</span>应急；“★”代表<span className="underline">夜班应急</span>，左上角“<span style={{ color: "red" }}>♥</span>”代表<span className="underline">期望</span>排班。
-                            </p>
-                            <p>
-                              2.字体颜色：名字<span style={{ color: "red" }}>红色</span>为<span className="underline">实习生</span>；名字<span style={{ color: "blue" }}>蓝色</span>为<span className="underline">进修生</span>；班次<span style={{ color: "red" }}>红色</span>为<span className="underline">各类休假</span>。
-                            </p>
-                            <p>
-                              3.背景颜色：名字<span style={{ background: "#fff58a" }}>黄色</span>为<span className="underline">未脱教护士</span>；班次<span style={{ background: "#b2a595" }}>棕色</span>为<span className="underline">中夜班</span>。
-                            </p>
-                          </div>
-                        </div>,
-                      default:""
-                    },
-                    vague: true
-                  })
-                }
-                <div className={"remark-con real"}>
-                  <div className="remark-title">
-                    {appStore.HOSPITAL_ID == "nys" ? "备注：" : "排班备注："}
+                <React.Fragment>
+                  {
+                    appStore.hisMatch({
+                      map: {
+                        'qhwy,dglb':
+                            <div className='remark-con system'>
+                              <div className="remark-title">
+                                系统标注:
+                              </div>
+                              <div>
+                                <p>1.符号标识："▲" 代表全院应急；"★" 代表科室应急班；"<span style={{color:"red",fontSize:"18px"}}>➁</span>"代表二线；"<span style={{color:"red",fontSize:"18px"}}>➂</span>"代表三线；</p>
+                              </div>
+                            </div>,
+                        'whyx,whhk':
+                            <div className="remark-con system">
+                              <div className="remark-title">
+                                系统标注:
+                              </div>
+                              <div>
+                                <p>
+                                  1.符号标识：“▲”代表<span className="underline">白班</span>应急；“★”代表<span className="underline">夜班应急</span>，左上角“<span style={{ color: "red" }}>♥</span>”代表<span className="underline">期望</span>排班。
+                                </p>
+                                <p>
+                                  2.字体颜色：名字<span style={{ color: "red" }}>红色</span>为<span className="underline">实习生</span>；名字<span style={{ color: "blue" }}>蓝色</span>为<span className="underline">进修生</span>；班次<span style={{ color: "red" }}>红色</span>为<span className="underline">各类休假</span>。
+                                </p>
+                                <p>
+                                  3.背景颜色：名字<span style={{ background: "#fff58a" }}>黄色</span>为<span className="underline">未脱教护士</span>；班次<span style={{ background: "#b2a595" }}>棕色</span>为<span className="underline">中夜班</span>。
+                                </p>
+                              </div>
+                            </div>,
+                        default:""
+                      },
+                      vague: true
+                    })
+                  }
+                  <div className={"remark-con real"}>
+                    <div className="remark-title">
+                      {appStore.HOSPITAL_ID == "nys" ? "备注：" : "排班备注："}
+                    </div>
+                    <Input.TextArea
+                        readOnly={!isEdit}
+                        defaultValue={sheetViewModal.remark}
+                        autosize={!isEdit}
+                        onBlur={(e) => {
+                          sheetViewModal.remark = e.target.value;
+                        }}
+                        style={{ minHeight: 100, textAlign: "left" }}
+                        className={appStore.HOSPITAL_ID == "nys" ? "nysCss" : ""}
+                    />
                   </div>
-                  <Input.TextArea
-                    readOnly={!isEdit}
-                    defaultValue={sheetViewModal.remark}
-                    autosize={!isEdit}
-                    onBlur={(e) => {
-                      sheetViewModal.remark = e.target.value;
-                    }}
-                    style={{ minHeight: 100, textAlign: "left" }}
-                    className={appStore.HOSPITAL_ID == "nys" ? "nysCss" : ""}
-                  />
-                </div>
-                <div className={"remark-con space"}>
-                  <div className="remark-title">
-                    {appStore.HOSPITAL_ID == "nys" ? "备注：" : "排班备注："}
+                  <div className={"remark-con space"}>
+                    <div className="remark-title">
+                      {appStore.HOSPITAL_ID == "nys" ? "备注：" : "排班备注："}
+                    </div>
+                    <Input.TextArea
+                        value={sheetViewModal.remark}
+                        autosize={!isEdit}
+                        style={{ minHeight: 100, textAlign: "left" }}
+                        className={appStore.HOSPITAL_ID == "nys" ? "nysCss" : ""}
+                    />
                   </div>
-                  <Input.TextArea
-                    value={sheetViewModal.remark}
-                    autosize={!isEdit}
-                    style={{ minHeight: 100, textAlign: "left" }}
-                    className={appStore.HOSPITAL_ID == "nys" ? "nysCss" : ""}
-                  />
-                </div>
-              </React.Fragment>
+                </React.Fragment>
             );
           }}
           type={isEdit && !sheetViewModal.isPush ? ["diagRow"] : []}
           moveRow={moveRow}
-        />
-      )}
-      {sheetViewModal.sheetTableData.length <= 0 && (
-        <BaseTable
-          loading={sheetViewModal.tableLoading}
-          surplusHeight={surplusHeight}
-          surplusWidth={surplusWidth}
-          columns={columns}
-          // fixedFooter={true}
-          dataSource={sheetViewModal.sheetTableData}
-          type={isEdit && !sheetViewModal.isPush ? ["diagRow"] : []}
-          moveRow={moveRow}
-        />
-      )}
+      />
       <contextMenu.Component />
       <editEffectiveTimeModal.Component />
       <editVacationCountModal.Component />
@@ -1031,8 +1020,7 @@ const Wrapper = styled.div`
     height: 27px;
   }
   #baseTable {
-    /* margin: 10px;
-    border-radius: 5px; */
+ 
     .ant-table-body td,
     .ant-table-tbody td {
       padding: 0 2px !important;

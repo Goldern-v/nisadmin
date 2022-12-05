@@ -34,7 +34,7 @@ export interface Props extends ModalComponentProps {
   data?: any;
   getTableData?: () => {};
 }
-const uploadCard = () => Promise.resolve("123");
+
 const rules: Rules = {
   cardNumber: (val: any) => {
     if (val && val.length != 18) {
@@ -428,7 +428,7 @@ export default function EditWorkHistoryModal(props: Props) {
          {appStore.HOSPITAL_ID !== 'gxjb'?
            <Col span={12}>
            <Form.Field label={['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID) ? `夏季鞋码大小` : `鞋码大小`} name="shoeSize">
-             <SelectOrAutoInput dict="鞋码大小" />
+              {'lyrm' === appStore.HOSPITAL_ID ? <Input /> : <SelectOrAutoInput dict="鞋码大小" />}
            </Form.Field>
          </Col>: <Col span={12}>
            <Form.Field label={`家庭住址`} name="address">
@@ -455,6 +455,13 @@ export default function EditWorkHistoryModal(props: Props) {
               <Input />
             </Form.Field>
           </Col>}
+          {
+            'lyrm' === appStore.HOSPITAL_ID && <Col span={12}>
+              <Form.Field label='个人住址' name="address">
+                <Input />
+              </Form.Field>
+            </Col>
+          }
         </Row>
         <Row>
           <Col span={12}>
@@ -468,7 +475,6 @@ export default function EditWorkHistoryModal(props: Props) {
           </Col>
           <Col span={12}>
             <Form.Field label={`添加护士执业证书`} name="zyzsUrl">
-              {/* <ImageUploader upload={uploadCard} text='添加护士执业证书' /> */}
               <MultipleImageUploader
                 text="添加图片"
                 tip={

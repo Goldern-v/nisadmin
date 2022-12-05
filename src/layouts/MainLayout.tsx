@@ -1,9 +1,8 @@
 import styled from "styled-components";
-import React, { useState, useEffect, useLayoutEffect } from "react";
-import Header from "./components/Header";
+import React, { useEffect, useLayoutEffect } from "react";
 import NavBar from "./components/NavBar";
 import RouterView, { RouteComponentProps } from "src/components/RouterView";
-import store, { appStore, authStore } from "src/stores";
+import store, { appStore } from "src/stores";
 import service from "src/services/api";
 import { observer } from "mobx-react-lite";
 import AduitModal from "../global/modal/AduitModal";
@@ -30,7 +29,7 @@ export default observer(function MainLayout(props: Props) {
   /** 审核模块区分 */
   let aduitModal = appStore.hisMatch({
     map: {
-      "wh,gzsrm,gxjb,fsxt,fssdy,whyx,sdlj, lyrm,gdtj,qhwy,lyyz,wjgdszd,zzwy,zhzxy,whhk,925,ytll,dglb,whsl": createModal(AduitModalWh),
+      "wh,gzsrm,gxjb,fsxt,fssdy,whyx,sdlj,lyrm,gdtj,qhwy,lyyz,wjgdszd,zzwy,zhzxy,whhk,925,ytll,dglb,whsl": createModal(AduitModalWh),
       other: createModal(AduitModal),
     },
     vague: true,
@@ -39,7 +38,7 @@ export default observer(function MainLayout(props: Props) {
   let groupsAduitModal = appStore.hisMatch({
     map: {
       "hj,ys,dzlc,gyd": createModal(GroupsAduitModal),
-      "wh,gzsrm,gxjb,fsxt,fssdy,whyx,sdlj, lyrm,gdtj,qhwy,lyyz,wjgdszd,zzwy,zhzxy,whhk,925,ytll,dglb,whsl": createModal(GroupsAduitModalWh),
+      "wh,gzsrm,gxjb,fsxt,fssdy,whyx,sdlj,lyrm,gdtj,qhwy,lyyz,wjgdszd,zzwy,zhzxy,whhk,925,ytll,dglb,whsl": createModal(GroupsAduitModalWh),
       other: createModal(GroupsAduitModalNew),
     },
     vague: true,
@@ -57,14 +56,6 @@ export default observer(function MainLayout(props: Props) {
         }
       }
     });
-    // if (appStore.HOSPITAL_ID == "wh") {
-    //   if (
-    //     !authStore.user ||
-    //     (authStore.user && authStore.user.roleManage != "1")
-    //   ) {
-    //     // appStore.history.push('/login')
-    //   }
-    // }
   }, []);
 
   useLayoutEffect(() => {
@@ -79,10 +70,7 @@ export default observer(function MainLayout(props: Props) {
       className="MainLayoutWrapper"
       style={(payload && payload.style) || {}}
     >
-      {/* <Header /> */}
-      {/* {appStore.isDev ? <NavBarNew {...props} /> : <NavBar {...props} />} */}
       <NavBar {...props} />
-      {/* {store.authStore.selectedDeptName} */}
       <RouterViewCon className="MainLayoutRouterViewCon">
         <RouterView routes={props.routes} />
       </RouterViewCon>

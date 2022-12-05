@@ -20,6 +20,7 @@ import { meunConfig as menuConfig_wjgdszd } from "./config/menuConfig_wjgdszd";
 import { meunConfig as menuConfig_nfzxy } from "./config/menuConfig_nfzxy";
 import { meunConfig as menuConfig_zhzxy } from "./config/menuConfig_zhzxy";
 import { meunConfig as menuConfig_ytll } from "./config/menuConfig_ytll";
+import { meunConfig as menuConfig_zzwy } from "./config/menuConfig_zzwy";
 
 export interface Props {
 }
@@ -35,7 +36,6 @@ export default function PersonnelManagementView() {
       case 'sdlj'://顺德龙江
       case 'nfsd':
       case 'gdtj':
-      case 'zzwy':
         return menuConfig_wh;
       case 'qhwy':
       case 'dglb':
@@ -74,6 +74,8 @@ export default function PersonnelManagementView() {
         return menuConfig_zhzxy
       case 'ytll':
         return menuConfig_ytll;
+      case 'zzwy':
+        return menuConfig_zzwy;
       default:
         return menuConfig_hj;
     }

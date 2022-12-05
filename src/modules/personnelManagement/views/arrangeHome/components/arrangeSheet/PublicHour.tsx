@@ -41,7 +41,7 @@ export const publicHour = (id: any) => {
     Number(user.publicHour) -
     Number(real_publicHour) +
     Number(user.current_publicHour);
-  if (total < 0) {
+  if (total < 0 && appStore.HOSPITAL_ID!=='sdlj') {
     message.warning(`${user.empName}的公休天数小于0，请修正`);
   }
   return Number(total)

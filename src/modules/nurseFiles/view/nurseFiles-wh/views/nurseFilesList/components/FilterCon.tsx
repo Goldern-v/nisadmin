@@ -1,9 +1,7 @@
 import styled from "styled-components";
-import React, { useState, useEffect, useLayoutEffect } from "react";
+import React, { useEffect, useLayoutEffect } from "react";
 import { nurseFilesListViewModel } from "../NurseFilesListViewModel";
 import { observer } from "mobx-react-lite";
-import { Button, Tag } from "antd";
-import { theme } from "src/styles/theme";
 import { to } from "src/libs/fns";
 import Form from "src/components/Form";
 import { Row, Col, Input, Select } from "src/vendors/antd";
@@ -11,9 +9,10 @@ import { statisticsViewModal } from "src/modules/nurseFiles/view/statistics/Stat
 import AgeRangePicker from "src/components/AgeRangePicker";
 import YearTimeRangePicker from "src/components/YearTimeRangePicker";
 import MonthTimeRangePicker from "src/components/MonthTimeRangePicker";
-import { appStore, authStore } from "src/stores";
+import { appStore } from "src/stores";
 import emitter from "src/libs/ev";
 import { cleanObj } from "src/utils/object/cleanObj";
+import { Obj } from "src/libs/types";
 
 export default observer(function FilterCon() {
   let refForm = React.createRef<Form>();
@@ -24,10 +23,9 @@ export default observer(function FilterCon() {
       nurseFilesListViewModel.init().then(res => {
         form &&
           form.setFields({
-            deptCode: statisticsViewModal.selectedDeptCode
+            deptCode: statisticsViewModal.selectedDeptCode,
+            sex: ''
           });
-
-        // nurseFilesListViewModel.loadNursingList()
       });
     }
   }, []);
@@ -81,7 +79,7 @@ export default observer(function FilterCon() {
     } else {
       deptCodes = value.deptCode;
     }
-    let postObj = {
+    let postObj: Obj = {
       deptCodes: deptCodes,
       name: value.name,
       newTitle: value.newTitle,
@@ -109,6 +107,9 @@ export default observer(function FilterCon() {
         ? value.zyzsEffectiveUp[1]
         : ""
     };
+    if (['lyrm'].includes(appStore.HOSPITAL_ID)) {
+      postObj.sex = value.sex 
+    }
     statisticsViewModal.selectedDeptCode = value.deptCode;
     nurseFilesListViewModel.postObj = postObj;
     nurseFilesListViewModel.loadNursingList();
@@ -269,23 +270,28 @@ export default observer(function FilterCon() {
                 </Select>
               </Form.Field>
             </Col>
-           { ['qhwy', 'whhk', 'dglb'].includes(appStore.HOSPITAL_ID) && 
-            <Col span={4} className="long--static">
-              <Form.Field label={"护理学会会员证号"} name={"membershipCardNumber"}>
-                <Input />
-              </Form.Field>
-            </Col>}
-
-            {/* <Col span={18} />
-            <Col span={6}>
-              <Button
-                type='primary'
-                style={{ marginLeft: 40, marginBottom: 20 }}
-                onClick={() => nurseFilesListViewModel.loadNursingList()}
-              >
-                查询
-              </Button> */}
-            {/* </Col> */}
+            {['qhwy', 'whhk', 'dglb'].includes(appStore.HOSPITAL_ID) &&
+              <Col span={4} className="long--static">
+                <Form.Field label={"护理学会会员证号"} name={"membershipCardNumber"}>
+                  <Input />
+                </Form.Field>
+              </Col>}
+            {['lyrm'].includes(appStore.HOSPITAL_ID) &&
+              <Col span={4} className="short">
+                <Form.Field label={"性别"} name={"sex"}>
+                  <Select>
+                    {
+                      [
+                        {value: '', label: '全部' },
+                        {value: 1, label: '女' },
+                        {value: 0, label: '男' },
+                      ].map(v => (
+                        <Select.Option value={v.value} key={v.value}>{v.label}</Select.Option>
+                      ))
+                    }
+                  </Select>
+                </Form.Field>
+              </Col>}
           </Row>
         </Form>
       </Inner>
