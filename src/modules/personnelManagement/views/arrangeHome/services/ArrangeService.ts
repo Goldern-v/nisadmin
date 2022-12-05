@@ -43,30 +43,17 @@ export default class ArrangeService extends BaseApiService {
 
   /** 保存排班信息 */
   public saveOrUpdate(status: "0" | "1" | undefined, urlName: string) {
-    let setting:any =[]
-    if(appStore.HOSPITAL_ID==='sdlj'){
-       setting =sheetViewModal.sheetTableData.sort((a: any, b: any) => a.sortValue - b.sortValue).map(
+    let obj = {
+      startTime: selectViewModal.params.startTime,
+      endTime: selectViewModal.params.endTime,
+      setting: sheetViewModal.sheetTableData.sort((a: any, b: any) => a.sortValue - b.sortValue).map(
           (item: any, index: number) => ({
             ...item,
             status,
             sortValue: index + 1,
             timeLimit: item.timeLimit
           })
-      )
-    }else{
-      setting = sheetViewModal.sheetTableData.map(
-          (item: any, index: number) => ({
-            ...item,
-            status,
-            sortValue: index,
-            timeLimit: item.timeLimit
-          })
-      )
-    }
-    let obj = {
-      startTime: selectViewModal.params.startTime,
-      endTime: selectViewModal.params.endTime,
-      setting,
+      ),
       remark: sheetViewModal.remark,
       deptCode: selectViewModal.params.deptCode,
       startTimeWeek: moment(selectViewModal.params.startTime)
