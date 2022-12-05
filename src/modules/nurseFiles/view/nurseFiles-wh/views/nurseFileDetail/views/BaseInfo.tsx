@@ -98,6 +98,31 @@ export default observer(function BaseInfo() {
             },
           },
         ];
+      }else if(['ytll'].includes(appStore.HOSPITAL_ID)){
+        // SAVE("noSubmit", "未提交"),
+        // HANDLE("handle", "审核中"),
+        // SUCCESS("success", "审核通过"),
+        // FAIL("fail", "审核不通过");
+        if(info.completeStatus=='noSubmit' || info.completeStatus=='success' || info.completeStatus=='fail'){
+          btnList.push({
+            label: "修改",
+            onClick: () => {
+              editBaseInfoModal.show({
+                id: id,
+                data: info,
+              });
+            },
+          })
+        }
+        if(info.completeStatus=='handle' || info.completeStatus=='fail'){
+          btnList.push({
+            label: "查看",
+            onClick: () => {
+              openAuditModal("基本信息", info, getTableData,'查看');
+            },
+          })
+        }
+
       }else{
     if (isSelf()) {
       btnList = [

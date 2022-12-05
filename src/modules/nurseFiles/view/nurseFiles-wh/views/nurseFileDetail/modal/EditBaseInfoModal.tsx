@@ -48,6 +48,38 @@ export default function EditWorkHistoryModal(props: Props) {
   let { visible, onCancel, onOk, data, id } = props;
   let refForm = React.createRef<Form>();
   const [nativePlaceList, setNativePlaceList] = useState([]);
+  const initFooterList = ()=>{
+    let footerList = [] as any
+    if(['ytll'].includes(appStore.HOSPITAL_ID)){
+      footerList=[
+        <Button key="back" onClick={onCancel}>
+          关闭
+        </Button>
+      ]
+      if(data?.needAudit){
+        footerList.push(<Button key="submit" type="primary" onClick={() => onSave(true)}>
+        提交审核
+      </Button>)
+      }else{
+        footerList.push(<Button key="save" type="primary" onClick={() => onSave(false)}>
+        保存
+      </Button>)
+      }
+    }else{
+      footerList=[
+        <Button key="back" onClick={onCancel}>
+          关闭
+        </Button>,
+        <Button key="save" type="primary" onClick={() => onSave(false)}>
+          保存
+        </Button>,
+        <Button key="submit" type="primary" onClick={() => onSave(true)}>
+          提交审核
+        </Button>,
+      ]
+    }
+    return footerList
+ }
 
   const onFieldChange = (name: any, value: any, form: Form<any>) => {
     if (name == "nativePlace") {
@@ -214,17 +246,7 @@ export default function EditWorkHistoryModal(props: Props) {
       onCancel={onCancel}
       forceRender
       centered
-      footer={[
-        <Button key="back" onClick={onCancel}>
-          关闭
-        </Button>,
-        <Button key="save" type="primary" onClick={() => onSave(false)}>
-          保存
-        </Button>,
-        <Button key="submit" type="primary" onClick={() => onSave(true)}>
-          提交审核
-        </Button>,
-      ]}
+      footer={initFooterList()}
     >
       <Form
         ref={refForm}

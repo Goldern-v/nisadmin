@@ -3,7 +3,7 @@ import { Obj } from 'src/libs/types'
 import { appStore } from 'src/stores'
 const isSdljText = 'sdlj,nfsd'
 const isSdlj = ['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID)
-export function openAuditModal(title: string, row: any, callBack: any) {
+export function openAuditModal(title: string, row: any, callBack: any,btnText?:string) {
   switch (title) {
     case '基本信息':
       {
@@ -13,6 +13,7 @@ export function openAuditModal(title: string, row: any, callBack: any) {
           type: 'nurseWHInformation',
           getTableData: callBack,
           title: '审核基础信息',
+          btnText:btnText || '',
           tableFormat: (() => {
             switch(appStore.HOSPITAL_ID) {
               case 'fsxt':
