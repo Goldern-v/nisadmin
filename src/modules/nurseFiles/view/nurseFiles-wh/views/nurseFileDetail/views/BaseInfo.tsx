@@ -207,7 +207,7 @@ export default observer(function BaseInfo() {
           现职务任职起始时间: data.jobStartDate,
         },
         {
-          院内工作地点: data.workAddress,
+          ...['wjgdszd'].includes(appStore.HOSPITAL_ID)?{编制科室: data.workAddress}:{院内工作地点: data.workAddress},
           工作护理单元: data.deptName,
         },
         (() => {

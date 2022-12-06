@@ -406,7 +406,8 @@ export default function EditWorkHistoryModal(props: Props) {
             </Form.Field>
           </Col>
           {appStore.HOSPITAL_ID !== 'fsxt'&& appStore.HOSPITAL_ID !== '925' && <Col span={12} style={{height: ['qhwy', 'whhk', 'dglb'].includes(appStore.HOSPITAL_ID) ? '52px' : '53px' }}>
-            <Form.Field label={`院内工作地点`} name="workAddress">
+            <Form.Field label={ ['wjgdszd'].includes(appStore.HOSPITAL_ID) ? '编制科室' : `院内工作地点` }
+            name="workAddress">
               <SelectOrAutoInput dict="院内工作地点" />
             </Form.Field>
           </Col>}

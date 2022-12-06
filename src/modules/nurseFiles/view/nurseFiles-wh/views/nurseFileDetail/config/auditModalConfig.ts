@@ -117,7 +117,7 @@ export function openAuditModal(title: string, row: any, callBack: any,btnText?:s
                   },
                   {
                     "现职务任职起始时间": 'jobStartDate',
-                    "院内工作地点": 'workAddress'
+                    ...['wjgdszd'].includes(appStore.HOSPITAL_ID)?{"编制科室": 'workAddress'}:{"院内工作地点": 'workAddress'},
                   },
                   ...appStore.hisMatch({
                     map: {
