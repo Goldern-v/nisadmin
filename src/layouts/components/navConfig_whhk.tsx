@@ -21,6 +21,7 @@ export const navConfig = (appStore:any,authStore?:any)=>{
     {
       name: "审核管理",
       path: "/auditsManagement",
+      hidden: !authStore.isNotANormalNurse,
     },
     {
       name: "档案管理",
