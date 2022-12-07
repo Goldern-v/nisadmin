@@ -265,11 +265,6 @@ export default observer(function OperateResultReview() {
               appStore.history.goBack()
             })
             setPublishLoading(false)
-            // trainingResultModel.
-            //   setBaseInfo({
-            //     ...baseInfo,
-            //     isResultPublished: 1
-            //   })
           }, () => setPublishLoading(false))
       }
     })

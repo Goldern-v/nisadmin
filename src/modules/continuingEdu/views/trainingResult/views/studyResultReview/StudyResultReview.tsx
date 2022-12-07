@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { Button } from 'antd'
 import { Link } from 'react-router-dom'
 import {
@@ -23,7 +23,7 @@ export interface Props { }
 
 //查看学习结果
 export default observer(function StudyResultReview() {
-  const { history, queryObj } = appStore
+  const { history } = appStore
   const { query, tableData, tableDataTotal, loading, baseInfo, menuInfo, isSignType } = trainingResultModel
 
   const statusColumns = (() => {
@@ -135,11 +135,11 @@ export default observer(function StudyResultReview() {
     <TopPannel>
       <NavCon>
         <Link to="/home">主页</Link>
-        <span> > </span>
+        <span> {'>'} </span>
         <span>{menuInfo.firstLevelMenuName || '一级目录'}</span>
-        <span> > </span>
+        <span> {'>'} </span>
         {<a onClick={() => appStore.history.goBack()}>{menuInfo.secondLevelMenuName}</a> || <span>二级目录</span>}
-        <span> > 查看结果</span>
+        <span> {'>'} 查看结果</span>
       </NavCon>
       <MainTitle>{baseInfo.title}</MainTitle>
       <SubContent>
