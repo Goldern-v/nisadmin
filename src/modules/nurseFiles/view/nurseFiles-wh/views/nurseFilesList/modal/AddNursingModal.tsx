@@ -229,6 +229,24 @@ const blurSetForm =(e:ChangeEvent<HTMLInputElement>)=>{
             </Select>
           )}
         </Form.Item>
+        { '925' === appStore.HOSPITAL_ID && <Form.Item {...formItemLayout} label='身份类别'>
+          {getFieldDecorator('identityType')(
+            <Select
+              showSearch
+              filterOption={(input: any, option: any) =>
+                option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+              }
+              style={{ width: '100%' }}
+              placeholder='选择身份类别'
+            >
+              {statisticsViewModal.getDict('身份类别').map((item: any) => (
+                <Select.Option value={item.code} key={item.code}>
+                  {item.name}
+                </Select.Option>
+              ))}
+            </Select>
+          )}
+        </Form.Item>}
       </Form>
     </Modal>
   )

@@ -13,6 +13,7 @@ import { appStore } from "src/stores";
 import emitter from "src/libs/ev";
 import { cleanObj } from "src/utils/object/cleanObj";
 import { Obj } from "src/libs/types";
+import { IDENTITY_TYPES } from "src/modules/nurseFiles/enums";
 
 export default observer(function FilterCon() {
   let refForm = React.createRef<Form>();
@@ -109,6 +110,9 @@ export default observer(function FilterCon() {
     };
     if (['lyrm'].includes(appStore.HOSPITAL_ID)) {
       postObj.sex = value.sex 
+    }
+    if (['925'].includes(appStore.HOSPITAL_ID)) {
+      postObj.identityType = value.identityType 
     }
     statisticsViewModal.selectedDeptCode = value.deptCode;
     nurseFilesListViewModel.postObj = postObj;
@@ -287,6 +291,21 @@ export default observer(function FilterCon() {
                         {value: 0, label: '男' },
                       ].map(v => (
                         <Select.Option value={v.value} key={v.value}>{v.label}</Select.Option>
+                      ))
+                    }
+                  </Select>
+                </Form.Field>
+              </Col>}
+            {['925'].includes(appStore.HOSPITAL_ID) &&
+              <Col span={4} className="short">
+                <Form.Field label={"身份类别"} name={"identityType"}>
+                  <Select>
+                    {
+                      [
+                        { code: '', name: '全部' },
+                        ...IDENTITY_TYPES
+                      ].map(v => (
+                        <Select.Option value={v.code} key={v.code}>{v.name}</Select.Option>
                       ))
                     }
                   </Select>

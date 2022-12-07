@@ -54,8 +54,23 @@ export function openAuditModal(title: string, row: any, callBack: any,btnText?:s
                   {
                     "工作护理单元": 'deptName',
                     "鞋码": 'shoeSize',
-
                   },
+                  ...appStore.hisMatch({
+                    map: {
+                      925: [
+                        {
+                          '身高': 'height',
+                          '护士服尺码': 'nurse_dress_size',
+                        },
+                        {
+                          '家庭住址': 'address',
+                          '合同截至日期': 'contract_due_date',
+                        }
+                        
+                      ],
+                      other: []
+                    },
+                  }),
                   {
                     "鞋款式": "nurse_shoes_style",
                     '夏装-上衣': 'summer_jacket_size'

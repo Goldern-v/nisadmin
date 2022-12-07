@@ -63,6 +63,25 @@ export default observer(function BaseInfo() {
       type: "winter_isolation_suit_size",
       name: "冬装-医生款"
     },
+    ...appStore.hisMatch({
+      map: {
+        '925': [
+          {
+            type: 'height',
+            name: '身高',
+          },
+          {
+            type: 'nurse_dress_size',
+            name: '护士服尺码',
+          },
+          {
+            type: 'contract_due_date',
+            name: '合同截至日期',
+          }
+        ],
+        other: []
+      }
+    })
     // {
     //   type: "nurse_shoes_size",
     //   name: "鞋码"
@@ -286,12 +305,24 @@ export default observer(function BaseInfo() {
           工作护理单元: data.deptName,
           鞋码: data.shoeSize,
         },
+        ...appStore.hisMatch({
+          map: {
+            '925': [
+              {
+                家庭住址: data.address,
+              }
+            ],
+            other: []
+          }
+        })
       ]
       let newTableData = (() => {
         switch (appStore.HOSPITAL_ID) {
           case "fsxt":
-          case "925": return newTableDataFxst
-          default: return newTableDataDefault
+          case "925":
+            return newTableDataFxst
+          default:
+          return newTableDataDefault
         }
       })()
 
@@ -330,7 +361,6 @@ export default observer(function BaseInfo() {
             if (target) val = target.name
           }
           let fieldCode = mapCfgItem.fieldCode
-          // let name = clothingInfo.find((item, index) => item.type == fieldCode).name
           let name = clothingInfo.filter((item, index) => item.type === fieldCode)[0]?.name
           // let name = mapCfgItem.fieldName
           let lastItem = newTableData[newTableData.length - 1]
