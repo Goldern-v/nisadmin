@@ -34,7 +34,6 @@ export default observer(function ChoiceQuestionsTable(props: Props) {
     labels: [] as any[],
     questionIds: [] as any[]
   })
-  console.log(tableData)
   const handleLabelAppendOk = (newLabels: any) => {
     let questionLabelIdList = newLabels.map((item: any) => item.id);
     let questionIdList = getSelectedRows().map((item: any) => item.id);

@@ -69,7 +69,7 @@ export default observer(function FollowUpRecord() {
       width: 150
     },
     {
-      title: "年假天数（天）",
+      title:appStore.HOSPITAL_ID==='sdlj' ?"公休天数（天）": "年假天数（天）",
       dataIndex: "publicHourNow",
       align: "center",
       width: 100
@@ -105,11 +105,18 @@ export default observer(function FollowUpRecord() {
         return Number(text).toFixed(2);
       }
     },
-    {
-      title: "积假结余",
-      dataIndex: "totalHoliday",
-      width: 100
-    },
+
+    ...appStore.hisMatch({
+      map: {
+        'sdlj': [],
+        other: [{
+          title: "积假结余",
+          dataIndex: "totalHoliday",
+          width: 100
+        },],
+      },
+      vague: true
+    }),
     ...appStore.hisMatch({
       map: {
         'qhwy,dglb': [
@@ -230,6 +237,7 @@ export default observer(function FollowUpRecord() {
   useEffect(() => {
     initData();
   }, [authStore.selectedDeptCode]);
+
   return (
     <Wrapper>
       <PageHeader>

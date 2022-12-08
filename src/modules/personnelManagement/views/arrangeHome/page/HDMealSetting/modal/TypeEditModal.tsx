@@ -30,7 +30,6 @@ export default observer(function TypeEditModal(props: Props) {
     if (visible) {
       setTimeout(() => {
         if (id) {
-          console.log(schMealDetailHds, '班次信息111111111111111')
           // 修改时数据回显
           setQuery({
             name,
@@ -83,7 +82,6 @@ export default observer(function TypeEditModal(props: Props) {
       onOk();
       clearInit()
     }).catch(e => {
-      console.log(e);
     });
   };
 

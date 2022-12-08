@@ -186,25 +186,41 @@ export default observer(function ArrangeSheet(props: Props) {
       },
       vague: true,
     }),
-    {
-      title: "姓名",
-      dataIndex: "empName",
-      width:['whyx','whhk'].includes(appStore.HOSPITAL_ID)?120: 50,
-      fixed: "left",
-      align: "center",
-      render(text: any, record: any) {
-        if (['whyx','whhk'].includes(appStore.HOSPITAL_ID)) {
-          return <div style={{ background: !!record.resignationFlag ? '#fff58a' : '' }}>
-            <span style={{ color: record.empNo == '实习' ? "#ff3030" : record.empNo == '进修' ? "#007aff" : "" }}>{record.empName}</span>
-            {record.extraUser && <React.Fragment>
-              /<span style={{ color: record.extraUser.userType == 1 ? "#ff3030" : record.extraUser.userType == 2 ? "#007aff" : "" }}>{record.extraUser.empName}</span>
-            </React.Fragment>
+    ...appStore.hisMatch({
+      map: {
+        'whyx,whhk': [
+          {
+            title: "姓名",
+            dataIndex: "empName",
+            width:120,
+            fixed: "left",
+            align: "center",
+            render(text: any, record: any) {
+
+                return <div style={{ background: !!record.resignationFlag ? '#fff58a' : '' }}>
+                  <span style={{ color: record.empNo == '实习' ? "#ff3030" : record.empNo == '进修' ? "#007aff" : "" }}>{record.empName}</span>
+                  {record.extraUser && <React.Fragment>
+                    /<span style={{ color: record.extraUser.userType == 1 ? "#ff3030" : record.extraUser.userType == 2 ? "#007aff" : "" }}>{record.extraUser.empName}</span>
+                  </React.Fragment>
+                  }
+                </div >
+            },
+          },
+        ],
+        other: [
+          {
+            title: "姓名",
+            dataIndex: "empName",
+            width:appStore.HOSPITAL_ID==='lyyz' ? 70 :  50,
+            fixed: "left",
+            align: "center",
+            render:(text: any, record: any)=>{
+              return <span>{record.empName}</span>
             }
-          </div >
-        }
-        return <span>{record.empName}</span>
+          },
+        ],
       },
-    },
+    }),
     ...appStore.hisMatch({
       map: {
         nys: [],
@@ -763,7 +779,6 @@ export default observer(function ArrangeSheet(props: Props) {
   }
 
   useLayoutEffect(() => {
-    console.log("====",sheetViewModal.sheetTableData.map((item:any)=>item.sortValue))
     try {
       (document as any)
         .getElementById("baseTable")!
@@ -828,7 +843,7 @@ export default observer(function ArrangeSheet(props: Props) {
               })) *
             70 +
             widthNys +
-            10 + (appStore.HOSPITAL_ID==='whyx'? 170 : 0) +
+            10 + (appStore.HOSPITAL_ID==='whyx'? 170 : 0) +(appStore.HOSPITAL_ID==='lyyz'? 20 : 0) +
             "px";
           setSurplusWidth(false);
         } else {

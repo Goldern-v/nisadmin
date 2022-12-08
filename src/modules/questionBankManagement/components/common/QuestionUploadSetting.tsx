@@ -56,7 +56,6 @@ export default observer(function QuestionUploadSetting(props: Props) {
   }
 
   useEffect(() => {
-    console.log(data, visible)
     if (visible) {
       setLabelList((data.labelList || []))
     }

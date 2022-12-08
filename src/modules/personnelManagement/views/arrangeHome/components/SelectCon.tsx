@@ -271,7 +271,6 @@ export default observer(function SelectCon() {
 
   // 导出片区Excel
   const exportBigDeptExcel = (param: any) => {
-    console.log(param, "paramparam");
     let data = {
       deptCode: selectViewModal.params.deptCode,
       startTime: selectViewModal.params.startTime,

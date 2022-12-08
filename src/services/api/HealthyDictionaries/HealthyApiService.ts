@@ -114,7 +114,6 @@ export default class HomeApiServices extends BaseApiService {
 
   // 12.保存自动推送医嘱类型
   public async preservationPushType2 (data: any) {
-    console.log(data.sex, 112223)
     const postData = {
       serialNo: data.serialNo, // string 非必须参数
       wardCode: data.wardCode, // string 必须参数
@@ -156,7 +155,7 @@ export default class HomeApiServices extends BaseApiService {
     }
     return this.get(`/educationSettingDiagnosis/delete/${getData.serialNo}`)
   }
-  
+
   // 12.保存自动推送诊断类型
   public async preservationDiagnosis (data: any) {
     const postData = {
@@ -221,5 +220,5 @@ export default class HomeApiServices extends BaseApiService {
     public async getChannelType () {
       return this.get(`/briefMission/getAdministrationDict`)
     }
-  
+
 }

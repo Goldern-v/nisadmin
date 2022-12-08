@@ -132,7 +132,8 @@ export function createContextMenu() {
 const Wrapper = styled.div<{ x: number; y: number }>`
   position: fixed;
   left: ${p => p.x}px;
-  top: ${p => p.y}px;
+  top: ${p => p.y - (22 * 3)}px;
+  //top:380px;
   z-index: 998;
   width: 150px;
   max-height: 500px;

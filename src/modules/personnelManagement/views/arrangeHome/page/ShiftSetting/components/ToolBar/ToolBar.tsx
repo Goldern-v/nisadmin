@@ -93,7 +93,6 @@ export default function ToolBar() {
     // return
     emitter.emit("获取选中班次列表", (shiftList: any) => {
       // message.success('保存排班班次设置')
-      console.log("获取选中班次", shiftList);
       // return
       shiftList = shiftList.filter((u: any) => {
         return u.status !== null && u.id;
@@ -101,7 +100,6 @@ export default function ToolBar() {
       service.scheduleShiftApiService.saveAll(shiftList).then(res => {
         message.success("保存排班班次设置成功");
         emitter.emit("更新班次列表");
-        console.log("保存排班班次", res);
       });
     });
   };
@@ -114,7 +112,6 @@ export default function ToolBar() {
       props.onChange(changedFields);
     },
     mapPropsToFields(props: any) {
-      console.log("mapPropsToFields", props);
       return {
         id: Form.createFormField({
           ...props.id,

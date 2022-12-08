@@ -233,7 +233,6 @@ function MealCon(props: { dataSource: any[] }) {
       for (let i = 0; i < list.length; i++) {
         let weekNum = moment(list[i].workDate).isoWeekday();
         let mealObj = getMealData(weekNum, item);
-        console.log(mealObj, weekNum, item)
         list[i]!.rangeName = mealObj.name;
         list[i]!.settingNightHour = mealObj.nightHour;
         list[i]!.settingMorningHour = mealObj.morningHour;

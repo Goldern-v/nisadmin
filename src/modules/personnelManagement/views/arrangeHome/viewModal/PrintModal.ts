@@ -189,7 +189,7 @@ class PrintModal {
         let insertClass = "insert-start";
         let nurse = NurseGroup[j];
         let nowPageEl = document.getElementById(tableId);
-        if (nowPageEl) console.log(nowPageEl.offsetHeight, pageHeight);
+        // if (nowPageEl) console.log(nowPageEl.offsetHeight, pageHeight);
         let nextPage = !!(nowPageEl && nowPageEl.offsetHeight > pageHeight);
 
         if (j == 0 || nextPage) {
@@ -574,7 +574,7 @@ class PrintModal {
         let insertClass = "insert-start";
         let nurse = NurseGroup[j];
         let nowPageEl = document.getElementById(tableId);
-        if (nowPageEl) console.log(nowPageEl.offsetHeight, pageHeight);
+        // if (nowPageEl) console.log(nowPageEl.offsetHeight, pageHeight);
         let nextPage = !!(nowPageEl && nowPageEl.offsetHeight > pageHeight);
 
         if (j == 0 || nextPage) {
@@ -1024,7 +1024,7 @@ class PrintModal {
       for (let j = 0; j < NurseGroup.length; j++) {
         let nurse = NurseGroup[j];
         let nowPageEl = document.getElementById(tableId);
-        if (nowPageEl) console.log(nowPageEl.offsetHeight, pageHeight);
+        // if (nowPageEl) console.log(nowPageEl.offsetHeight, pageHeight);
         let nextPage = !!(nowPageEl && nowPageEl.offsetHeight > pageHeight);
 
         if (j == 0 || nextPage) {

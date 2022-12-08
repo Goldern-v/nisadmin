@@ -43,7 +43,7 @@ export default function ArrangAnalysisModal(props: Props) {
   /**
    * 数组对象去重合并
    * @param arr 数组对象
-   * @returns 
+   * @returns
    */
   const removeDuplicate=(arr:any[])=> {
     const newArr: any[] = [];
@@ -62,9 +62,9 @@ export default function ArrangAnalysisModal(props: Props) {
 
   /**
    * 合并两个对象内容对象key的值也合并
-   * @param obj 
-   * @param target 
-   * @returns 
+   * @param obj
+   * @param target
+   * @returns
    */
   const mergeObject = (obj:any, target:any) =>{
     let cloneObj = {};
@@ -155,7 +155,6 @@ export default function ArrangAnalysisModal(props: Props) {
                   let total: any = 0;
                   let keys = Object.keys(record);
                   for (let key of keys) {
-                    console.log(key, record[key], "aaa");
                     if (!(key == "name" || key === "key")) {
                       total += record[key].length;
                     }
@@ -209,7 +208,7 @@ export default function ArrangAnalysisModal(props: Props) {
         }
 
       }
-      
+
       // 追加排班也算进统计
       // let mergeArr = list.concat(settingsList)
       let mergeArr = [...list,...settingsList]

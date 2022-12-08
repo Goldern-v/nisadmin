@@ -160,6 +160,8 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
     case 'nfsd':
       return "http://info.cr-health.com:20111"
       return "http://192.168.1.54:9901"
+    case 'lyyz':
+      return "http://192.168.1.54:9866";
     default:
       return "http://192.168.1.54:9866";
   }

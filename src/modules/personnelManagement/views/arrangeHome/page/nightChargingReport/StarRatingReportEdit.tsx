@@ -40,7 +40,7 @@ export default observer(function StarRatingReportEdit() {
   let reportName =
     starRatingReportEditModel.getSectionData("报告名称")!.text ||
     report.reportName;
-    
+
 
   const onPrint = (isPrint: boolean) => {
     let printFun = isPrint ? printing : printing.preview;
@@ -154,7 +154,7 @@ export default observer(function StarRatingReportEdit() {
     //     fileDownload(res);
     //   });
     // }
-    
+
   };
   const onPublish = () => {
     globalModal.confirm("提交确认", "你确定要提交该报告吗？").then(res => {
@@ -222,8 +222,6 @@ export default observer(function StarRatingReportEdit() {
         >
           {starRatingReportEditModel.sectionList.map((item, index) => {
             if (item.sectionId) {
-              console.log(item)
-              console.log("item")
               let Components = starRatingReportEditModel.getSection(
                 item.sectionId
               );
@@ -253,7 +251,7 @@ export default observer(function StarRatingReportEdit() {
 
   /**
    * 渲染ScrollCon
-   * @returns 
+   * @returns
    */
   const ScrollConRender = () => {
     switch (appStore.HOSPITAL_ID) {

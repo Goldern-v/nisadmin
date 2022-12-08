@@ -153,13 +153,13 @@ export function getFun(context: any) {
       paramMap: _paramsMap,
       ...pageOptions
     } as any
-    
+
     let url: Promise<any>
     // 贵州 全院的情况下需要调后端另外一个接口
     if (appStore.HOSPITAL_ID === 'gzsrm' && authStore.selectedDeptCode === '全院')
       url = wardRegisterDefaultService.getPageGZSRM(registerCode, params)
     else url = wardRegisterDefaultService.getPage(registerCode, params)
-    
+
     url.then(res => {
         setPageLoading(false)
         if (!res.data) return
@@ -173,7 +173,7 @@ export function getFun(context: any) {
         let newList = res.data.itemDataPage.list || []
 
         setTotal(res.data.itemDataPage.totalCount);
-        
+
         // 所有计算的项
         let auto_cal = res.data.itemConfigList.filter((it:any)=>{return it.itemType=='timeCalculation'}) || []
         if(auto_cal.length>0){
@@ -195,7 +195,7 @@ export function getFun(context: any) {
             })
           });
         }
-        
+
         setItemConfigList(thMerge(res.data.itemConfigList));
         setConfig(res.data.config || {})
         setRangeConfigList(res.data.rangeConfigList);
@@ -289,7 +289,6 @@ export function getFun(context: any) {
     setPageLoading && setPageLoading(true)
     let reqDataSorce = dataSource.filter((item: any) => !item.id || item.modified)
 
-    console.log(JSON.parse(JSON.stringify(reqDataSorce)))
     wardRegisterDefaultService
       .saveAndSignAll(registerCode, selectedBlockId, reqDataSorce, false, dataMap)
       .then(res => {
@@ -691,8 +690,8 @@ export function getFun(context: any) {
     })
     let deleteIds = deleteLists.map((item: any) => ({ id: item.id }))
     /**请求前的操作 */
-    if (beforeReqCB && beforeReqCB(deleteLists) === false) return 
-    
+    if (beforeReqCB && beforeReqCB(deleteLists) === false) return
+
     globalModal
       .confirm("删除确认", "确定要删除吗？")
       .then((res: any) => {
@@ -745,13 +744,13 @@ export function getFun(context: any) {
       message.warn('未勾选项目')
       return
     }
-    
+
     let selectedRows = dataSource
       .filter((item: any) => selectedRowKeys.indexOf(item.key) >= 0)
-    
+
     const curItem = customSign.find((v:any) => v.itemCode == type)
     const roleList = curItem?.itemType.split('-')[1] ? (curItem?.itemType.split('-')[1]).split(',') : []
-  
+
     if (roleList.length > 0 && authStore.user) {
       let flag = (authStore.user.roleManageCodeList || []).find((v:string) => roleList.indexOf(v)> -1)
       if (!flag) return message.error(`权限不足，无法签名`)
@@ -769,7 +768,7 @@ export function getFun(context: any) {
       })
       return
     }
-    
+
     /**签名 */
     globalModal
       .confirm(`${type}批量签名确认`, `你确定${type}签名吗？`)
@@ -800,7 +799,7 @@ export function getFun(context: any) {
       return
     }
     let selectedRows = dataSource.filter((item: any) =>selectedRowKeys.indexOf(item.key) >= 0)
-    
+
     let newRows = dataSource.map((item: any) => {
       let newItem = JSON.parse(JSON.stringify(item))
       if (selectedRowKeys.indexOf(item.key) >= 0) {
@@ -841,7 +840,7 @@ export function getFun(context: any) {
         delete newItem.id
         newItem['班次'] = data.type ? data.type : newItem['班次']
         newItem[data.signName] = data.sign ? authStore.user?.empName : ""
-        // newItem[data.signName] = data.sign ? item[data.signName] : ""        
+        // newItem[data.signName] = data.sign ? item[data.signName] : ""
         return {
           ...newItem,
           ...customSignObj,

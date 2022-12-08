@@ -108,7 +108,6 @@ export default observer(function ChoiceQuestionEdit() {
   const handleLabelSelected = (label: any) => {
     let newNodel = { ...editModel };
     let { labelList } = newNodel;
-    console.log(newNodel)
     if (!label.labelContent) return
 
     let sameItems = labelList.filter((item: any) => item.labelContent == label.labelContent);
@@ -129,7 +128,6 @@ export default observer(function ChoiceQuestionEdit() {
     newList.splice(idx, 1)
 
     newNodel.labelList = newList
-    console.log(newNodel)
     setEditModel(newNodel);
   }
 

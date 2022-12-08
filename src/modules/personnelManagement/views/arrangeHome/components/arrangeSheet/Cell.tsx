@@ -57,7 +57,6 @@ export default observer(function Cell(props: Props) {
     );
 
     let { left: x, top: y, width, height } = target.getBoundingClientRect();
-    // console.log(event.target, x, y, width, height, 'width, height ')
     /** 公休节休不可编辑 */
 
     let disableByName =
@@ -516,6 +515,7 @@ export default observer(function Cell(props: Props) {
       ],
       {
         x: x + width,
+        // y: y - 80
         y: y + height / 2
       }
     );

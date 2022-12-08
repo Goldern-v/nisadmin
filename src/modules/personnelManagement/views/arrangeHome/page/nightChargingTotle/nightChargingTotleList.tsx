@@ -252,7 +252,6 @@ export default observer(function nightChargingTotleList() {
    */
   const getSgyGetListTwol = () => {
     starRatingReportService.sgyGetListTwol(query).then(res => {
-      console.log(res)
       if (res?.data) {
         let resData = res.data;
         setNightNum(resData.rowNum);
@@ -260,7 +259,6 @@ export default observer(function nightChargingTotleList() {
         setNightThiftList(resData.dataList);
       }
     }).catch(error => {
-      console.log(error)
       message.error(error)
     });
     // commonApiService
@@ -275,7 +273,6 @@ export default observer(function nightChargingTotleList() {
   //导出
   const exportExcel = () => {
     starRatingReportService.sgyExcelTwo(query).then(res => {
-      console.log(res);
       fileDownload(res);
     }).catch(error => {
       message.error(error)

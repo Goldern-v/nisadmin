@@ -26,7 +26,6 @@ const getColumns = (cloneData: any, calBack: Function) => {
             value={record.empName}
             onChange={(e: any) => {
               record.empName = e.target.value;
-              console.log(record)
               calBack('setData', cloneData)
             }}
           />
@@ -123,13 +122,11 @@ const getColumns = (cloneData: any, calBack: Function) => {
           //     calBack('setData', cloneData)
           //   }}
           // />
-          <Select 
-          defaultValue={standardItem.code} 
-          style={{ width: "100%" }} 
+          <Select
+          defaultValue={standardItem.code}
+          style={{ width: "100%" }}
           onChange={(value:string)=>{
-            console.log(value);
             const findItem=standardList.find(item=>item.code==value);
-            console.log(findItem)
             if(findItem){
               standardItem=findItem;
               record.totalMoney = parseInt(findItem.name) * record.num;
@@ -140,7 +137,7 @@ const getColumns = (cloneData: any, calBack: Function) => {
           >
             {
               (standardList as any).map((item:any,index:number)=>{
-               return(<Option value={item.code} key={index}>{item.code}</Option>) 
+               return(<Option value={item.code} key={index}>{item.code}</Option>)
               })
             }
           </Select>

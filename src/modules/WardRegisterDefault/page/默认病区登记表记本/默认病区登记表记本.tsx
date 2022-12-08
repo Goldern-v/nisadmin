@@ -253,7 +253,7 @@ export default observer(function 敏感指标登记本(props: Props) {
   }
 
   /**
-   * 
+   *
    * @param calculationType dayTime、day单位都是天，hour单位是小时
    */
   const getDayOrHours = (calculationType: string) => {
@@ -604,7 +604,6 @@ export default observer(function 敏感指标登记本(props: Props) {
       let endDate = moment(moment(data[arr[1]]).format('YYYY-MM-DD HH:MM'))
       const m = startDate && endDate ? endDate.diff(startDate, "m") : 0;
       hours = Math.floor(m / 30) * 0.5 + '小时';
-      console.log(startDate, endDate);
 
     }
     data[arr[2]] = String(hours)

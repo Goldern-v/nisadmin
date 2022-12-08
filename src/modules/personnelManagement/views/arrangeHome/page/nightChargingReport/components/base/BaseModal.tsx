@@ -59,8 +59,6 @@ export default observer(function BaseModal(props: Props) {
 
 
   const onSave = async () => {
-    console.log(sectionData.sectionId, data);
-
     if (sectionData.sectionId == "夜班费上报表") {
       const params = appStore.hisMatch({
         map: {
