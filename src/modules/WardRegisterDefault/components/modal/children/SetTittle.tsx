@@ -190,8 +190,11 @@ export default observer(function SetTittle(props: Props) {
                   expandTrigger="hover"
                   defaultValue={record.cascaderCode || ['']}
                   displayRender={(label: any, selectedOptions: any) => {
-
                     // 多选
+                    if(selectedOptions.length<1){
+                      // 没有的类型，比如护士长签名，护士签名
+                      return <span>文本框</span>
+                    }
                     if (selectedOptions[0].multiple) {
                       if (record.itemType == '') {
                         return <span>文本框</span>
