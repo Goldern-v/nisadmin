@@ -72,7 +72,7 @@ export default observer(function PerformChart() {
         let isOk = Number(record.totalNum) - Number(record.unExecute);
         let num: any = (isOk / Number(record.totalNum)).toFixed(2);
         return record.totalNum && record.totalNum !== "0" && isOk
-          ? `${num * 100}%`
+          ? `${Math.ceil(num * 100)}%`
           : "0%";
       }
     }
