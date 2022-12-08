@@ -4,6 +4,7 @@ import { action, observable, computed } from "mobx";
 import User from "src/models/User";
 import { DeptType } from "src/components/DeptSelect";
 import { appStore } from "src/stores";
+import moment from 'moment'
 
 export default class AuthStore {
   public constructor() {
@@ -28,6 +29,10 @@ export default class AuthStore {
 
   /** 用户选择的科室 */
   @observable public selectedDeptCode: any = "";
+  /** 用户默认的开始时间~ 结束时间*/
+  @observable public defaultDateTime:any = [moment().startOf('month'),moment()]
+  /** 用户选择的结束时间 */
+  @observable public selectDateTime:any= this.defaultDateTime;
 
   @computed
   public get selectedDeptNameAdd() {

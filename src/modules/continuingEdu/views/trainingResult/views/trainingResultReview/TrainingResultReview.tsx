@@ -20,12 +20,12 @@ import { ColumnProps } from 'src/vendors/antd'
 import { appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import Zmage from 'react-zmage'
-// import moment from 'moment'
 import AnswerSheetModal from './../../components/AnswerSheetModal/AnswerSheetModal'
 
 import { trainingResultModel } from './../../models/TrainingResultModel'
 import { trainingResultService } from '../../api/TrainingResultService'
 import TrainingRecordTable from './TrainingRecordTable'
+import { Obj } from 'src/libs/types'
 
 const TabPane = Tabs.TabPane
 
@@ -35,7 +35,7 @@ export interface Props {
 //查看培训结果
 export default observer(function TrainingResultReview() {
   const { history } = appStore
-  const scorceConfirm = createModal(ScoreConfirmModal)
+  const scoreConfirm = createModal(ScoreConfirmModal)
   const { query, tableData, tableDataTotal, loading, baseInfo, menuInfo, isSignType } = trainingResultModel
 
   const answerSheetModal = createModal(AnswerSheetModal)
@@ -89,7 +89,7 @@ export default observer(function TrainingResultReview() {
   })()
 
   /**是否显示线下培训的现场图片 */
-  const pictrueVisible = (() => {
+  const pictureVisible = (() => {
     if (appStore.HOSPITAL_ID === 'hj' || appStore.HOSPITAL_ID === 'gxjb') {
       if (baseInfo.organizationWay == '线下') return true
     }
@@ -135,7 +135,7 @@ export default observer(function TrainingResultReview() {
       width: 60,
       render: (isValidResult: number, record: any) => {
         const itemScoreConfirm = () => {
-          scorceConfirm.show({
+          scoreConfirm.show({
             onOkCallBack: () => {
               message.success(`${record.empName} 的成绩修改成功`)
               trainingResultModel.getTableData()
@@ -226,51 +226,73 @@ export default observer(function TrainingResultReview() {
       width: 100,
     }
   ]
-  // columns = appStore.HOSPITAL_ID === 'fsxt' ? fsxtColumns : columns
-  columns = appStore.hisMatch({
-    map: {
-      'fsxt,925': fsxtColumns,
-      other: columns,
-    },
-    vague:true,
-  })
-  if (baseInfo.questionStat) {
-    columns = columns.concat([
-      {
-        title: '培训后满意度调查问卷',
-        align: 'center',
-        width: 100,
-        children: [
-          {
-            dataIndex: 'scoresDesc',
-            title: '得分',
-            align: 'center',
-            width: 60,
-          },
-          {
-            dataIndex: 'fillTime',
-            title: '时间',
-            align: 'center',
-            width: 120,
-            render: (text: string) => {
-              return text || '未完成'
-            }
-          },
-          {
-            title: '操作',
-            dataIndex: 'indnex',
-            align: 'center',
-            width: 80,
-            render: (text: string, record: any) => {
-              return <DoCon>
-                <span onClick={() => viewAnwserPage(record)}>查看问卷</span>
-              </DoCon>
-            }
-          },
-        ]
+  columns = [
+    ...appStore.hisMatch({
+      map: {
+        'fsxt,925': fsxtColumns,
+        other: columns,
+      },
+      vague: true,
+    }),
+    ...appStore.hisMatch({
+      map: {
+        'true': [{
+          title: '培训后满意度调查问卷',
+          align: 'center',
+          width: 100,
+          children: [
+            {
+              dataIndex: 'scoresDesc',
+              title: '得分',
+              align: 'center',
+              width: 60,
+            },
+            {
+              dataIndex: 'fillTime',
+              title: '时间',
+              align: 'center',
+              width: 120,
+              render: (text: string) => {
+                return text || '未完成'
+              }
+            },
+            {
+              title: '操作',
+              dataIndex: 'indnex',
+              align: 'center',
+              width: 80,
+              render: (text: string, record: any) => {
+                return <DoCon>
+                  <span onClick={() => viewAnswerPage(record)}>查看问卷</span>
+                </DoCon>
+              }
+            },
+          ]
+        }],
+        other: []
+      },
+      currentHospitalId: !!baseInfo.questionStat + ``
+    }),
+    ...appStore.hisMatch({
+      map: {
+        'whyx': [{
+          title: '操作',
+          align: 'center',
+          width: 50,
+          render: (text: string, record: Obj) => (
+            <DoCon>
+              <span onClick={() => onDel(record)}>删除</span>
+            </DoCon>
+          )
+        }]
       }
-    ])
-  }
+    })
+  ]
+  // if (baseInfo.questionStat) {
+  //   columns = columns.concat([
+
+  //   ])
+  // }
 
   const handleDetail = (record: any) => {
     //查看详情
@@ -296,7 +318,7 @@ export default observer(function TrainingResultReview() {
       return
     }
 
-    scorceConfirm.show({
+    scoreConfirm.show({
       onOkCallBack: () => {
         message
           .success(`选中人员（共${selectedRowKeys.length}人）的成绩修改成功`)
@@ -307,7 +329,7 @@ export default observer(function TrainingResultReview() {
     })
   }
 
-  const viewAnwserPage = (record: any) => {
+  const viewAnswerPage = (record: any) => {
     if (!record.fillTime) {
       message.warning('学员未填写问卷')
       return
@@ -344,6 +366,22 @@ export default observer(function TrainingResultReview() {
     await trainingResultService.uploadImg(appStore.queryObj.id, file)
     await getImgList()
     return false
+  }
+  const onDel = async (record: Obj) => {
+    const { cetpId, empNo } = record
+    try {
+      const res = await trainingResultService.deleteByCetpldAndEmpNo({
+        cetpId, empNo
+      })
+      if (res.code  === '200') {
+        message.success('删除成功')
+        trainingResultModel.getTableData()
+        return
+      }
+      message.error('删除失败')
+    } catch (e) {      
+      message.error('删除失败')
+    }
   }
 
   useEffect(() => {
@@ -387,20 +425,19 @@ export default observer(function TrainingResultReview() {
         {appStore.hisMatch({
           map: {
             wh: <span></span>,
-            'fsxt,925': 
-            <React.Fragment>
-              {isSignType &&
-              <Button onClick={() => trainingResultModel.handleSignExportXingtan()}>导出签到信息</Button>}
-              <Button onClick={() => trainingResultModel.handleAttendanceExport()}>导出出勤率统计</Button>
-            </React.Fragment>,
-            // gxjb: <span></span>,
+            'fsxt,925':
+              <React.Fragment>
+                {isSignType &&
+                  <Button onClick={() => trainingResultModel.handleSignExportXingtan()}>导出签到信息</Button>}
+                <Button onClick={() => trainingResultModel.handleAttendanceExport()}>导出出勤率统计</Button>
+              </React.Fragment>,
             other: <React.Fragment>
               {isSignType &&
                 <Button onClick={() => trainingResultModel.handleSignExport()}>导出签到信息</Button>}
               <Button onClick={() => trainingResultModel.handleAttendanceExport()}>导出出勤率统计</Button>
             </React.Fragment>
           },
-          vague:true,
+          vague: true,
         })}
         <Button onClick={() => trainingResultModel.handleExportResults()}>导出</Button>
         <Button onClick={() => history.goBack()}>返回</Button>
@@ -465,7 +502,7 @@ export default observer(function TrainingResultReview() {
               </SelectionOperate>
             )}
           </TabPane>
-          {pictrueVisible && (
+          {pictureVisible && (
             <TabPane tab="现场图片" key="2">
               {
                 !imgListLoading ?
@@ -480,7 +517,6 @@ export default observer(function TrainingResultReview() {
                         imgList.length ? imgList.map((item: any, idx: number) =>
                           <div className="img-wrapper" key={idx}>
                             <img
-
                               src={item.path || ''}
                               onClick={() => {
                                 if (item.path) Zmage.browsing({
@@ -509,14 +545,14 @@ export default observer(function TrainingResultReview() {
               }
             </TabPane>
           )}
-          {["whyx","whhk"].includes(appStore.HOSPITAL_ID) && 
+          {["whyx", "whhk"].includes(appStore.HOSPITAL_ID) &&
             <TabPane tab="培训实施记录" key="2">
               <TrainingRecordTable />
             </TabPane>}
         </Tabs>
       </TableWrapper>
     </MainPannel>
-    <scorceConfirm.Component />
+    <scoreConfirm.Component />
     <answerSheetModal.Component />
   </Wrapper>
 })
@@ -617,10 +653,9 @@ const FullContent = styled.div`
   .imglist-con{
     .img-wrapper{
       width: 20%;
-      float: left;
       display: inline-block;
       padding: 0 15px;
-      margin: 10px  0;
+      margin: 10px 0;
       height: 200px;
       text-align: center;
       img{
@@ -686,7 +721,6 @@ const SelectionOperate = styled.div`
   position: absolute;
   bottom: 15px;
   left: 38px;
-  /* font-size: 12px; */
   span{
     vertical-align: middle;
   }

@@ -3,7 +3,7 @@ import { Obj } from 'src/libs/types'
 import { appStore } from 'src/stores'
 const isSdljText = 'sdlj,nfsd'
 const isSdlj = ['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID)
-export function openAuditModal(title: string, row: any, callBack: any) {
+export function openAuditModal(title: string, row: any, callBack: any,btnText?:string) {
   switch (title) {
     case '基本信息':
       {
@@ -13,6 +13,7 @@ export function openAuditModal(title: string, row: any, callBack: any) {
           type: 'nurseWHInformation',
           getTableData: callBack,
           title: '审核基础信息',
+          btnText:btnText || '',
           tableFormat: (() => {
             switch(appStore.HOSPITAL_ID) {
               case 'fsxt':
@@ -53,8 +54,23 @@ export function openAuditModal(title: string, row: any, callBack: any) {
                   {
                     "工作护理单元": 'deptName',
                     "鞋码": 'shoeSize',
-
                   },
+                  ...appStore.hisMatch({
+                    map: {
+                      925: [
+                        {
+                          '身高': 'height',
+                          '护士服尺码': 'nurse_dress_size',
+                        },
+                        {
+                          '家庭住址': 'address',
+                          '合同截至日期': 'contract_due_date',
+                        }
+                        
+                      ],
+                      other: []
+                    },
+                  }),
                   {
                     "鞋款式": "nurse_shoes_style",
                     '夏装-上衣': 'summer_jacket_size'
@@ -116,7 +132,7 @@ export function openAuditModal(title: string, row: any, callBack: any) {
                   },
                   {
                     "现职务任职起始时间": 'jobStartDate',
-                    "院内工作地点": 'workAddress'
+                    ...['wjgdszd'].includes(appStore.HOSPITAL_ID)?{"编制科室": 'workAddress'}:{"院内工作地点": 'workAddress'},
                   },
                   ...appStore.hisMatch({
                     map: {

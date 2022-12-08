@@ -257,7 +257,7 @@ export default observer(function 敏感指标登记本(props: Props) {
    * @param calculationType dayTime、day单位都是天，hour单位是小时
    */
   const getDayOrHours = (calculationType: string) => {
-    if (['qhwy', 'dglb'].includes(appStore.HOSPITAL_ID)) {
+    if (['qhwy', 'dglb','whyx'].includes(appStore.HOSPITAL_ID)) {
       if (['dayTime', 'day'].includes(calculationType)) return '(天)'
       if (['hour'].includes(calculationType)) return '(时)'
       return ''
@@ -448,7 +448,7 @@ export default observer(function 敏感指标登记本(props: Props) {
                 updateDataSource,
                 registerCode,
                 onChangeDate: (newVal: string) => {
-                  if (['qhwy', 'dglb'].includes(appStore.HOSPITAL_ID)) {
+                  if (['qhwy', 'dglb','whyx'].includes(appStore.HOSPITAL_ID)) {
                     // 时间改变 时间关联的有计算器和叠加器
                     gotoContiun(item, record, index)
                   }
@@ -502,7 +502,7 @@ export default observer(function 敏感指标登记本(props: Props) {
                 updateDataSource,
                 handleNextIptFocus,
                 onBlur: (newVal: string, oldVal: any) => {
-                  if (['qhwy', 'dglb'].includes(appStore.HOSPITAL_ID)) {
+                  if (['qhwy', 'dglb','whyx'].includes(appStore.HOSPITAL_ID)) {
                     if (item.itemType == "") {
                       // 时间改变 时间关联的有计算器和叠加器
                       gotoContiun(item, record, index)

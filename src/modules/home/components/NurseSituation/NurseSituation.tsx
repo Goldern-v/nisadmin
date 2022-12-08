@@ -43,7 +43,7 @@ export default observer(function NurseSituation() {
         }
       })
     }
-  }, [authStore.selectedDeptCode, titleBy])
+  }, [authStore.selectedDeptCode, titleBy,authStore.selectDateTime])
 
   return (
     <div>

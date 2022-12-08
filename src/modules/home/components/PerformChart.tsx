@@ -16,6 +16,10 @@ export default observer(function PerformChart() {
       startDate: moment().format(dateFormat), // 时间默认为当天
       endDate: moment().format(dateFormat)
     };
+    if(['fsxt'].includes(appStore.HOSPITAL_ID)){
+      postData.startDate = authStore.selectDateTime[0].format("YYYY-MM-DD HH:mm:ss")
+      postData.endDate = authStore.selectDateTime[1].format("YYYY-MM-DD HH:mm:ss")
+    }
     // 获取执行单情况数据
     if (authStore.selectedDeptCode && appStore.HOSPITAL_ID !== 'whyx') {
       setTableLoading(true);
@@ -31,7 +35,7 @@ export default observer(function PerformChart() {
           console.log(err);
         });
     }
-  }, [authStore.selectedDeptCode]);
+  }, [authStore.selectedDeptCode,authStore.selectDateTime]);
 
   // 表格
   const columns: any = [
@@ -68,7 +72,7 @@ export default observer(function PerformChart() {
         let isOk = Number(record.totalNum) - Number(record.unExecute);
         let num: any = (isOk / Number(record.totalNum)).toFixed(2);
         return record.totalNum && record.totalNum !== "0" && isOk
-          ? `${num * 100}%`
+          ? `${Math.ceil(num * 100)}%`
           : "0%";
       }
     }

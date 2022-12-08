@@ -5,7 +5,7 @@ import { Chart, Tooltip, Axis, Legend, Coord, Pie } from 'viser-react'
 
 import service from 'src/services/api'
 import HomeApi from 'src/modules/home/api/HomeApi.ts'
-import { authStore } from 'src/stores/index'
+import { authStore,appStore } from 'src/stores/index'
 import moment from 'moment'
 import { observer } from 'mobx-react-lite'
 moment.locale('zh-cn')
@@ -39,13 +39,15 @@ export default observer(function BedSituation () {
 
   useEffect(() => {
     // 
-    const postData = {
+    let postData = {
       wardCode: authStore.selectedDeptCode, // string 必须参数 科室编码
       startTime: moment().format(dateFormat), // string 必须参数 开始时间 2019-01-01 00:00:00
       endTime: moment()
         .add(1, 'd')
         .format(dateFormat) // string 必须参数 结束时间 2019-01-02 00:00:00
-    }
+    } as any
+
+    // console.log(authStore.defaultDateTime)
     // console.log('===BedSituation', postData)
     // service
     // 换接口下
@@ -130,7 +132,7 @@ export default observer(function BedSituation () {
           }
         })
     }
-  }, [authStore.selectedDeptCode])
+  }, [authStore.selectedDeptCode,authStore.selectDateTime])
   // 表图
   // const DataSet = require('@antv/data-set')
   // let getData = [{ item: '已占用', count: 160 }, { item: '空床', count: 40 }]

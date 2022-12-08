@@ -413,7 +413,7 @@ export default observer(function NurseFilesView(props: Props) {
     retiredRetireesCon,
     ...appStore.hisMatch({
       map: {
-        'whsl': [
+        'whsl,925': [
           {
             title: "查询统计",
             icon: <CXTJ />,
@@ -514,7 +514,8 @@ export default observer(function NurseFilesView(props: Props) {
           },
         ],
         'other': []
-      }
+      },
+      vague: true
     }),
     nursingEduFilesCon,
     traineeFilesCon,

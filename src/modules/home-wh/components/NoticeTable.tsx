@@ -65,7 +65,7 @@ export default observer(function NoticeTable() {
 
   useEffect(() => {
     getMealList();
-  }, []);
+  }, [authStore.selectDateTime]);
 
   const selectRow = (record: any) => {
     appStore.history.push(`/notice?selectedMenu=收件箱&id=${record.id}`);

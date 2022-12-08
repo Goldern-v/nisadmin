@@ -3,6 +3,7 @@ import { observable, computed, action } from 'mobx'
 import { reverseKeyValue } from 'src/utils/object/object'
 import { DictItem } from 'src/services/api/CommonApiService'
 import { appStore, authStore } from 'src/stores'
+import { IDENTITY_TYPES } from '../../enums'
 let dictList = {
   民族: 'nation',
   初始学历: 'initial_education',
@@ -79,12 +80,13 @@ class StatisticsViewModal {
     })
     this.hadData = true
   }
-  getDict(dictName: DictName | '全部科室' | '完整科室'): DictItem[] {
+  getDict(dictName: DictName | '全部科室' | '完整科室' | '身份类别'): DictItem[] {
     if (dictName == '全部科室') {
       return this.allDeptAll
-    }
-    if (dictName == '完整科室') {
+    } else if (dictName == '完整科室') {
       return this.fullDeptAll
+    } else if (dictName == '身份类别') {
+      return IDENTITY_TYPES
     } else {
       return this.dict[dictList[dictName]] || []
     }

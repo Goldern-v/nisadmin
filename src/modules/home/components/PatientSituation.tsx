@@ -21,13 +21,12 @@ export default observer(function PatientSituation() {
     }
     if (authStore.selectedDeptCode) {
       HomeApi.patientCondition(postData).then((res: any) => {
-        console.log('===patientCondition', res)
         if (res.data) {
           setDataSource(res.data)
         }
       })
     }
-  }, [authStore.selectedDeptCode])
+  }, [authStore.selectedDeptCode,authStore.selectDateTime])
   const columns: any = [
     // {
     //   title: '序号',

@@ -151,7 +151,7 @@ export default function SpecialWholeAysi(props: Props) {
 	}
 	useEffect(() => {
 		getDeptList()
-		
+
 	}, [])
 
 	/**获取特殊科室 */
@@ -160,7 +160,7 @@ export default function SpecialWholeAysi(props: Props) {
 		apiSpecialNurse.getSpecialDeptList({type:'qualityReport'}).then(res=>{
 			setPageLoading(false)
 			if(res.code == '200'){
-				
+
 				// 新建时没有全部这个选项
 				setModalDeptCode(res.data.defaultDept || '')
 				setModalDeptList(res.data.deptList || [])
@@ -262,8 +262,8 @@ export default function SpecialWholeAysi(props: Props) {
 				sessionStorage.setItem('myreport', qs.stringify(res.data))
 				history.push(`/specialAysiPrint?${qs.stringify(res.data)}`)
 			}
-			
-			
+
+
 		}).catch(err => {
 			// setModalVisible(false)
 		})
@@ -347,7 +347,7 @@ export default function SpecialWholeAysi(props: Props) {
 					>
 						查询
 					</Button>
-					{authStore.isDepartment && <Button
+					{authStore.isNotANormalNurse && <Button
 						type="primary"
 						className="span"
 						onClick={handelNewModal}

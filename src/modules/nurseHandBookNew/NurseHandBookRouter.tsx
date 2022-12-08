@@ -128,7 +128,7 @@ export default function NurseHandBookRouter() {
           disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
         },
       ],
-      'wjgdszd':[
+      'wjgdszd,gzhd':[
         {
             title:'工作职责',
             children:[
@@ -265,8 +265,8 @@ export default function NurseHandBookRouter() {
     },
     vague: true,
   })
-  
-  
+
+
   return (
     <Wrapper>
       <LeftMenuPage leftMenuConfig={leftMenuConfig} />

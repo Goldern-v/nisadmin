@@ -33,7 +33,7 @@ export interface Props { }
 export default observer(function TestingResultReview() {
   const { history, queryObj } = appStore
   const editable = !!queryObj.editable || false
-  const scorceConfirm = createModal(ScoreConfirmModal)
+  const scoreConfirm = createModal(ScoreConfirmModal)
   const answerSheet = createModal(AnswerSheetModal)
   const { query, tableData, tableDataTotal, loading, baseInfo, menuInfo } = trainingResultModel
 
@@ -164,7 +164,7 @@ export default observer(function TestingResultReview() {
       width: 70,
       render: (isValidResult: number, record: any) => {
         const itemScoreConfirm = () => {
-          scorceConfirm.show({
+          scoreConfirm.show({
             onOkCallBack: () => {
               message.success(`${record.empName} 的成绩修改成功`)
               trainingResultModel.getTableData()
@@ -223,7 +223,7 @@ export default observer(function TestingResultReview() {
       return
     }
 
-    scorceConfirm.show({
+    scoreConfirm.show({
       onOkCallBack: () => {
         message.success(`选中人员（共${selectedRowKeys.length}人）的成绩修改成功`)
         trainingResultModel.getTableData()
@@ -275,11 +275,6 @@ export default observer(function TestingResultReview() {
               appStore.history.goBack()
             })
             setPublishLoading(false)
-            // trainingResultModel.
-            //   setBaseInfo({
-            //     ...baseInfo,
-            //     isResultPublished: 1
-            //   })
           }, () => setPublishLoading(false))
       }
     })
@@ -514,7 +509,7 @@ export default observer(function TestingResultReview() {
       </ButtonGroups>
     </TopPannel>
     <div style={{ padding: "10px", boxSizing: "border-box" }}>{getPage()}</div>
-    <scorceConfirm.Component />
+    <scoreConfirm.Component />
     <answerSheet.Component />
     <AddExamPaperModal
       visible={editVisible}

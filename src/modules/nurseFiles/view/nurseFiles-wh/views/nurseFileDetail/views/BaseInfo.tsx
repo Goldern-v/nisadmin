@@ -63,6 +63,25 @@ export default observer(function BaseInfo() {
       type: "winter_isolation_suit_size",
       name: "冬装-医生款"
     },
+    ...appStore.hisMatch({
+      map: {
+        '925': [
+          {
+            type: 'height',
+            name: '身高',
+          },
+          {
+            type: 'nurse_dress_size',
+            name: '护士服尺码',
+          },
+          {
+            type: 'contract_due_date',
+            name: '合同截至日期',
+          }
+        ],
+        other: []
+      }
+    })
     // {
     //   type: "nurse_shoes_size",
     //   name: "鞋码"
@@ -95,6 +114,31 @@ export default observer(function BaseInfo() {
           },
         },
       ];
+    }else if(['ytll'].includes(appStore.HOSPITAL_ID)){
+      // SAVE("noSubmit", "未提交"),
+      // HANDLE("handle", "审核中"),
+      // SUCCESS("success", "审核通过"),
+      // FAIL("fail", "审核不通过");
+      if(info.completeStatus=='noSubmit' || info.completeStatus=='success' || info.completeStatus=='fail'){
+        btnList.push({
+          label: "修改",
+          onClick: () => {
+            editBaseInfoModal.show({
+              id: id,
+              data: info,
+            });
+          },
+        })
+      }
+      if(info.completeStatus=='handle' || info.completeStatus=='fail'){
+        btnList.push({
+          label: "查看",
+          onClick: () => {
+            openAuditModal("基本信息", info, getTableData,'查看');
+          },
+        })
+      }
+
     } else {
       if (isSelf()) {
         btnList = [
@@ -182,7 +226,7 @@ export default observer(function BaseInfo() {
           现职务任职起始时间: data.jobStartDate,
         },
         {
-          院内工作地点: data.workAddress,
+          ...['wjgdszd'].includes(appStore.HOSPITAL_ID)?{编制科室: data.workAddress}:{院内工作地点: data.workAddress},
           工作护理单元: data.deptName,
         },
         (() => {
@@ -261,12 +305,24 @@ export default observer(function BaseInfo() {
           工作护理单元: data.deptName,
           鞋码: data.shoeSize,
         },
+        ...appStore.hisMatch({
+          map: {
+            '925': [
+              {
+                家庭住址: data.address,
+              }
+            ],
+            other: []
+          }
+        })
       ]
       let newTableData = (() => {
         switch (appStore.HOSPITAL_ID) {
           case "fsxt":
-          case "925": return newTableDataFxst
-          default: return newTableDataDefault
+          case "925":
+            return newTableDataFxst
+          default:
+          return newTableDataDefault
         }
       })()
 
@@ -305,7 +361,6 @@ export default observer(function BaseInfo() {
             if (target) val = target.name
           }
           let fieldCode = mapCfgItem.fieldCode
-          // let name = clothingInfo.find((item, index) => item.type == fieldCode).name
           let name = clothingInfo.filter((item, index) => item.type === fieldCode)[0]?.name
           // let name = mapCfgItem.fieldName
           let lastItem = newTableData[newTableData.length - 1]

@@ -9,3 +9,8 @@ export const crrentMonth = () => {
 export const noCrrentMonth = () => {
   return ['', '']
 }
+
+/**字符串转moment对象 */
+export const strFormatIntoMoment = (str: string) => {
+  return str ? moment(str) : null
+}

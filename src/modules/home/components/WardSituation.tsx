@@ -39,7 +39,7 @@ export default observer(function WardSituation () {
           // setDataSource(cacheData)
         })
     }
-  }, [authStore.selectedDeptCode])
+  }, [authStore.selectedDeptCode,authStore.selectDateTime])
   const columns: any = [
     // {
     //   title: '序号',

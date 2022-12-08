@@ -2,6 +2,7 @@ import BaseApiService from "src/services/api/BaseApiService";
 import qs from "qs";
 import { appStore } from "src/stores";
 import { stepViewModal } from "../../../modal/stepComponent/StepViewModal";
+import { Obj } from "src/libs/types";
 
 export default class TrainingResultService extends BaseApiService {
   /**获取概要信息 */
@@ -241,6 +242,13 @@ export default class TrainingResultService extends BaseApiService {
   public async saveOrUpdateTrainImplementation(obj: any) {
     return this.post(
       `/studyAndTrain/teachingPlanManage/saveOrUpdateTrainImplementation`,
+      obj
+    );
+  }
+  // 删除培训结果
+  public async deleteByCetpldAndEmpNo(obj: Obj) {
+    return this.post(
+      `/studyAndTrain/teachingPlanManage/deleteByCetpIdAndEmpNo`,
       obj
     );
   }

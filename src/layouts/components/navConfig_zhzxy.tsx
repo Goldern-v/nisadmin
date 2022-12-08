@@ -31,18 +31,20 @@ export const navConfig = (appStore:any,authStore?:any)=>{
       //   path: "/wardRegister"
       //   // hidden: !appStore.isDev
       // },
-      // {
-      //   name: "一级质控",
-      //   path: "/qcOne/nursingWorkPlainList"
-      // },
-      // {
-      //   name: "二级质控",
-      //   path: "/qcTwo"
-      // },
-      // {
-      //   name: "三级质控",
-      //   path: "/qcThree"
-      // },
+      {
+        name: "一级质控",
+        path: "/qcOne/nursingWorkPlainList"
+      },
+      {
+        name: "二级质控",
+        path: "/qcTwo",
+        hidden: !authStore.isRoleManage
+      },
+      {
+        name: "三级质控",
+        path: "/qcThree",
+        hidden: !authStore.isRoleManage
+      },
       // {
       //   name: "学习培训",
       //   path: "/continuingEdu"
@@ -56,10 +58,10 @@ export const navConfig = (appStore:any,authStore?:any)=>{
       //   name: "通知公告",
       //   path: "/notice"
       // },
-      // {
-      //   name: "护理制度",
-      //   path: "/nursingRulesNew"
-      // },
+      {
+        name: "护理制度",
+        path: "/nursingRulesNew"
+      },
       {
         name: "档案管理",
         path: "/nurseFile"
@@ -76,11 +78,11 @@ export const navConfig = (appStore:any,authStore?:any)=>{
       //   name: "病区管理",
       //   path: "/wardManagement"
       // },
-      // {
-      //   name: "统计查询",
-      //   path: "/statistic",
-      //   hidden: () => !appStore.isDev
-      // },
+      {
+        name: "统计查询",
+        path: "/statistic",
+        // hidden: () => !appStore.isDev
+      },
       // {
       //   name: "进出感染区统计",
       //   path: "/InfectedAreasCount",
