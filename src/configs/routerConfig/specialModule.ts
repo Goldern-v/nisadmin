@@ -522,7 +522,7 @@ if (process.env.REACT_APP_HOSPITAL_ID == "hj") {
   specialModule = [...homeRouter(SettingView)]
 } else if (appStore.HOSPITAL_ID == 'qzxyy') {
   specialModule = [...homeRouter(SettingView)]
-} else if (['whyx','whhk'].includes(appStore.HOSPITAL_ID)) {//武汉亚心、武汉汉口
+} else if (['whyx'].includes(appStore.HOSPITAL_ID)) {//武汉亚心、武汉汉口
   specialModule = [
     setLayout("/indicator/:name", IndicatorNew, layouts.MainLayout),
     setLayout("/indicator", IndicatorNew, layouts.MainLayout),
@@ -553,6 +553,37 @@ if (process.env.REACT_APP_HOSPITAL_ID == "hj") {
     ),
     setLayout("/nursingRulesNewEdit", NursingRulesNewEdit, layouts.MainLayout)
   ];
+} else if (['whhk'].includes(appStore.HOSPITAL_ID)) {//武汉亚心、武汉汉口
+  specialModule = [
+    setLayout("/indicator/:name", IndicatorNew, layouts.MainLayout),
+    setLayout("/indicator", IndicatorNew, layouts.MainLayout),
+    setLayout("/nurseAudit", NurseAudit_whyx, layouts.MainLayout),
+    setLayout(
+        "/selfNurseFile/:type",
+        NurseFileDetailView_whyx,
+        layouts.MainLayout
+    ),
+    setLayout(
+        "/nurseFileDetail/:type",
+        NurseFileDetailView_whyx,
+        layouts.MainLayout
+    ),
+    setLayout("/auditsManagement", AuditsManagementView_wh, layouts.MainLayout),//武汉版本审核管理
+    ...homeRouter(HomeView),
+    //厚街护理制度
+    setLayout("/nursingRulesNew", NursingRulesNew_wh, layouts.MainLayout),
+    setLayout(
+        "/nursingRulesNewDetail",
+        NursingRulesNewDetail_wh,
+        layouts.MainLayout
+    ),
+    setLayout(
+        "/NursingRulesPagePreView",
+        NursingRulesPagePreview_wh,
+        layouts.MainLayout
+    ),
+    setLayout("/nursingRulesNewEdit", NursingRulesNewEdit_wh, layouts.MainLayout)
+  ];
 } else if (['lyyz','qhwy','whsl', 'dglb'].includes(appStore.HOSPITAL_ID)) {
   specialModule = [
     ...homeRouter(HomeView),
@@ -582,7 +613,7 @@ if (process.env.REACT_APP_HOSPITAL_ID == "hj") {
       layouts.MainLayout
     ),
     setLayout("/nursingRulesNewEdit", NursingRulesNewEdit, layouts.MainLayout)
-  ]  
+  ]
 } else {
   // 使用医院：临邑
   specialModule = [
