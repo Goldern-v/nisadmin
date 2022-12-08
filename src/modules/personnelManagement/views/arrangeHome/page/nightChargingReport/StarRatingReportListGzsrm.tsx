@@ -75,7 +75,7 @@ export default observer(function NursingWorkPlainList() {
       <div className={'status' + newStatus}>{approvalStatusList[newStatus].str}</div>
     )
   }
-
+  
   const columns: ColumnProps<any>[] = [
     {
       key: "index",
@@ -166,15 +166,19 @@ export default observer(function NursingWorkPlainList() {
 
   const handlePageChange = (current: number) => {
     setQuery({ ...query, pageIndex: current });
+    getList({ ...query, pageIndex: current })
+
   };
 
   const handleSizeChange = (current: number, size: number) => {
     setQuery({ ...query, pageSize: size, pageIndex: 1 });
+    getList({ ...query, pageSize: size, pageIndex: 1 })
   };
 
   const handleSearch = () => {
-    if (query.pageIndex == 1) getList(query);
     setQuery({ ...query, pageIndex: 1 });
+    getList({ ...query, pageIndex: 1 })
+
   };
 
   const monthList = (() => {

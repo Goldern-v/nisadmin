@@ -74,20 +74,25 @@ export default observer(function 夜班费上报表弹窗(props: Props) {
         'sdlj,nfsd': configSdlj.item,
         default: configDefault.item
       },
+      vague:true,
     })
     cloneData.list.push(item)
+    // console.log(item)
+    // console.log(cloneData.list)
     setData(cloneData);
   };
 
-  useEffect(() => {
-    if (!cloneData.list.length) {
-      addItem()
-    }
-  },[])
+  // useEffect(() => {
+  //   if (!cloneData.list.length) {
+  //     addItem()
+  //   }
+  // },[])
+
+  
 
   return (
     <Wrapper>
-      <div className="remark">{configSdlj.remark}</div>
+      {!['gzsrm'].includes(appStore.HOSPITAL_ID) && <div className="remark">{configSdlj.remark}</div>}
       <div className="button-con">
         <Button icon="plus" size="small" onClick={addItem}>
           添加
