@@ -39,7 +39,7 @@ export default observer(function PatientDistribute() {
         }
       })
     }
-  }, [authStore.selectedDeptCode, titleBy])
+  }, [authStore.selectedDeptCode, titleBy,authStore.selectDateTime])
 
   const selectChange = (e: any) => {
     setTitleBy(e.target.value)

@@ -36,7 +36,11 @@ class StatisticsApi extends BaseApiService {
       pageIndex: pageIndex || 0, //页码，number
       pageSize: pageSize || 10, //条数，number
       keyword
-    };
+    }as any;
+    if(['fsxt'].includes(appStore.HOSPITAL_ID)){
+      data.beginDate = authStore.selectDateTime[0].format("YYYY-MM-DD HH:mm")
+      data.endDate = authStore.selectDateTime[1].format("YYYY-MM-DD HH:mm")
+    }
     return this.post(`/mail/receive/list`, data);
   }
 
@@ -66,6 +70,10 @@ class StatisticsApi extends BaseApiService {
       startDate: data.startTime, // string 必须参数 开始时间
       endDate: data.endTime // string 必须参数 结束时间
     };
+    if(['fsxt'].includes(appStore.HOSPITAL_ID)){
+      postData.startDate = authStore.selectDateTime[0].format("YYYY-MM-DD HH:mm:ss")
+      postData.endDate = authStore.selectDateTime[1].format("YYYY-MM-DD HH:mm:ss")
+    }
     let trancePostData = this.stringify(postData);
     if (['nfzxy'].includes(appStore.HOSPITAL_ID)) { 
       return this.post(`/indexInfo/bedInfoHis`, trancePostData);   
@@ -112,21 +120,30 @@ class StatisticsApi extends BaseApiService {
       startDate: data.startTime, // string 必须参数 开始时间
       endDate: data.endTime // string 必须参数 结束时间
     };
+    if(['fsxt'].includes(appStore.HOSPITAL_ID)){
+      postData.startDate = authStore.selectDateTime[0].format("YYYY-MM-DD HH:mm:ss")
+      postData.endDate = authStore.selectDateTime[1].format("YYYY-MM-DD HH:mm:ss")
+    }
     let trancePostData = this.stringify(postData);
     return this.post(`/indexInfo/patientdistribute`, trancePostData);
   }
 
   // 3.患者情况
   public async patientCondition(data: any) {
-    const postData = {
+    let postData = {
       wardCode: data.wardCode, // string 必须参数 科室编码
       startDate: data.startTime, // string 必须参数 开始时间
       endDate: data.endTime // string 必须参数 结束时间
     };
+    if(['fsxt'].includes(appStore.HOSPITAL_ID)){
+      postData.startDate = authStore.selectDateTime[0].format("YYYY-MM-DD HH:mm:ss")
+      postData.endDate = authStore.selectDateTime[1].format("YYYY-MM-DD HH:mm:ss")
+    }
     let trancePostData = this.stringify(postData);
     if (['nfzxy'].includes(appStore.HOSPITAL_ID)) { 
       return this.post(`/indexInfo/patientConditionHis`, trancePostData);   
     }
+    
     return this.post(`/indexInfo/patientCondition`, trancePostData);
   }
 
@@ -157,18 +174,26 @@ class StatisticsApi extends BaseApiService {
     let postData = {
       deptCode: exportData.deptCode,
       item: exportData.item
-    };
+    }as any;
+    if(['fsxt'].includes(appStore.HOSPITAL_ID)){
+      postData.startDate = authStore.selectDateTime[0].format("YYYY-MM-DD HH:mm:ss")
+      postData.endDate = authStore.selectDateTime[1].format("YYYY-MM-DD HH:mm:ss")
+    }
     let trancePostData = this.stringify(postData);
     return this.post(`/indexInfo/nursingUser`, trancePostData);
   }
   // 6.病区流转情况
   public async wardFlow(data: any) {
-    const postData = {
+    let postData = {
       wardCode: data.wardCode, // string 必须参数 科室编码
       startDate: data.startTime, // string 必须参数 开始时间
       endDate: data.endTime, // string 必须参数 结束时间
       type: data.type
-    };
+    } as any
+    if(['fsxt'].includes(appStore.HOSPITAL_ID)){
+      postData.startDate = authStore.selectDateTime[0].format("YYYY-MM-DD HH:mm:ss")
+      postData.endDate = authStore.selectDateTime[1].format("YYYY-MM-DD HH:mm:ss")
+    }
     let trancePostData = this.stringify(postData);
     return this.post(`/indexInfo/wardFlow`, trancePostData);
   }
