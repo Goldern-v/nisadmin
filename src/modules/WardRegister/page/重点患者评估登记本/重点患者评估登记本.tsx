@@ -1562,7 +1562,7 @@ useEffect(()=>{
                     </Button>
                   </React.Fragment>
                 ),
-                'QCRG_14_1,QCRG_10,QCRG_10_2,QCRG_03,QCRG_14_2,QCRG_21': (
+                'QCRG_14_1,QCRG_03': (
                   <React.Fragment>
                     <Button
                       disabled={
@@ -1598,7 +1598,7 @@ useEffect(()=>{
                     </Button>
                   </React.Fragment>
                 ),
-                'QCRG_12_2': (
+                'QCRG_12_2,QCRG_10,QCRG_10_2,QCRG_21,QCRG_14_2': (
                   <React.Fragment>
                     <Button
                       disabled={
