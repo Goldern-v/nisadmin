@@ -186,19 +186,19 @@ export default function NurseHandBookRouter() {
               title:'月度计划管理',
               path:'/nurseHandBookNew/managemonth',
               component:ManageMonth,
-              hide:!authStore.isSupervisorNurse,
+              hide:!(authStore.isSupervisorNurse || authStore.isDepartment),
             },
             {
               title:'季度计划管理',
               path:'/nurseHandBookNew/managequarter',
               component:ManageMonth,
-              hide:!authStore.isSupervisorNurse,
+              hide:!(authStore.isSupervisorNurse || authStore.isDepartment),
             },
             {
               title:'年度计划管理',
               path:'/nurseHandBookNew/manageyear',
               component:ManageMonth,
-              hide:!authStore.isSupervisorNurse,
+              hide:!(authStore.isSupervisorNurse || authStore.isDepartment),
             },
           ]
         },
