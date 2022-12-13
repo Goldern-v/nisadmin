@@ -128,7 +128,7 @@ export default function NurseHandBookRouter() {
           disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
         },
       ],
-      'wjgdszd,gzhd':[
+      'wjgdszd,gzhd,nfzxy':[
         {
             title:'工作职责',
             children:[

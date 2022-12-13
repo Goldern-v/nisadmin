@@ -1,5 +1,5 @@
 import React from "react";
-import { appStore } from "src/stores";
+import { appStore,authStore } from "src/stores";
 
 export interface navConfigItem {
   onClick?: any;
@@ -10,7 +10,6 @@ export interface navConfigItem {
   icon?: any;
   menuStyle?: React.CSSProperties;
 }
-
 const baseConfig: navConfigItem[] = [
   {
     name: "首页",
@@ -77,6 +76,11 @@ const baseConfig: navConfigItem[] = [
         icon: require("../images/menu-icon/护理查房@2x.png")
       }
     ]
+  },
+  {
+    name: "护士长手册",
+    path: "/nurseHandBookNew",
+    hidden: !authStore.isNotANormalNurse
   },
   {
     name: "学习培训",
