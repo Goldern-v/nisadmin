@@ -271,6 +271,7 @@ export default observer(function TrainingResultReview() {
         }],
         other: []
       },
+      vague:true,
       currentHospitalId: !!baseInfo.questionStat + ``
     }),
     ...appStore.hisMatch({
@@ -285,7 +286,8 @@ export default observer(function TrainingResultReview() {
             </DoCon>
           )
         }]
-      }
+      },
+      vague:true,
     })
   ]
   // if (baseInfo.questionStat) {

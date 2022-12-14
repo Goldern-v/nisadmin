@@ -187,6 +187,7 @@ import { appStore, authStore } from "src/stores";
 import NavBar from "src/layouts/components/NavBar";
 import { Icon } from "antd";
 import { use } from "echarts";
+import { dynamicRouting } from "./DynamicRouting";
 
 export default function ContinuingEdu(props: Props) {
   const [dataList, setDataList] = useState([] as any); // 动态菜单树
@@ -754,6 +755,50 @@ export default function ContinuingEdu(props: Props) {
       hide: !['fsxt','925'].includes(appStore.HOSPITAL_ID)
     },
   ]
+// 获取icon
+const getIcon = (icon: any) => {
+  switch (icon) {
+    case 1:
+      return <JXJH />;
+    case 2:
+      return <LXGL />;
+    case 3:
+      return <SPXX />;
+    case 4:
+      return <TKGL />;
+    case 5:
+      return <PXGL />;
+    case 6:
+      return <JJSZ />;
+    default:
+      return <JXJH />;
+  }
+};
+/**
+ * 初始化动态路由，(解决返回刷新或者页面刷新空白)
+ * 静态管理：返回刷新有路由
+ * 存储：页面刷新有路由
+ * @returns Array
+ */
+  const initDynamicRouting = ()=>{
+    let newRouter = []
+    if(localStorage.getItem("continuDynamicRouter")){
+      newRouter = JSON.parse(localStorage.getItem("continuDynamicRouter") as string)
+    }else if(dynamicRouting.dataList.length>0){
+      newRouter = dynamicRouting.dataList
+    }
+    newRouter.map((it:any)=>{
+      it.icon = getIcon(it.sort)
+      it.hide=authStore.isOnlyInternsManage
+      it.component = 无权限
+      if(it.children && it.children.length>0){
+        it.children.map((ij:any)=>{
+          ij.component = 主列表页
+        })
+      }
+    })
+    return newRouter
+  }
 
   const LEFT_MENU_CONFIG = [
     {
@@ -861,7 +906,7 @@ export default function ContinuingEdu(props: Props) {
       hide: () => !["lcey","zzwy"].includes(appStore.HOSPITAL_ID),
     },
 
-    ...dataList,
+    ...initDynamicRouting(),
     ...appStore.hisMatch({
       map: {
         other: [],
@@ -1102,6 +1147,8 @@ export default function ContinuingEdu(props: Props) {
     // })
   ];
 
+  
+
   // 查询获取动态菜单列表
   const getList = () => {
     meunSettingApi.getData().then((res: any) => {
@@ -1166,29 +1213,12 @@ export default function ContinuingEdu(props: Props) {
   //   appStore.history.push(url);
   // };
 
-  // 获取icon
-  const getIcon = (icon: any) => {
-    switch (icon) {
-      case 1:
-        return <JXJH />;
-      case 2:
-        return <LXGL />;
-      case 3:
-        return <SPXX />;
-      case 4:
-        return <TKGL />;
-      case 5:
-        return <PXGL />;
-      case 6:
-        return <JJSZ />;
-      default:
-        return <JXJH />;
-    }
-  };
+  
 
-  let baseInitMethods = () => {
+  const baseInitMethods = async () => {
     getAuth();
-    getList();
+    // getList();
+    await dynamicRouting.getList()
   };
   //初始化的方法
   let initMethods = appStore.hisMatch({
@@ -1205,7 +1235,14 @@ export default function ContinuingEdu(props: Props) {
   useLayoutEffect(() => {
     // 初始化动态菜单 菜单权限
     initMethods();
+    // console.log('初始化？')
   }, [])
+  useEffect(() => {
+    return () => {
+      localStorage.removeItem("continuDynamicRouter")
+    }
+  }, [])
+  
   useLayoutEffect(() => {
     setCurrentRoutePath(`${props.history.location.pathname}${props.history.location.search}`)
   }, [props.history.location.pathname]);
@@ -1258,7 +1295,7 @@ export default function ContinuingEdu(props: Props) {
               getId={currentRoute && currentRoute.id} //菜单id
               getFormCode={currentRoute && currentRoute.formCode} //表单code值
               getFormName={currentRoute && currentRoute.formName} //表单code值
-              getList={getList} // 动态菜单树
+              getList={dynamicRouting.getList} // 动态菜单树
               getParentsName={currentRoute && currentRoute.parentsName}
             />
           </Suspense>
