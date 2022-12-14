@@ -1,10 +1,11 @@
 import { fileDownload } from "src/utils/file/file";
-import { observable, computed, action, reaction } from "mobx";
+import { observable, action, reaction } from "mobx";
 import {
   nurseFilesService,
   NurseQuery
 } from "../../services/NurseFilesService";
 import { authStore } from "src/stores";
+import { Obj } from "src/libs/types";
 
 const kssxMap: any = {
   全部: "",
@@ -79,6 +80,23 @@ class NurseFilesListViewModel {
       fileDownload(res);
     });
   };
+  @action
+  public getDeptByEmpNo = async(empNo: string) => {
+    try {
+      const res = await nurseFilesService.getDeptRelation(empNo)
+      return (res?.data || []).map((v: Obj) => v.deptCode)
+    } catch (error) {
+    }
+  }
+  @action
+  public updateDeptByEmpNo = async(data: Obj) => {
+    try {
+      const res = await nurseFilesService.updateDeptRelation(data)
+      console.log('test-res', res)
+
+    } catch (error) {
+    }
+  }
 }
 
 export const nurseFilesListViewModel = new NurseFilesListViewModel();

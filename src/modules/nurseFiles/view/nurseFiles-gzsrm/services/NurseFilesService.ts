@@ -1,6 +1,10 @@
+import { data } from 'jquery';
 import BaseApiService from "src/services/api/BaseApiService";
 import { appStore, authStore } from "src/stores";
 import { nurseFileDetailViewModal } from "../views/nurseFileDetail/NurseFileDetailViewModal";
+import qs from 'qs'
+import { Obj } from 'src/libs/types';
+
 export interface NurseQuery {
   deptCode?: string /** 部门编码 */;
   empNo?: string /** 员工工号 */;
@@ -291,6 +295,14 @@ export default class NurseFilesService extends BaseApiService {
     return this.post(`/auditeNurseList/excel`, this.stringify(obj), {
       responseType: "blob"
     });
+  }
+  /**获取护士拥有权限科室列表 by贵州 */
+  public getDeptRelation(empNo: string) {
+    return this.get(`/auditeNurseList/getDeptRelation?${qs.stringify({ empNo })}`)
+  }
+  /**更新护士拥有权限科室列表 by贵州 */
+  public updateDeptRelation(data: Obj) {
+    return this.post(`/auditeNurseList/updateDeptRelation`, data)
   }
 }
 
