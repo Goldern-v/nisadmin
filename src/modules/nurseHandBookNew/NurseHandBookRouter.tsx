@@ -227,19 +227,19 @@ export default function NurseHandBookRouter() {
               title:'月度工作总结管理',
               path:'/nurseHandBookNew/summanagemonth',
               component:ManageMonth,
-              hide:!authStore.isSupervisorNurse,
+              hide:!(authStore.isSupervisorNurse || authStore.isDepartment),
             },
             {
               title:'季度工作总结管理',
               path:'/nurseHandBookNew/summanagequarter',
               component:ManageMonth,
-              hide:!authStore.isSupervisorNurse,
+              hide:!(authStore.isSupervisorNurse || authStore.isDepartment),
             },
             {
               title:'年度工作总结管理',
               path:'/nurseHandBookNew/summanageyear',
               component:ManageMonth,
-              hide:!authStore.isSupervisorNurse,
+              hide:!(authStore.isSupervisorNurse || authStore.isDepartment),
             },
           ]
         },
@@ -256,7 +256,7 @@ export default function NurseHandBookRouter() {
               title:'科内大事/好人/好事/建议管理',
               path:'/nurseHandBookNew/bettermanagequarter',
               component:ManageMonth,
-              hide:!authStore.isSupervisorNurse,
+              hide:!(authStore.isSupervisorNurse || authStore.isDepartment),
             },
           ]
         },
