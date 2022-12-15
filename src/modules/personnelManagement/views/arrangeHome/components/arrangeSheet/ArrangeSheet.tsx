@@ -10,7 +10,7 @@ import { Input, message, Modal, Tooltip } from 'src/vendors/antd'
 import { getWeekString, getWeekString2 } from 'src/utils/date/week'
 import { observer } from 'mobx-react-lite'
 import { appStore } from 'src/stores'
-import { cloneJson } from 'src/utils/json/clone'
+import {cloneJson, deepCopy} from 'src/utils/json/clone'
 
 import AddAccumulativeLeaveModal from '../../modal/AddAccumulativeLeaveModal'
 import AddRemakeModal from '../../modal/AddRemakeModal'
@@ -78,7 +78,7 @@ export default observer(function ArrangeSheet(props: Props) {
           dataIndex: "",
           width: 70,
           align: "center",
-          render(text: any, record: any, index: number) {
+          render(text: any, record: any) {
             return (
               <DoCon>
                 <span onClick={() => handleDelete(record)}>删除</span>
@@ -94,7 +94,7 @@ export default observer(function ArrangeSheet(props: Props) {
    */
   //
   const manHourTitle = (): string => {
-    let title = "工时小计";
+    let title:string = "";
     switch (appStore.HOSPITAL_ID) {
       case "dghl":
         title = "本周上班时数";
@@ -539,7 +539,7 @@ export default observer(function ArrangeSheet(props: Props) {
       centered: true,
       maskClosable: true,
       onOk: () => {
-        service.scheduleUserApiService.delete(record.id).then((res) => {
+        service.scheduleUserApiService.delete(record.id).then(() => {
           message.success("删除成功");
           sheetViewModal.init();
         });
@@ -856,15 +856,16 @@ export default observer(function ArrangeSheet(props: Props) {
       }, 10);
     } catch (error) { }
     try {
-      let remark = sheetViewModal.remark;
+      // let remark = sheetViewModal.remark;
       (document as any).querySelector(
         ".remark-con.real textarea"
-      ).value = remark;
+      ).value = sheetViewModal.remark;
     } catch (error) { }
   }, [sheetViewModal.sheetTableData, surplusWidth, sheetViewModal.remark]);
 
   // 拖拽排序
   const moveRow = (dragIndex: number, hoverIndex: number) => {
+    console.log("dragIndex, hoverIndex===",dragIndex, hoverIndex);
     switch (appStore.HOSPITAL_ID) {
       case "hj":
       case "wjgdszd":
@@ -924,6 +925,8 @@ export default observer(function ArrangeSheet(props: Props) {
             }));
             return item;
           });
+          /*需要手动更改对应的sortValue*/
+          list[hoverIndex].sortValue = hoverIndex + 1
           sheetViewModal.sheetTableData = list;
           sheetViewModal.allCell = sheetViewModal.getAllCell(true);
         } catch (error) { }

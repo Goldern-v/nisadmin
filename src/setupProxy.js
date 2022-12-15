@@ -10,7 +10,7 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
   switch (HOSPITAL_ID) {
     /** 厚街 */
     case "hj":
-      // return 'http://120.197.141.41:9091' // 厚街正式
+      return 'http://120.197.141.41:9091' // 厚街正式
       // return 'http://120.197.141.41:9094' // 厚街测试
       // return "https://info.cr-health.com:20203"; // 公司-厚街测试-外网
       return "http://192.168.1.54:9866" // 公司-厚街测试-内网
@@ -92,10 +92,10 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
       return "http://192.168.1.54:9866"; // 聊城二院测试
     /** 佛山杏坛 */
     case "fsxt":
-      return "http://192.168.1.54:9886";
+      // return "http://192.168.1.54:9886";
     // return 'http://192.168.20.83:8080'
     // return 'http://192.168.20.61:9091' // 宏群本地
-    // return 'http://218.13.87.27:9094'//正式
+    return 'http://218.13.87.27:9094'//正式
     // return "http://192.168.20.57:9091"; // 伟贤本地
     // return "http://192.168.1.74:9091"; // 信铭本地
     case "fssdy": //佛山市一
@@ -105,7 +105,7 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
     case "sdlj": //顺德龙江
       return 'http://218.13.34.230:9094'
       // return 'http://192.168.20.83:8080'//
-      return "http://192.168.1.54:9887"; //
+      // return "http://192.168.1.54:9887"; //
 
     //武汉亚心
     case "whyx":
