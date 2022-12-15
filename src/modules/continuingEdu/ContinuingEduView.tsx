@@ -1186,35 +1186,30 @@ export default function ContinuingEdu(props: Props) {
     }
   };
 
-  let baseInitMethods = () => {
-    getAuth();
-    getList();
-  };
-  //初始化的方法
-  let initMethods = appStore.hisMatch({
-    map: {
-      "hj,dgxg,lyyz,qhwy,nfsd,dglb": () => {
-        baseInitMethods();
-        //初始化学习培训权限
-        continuningEduAuth.initAuth();
-      },
-      other: () => baseInitMethods(),
-    },
-    vague: true,
-  });
+  // 初始化动态菜单 菜单权限
   useLayoutEffect(() => {
-    // 初始化动态菜单 菜单权限
-    initMethods();
-  }, [])
-  useLayoutEffect(() => {
-    setCurrentRoutePath(`${props.history.location.pathname}${props.history.location.search}`)
-  }, [props.history.location.pathname]);
+    let baseInitMethods = () => {
+      getAuth();
+      getList();
+    };
 
-  const [currentRoutePath, setCurrentRoutePath] = useState('')
-  const [currentRoute, setCurrentRoute] = useState<any>(null)
-  useEffect(() => {
-    setCurrentRoute(getTargetObj(LEFT_MENU_CONFIG, "path", currentRoutePath));
-  }, [currentRoutePath])
+    //初始化的方法
+    let initMethods = appStore.hisMatch({
+      map: {
+        "hj,dgxg,lyyz,qhwy,nfsd,dglb": () => {
+          baseInitMethods();
+          //初始化学习培训权限
+          continuningEduAuth.initAuth();
+        },
+        other: () => baseInitMethods(),
+      },
+      vague: true,
+    });
+
+    initMethods();
+  }, [props.history.location.pathname]);
+  let currentRoutePath =`${props.history.location.pathname}${props.history.location.search}` || "";
+  let currentRoute = getTargetObj(LEFT_MENU_CONFIG, "path", currentRoutePath);
   // 筛选目标对象
   function getTargetObj(listDate: any, targetKey: string, targetName: string) {
     let chooseRoute = listDate.find((item: any) => {
