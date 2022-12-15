@@ -1,10 +1,9 @@
 import LeftMenu from "src/components/LeftMenu";
 import styled from "styled-components";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { RouteComponentProps } from "src/components/RouterView";
 import { appStore } from "src/stores";
 import HealthPropagandaView from "./../healthPropaganda/HealthPropagandaView";
-import EditTable from "./components/EditTable";
 import settingViewModel from "./SettingViewModel";
 import AutomaticPush from "./view/AutomaticPush";
 import CategoryDictionary from "./view/CategoryDictionary";
@@ -23,6 +22,8 @@ import FlatManage from "src/modules/deptReferSetting/views/FlatManage";
 import FlatManageProblemList from "src/modules/deptReferSetting/views/FlatManageProblemList";
 import ManagementSummary from "src/modules/deptReferSetting/views/ManagementSummary";
 import HealthEducationReportList from "../healthEducationReport/healthEducationReportList/HealthEducationReportList";
+import roleControlled from "./view/role-controlled";
+import areaControl from "./view/area-control";
 // 引入类别字典设置页面
 // 引入自动推送设置页面
 export interface Props extends RouteComponentProps<{ name?: string }> {}
@@ -84,11 +85,6 @@ const LEFT_MENU_CONFIG = [
       },
     }),
   },
-  // {
-  //   title: '护理评估设置',
-  //   icon: <HLPGSZ />,
-  //   path: '/setting/护理评估设置'
-  // },
   {
     title: "节假日设置",
     icon: <JJRSZ />,
@@ -145,7 +141,25 @@ const LEFT_MENU_CONFIG = [
       },
     ],
   },
-
+  ...appStore.hisMatch({
+    map: {
+      gzsrm: [
+        {
+          title: '角色对照',
+          icon: <KSPHSZ />,
+          path: '/setting/role-controlled',
+          component: roleControlled
+        },
+        {
+          title: '片区对照',
+          icon: <KSPHSZ />,
+          path: '/setting/area-control',
+          component: areaControl
+        },
+      ],
+      other: []
+    }
+  })
   // {
   //   title: '物流平台设置',
   //   icon: <WLPTSZ />,
@@ -233,7 +247,6 @@ export default function SettingView(props: Props) {
         {/*
         <TopCon>{currentRoute && currentRoute.title}</TopCon>
         <TableCon> */}
-        {/* <EditTable /> */}
         {currentRoute && currentRoute.component && (
           <currentRoute.component
             getTitle={currentRoute && currentRoute.title}

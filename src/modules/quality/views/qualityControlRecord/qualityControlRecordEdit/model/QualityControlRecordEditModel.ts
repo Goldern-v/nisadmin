@@ -179,7 +179,7 @@ class QualityControlRecordEditModel {
         this.master[x] = false
       } else if (x == 'evalDate') {
         this.master[x] = moment().format('YYYY-MM-DD HH:mm')
-      } else if (x == 'wardCode' && appStore.HOSPITAL_ID === 'whyx') {
+      } else if (x == 'wardCode' && ['whyx', 'whsl'].includes(appStore.HOSPITAL_ID)) {
         this.master[x] = authStore.defaultDeptCode
       } else {
         this.master[x] = ''
