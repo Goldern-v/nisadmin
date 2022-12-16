@@ -257,7 +257,7 @@ const columns: ColumnProps<any>[] = [
     title: '科室',
     dataIndex: 'deptName',
     key: 'deptName',
-    width: appStore.HOSPITAL_ID === 'lyrm' ? 120 : 200,
+    width: ['lyrm', 'stmz'].includes(appStore.HOSPITAL_ID) ? 120 : 200,
     align: 'left'
   },
   {

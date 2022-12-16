@@ -425,7 +425,7 @@ export default function EditWorkHistoryModal(props: Props) {
           {appStore.HOSPITAL_ID !== 'gxjb' ?
             <Col span={12}>
               <Form.Field label={['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID) ? `夏季鞋码大小` : `鞋码大小`} name="shoeSize">
-                {'lyrm' === appStore.HOSPITAL_ID ? <Input /> : <SelectOrAutoInput dict="鞋码大小" />}
+                {['lyrm', 'stmz'].includes(appStore.HOSPITAL_ID) ? <Input /> : <SelectOrAutoInput dict="鞋码大小" />}
               </Form.Field>
             </Col> : <Col span={12}>
               <Form.Field label={`家庭住址`} name="address">
@@ -453,7 +453,7 @@ export default function EditWorkHistoryModal(props: Props) {
             </Form.Field>
           </Col>}
           {
-            'lyrm' === appStore.HOSPITAL_ID && <Col span={12}>
+            ['lyrm', 'stmz'].includes(appStore.HOSPITAL_ID) && <Col span={12}>
               <Form.Field label='个人住址' name="address">
                 <Input />
               </Form.Field>

@@ -108,7 +108,7 @@ export default observer(function FilterCon() {
         ? value.zyzsEffectiveUp[1]
         : ""
     };
-    if (['lyrm'].includes(appStore.HOSPITAL_ID)) {
+    if (['lyrm', 'stmz'].includes(appStore.HOSPITAL_ID)) {
       postObj.sex = value.sex 
     }
     if (['925'].includes(appStore.HOSPITAL_ID)) {
@@ -280,7 +280,7 @@ export default observer(function FilterCon() {
                   <Input />
                 </Form.Field>
               </Col>}
-            {['lyrm'].includes(appStore.HOSPITAL_ID) &&
+            {['lyrm', 'stmz'].includes(appStore.HOSPITAL_ID) &&
               <Col span={4} className="short">
                 <Form.Field label={"性别"} name={"sex"}>
                   <Select>

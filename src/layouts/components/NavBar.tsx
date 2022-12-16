@@ -186,7 +186,7 @@ export default observer(function NavBar(props: any) {
     } else if (appStore.HOSPITAL_ID == "sdlj") {
       return navConfig_sdlj(appStore, authStore);
       //return navConfig_sdljSelf
-    } else if (appStore.HOSPITAL_ID == "lyrm") {
+    } else if (["lyrm", 'stmz'].includes(appStore.HOSPITAL_ID)) {
       return navConfig_lyrm(appStore, authStore)
       //return navConfig_sdljSelf
     } else if (appStore.HOSPITAL_ID == 'gdtj') {

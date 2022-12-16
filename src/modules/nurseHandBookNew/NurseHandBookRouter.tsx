@@ -84,7 +84,7 @@ export default function NurseHandBookRouter() {
           disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
         },
       ],
-      'lcey,lyrm': [
+      'lcey,lyrm,stmz': [
         {
           title: '护士基本情况',
           path: '/nurseHandBookNew/lcBaseInfo',

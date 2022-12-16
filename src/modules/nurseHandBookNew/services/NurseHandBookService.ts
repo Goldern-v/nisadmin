@@ -6,7 +6,7 @@ const hospital: string =
 appStore.hisMatch({
   map: {
     jmfy: 'nurseManualJM',
-    'lcey,lyrm': 'nurseManualLC',
+    'lcey,lyrm,stmz': 'nurseManualLC',
     default: 'nurseManualJM',
   },
   vague: true,

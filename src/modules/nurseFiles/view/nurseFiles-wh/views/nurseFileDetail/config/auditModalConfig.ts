@@ -199,13 +199,14 @@ export function openAuditModal(title: string, row: any, callBack: any,btnText?:s
                       'gzsrm': [{
                         "职称": 'newTitle'
                       }],
-                      'lyrm': [
+                      'lyrm,stmz': [
                         {
                           '个人住址': 'address'
                         }
                       ],
                       other: []
                     },
+                    vague: true
                   })
                 ]
             }

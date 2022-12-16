@@ -55,7 +55,7 @@ export default observer(function QualityControlRecordEdit() {
           });
           ////非贵州
           if (
-            !["gzsrm","lyrm","whsl"].includes(appStore.HOSPITAL_ID) &&
+            !["gzsrm","lyrm","whsl", 'stmz'].includes(appStore.HOSPITAL_ID) &&
             (isNaN(inpNo) || inpNoLengthArr.indexOf(master[x].length) < 0)
           ) {
             //if (isNaN(inpNo) || inpNoLengthArr.indexOf(master[x].length) < 0) {

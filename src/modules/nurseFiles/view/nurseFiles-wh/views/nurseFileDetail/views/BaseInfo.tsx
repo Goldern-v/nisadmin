@@ -254,6 +254,7 @@ export default observer(function BaseInfo() {
                 护理学会会员证号: data.membershipCardNumber,
               };
             case 'lyrm':
+            case "stmz":
               return {
                 鞋码大小: data.shoeSize,
                 个人住址: data.address,

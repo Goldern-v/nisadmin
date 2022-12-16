@@ -1051,7 +1051,7 @@ const routes: RouteItem[] = [
   },
   ...appStore.hisMatch({
     map: {
-      "gzsrm,lyrm,gdtj,whfk": [
+      "gzsrm,lyrm,gdtj,whfk,stmz": [
         {
           path: "/setting",
           redirect: "/setting/健康宣教字典"
