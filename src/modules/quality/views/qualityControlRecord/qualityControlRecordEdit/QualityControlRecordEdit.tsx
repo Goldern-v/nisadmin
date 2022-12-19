@@ -61,7 +61,7 @@ const QualityControlRecordEdit = observer(function QualityControlRecordEdit() {
           });
           // 非贵州
           if (
-            !["gzsrm", "gzhd", "whyx", "fsxt",'925',"lyrm","whhk","whsl", 'zzwy', 'stmz'].includes(appStore.HOSPITAL_ID) &&
+            !["gzsrm", "gzhd", "whyx", "fsxt",'925',"lyrm","whhk",'zzwy', 'stmz'].includes(appStore.HOSPITAL_ID) &&
             (isNaN(inpNo) || inpNoLengthArr.indexOf(master[x].length) < 0)
           ) {
             //if (isNaN(inpNo) || inpNoLengthArr.indexOf(master[x].length) < 0) {
@@ -90,7 +90,7 @@ const QualityControlRecordEdit = observer(function QualityControlRecordEdit() {
         }
       } else if (x == "bedLabel") {
         if (['whyx','whhk'].includes(appStore.HOSPITAL_ID) && baseInfo.isBedNumber == "否") {
-        } else if (["gzsrm", "nys"].includes(appStore.HOSPITAL_ID)) {
+        } else if (["gzsrm", "nys","whsl"].includes(appStore.HOSPITAL_ID)) {
         } else if (
           master[x].length <= 0 &&
           Object.keys(masterErrObj).indexOf(x) >= 0
