@@ -55,7 +55,7 @@ export default observer(function AuditsTableDHSZ(props: Props) {
 
   const toDetails = (row: any) => {
     console.log("ok",showType,needAudit);
-    if (showType == "qc" || showType == "qcTwoLevel") {
+    if (showType == "qc" || showType == "qcTwoLevel" || showType == "qcOneLevel") {
       window.open(
         `/crNursing/manage/#/qualityControlRecordDetail/${
           row.othersMessage.id
