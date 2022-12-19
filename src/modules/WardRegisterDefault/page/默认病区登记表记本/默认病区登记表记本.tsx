@@ -53,7 +53,7 @@ const configListByPatientSelect = {
       '床号': item.bedLabel,
       '患者姓名': item.name,
   }),
-  QCRG_GSY_08: (item: Obj) => ({
+  QCRG_GSY_12: (item: Obj) => ({
       '床号': item.bedLabel,
       '姓名': item.name,
       '疾病诊断': item.diagnosis,
@@ -907,7 +907,7 @@ export default observer(function 敏感指标登记本(props: Props) {
           </Select>
         </React.Fragment>}
         {
-          (location.pathname.includes('QCRG_GSY_07') || location.pathname.includes('QCRG_GSY_08')) && (
+          (location.pathname.includes('QCRG_GSY_07') || location.pathname.includes('QCRG_GSY_12')) && (
             <Button onClick={() => onAddPatient()}>添加患者</Button>
           )
         }
