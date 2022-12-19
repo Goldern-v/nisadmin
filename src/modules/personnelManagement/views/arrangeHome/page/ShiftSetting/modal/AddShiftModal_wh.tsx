@@ -9,7 +9,7 @@ import {
   Select,
   Row,
   Col,
-  message
+  message, TimePicker
 } from "antd";
 import { ModalComponentProps } from "src/libs/createModal";
 import Form from "src/components/Form";
@@ -17,10 +17,11 @@ import { to } from "src/libs/fns";
 import { Rules } from "src/components/Form/interfaces";
 import service from "src/services/api";
 import { Spin, Switch } from "src/vendors/antd";
-import { authStore } from "src/stores";
+import {appStore, authStore} from "src/stores";
 import SwitchField from "src/components/Swich";
 import { arrangeService } from "../../../services/ArrangeService";
 import emitter from "src/libs/ev";
+import moment from "moment";
 
 const Option = Select.Option;
 export interface Props extends ModalComponentProps {
@@ -32,7 +33,9 @@ export interface Props extends ModalComponentProps {
 /** 设置规则 */
 const rules: Rules = {
   name: val => !!val || "请填写班次名称",
-  shiftType: val => !!val || "请填写班次类别"
+  shiftType: val => !!val || "请填写班次类别",
+  workTime1: (val) => !!val || "请填写上班开始时间",
+  workTime2: (val) => !!val || "请填写上班结束时间",
   // workTime: (val) => !!val || '请填写上班时间',
   // effectiveTime: (val) => !!val || '请填写标准工时',
   // nameColor: (val) => !!val || '请填写颜色标记'
@@ -48,8 +51,19 @@ export default function AddShiftModal(props: Props) {
   let refForm = React.createRef<Form>();
   useEffect(()=>{
     console.log(radioChange);
-    
+
   },[radioChange])
+  const parsingTime = (time: string) => {
+    const [timeRange, timeRange2] = time.split(";");
+    const [workTime1, workTime2] = (timeRange || "").split("-");
+    const [workTime3, workTime4] = (timeRange2 || "").split("-");
+    return {
+      workTime1: workTime1 ? moment(workTime1, "HH:mm") : undefined,
+      workTime2: workTime2 ? moment(workTime2, "HH:mm") : undefined,
+      workTime3: workTime3 ? moment(workTime3, "HH:mm") : undefined,
+      workTime4: workTime4 ? moment(workTime4, "HH:mm") : undefined,
+    };
+  };
   const onSave = async () => {
     if (!refForm.current) return;
     let [err, value] = await to(refForm.current.validateFields());
@@ -70,6 +84,16 @@ export default function AddShiftModal(props: Props) {
         ? data.settingNightHour
         : (data.settingNightHour = 0);
       data.deptCode = authStore.selectedDeptCode;
+      data.workTime = getTimeStr(
+          data.workTime1,
+          data.workTime2,
+          data.workTime3,
+          data.workTime4
+      );
+      delete data.workTime1;
+      delete data.workTime2;
+      delete data.workTime3;
+      delete data.workTime4;
       /** 保存接口 */
       arrangeService.schShiftSettingSaveOrUpdate(data).then((res: any) => {
         message.success("保存成功");
@@ -78,7 +102,21 @@ export default function AddShiftModal(props: Props) {
       });
     });
   };
-
+  const getTimeStr = (
+      time1?: moment.Moment,
+      time2?: moment.Moment,
+      time3?: moment.Moment,
+      time4?: moment.Moment
+  ) => {
+    let str = ""
+    if (time1 && time2) {
+      str = time1.format("HH:mm") + "-" + time2.format("HH:mm");
+    }
+    if (time3 && time4) {
+      str += ";" + time3.format("HH:mm") + "-" + time4.format("HH:mm");
+    }
+    return str;
+  };
   useLayoutEffect(() => {
     if (refForm.current && visible) refForm!.current!.clean();
     /** 如果是修改 */
@@ -96,7 +134,8 @@ export default function AddShiftModal(props: Props) {
               name: props.editData.name,
               shiftType: props.editData.shiftType,
               isZh: props.editData.isZh,
-              workTime: props.editData.workTime,
+              ...parsingTime(props.editData.workTime),
+              // workTime: props.editData.workTime,
               effectiveTime: props.editData.effectiveTime,
               settingNightHour: props.editData.settingNightHour,
               settingMorningHour: props.editData.settingMorningHour,
@@ -109,7 +148,11 @@ export default function AddShiftModal(props: Props) {
               name: "",
               shiftType: "",
               isZh: 0,
-              workTime: "8:00 - 16:00",
+              // workTime: "8:00 - 16:00",
+              workTime1: moment("8:00", "HH:mm"),
+              workTime2: moment("12:00", "HH:mm"),
+              workTime3: moment("14:00", "HH:mm"),
+              workTime4: moment("18:00", "HH:mm"),
               effectiveTime: "0",
               settingNightHour: "0",
               settingMorningHour: "0",
@@ -172,11 +215,40 @@ export default function AddShiftModal(props: Props) {
                   </Radio.Group>
                 </Form.Field>
               </Col>
-              <Col span={24}>
-                <Form.Field label={`上班时间`} name="workTime">
-                  <Input />
-                </Form.Field>
-              </Col>
+
+                  <Col span={13}>
+                    <Form.Field label={['lcey', 'lyyz'].includes(appStore.HOSPITAL_ID) ? `夏令上班时间` : '上班时间'} name="workTime1" required={true}>
+                      <TimePicker format={"HH:mm"} />
+                    </Form.Field>
+                  </Col>
+                  <Col span={1}>
+                    <div style={{ marginLeft: '-5px', lineHeight: "32px", textAlign: "center" }}>-</div>
+                  </Col>
+                  <Col span={8}>
+                    <Form.Field name="workTime2" required>
+                      <TimePicker format={"HH:mm"} />
+                    </Form.Field>
+                  </Col>
+                  {/* 时间段2 */}
+                  <Col span={13} style={{ paddingLeft: "100px" }}>
+                    <Form.Field name="workTime3" required>
+                      <TimePicker format={"HH:mm"} />
+                    </Form.Field>
+                  </Col>
+                  <Col span={1}>
+                    <div style={{ marginLeft: '-5px', lineHeight: "32px", textAlign: "center" }}>-</div>
+                  </Col>
+                  <Col span={8}>
+                    <Form.Field name="workTime4" required>
+                      <TimePicker format={"HH:mm"} />
+                    </Form.Field>
+                  </Col>
+
+              {/*<Col span={24}>*/}
+              {/*  <Form.Field label={`上班时间`} name="workTime">*/}
+              {/*    <Input />*/}
+              {/*  </Form.Field>*/}
+              {/*</Col>*/}
               <Col span={24}>
                 <Form.Field label={`标准工时`} name="effectiveTime">
                   <Input />

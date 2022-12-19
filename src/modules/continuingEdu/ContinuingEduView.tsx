@@ -752,7 +752,7 @@ export default function ContinuingEdu(props: Props) {
       icon: <TKGL />,
       path: "/continuingEdu/PracticalOperationScorFSXT",
       component: PracticalOperationScoreFSXT,
-      hide: !['fsxt','925'].includes(appStore.HOSPITAL_ID)
+      hide: !['fsxt','925','fssdy'].includes(appStore.HOSPITAL_ID)
     },
   ]
 // 获取icon
@@ -1147,7 +1147,7 @@ const getIcon = (icon: any) => {
     // })
   ];
 
-  
+
 
   // 查询获取动态菜单列表
   const getList = () => {
@@ -1213,7 +1213,7 @@ const getIcon = (icon: any) => {
   //   appStore.history.push(url);
   // };
 
-  
+
 
   const baseInitMethods = async () => {
     getAuth();
@@ -1242,7 +1242,7 @@ const getIcon = (icon: any) => {
       localStorage.removeItem("continuDynamicRouter")
     }
   }, [])
-  
+
   useLayoutEffect(() => {
     setCurrentRoutePath(`${props.history.location.pathname}${props.history.location.search}`)
   }, [props.history.location.pathname]);
