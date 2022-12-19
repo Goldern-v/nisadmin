@@ -342,7 +342,7 @@ export default observer(function TopCon(props: any) {
       {exportCon()}
       {appStore.hisMatch({
         map: {
-          gzsrm: (
+          'gzsrm,whsl': (
             <FormCreateByTagModal
               onCancel={() => setFormCreateVisible(false)}
               onOk={() => setFormCreateVisible(false)}
@@ -359,6 +359,7 @@ export default observer(function TopCon(props: any) {
             />
           ),
         },
+        vague:true
       })}
     </Wrapper>
   );
