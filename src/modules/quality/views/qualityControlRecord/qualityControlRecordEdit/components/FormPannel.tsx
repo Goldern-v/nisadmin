@@ -169,6 +169,12 @@ export default observer(function FormPannel() {
     qcModel.setNodeAppointList(newNodeAppointList)
   }
 
+  // 打开患者弹窗
+  const openPatient = () => {
+    if (!qcModel.needPatientModal) return
+    qcModel.patientVisible = true
+  }
+
   return <Wrapper>
     <div className="master-area" id="masterArea">
       <div className="item">
@@ -270,6 +276,9 @@ export default observer(function FormPannel() {
                 <Input
                   placeholder="请输入床号"
                   value={master.bedLabel}
+                  onDoubleClick={() => {
+                    openPatient()
+                  }}
                   onChange={(e: any) => {
                     qcModel.setMasterErrObj('bedLabel', false)
                     qcModel.setMaster({ ...master, bedLabel: e.target.value })
@@ -282,6 +291,9 @@ export default observer(function FormPannel() {
                 <Input
                   placeholder={`请输入${zhuyuanhao}`}
                   value={master.inpNo}
+                  onDoubleClick={() => {
+                    openPatient()
+                  }}
                   onChange={(e: any) => {
                     qcModel.setMasterErrObj('inpNo', false)
                     qcModel.setMaster({ ...master, inpNo: e.target.value })

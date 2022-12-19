@@ -64,11 +64,6 @@ export interface INodeAppoint extends IAudit {
   userList: Array<IuserEmpNo> | []
 }
 
-
-
-
-
-
 class QualityControlRecordEditModel {
   //浏览器查询参数
   @observable query = {} as any
@@ -99,6 +94,10 @@ class QualityControlRecordEditModel {
   @observable auditList: Array<IAudit> = [];
   //指定人员类型及名单
   @observable nodeAppointList: Array<INodeAppoint> = [];
+  // 是否需要添加患者弹窗
+  needPatientModal: boolean = ['whsl'].includes(appStore.HOSPITAL_ID)
+  // 是否添加患者弹窗
+  @observable patientVisible: boolean = false
 
   //基本填写信息
   @observable master = {
@@ -701,6 +700,16 @@ class QualityControlRecordEditModel {
       deductScore,
       noPlan
     };
+  }
+  /**选择患者 */
+  @action
+  handlePatientSelect(data: any) {
+    const { bedLabel, inpNo } = data[0]
+    this.setMasterErrObj('inpNo', false)
+    this.setMasterErrObj('bedLabel', false)
+    
+    this.setMaster({ ...this.master, inpNo, bedLabel })
+    this.patientVisible = false
   }
 }
 

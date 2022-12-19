@@ -47,7 +47,6 @@ class AuditASettingsModel {
   // 删除角色
   delRole(item: Obj, index: number) {
     const list = this.editContentData[index].settingList
-    console.log('test-list', list)
     this.editContentData[index].settingList = list.filter((v: Obj) => {
       if (item.id) return item.id !== v.id
       return !(item.auditType === v.auditType && item.settingValueName === v.settingValueName && item.settingValue === v.settingValue)

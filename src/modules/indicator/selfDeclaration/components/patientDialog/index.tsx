@@ -17,10 +17,12 @@ interface Props {
   onOk: Function
   onCancel: Function
   isMulti?: boolean
+  // 可显示的搜索参数
+  searchCodes?: string[]
 }
 
 export default observer((props: Props) => {
-  const { visible, onOk, onCancel, isMulti = false } = props
+  const { visible, onOk, onCancel, isMulti = false, searchCodes = ['wardCode', 'status', 'time', 'name', 'patientId', 'inpNo', 'bedLabel'] } = props
   const [loading, setLoading] = useState(false)
   const [form, setForm]: any = useState({
     status: '1',
@@ -113,7 +115,6 @@ export default observer((props: Props) => {
   }
 
   const handleChange = async (keys: any[]) => {
-    console.log('test-', keys)
     if (!isMulti) {
       if (keys.length > 1) {
         setSelected([keys[keys.length - 1]])
@@ -139,6 +140,10 @@ export default observer((props: Props) => {
     //   birthday: data.birthday
     // }
     onOk(arr)
+  }
+  /**是否搜索添加 */
+  const isSearchCondition = (text: string) => {
+    return searchCodes.includes(text)
   }
 
   useEffect(() => {
@@ -196,32 +201,53 @@ export default observer((props: Props) => {
           />
         </TableWrapper>
         <SearchWrapper>
-          <div className='label'>护理单元:</div>
-          <div className='item'>
-            <DeptSelect hasAllDept deptCode={authStore.defaultDeptCode} style={{ width: '100%' }}
-              onChange={deptCode => setFormItem({ 'wardCode': deptCode })} />
-          </div>
-          <div className='label'>出入院:</div>
-          <Select value={form.status} className='item'
-            onChange={(val: string) => setFormItem({ 'status': val })}>
-            <Select.Option value="1">在院</Select.Option>
-            <Select.Option value="2">出院</Select.Option>
-          </Select>
-          <div className='label'>时间:</div>
-          <DatePicker.RangePicker
-            className='item'
-            value={form.time}
-            onChange={(dates) => setFormItem({ 'time': dates })} />
-          <div className='label'>病人信息:</div>
-          <Input value={form.name} className='item' placeholder='姓名'
-            onChange={(event => setFormItem({ 'name': event.target.value }))} />
-          <Input value={form.patientId} className='item' placeholder='病人ID'
-            onChange={(event => setFormItem({ 'patientId': event.target.value }))} />
-          <Input value={form.inpNo} className='item' placeholder='住院号'
-            onChange={(event => setFormItem({ 'inpNo': event.target.value }))} />
-          <Input value={form.bedLabel} className='item' placeholder='床号'
-            onChange={(event => setFormItem({ 'bedLabel': event.target.value }))} />
+          {isSearchCondition('wardCode') && <>
+            <div className='label'>护理单元:</div>
+            <div className='item'>
+              <DeptSelect hasAllDept deptCode={authStore.defaultDeptCode} style={{ width: '100%' }}
+                onChange={deptCode => setFormItem({ 'wardCode': deptCode })} />
+            </div>
+          </>
+          }
+          {isSearchCondition('status') && <>
 
+            <div className='label'>出入院:</div>
+            <Select value={form.status} className='item'
+              onChange={(val: string) => setFormItem({ 'status': val })}>
+              <Select.Option value="1">在院</Select.Option>
+              <Select.Option value="2">出院</Select.Option>
+            </Select>
+          </>
+          }
+          {isSearchCondition('time') && <>
+            <div className='label'>时间:</div>
+            <DatePicker.RangePicker
+              className='item'
+              value={form.time}
+              onChange={(dates) => setFormItem({ 'time': dates })} />
+          </>
+          }
+          <div className='label'>病人信息:</div>
+          {isSearchCondition('name') && <>
+            <Input value={form.name} className='item' placeholder='姓名'
+              onChange={(event => setFormItem({ 'name': event.target.value }))} />
+          </>
+          }
+          {isSearchCondition('patientId') && <>
+            <Input value={form.patientId} className='item' placeholder='病人ID'
+              onChange={(event => setFormItem({ 'patientId': event.target.value }))} />
+          </>
+          }
+          {isSearchCondition('inpNo') && <>
+            <Input value={form.inpNo} className='item' placeholder='住院号'
+              onChange={(event => setFormItem({ 'inpNo': event.target.value }))} />
+          </>
+          }
+          {isSearchCondition('bedLabel') && <>
+            <Input value={form.bedLabel} className='item' placeholder='床号'
+              onChange={(event => setFormItem({ 'bedLabel': event.target.value }))} />
+          </>
+          }
           <Button type='primary' className='item' onClick={() => getData()}>查询</Button>
         </SearchWrapper>
       </Wrapper>

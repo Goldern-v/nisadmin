@@ -1,14 +1,11 @@
 import styled from "styled-components";
-import React, { useEffect, useState } from "react";
-import { RouteComponentProps } from "react-router";
-import { Icon, Menu } from "antd";
+import React, { useState } from "react";
+import { Menu } from "antd";
 import { appStore } from "src/stores";
-import { toJS } from "mobx";
 import { traineeShiftModal } from "../modules/nurseFiles/view/traineeShift/TraineeShiftModal";
 import { observer } from "mobx-react-lite";
 
 const SubMenu = Menu.SubMenu;
-const MenuItemGroup = Menu.ItemGroup;
 
 export interface Props {
   config: any;

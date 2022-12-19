@@ -92,8 +92,6 @@ class NurseFilesListViewModel {
   public updateDeptByEmpNo = async(data: Obj) => {
     try {
       const res = await nurseFilesService.updateDeptRelation(data)
-      console.log('test-res', res)
-
     } catch (error) {
     }
   }

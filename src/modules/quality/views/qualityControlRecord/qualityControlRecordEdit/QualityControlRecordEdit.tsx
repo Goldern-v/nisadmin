@@ -6,7 +6,6 @@ import { appStore } from "src/stores";
 import { qualityControlRecordEditModel as qcModel } from "./model/QualityControlRecordEditModel";
 import { observer } from "mobx-react-lite";
 import qs from "qs";
-// import { qualityControlRecordApi } from './../api/QualityControlRecordApi'
 import { ScrollBox } from "src/components/common";
 import FormPannel from "./components/FormPannel";
 import FormPanelYx from "./components/FormPanelYx";
@@ -14,6 +13,7 @@ import PreviewPannel from "./components/PreviewPannel";
 import { navTitle } from "src/modules/quality/data/qcTitle";
 // import QcrEditNoRadio from "../qualityControlRecordEditNoRadio/QualityControlRecordEdit";
 // import { qualityControlRecordApi } from "src/modules/quality/views/qualityControlRecord/api/QualityControlRecordApi";
+import PatientDialog from "src/modules/indicator/selfDeclaration/components/patientDialog";
 
 export interface Props {}
 
@@ -297,6 +297,13 @@ const QualityControlRecordEdit = observer(function QualityControlRecordEdit() {
           </Spin>
         </div>
       </MainPannel>
+      {/* 患者弹窗 */}
+      {qcModel.needPatientModal && <PatientDialog
+        visible={qcModel.patientVisible}
+        searchCodes={['wardCode', 'name', 'patientId', 'inpNo', 'bedLabel']}
+        onOk={qcModel.handlePatientSelect.bind(qcModel)}
+        onCancel={() => qcModel.patientVisible = false}
+      />}
     </Wrapper>
   );
 });

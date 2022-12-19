@@ -26,7 +26,6 @@ export default observer(function (props: Props) {
     try {
       setLoading(true)
       SettingApi.getListByRoleCodeForManage(id).then(res => {
-        console.log('test-res', res)
         setTableData(res.data)
         setData(res.data)
         setLoading(false)

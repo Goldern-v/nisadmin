@@ -13,7 +13,6 @@ export default observer(function (props: Props) {
 
   let refForm = React.createRef<Form>()
 
-  console.log('test-', areaControlModel.modalVis)
   useLayoutEffect(() => {
     if (refForm.current && areaControlModel.modalVis) refForm!.current!.clean()
     /** 如果是修改 */

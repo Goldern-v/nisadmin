@@ -11,7 +11,6 @@ export interface Props {
 export default observer(function (props: Props) {
 
   const addChild = (row: Obj) => {
-    console.log('test-row', row)
     areaControlModel.showModal({
       type: '',
       name: '',
@@ -22,7 +21,6 @@ export default observer(function (props: Props) {
       '添加下一级')
   }
   const onEdit = (row: Obj) => {
-    console.log('test-row', row)
     areaControlModel.showModal({
       type: row.type,
       name: row.name,
