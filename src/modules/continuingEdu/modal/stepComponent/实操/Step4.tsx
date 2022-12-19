@@ -124,7 +124,7 @@ export default observer(function Step4() {
             </Col>
           ) : (
             <Col span={24} >
-              {["whyx","whhk","fsxt",'925'].includes(appStore.HOSPITAL_ID)?
+              {["whyx","whhk","fsxt",'fssdy','925'].includes(appStore.HOSPITAL_ID)?
               <Form.Field
                 label={`选择实操评分管理表`}
                 name="adminTable"
