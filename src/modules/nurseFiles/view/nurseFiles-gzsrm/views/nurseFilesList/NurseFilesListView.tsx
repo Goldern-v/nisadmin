@@ -13,6 +13,7 @@ import SelectCon from "./components/SelectCon";
 import { nurseFilesListViewModel } from "./NurseFilesListViewModel";
 import { Obj } from "src/libs/types";
 import DeptModal from "./components/deptModal";
+import { unstable_batchedUpdates } from "react-dom";
 
 export interface Props extends RouteComponentProps { }
 /** 一行的列数 */
@@ -133,13 +134,14 @@ export default observer(function NurseFilesListView() {
       title: "操作",
       dataIndex: "auditedStatusName",
       key: "6",
-      width: 130,
+      width: 170,
       align: "center",
       render(text: any, row: any) {
         return (
         <DoCon>
           <span onClick={() => onDoubleClick(row)}>查看</span>
-          <span onClick={() => openDeptModal(row)}>护理单元配置</span>
+          <span onClick={() => openModal(row, 'dept')}>护理单元配置</span>
+          <span onClick={() => openModal(row, 'role')}>角色设置</span>
         </DoCon>
         );
       }
@@ -147,9 +149,13 @@ export default observer(function NurseFilesListView() {
   ];
   const [deptModalVis, setDeptModalVis] = useState<boolean>(false)
   const [curItem, setCurItem] = useState<Obj>({})
-  const openDeptModal = (record: Obj) => {
-    setDeptModalVis(true)
-    setCurItem(record)
+  const [modalType, setModalType] = useState('')
+  const openModal = (record: Obj, flag: string) => {
+    unstable_batchedUpdates(() => {
+      setDeptModalVis(true)
+      setCurItem(record)
+      setModalType(flag)
+    })
   }
   const onDeptModalOk = () => {
     setDeptModalVis(false)
@@ -178,6 +184,7 @@ export default observer(function NurseFilesListView() {
       <PaginationCon rowNum={rowNum} />
       <DeptModal
         visible={deptModalVis}
+        modalType={modalType}
         handleOk={onDeptModalOk}
         handleCancel={() => { setDeptModalVis(false) }}
         curItem={curItem} />

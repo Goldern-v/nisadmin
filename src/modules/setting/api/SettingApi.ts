@@ -41,6 +41,15 @@ class SettingApi extends BaseApiService {
   public async getListByRoleCodeForManage (roleCode: string) {
     return this.get(`flowRoleUser/getListByRoleCodeForManage/${roleCode}`)
   }
+  /**获取账号角色权限 */
+  public async getRoleByEmpNo (empNo: string) {
+    return this.get(`flowRoleUser/getRoleByEmpNo/${empNo}`)
+  }
+  /**更新账号角色权限 */
+  public async setRoleForEmpNo (data: Obj) {
+    return this.post(`flowRoleUser/setRoleForEmpNo`, data)
+  }
+
   /**设置角色描述 */
   public async updateRoleDescribe(data: Obj) {
     return await this.post(`flowRole/updateRoleDescribe`, data)

@@ -81,7 +81,6 @@ class AreaControlModel {
     this.curItem = row;
     this.modalTitle = title || "编辑";
     this.modalVis = true;
-    console.log("test-this.modalVis", this.modalVis);
   }
   @action
   init() {
