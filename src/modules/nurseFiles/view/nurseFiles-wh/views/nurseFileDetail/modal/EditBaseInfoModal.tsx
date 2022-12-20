@@ -131,6 +131,9 @@ export default function EditWorkHistoryModal(props: Props) {
     let parentObj = obj
     let i = 0
     while(i < len) {
+      if(parentObj === null){
+        return
+      }
       val = parentObj[keys[i]]
       if (val === undefined) return
       if (i < len - 1) parentObj = val
