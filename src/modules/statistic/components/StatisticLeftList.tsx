@@ -16,6 +16,16 @@ const LEFT_MENU_CONFIG = [
           title: "发热患者统计",
           icon: <ZZHSDA />,
           path: "/statistic/发热患者统计",
+        },
+        {
+          title: "PDA使用情况统计",
+          icon: <ZZHSDA />,
+          path: "/statistic/PDA使用情况统计",
+        },
+        {
+          title: "电话回访率统计",
+          icon: <ZZHSDA />,
+          path: "/statistic/电话回访率统计",
         }
       ],
       // 其他医院

@@ -70,6 +70,8 @@ import professionalTec from "./views/professional-tec";
 // export interface Props extends RouteComponentProps<{ type?: string }> {}
 // 护理人员一览表（层级）
 import NurseList_whyx from "./views/nursingStatistics/NurseList_whyx/NurseList_whyx";
+import PdaUsage from "./views/PDAusage/PdaUsage";
+import TelFollowUp from "./views/telFollowUp/TelFollowUp";
 // 患者查询统计   大块
 // 住院病人认知情况统计表
 // import 住院病人认知情况统计表 from 'src/modules/statistic/PatientQueryView/住院病人认知情况统计表/住院病人认知情况统计表.tsx'
@@ -284,6 +286,16 @@ export default function StatisticView() {
       name: "发热患者统计",
       path: "/statistic/发热患者统计",
       component: FeverPatient,
+    },
+    {
+      name: "PDA使用情况统计",
+      path: "/statistic/PDA使用情况统计",
+      component: PdaUsage,
+    },
+    {
+      title: "电话回访率统计",
+      path: "/statistic/电话回访率统计",
+      component: TelFollowUp,
     },
     // 病区设备统计
     {

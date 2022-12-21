@@ -44,12 +44,12 @@ export default observer(function Step5() {
       setModalVisible(true)
       setBtnLoading(false)
     })
-    
+
   }
   const handleModelOk = ()=>{
     setModalVisible(false)
     console.log('ddd');
-    
+
   }
 
   return (
@@ -246,7 +246,7 @@ export default observer(function Step5() {
                 .join("，")}
             </td>
           </tr>
-          {['whyx','fsxt','925','whhk'].includes(appStore.HOSPITAL_ID) ? 
+          {['whyx','fsxt','925','whhk','fssdy'].includes(appStore.HOSPITAL_ID) ?
               <tr>
                 <td className="key">实操评分管理表：</td>
                 <td className="value">{scStepViewModal.stepData2.selectPrcaticalOperation}<Button onClick={handlePreview} loading={btnLoading} >预览</Button></td>
@@ -295,7 +295,7 @@ export default observer(function Step5() {
           </tr>
         </tbody>
       </table>
-      <PracticalPreview 
+      <PracticalPreview
         modalVisible={modalVisible}
         modalTitle={modalTitle}
         params={modalParams}
