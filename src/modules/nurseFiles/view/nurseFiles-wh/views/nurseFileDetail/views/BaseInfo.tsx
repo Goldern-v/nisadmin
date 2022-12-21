@@ -103,46 +103,25 @@ export default observer(function BaseInfo() {
         {
           label: "查看",
           onClick: () => {
-            openAuditModal("基本信息", info, getTableData);
+            openAuditModal("基本信息", info, getTableData,'查看');
           },
         },
       ] : [
         {
           label: "查看",
           onClick: () => {
-            openAuditModal("基本信息", info, getTableData);
+            openAuditModal("基本信息", info, getTableData,'查看');
           },
         },
       ];
-    }else if(['ytll'].includes(appStore.HOSPITAL_ID)){
+    }else{
       // SAVE("noSubmit", "未提交"),
       // HANDLE("handle", "审核中"),
       // SUCCESS("success", "审核通过"),
       // FAIL("fail", "审核不通过");
-      if(info.completeStatus=='noSubmit' || info.completeStatus=='success' || info.completeStatus=='fail'){
-        btnList.push({
-          label: "修改",
-          onClick: () => {
-            editBaseInfoModal.show({
-              id: id,
-              data: info,
-            });
-          },
-        })
-      }
-      if(info.completeStatus=='handle' || info.completeStatus=='fail'){
-        btnList.push({
-          label: "查看",
-          onClick: () => {
-            openAuditModal("基本信息", info, getTableData,'查看');
-          },
-        })
-      }
-
-    } else {
-      if (isSelf()) {
-        btnList = [
-          {
+      if(isSelf()){
+        if(info.completeStatus=='noSubmit' || info.completeStatus=='success' || info.completeStatus=='fail'){
+          btnList.push({
             label: "修改",
             onClick: () => {
               editBaseInfoModal.show({
@@ -150,25 +129,50 @@ export default observer(function BaseInfo() {
                 data: info,
               });
             },
-          },
-          {
-            label: "查看",
-            onClick: () => {
-              openAuditModal("基本信息", info, getTableData);
-            },
-          },
-        ];
-      } else {
-        btnList = [
-          {
-            label: info.statusColor === "1" ? "审核" : "查看",
-            onClick: () => {
-              openAuditModal("基本信息", info, getTableData);
-            },
-          },
-        ];
+          })
+        }
       }
-    }
+      
+      if(info.completeStatus=='handle' || info.completeStatus=='fail'){
+        btnList.push({
+          label: info.statusColor === "1" ? "审核" : "查看",
+          onClick: () => {
+            openAuditModal("基本信息", info, getTableData,'查看');
+          },
+        })
+      }
+
+    } 
+    // else {
+    //   if (isSelf()) {
+    //     btnList = [
+    //       {
+    //         label: "修改",
+    //         onClick: () => {
+    //           editBaseInfoModal.show({
+    //             id: id,
+    //             data: info,
+    //           });
+    //         },
+    //       },
+    //       {
+    //         label: "查看",
+    //         onClick: () => {
+    //           openAuditModal("基本信息", info, getTableData);
+    //         },
+    //       },
+    //     ];
+    //   } else {
+    //     btnList = [
+    //       {
+    //         label: info.statusColor === "1" ? "审核" : "查看",
+    //         onClick: () => {
+    //           openAuditModal("基本信息", info, getTableData);
+    //         },
+    //       },
+    //     ];
+    //   }
+    // }
     return btnList;
   };
 

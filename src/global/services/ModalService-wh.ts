@@ -18,12 +18,14 @@ export default class ModalService extends BaseApiService {
   // 基本信息获取详情
   public getByIdAuditeDis(type: string, empNo: any,btnText?:string) {
     if (isSelf()) {
-      if(['ytll'].includes(appStore.HOSPITAL_ID) && btnText=='查看'){
+      if(btnText=='查看'){
+        // 武汉版本
         return this.get(`/${type}/findByEmpByAudit/${empNo}`)
       }
       return this.get(`/${type}/findByEmpNo/${empNo}`)
     } else {
-      if(['ytll'].includes(appStore.HOSPITAL_ID) && type=='nurseWHInformation'){
+      if(btnText=='查看'){
+        // 武汉版本
         return this.get(`/${type}/findByEmpByAudit/${empNo}`)
       }
       return this.get(`/${type}/findByEmpNoSubmit/${empNo}`)

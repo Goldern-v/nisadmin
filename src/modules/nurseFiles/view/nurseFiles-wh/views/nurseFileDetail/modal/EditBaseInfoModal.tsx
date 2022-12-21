@@ -52,8 +52,8 @@ export default function EditWorkHistoryModal(props: Props) {
   const [nativePlaceList, setNativePlaceList] = useState([]);
   const initFooterList = () => {
     let footerList = [] as any
-    if (['ytll'].includes(appStore.HOSPITAL_ID)) {
-      footerList = [
+    // if (['ytll'].includes(appStore.HOSPITAL_ID)) {
+      footerList = [ 
         <Button key="back" onClick={onCancel}>
           关闭
         </Button>
@@ -67,19 +67,20 @@ export default function EditWorkHistoryModal(props: Props) {
           保存
         </Button>)
       }
-    } else {
-      footerList = [
-        <Button key="back" onClick={onCancel}>
-          关闭
-        </Button>,
-        <Button key="save" type="primary" onClick={() => onSave(false)}>
-          保存
-        </Button>,
-        <Button key="submit" type="primary" onClick={() => onSave(true)}>
-          提交审核
-        </Button>,
-      ]
-    }
+    // } 
+    // else {
+    //   footerList = [
+    //     <Button key="back" onClick={onCancel}>
+    //       关闭
+    //     </Button>,
+    //     <Button key="save" type="primary" onClick={() => onSave(false)}>
+    //       保存
+    //     </Button>,
+    //     <Button key="submit" type="primary" onClick={() => onSave(true)}>
+    //       提交审核
+    //     </Button>,
+    //   ]
+    // }
     return footerList
   }
 
