@@ -1,23 +1,19 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Table, Button, DatePicker, Radio, Spin } from 'antd'
+import { Button, DatePicker, Radio, Spin } from 'antd'
 import CommonLayout, { ChartCon } from './../../common/CommonLayout'
 import { observer } from 'mobx-react'
-import { appStore, authStore } from 'src/stores'
-// import CircleChart from './../../components/CircleChart'
-// import LineChart from './../../components/LineChart'
+import { appStore } from 'src/stores'
 import CircleChart from './components/CircleChart'
 import LineChart from './components/LineChart'
 import BaseTable from 'src/components/BaseTable'
 import { statisticsApi } from './../../api/StatisticsApi'
 import { ColumnProps } from 'antd/lib/table'
 import { chartHeightCol } from '../../utils/chartHeightCol'
-// import { delWithResData } from '../../utils/dealWithData'
 import { setResData, getLineData } from './dealWithData'
 import moment from 'src/vendors/moment'
 import { currentMonth, currentQuater, currentYear } from 'src/utils/date/rangeMethod'
 const RangePicker = DatePicker.RangePicker
-const MonthPicker = DatePicker.MonthPicker
 export interface Props { }
 
 export default observer(function FeverPatient() {
@@ -26,7 +22,6 @@ export default observer(function FeverPatient() {
   let _currentQuater = currentQuater()
 
   let _currentYear = currentYear()
-  // const { deptList } = authStore
   interface IQuery {
     startDate: string|any;
     endDate: string|any;
@@ -46,7 +41,6 @@ export default observer(function FeverPatient() {
   const [loading, setLoading] = useState(false)
   const [format, setFormat] = useState('YYYY-MM-DD')
   const [lineData, setLineData] = useState({})
-  // const [extraColumns, setExtraColumns] = useState([] as ColumnProps<any>[])
   
   // 表头数据类型
   interface IHeaderType {
@@ -87,6 +81,19 @@ export default observer(function FeverPatient() {
       dataIndex: 'qita',
       align: 'center',
     },
+    ...appStore.hisMatch({
+      map: {
+        gzsrm: [
+          {
+            title: '患者总数',
+            width: 90,
+            dataIndex: 'inHospitalCount',
+            align: 'center'
+          }
+        ],
+        other: []
+      }
+    })
   ]
 
   const expandedRowRender = (record: any): JSX.Element => {
@@ -314,6 +321,4 @@ const Con = styled.div`
   .evenRow {
     background-color: rgba(247, 247, 247, 1);
   }
-  
-  
 `

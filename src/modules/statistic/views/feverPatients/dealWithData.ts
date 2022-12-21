@@ -1,4 +1,3 @@
-import { message } from 'antd';
 import moment from 'src/vendors/moment'
 
 interface IExtraData {
@@ -16,6 +15,7 @@ interface ITableData {
   ruyuan: number;
   ruyuanshoushu: number;
   qita: number;
+  inHospitalCount?: number;
   option?: IExtraData[]
 }
 interface ICircleChart {
@@ -75,10 +75,7 @@ const getChartData = (data?: ITableData[]) => {
  */
 export const setResData = (options?: any) => {
   let tableData: ITableData[] = [];
-  // 发热患者类型字段
-  // let colNames: string[] = ['shoushu', 'ruyuan', 'ruyuanshoushu', 'qita']
   const keys: string[] = Object.keys(options)
-  // console.log('keys', keys)
   // 每种发热类型患者名称字段
   let extraNames: string[] = ['patientNameOne', 'patientNameTwo', 'patientNameThree', 'patientNameFour']
   for (let index = 0; index < keys.length; index++) {
@@ -131,6 +128,7 @@ export const setResData = (options?: any) => {
           ruyuan: 'ruyuan' == countName ? item.visitId : 0,
           ruyuanshoushu: 'ruyuanshoushu' == countName ? item.visitId : 0,
           qita: 'qita' == countName ? item.visitId : 0,
+          inHospitalCount: 'countList' === countName ? item.inHospitalCount : 0,
           option: [optionItem]
         }
         tableData.push(dataItem)
@@ -228,6 +226,7 @@ const getLineDataByYear = <K, T>(data: K, start: T, end: T): ILineData => {
   // 获取坐标轴
   resultData.xAxis = getXAxisWithSequence(start, end, '年')
   resultData.searchMode = 'year'
+  console.log('test-data', data)
   for (const key in data) {
     const currentData: any = data[key];
     let lineArr: number[] = []
@@ -235,7 +234,7 @@ const getLineDataByYear = <K, T>(data: K, start: T, end: T): ILineData => {
     for (let index = 0; index <= (+end - +start); index++) {
       // 过滤指定年份的数据并汇总每年的住院次数visitId
       let count: number = currentData
-      .filter((item: any) => +(item.recordDate.split('-')[0]) == (+start + index))
+      .filter((item: any) => +(item.year) == (+start + index))
       .reduce((pre: any, cur: any) => { return pre + cur.visitId }, 0)
       lineArr.push(count)
     }
