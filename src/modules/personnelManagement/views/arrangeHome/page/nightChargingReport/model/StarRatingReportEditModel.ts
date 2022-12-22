@@ -1,6 +1,5 @@
 import { appStore } from "src/stores";
-import { observable, computed, action } from "mobx";
-import React from "react";
+import { observable, action } from "mobx";
 import {message} from "antd";
 
 import createModal from "src/libs/createModal";
@@ -9,9 +8,7 @@ import BaseModal from "./../components/base/BaseModal";
 import { sectionList } from "./../config/sectionList";
 
 import { starRatingReportService } from "./../api/StarRatingReportService";
-import { AllData, DeptItem, DetailItem,IStandardItem } from "./../types";
-import qs from "qs";
-import { numToChinese } from "src/utils/number/numToChinese";
+import { AllData, IStandardItem } from "./../types";
 
 
 export interface SectionListItem {
@@ -180,19 +177,17 @@ class StarRatingReportEditModel {
     }else if (['fqfybjy'].includes(appStore.HOSPITAL_ID)) {
       let res = await starRatingReportService.getReportFQ(query)
       data = res.data
-    } else if (['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID)) {
+    } else if (['sdlj', 'nfsd', 'qzde'].includes(appStore.HOSPITAL_ID)) {
       let res = await starRatingReportService.getReportLJ(query)
       data = res.data
     } else {
       let res = await starRatingReportService.getReport(query)
       data = res.data
     }
-    // let res = await starRatingReportService.getReport(query)
-    // data = res.data
 
     this.getSectionData("报告名称")!.text = appStore.queryObj.name
 
-    if (['dghl', 'fqfybjy','sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID)) {
+    if (['dghl', 'fqfybjy','sdlj', 'nfsd', 'qzde'].includes(appStore.HOSPITAL_ID)) {
       this.allData = data.list1
       this.getSectionData("夜班费上报表")!.list = data.list1
       this.getSectionData("夜班费上报表")!.list2 = {

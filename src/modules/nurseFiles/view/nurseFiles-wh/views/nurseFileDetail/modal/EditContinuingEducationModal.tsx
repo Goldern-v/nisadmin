@@ -144,7 +144,7 @@ export default function EditPersonWinningModal(props: Props) {
               <AutoComplete dataSource={nurseFileDetailViewModal.getDict('级别').map((item) => item.name)} />
             </Form.Field>
           </Col>
-          {!['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID) &&
+          {!['sdlj', 'nfsd', 'qzde'].includes(appStore.HOSPITAL_ID) &&
             <div>
               <Col span={24}>
                 <Form.Field label={`课时数`} name='courseHour'>

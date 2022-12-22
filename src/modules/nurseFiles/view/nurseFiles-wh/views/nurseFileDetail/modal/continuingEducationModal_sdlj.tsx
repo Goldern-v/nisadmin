@@ -23,7 +23,7 @@ let rules: Rules = {
   theoryAssess: (val) => !!val || '请填选择理论考核',
   operateAssess: (val) => !!val || '请选择操作考核',
   urlImageOne: (val) =>{
-    if(!['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID)){
+    if(!['sdlj', 'nfsd', 'qzde'].includes(appStore.HOSPITAL_ID)){
       return !!val || '请上传图片'
     }
   },
@@ -250,4 +250,3 @@ export default function EditPersonWinningModal(props: Props) {
     </Modal>
   )
 }
-const Wrapper = styled.div``

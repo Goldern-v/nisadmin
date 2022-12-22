@@ -145,7 +145,7 @@ export default observer(function Header(props: Props) {
   /** 根据医院、一级菜单名动态渲染头部类型 */
   const getType = () => {
     const nameList = ["集中培训", "在线学习"];
-    if (['hj', 'lyyz'].includes(appStore.HOSPITAL_ID) && nameList.includes(stepViewModal.getParentsName)) {
+    if (['hj', 'lyyz', 'qzde'].includes(appStore.HOSPITAL_ID) && nameList.includes(stepViewModal.getParentsName)) {
       return ''
     } else {
       return (

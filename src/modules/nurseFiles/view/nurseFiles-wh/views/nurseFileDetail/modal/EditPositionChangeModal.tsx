@@ -27,13 +27,14 @@ export interface Props extends ModalComponentProps {
   signShow?: string;
   getTableData?: () => {};
 }
+const isSdlj = ['sdlj', 'nfsd', 'qzde'].includes(appStore.HOSPITAL_ID)
 
 // winNewTiTleDate: data.winNewTiTleDate ? moment(data.winNewTiTleDate) : null,
 // employNewTiTleDate: data.employNewTiTleDate ? moment(data.employNewTiTleDate) : null,
 // titleOld: data.titleOld,
 // titleNew: data.titleNew,
 const rules: Rules = {
-  ...!['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID) ? {
+  ...!isSdlj ? {
     titleOld: val => !!val || "请填写原职称名称",
     titleNew: val => !!val || "请填写现职称名称"
   } : { titleNew: val => !!val || "请填写职称名称" },
@@ -105,7 +106,7 @@ export default function EditPositionChangeModal(props: Props) {
         urlImageOne: data.urlImageOne ? data.urlImageOne.split(",") : [],
         ...appStore.hisMatch({
           map: {
-            'sdlj,nfsd': {
+            'sdlj,nfsd,qzde': {
               titleNumber: data.titleNumber
             },
             other: {}
@@ -157,33 +158,33 @@ export default function EditPositionChangeModal(props: Props) {
               <DatePicker />
             </Form.Field>
           </Col> */}
-          {!['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID) && <Col span={24}>
+          {!isSdlj && <Col span={24}>
             <Form.Field label={`原职称名称`} name="titleOld" required>
               <Select>
                 {nurseFileDetailViewModal
                   .getDict("技术职称")
                   .map((item: any, index: number) => (
-                    <Select.Option value={item.code} key={index}>
+                    <Option value={item.code} key={index}>
                       {item.name}
-                    </Select.Option>
+                    </Option>
                   ))}
               </Select>
             </Form.Field>
           </Col>}
           <Col span={24}>
-            <Form.Field label={['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID) ? '职称名称' : `现职称名称`} name="titleNew" required>
+            <Form.Field label={isSdlj ? '职称名称' : `现职称名称`} name="titleNew" required>
               <Select>
                 {nurseFileDetailViewModal
                   .getDict("技术职称")
                   .map((item: any, index: number) => (
-                    <Select.Option value={item.code} key={index}>
+                    <Option value={item.code} key={index}>
                       {item.name}
-                    </Select.Option>
+                    </Option>
                   ))}
               </Select>
             </Form.Field>
           </Col>
-          {['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID) && <Col span={24}>
+          {isSdlj && <Col span={24}>
             <Form.Field label="证书编号" name="titleNumber">
               <Input />
             </Form.Field>

@@ -23,7 +23,7 @@ export default class AuthApiService extends BaseApiService {
       }
       // let regexp = new RegExp("^(?![A-Za-z0-9]+$)(?![a-z0-9\\W]+$)(?![A-Za-z\\W]+$)(?![A-Z0-9\\W]+$)[a-zA-Z0-9\\W]{8,}$") 
       let regexp = new RegExp("^(?![A-Z]*$)(?![a-z]*$)(?![0-9]*$)(?![^a-zA-Z0-9]*$)\\S{8,}$")
-      if (['sdlj','dghl'].includes(appStore.HOSPITAL_ID) && !regexp.test(orgPsd||'')) {
+      if (['sdlj','dghl', 'qzde'].includes(appStore.HOSPITAL_ID) && !regexp.test(orgPsd||'')) {
         message.error('当前登录密码强度较弱，请修改密码后登录!')
         window.location.href = '#/resetpassword'
         return
@@ -54,11 +54,11 @@ export default class AuthApiService extends BaseApiService {
       scheduleStore.setDepartmentValue('deptCode', user.deptCode)
       scheduleStore.setDepartmentValue('deptName', user.deptName)
       authStore.initUser()
-      if (appStore.HOSPITAL_ID == 'wh') {
+      // if (appStore.HOSPITAL_ID == 'wh') {
         // if (user.roleManage != '1') {
         //   return message.warn('你没有权限进入管理系统')
         // }
-      }
+      // }
       // 实习生直接跳转学习培训在线学习
       if (authStore.isOnlyInternsManage) {
         return window.location.href = '#/continuingEdu/在线学习'
@@ -76,8 +76,6 @@ export default class AuthApiService extends BaseApiService {
       }else {
         window.location.href = '#/home'
       }
-
-
     })
   }
   public logout(stopComfirm?: boolean) {

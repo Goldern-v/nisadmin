@@ -486,11 +486,13 @@ class SheetViewModal {
   }
 
   saveSheetTableData(status: "0" | "1" | undefined) {
-    if (document.querySelector(".public-hour-warning")&&appStore.HOSPITAL_ID!=='sdlj') {
-      return message.warning("存在公休天数小于0的护士，请修正");
-    }
-    if (document.querySelector(".period-hour-warning")&&appStore.HOSPITAL_ID!=='sdlj') {
-      return message.warning("存在例假天数小于0的护士，请修正");
+    if (!['sdlj', 'qzde'].includes(appStore.HOSPITAL_ID)) {
+      if (document.querySelector(".public-hour-warning")) {
+        return message.warning("存在公休天数小于0的护士，请修正");
+      }
+      if (document.querySelector(".period-hour-warning")) {
+        return message.warning("存在例假天数小于0的护士，请修正");
+      }
     }
     let urlName =
       appStore.HOSPITAL_ID == "nys" ? "schedulingNys" : "scheduling";

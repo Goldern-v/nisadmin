@@ -125,7 +125,7 @@ const blurSetForm =(e:ChangeEvent<HTMLInputElement>)=>{
             rules: [{ required: true, message: '科室不能为空' }],
             initialValue: authStore.selectedDeptCode === '全院' ? '' : authStore.selectedDeptCode,
           })(
-            ['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID)
+            ['sdlj', 'nfsd', 'qzde'].includes(appStore.HOSPITAL_ID)
             ? <TreeSelectCom
             list={authStore.treeDeptList}
             placeholder='选择所属科室'

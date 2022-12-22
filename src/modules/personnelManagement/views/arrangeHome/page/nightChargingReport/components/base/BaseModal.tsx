@@ -1,26 +1,13 @@
-import styled from "styled-components";
-import React, { useState, useEffect, useLayoutEffect } from "react";
+import React, { useState, useLayoutEffect } from "react";
 import {
   Modal,
-  Input,
-  Button,
-  Radio,
-  DatePicker,
-  Select,
-  Row,
-  Col,
   message
 } from "antd";
 import { ModalComponentProps } from "src/libs/createModal";
-import Form from "src/components/Form";
-import { to } from "src/libs/fns";
-import { Rules } from "src/components/Form/interfaces";
 import { observer } from "src/vendors/mobx-react-lite";
 import { starRatingReportEditModel } from "./../../model/StarRatingReportEditModel";
 import { starRatingReportService } from "./../../api/StarRatingReportService";
 import { appStore } from "src/stores";
-
-const Option = Select.Option;
 
 export interface Props extends ModalComponentProps {
   /** 表单提交成功后的回调 */
@@ -62,7 +49,7 @@ export default observer(function BaseModal(props: Props) {
     if (sectionData.sectionId == "夜班费上报表") {
       const params = appStore.hisMatch({
         map: {
-          'dghl,fqfybjy,sdlj': {
+          'dghl,fqfybjy,sdlj,qzde': {
             list1: data.list,
             list2: data.list2,
             schNightTotalModel: data.schNightTotalModel
@@ -87,8 +74,6 @@ export default observer(function BaseModal(props: Props) {
         onCancel();
       });
     }
-
-    // starRatingReportEditModel.setSectionData(sectionData.sectionId, data) ? onCancel() : message.error('未知异常')
   };
 
   useLayoutEffect(() => {
@@ -128,4 +113,3 @@ export default observer(function BaseModal(props: Props) {
     </Modal>
   );
 });
-const Wrapper = styled.div``;

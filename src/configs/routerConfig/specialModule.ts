@@ -168,7 +168,7 @@ if (process.env.REACT_APP_HOSPITAL_ID == "hj") {
     ),
     setLayout("/nursingRulesNewEdit", NursingRulesNewEdit, layouts.MainLayout)
   ];
-} else if (["wh","gxjb","fssdy","fsxt","sdlj","gdtj","zzwy","wjgdszd", 'ytll','zhzxy', 'nfsd','925'].includes(appStore.HOSPITAL_ID)) {
+} else if (["wh","gxjb","fssdy","fsxt","sdlj","gdtj","zzwy","wjgdszd", 'ytll','zhzxy', 'nfsd','925', 'qzde'].includes(appStore.HOSPITAL_ID)) {
   specialModule = [
     setLayout("/nurseAudit", NurseAudit_wh, layouts.MainLayout),
     setLayout(

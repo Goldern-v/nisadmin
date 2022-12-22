@@ -214,7 +214,7 @@ export default function qualityControlRecordDetailHeader(props: Props) {
                   ? "/qcThree"
                   : master.qcLevel == "2"
                   ? "/qcTwo"
-                  : ["hj", "gxjb", 'nfsd'].includes(appStore.HOSPITAL_ID)
+                  : ["hj", "gxjb", 'nfsd', 'qzde'].includes(appStore.HOSPITAL_ID)
                   ? "/qcOneHj"
                   : appStore.HOSPITAL_ID == "nys"
                   ? "/qcOneNys"

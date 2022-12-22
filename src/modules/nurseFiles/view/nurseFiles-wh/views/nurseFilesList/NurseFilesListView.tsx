@@ -457,7 +457,7 @@ export default observer(function NurseFilesListView() {
   return (
     <Wrapper>
       <SelectCon />
-      {['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID)
+      {['sdlj', 'nfsd', 'qzde'].includes(appStore.HOSPITAL_ID)
         ? <FilterConTree />
         : <FilterCon />}
       <div style={{ height: 10 }} />

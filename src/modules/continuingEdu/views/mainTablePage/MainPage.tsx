@@ -47,7 +47,7 @@ export default observer(function MainPage(props: Props) {
   /** 动态渲染页面组件 */
   const getDynamicPage = () => {
     const arr = ["集中培训", "在线练习考试"];
-    if (['hj', 'lyyz'].includes(appStore.HOSPITAL_ID)) {
+    if (['hj', 'lyyz', 'qzde'].includes(appStore.HOSPITAL_ID)) {
       if (getParentsName === "在线学习")
         return (
           <BaseTabs

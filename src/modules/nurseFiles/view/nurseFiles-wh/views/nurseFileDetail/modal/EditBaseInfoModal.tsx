@@ -46,6 +46,8 @@ const rules: Rules = {
     }
   },
 };
+const isSdlj = ['sdlj', 'nfsd', 'qzde'].includes(appStore.HOSPITAL_ID)
+
 export default function EditWorkHistoryModal(props: Props) {
   let { visible, onCancel, onOk, data, id } = props;
   let refForm = React.createRef<Form>();
@@ -343,7 +345,7 @@ export default function EditWorkHistoryModal(props: Props) {
           </Col>
           <Col span={12}>
             <Form.Field
-              label={['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID) ? '参加护理工作时间' : `取得执业证书并从事护理岗位时间`}
+              label={isSdlj ? '参加护理工作时间' : `取得执业证书并从事护理岗位时间`}
               name="zyzsNursingPostDate"
             >
               <DatePicker />
@@ -428,7 +430,7 @@ export default function EditWorkHistoryModal(props: Props) {
           </Col>
           {appStore.HOSPITAL_ID !== 'gxjb' ?
             <Col span={12}>
-              <Form.Field label={['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID) ? `夏季鞋码大小` : `鞋码大小`} name="shoeSize">
+              <Form.Field label={isSdlj ? `夏季鞋码大小` : `鞋码大小`} name="shoeSize">
                 {['lyrm', 'stmz'].includes(appStore.HOSPITAL_ID) ? <Input /> : <SelectOrAutoInput dict="鞋码大小" />}
               </Form.Field>
             </Col> : <Col span={12}>
@@ -437,7 +439,7 @@ export default function EditWorkHistoryModal(props: Props) {
               </Form.Field>
             </Col>
           }
-          {['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID) && <Col span={12}>
+          {isSdlj && <Col span={12}>
             <Form.Field label={`冬季鞋码大小`} name="maps.winter_shoe_size">
               <SelectOrAutoInput dict="鞋码大小" />
             </Form.Field>

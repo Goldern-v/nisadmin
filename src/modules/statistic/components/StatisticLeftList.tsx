@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import LeftMenu from "src/components/LeftMenu";
 import { appStore } from "src/stores";
 import { ReactComponent as PBTJ } from "../img/PBTJ.svg";
@@ -155,7 +155,7 @@ const LEFT_MENU_CONFIG = [
                 {
                   title: '护理人员统计',
                   path: '/statistic/护理人员统计',
-                  hide: ['jmfy', 'nys', 'whyx','sdlj','whhk'].includes(appStore.HOSPITAL_ID),
+                  hide: ['jmfy', 'nys', 'whyx','sdlj','whhk', 'qzde'].includes(appStore.HOSPITAL_ID),
                 },
                 {
                   title: "护士层级分布", path: "/statistic/护士层级分布",
@@ -169,7 +169,7 @@ const LEFT_MENU_CONFIG = [
                 },
                 ...appStore.hisMatch({
                   map: {
-                    'lcey,hj,sdlj,nfsd': [
+                    'lcey,hj,sdlj,nfsd,qzde,qzde': [
                       {
                         title: "护士职称分布",
                         path: "/statistic/护士职称分布",
@@ -181,7 +181,7 @@ const LEFT_MENU_CONFIG = [
                 }),
                 ...appStore.hisMatch({
                   map: {
-                    'sdlj': [
+                    'sdlj,qzde': [
                       {
                         title: "护士职务分布",
                         path: "/statistic/护士职务分布",
@@ -190,11 +190,6 @@ const LEFT_MENU_CONFIG = [
                     other: []
                   }
                 })
-                // {
-                //   title: "科室护士结构信息汇总表",
-                //   path: "/statistic/科室护士结构信息汇总表"
-                // },
-                // { title: "护士离职率", path: "/statistic/护士离职率" }
               ]
             }
           })
@@ -211,23 +206,6 @@ const LEFT_MENU_CONFIG = [
     }
   }),
   
-  // {
-  //   title: "患者查询统计",
-  //   icon: <HZCXTJ />,
-  //   children: [
-  //     { title: "患者查询", path: "/statistic/患者查询" },
-  //     {
-  //       title: "住院病人认知情况统计表",
-  //       path: "/statistic/住院病人认知情况统计表"
-  //     },
-  //     { title: "床位使用情况统计表", path: "/statistic/床位使用情况统计表" },
-  //     { title: "病区流转", path: "/statistic/病区流转" },
-  //     { title: "在院患者病情统计表", path: "/statistic/在院患者病情统计表" },
-  //     { title: "出院病人统计表", path: "/statistic/出院病人统计表" },
-  //     { title: "住院执行单统计表", path: "/statistic/住院执行单统计表" },
-  //     { title: "患者分布统计表", path: "/statistic/患者分布统计表" }
-  //   ]
-  // },
   ...appStore.hisMatch({
     map: {
       nys: [

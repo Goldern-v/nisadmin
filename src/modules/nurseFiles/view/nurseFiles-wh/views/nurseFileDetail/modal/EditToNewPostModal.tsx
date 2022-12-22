@@ -1,11 +1,8 @@
 import styled from "styled-components";
-import React, { useState, useEffect, useLayoutEffect } from "react";
-import { RouteComponentProps } from "react-router";
+import React, { useState, useLayoutEffect } from "react";
 import {
   Modal,
-  Input,
   Button,
-  Radio,
   DatePicker,
   Select,
   Row,
@@ -17,22 +14,14 @@ import { ModalComponentProps } from "src/libs/createModal";
 import Form from "src/components/Form";
 import { nurseFilesService } from "../../../services/NurseFilesService";
 import { nurseFileDetailViewModal } from "../NurseFileDetailViewModal";
-import {
-  TITLE_LIST,
-  POST_LIST
-} from "../../nurseFilesList/modal/AddNursingModal";
 import { to } from "src/libs/fns";
 import { Rules } from "src/components/Form/interfaces";
 import moment from "moment";
-import loginViewModel from "src/modules/login/LoginViewModel";
-// 加附件
-import ImageUploader from "src/components/ImageUploader";
 import { authStore, appStore } from "src/stores";
-import service from "src/services/api";
 import emitter from "src/libs/ev";
-import MultipleImageUploader from "src/components/ImageUploader/MultipleImageUploader";
-import YearPicker from "src/components/YearPicker";
 const Option = Select.Option;
+const isSdlj = ['sdlj', 'nfsd', 'qzde'].includes(appStore.HOSPITAL_ID)
+
 export interface Props extends ModalComponentProps {
   data?: any;
   signShow?: string;
@@ -41,29 +30,16 @@ export interface Props extends ModalComponentProps {
 const rules: Rules = {
   oldDeptCode: val => !!val || "原工作科室",
   newDeptCode: val => !!val || "现工作科室",
-  ...!['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID) ? {deptBeDepartment: val => !!val || "现科室隶属部门"} : {},
+  ...!isSdlj ? {deptBeDepartment: val => !!val || "现科室隶属部门"} : {},
   transferDate: val => !!val || "请填写转岗时间"
-  // awardWinningName: (val) => !!val || '请填写获奖/推广创新项目名称',
-  // rank: (val) => !!val || '请填写本人排名',
-  // awardlevel: (val) => !!val || '请填写授奖级别',
-  // approvalAuthority: (val) => !!val || '请填写批准机关'
 };
 export default function EditToNewPostModal(props: Props) {
   const [title, setTitle] = useState("");
   const [list, setList]: any = useState([]);
-  const [type, setType] = useState("");
-  const [oldType, setOldType] = useState("");
   let { visible, onCancel, onOk, data, signShow } = props;
   let refForm = React.createRef<Form>();
 
   const onFieldChange = () => {};
-
-  const onSelectChange = (value: any) => {
-    setType(value);
-  };
-  const onSelectChangeOld = (value: any) => {
-    setOldType(value);
-  };
 
   const onSave = async (sign: boolean) => {
     let obj = {
@@ -149,20 +125,19 @@ export default function EditToNewPostModal(props: Props) {
         onChange={onFieldChange}
       >
         <Row>
-          {!['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID) ? <Col span={24}>
+          {!isSdlj ? <Col span={24}>
             <Form.Field label={`原工作科室`} name="oldDeptCode" required>
               <Select placeholder="选择原工作科室">
                 {list.map((item: any) => (
-                  <Select.Option value={item.code} key={item.code}>
+                  <Option value={item.code} key={item.code}>
                     {item.name}
-                  </Select.Option>
+                  </Option>
                 ))}
               </Select>
             </Form.Field>
           </Col> : 
           <Col span={24}>
             <Form.Field label={`原工作科室`} name="oldDeptCode" required>
-              {/* <Input placeholder='请填写原工作科室' /> */}
               <AutoComplete
                 dataSource={list.map((item: any) => item.name)}
                 placeholder="选择原工作科室"
@@ -178,14 +153,14 @@ export default function EditToNewPostModal(props: Props) {
                 {nurseFileDetailViewModal
                   .getDict("全部科室")
                   .map((item: any) => (
-                    <Select.Option value={item.code} key={item.code}>
+                    <Option value={item.code} key={item.code}>
                       {item.name}
-                    </Select.Option>
+                    </Option>
                   ))}
               </Select>
             </Form.Field>
           </Col>
-          {!['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID) && <Col span={24}>
+          {!isSdlj && <Col span={24}>
             <Form.Field
               label={`现科室隶属部门`}
               name="deptBeDepartment"
@@ -195,9 +170,9 @@ export default function EditToNewPostModal(props: Props) {
                 {nurseFileDetailViewModal
                   .getDict("现科室隶属部门")
                   .map((item: any) => (
-                    <Select.Option value={item.code} key={item.code}>
+                    <Option value={item.code} key={item.code}>
                       {item.name}
-                    </Select.Option>
+                    </Option>
                   ))}
               </Select>
             </Form.Field>
@@ -207,11 +182,6 @@ export default function EditToNewPostModal(props: Props) {
               <DatePicker />
             </Form.Field>
           </Col>
-          {/* <Col span={24}>
-            <Form.Field label={`附件`} name='urlImageOne'>
-              <MultipleImageUploader text='添加图片' />
-            </Form.Field>
-          </Col> */}
         </Row>
       </Form>
     </Modal>

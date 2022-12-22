@@ -209,7 +209,7 @@ export default observer(function QualityControlRecord() {
           tableData={qualityControlRecordVM.allData.list || []}
           allData={qualityControlRecordVM.allData}
           loadingGet={loading}
-          showSelection={["hj", "gzsrm", "gxjb", 'nfsd'].includes(appStore.HOSPITAL_ID)}
+          showSelection={["hj", "gzsrm", "gxjb", 'nfsd', 'qzde'].includes(appStore.HOSPITAL_ID)}
           selectionChange={(payload: any) => setSelectedRowKeys(payload)}
           selectedRowKeys={selectedRowKeys}
           getTableData={getTableData}

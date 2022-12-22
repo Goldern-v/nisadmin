@@ -69,14 +69,14 @@ export default observer(function FollowUpRecord() {
       width: 150
     },
     {
-      title:appStore.HOSPITAL_ID==='sdlj' ?"公休天数（天）": "年假天数（天）",
+      title: ['sdlj', 'qzde'].includes(appStore.HOSPITAL_ID) ?"公休天数（天）": "年假天数（天）",
       dataIndex: "publicHourNow",
       align: "center",
       width: 100
     },
     ...appStore.hisMatch({
       map: {
-        'sdlj,nfsd': [
+        'sdlj,nfsd,qzde': [
           {
             title: "例假结余（天）",
             dataIndex: "periodHourNow",
@@ -108,7 +108,7 @@ export default observer(function FollowUpRecord() {
 
     ...appStore.hisMatch({
       map: {
-        'sdlj': [],
+        'sdlj,qzde': [],
         other: [{
           title: "积假结余",
           dataIndex: "totalHoliday",

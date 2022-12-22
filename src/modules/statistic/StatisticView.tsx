@@ -249,27 +249,20 @@ export default function StatisticView() {
     },
     ...appStore.hisMatch({
       map: {
-        'jmfy,lcey,hj,sdlj,nfsd': [
+        'jmfy,lcey,hj,sdlj,nfsd,qzde': [
           {
             name: "护士职称分布",
             path: "/statistic/护士职称分布",
             component: 护士职称统计,
           },
         ],
-        // lcey: [
-        //   {
-        //     name: "护士职称分布",
-        //     path: "/statistic/护士职称分布",
-        //     component: 护士职称统计,
-        //   },
-        // ],
         default: [],
       },
       vague:true
     }),
     ...appStore.hisMatch({
       map: {
-        'sdlj': [
+        'sdlj,qzde': [
           {
             name: "护士职务分布",
             path: "/statistic/护士职务分布",

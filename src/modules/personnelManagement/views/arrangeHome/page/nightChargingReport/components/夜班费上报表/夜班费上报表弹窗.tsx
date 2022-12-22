@@ -1,11 +1,10 @@
 import styled from "styled-components";
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Button } from "antd";
-import BaseTable, { DoCon } from "src/components/BaseTable";
+import BaseTable from "src/components/BaseTable";
 import { cloneJson } from "src/utils/json/clone";
 import { appStore } from "src/stores";
 import { observer } from "mobx-react-lite";
-import service from "src/services/api";
 import configDefault from './config/default'
 import configNys from './config/nys'
 import configDghl from './config/dghl'
@@ -13,13 +12,13 @@ import configFqfybjy from './config/fqfybjy'
 import configGzsrm from './config/gzsrm'
 import configSdlj from './config/sdlj'
 
-const commonApi = service.commonApiService;
 
 export interface Props {
   sectionId: string;
   data: any;
   setData: any;
 }
+const isSdljText = 'sdlj,nfsd,qzde'
 
 export default observer(function 夜班费上报表弹窗(props: Props) {
   let { sectionId, setData, data } = props;
@@ -43,7 +42,7 @@ export default observer(function 夜班费上报表弹窗(props: Props) {
       fqfybjy: configFqfybjy.getColumns(cloneData, calBack),
       //暂时隐藏20210926
       'gzsrm': configGzsrm.getColumns(cloneData, calBack),
-      'sdlj,nfsd': configSdlj.getColumns(cloneData, calBack),
+      [isSdljText]: configSdlj.getColumns(cloneData, calBack),
       default: configDefault.getColumns(cloneData, calBack)
     },
     vague: true,
@@ -55,7 +54,7 @@ export default observer(function 夜班费上报表弹窗(props: Props) {
         nys: configNys.moneyKeyList,
         dghl: configDghl.moneyKeyList,
         fqfybjy: configFqfybjy.moneyKeyList,
-        'sdlj,nfsd': configSdlj.moneyKeyList,
+        [isSdljText]: configSdlj.moneyKeyList,
       },
       vague: true,
     })
@@ -71,7 +70,7 @@ export default observer(function 夜班费上报表弹窗(props: Props) {
         dghl: configDghl.item,
         fqfybjy: configFqfybjy.item,
         'gzsrm': configGzsrm.item(),
-        'sdlj,nfsd': configSdlj.item,
+        [isSdljText]: configSdlj.item,
         default: configDefault.item
       },
       vague:true,
@@ -87,7 +86,6 @@ export default observer(function 夜班费上报表弹窗(props: Props) {
   //     addItem()
   //   }
   // },[])
-
   
 
   return (
@@ -152,12 +150,6 @@ const Wrapper = styled.div`
     outline: none;
     background: none;
     box-shadow: none;
-    /* :hover{
-      outline: none;
-      border: none;
-      background: none;
-      box-shadow: none;
-    } */
     :focus{
       outline: none;
       border: none;
@@ -166,37 +158,35 @@ const Wrapper = styled.div`
     }
   }
   .ant-input{
-      resize: none;
-      ${defaultInputStyle}
-      /* :hover{
-        ${activeInputStyle}
-          background: ${p => p.theme.$mlc};
-      } */
-      :focus{
-        ${activeInputStyle}
-          background: ${p => p.theme.$mlc};
-      }
+    resize: none;
+    ${defaultInputStyle}
+    /* :hover{
+      ${activeInputStyle}
+        background: ${p => p.theme.$mlc};
+    } */
+    :focus{
+      ${activeInputStyle}
+        background: ${p => p.theme.$mlc};
     }
-    .ant-select-selection{
-      ${defaultInputStyle}
-    }
+  }
   .ant-select-selection{
-      ${defaultInputStyle}
-    }
+    ${defaultInputStyle}
+  }
+  .ant-select-selection{
+    ${defaultInputStyle}
+  }
 
-    .ant-select-open,.ant-select-focused{
-      .ant-select-selection{
+  .ant-select-open,.ant-select-focused{
+    .ant-select-selection{
+      ${activeInputStyle}
+      &:focus{
         ${activeInputStyle}
-        &:focus{
-          ${activeInputStyle}
-          background: ${p => p.theme.$mlc};
-        }
+        background: ${p => p.theme.$mlc};
       }
     }
+  }
 
   input {
     text-align: center;
   }  
 `;
-
-const HeadCon = styled.div``;

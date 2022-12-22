@@ -130,7 +130,7 @@ export default class NurseFilesService extends BaseApiService {
   }
   /** 统一更新 */
   public async commonSaveOrUpdate(type: string, obj: any) {
-    return this.post(`/${type}/${appStore.HOSPITAL_ID === 'sdlj' && type === 'nurseWHTransferPost' ? 'saveOrUpdateLJ' : 'saveOrUpdate'}`, obj)
+    return this.post(`/${type}/${['sdlj', 'qzde'].includes(appStore.HOSPITAL_ID) && type === 'nurseWHTransferPost' ? 'saveOrUpdateLJ' : 'saveOrUpdate'}`, obj)
   }
   /** 统一删除 */
   public async commonDelById(type: string, id: any) {

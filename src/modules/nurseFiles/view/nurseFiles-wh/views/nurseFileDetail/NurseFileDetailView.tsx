@@ -1,7 +1,6 @@
 import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { RouteComponentProps } from 'src/components/RouterView'
-import _ from 'lodash'
 import { HorizontalMenuItem } from 'src/types/horizontalMenu'
 import TopCon from './components/TopCon'
 import LeftMenu from './components/LeftMenu'
@@ -44,7 +43,7 @@ import SocialNurse from './views/SocialNurse'
 export interface Props extends RouteComponentProps<{ type?: string }> {
   payload: HorizontalMenuItem[]
 }
-
+const isSdlj = ['sdlj', 'nfsd', 'qzde'].includes(appStore.HOSPITAL_ID)
 const ROUTE_LIST = [
   {
     type: 'baseInfo',
@@ -74,7 +73,7 @@ const ROUTE_LIST = [
     component: OnEducation,
     name: '外出进修'
   },
-  ...['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID) ? [
+  ...isSdlj ? [
     {
       type: 'continuingEducation_sdlj',
       component: continuingEducation_sdlj,
@@ -149,7 +148,7 @@ const ROUTE_LIST = [
     component: WorkRegistrationForm,
     name: '在院工作情况'
   },
-  ...['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID) ? [
+  ...isSdlj ? [
     {
       type: 'toNewPost',
       component: ToNewPost_sdlj,
@@ -167,7 +166,7 @@ const ROUTE_LIST = [
     component: PositionChange,
     name: '职称变动'
   },
-  ...['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID) ? [{
+  ...isSdlj ? [{
     type: 'jobChange',
     component: jobChange,
     name: '职务变动'
@@ -177,7 +176,7 @@ const ROUTE_LIST = [
     component: RankChange,
     name: '层级变动'
   },
-  ...!['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID) ? [{
+  ...!isSdlj ? [{
     type: 'OrganizationChange',
     component: OrganizationChange,
     name: '编制变动'

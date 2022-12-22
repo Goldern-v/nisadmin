@@ -112,7 +112,7 @@ export default observer(function QcTwoRouter(props: Props) {
 
   const extra_menu = appStore.hisMatch({
     map: {
-      "hj,gxjb,lyyz,qhwy,lyrm,whhk,nfsd,dglb,stmz": [
+      "hj,gxjb,lyyz,qhwy,lyrm,whhk,nfsd,dglb,stmz,qzde": [
         {
           title: "护理质量巡查情况汇总表",
           icon: <YDBG />,
