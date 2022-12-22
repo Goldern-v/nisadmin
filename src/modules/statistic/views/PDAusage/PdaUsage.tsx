@@ -51,11 +51,11 @@ export default observer(function PdaUsage(props: Props) {
     {
       title: '登记总次数',
       width: 90,
-      dataIndex: '',
+      dataIndex: 'totalcount',
       align: 'center',
-      render: (text: any, record: any, index: number) =>{
-        return <span>{Number(record.goodcount)+Number(record.badcount)>0?Number(record.goodcount)+Number(record.badcount):''}</span>
-      }
+      // render: (text: any, record: any, index: number) =>{
+      //   return <span>{Number(record.goodcount)+Number(record.badcount)>0?Number(record.goodcount)+Number(record.badcount):''}</span>
+      // }
     },
     {
       title: '好（次数）',
@@ -72,10 +72,11 @@ export default observer(function PdaUsage(props: Props) {
     {
       title: '运行好率（%）',
       width: 90,
-      dataIndex: '',
+      dataIndex: 'goodrate',
       align: 'center',
       render: (text: any, record: any, index: number) =>{
-        let percent = numberFormat((Number(record.goodcount)/(Number(record.goodcount)+Number(record.badcount)))*100,2)
+        // let percent = numberFormat((Number(record.goodcount)/(Number(record.goodcount)+Number(record.badcount)))*100,2)
+        let percent = numberFormat(text*100,2)
         return <span>{Number(percent)>0?percent+'%':'0'}</span>
       }
     },
@@ -136,7 +137,7 @@ return (
         allowClear={false} />}
      
       <Button type="primary" onClick={handleSearch}>查询</Button>
-      {/* <Button style={{marginLeft:'15px'}} onClick={exportTable}>导出</Button> */}
+      <Button style={{marginLeft:'15px'}} onClick={exportTable}>导出</Button>
       
     </div>}
     body={

@@ -5,7 +5,7 @@ export default class PdaUsageApi extends BaseApiService {
 		return this.post(`/qcRegisterCount/pdaCommentsCount`,obj);
 	}
   public async exportData(obj: any) {
-		return this.get(`/goodEvent/clinicalIndicators/exportMonthlyForDeptCode?${qs.stringify(obj)}`, {
+		return this.get(`/qcRegisterCount/exportPdaCommentsCount?${qs.stringify(obj)}`, {
 			responseType: "blob"
 		});
 	}

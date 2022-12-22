@@ -5,7 +5,7 @@ export default class TelFollowUpApi extends BaseApiService {
 		return this.post(`/qcRegisterCount/phoneCallBackCount`,obj);
 	}
 	public async exportData(obj: any) {
-		return this.get(`/goodEvent/clinicalIndicators/exportMonthlyForDeptCode?${qs.stringify(obj)}`, {
+		return this.get(`/qcRegisterCount/exportPhoneCallBackCount?${qs.stringify(obj)}`, {
 			responseType: "blob"
 		});
 	}

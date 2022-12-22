@@ -142,7 +142,7 @@ return (
         allowClear={false} />
      
       <Button type="primary" onClick={handleSearch}>查询</Button>
-      {/* <Button style={{marginLeft:'15px'}} onClick={exportTable}>导出</Button> */}
+      <Button style={{marginLeft:'15px'}} onClick={exportTable}>导出</Button>
       
     </div>}
     body={
