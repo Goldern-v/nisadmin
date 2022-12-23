@@ -29,6 +29,7 @@ for (let j = 0; j < (user.settingDtos || []).length; j++) {
   }
   }
   let total = user.holidayHour - real_holidayHour + user.current_holidayHour
+  if ('whsl' === appStore.HOSPITAL_ID) return Number(total) + 'd'
   return total
 }
 const Wrapper = styled.div`

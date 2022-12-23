@@ -1,11 +1,9 @@
 import styled from "styled-components";
-import React, { useState, useEffect } from "react";
-import { Button } from "antd";
+import React from "react";
 import { observer } from "mobx-react-lite";
 import { sheetViewModal } from "../../viewModal/SheetViewModal";
-import { ArrangeItem } from "../../types/Sheet";
-import { Input } from "src/vendors/antd";
 import moment from "moment";
+import { appStore } from "src/stores";
 export interface Props {
   id: any;
 }
@@ -16,7 +14,7 @@ export default observer(function BalanceHour(props: Props) {
 });
 
 export const balanceHour = (id: any) => {
- 
+
   let list = [];
   let user = sheetViewModal.sheetTableData.find((item: any) => {
     return item.id == id;
@@ -56,6 +54,10 @@ export const balanceHour = (id: any) => {
       real_balanceHour -= (real_week / 5) * 2;
       // real_balanceHour = real_week;
     }
+  }
+  if ('whsl' === appStore.HOSPITAL_ID) {
+    let hour = Number(user.balanceHour * 100 + real_balanceHour * 100 - user.current_balanceHour * 100) / 100
+    return parseInt((hour / 8) + '') != 0 ? parseInt((hour / 8) + '') + 'd' + parseFloat(Math.abs(Math.ceil(Number((hour % 8 * 100).toFixed(1))) / 100) + '') + 'h' : parseFloat((Math.ceil(hour % 8 * 10) / 10) + '') + 'h'
   }
   return Number(user.balanceHour + real_balanceHour - user.current_balanceHour).toFixed(1)
 

@@ -38,6 +38,8 @@ export interface Props {
   isEditable: boolean;
 }
 
+/**结余是否格式化为dh */
+const isBalanceFormat = ['whsl'].includes(appStore.HOSPITAL_ID)
 export default observer(function ArrangeSheet(props: Props) {
   let { isEdit, surplusHeight, isEditable } = props;
   const [surplusWidth, setSurplusWidth]: any = useState(false);
@@ -603,7 +605,7 @@ export default observer(function ArrangeSheet(props: Props) {
                 title: (
                     <div>
                       <div>{['sdlj', 'nfsd', 'qzde'].includes(appStore.HOSPITAL_ID)?'工休结余':'公休结余'}</div>
-                      <div>（天）</div>
+                      {!isBalanceFormat && <div>（天）</div>}
                     </div>
                 ),
                 width: 70,
@@ -638,7 +640,7 @@ export default observer(function ArrangeSheet(props: Props) {
               title: (
                 <div>
                   <div>节休结余</div>
-                  <div>（天）</div>
+                  {!isBalanceFormat && <div>（天）</div>}
                 </div>
               ),
               width: 70,

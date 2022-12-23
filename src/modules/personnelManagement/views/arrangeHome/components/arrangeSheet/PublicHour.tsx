@@ -42,6 +42,7 @@ export const publicHour = (id: any) => {
   if (total < 0 && ['sdlj', 'qzde'].includes(appStore.HOSPITAL_ID)) {
     message.warning(`${user.empName}的公休天数小于0，请修正`);
   }
+  if ('whsl' === appStore.HOSPITAL_ID) return Number(total) + 'd'
   return Number(total)
 }
 const Wrapper = styled.div`
