@@ -257,7 +257,7 @@ const getTotle = (list: any) => {
 
 }
 
-const getTable = (list: any[]) => {
+const getTable = (list: any[],remark:any) => {
   return (
     <div>
       <table>
@@ -291,7 +291,7 @@ const getTable = (list: any[]) => {
             <td className="table-gzsrm-total" colSpan={6}>{getTotle(list)}</td>
           </tr>
           <tr>
-            <td colSpan={7} className="table-gzsrm-total">备注：护理信息系统无护工/工人信息，请手填输入姓名及个数。</td>
+            <td colSpan={7} className="table-gzsrm-total">备注：{remark || '护理信息系统无护工/工人信息，请手填输入姓名及个数。'}</td>
           </tr>
         </tbody>
       </table>

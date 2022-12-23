@@ -21,6 +21,7 @@ export default observer(function Table(props: Props) {
   let { sectionId, totalSorce } = props;
   const data = starRatingReportEditModel.getSectionData(sectionId);
   const list = data.list || []
+  const remark = data.remark || ''
   const otherObj = data.list2 || {}
 
   const updateOtherObj = (key: string, value: any) => {
@@ -44,7 +45,7 @@ export default observer(function Table(props: Props) {
           fqfybjy: configFqfybjy.getTable(list, otherObj, updateOtherObj),
           'sdlj,nfsd': configSdlj.getTable(list, otherObj, updateOtherObj),
           //暂时隐藏20210926
-          gzsrm: configGzsrm.getTable(list),
+          gzsrm: configGzsrm.getTable(list,remark),
           default: configDefault.getTable(list)
         },
         vague: true

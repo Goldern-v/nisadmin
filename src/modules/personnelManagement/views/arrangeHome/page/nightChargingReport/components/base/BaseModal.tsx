@@ -70,6 +70,7 @@ export default observer(function BaseModal(props: Props) {
           //20210926暂时隐藏
           gzsrm: {
             list: data.list,
+            remark:data.remark,
             schModelSgyId: appStore.queryObj.id
           },
           other: {
@@ -81,9 +82,16 @@ export default observer(function BaseModal(props: Props) {
       })
       starRatingReportService.editReport(params).then(res => {
         message.success("修改成功");
-        starRatingReportEditModel.setSectionData(sectionData.sectionId, {
-          list: data.list
-        });
+        if(['gzsrm'].includes(appStore.HOSPITAL_ID)){
+          starRatingReportEditModel.setSectionData(sectionData.sectionId, {
+            list: data.list,
+            remark:data.remark
+          });
+        }else{
+          starRatingReportEditModel.setSectionData(sectionData.sectionId, {
+            list: data.list
+          });
+        }
         onCancel();
       });
     }

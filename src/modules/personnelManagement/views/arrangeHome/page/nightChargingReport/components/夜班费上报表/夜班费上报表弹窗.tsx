@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import React, { useState, useEffect } from "react";
-import { Button } from "antd";
+import { Button,Input } from "antd";
+
 import BaseTable, { DoCon } from "src/components/BaseTable";
 import { cloneJson } from "src/utils/json/clone";
 import { appStore } from "src/stores";
@@ -14,7 +15,7 @@ import configGzsrm from './config/gzsrm'
 import configSdlj from './config/sdlj'
 
 const commonApi = service.commonApiService;
-
+const { TextArea } = Input
 export interface Props {
   sectionId: string;
   data: any;
@@ -109,6 +110,16 @@ export default observer(function 夜班费上报表弹窗(props: Props) {
           paddingTop: 20
         }}
       />
+      <div style={{marginTop:'5px',display:'flex'}}>
+      {/* // setTextArea3_1(e.target.value) */}
+        <span style={{flex:'none'}}>备注：</span>
+        <TextArea className='print-page__ipt' placeholder='字数上限2000字' value={cloneData.remark}
+         onChange={(e: any) => {
+          cloneData.remark = e.target.value 
+          setData(cloneData)
+        }}
+        maxLength={2000} autosize={{ minRows: 3 }} />
+      </div>
     </Wrapper>
   );
 });

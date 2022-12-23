@@ -95,6 +95,7 @@ class StarRatingReportEditModel {
     pageIndex: "",
     pageSize: "",
     contentSgyList: [],
+    remark:'护理信息系统无护工/工人信息，请手填输入姓名及个数。',
     sumTotal: 0,
   };
   //贵州夜班费标准字典
@@ -172,10 +173,12 @@ class StarRatingReportEditModel {
   /** 数据初始化 */
   async initData(query?: any) {
     let data;
+    let remark;
     //暂时隐藏20210926
     if (['gzsrm'].includes(appStore.HOSPITAL_ID)) {
       let res = await starRatingReportService.getSgyReport(query.id)
       data = res.data.contentSgyList
+      remark = res.data.remark || '护理信息系统无护工/工人信息，请手填输入姓名及个数。'
       this.gzsrmReport = res.data
     }else if (['fqfybjy'].includes(appStore.HOSPITAL_ID)) {
       let res = await starRatingReportService.getReportFQ(query)
@@ -214,6 +217,9 @@ class StarRatingReportEditModel {
       //console.log(this.getSectionData("夜班费上报表"))
       // console.log('this.getSectionData("夜班费上报表")')
       this.getSectionData("夜班费上报表")!.list = data
+      if(['gzsrm'].includes(appStore.HOSPITAL_ID)){
+        this.getSectionData("夜班费上报表")!.remark = remark
+      }
     }
   }
 
