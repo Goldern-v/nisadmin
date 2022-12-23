@@ -40,7 +40,7 @@ export default observer(function PersonWinning() {
     },
     ...appStore.hisMatch({
       map: {
-        'sdlj,nfsd': [
+        'sdlj,nfsd,qzde': [
           {
             title: '层级名称',
             dataIndex: 'nursehierarchyNew',

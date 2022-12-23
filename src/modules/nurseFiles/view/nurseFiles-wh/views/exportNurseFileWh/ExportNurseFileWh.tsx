@@ -19,8 +19,8 @@ export interface Props {
   empNo: string | number
   callback: (success: boolean) => any
 }
-const isSdljText = 'sdlj,nfsd'
-const isSdlj = ['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID)
+const isSdljText = 'sdlj,nfsd,qzde'
+const isSdlj = ['sdlj', 'nfsd', 'qzde'].includes(appStore.HOSPITAL_ID)
 export default function ExportNurseFileWh(props: Props) {
   const { empNo, callback } = props
   const exportId = 'exportNurserFileWh'

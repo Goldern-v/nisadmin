@@ -12,10 +12,8 @@ import createModal from 'src/libs/createModal'
 // import { authStore } from 'src/stores'
 // import limitUtils from '../utils/limit'
 import Zimage from 'src/components/Zimage'
-import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
 import EditJoinScientificModal from '../modal/EditJoinScientificModal'
 import { nurseFilesService } from '../../../services/NurseFilesService'
-import { openAuditModal } from '../config/auditModalConfig'
 import { isSelf,editFlag } from './BaseInfo'
 import Do from '../components/Do'
 export interface Props extends RouteComponentProps {}
@@ -57,7 +55,7 @@ export default observer(function PersonWinning() {
       width: 120,
       align: 'center'
     },
-    !['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID) && {
+    !['sdlj', 'nfsd', 'qzde'].includes(appStore.HOSPITAL_ID) && {
       title: '课题主持人工号',
       dataIndex: 'hostNo',
       key: 'hostNo',
@@ -129,7 +127,7 @@ export default observer(function PersonWinning() {
       width: 90,
       align: 'center'
     },
-    !['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID) && {
+    !['sdlj', 'nfsd', 'qzde'].includes(appStore.HOSPITAL_ID) && {
       title: '时间',
       dataIndex: 'completionDate',
       key: 'completionDate',

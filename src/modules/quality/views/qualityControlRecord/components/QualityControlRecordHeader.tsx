@@ -1,11 +1,9 @@
-import moment from "moment";
-import store, { authStore, appStore } from "src/stores";
+import { authStore, appStore } from "src/stores";
 import styled from "styled-components";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { RouteComponentProps } from "react-router";
 import { observer } from "mobx-react-lite";
-import { Button, DatePicker, Tooltip , Input} from "antd";
-import DeptSelect from "src/components/DeptSelect";
+import { Button, DatePicker , Input} from "antd";
 import FormSelect from "src/modules/quality/views/qualityControlRecord/components/common/FormSelect";
 import TableSelect from "src/modules/quality/views/qualityControlRecord/components/common/TableSelect";
 import StateSelect from "src/modules/quality/views/qualityControlRecord/components/common/StateSelect";
@@ -88,7 +86,7 @@ export default observer(function TopCon(props: any) {
       map: {
         // 武汉默认只有二级质控能在pc端添加
         wh: qualityControlRecordVM.level == 2 ? defaultCreateCon : <span />,
-        'hj,nfsd': defaultCreateCon,
+        'hj,nfsd,qzde': defaultCreateCon,
         gxjb: defaultCreateCon,
         "whyx,whhk": createBtn ? withOutAuditCreateCon : "",
         other: withOutAuditCreateCon,
@@ -149,9 +147,9 @@ export default observer(function TopCon(props: any) {
           >
 
             {qcCodeList.map((item: any) => (
-              <Select.Option value={item.qcCode} key={item.qcCode} style={{fontSize:'12px'}} title={item.qcName}>
+              <Option value={item.qcCode} key={item.qcCode} style={{fontSize:'12px'}} title={item.qcName}>
                 {item.qcName}
-              </Select.Option >
+              </Option >
 
             ))}
           </Select>
@@ -246,7 +244,7 @@ export default observer(function TopCon(props: any) {
               </Radio.Group>
             </div>
           ),
-          'hj,nfsd': qualityControlRecordVM.formSelectList.length >= 1 && (
+          'hj,nfsd,qzde': qualityControlRecordVM.formSelectList.length >= 1 && (
               <div className="radio-con">
                 <Radio.Group
                   name="radiogroup"
@@ -284,7 +282,7 @@ export default observer(function TopCon(props: any) {
 
       {(appStore.hisMatch({
         map: {
-          'hj,nfsd': qualityControlRecordVM.readWay == 1 &&
+          'hj,nfsd,qzde': qualityControlRecordVM.readWay == 1 &&
           qualityControlRecordVM.level == 2,
           other: qualityControlRecordVM.readWay == 1 ||
           qualityControlRecordVM.level == 2
@@ -308,9 +306,9 @@ export default observer(function TopCon(props: any) {
             }}
           >
             {filterDeptList.map((item: any) => (
-              <Select.Option value={item.code} key={item.code}>
+              <Option value={item.code} key={item.code}>
                 {item.name}
-              </Select.Option>
+              </Option>
             ))}
           </Select>
         </React.Fragment>
@@ -322,7 +320,7 @@ export default observer(function TopCon(props: any) {
           <FormSelect refreshData={props.refreshData} />
         </React.Fragment>
       )}
-      {["hj", 'nfsd'].includes(appStore.HOSPITAL_ID) && (
+      {["hj", 'nfsd', 'qzde'].includes(appStore.HOSPITAL_ID) && (
         <React.Fragment>
           <span style={{ margin: "0 3px 0 15px" }}>表单小组:</span>
           <TableSelect refreshData={props.refreshData} />
@@ -400,13 +398,6 @@ const Wrapper = styled.div`
     overflow: auto;
     min-width: 248px;
   }
-  .dropdown-style {
-    color:red;
-  }
-`;
-const QualityControlCon = styled.div`
-  /* margin-left: 30px; */
-  /* display: flex; */
   .dropdown-style {
     color:red;
   }

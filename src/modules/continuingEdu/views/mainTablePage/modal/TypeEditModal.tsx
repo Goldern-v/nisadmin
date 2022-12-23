@@ -98,7 +98,7 @@ export default observer(function TypeEditModal(props: Props) {
               newParams.id = params.id;
               delete newParams.teachingMethod;
               setEditLoading(true);
-              if (['hj', 'lyyz'].includes(appStore.HOSPITAL_ID)) {
+              if (['hj', 'lyyz', 'qzde'].includes(appStore.HOSPITAL_ID)) {
                 updateTypeDataHJ(newParams)
               } else {
                 mainPageApi.updateTypeData(newParams).then(res => {
@@ -114,7 +114,7 @@ export default observer(function TypeEditModal(props: Props) {
               }
               newParams.pId = Number(params.Pid);
               newParams.teachingMethod = Number(newParams.teachingMethod);
-              if (['hj', 'lyyz'].includes(appStore.HOSPITAL_ID)) {
+              if (['hj', 'lyyz', 'qzde'].includes(appStore.HOSPITAL_ID)) {
                 updateTypeDataHJ(newParams)
               } else {
                 mainPageApi.addTypeData(newParams).then(res => {
@@ -159,7 +159,7 @@ export default observer(function TypeEditModal(props: Props) {
     >
       <Wrapper>
         <Form ref={formRef} rules={rules}>
-          {['hj', 'lyyz'].includes(appStore.HOSPITAL_ID) &&
+          {['hj', 'lyyz', 'qzde'].includes(appStore.HOSPITAL_ID) &&
             <Row>
               <Col span={5} className="label">
                 名称:
@@ -171,7 +171,7 @@ export default observer(function TypeEditModal(props: Props) {
               </Col>
             </Row>
           }
-          {!['hj', 'lyyz'].includes(appStore.HOSPITAL_ID) &&
+          {!['hj', 'lyyz', 'qzde'].includes(appStore.HOSPITAL_ID) &&
             <Row>
               <Col span={5} className="label">
                 名称:

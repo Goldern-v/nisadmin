@@ -24,7 +24,7 @@ const rules: Rules = {
   // awardlevel: (val) => !!val || '请填写授奖级别',
   // approvalAuthority: (val) => !!val || '请填写批准机关'
 }
-const isSdlj = ['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID)
+const isSdlj = ['sdlj', 'nfsd', 'qzde'].includes(appStore.HOSPITAL_ID)
 
 export default function EditRankChangeModal(props: Props) {
   const [title, setTitle] = useState('')
@@ -56,7 +56,7 @@ export default function EditRankChangeModal(props: Props) {
       return message.warning('数据不能为空')
     }
     value.startDate && (value.startDate = value.startDate.format('YYYY-MM-DD'))
-    value.endDate && ['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID) && (value.endDate = value.endDate.format('YYYY-MM-DD'))
+    value.endDate && isSdlj && (value.endDate = value.endDate.format('YYYY-MM-DD'))
     value.urlImageOne && (value.urlImageOne = value.urlImageOne.join(','))
     nurseFilesService.commonSaveOrUpdate('nurseWHHierarchy', { ...obj, ...value, sign }).then((res: any) => {
       message.success('保存成功')

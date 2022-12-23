@@ -1,5 +1,5 @@
 import service from 'src/services/api'
-import { observable, computed, action } from 'mobx'
+import { observable} from 'mobx'
 import { reverseKeyValue } from 'src/utils/object/object'
 import { DictItem } from 'src/services/api/CommonApiService'
 import { appStore, authStore } from 'src/stores'
@@ -54,14 +54,14 @@ class StatisticsViewModal {
     })
     const fn = appStore.hisMatch({
       map: {
-        'sdlj,nfsd': service.commonApiService.nursingUnit4Area.bind(service.commonApiService),
+        'sdlj,nfsd,qzde': service.commonApiService.nursingUnit4Area.bind(service.commonApiService),
         'other': service.commonApiService.getUintList.bind(service.commonApiService)
       },
       vague: true
     })
     
     await fn().then((res: any) => {
-      if (['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID)) {
+      if (['sdlj', 'nfsd', 'qzde'].includes(appStore.HOSPITAL_ID)) {
         authStore.treeDeptList = res.data.deptList
       }
       if (authStore.isDepartment) {

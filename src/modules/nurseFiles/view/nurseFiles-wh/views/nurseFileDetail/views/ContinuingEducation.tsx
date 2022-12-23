@@ -138,6 +138,7 @@ export default observer(function PersonWinning() {
   switch(appStore.HOSPITAL_ID) {
     case 'sdlj':
     case 'nfsd':
+    case 'qzde':
       columns = columnsSDLJ 
       break;
     default: columns = columnsDefault

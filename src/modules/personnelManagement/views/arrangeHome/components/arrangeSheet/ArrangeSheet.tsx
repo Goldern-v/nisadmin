@@ -10,7 +10,7 @@ import { Input, message, Modal, Tooltip } from 'src/vendors/antd'
 import { getWeekString, getWeekString2 } from 'src/utils/date/week'
 import { observer } from 'mobx-react-lite'
 import { appStore } from 'src/stores'
-import {cloneJson, deepCopy} from 'src/utils/json/clone'
+import { cloneJson } from 'src/utils/json/clone'
 
 import AddAccumulativeLeaveModal from '../../modal/AddAccumulativeLeaveModal'
 import AddRemakeModal from '../../modal/AddRemakeModal'
@@ -47,7 +47,7 @@ export default observer(function ArrangeSheet(props: Props) {
   let editEffectiveTimeModal = createModal(
     appStore.hisMatch({
       map: {
-        'wjgdszd,wh,gxjb,lcey,dghl,fqfybjy,jmfy,nys,gzsrm,fssdy,fsxt,925,sdlj,whyx,gdtj,lyyz,qhwy,whsl,ytll,zhzxy,whhk,nfsd,whhk,dglb,zzwy': EditVacationCountModal_wh,
+        'wjgdszd,wh,gxjb,lcey,dghl,fqfybjy,jmfy,nys,gzsrm,fssdy,fsxt,925,sdlj,whyx,gdtj,lyyz,qhwy,whsl,ytll,zhzxy,whhk,nfsd,whhk,dglb,zzwy,qzde': EditVacationCountModal_wh,
         other: EditEffectiveTimeModal,
       },
       vague: true
@@ -390,7 +390,7 @@ export default observer(function ArrangeSheet(props: Props) {
     }),
     ...appStore.hisMatch({
       map: {
-        'sdlj': [],//
+        'sdlj,qzde': [],
         other: [
           {
             title: (
@@ -548,12 +548,12 @@ export default observer(function ArrangeSheet(props: Props) {
   };
 
   /** 武汉特殊字段*/
-  if (["wh", "gzsrm", "gxjb", "fsxt", '925', "whyx",'whhk','sdlj', 'fssdy',"gdtj", "lyyz", "qhwy","whsl","wjgdszd", 'ytll','zhzxy', 'nfsd', 'dglb', 'zzwy'].includes(appStore.HOSPITAL_ID)) {
+  if (["wh", "gzsrm", "gxjb", "fsxt", '925', "whyx",'whhk','sdlj', 'fssdy',"gdtj", "lyyz", "qhwy","whsl","wjgdszd", 'ytll','zhzxy', 'nfsd', 'dglb', 'zzwy', 'qzde'].includes(appStore.HOSPITAL_ID)) {
     columns.push(
         ...appStore.hisMatch({
           map: {
             //,sdlj
-            'sdlj': [],//佛山杏坛去除累计结余添加本周结余
+            'sdlj,qzde': [],//佛山杏坛去除累计结余添加本周结余
             other: [
               {
                 title: (
@@ -572,24 +572,10 @@ export default observer(function ArrangeSheet(props: Props) {
           },
           vague:true,
         }),
-
-      // {
-      //   title: (
-      //     <div>
-      //       <div>累计结余</div>
-      //       <div>（小时）</div>
-      //     </div>
-      //   ),
-      //   width: 70,
-      //   align: "center",
-      //   render(text: string, record: any) {
-      //     return <BalanceHour id={record.id} />;
-      //   },
-      // },
       ...appStore.hisMatch({
         map: {
           //,sdlj
-          'fsxt,925,sdlj,zzwy': [],//佛山杏坛去除累计结余添加本周结余
+          'fsxt,925,sdlj,zzwy,qzde': [],//佛山杏坛去除累计结余添加本周结余
           other: [
             {
               title: (
@@ -616,7 +602,7 @@ export default observer(function ArrangeSheet(props: Props) {
               {
                 title: (
                     <div>
-                      <div>{['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID)?'工休结余':'公休结余'}</div>
+                      <div>{['sdlj', 'nfsd', 'qzde'].includes(appStore.HOSPITAL_ID)?'工休结余':'公休结余'}</div>
                       <div>（天）</div>
                     </div>
                 ),
@@ -632,7 +618,7 @@ export default observer(function ArrangeSheet(props: Props) {
         }),
       ...appStore.hisMatch({
         map: {
-          'sdlj,nfsd': [
+          'sdlj,nfsd,qzde': [
             {
               title: (
                 <div>
@@ -836,7 +822,7 @@ export default observer(function ArrangeSheet(props: Props) {
                   nys: (isEdit ? 6 : 5),
                   'wjgdszd,wh,gxjb,jmfy,dghl,gzsrm,fsxt,925,whyx,whhk,gdtj,lyyz,qhwy,whsl,ytll,zhzxy,whhk,nfsd,dglb,zzwy': 6,
                   fssdy: 7,
-                  sdlj:3,
+                  'sdlj,qzde':3,
                   other: 2
                 },
                 vague: true

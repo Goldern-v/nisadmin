@@ -39,7 +39,7 @@ export default observer(function PersonWinning() {
       width: 55
     },
 
-    ...!['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID) ? [{
+    ...!['sdlj', 'nfsd', 'qzde'].includes(appStore.HOSPITAL_ID) ? [{
       title: '原职称名称',
       dataIndex: 'titleOld',
       key: 'titleOld',
@@ -63,7 +63,7 @@ export default observer(function PersonWinning() {
     ],
     ...appStore.hisMatch({
       map: {
-        'sdlj,nfsd': [
+        'sdlj,nfsd,qzde': [
           {
             title: '证书编号',
             dataIndex: 'titleNumber',

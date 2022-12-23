@@ -149,13 +149,13 @@ export default observer(function QcItemGroup(props: Props) {
               全否
             </Button>
           )}
-          {['lcey', 'whyx','whhk'].includes(appStore.HOSPITAL_ID) && (
+          {['lcey', 'whyx','whhk', 'whsl'].includes(appStore.HOSPITAL_ID) && (
             <Button
               style={{ marginLeft: '10px', backgroundColor: '#FFA500', color: '#FFFFFF' }}
               type="default"
               size="small"
               onClick={() => setAllQcItemValue('不适用')}>
-              不适用
+              全不适用
             </Button>
           )}
         </div>

@@ -1,5 +1,4 @@
 import { SectionListItem } from "./../model/StarRatingReportEditModel";
-import Line from "../components/common/Line";
 import { appStore } from "src/stores";
 import 标题模块 from "../components/标题/标题模块";
 import 标题弹窗 from "../components/标题/标题弹窗";
@@ -22,6 +21,6 @@ export const sectionList: SectionListItem[] = [
     data: {},
     section: 夜班费上报表模块,
     modal: 夜班费上报表弹窗,
-    modalWidth: ['nys', 'dghl', 'fqfybjy', 'gzsrm','sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID) ? 1400 : 900
+    modalWidth: ['nys', 'dghl', 'fqfybjy', 'gzsrm','sdlj', 'nfsd', 'qzde'].includes(appStore.HOSPITAL_ID) ? 1400 : 900
   }
 ];

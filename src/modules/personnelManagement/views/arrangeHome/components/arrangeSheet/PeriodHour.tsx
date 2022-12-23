@@ -31,7 +31,7 @@ export const periodHour = (id: any) => {
     Number(user.periodHour) -
     Number(real_periodHour) +
     Number(user.current_periodHour);
-  if (total < 0 && appStore.HOSPITAL_ID!=='sdlj') {
+  if (total < 0 && ['sdlj', 'qzde'].includes(appStore.HOSPITAL_ID)) {
     message.warning(`${user.empName}的例假天数小于0，请修正`);
   }
   return Number(total)

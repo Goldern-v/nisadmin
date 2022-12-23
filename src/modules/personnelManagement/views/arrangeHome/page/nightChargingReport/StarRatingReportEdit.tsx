@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { RouteComponentProps } from "react-router";
 import BaseBreadcrumb from "src/components/BaseBreadcrumb";
 import { Button, message } from "src/vendors/antd";
@@ -15,7 +15,6 @@ import { starRatingReportService } from "./api/StarRatingReportService";
 import qs from "qs";
 import { fileDownload } from "src/utils/file/file";
 import PageJmfy from './components/nightReport_jmfy';
-import moment from "moment";
 
 export interface Props extends RouteComponentProps {
 }
@@ -111,7 +110,7 @@ export default observer(function StarRatingReportEdit() {
     let query = qs.parse(search.replace("?", ""));
     const params = appStore.hisMatch({
       map: {
-        'dghl,fqfybjy,sdlj,nfsd': {
+        'dghl,fqfybjy,sdlj,nfsd,qzde': {
           list1: list,
           list2: data.list2,
           schNightTotalModel: data.schNightTotalModel
@@ -132,7 +131,7 @@ export default observer(function StarRatingReportEdit() {
             fileDownload(res);
           });
         },
-        'sdlj,nfsd': () => {
+        'sdlj,nfsd,qzde': () => {
           starRatingReportService.exportLJ(params).then(res => {
             fileDownload(res);
           });
@@ -185,7 +184,7 @@ export default observer(function StarRatingReportEdit() {
       <ScrollCon>
         <Page
           ref={pageRef}
-          className={['nys', 'dghl', 'fqfybjy','sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID) ? "nysWidth" : ""}
+          className={['nys', 'dghl', 'fqfybjy','sdlj', 'nfsd', 'qzde'].includes(appStore.HOSPITAL_ID) ? "nysWidth" : ""}
         >
           {starRatingReportEditModel.sectionList.map((item, index) => {
             if (item.sectionId) {

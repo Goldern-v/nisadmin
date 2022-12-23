@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import React, { useState, useEffect } from "react";
-import { Button } from "antd";
 import OnePage from "./page/OnePage";
 import TwoPage from "./page/TwoPage";
 import BaseInfo from "./page/BaseInfo";
@@ -165,7 +164,7 @@ export default function ExportContinuingEduFile(props: Props) {
           <PrintPage>
             <OnePage baseInfo={baseInfo} />
           </PrintPage>
-          {["hj", 'nfsd'].includes(appStore.HOSPITAL_ID) && (
+          {["hj", 'nfsd', 'qzde'].includes(appStore.HOSPITAL_ID) && (
             <PrintPage>
               <ManualInstructions />
             </PrintPage>
@@ -176,7 +175,7 @@ export default function ExportContinuingEduFile(props: Props) {
           {/* <PrintPage pageIndex={2}>
             <TwoPage />
           </PrintPage> */}
-          {["hj", 'nfsd'].includes(appStore.HOSPITAL_ID) ? (
+          {["hj", 'nfsd', 'qzde'].includes(appStore.HOSPITAL_ID) ? (
             <PrintPage pageIndex={1}>
               <BaseInfoHj baseInfo={baseInfo} />
             </PrintPage>
@@ -225,7 +224,7 @@ export default function ExportContinuingEduFile(props: Props) {
           <PrintPage pageIndex={9}>
             <ExaminationResults yearCheckList={yearCheckList} />
           </PrintPage> */}
-          {!["hj", 'nfsd'].includes(appStore.HOSPITAL_ID) ? (
+          {!["hj", 'nfsd', 'qzde'].includes(appStore.HOSPITAL_ID) ? (
             <PrintPage pageIndex={10}>
               <ThreeBases threeBaseList={threeBaseList} />
             </PrintPage>

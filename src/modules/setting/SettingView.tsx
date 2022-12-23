@@ -104,7 +104,7 @@ const LEFT_MENU_CONFIG = [
     path: "/setting/科室文件共享",
     hide: appStore.hisMatch({
       map: {
-        "gzsrm,bhsrm,qzxyy,lyrm,gdtj,whfk,sdlj,stmz": true,
+        "gzsrm,bhsrm,qzxyy,lyrm,gdtj,whfk,sdlj,stmz,qzde": true,
         other: false,
       },
       vague: true,

@@ -1,6 +1,5 @@
 import styled from "styled-components";
-import React, { useState, useEffect } from "react";
-import { Button } from "antd";
+import React from "react";
 // import PrintPage from "../components/PrintPage";
 import User from "src/models/User";
 import { appStore } from "src/stores";
@@ -33,12 +32,12 @@ export default function OnePage(props: Props) {
       <div
         className={[
           "title",
-          ["hj", 'nfsd'].includes(appStore.HOSPITAL_ID) ? "none" : "title-1",
+          ["hj", 'nfsd', 'qzde'].includes(appStore.HOSPITAL_ID) ? "none" : "title-1",
         ].join(" ")}
       >
         {appStore.HOSPITAL_Name}
       </div>
-      {["hj", 'nfsd'].includes(appStore.HOSPITAL_ID) ? (
+      {["hj", 'nfsd', 'qzde'].includes(appStore.HOSPITAL_ID) ? (
         <div className="title-hj">
           <div className="title">护理人员层级培训实施手册</div>
           <p className="title-bottom">(个人使用)</p>
@@ -54,7 +53,7 @@ export default function OnePage(props: Props) {
         <div className="label">科&nbsp;&nbsp;室：</div>
         <div className="input">{baseInfo.deptName}</div>
       </div>
-      {["hj", 'nfsd'].includes(appStore.HOSPITAL_ID) && (
+      {["hj", 'nfsd', 'qzde'].includes(appStore.HOSPITAL_ID) && (
         <div>
           <div className="input-con">
             <div className="label">所在层级：</div>
@@ -73,7 +72,7 @@ export default function OnePage(props: Props) {
         </div>
       )}
       <div className="aside">
-        {["hj", 'nfsd'].includes(appStore.HOSPITAL_ID) ? "护理部编制" : appStore.HOSPITAL_Name}
+        {["hj", 'nfsd', 'qzde'].includes(appStore.HOSPITAL_ID) ? "护理部编制" : appStore.HOSPITAL_Name}
       </div>
     </Wrapper>
   );

@@ -144,7 +144,7 @@ export default function MainBox() {
     },
     ...appStore.hisMatch({
       map: {
-        'sdlj,nfsd': [
+        'sdlj,nfsd,qzde': [
           {
             title: "扣减天数",
             dataIndex: "deductionDay",

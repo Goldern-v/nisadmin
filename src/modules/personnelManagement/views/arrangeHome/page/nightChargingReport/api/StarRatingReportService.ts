@@ -1,5 +1,4 @@
 import BaseApiService from "src/services/api/BaseApiService";
-// import qs from 'qs'
 import { starRatingReportEditModel } from "./../model/StarRatingReportEditModel";
 import { appStore } from "src/stores";
 
@@ -7,7 +6,7 @@ const hospitalPath: string =
   appStore.hisMatch({
     map: {
       nys: 'schNightTotalContentNys',
-      'dghl,fqfybjy,sdlj,nfsd': 'schNightTotalContentHl',
+      'dghl,fqfybjy,sdlj,nfsd,qzde': 'schNightTotalContentHl',
       //20210926暂时隐藏
       gzsrm: 'nightTotalContentSgy',
       default: 'schNightTotalContent',
@@ -238,8 +237,6 @@ export default class StarRatingReportService extends BaseApiService {
   public getStandardList() {
     return this.get(`/nightTotalContentSgy/getStandardList`);
   }
-
-
 }
 
 export const starRatingReportService = new StarRatingReportService();

@@ -107,7 +107,7 @@ export default observer(function PersonWinning() {
       width: 90,
       align: 'center'
     },
-    !['sdlj', 'nfsd'].includes(appStore.HOSPITAL_ID) && {
+    !['sdlj', 'nfsd', 'qzde'].includes(appStore.HOSPITAL_ID) && {
       title: '时间',
       dataIndex: 'completionDate',
       key: 'completionDate',

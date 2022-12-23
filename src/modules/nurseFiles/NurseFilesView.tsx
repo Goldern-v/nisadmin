@@ -73,6 +73,7 @@ export default observer(function NurseFilesView(props: Props) {
       case "gdtj":
       case "ytll":
       case "stmz":
+      case 'qzde':
         return NurseFilesListView_wh;
       case "nys":
         return NurseFilesListView_nys;
@@ -263,7 +264,7 @@ export default observer(function NurseFilesView(props: Props) {
           component: StatisticsView,
           hide: appStore.hisMatch({
               map: {
-                  "sdlj": true,
+                  "sdlj,qzde": true,
                   other: false,
               },
               vague: true
@@ -279,7 +280,7 @@ export default observer(function NurseFilesView(props: Props) {
     },
     ...appStore.hisMatch({
       map: {
-        "qhwy,ytll,whhk,dglb,sdlj": [
+        "qhwy,ytll,whhk,dglb,sdlj,qzde": [
           nursingEduFilesCon
         ],
         other: [],
@@ -291,7 +292,7 @@ export default observer(function NurseFilesView(props: Props) {
       path: "/nurseFile/traineeFiles",
       hide: appStore.hisMatch({
         map: {
-          "qhwy,whhk,dglb,sdlj": false,
+          "qhwy,whhk,dglb,sdlj,qzde": false,
           other: !appStore.isDev,
         },
         vague: true,
@@ -533,12 +534,6 @@ export default observer(function NurseFilesView(props: Props) {
         other: [],
       },
     }),
-    // appStore.HOSPITAL_ID === 'gxjb' && {
-    //   title: "人员调动查询",
-    //   path: "/nurseFile/staffMovementEnquiry",
-    //   component: StaffMovementEnquiry,
-    //   icon: <TXHSCX />
-    // },
     nursingRoundsCon,
   ];
 
@@ -555,12 +550,6 @@ export default observer(function NurseFilesView(props: Props) {
           path: "/nurseFile/baseInfo",
           component: StatisticsViewWHYX,
         },
-        // // 新
-        // {
-        //   title: "人员状态",
-        //   path: "/nurseFile/statePersonnel",
-        //   component: StatisticsViewWHYX
-        // },
         {
           title: "专科护士",
           path: "/nurseFile/specializNurse",
@@ -803,6 +792,7 @@ export default observer(function NurseFilesView(props: Props) {
       case 'zzwy':
       case 'dglb':
       case 'sdlj':
+      case 'qzde':
         return LEFT_MENU_CONFIG_WH;
       case "nys":
         return LEFT_MENU_CONFIG_NYS;

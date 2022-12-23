@@ -1,10 +1,8 @@
 import styled from "styled-components";
-import React, { useState, useEffect } from "react";
-import { Button } from "antd";
+import React from "react";
 import { observer } from "mobx-react-lite";
 import { sheetViewModal } from "../../viewModal/SheetViewModal";
-import { ArrangeItem } from "../../types/Sheet";
-import { Input, message } from "src/vendors/antd";
+import { message } from "src/vendors/antd";
 import { appStore } from "src/stores";
 export interface Props {
   id: any;
@@ -41,7 +39,7 @@ export const publicHour = (id: any) => {
     Number(user.publicHour) -
     Number(real_publicHour) +
     Number(user.current_publicHour);
-  if (total < 0 && appStore.HOSPITAL_ID!=='sdlj') {
+  if (total < 0 && ['sdlj', 'qzde'].includes(appStore.HOSPITAL_ID)) {
     message.warning(`${user.empName}的公休天数小于0，请修正`);
   }
   return Number(total)

@@ -301,7 +301,7 @@ switch (appStore.HOSPITAL_ID) {
     if (name == 'deductionDay') {
       let num = (value || 0) / 0.5
       if (num.toString().indexOf('.') != -1) {
-        form.setField('deductionDay',appStore.HOSPITAL_ID==='sdlj'? 0 :Math.floor(num)*0.5)
+        form.setField('deductionDay', ['sdlj', 'qzde'].includes(appStore.HOSPITAL_ID) ? 0 :Math.floor(num)*0.5)
       }
     }
     if (['lcey', 'lyyz'].includes(appStore.HOSPITAL_ID)) {
@@ -591,7 +591,7 @@ switch (appStore.HOSPITAL_ID) {
                         </Form.Field>
                       </Col>
                     </React.Fragment>,
-                    'sdlj':<React.Fragment>
+                    'sdlj,qzde':<React.Fragment>
                       <Col span={24}>
                         <Form.Field label={`扣减天数2`} name="deductionDay">
                           <InputNumber min={0} step={0.5} precision={1} />
