@@ -120,7 +120,7 @@ export default observer(function BaseInfo() {
       // SUCCESS("success", "审核通过"),
       // FAIL("fail", "审核不通过");
       if(isSelf()){
-        if(info.completeStatus=='noSubmit' || info.completeStatus=='success' || info.completeStatus=='fail'){
+        if(info.completeStatus=='noSubmit' || info.completeStatus=='success' || info.completeStatus=='fail' || info.completeStatus==''){
           btnList.push({
             label: "修改",
             onClick: () => {
