@@ -61,7 +61,7 @@ const QualityControlRecordEdit = observer(function QualityControlRecordEdit() {
           });
           // 非贵州
           if (
-            !["gzsrm", "gzhd", "whyx", "fsxt",'925',"lyrm","whhk",'zzwy', 'stmz'].includes(appStore.HOSPITAL_ID) &&
+            !["gzsrm", "gzhd", "whyx", "fsxt",'925',"lyrm","whhk",'zzwy', 'stmz','whsl'].includes(appStore.HOSPITAL_ID) &&
             (isNaN(inpNo) || inpNoLengthArr.indexOf(master[x].length) < 0)
           ) {
             //if (isNaN(inpNo) || inpNoLengthArr.indexOf(master[x].length) < 0) {
@@ -243,7 +243,7 @@ const QualityControlRecordEdit = observer(function QualityControlRecordEdit() {
                   </Button>}
                   {appStore.HOSPITAL_ID == "fssdy"&&<Button
                     onClick={() => qcModel.setAllQcItemValue("部分符合")}
-                    
+
                   >
                     全部分符合
                   </Button>}
@@ -259,7 +259,7 @@ const QualityControlRecordEdit = observer(function QualityControlRecordEdit() {
                     >
                       全否
                     </Button>
-                    
+
                   )}
                   <Button onClick={handleCache}>暂存</Button>
                   <Button onClick={handleNext}>下一步</Button>
