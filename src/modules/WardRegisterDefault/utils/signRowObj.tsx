@@ -3,7 +3,7 @@ import { wardRegisterDefaultService } from "../services/WardRegisterDefaultServi
 import { message } from "src/vendors/antd";
 import { appStore, authStore } from 'src/stores'
 import { DoCon } from "src/components/BaseTable";
-import React, { useState, useEffect } from "react";
+import React from "react";
 export function signRowObj(obj: {
   title: string;
   width: number;
@@ -23,6 +23,8 @@ export function signRowObj(obj: {
     updateDataSource,
     selectedBlockId
   } = obj;
+  // 点击权限
+  const clickRule = (title.match('护士长') || ('yczyy' === appStore.HOSPITAL_ID && dataIndex === 'auditorName')) && !authStore.isRoleManage
   return {
     title,
     width,
@@ -64,17 +66,13 @@ export function signRowObj(obj: {
       if (operator && (signerNo || '').toLowerCase() == operator.toLowerCase()) isSigner = true
 
       if (
-        // text && (
-        //   registerCode !== 'QCRG_08'
-        //   || isSigner
-        // )
         text
       ) {
         return (
           <div
             className="sign-name"
             onClick={() => {
-              if (title.match('护士长') && !authStore.isRoleManage) {
+              if (clickRule) {
                 message.error('非护士长无法取消签名')
                 return
               }
@@ -99,7 +97,7 @@ export function signRowObj(obj: {
             <span
               onClick={() => {
                 // console.log(dataIndex, authStore.isRoleManage)
-                if (title.match('护士长') && !authStore.isRoleManage) {
+                if (clickRule) {
                   message.error('非护士长无法签名')
                   return
                 }
