@@ -66,7 +66,7 @@ export function openAuditModal(title: string, row: any, callBack: any,btnText?:s
                           '家庭住址': 'address',
                           '合同截至日期': 'contract_due_date',
                         }
-                        
+
                       ],
                       other: []
                     },
@@ -110,7 +110,7 @@ export function openAuditModal(title: string, row: any, callBack: any,btnText?:s
                     "手机号": 'phone'
                   },
                   {
-                    "参加工作时间":  'goWorkTime',
+                    ...['fsxt', '925'].includes(appStore.HOSPITAL_ID) ? {"参加工作时间":  'goWorkTime'} : {"参加工作时间": 'takeWorkTime'},
                     "护士执业证书编号": 'zyzsNumber'
                   },
 
@@ -572,7 +572,7 @@ export function openAuditModal(title: string, row: any, callBack: any,btnText?:s
         })
       }
       break
-     
+
       case '离职':
       {
         globalModal.auditModal.show({
