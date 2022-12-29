@@ -11,3 +11,13 @@ export interface SelectItem extends Obj {
   label: string
   value: any
 }
+
+export interface navConfigItem {
+  onClick?: any;
+  name: string;
+  path?: string;
+  children?: navConfigItem[];
+  hidden?: boolean | Function;
+  icon?: any;
+  menuStyle?: React.CSSProperties;
+}

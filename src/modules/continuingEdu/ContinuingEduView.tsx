@@ -205,7 +205,7 @@ export default function ContinuingEdu(props: Props) {
   //晋升管理 根据医院切换
   const PromotionSettingCons = appStore.hisMatch({
     map: {
-      "hj,dgxg,lyyz,qhwy,nfsd,dglb,qzde": [
+      "hj,dgxg,lyyz,qhwy,nfsd,dglb,qzde,dghm": [
         {
           title: "晋升管理",
           icon: <JSGL />,
@@ -241,7 +241,7 @@ export default function ContinuingEdu(props: Props) {
   //题库管理 根据医院切换
   const QuestionBankManagementCon = appStore.hisMatch({
     map: {
-      'hj,lyyz,qhwy,nfsd,dglb,qzde': [
+      'hj,lyyz,qhwy,nfsd,dglb,qzde,dghm': [
         {
           title: "学习资源",
           icon: <TKGL />,
@@ -672,7 +672,7 @@ export default function ContinuingEdu(props: Props) {
     title: "教学质量管理",
     icon: <JXJH />,
     hide:
-      !["hj",'lyyz','qhwy', 'nfsd', 'dglb', 'qzde'].includes(appStore.HOSPITAL_ID) || authStore.isOnlyInternsManage,
+      !["hj",'lyyz','qhwy', 'nfsd', 'dglb', 'qzde', 'dghm'].includes(appStore.HOSPITAL_ID) || authStore.isOnlyInternsManage,
     children: [
       {
         title: "教学质量评价详情",
@@ -728,7 +728,7 @@ export default function ContinuingEdu(props: Props) {
     component: 培训统计分析,
     // hide: () => queyMenuAuthInfo("nm_lat_teachingPlanManage") || authStore.isOnlyInternsManage
     hide: () =>
-      !["hj", "gxjb", "dgxg",'lyyz','qhwy', 'nfsd', 'dglb', 'qzde'].includes(appStore.HOSPITAL_ID) ||
+      !["hj", "gxjb", "dgxg",'lyyz','qhwy', 'nfsd', 'dglb', 'qzde', 'dghm'].includes(appStore.HOSPITAL_ID) ||
       authStore.isOnlyInternsManage,
   };
   const TrainingChartAnalysisCon = {
@@ -736,7 +736,7 @@ export default function ContinuingEdu(props: Props) {
     icon: <JSGL />,
     path: "/continuingEdu/trainingChartAnalysis",
     component: TrainingChartAnalysis,
-    hide: () => !["hj", "dgxg",'lyyz','qhwy', 'nfsd', 'dglb', 'qzde'].includes(appStore.HOSPITAL_ID),
+    hide: () => !["hj", "dgxg",'lyyz','qhwy', 'nfsd', 'dglb', 'qzde', 'dghm'].includes(appStore.HOSPITAL_ID),
   };
 
   const PracticalOperation = [
@@ -810,7 +810,7 @@ const getIcon = (icon: any) => {
     },
     ...appStore.hisMatch({
       map: {
-        "hj,dgxg,lyyz,qhwy,nfsd,dglb,qzde": [
+        "hj,dgxg,lyyz,qhwy,nfsd,dglb,qzde,dghm": [
           {
             title: "人员管理",
             icon: <RYGL />,
@@ -887,7 +887,7 @@ const getIcon = (icon: any) => {
       path: "/continuingEdu/评分管理",
       component: 评分管理,
       hide: () =>
-        !["hj",'lyyz','qhwy', 'nfsd', 'dglb', 'qzde'].includes(appStore.HOSPITAL_ID)
+        !["hj",'lyyz','qhwy', 'nfsd', 'dglb', 'qzde', 'dghm'].includes(appStore.HOSPITAL_ID)
           ? queyMenuAuthInfo("nm_lat_scoremanage") ||
             authStore.isOnlyInternsManage
           : true,
@@ -918,7 +918,7 @@ const getIcon = (icon: any) => {
       path: "/continuingEdu",
       icon: <JXJH />,
       hide:
-        !["hj", "dgxg",'lyyz','qhwy', 'nfsd', 'dglb', 'qzde'].includes(appStore.HOSPITAL_ID) ||
+        !["hj", "dgxg",'lyyz','qhwy', 'nfsd', 'dglb', 'qzde', 'dghm'].includes(appStore.HOSPITAL_ID) ||
         authStore.isOnlyInternsManage,
       children: [
         ...appStore.hisMatch({
@@ -1115,7 +1115,7 @@ const getIcon = (icon: any) => {
       component: 类型管理,
       hide: () =>
         queyMenuAuthInfo("nm_lat_typemanage") ||
-        ["hj", "dgxg",'lyyz','qhwy', 'nfsd', 'dglb', 'qzde'].includes(appStore.HOSPITAL_ID) ||
+        ["hj", "dgxg",'lyyz','qhwy', 'nfsd', 'dglb', 'qzde', 'dghm'].includes(appStore.HOSPITAL_ID) ||
         authStore.isOnlyInternsManage,
     },
 
@@ -1126,7 +1126,7 @@ const getIcon = (icon: any) => {
       component: 菜单设置,
       hide: () =>
         queyMenuAuthInfo("nm_lat_menusetting") ||
-        ["hj", "dgxg",'lyyz','qhwy', 'nfsd', 'dglb', 'qzde'].includes(appStore.HOSPITAL_ID) ||
+        ["hj", "dgxg",'lyyz','qhwy', 'nfsd', 'dglb', 'qzde', 'dghm'].includes(appStore.HOSPITAL_ID) ||
         authStore.isOnlyInternsManage,
     },
     // ...appStore.hisMatch({
@@ -1150,47 +1150,47 @@ const getIcon = (icon: any) => {
 
 
   // 查询获取动态菜单列表
-  const getList = () => {
-    meunSettingApi.getData().then((res: any) => {
-      let newArr: any = [];
-      if (res.data) {
-        let arr = res.data || [];
-        if (arr && arr.length) {
-          arr.map((item: any, index: number) => {
-            var obj1: any = {
-              id: item.id,
-              title: item.name,
-              icon: getIcon(item.sort),
-              component: 无权限,
-              path: `/continuingEdu/${item.name}?Pid=${item.id}`,
-              hide: authStore.isOnlyInternsManage,
-            };
-            if (item.childList && item.childList.length) {
-              let Pid = item.id;
-              let arr: any = [];
-              item.childList.map((childItem: any, index: any) => {
-                var obj2: any = {
-                  parentsName: item.name,
-                  id: childItem.id,
-                  title: childItem.name,
-                  component: 主列表页,
-                  path: `/continuingEdu/${Pid}/${childItem.id}?Pid=${Pid}&id=${
-                    childItem.id
-                  }`,
-                };
-                arr.push(obj2);
-                obj1.children = arr;
-              });
-            }
-            newArr.push(obj1);
-          });
-          setDataList(newArr);
-        } else {
-          setDataList([]);
-        }
-      }
-    });
-  };
+  // const getList = () => {
+  //   meunSettingApi.getData().then((res: any) => {
+  //     let newArr: any = [];
+  //     if (res.data) {
+  //       let arr = res.data || [];
+  //       if (arr && arr.length) {
+  //         arr.map((item: any, index: number) => {
+  //           var obj1: any = {
+  //             id: item.id,
+  //             title: item.name,
+  //             icon: getIcon(item.sort),
+  //             component: 无权限,
+  //             path: `/continuingEdu/${item.name}?Pid=${item.id}`,
+  //             hide: authStore.isOnlyInternsManage,
+  //           };
+  //           if (item.childList && item.childList.length) {
+  //             let Pid = item.id;
+  //             let arr: any = [];
+  //             item.childList.map((childItem: any, index: any) => {
+  //               var obj2: any = {
+  //                 parentsName: item.name,
+  //                 id: childItem.id,
+  //                 title: childItem.name,
+  //                 component: 主列表页,
+  //                 path: `/continuingEdu/${Pid}/${childItem.id}?Pid=${Pid}&id=${
+  //                   childItem.id
+  //                 }`,
+  //               };
+  //               arr.push(obj2);
+  //               obj1.children = arr;
+  //             });
+  //           }
+  //           newArr.push(obj1);
+  //         });
+  //         setDataList(newArr);
+  //       } else {
+  //         setDataList([]);
+  //       }
+  //     }
+  //   });
+  // };
 
   // 获取固定菜单权限
   const queyMenuAuthInfo = (val: any) => {
@@ -1223,7 +1223,7 @@ const getIcon = (icon: any) => {
   //初始化的方法
   let initMethods = appStore.hisMatch({
     map: {
-      "hj,dgxg,lyyz,qhwy,nfsd,dglb,qzde": () => {
+      "hj,dgxg,lyyz,qhwy,nfsd,dglb,qzde,dghm": () => {
         baseInitMethods();
         //初始化学习培训权限
         continuningEduAuth.initAuth();

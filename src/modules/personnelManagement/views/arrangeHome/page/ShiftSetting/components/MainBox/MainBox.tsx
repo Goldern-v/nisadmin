@@ -17,14 +17,14 @@ import AddShiftModal_wh from '../../modal/AddShiftModal_wh'
 export interface Props extends RouteComponentProps {
 }
 
-let colorLumpMap: any = {
-  red: '红色', //#F23D35
-  green: '绿色', //#32B378
-  blue: '蓝色', //#007AFF
-  yellow: '黄色', //#f7ff02
-  gray: '灰色', //#999999
-  white: '白色' //#ffffff
-}
+// let colorLumpMap: any = {
+//   red: '红色', //#F23D35
+//   green: '绿色', //#32B378
+//   blue: '蓝色', //#007AFF
+//   yellow: '黄色', //#f7ff02
+//   gray: '灰色', //#999999
+//   white: '白色' //#ffffff
+// }
 
 export default function MainBox() {
   const [tableLoading, setTableLoading] = useState(false);
@@ -40,7 +40,7 @@ export default function MainBox() {
   const addShiftModal = createModal(
     appStore.hisMatch({
       map: {
-        'wh,qhwy,wjgdszd,ytll,zhzxy,dglb': AddShiftModal_wh,
+        'wh,qhwy,wjgdszd,ytll,zhzxy,dglb,dghm': AddShiftModal_wh,
         // gxjb: AddShiftModal_wh,
         other: AddShiftModal
       },
@@ -319,7 +319,7 @@ export default function MainBox() {
   ];
   // new:南医三护士长可以编辑排班设置
   let promise =
-    (["wh", 'gxjb',"qhwy", "ytll", 'dglb'].includes(appStore.HOSPITAL_ID))
+    (["wh", 'gxjb',"qhwy", "ytll", 'dglb', 'dghm'].includes(appStore.HOSPITAL_ID))
       ? authStore.isRoleManage
       : (authStore.user && authStore.user.post) == "护理部" ||
       (authStore.user && authStore.user.empName) == "管理员" ||
@@ -484,7 +484,7 @@ export default function MainBox() {
     }
   }
   // new: 武汉市一增加是否为责护
-  let isWh = ['wh', 'qhwy', "ytll", 'dglb'].includes(appStore.HOSPITAL_ID)
+  let isWh = ['wh', 'qhwy', "ytll", 'dglb', 'dghm'].includes(appStore.HOSPITAL_ID)
   if (isWh) {
     columns.splice(4, 0, {
       title: "是否为责护",

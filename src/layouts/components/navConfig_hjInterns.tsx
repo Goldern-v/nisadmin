@@ -1,5 +1,5 @@
 import React from "react";
-import { appStore, authStore } from "src/stores";
+import { appStore } from "src/stores";
 
 export interface navConfigItem {
   onClick?: any;
@@ -18,7 +18,7 @@ const baseConfig:ConfigType = (app, auth) => ([
   },
   ...appStore.hisMatch({
     map: {
-      'qhwy,whhk,dglb': [
+      'qhwy,whhk,dglb,dghm': [
         {
           name: "排班管理",
           path: "/personnelManagement"

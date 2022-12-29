@@ -117,7 +117,7 @@ export default observer(function NursingEduFiles(props: Props) {
       width: 80,
       align: "center"
     },
-    ['hj','qhwy', 'whhk', 'dglb'].includes(appStore.HOSPITAL_ID) &&{
+    ['hj','qhwy', 'whhk', 'dglb', 'dghm'].includes(appStore.HOSPITAL_ID) &&{
       title: "在院状态",
       dataIndex: "isOnJob",
       width: 80,
@@ -203,7 +203,7 @@ export default observer(function NursingEduFiles(props: Props) {
     },
     ...appStore.hisMatch({
       map: {
-        'qhwy,whhk,dglb': [],
+        'qhwy,whhk,dglb,dghm': [],
         other: [
           {
             title: "进修科室二",
@@ -388,7 +388,7 @@ export default observer(function NursingEduFiles(props: Props) {
             <Select.Option value="1">女</Select.Option>
           </Select>
           {
-            ['hj','qhwy', 'dglb'].includes(appStore.HOSPITAL_ID) &&<React.Fragment>
+            ['hj','qhwy', 'dglb', 'dghm'].includes(appStore.HOSPITAL_ID) &&<React.Fragment>
               <span>在院状态：</span>
               <Select
                 style={{ width: 90 }}
@@ -424,7 +424,7 @@ export default observer(function NursingEduFiles(props: Props) {
           {
            appStore.hisMatch({
             map: {
-              'qhwy,whhk,dglb': <>
+              'qhwy,whhk,dglb,dghm': <>
                 <Button
                   onClick={() => {
                     nursingEduFilesModal.getImportTemplate();
@@ -451,7 +451,7 @@ export default observer(function NursingEduFiles(props: Props) {
             导出
           </Button>
           <Button onClick={() => addNurse()}>添加进修生</Button>
-          {['hj','qhwy', 'whhk', 'dglb'].includes(appStore.HOSPITAL_ID) &&
+          {['hj','qhwy', 'whhk', 'dglb', 'dghm'].includes(appStore.HOSPITAL_ID) &&
             <span>
               <Button onClick={() => qrCodeSubmitModal.show()}>填写二维码</Button>
               <Button

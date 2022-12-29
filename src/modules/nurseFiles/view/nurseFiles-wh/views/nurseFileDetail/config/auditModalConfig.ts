@@ -165,7 +165,7 @@ export function openAuditModal(title: string, row: any, callBack: any,btnText?:s
                   })(),
                   ...appStore.hisMatch({
                     map: {
-                      'qhwy,whhk,dglb': [{
+                      'qhwy,whhk,dglb,dghm': [{
                         "护理学会会员证号": 'membershipCardNumber',
                       }],
                       other: []

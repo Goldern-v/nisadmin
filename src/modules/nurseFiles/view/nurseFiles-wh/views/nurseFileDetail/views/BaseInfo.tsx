@@ -254,6 +254,7 @@ export default observer(function BaseInfo() {
             case "qhwy":
             case 'whhk':
             case 'dglb':
+            case 'dghm':
               return {
                 鞋码大小: data.shoeSize,
                 护理学会会员证号: data.membershipCardNumber,

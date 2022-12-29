@@ -135,7 +135,7 @@ export default function RefresherAuditModal(props: Props) {
             <Col span={16}>{info.studyDeptName01}</Col>
           </Row>
           {
-            !['qhwy', 'whhk', 'dglb'].includes(appStore.HOSPITAL_ID) &&
+            !['qhwy', 'whhk', 'dglb', 'dghm'].includes(appStore.HOSPITAL_ID) &&
               <Row>
                 <Col span={8} className="label">进修科室2：</Col>
                 <Col span={16}>{info.studyDeptName02}</Col>

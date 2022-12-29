@@ -206,7 +206,7 @@ class SheetViewModal {
       isExpectedScheduling: cellObj.statusType == "1",
       isAddWordTime: appStore.hisMatch({
         map: {
-          "dghl,fqfybjy,wh,gxjb,fssdy,fsxt,925,whyx,lyyz,qhwy,whsl,ytll,whhk,dglb,zzwy":
+          "dghl,fqfybjy,wh,gxjb,fssdy,fsxt,925,whyx,lyyz,qhwy,whsl,ytll,whhk,dglb,zzwy,dghm":
             (cellObj.schAddOrSubs &&
               cellObj.schAddOrSubs.length &&
               cellObj.schAddOrSubs[0].statusType) == "1",
@@ -219,7 +219,7 @@ class SheetViewModal {
       }),
       isReduceWordTime: appStore.hisMatch({
         map: {
-          "wh,gxjb,fssdy,fsxt,925,whyx,lyyz,whsl,qhwy,ytll,whhk,dglb,zzwy":
+          "wh,gxjb,fssdy,fsxt,925,whyx,lyyz,whsl,qhwy,ytll,whhk,dglb,zzwy,dghm":
             (cellObj.schAddOrSubs &&
               cellObj.schAddOrSubs.length &&
               cellObj.schAddOrSubs[0].statusType) == "2",
@@ -243,7 +243,7 @@ class SheetViewModal {
       // 是否存在排班
       isWorkTime: appStore.hisMatch({
         map: {
-          "qhwy,dglb": !!cellObj.workTime,
+          "qhwy,dglb,dghm": !!cellObj.workTime,
           default: false,
         },
         vague: true,
@@ -311,7 +311,7 @@ class SheetViewModal {
           "lyyz",
           "qhwy",
           "whsl",
-          "zhzxy", 'dglb',
+          "zhzxy", 'dglb', 'dghm'
         ].includes(appStore.HOSPITAL_ID)
       ) {
         let { data: countObj } = await arrangeService.listRangeNameCode(

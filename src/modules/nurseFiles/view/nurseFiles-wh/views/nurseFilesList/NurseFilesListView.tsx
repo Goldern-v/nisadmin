@@ -389,7 +389,7 @@ const columns: ColumnProps<any>[] = [
     width: 100,
     align: 'center'
   },
-  ['qhwy', 'whhk', 'dglb'].includes(appStore.HOSPITAL_ID) ?
+  ['qhwy', 'whhk', 'dglb', 'dghm'].includes(appStore.HOSPITAL_ID) ?
   {
     title: '护理学会会员证号',
     dataIndex: 'membershipCardNumber',

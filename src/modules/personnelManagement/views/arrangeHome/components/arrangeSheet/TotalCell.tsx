@@ -52,7 +52,7 @@ export const totalCellContent = (id: any) => {
   let total = list.reduce((total: any, current: ArrangeItem | any) => {
     let isOk: any = arr.find((item: any) => item === current.rangeName);
     // console.log('schAddOrSubs', current.schAddOrSubs)
-    if (isOk && (["wh", "lyyz","qhwy", "ytll", 'whhk', 'dglb', 'dglb'].includes(appStore.HOSPITAL_ID))) {
+    if (isOk && (["wh", "lyyz","qhwy", "ytll", 'whhk', 'dglb', 'dglb', 'dghm'].includes(appStore.HOSPITAL_ID))) {
       return total
     // } else if (['dghl'].includes(appStore.HOSPITAL_ID) && current.schAddOrSubs) {
     //   // 计算加减班工时
@@ -68,11 +68,7 @@ export const totalCellContent = (id: any) => {
     } else {
       return total + Number(current.effectiveTime)
     }
-    // return isOk && (appStore.HOSPITAL_ID === "wh")
-    //   ? total
-    //   : total + Number(current.effectiveTime);
   }, 0);
-  // console.log('schAddOrSubs', user.settingDtosschAddOrSubs)
   // 超过周工作时长给提示
   if (user && user.timeLimit && allTimeLimit && total > allTimeLimit) {
     Message.warning(

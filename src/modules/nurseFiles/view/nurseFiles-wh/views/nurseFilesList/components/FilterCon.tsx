@@ -274,7 +274,7 @@ export default observer(function FilterCon() {
                 </Select>
               </Form.Field>
             </Col>
-            {['qhwy', 'whhk', 'dglb'].includes(appStore.HOSPITAL_ID) &&
+            {['qhwy', 'whhk', 'dglb', 'dghm'].includes(appStore.HOSPITAL_ID) &&
               <Col span={4} className="long--static">
                 <Form.Field label={"护理学会会员证号"} name={"membershipCardNumber"}>
                   <Input />
