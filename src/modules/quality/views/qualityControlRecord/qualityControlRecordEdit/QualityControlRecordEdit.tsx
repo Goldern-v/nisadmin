@@ -56,8 +56,10 @@ const QualityControlRecordEdit = observer(function QualityControlRecordEdit() {
             map: {
               wh: [7, 8],
               sdlj: [6, 7, 8],
+              dgxg:[10],
               other: [7],
             },
+            vague:true
           });
           // 非贵州
           if (
