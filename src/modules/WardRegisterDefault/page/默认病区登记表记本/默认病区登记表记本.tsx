@@ -489,7 +489,9 @@ export default observer(function 敏感指标登记本(props: Props) {
                 },
               }}
             />
-          } else if (item.itemType == "cumulative" || item.itemType == "") {
+            // qhwy,dglb,whyx itemType = '' 表示 文本框，itemType = 'radio' 表示下拉框
+            // 其它医院 itemType = '' 表示下拉框
+          } else if (item.itemType == "cumulative" || (["qhwy", 'dglb','whyx'].includes(appStore.HOSPITAL_ID) && item.itemType == "")) {
             // 累计时间
             // 不初始化数据
             children = <InputRender
