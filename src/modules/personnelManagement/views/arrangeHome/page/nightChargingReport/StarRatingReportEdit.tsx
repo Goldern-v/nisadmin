@@ -165,18 +165,6 @@ export default observer(function StarRatingReportEdit() {
       });
     });
   };
-  const onCancelPublish = () => {
-    globalModal.confirm("撤销确认", "你确定要撤销该报告吗？").then(res => {
-      starRatingReportService
-        .cancelPublish(qs.parse(appStore.query))
-        .then(res => {
-          message.success("撤销成功");
-          setTimeout(() => {
-            appStore.history.push("/qcOne/starRatingReport");
-          }, 500);
-        });
-    });
-  };
 
   //通用模板渲染
   const ScrollConCommon = () => {
@@ -283,20 +271,8 @@ export default observer(function StarRatingReportEdit() {
           ]}
         />
         <div className="title">{reportName}</div>
-        {/* <div className='aside'>
-          <span>
-            由{report.creatorName}创建{report.updateTime && <span>，最后修改于{report.updateTime}</span>}
-          </span>
-        </div> */}
         <div className="tool-con">
           <Button onClick={onDelete}>删除</Button>
-          {/* <Button onClick={() => onPrint(false)}>预览</Button> */}
-          {/* {report.status == "1" ? (
-            <Button onClick={onCancelPublish}>撤销</Button>
-          ) : (
-            // <Button onClick={onPublish}>提交</Button>
-          )} */}
-          {/* <Button onClick={() => onPrint(true)}>打印</Button> */}
           {
             ['gzsrm'].includes(appStore.HOSPITAL_ID)?
             <Button onClick={() => onPrint(true)}>打印</Button>:''

@@ -1,6 +1,5 @@
 import { Input,Select } from "src/vendors/antd";
-import { DoCon } from "src/components/BaseTable";
-import React, { useEffect } from "react";
+import React from "react";
 import { starRatingReportEditModel } from "../../../model/StarRatingReportEditModel"
 import {standardList} from "../../../types"
 
@@ -8,7 +7,6 @@ const { Option } = Select;
 let standardItem=standardList[0];
 
 const getColumns = (cloneData: any, calBack: Function) => {
-  //let newStandardList= starRatingReportEditModel.getApiGzsrmStandardList()
   return [
     {
       title: "序号",
@@ -101,8 +99,7 @@ const getColumns = (cloneData: any, calBack: Function) => {
             value={record.num}
             onChange={(e: any) => {
               record.num = e.target.value;
-              //record.totalMoney = record.standard * record.num;
-              record.totalMoney = parseInt(standardItem.name) * record.num;
+              record.totalMoney = parseInt(standardItem.name) * record.num + record.zbNum * 60;
               calBack('setData', cloneData)
             }}
           />
@@ -114,14 +111,6 @@ const getColumns = (cloneData: any, calBack: Function) => {
       title: "标准",
       render(text: any, record: any, index: number) {
         return (
-          // <Input
-          //   value={record.standard}
-          //   onChange={(e: any) => {
-          //     record.standard = e.target.value;
-          //     record.totalMoney = record.standard * record.num;
-          //     calBack('setData', cloneData)
-          //   }}
-          // />
           <Select
           defaultValue={standardItem.code}
           style={{ width: "100%" }}
@@ -129,7 +118,7 @@ const getColumns = (cloneData: any, calBack: Function) => {
             const findItem=standardList.find(item=>item.code==value);
             if(findItem){
               standardItem=findItem;
-              record.totalMoney = parseInt(findItem.name) * record.num;
+              record.totalMoney = parseInt(findItem.name) * record.num + record.zbNum * 60;
               record.standard=value;
               calBack('setData', cloneData)
             }
@@ -146,6 +135,20 @@ const getColumns = (cloneData: any, calBack: Function) => {
       width: 270
     },
     {
+      title: '助班',
+      width: 90,
+      render(text: any, record: any, index: number) {
+        return (<Input
+          value={record.zbNum}
+          onChange={(e: any) => {
+            record.zbNum = e.target.value;
+            record.totalMoney = parseInt(standardItem.name) * record.num + record.zbNum * 60;
+            calBack('setData', cloneData)
+          }}
+        />)
+      }
+    },
+    {
       title: "合计金额(元)",
       render(text: any, record: any, index: number) {
         return (
@@ -153,7 +156,6 @@ const getColumns = (cloneData: any, calBack: Function) => {
             value={record.totalMoney}
             onChange={(e: any) => {
               record.totalMoney = e.target.value;
-              // record.totalMoney = record.num * 130
               calBack('setData', cloneData)
             }}
           />
@@ -169,7 +171,6 @@ const getColumns = (cloneData: any, calBack: Function) => {
             value={record.approvedSignature}
             onChange={(e: any) => {
               record.approvedSignature = e.target.value;
-              // record.total = record.standard * record.num;
               calBack('setData', cloneData)
             }}
           />
@@ -248,13 +249,12 @@ const item = () => {
   return newItem
 }
 
-const getTotle = (list: any) => {
-  if (!list || list == {} || list.length <= 0) return 0;
+const getTitle = (list: any) => {
+  if (!list || JSON.stringify(list) == '{}' || list.length <= 0) return 0;
   let total = list.reduce((total: number, item: any, index: number) => {
     return total = total + parseFloat(item.totalMoney)
   }, 0);
   return parseFloat(total).toFixed(2);
-
 }
 
 const getTable = (list: any[],remark:any) => {
@@ -272,6 +272,7 @@ const getTable = (list: any[],remark:any) => {
             <td>职称</td>
             <td>数量（个）</td>
             <td style={{width:180}}>标准</td>
+            <td>助班</td>
             <td>合计金额(元)</td>
             <td>认可签名</td>
           </tr>
@@ -282,16 +283,17 @@ const getTable = (list: any[],remark:any) => {
               <td style={{ textAlign: "center" }}>{item.newTitle}</td>
               <td style={{ textAlign: "center" }}>{item.num}</td>
               <td style={{ textAlign: "center",width:180 }}>{item.standard}</td>
+              <td style={{ textAlign: "center" }}>{item.zbNum}</td>
               <td style={{ textAlign: "center" }}>{item.totalMoney}</td>
               <td style={{ textAlign: "center" }}>{item.approvedSignature}</td>
             </tr>
           ))}
           <tr>
             <td colSpan={1}>合计</td>
-            <td className="table-gzsrm-total" colSpan={6}>{getTotle(list)}</td>
+            <td className="table-gzsrm-total" colSpan={7}>{getTitle(list)}</td>
           </tr>
           <tr>
-            <td colSpan={7} className="table-gzsrm-total">备注：{remark || '护理信息系统无护工/工人信息，请手填输入姓名及个数。'}</td>
+            <td colSpan={8} className="table-gzsrm-total">备注：{remark || '护理信息系统无护工/工人信息，请手填输入姓名及个数。'}</td>
           </tr>
         </tbody>
       </table>

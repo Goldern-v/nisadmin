@@ -1,32 +1,21 @@
 import styled from "styled-components";
 import React, { useState, useEffect } from "react";
-import qs from "qs";
-import { authStore, appStore } from "src/stores";
+import { authStore } from "src/stores";
 import { observer } from "mobx-react-lite";
-import { Button, Select, message, Modal, Table, Tag, Input, Row, Col } from "antd";
-import BaseTable, {
-  TabledCon,
-  DoCon,
-  TableHeadCon
-} from "src/components/BaseTable";
+import { Button, Select, message, Table, Input } from "antd";
 import moment from "moment";
 import YearPicker from "src/components/YearPicker";
 
 import { ColumnProps } from "src/vendors/antd";
 import { starRatingReportService } from "../nightChargingReport/api/StarRatingReportService";
 import { INightThiftItem, INightThiftMoney } from "./types"
-import service from "src/services/api/index";
-import { DictItem } from "src/services/api/CommonApiService";
 import { fileDownload } from "src/utils/file/file";
 import { useRef } from "src/types/react";
 import printing from "printing";
 
-const { Column, ColumnGroup } = Table;
-
 const Option = Select.Option;
 
 export default observer(function nightChargingTotleList() {
-  const { history } = appStore;
   const defaultQuery = {
     year: moment().format("YYYY"),
     month: moment().format("MM"),
@@ -39,16 +28,7 @@ export default observer(function nightChargingTotleList() {
   }
 
   const [query, setQuery] = useState(defaultQuery);
-  const [cacheQuery, setCacheQuery] = useState(defaultQuery);
-  const [bigDeptList, setBigDeptList] = useState([] as any[]);
 
-  const [createVisible, setCreateVisible] = useState(false);
-
-  const [tableData, setTableData] = useState([] as any[]);
-
-  const [loading, setLoading] = useState(false);
-
-  const [dataTotal, setDataTotal] = useState(0);
   const [nightThiftList, setNightThiftList] = useState<Array<INightThiftItem> | []>([]);//夜班统计list
   const [nightNum, setNightNum] = useState<INightThiftMoney | null>();
   const [nightMoney, setNightMoney] = useState<INightThiftMoney | null>();
@@ -173,7 +153,6 @@ export default observer(function nightChargingTotleList() {
     }, 500);
   };
 
-
   //获取月份
   const monthList = (() => {
     let currentMonth = 12;
@@ -183,8 +162,6 @@ export default observer(function nightChargingTotleList() {
     }
     return monthArr;
   })();
-
-
 
   const columns: ColumnProps<any>[] = [
     {
@@ -226,7 +203,7 @@ export default observer(function nightChargingTotleList() {
     {
       dataIndex: "zwzb",
       key: "zwzb",
-      title: "早晚助班 60元/个",
+      title: "助班 60元/个",
       align: "center",
       width: 100
     },
@@ -244,13 +221,12 @@ export default observer(function nightChargingTotleList() {
       align: "center",
       width: 100
     },
-
   ];
 
   /**
    * 获取接口数据
    */
-  const getSgyGetListTwol = () => {
+  const getSgyGetListTwo = () => {
     starRatingReportService.sgyGetListTwol(query).then(res => {
       if (res?.data) {
         let resData = res.data;
@@ -261,13 +237,6 @@ export default observer(function nightChargingTotleList() {
     }).catch(error => {
       message.error(error)
     });
-    // commonApiService
-    //  starRatingReportService.getStandardList().then((res:any)=>{
-    //     console.log(res);
-    //     //fileDownload(res);
-    //   }).catch((error:any)=>{
-    //     message.error(error)
-    //   })
   }
 
   //导出
@@ -280,68 +249,66 @@ export default observer(function nightChargingTotleList() {
   }
 
   //初始化数据
-  const initData = () => {
-    setNightNum({
-      zghs: 3,
-      money: 2086,
-      hggr: 6,
-      hs: 2,
-      zwzb: 2,
-      fzrhs: 5
-    });
-    setNightMoney({
-      zghs: 8,
-      money: 3086,
-      hggr: 4,
-      hs: 7,
-      zwzb: 6,
-      fzrhs: 9
-    });
-    setNightThiftList([
-      {
-        deptName: "急诊护理科室",
-        zghs: 6,
-        money: 150,
-        hggr: 2,
-        hs: 6,
-        zwzb: 3,
-        fzrhs: 4,
-      },
-      {
-        deptName: "神经内科护理单元",
-        zghs: 6,
-        money: 150,
-        hggr: 2,
-        hs: 6,
-        zwzb: 3,
-        fzrhs: 4,
-      },
-      {
-        deptName: "神经外科护理单元",
-        zghs: 6,
-        money: 150,
-        hggr: 2,
-        hs: 6,
-        zwzb: 3,
-        fzrhs: 4,
-      },
-      {
-        deptName: "心血管内科护理单元",
-        zghs: 6,
-        money: 150,
-        hggr: 2,
-        hs: 6,
-        zwzb: 3,
-        fzrhs: 4,
-      }
-    ])
-  }
+  // const initData = () => {
+  //   setNightNum({
+  //     zghs: 3,
+  //     money: 2086,
+  //     hggr: 6,
+  //     hs: 2,
+  //     zwzb: 2,
+  //     fzrhs: 5
+  //   });
+  //   setNightMoney({
+  //     zghs: 8,
+  //     money: 3086,
+  //     hggr: 4,
+  //     hs: 7,
+  //     zwzb: 6,
+  //     fzrhs: 9
+  //   });
+  //   setNightThiftList([
+  //     {
+  //       deptName: "急诊护理科室",
+  //       zghs: 6,
+  //       money: 150,
+  //       hggr: 2,
+  //       hs: 6,
+  //       zwzb: 3,
+  //       fzrhs: 4,
+  //     },
+  //     {
+  //       deptName: "神经内科护理单元",
+  //       zghs: 6,
+  //       money: 150,
+  //       hggr: 2,
+  //       hs: 6,
+  //       zwzb: 3,
+  //       fzrhs: 4,
+  //     },
+  //     {
+  //       deptName: "神经外科护理单元",
+  //       zghs: 6,
+  //       money: 150,
+  //       hggr: 2,
+  //       hs: 6,
+  //       zwzb: 3,
+  //       fzrhs: 4,
+  //     },
+  //     {
+  //       deptName: "心血管内科护理单元",
+  //       zghs: 6,
+  //       money: 150,
+  //       hggr: 2,
+  //       hs: 6,
+  //       zwzb: 3,
+  //       fzrhs: 4,
+  //     }
+  //   ])
+  // }
 
   const tableSummary = () => {
     if (!nightMoney || !nightNum) {
       return <div></div>
-      //   border-right: 1px solid #e8e8e8;
-      // border-left: 1px solid #e8e8e8;
     }
     return (
       <table>
@@ -358,19 +325,13 @@ export default observer(function nightChargingTotleList() {
           })}
         </tr>
       </table>
-
     )
   }
 
-
-
-
   useEffect(() => {
-    getSgyGetListTwol()
+    getSgyGetListTwo()
     //initData()
   }, [query])
-
-
 
   return (
     <Wrapper>
@@ -413,27 +374,6 @@ export default observer(function nightChargingTotleList() {
       <TableBox>
         <TableWrapper ref={tableWrapper}>
           <h3 className="table-wrapper-title">护理系统夜班绩效统计汇总表</h3>
-          {/* <BaseTable
-          className="table-wrapper-body"
-          onRow={(record: any) => {
-            return {
-              onDoubleClick: () => { }
-            };
-          }}
-          // surplusHeight={400}
-          surplusHeight={100}
-          dataSource={tableData}
-          loading={loading}
-          columns={columns}
-          pagination={false}
-        // pagination={{
-        //   current: query.pageIndex,
-        //   pageSize: query.pageSize,
-        //   total: 0,
-        //   onChange: handlePageChange,
-        //   onShowSizeChange: handleSizeChange
-        // }}
-        /> */}
           <Table
             className="newtable"
             dataSource={nightThiftList}
@@ -468,7 +408,7 @@ const TableBox = styled.div`
  height: 88vh;
  overflow: auto;
 `
-//const TableWrapper = styled(TabledCon)`
+
 // @ts-ignore
 const TableWrapper = styled.div`
 /* height: 100px; */
@@ -480,9 +420,6 @@ const TableWrapper = styled.div`
     page-break-after:avoid
   }
   position: relative;
-  .table-wrapper-body{
-    //height: 300px !important;
-  }
   .newtable{
     position: relative;
     min-height: 200px;

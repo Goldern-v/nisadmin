@@ -46,7 +46,6 @@ export default observer(function NursingEduFiles(props: Props) {
     setHdVisible(false);
   };
 
-
   // 添加护士
   const addNurse = () => {
     if (appStore.HOSPITAL_ID == "gzhd") {
@@ -315,7 +314,6 @@ export default observer(function NursingEduFiles(props: Props) {
     })
   }
   const showDetail = (list: any) => {
-    // console.log('test-list', list)
     sheetDetailModal.show({
       handleOk: handleOkByShowDetail,
       data: list,
