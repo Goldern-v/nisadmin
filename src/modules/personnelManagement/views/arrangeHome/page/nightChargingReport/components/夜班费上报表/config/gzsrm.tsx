@@ -1,5 +1,5 @@
 import { Input,Select } from "src/vendors/antd";
-import React from "react";
+import React, { useMemo } from "react";
 import { starRatingReportEditModel } from "../../../model/StarRatingReportEditModel"
 import {standardList} from "../../../types"
 
@@ -108,6 +108,20 @@ const getColumns = (cloneData: any, calBack: Function) => {
       width: 90
     },
     {
+      title: '助班',
+      width: 90,
+      render(text: any, record: any, index: number) {
+        return (<Input
+          value={record.zbNum}
+          onChange={(e: any) => {
+            record.zbNum = e.target.value;
+            record.totalMoney = parseInt(standardItem.name) * record.num + record.zbNum * 60;
+            calBack('setData', cloneData)
+          }}
+        />)
+      }
+    },
+    {
       title: "标准",
       render(text: any, record: any, index: number) {
         return (
@@ -133,20 +147,6 @@ const getColumns = (cloneData: any, calBack: Function) => {
         );
       },
       width: 270
-    },
-    {
-      title: '助班',
-      width: 90,
-      render(text: any, record: any, index: number) {
-        return (<Input
-          value={record.zbNum}
-          onChange={(e: any) => {
-            record.zbNum = e.target.value;
-            record.totalMoney = parseInt(standardItem.name) * record.num + record.zbNum * 60;
-            calBack('setData', cloneData)
-          }}
-        />)
-      }
     },
     {
       title: "合计金额(元)",
@@ -258,6 +258,13 @@ const getTitle = (list: any) => {
 }
 
 const getTable = (list: any[],remark:any) => {
+  /**计算班次个数合计 */
+  const calcCount = useMemo(() => {
+    if (!(list && list.length)) return 0
+    return list.reduce((total: number, item: any, index: number) => {
+      return total += Number(item.num) + Number(item.zbNum)
+    }, 0);
+  }, [list])
   return (
     <div>
       <table>
@@ -271,8 +278,8 @@ const getTable = (list: any[],remark:any) => {
             <td>姓名</td>
             <td>职称</td>
             <td>数量（个）</td>
-            <td style={{width:180}}>标准</td>
             <td>助班</td>
+            <td style={{width:180}}>标准</td>
             <td>合计金额(元)</td>
             <td>认可签名</td>
           </tr>
@@ -282,15 +289,17 @@ const getTable = (list: any[],remark:any) => {
               <td style={{ textAlign: "center" }}>{item.empName}</td>
               <td style={{ textAlign: "center" }}>{item.newTitle}</td>
               <td style={{ textAlign: "center" }}>{item.num}</td>
-              <td style={{ textAlign: "center",width:180 }}>{item.standard}</td>
               <td style={{ textAlign: "center" }}>{item.zbNum}</td>
+              <td style={{ textAlign: "center",width:180 }}>{item.standard}</td>
               <td style={{ textAlign: "center" }}>{item.totalMoney}</td>
               <td style={{ textAlign: "center" }}>{item.approvedSignature}</td>
             </tr>
           ))}
           <tr>
-            <td colSpan={1}>合计</td>
-            <td className="table-gzsrm-total" colSpan={7}>{getTitle(list)}</td>
+            <td colSpan={3}>班次个数合计</td>
+            <td colSpan={2}>{calcCount}</td>
+            <td>金额合计</td>
+            <td className="table-gzsrm-total" colSpan={2}>{getTitle(list)}</td>
           </tr>
           <tr>
             <td colSpan={8} className="table-gzsrm-total">备注：{remark || '护理信息系统无护工/工人信息，请手填输入姓名及个数。'}</td>
@@ -298,7 +307,6 @@ const getTable = (list: any[],remark:any) => {
         </tbody>
       </table>
     </div>
-
   )
 }
 
