@@ -68,6 +68,16 @@ export function openAuditModal(title: string, row: any, callBack: any,btnText?:s
                         }
 
                       ],
+                      fsxt: [
+                        {
+                          在读学历: 'current_education_background',
+                          已取得最高学历毕业时间: 'last_education_graduation_time',
+                        },
+                        {
+                          执业注册有效期: 'licensed_of_practice_time',
+                          资格证书编号: 'hdry_qua_cer_no',
+                        },
+                      ],
                       other: []
                     },
                   }),
@@ -110,7 +120,7 @@ export function openAuditModal(title: string, row: any, callBack: any,btnText?:s
                     "手机号": 'phone'
                   },
                   {
-                    ...['fsxt', '925'].includes(appStore.HOSPITAL_ID) ? {"参加工作时间":  'goWorkTime'} : {"参加工作时间": 'takeWorkTime'},
+                    "参加工作时间": 'takeWorkTime',
                     "护士执业证书编号": 'zyzsNumber'
                   },
 
@@ -172,29 +182,30 @@ export function openAuditModal(title: string, row: any, callBack: any,btnText?:s
                     },
                     vague: true
                   }),
-                  ...appStore.hisMatch({
-                    map: {
-                      'fsxt,925': [
-                        {
-                          "夏装-裤子": "summer_trousers_size",
-                          "冬装-上衣": "winter_jacket_size",
-                        },
-                        {
-                          "冬装-裤子": "winter_trousers_size",
-                          "夏装-医生款": "summer_isolation_suit_size",
-                        },
-                        {
-                          "冬装-医生款": "winter_isolation_suit_size",
-                          "鞋款式": "nurse_shoes_style",
-                        },
-                        {
-                          "鞋码": "shoeSize",
-                        }
-                      ],
-                      other: []
-                    },
-                    vague:true,
-                  }),
+                  // 无效
+                  // ...appStore.hisMatch({
+                  //   map: {
+                  //     'fsxt,925': [
+                  //       {
+                  //         "夏装-裤子": "summer_trousers_size",
+                  //         "冬装-上衣": "winter_jacket_size",
+                  //       },
+                  //       {
+                  //         "冬装-裤子": "winter_trousers_size",
+                  //         "夏装-医生款": "summer_isolation_suit_size",
+                  //       },
+                  //       {
+                  //         "冬装-医生款": "winter_isolation_suit_size",
+                  //         "鞋款式": "nurse_shoes_style",
+                  //       },
+                  //       {
+                  //         "鞋码": "shoeSize",
+                  //       }
+                  //     ],
+                  //     other: []
+                  //   },
+                  //   vague:true,
+                  // }),
                   ...appStore.hisMatch({
                     map: {
                       'gzsrm': [{

@@ -25,7 +25,6 @@ export const editFlag = () => {
   }
 }
 
-
 export default observer(function BaseInfo() {
   const editBaseInfoModal = createModal(EditBaseInfoModal);
   let [tableData, setTableData]: [any, any] = useState([]);
@@ -141,7 +140,6 @@ export default observer(function BaseInfo() {
           },
         })
       }
-
     } 
     // else {
     //   if (isSelf()) {
@@ -272,7 +270,7 @@ export default observer(function BaseInfo() {
           }
         })(),
       ]
-      let newTableDataFxst = [
+      let newTableDataFsxt = [
         {
           民族: data.nation,
           籍贯: data.nativePlace,
@@ -319,6 +317,16 @@ export default observer(function BaseInfo() {
                 家庭住址: data.address,
               }
             ],
+            fsxt: [
+              {
+                在读学历: data.maps.current_education_background,
+                已取得最高学历毕业时间: data.maps.last_education_graduation_time,
+              },
+              {
+                执业注册有效期: data.maps.licensed_of_practice_time,
+                资格证书编号: data.maps.hdry_qua_cer_no,
+              },
+            ],
             other: []
           }
         })
@@ -327,7 +335,7 @@ export default observer(function BaseInfo() {
         switch (appStore.HOSPITAL_ID) {
           case "fsxt":
           case "925":
-            return newTableDataFxst
+            return newTableDataFsxt
           default:
           return newTableDataDefault
         }

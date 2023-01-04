@@ -17,14 +17,6 @@ import { nurseFilesListViewModel } from './NurseFilesListViewModel'
 export interface Props extends RouteComponentProps { }
 
 const columns1: ColumnProps<any>[] = [
-  // {
-  //   title: '序号',
-  //   dataIndex: '1',
-  //   key: '1',
-  //   render: (text: any, row: any, index: number) => index + 1,
-  //   align: 'center',
-  //   width: 50
-  // },
   {
     title: '科室',
     dataIndex: 'deptName',
@@ -432,6 +424,63 @@ const columns: ColumnProps<any>[] = [
     width: 100,
     align: 'center'
   },
+  ...appStore.hisMatch({
+    map: {
+      fsxt: [
+        {
+          title: '在读学历',
+          key: 'current_education_background',
+          width: 100,
+          align: 'center',
+          render(text: any, record: any) {
+            return record.nurseExpand.current_education_background
+          }
+        },
+        {
+          title: '已取得最高学历毕业时间',
+          key: 'last_education_graduation_time',
+          width: 100,
+          align: 'center',
+          render(text: any, record: any) {
+            return record.nurseExpand.last_education_graduation_time
+          }
+        },
+        {
+          title: '执业注册有效期',
+          key: 'licensed_of_practice_time',
+          width: 100,
+          align: 'center',
+          render(text: any, record: any) {
+            return record.nurseExpand.licensed_of_practice_time
+          }
+        },
+        {
+          title: '资格证书编号',
+          key: 'hdry_qua_cer_no',
+          width: 100,
+          align: 'center',
+          render(text: any, record: any) {
+            return record.nurseExpand.hdry_qua_cer_no
+          }
+        },
+        {
+          title: '来院工作时间',
+          dataIndex: 'goHospitalWorkDate',
+          key: 'goHospitalWorkDate',
+          width: 100,
+          align: 'center'
+        },
+        {
+          title: '参加工作时间',
+          dataIndex: 'goWorkTime',
+          key: 'goWorkTime',
+          width: 100,
+          align: 'center'
+        },
+      ],
+      other: []
+    }
+  }),
   {
     title: '操作',
     dataIndex: 'auditedStatusName',
