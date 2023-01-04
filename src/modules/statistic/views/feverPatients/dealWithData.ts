@@ -226,7 +226,6 @@ const getLineDataByYear = <K, T>(data: K, start: T, end: T): ILineData => {
   // 获取坐标轴
   resultData.xAxis = getXAxisWithSequence(start, end, '年')
   resultData.searchMode = 'year'
-  console.log('test-data', data)
   for (const key in data) {
     const currentData: any = data[key];
     let lineArr: number[] = []

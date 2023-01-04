@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 // import { Link } from 'react-router-dom'
 
@@ -157,8 +157,6 @@ export default function ToolBar() {
 
   const save = (e: any) => {
     // 获取选中班次套餐
-    // console.log('获取选中班次套餐', e)
-    // return
     emitter.emit('获取选中班次套餐列表', (mealList: any) => {
       // message.success('保存排班班次套餐设置')
       // console.log('获取选中班次套餐', mealList)
@@ -535,26 +533,6 @@ export default function ToolBar() {
   const handleFormChange = (changedFields: any) => {
     //  mondaySymbolName: objSymbol['symbol'], mondaySymbolColor: objSymbol['symbolColor']
     fields = { ...fields, ...changedFields }
-    // console.log('handleFormChange', changedFields, customizedForm)
-
-    // console.log('onFieldsChange', props, changedFields)
-    //   let diff = 0
-    //   // let dateFormat = 'YYYY-MM-DD HH:mm:ss'
-    //   try {
-    //     if (Object.keys(changedFields).indexOf('startTime') > -1) {
-    //       diff = fields.endTime.value.diff(changedFields.startTime.value, 'hours')
-    //     } else if (Object.keys(changedFields).indexOf('endTime') > -1) {
-    //       diff = changedFields.endTime.value.diff(fields.startTime.value, 'hours')
-    //     }
-    //     if (diff) {
-    //       diff = Math.abs(diff)
-    //       fields.workHour.value = `${diff}`
-    //       customizedForm.setFieldsValue({ thursdayName: diff })
-    //     }
-    //   } catch (error) {
-    //     //
-    //   }
-    //   console.log('工时', diff, fields.endTime)
   }
 
   let fields = {
@@ -652,7 +630,7 @@ export default function ToolBar() {
       sundaySymbolId: fields.sundaySymbolId.value || '',
 
     }
-    if (['wh', 'lyyz', 'qhwy','whsl', 'ytll', 'whhk', 'dglb'].includes(appStore.HOSPITAL_ID)) {
+    if (['wh', 'lyyz', 'qhwy','whsl', 'ytll', 'whhk', 'dglb', 'dghm'].includes(appStore.HOSPITAL_ID)) {
       for (let key in postData) {
         if (key == 'monday' || key == 'tuesday' || key == 'wednesday' || key == 'thursday' || key == 'friday' || key == 'saturday' || key == 'sunday') {
           if (postData[key]) {

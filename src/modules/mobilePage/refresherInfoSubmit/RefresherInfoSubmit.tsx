@@ -6,9 +6,6 @@ import {
   List as ListMb,
   InputItem,
   Picker,
-  // NavBar,
-  // Icon as IconMb,
-  Modal as ModalMb,
   TextareaItem
 } from 'antd-mobile'
 import { Icon, message } from 'antd'
@@ -384,7 +381,7 @@ export default function TraineeInfoSubmit() {
           <ListMb.Item className="studyDeptCode-row" arrow="horizontal" error={rules['studyDeptCode01'].error}>进修科室1</ListMb.Item>
         </Picker>
         {
-          !['qhwy', 'whhk', 'dglb'].includes(appStore.HOSPITAL_ID) &&
+          !['qhwy', 'whhk', 'dglb', 'dghm'].includes(appStore.HOSPITAL_ID) &&
             <Picker
               extra="请选择"
               data={[

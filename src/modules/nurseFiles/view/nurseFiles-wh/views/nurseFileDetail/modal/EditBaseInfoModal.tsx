@@ -47,7 +47,7 @@ const rules: Rules = {
   },
 };
 const isSdlj = ['sdlj', 'nfsd', 'qzde'].includes(appStore.HOSPITAL_ID)
-
+const isQhwy = ['qhwy', 'whhk', 'dglb'].includes(appStore.HOSPITAL_ID)
 export default function EditWorkHistoryModal(props: Props) {
   let { visible, onCancel, onOk, data, id } = props;
   let refForm = React.createRef<Form>();
@@ -397,7 +397,7 @@ export default function EditWorkHistoryModal(props: Props) {
               />
             </Form.Field>
           </Col>}
-          <Col span={12} style={{ height: ['qhwy', 'whhk', 'dglb'].includes(appStore.HOSPITAL_ID) ? '52px' : '53px' }}>
+          <Col span={12} style={{ height: isQhwy ? '52px' : '53px' }}>
             <Form.Field label={`职务`} name="job">
               <SelectOrAutoInput dict="职务" />
             </Form.Field>
@@ -407,7 +407,7 @@ export default function EditWorkHistoryModal(props: Props) {
               <DatePicker />
             </Form.Field>
           </Col>
-          {appStore.HOSPITAL_ID !== 'fsxt' && appStore.HOSPITAL_ID !== '925' && <Col span={12} style={{ height: ['qhwy', 'whhk', 'dglb'].includes(appStore.HOSPITAL_ID) ? '52px' : '53px' }}>
+          {appStore.HOSPITAL_ID !== 'fsxt' && appStore.HOSPITAL_ID !== '925' && <Col span={12} style={{ height: isQhwy ? '52px' : '53px' }}>
             <Form.Field label={['wjgdszd'].includes(appStore.HOSPITAL_ID) ? '编制科室' : `院内工作地点`}
               name="workAddress">
               <SelectOrAutoInput dict="院内工作地点" />
@@ -453,7 +453,7 @@ export default function EditWorkHistoryModal(props: Props) {
           ) : (
             ""
           )}
-          {['qhwy', 'whhk', 'dglb'].includes(appStore.HOSPITAL_ID) && <Col span={12}>
+          {isQhwy && <Col span={12}>
             <Form.Field label={`护理学会会员证号`} name="membershipCardNumber">
               <Input />
             </Form.Field>

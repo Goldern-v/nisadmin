@@ -18,8 +18,7 @@ import {
   Select,
   Timeline,
 } from 'src/vendors/antd'
-import { appStore, authStore } from 'src/stores'
-import { stringify } from 'qs'
+import { appStore } from 'src/stores'
 
 import api from '../api'
 import verify from './verify'
@@ -38,7 +37,7 @@ export default observer((props: Props) => {
   const _user = JSON.parse(sessionStorage.getItem('user') || '[]')
   const userName = _user.empName
   const [deptList, setDeptList] = useState([])
-  const { history, location, match } = appStore
+  const { history } = appStore
   const [master, setMaster]: any = useState({})
   const [process, setProcess]: any[] = useState([])
   const [form, setForm]: any = useState({})
@@ -59,15 +58,6 @@ export default observer((props: Props) => {
   }
 
   const [wardString, setWardCode] = useState({ wardCode: '', wardName: '' })
-  // const [master, setMaster] = useState({})
-  // {
-  //   formCode: 'SR0001',
-  //   formName: '日查房评分表',
-  //   deptCode: '',
-  //   deptName: '',
-  //   wardCode: wardString.wardCode,
-  //   wardName: wardString.wardName
-  // }
   const [processVisible, setProcessVisible] = useState(false)
   const [checkUserVisible, setCheckUserVisible] = useState(false)
   const defaultUser = {
@@ -107,8 +97,6 @@ export default observer((props: Props) => {
   }
 
   const notFullMarks = (key: any, num: number) => {
-    // const keys = ['SR0004021','SR0004019', 'SR0004017', 'SR0004015', 'SR0004013', 'SR0004011']
-    // eslint-disable-next-line default-case
     switch (key) {
       case 'SR0004011':
         if (num < 15.0) {
@@ -123,7 +111,6 @@ export default observer((props: Props) => {
   }
 
   const onVerify = () => {
-    // required = []
     if (JSON.stringify(form) === '{}') {
       return false
     } else {
@@ -146,7 +133,6 @@ export default observer((props: Props) => {
     if (onVerify()) {
       if (notFullMarks('SR0004011', form.SR0004011)) {
 
-        // if (!appStore.queryObj.id) {
         let obj = {
           formCode: 'SR0004',
           formName: '护士长班查房评分表',
@@ -155,31 +141,20 @@ export default observer((props: Props) => {
           wardCode: wardString.wardCode,
           wardName: wardString.wardName
         }
-        // }
         const res = await api.saveItem({
           master: appStore.queryObj.id || tableId ? { ...master, wardCode: wardString.wardCode, wardName: wardString.wardName } : obj,
           itemDataMap: form,
           commit: status
         })
-        // if (!appStore.queryObj.id) {
         if (res.code === '200') {
-          // message.success('新建成功')
-          // appStore.history.push(`/checkWard/scoringRecord`)
           message.success(!status ? '暂存成功' : '保存成功')
           // 控制是否出来审核模块
           setCheckStatus(status)
           setTableId(res.data.master.id)
           await getData(res.data.master.id)
-
-
         } else {
           message.warning(res.desc)
         }
-        // }
-        // else {
-        // message.success(!status ? '暂存成功' : '保存成功')
-        // await getData(res.data.master.id)
-        // }
       } else {
         message.warning("护理单元不是满分必须填写存在问题")
       }
@@ -219,17 +194,7 @@ export default observer((props: Props) => {
       }
       await api.auditItem(params)
       await getData(tableId || appStore.queryObj.id)
-      // todo
-      // const current = process.find((item: any) => {
-      //   return master.nextNodeCode === item.nodeCode
-      // })
-      // if (current.nodeName === '片区护士长填写意见') {
-      //   setForm({ ...form, 'SR0004023': user.handleContent });
 
-      // } else if (current.nodeName === '病区护士长填写病区整改') {
-      //   form.SR0004024 = user.handleContent
-      //   setForm({ ...form, 'SR0004024': user.handleContent });
-      // }
     } finally {
       setCheckUserVisible(false)
     }
@@ -309,10 +274,8 @@ export default observer((props: Props) => {
           {appStore.queryObj.id && <div>状态: {statusMap_gzsrm[master.status]}</div>}
         </div>
         <div className='right-bottom'>
-          {/* hasSubmit() && */}
           {<Button type='primary' className="con-item" onClick={() => handleSubmit(false)}>暂存</Button>}
           {<Button type='primary' className="con-item" onClick={() => handleSubmit(true)}>提交</Button>}
-          {/* {!appStore.queryObj.id && <Button type='primary' className="con-item" onClick={() => handleSubmit()}>保存</Button>} */}
           {(hasAudit() && master.status !== '0') && <Button type='primary' className="con-item" onClick={() => handleAudit()}>审核</Button>}
           {<Button type='primary' className="con-item" onClick={() => setDeleteVisible(true)}>删除</Button>}
           {<Button type='primary' className="con-item" onClick={() => cancelCommit()}>撤销提交</Button>}
@@ -326,14 +289,6 @@ export default observer((props: Props) => {
               护士长查房评分表
             </div>
             <table className={!appStore.queryObj.id ? '' : hasSubmit() ? '' : 'disable'}>
-              {/* <colgroup>
-                <col/>
-                <col/>
-                <col/>
-                <col/>
-                <col/>
-                <col/>
-              </colgroup> */}
               <tbody>
                 <tr>
                   <td className='required'>查房护士长：</td>
@@ -347,12 +302,6 @@ export default observer((props: Props) => {
                   </td>
                   <td className='required'>查房班次:</td>
                   <td>
-                    {/* <Input
-                      value={form.SR0004002}
-                      onChange={(e) =>
-                        setFormItem({ 'SR0004002': e.target.value })
-                      }
-                    /> */}
                     <Select className='select' value={form.SR0004002}
                       onChange={(val: any) =>
                         setFormItem({ 'SR0004002': val })
@@ -365,12 +314,6 @@ export default observer((props: Props) => {
                   </td>
                   <td className='required'>查房时间:</td>
                   <td>
-                    {/* <Input
-                      value={form.SR0004003}
-                      onChange={(e) =>
-                        setFormItem({ 'SR0004003': e.target.value })
-                      }
-                    /> */}
                     <DatePicker
                       format="YYYY-MM-DD HH:mm"
                       allowClear={false}
@@ -388,12 +331,6 @@ export default observer((props: Props) => {
                 <tr>
                   <td className='required'>病区:</td>
                   <td>
-                    {/* <Input.TextArea
-                      value={form.SR0004004}
-                      onChange={(e) =>
-                        setFormItem({ 'SR0004004': e.target.value })
-                      }
-                    /> */}
                     <Select className='select inpatientAreaSel'
                       showSearch
                       optionFilterProp="children"
@@ -494,13 +431,6 @@ export default observer((props: Props) => {
                     />
                   </td>
                   <td>
-                    {/* <Input.TextArea
-                      value={form.SR0004011}
-                      rows={6}
-                      onChange={(e) =>
-                        setFormItem({ 'SR0004011': e.target.value })
-                      }
-                    /> */}
                     <InputNumber value={form.SR0004011} min={0} max={15} step={0.1}
                       onChange={(value) => {
                         form.SR0004011 = value
@@ -528,13 +458,6 @@ export default observer((props: Props) => {
                     />
                   </td>
                   <td>
-                    {/* <Input.TextArea
-                      value={form.SR0004013}
-                      rows={6}
-                      onChange={(e) =>
-                        setFormItem({ 'SR0004013': e.target.value })
-                      }
-                    /> */}
                     <InputNumber value={form.SR0004013} min={0} max={10} step={0.1}
                       onChange={(value) => {
                         form.SR0004013 = value
@@ -564,13 +487,6 @@ export default observer((props: Props) => {
                     />
                   </td>
                   <td>
-                    {/* <Input.TextArea
-                      value={form.SR0004015}
-                      rows={6}
-                      onChange={(e) =>
-                        setFormItem({ 'SR0004015': e.target.value })
-                      }
-                    /> */}
                     <InputNumber value={form.SR0004015} min={0} max={25} step={0.1}
                       onChange={(value) => {
                         form.SR0004015 = value
@@ -631,13 +547,6 @@ export default observer((props: Props) => {
                     />
                   </td>
                   <td>
-                    {/* <Input.TextArea
-                      value={form.SR0004019}
-                      rows={6}
-                      onChange={(e) =>
-                        setFormItem({ 'SR0004019': e.target.value })
-                      }
-                    /> */}
                     <InputNumber value={form.SR0004019} min={0} max={5} step={0.1}
                       onChange={(value) => {
                         form.SR0004019 = value
@@ -667,13 +576,6 @@ export default observer((props: Props) => {
                     />
                   </td>
                   <td>
-                    {/* <Input.TextArea
-                      value={form.SR0004021}
-                      rows={6}
-                      onChange={(e) =>
-                        setFormItem({ 'SR0004021': e.target.value })
-                      }
-                    /> */}
                     <InputNumber value={form.SR0004021} min={0} max={10} step={0.1}
                       onChange={(value) => {
                         form.SR0004021 = value
@@ -704,13 +606,6 @@ export default observer((props: Props) => {
                     />
                   </td>
                   <td>
-                    {/* <Input.TextArea
-                      value={form.SR0004021}
-                      rows={6}
-                      onChange={(e) =>
-                        setFormItem({ 'SR0004021': e.target.value })
-                      }
-                    /> */}
                     <InputNumber value={form.SR0004029} min={0} max={15} step={0.1}
                       onChange={(value) => {
                         form.SR0004029 = value
@@ -723,18 +618,7 @@ export default observer((props: Props) => {
                 <tr>
                   <td>总分</td>
                   <td colSpan={5}>
-                    {/* <Input
-                      value={form.SR0004022}
-                      onChange={(e) =>
-                        setFormItem({ 'SR0004022': e.target.value })
-                      }
-                    /> */}
                     {form.SR0004022}
-                    {/* <InputNumber value={form.SR0004022}
-                      onChange={(value) =>
-                        setFormItem({ 'SR0004022': value })
-                      }
-                    /> */}
                   </td>
                 </tr>
               </tbody>
@@ -833,7 +717,7 @@ export default observer((props: Props) => {
         }}
       >
         <div style={{ lineHeight: '28px', fontSize: '16px' }}>
-          {currentNode().nodeName === '片区护士长填写意见' &&
+          {currentNode().nodeName === '片区护士长巡查意见' &&
             <Row style={{ marginBottom: '10px' }}>
               <Col span={4}>审核结果:</Col>
               <Col span={20}>
@@ -975,7 +859,6 @@ const MainWrapper = styled.div`
       margin: 0 15%;
       padding: 30px 50px 80px;
       overflow: auto;
-      
       
       .table-title{
         text-align: center;

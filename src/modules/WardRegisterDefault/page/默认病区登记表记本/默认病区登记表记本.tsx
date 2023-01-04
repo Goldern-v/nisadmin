@@ -489,7 +489,9 @@ export default observer(function 敏感指标登记本(props: Props) {
                 },
               }}
             />
-          } else if (item.itemType == "cumulative" || item.itemType == "") {
+            // qhwy,dglb,whyx itemType = '' 表示 文本框，itemType = 'radio' 表示下拉框
+            // 其它医院 itemType = '' 表示下拉框
+          } else if (item.itemType == "cumulative") {
             // 累计时间
             // 不初始化数据
             children = <InputRender
@@ -511,6 +513,29 @@ export default observer(function 敏感指标登记本(props: Props) {
 
 
                 },
+              }}
+            />
+          } else if(["qhwy", 'dglb','whyx'].includes(appStore.HOSPITAL_ID) && item.itemType == ""){
+            // qhwy", 'dglb','whyx  医院itemType空值代表文本框
+            children = <InputRender
+              {...{
+                cellDisabled,
+                options: item.options ? item.options.split(";").map((itemCfg: any) => itemCfg || " ") : undefined,
+                record,
+                className: childrenClassName,
+                itemCode: item.itemCode,
+                updateDataSource,
+                handleNextIptFocus,
+                // onBlur: (newVal: string, oldVal: any) => {
+                //   if (['qhwy', 'dglb','whyx'].includes(appStore.HOSPITAL_ID)) {
+                //     if (item.itemType == "") {
+                //       // 时间改变 时间关联的有计算器和叠加器
+                //       gotoContiun(item, record, index)
+                //     }
+                //   }
+
+
+                // },
               }}
             />
           } else {

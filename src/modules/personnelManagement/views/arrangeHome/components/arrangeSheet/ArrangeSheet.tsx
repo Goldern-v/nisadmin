@@ -49,7 +49,7 @@ export default observer(function ArrangeSheet(props: Props) {
   let editEffectiveTimeModal = createModal(
     appStore.hisMatch({
       map: {
-        'wjgdszd,wh,gxjb,lcey,dghl,fqfybjy,jmfy,nys,gzsrm,fssdy,fsxt,925,sdlj,whyx,gdtj,lyyz,qhwy,whsl,ytll,zhzxy,whhk,nfsd,whhk,dglb,zzwy,qzde': EditVacationCountModal_wh,
+        'wjgdszd,wh,gxjb,lcey,dghl,fqfybjy,jmfy,nys,gzsrm,fssdy,fsxt,925,sdlj,whyx,gdtj,lyyz,qhwy,whsl,ytll,zhzxy,whhk,nfsd,whhk,dglb,zzwy,qzde,dghm': EditVacationCountModal_wh,
         other: EditEffectiveTimeModal,
       },
       vague: true
@@ -363,7 +363,7 @@ export default observer(function ArrangeSheet(props: Props) {
     }),
     ...appStore.hisMatch({
       map: {
-        "whyx,qhwy,whhk,dglb": [
+        "whyx,qhwy,whhk,dglb,dghm": [
           {
             title: "备注",
             dataIndex: "empRemark",
@@ -550,7 +550,7 @@ export default observer(function ArrangeSheet(props: Props) {
   };
 
   /** 武汉特殊字段*/
-  if (["wh", "gzsrm", "gxjb", "fsxt", '925', "whyx",'whhk','sdlj', 'fssdy',"gdtj", "lyyz", "qhwy","whsl","wjgdszd", 'ytll','zhzxy', 'nfsd', 'dglb', 'zzwy', 'qzde'].includes(appStore.HOSPITAL_ID)) {
+  if (["wh", "gzsrm", "gxjb", "fsxt", '925', "whyx",'whhk','sdlj', 'fssdy',"gdtj", "lyyz", "qhwy","whsl","wjgdszd", 'ytll','zhzxy', 'nfsd', 'dglb', 'zzwy', 'qzde', 'dghm'].includes(appStore.HOSPITAL_ID)) {
     columns.push(
         ...appStore.hisMatch({
           map: {
@@ -809,7 +809,7 @@ export default observer(function ArrangeSheet(props: Props) {
           if (appStore.HOSPITAL_ID == 'fssdy') {
             widthNys += 200
           }
-          if (['qhwy','nfzxy', 'whhk', 'dglb'].includes(appStore.HOSPITAL_ID)) {
+          if (['qhwy','nfzxy', 'whhk', 'dglb', 'dghm'].includes(appStore.HOSPITAL_ID)) {
             widthNys += 100
           }
           /** noscorll */
@@ -822,7 +822,7 @@ export default observer(function ArrangeSheet(props: Props) {
                   hj: 3,
                   fqfybjy: 5,
                   nys: (isEdit ? 6 : 5),
-                  'wjgdszd,wh,gxjb,jmfy,dghl,gzsrm,fsxt,925,whyx,whhk,gdtj,lyyz,qhwy,whsl,ytll,zhzxy,whhk,nfsd,dglb,zzwy': 6,
+                  'wjgdszd,wh,gxjb,jmfy,dghl,gzsrm,fsxt,925,whyx,whhk,gdtj,lyyz,qhwy,whsl,ytll,zhzxy,whhk,nfsd,dglb,zzwy,dghm': 6,
                   fssdy: 7,
                   'sdlj,qzde':3,
                   other: 2
@@ -867,6 +867,7 @@ export default observer(function ArrangeSheet(props: Props) {
       case "qhwy":
       case 'whhk':
       case 'dglb':
+      case 'dghm':
         const dragRowWhyx = sheetViewModal.sheetTableData[dragIndex];
         if (!dragRowWhyx) return;
         sheetViewModal.sheetTableData = update(sheetViewModal.sheetTableData, {
@@ -936,7 +937,7 @@ export default observer(function ArrangeSheet(props: Props) {
                   {
                     appStore.hisMatch({
                       map: {
-                        'qhwy,dglb':
+                        'qhwy,dglb,dghm':
                             <div className='remark-con system'>
                               <div className="remark-title">
                                 系统标注:

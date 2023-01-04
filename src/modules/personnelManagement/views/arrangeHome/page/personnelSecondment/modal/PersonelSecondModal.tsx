@@ -12,6 +12,8 @@ import { personelSecondServices } from '../service/PersonelSecondServices'
 import { globalModal } from 'src/global/globalModal'
 
 const Option = Select.Option
+/**青海借调 */
+const IS_QHWY = ['qhwy', 'dglb', 'dghm'].includes(appStore.HOSPITAL_ID)
 export interface Props extends ModalComponentProps {
   /** 表单提交成功后的回调 */
   onOkCallBack?: () => void,
@@ -50,7 +52,7 @@ export default function PersonelSecondModal(props: Props) {
     data.startDate = moment(data.startDate).format('YYYY-MM-DD')
     /** 保存接口 */
     globalModal.confirm('确定要保存吗？', '保存后，该护士会在指定日期自动借出。').then((res) => {
-     if(['qhwy', 'dglb'].includes(appStore.HOSPITAL_ID)){
+     if(IS_QHWY){
       personelSecondServices.saveOrUpdateByAudit(data).then((res: any) => {
         message.success('保存成功')
         props.onOkCallBack && props.onOkCallBack()
@@ -109,7 +111,7 @@ export default function PersonelSecondModal(props: Props) {
       <Spin spinning={modalLoading}>
         <Form ref={refForm} rules={rules} labelWidth={80}>
           <Row>
-          {['qhwy', 'dglb'].includes(appStore.HOSPITAL_ID) && (
+          {IS_QHWY && (
               <React.Fragment>
                 <Col span={24}>
                   <Form.Field label={`护士总数`} name="nurseNum" required>

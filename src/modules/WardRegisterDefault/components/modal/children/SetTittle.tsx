@@ -352,7 +352,7 @@ export default observer(function SetTittle(props: Props) {
       render(text: any, record: any, index: any) {
         // if (['date_time','date','time','','timeCalculation','cumulative'].includes(record.itemType)) {
         //   return <span></span>
-        // } else 
+        // } else
         if (record.itemType == 'attachment') {
           return <Select
             mode="tags"
@@ -401,7 +401,10 @@ export default observer(function SetTittle(props: Props) {
             <Option value="全选">全选</Option>
             {empNameOptions()}
           </Select>
-        } else if (record.itemType == 'radio' || record.itemType == 'multiple_select') {
+          // qhwy,dglb,whyx itemType = '' 表示 文本框，itemType = 'radio' 表示下拉框
+          // 其它医院 itemType = '' 表示下拉框
+        } else if ((!["qhwy", 'dglb','whyx'].includes(appStore.HOSPITAL_ID) && (record.itemType == '' || record.itemType == 'multiple_select'))
+        || (["qhwy", 'dglb','whyx'].includes(appStore.HOSPITAL_ID) && (record.itemType == 'radio' || record.itemType == 'multiple_select'))) {
           return defaultOptions.length > 0 ?
             <Select
               mode="tags"

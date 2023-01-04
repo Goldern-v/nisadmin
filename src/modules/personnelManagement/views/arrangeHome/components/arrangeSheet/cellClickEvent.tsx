@@ -8,7 +8,10 @@ import { appStore } from 'src/stores'
 import { ArrangeItem } from '../../types/Sheet'
 import { sheetViewModal } from '../../viewModal/SheetViewModal'
 import { resetArrangeCount } from '../../page/EditArrangePage/components/FlightMenu'
-
+/**添加班次时间段 */
+const ADD_TIME_PERIOD = ['qhwy', 'dglb', 'dghm'].includes(appStore.HOSPITAL_ID)
+/**武汉加减班 */
+const IS_WH_SCH_ADD_OR_SUB = ["wh", 'gxjb', "lyyz","qhwy", "ytll", 'dglb', 'dghm'].includes(appStore.HOSPITAL_ID)
 /** 追加排班 */
 export function getAddArrangeMenuList(
   list: ArrangeItem[],
@@ -38,7 +41,7 @@ export function getAddArrangeMenuList(
         async onClick(item: any) {
           sheetViewModal.tableLoading = true
           sheetViewModal.tableLoading = true
-          if (['wh', 'lyyz', 'qhwy',"whsl", 'ytll', 'dglb'].includes(appStore.HOSPITAL_ID)) {
+          if (['wh', 'lyyz', 'qhwy',"whsl", 'ytll', 'dglb', 'dghm'].includes(appStore.HOSPITAL_ID)) {
             let res = await service.scheduleMealApiService.check(item.dataSource.id)
           }
           if (selectedCellObj!.rangeName) {
@@ -68,7 +71,7 @@ export function getAddArrangeMenuList(
               selectedCellObj!.settingNightHour=item.dataSource.settingNightHour
             }
             // 添加班次时间段
-            if (['qhwy', 'dglb'].includes(appStore.HOSPITAL_ID)) {
+            if (ADD_TIME_PERIOD) {
               selectedCellObj!.workTime = item.dataSource.workTime
             }
           }
@@ -94,14 +97,14 @@ export function copyRowClick(list: any, copyRow: any, isClean: boolean) {
       list[i].settingNightHour = copyRow[i].settingNightHour;
       list[i].settings = cloneJson(copyRow[i].settings);
       list[i].backgroundColor = copyRow[i].backgroundColor;
-      if (["wh", 'gxjb', "lyyz","qhwy","whsl", "ytll", 'dglb'].includes(appStore.HOSPITAL_ID)) {
+      if (["wh", 'gxjb', "lyyz","qhwy","whsl", "ytll", 'dglb', 'dghm'].includes(appStore.HOSPITAL_ID)) {
         list[i].schAddOrSubs = cloneJson(copyRow[i].schAddOrSubs);
       }
       if (['whyx','whhk'].includes(appStore.HOSPITAL_ID)) {
         list[i].coefficient = copyRow[i].coefficient;
       }
       // 添加班次时间段
-      if (['qhwy', 'dglb'].includes(appStore.HOSPITAL_ID)) {
+      if (ADD_TIME_PERIOD) {
         list[i].workTime = copyRow[i].workTime
       }
       if (isClean) {
@@ -118,7 +121,7 @@ export function copyRowClick(list: any, copyRow: any, isClean: boolean) {
         copyRow[i].backgroundColor = "";
 
 
-        if (["wh", 'gxjb', "lyyz","qhwy", "ytll", 'dglb'].includes(appStore.HOSPITAL_ID)) {
+        if (IS_WH_SCH_ADD_OR_SUB) {
           copyRow[i].schAddOrSubs = [];
         }
         if (['whyx', 'whhk'].includes(appStore.HOSPITAL_ID)) {
@@ -161,7 +164,7 @@ export function copyCellClick(cell: ArrangeItem, copyCell: any) {
     cell.backgroundColor = copyCell.backgroundColor;
     cell.schSpecial = cloneJson(copyCell.schSpecial);
 
-    if (["wh", 'gxjb', "lyyz","qhwy", "ytll", 'dglb'].includes(appStore.HOSPITAL_ID)) {
+    if (IS_WH_SCH_ADD_OR_SUB) {
       cell.schAddOrSubs = cell.schAddOrSubs;
     }
     if (['whyx', 'whhk'].includes(appStore.HOSPITAL_ID)) {
@@ -169,7 +172,7 @@ export function copyCellClick(cell: ArrangeItem, copyCell: any) {
     }
 
     // 添加班次时间段
-    if (['qhwy', 'dglb'].includes(appStore.HOSPITAL_ID)) {
+    if (ADD_TIME_PERIOD) {
       cell!.workTime = copyCell.workTime
     }
 
@@ -209,7 +212,7 @@ export function cleanCell(cellObj: ArrangeItem) {
   cellObj.schJiJias = [];
   cellObj.schSpecial = [];
   cellObj.backgroundColor = ""
-  if (["wh", 'gxjb', "lyyz","qhwy", "ytll", 'dglb'].includes(appStore.HOSPITAL_ID)) {
+  if (IS_WH_SCH_ADD_OR_SUB) {
     cellObj.schAddOrSubs = [];
     cellObj.settingMorningHour = 0;
     cellObj.settingNightHour = 0;

@@ -82,7 +82,7 @@ export default observer(function Cell(props: Props) {
         {
           type: "line"
         },
-        ['wh', 'gxjb', 'whyx', 'gzsrm', 'fssdy', 'fsxt','925', 'nys', 'jmfy', 'lcey', 'dghl', 'fqfybjy', 'lyyz', 'qhwy',"whsl","wjgdszd", 'ytll', 'whhk', 'dglb', 'zzwy'].includes(appStore.HOSPITAL_ID)
+        ['wh', 'gxjb', 'whyx', 'gzsrm', 'fssdy', 'fsxt','925', 'nys', 'jmfy', 'lcey', 'dghl', 'fqfybjy', 'lyyz', 'qhwy',"whsl","wjgdszd", 'ytll', 'whhk', 'dglb', 'zzwy', 'dghm'].includes(appStore.HOSPITAL_ID)
           ? {
             icon: require("../../images/修改工时.png"),
             label: "加/减班",
@@ -615,7 +615,7 @@ export default observer(function Cell(props: Props) {
           0}h`
         )
       },
-      'qhwy,whsl,dglb':() => {
+      'qhwy,whsl,dglb,dghm':() => {
         return (
           (cellObj.schAddOrSubs &&
             cellObj.schAddOrSubs.length &&

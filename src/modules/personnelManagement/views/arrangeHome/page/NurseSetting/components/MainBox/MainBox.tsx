@@ -144,7 +144,7 @@ export default observer(function MainBox() {
             width: 70,
           },
         ],
-        'wh,gzsrm,gxjb,lyyz,qhwy,ytll,dglb': [
+        'wh,gzsrm,gxjb,lyyz,qhwy,ytll,dglb,dghm': [
           {
             title: "开始时间",
             dataIndex: "startDate",
@@ -257,11 +257,8 @@ export default observer(function MainBox() {
     });
   }, []);
 
-  // Similar to componentDidMount and componentDidUpdate:
   useEffect(() => {
     getUserList();
-
-    //
   }, [authStore.selectedDeptCode]); // <= 执行初始化操作，需要注意的是，如果你只是想在渲染的时候初始化一次数据，那么第二个参数必须传空数组。
 
   emitter.removeAllListeners("获取选中人员列表");
@@ -371,9 +368,6 @@ const Wrapper = styled.div`
   th div {
     text-align: center !important;
     padding: 3px !important;
-    /* .ant-table-selection-column{
-      width: 30px!important;
-    } */
   }
 
   /* 表格前端打勾样式 */
@@ -383,10 +377,6 @@ const Wrapper = styled.div`
     width: 20px !important;
     max-width: 20px !important;
   }
-
-  /* tr > th .ant-table-selection-column {
-    width: 30px!important;
-  } */
 
   .ant-input {
     width: none;

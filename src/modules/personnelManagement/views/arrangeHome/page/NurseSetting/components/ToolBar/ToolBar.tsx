@@ -57,7 +57,7 @@ export default function ToolBar() {
           {
             appStore.hisMatch({
               map: {
-                'wh,gzsrm,lyyz,qhwy,whsl,ytll,dglb': '添加',
+                'wh,gzsrm,lyyz,qhwy,whsl,ytll,dglb,dghm': '添加',
                 hj: '添加实习护士',
                 "nys,lcey": '添加排班人员',
                 'whyx,whhk': "添加实习/进修生护士",
@@ -119,14 +119,6 @@ const Wrapper = styled.div`
   width: 100%;
   align-items: flex-end;
 `;
-
-// const BreakLine = styled.div`
-//   padding: 0 10px;
-// `
-
-// const LinkText = styled.div`
-//   cursor: pointer;
-// `
 
 const Title = styled.div`
   font-size: 20px;

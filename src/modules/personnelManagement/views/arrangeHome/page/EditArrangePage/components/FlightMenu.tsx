@@ -33,28 +33,6 @@ const BoxInner = styled.div<{ color?: string, backgroundColor?: string }>`
 /**重置某个用户某个班次的编号 */
 export const resetArrangeCount = (userId: number, arrangeName: string) => {
   let [user, list] = sheetViewModal.getUser(userId);
-  // let mess = {
-  //   workDate: "",
-  //   type: ""
-  // };
-  // let data: any = [];
-  // // 存放所有排班日期
-  // list.map((item: ArrangeItem, index: number) => {
-  //   for (let o in item) {
-  //     if (typeof item[o] === "string") {
-  //       console.log(o, "11111111");
-  //       if (item[1]) {
-  //         mess.type = item[1];
-  //         if (item[o].indexOf("-") !== -1) {
-  //           mess.workDate = item[o];
-  //         }
-  //       } else {
-  //         return;
-  //       }
-  //     }
-  //   }
-  // });
-  // console.log(mess, "ooooooooooo");
 
   if (user) {
     let baseCount = user.countArrangeBaseIndexObj[arrangeName];
@@ -159,22 +137,14 @@ function MenuCon(props: { dataSource: any[] }) {
         resetArrangeCount(cell.userId, cell.rangeName)
       }
       // 添加班次时间段
-      if (['qhwy', 'dglb'].includes(appStore.HOSPITAL_ID)) {
+      if (['qhwy', 'dglb', 'dghm'].includes(appStore.HOSPITAL_ID)) {
         cell!.workTime = item.workTime
       }
-      // if (
-      //   _rangeName &&
-      //   cell.userId &&
-      //   countArrangeNameList.includes(_rangeName)
-      // ) {
-      //   resetArrangeCount(cell.userId, _rangeName);
-      // }
-      // cell = cell.getNextCell();
     }
   }
 
   const onClick = async (item: any) => {
-    if (['wh', "lyyz","qhwy", "ytll"].includes(appStore.HOSPITAL_ID)) {
+    if (['wh', "lyyz","qhwy", "ytll", 'dghm'].includes(appStore.HOSPITAL_ID)) {
       // let res = await service.scheduleMealApiService.check(item.id)
     }
     if (['dghl', 'fqfybjy'].includes(appStore.HOSPITAL_ID)) {

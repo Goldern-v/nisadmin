@@ -33,7 +33,7 @@ class NursingEduFilesModal {
       pageIndex: this.pageIndex,
       pageSize: this.pageSize,
       type: appStore.HOSPITAL_ID == "gzhd" ? this.selectdType : null,
-      isOnJob: ['hj','qhwy', 'whhk', 'dglb'].includes(appStore.HOSPITAL_ID) ? this.isOnJob : null,
+      isOnJob: ['hj','qhwy', 'whhk', 'dglb', 'dghm'].includes(appStore.HOSPITAL_ID) ? this.isOnJob : null,
     };
   }
 

@@ -2,9 +2,7 @@ import styled from "styled-components";
 import React, { useState, useEffect } from "react";
 import {
   Button,
-  // Icon, 
   Input,
-  // Popover, 
   Select, message, Modal,
 } from "antd";
 import BaseTable, { DoCon } from "src/components/BaseTable";
@@ -14,7 +12,6 @@ import CommonHeader from "./../../components/CommonHeader";
 import { appStore, authStore } from "src/stores";
 import { observer } from "mobx-react-lite";
 
-// import DeptSelect from "src/components/DeptSelect";
 import service from 'src/services/api'
 
 import FilterCon from "./components/FilterCon";
@@ -56,10 +53,6 @@ export default observer(function 其他人员(props: Props) {
   const [isAdd, setIsAdd] = useState(true)
   const [recordSelected, setRecordSelected] = useState({} as any)
   const [importVisible, setImportVisible] = useState(false)
-  // const [ruleInsts, setRuleInsts] = useState([])
-
-  // let creditRecordExport = createModal(DeptCreditRecordExportModal)
-  // let ruleInstsEditModal = createModal(RuleInstsEditModal)
 
   const columns: ColumnProps<any>[] = [
     {
@@ -219,7 +212,7 @@ export default observer(function 其他人员(props: Props) {
     },
     ...appStore.hisMatch({
       map: {
-        'qhwy,whhk,dglb': [],
+        'qhwy,whhk,dglb,dghm': [],
         other: [
           {
             title: "进修科室二",

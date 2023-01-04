@@ -56,12 +56,14 @@ const QualityControlRecordEdit = observer(function QualityControlRecordEdit() {
             map: {
               wh: [7, 8],
               sdlj: [6, 7, 8],
+              dgxg:[10],
               other: [7],
             },
+            vague:true
           });
           // 非贵州
           if (
-            !["gzsrm", "gzhd", "whyx", "fsxt",'925',"lyrm","whhk",'zzwy', 'stmz','whsl'].includes(appStore.HOSPITAL_ID) &&
+            !["gzsrm", "gzhd", "whyx", "fsxt",'925',"lyrm","whhk",'zzwy', 'stmz','whsl', 'yczyy'].includes(appStore.HOSPITAL_ID) &&
             (isNaN(inpNo) || inpNoLengthArr.indexOf(master[x].length) < 0)
           ) {
             //if (isNaN(inpNo) || inpNoLengthArr.indexOf(master[x].length) < 0) {
@@ -74,7 +76,7 @@ const QualityControlRecordEdit = observer(function QualityControlRecordEdit() {
             errMsg = `住院号必须为数字`;
           }
         } else if (
-          ["gzhd"].includes(appStore.HOSPITAL_ID) &&
+          ["gzhd", 'yczyy'].includes(appStore.HOSPITAL_ID) &&
           (!master[x] || master[x].length === 0)
         ) {
           qcModel.setMasterErrObj(x, true);

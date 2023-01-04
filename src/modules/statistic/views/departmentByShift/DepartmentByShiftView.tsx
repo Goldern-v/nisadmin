@@ -258,9 +258,9 @@ export default function StatisticView() {
           <div className='NurseByShiftChooseCon'>
             {appStore.HOSPITAL_ID === 'gxjb' &&
               <NurseByShiftChoose_gxjb filterObj={filterObj} onFilterObjChange={handleFilterObjChange} />}
-            {['qhwy', 'dglb'].includes(appStore.HOSPITAL_ID) &&
+            {['qhwy', 'dglb', 'dghm'].includes(appStore.HOSPITAL_ID) &&
               <QHWYShiftChoose filterObj={filterObj} onFilterObjChange={handleFilterObjChange} />}
-            {!['gxjb', 'qhwy', 'dglb'].includes(appStore.HOSPITAL_ID) && <NurseByShiftChoose
+            {!['gxjb', 'qhwy', 'dglb', 'dghm'].includes(appStore.HOSPITAL_ID) && <NurseByShiftChoose
               statusRadio={statusRadio}
               filterObj={filterObj}
               onFilterObjChange={handleFilterObjChange} />}

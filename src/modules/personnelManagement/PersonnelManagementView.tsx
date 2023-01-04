@@ -24,7 +24,7 @@ import { meunConfig as menuConfig_zzwy } from "./config/menuConfig_zzwy";
 
 export interface Props {
 }
-
+/**排班管理 */
 export default function PersonnelManagementView() {
   const leftMenuConfig = (() => {
     switch (appStore.HOSPITAL_ID) {
@@ -40,6 +40,7 @@ export default function PersonnelManagementView() {
         return menuConfig_wh;
       case 'qhwy':
       case 'dglb':
+      case 'dghm':
         return menuConfig_qhwy;
       case 'gzsrm':
         return menuConfig_gzsrm;
