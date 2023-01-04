@@ -7,6 +7,7 @@ import { Button, Select } from 'antd';
 import { badEventData_gxjb } from '../BadEvent_gxjb';
 
 import { quarterList } from 'src/enums/date'
+import {appStore} from "src/stores";
 const Option = Select.Option
 interface Props { }
 export default observer(function BadEventHeader(props: Props) {
@@ -14,7 +15,8 @@ export default observer(function BadEventHeader(props: Props) {
 		<Wrapper>
 			<PageHeader>
 				<PageTitle className='page-title'>
-					{`${moment().year()}年`}{`${quarterList[badEventData_gxjb.currentQuarter - 1]}`}广西壮族自治区江滨医院
+					{`${moment().year()}年`}{`${quarterList[badEventData_gxjb.currentQuarter - 1]}`}
+					{appStore.HOSPITAL_ID==='gxjb'?'广西壮族自治区江滨医院':'阳春中医护理医院'}
 					<div>{`${badEventData_gxjb.eventType.key != '' ? badEventData_gxjb.eventType.label + '不良事件上报汇总表' : ''}`}</div>
 				</PageTitle>
 				<Place />

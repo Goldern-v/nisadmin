@@ -1,14 +1,13 @@
 import LeftMenu from "src/components/LeftMenu";
 import styled from "styled-components";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { RouteComponentProps } from "src/components/RouterView";
 
-import { Provider, KeepAlive } from "react-keep-alive";
-// import { ReactComponent as CFJL } from "./images/icon/CFJL.svg";
+import { KeepAlive } from "react-keep-alive";
 
 export interface Props extends RouteComponentProps<{ name?: string }> { }
 
-import { appStore, authStore } from "src/stores";
+import { appStore} from "src/stores";
 import BadEventsNewList from './BadEventsNewList'
 import BadEventsNewList_nys from './BadEventsNewList_nys'
 import BadEventsNewList_gzsrm from './BadEventsNewList_gzsrm'
@@ -19,9 +18,6 @@ import badEventStatCommon from './views/badEventStatCommon'
 import BadEventReportList from './views/BadEventReportList/BadEventReportList'
 import BadEventReportListNew_gzsrm from './views/BadEventReportListNew_gzsrm/BadEventReportList'
 import { autoLoginTnNisInfoBe } from "src/utils/toNisInfo/toNisInfo";
-import BadEventSummary from "./views/BadEventSummary";
-import BadEventReportSummary from "./views/BadEventReportSummary";
-
 import BadEventSummaryQuarterGxjb from "./views/BadEventSummary_gxjb/BadEventSummaryQuarterGxjb";
 import BadEventSummaryCaseGxjb from "./views/BadEventSummary_gxjb/BadEventSummaryCaseGxjb";
 import BadEventSummaryClassfiyGxjb from "./views/BadEventSummary_gxjb/BadEventSummaryClassfiyGxjb";
@@ -103,7 +99,7 @@ export default function BadEventsRouters(props: Props) {
       map: {
         gzsrm: [],
         lcey: [],
-        gxjb: [
+        'gxjb,yczyy': [
           {
             title: '不良事件汇总',
             path: `${baseRouter}/summary`,
@@ -144,8 +140,10 @@ export default function BadEventsRouters(props: Props) {
             path: `${baseRouter}/不良事件发生率`,
             component: 不良事件发生率,
           },
-        ]
-      }
+        ],
+
+      },
+      vague: true,
     }),
     ...appStore.hisMatch({
       map: {
@@ -172,23 +170,23 @@ export default function BadEventsRouters(props: Props) {
         other: []
       }
     }),
-    ...appStore.hisMatch({
-      map: {
-        yczyy: [
-          {
-            title: '不良事件汇总',
-            path: `${baseRouter}/BadEventSummary`,
-            component: BadEventSummary
-          },
-          {
-            title: '不良事件报告登记汇总',
-            path: `${baseRouter}/BadEventReportSummary`,
-            component: BadEventReportSummary
-          },
-        ],
-        other: []
-      }
-    })
+    // ...appStore.hisMatch({
+    //   map: {
+    //     yczyy: [
+    //       {
+    //         title: '不良事件汇总',
+    //         path: `${baseRouter}/BadEventSummary`,
+    //         component: BadEventSummary
+    //       },
+    //       {
+    //         title: '不良事件报告登记汇总',
+    //         path: `${baseRouter}/BadEventReportSummary`,
+    //         component: BadEventReportSummary
+    //       },
+    //     ],
+    //     other: []
+    //   }
+    // })
   ];
 
   let currentRoutePath = props.history.location.pathname || "";
@@ -216,7 +214,7 @@ export default function BadEventsRouters(props: Props) {
     redictUri: '/crNursing/badEvent',
     loginUri: '/crNursing/login'
   }
-  if (['gxjb'].includes(appStore.HOSPITAL_ID)) { //跳转单独的上报系统
+  if (['gxjb','yczyy'].includes(appStore.HOSPITAL_ID)) { //跳转单独的上报系统
     autoLoginInfo = {
       blank: true,
       redictUri: '/crNursing/badevents/index',

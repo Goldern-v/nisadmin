@@ -18,7 +18,8 @@ export default observer(function BadEventHeaderQuarter(props: Props) {
 		<Wrapper>
 			<PageHeader>
 				<PageTitle className='page-title'>
-					{`${moment().year()}年`}{`${quarterList[badEventQuarterData_gxjb.currentQuarter - 1]}`}广西壮族自治区江滨医院
+					{`${moment().year()}年`}{`${quarterList[badEventQuarterData_gxjb.currentQuarter - 1]}`}
+					{appStore.HOSPITAL_ID==='gxjb'?'广西壮族自治区江滨医院':'阳春中医护理医院'}
 					<div>护理不良事件上报汇总表</div>
 				</PageTitle>
 				<Place />
