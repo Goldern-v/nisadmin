@@ -5,6 +5,7 @@ const { TextArea } = Input
 import ReactEcharts from 'echarts-for-react';
 import { authStore } from 'src/stores'
 import { wholePrintData } from './WholePrintData'
+import { numberFormat } from 'src/utils/number/numberFormat';
 interface Props {
 	// 输入框
 	textArea1_1: string,
@@ -361,6 +362,18 @@ const PrintContent = (props: Props) => {
 								<span>{wholePrintData.currentCycleMessage}</span>
 							)
 						}, key: 'currentYearRate', dataIndex: 'currentYearRate', align: 'center',
+						render: (text: any, record: any, index: number) => {
+							if(record.isRate){
+								if(text>0){
+									return <span>{numberFormat(text*100,2)}%</span>
+								}else{
+									return <span>0%</span>
+								}
+							}else{
+								<span></span>
+							}
+							
+						},
 						onCell(record: any, rowIndex: any) {
 							if (!record.isRate) {
 								return {
@@ -401,6 +414,18 @@ const PrintContent = (props: Props) => {
 								<span>{wholePrintData.preCycleMessage}</span>
 							)
 						}, key: 'preYearRate', dataIndex: 'preYearRate', align: 'center',
+						render: (text: any, record: any, index: number) => {
+							if(record.isRate){
+								if(text>0){
+									return <span>{numberFormat(text*100,2)}%</span>
+								}else{
+									return <span>0%</span>
+								}
+							}else{
+								<span></span>
+							}
+							
+						},
 						onCell(record: any, rowIndex: any) {
 							if (!record.isRate) {
 								return {
