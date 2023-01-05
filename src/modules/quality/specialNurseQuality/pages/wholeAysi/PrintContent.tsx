@@ -303,7 +303,7 @@ const mergeCells = (text: string, data: any, key: string, index: number) => {
 							if(record.itemType=='1'){
 								return ''
 							}else{
-								return <>{Number(text)>0?Math.trunc(Number(text)*10000)/100+'%':0}</>
+								return <>{Number(text)>0?Math.trunc(Number(text)*10000)/100+'%':'0%'}</>
 							}
 						},
 						onCell(record: any, rowIndex: any) {
@@ -357,7 +357,7 @@ const mergeCells = (text: string, data: any, key: string, index: number) => {
 							if(record.itemType=='1'){
 								return ''
 							}else{
-								return <>{Number(text)>0?Math.trunc(Number(text)*10000)/100+'%':0}</>
+								return <>{Number(text)>0?Math.trunc(Number(text)*10000)/100+'%':'0%'}</>
 							}
 						},
 						onCell(record: any, rowIndex: any) {

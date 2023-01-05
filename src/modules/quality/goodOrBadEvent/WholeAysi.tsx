@@ -64,34 +64,6 @@ export default function WholeAysi(props: Props) {
 		return 2
 	}
 	// end
-
-
-
-	const dataSource = [
-		{
-			"id": 61,
-			"title": "年度报告111",
-			"createName": "admin",
-			"createDate": "2022-08-11",
-			"reportType": "0",
-			"beginDateStr": "2022-07-01",
-			"endDateStr": "2022-07-31",
-			"belongsYear": "2022",
-			"belongsCycle": "07"
-		},
-		{
-			"id": 61,
-			"title": "年度报告222",
-			"createName": "admin",
-			"createDate": "2022-08-11",
-			"reportType": "0",
-			"beginDateStr": "2022-07-01",
-			"endDateStr": "2022-07-31",
-			"belongsYear": "2022",
-			"belongsCycle": "07"
-		}
-	]
-
 	const columns3: ColumnProps<any>[] | any = [
 		{
 			title: "序号",
