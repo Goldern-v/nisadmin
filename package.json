@@ -257,6 +257,7 @@
     "publish:9903": "npm run build:fssdy && node publish.js",
     "publish:9905": "npm run build:fqfybjy && node publish.js",
     "publish:9906": "npm run build:dglb && node publish.js",
+    "publish:9907": "npm run build:yczyy && node publish.js",
     "publish:9964": "npm run build:wh && node publish.js",
     "publish:be": "npm run build:hj-be && node publish-be.js",
     "publish:nys-be": "npm run build:nys-be && node publish-be.js",

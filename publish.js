@@ -96,7 +96,7 @@ let sshUpload = (localSrc = './build', folderSrc = '/crdata/webProject/manage') 
   if (process.env.npm_lifecycle_event.indexOf('9884') >= 0) {
     folderSrc = '/crdata/webProject/manage-wuhanfeike'
   }
-  
+
   //南方中西医
   if (process.env.npm_lifecycle_event.indexOf('9879') >= 0) {
     folderSrc = '/crdata/webProject/manage-nanfangzhongxiyi'
@@ -118,7 +118,7 @@ let sshUpload = (localSrc = './build', folderSrc = '/crdata/webProject/manage') 
   if (process.env.npm_lifecycle_event.indexOf('9897') >= 0) {
     folderSrc = '/crdata/webProject/manage-zhangzhou'
   }
-  
+
   // 珠海中西医
   if (process.env.npm_lifecycle_event.indexOf('9898') >= 0) {
     folderSrc = '/crdata/webProject/manage-zhuhaizhongxiyi'
@@ -136,6 +136,9 @@ let sshUpload = (localSrc = './build', folderSrc = '/crdata/webProject/manage') 
   }
   if (process.env.npm_lifecycle_event.indexOf('9906') >= 0) {
     folderSrc = '/crdata/webProject/manage-dongguanliaobu'
+  }
+  if (process.env.npm_lifecycle_event.indexOf('9907') >= 0) {
+    folderSrc = '/crdata/webProject/manage-yczyy'
   }
   //护理管理文档
   if (process.env.npm_lifecycle_event.indexOf('docs') >= 0) {
