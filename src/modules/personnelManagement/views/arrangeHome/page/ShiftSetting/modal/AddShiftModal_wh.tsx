@@ -3,9 +3,7 @@ import React, { useState, useEffect, useLayoutEffect } from "react";
 import {
   Modal,
   Input,
-  Button,
   Radio,
-  DatePicker,
   Select,
   Row,
   Col,
@@ -23,7 +21,6 @@ import { arrangeService } from "../../../services/ArrangeService";
 import emitter from "src/libs/ev";
 import moment from "moment";
 
-const Option = Select.Option;
 export interface Props extends ModalComponentProps {
   /** 表单提交成功后的回调 */
   onOkCallBack?: () => any;
@@ -41,6 +38,8 @@ const rules: Rules = {
   // nameColor: (val) => !!val || '请填写颜色标记'
 };
 
+/**隐藏责护 */
+const HIDE_ZH = ['dghm'].includes(appStore.HOSPITAL_ID)
 export default function AddShiftModal(props: Props) {
   const [title, setTitle] = useState("添加班次");
   const [shiftList, setShiftList] = useState([]);
@@ -207,14 +206,17 @@ export default function AddShiftModal(props: Props) {
                   </Select>
                 </Form.Field>
               </Col>
-              <Col span={24}>
-                <Form.Field label={`是否为责护`} name="isZh" required>
-                  <Radio.Group style={{marginTop:"7px"}}>
-                    <Radio value={1}>是</Radio>
-                    <Radio value={0}>否</Radio>
-                  </Radio.Group>
-                </Form.Field>
-              </Col>
+              {
+                !HIDE_ZH &&
+                <Col span={24}>
+                  <Form.Field label={`是否为责护`} name="isZh" required>
+                    <Radio.Group style={{marginTop:"7px"}}>
+                      <Radio value={1}>是</Radio>
+                      <Radio value={0}>否</Radio>
+                    </Radio.Group>
+                  </Form.Field>
+                </Col>
+              }
 
                   <Col span={13}>
                     <Form.Field label={['lcey', 'lyyz'].includes(appStore.HOSPITAL_ID) ? `夏令上班时间` : '上班时间'} name="workTime1" required={true}>
@@ -283,7 +285,7 @@ export default function AddShiftModal(props: Props) {
             </Row>
           </Form>
         </Spin>
-        <span className="tip">(主班和护士长不是责护，其他均是责护)</span>
+        {!HIDE_ZH && <span className="tip">(主班和护士长不是责护，其他均是责护)</span>}
       </Wrapper>
     </Modal>
   );

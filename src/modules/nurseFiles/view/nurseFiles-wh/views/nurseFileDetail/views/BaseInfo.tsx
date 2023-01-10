@@ -18,11 +18,10 @@ export const isSelf = () => {
   return appStore.match.path == "/selfNurseFile/:type";
 };
 export const editFlag = () => {
-  if ((authStore.isAdmin || authStore.isRoleManage || authStore.isAd || JSON.parse(sessionStorage.getItem('user') || '').empNo === appStore.queryObj.empNo) && ['gxjb'].includes(appStore.HOSPITAL_ID)) {
+  if ((authStore.isAdmin || authStore.isRoleManage || authStore.isAd || JSON.parse(sessionStorage.getItem('user') || '').empNo === appStore.queryObj.empNo)) {
     return true
-  } else {
-    false
   }
+  return false
 }
 
 export default observer(function BaseInfo() {
@@ -88,7 +87,7 @@ export default observer(function BaseInfo() {
   ]
   const limitsComponent = () => {
     let btnList: Array<object> = [];
-    if (['gxjb'].includes(appStore.HOSPITAL_ID)) {
+    if (['gxjb', 'dghm'].includes(appStore.HOSPITAL_ID)) {
       btnList = editFlag() ? [
         {
           label: "修改",
@@ -215,10 +214,18 @@ export default observer(function BaseInfo() {
           ...['sdlj', 'nfsd', 'qzde'].includes(appStore.HOSPITAL_ID) ? { 参加护理工作时间: data.zyzsNursingPostDate } : { 取得执业证书并从事护理岗位时间: data.zyzsNursingPostDate },
           护士执业证书有效截止日期: data.zyzsEffectiveUpDate,
         },
-        {
-          初始学历: data.initialEducation,
-          最高学历: data.highestEducation
-        },
+        appStore.hisMatch({
+          map: {
+            dghm: {
+              家庭住址: data.address,
+              最高学历: data.highestEducation
+            },
+            other: {
+              初始学历: data.initialEducation,
+              最高学历: data.highestEducation
+            }
+          }
+        }),
         {
           取得最高学历时间: data.highestEducationDate,
           最高学历学位: data.highestEducationDegree,
@@ -252,7 +259,6 @@ export default observer(function BaseInfo() {
             case "qhwy":
             case 'whhk':
             case 'dglb':
-            case 'dghm':
               return {
                 鞋码大小: data.shoeSize,
                 护理学会会员证号: data.membershipCardNumber,
@@ -263,6 +269,11 @@ export default observer(function BaseInfo() {
                 鞋码大小: data.shoeSize,
                 个人住址: data.address,
               };
+            case 'dghm':
+              return {
+                现职称: data.newTitle,
+                取得现有职称时间: data.newTitleDateDate
+              }
             default:
               return {
                 鞋码大小: data.shoeSize,

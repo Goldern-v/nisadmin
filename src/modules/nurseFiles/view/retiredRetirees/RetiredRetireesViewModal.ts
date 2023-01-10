@@ -1,10 +1,10 @@
+import { appStore } from 'src/stores';
 import { fileDownload } from './../../../../utils/file/file'
-import { format } from 'date-fns'
 import { observable, computed, action } from 'mobx'
 import { retiredRetireesService } from './services/RetiredRetireesService'
-import monnet from 'src/vendors/moment'
 import { crrentMonth } from 'src/utils/moment/crrentMonth'
 import service from 'src/services/api'
+import * as types from 'src/libs/types'
 
 class RetiredRetireesViewModal {
   @observable public bigDeptList = []
@@ -16,6 +16,19 @@ class RetiredRetireesViewModal {
   @observable public selectedDate: any = crrentMonth()
   @observable public selectedStatus = '离职'
   @observable public tableList = []
+  /**查询条件 by虎门 */
+  @observable public query: types.Obj = {
+    bigDept: '',
+    deptCodes: ['全部'],
+    selectedDate: crrentMonth(),
+    selectedStatus: '离职',
+    nurseHierarchy: '', //层级：
+    newTitle: '', //职称
+    goHospitalWorkDateYearGe: '', //在院工龄大于等于
+    goHospitalWorkDateYearLe: '', //在院工龄小于等于
+    takeWorkYearGe: '', //工龄大于等于
+    takeWorkYearLe: '', //工龄小于等于
+  }
 
   @observable public tableLoading = false
   @observable public pageIndex: any = 1
@@ -41,6 +54,17 @@ class RetiredRetireesViewModal {
 
   @computed
   get postObj() {
+    if ('dghm' === appStore.HOSPITAL_ID) {
+      const {selectedDate, selectedStatus, ...other } = this.query 
+      return {
+        ...other,
+        pageIndex: this.pageIndex,
+        pageSize: this.pageSize,
+        leaveStartDate: selectedDate[0].format('YYYY-MM-DD'),
+        leaveEndDate: selectedDate[1].format('YYYY-MM-DD'),
+        statusType: selectedStatus.split('+')
+      }
+    }
     return {
       pageIndex: this.pageIndex,
       pageSize: this.pageSize,
@@ -76,6 +100,22 @@ class RetiredRetireesViewModal {
         /** 默认全部 */
         this.deptList = (res.data || []).map((item: any) => ({ name: item.deptName, code: item.deptCode }))
         this.selectedDept = ['全部']
+      })
+    }
+    this.onload()
+  }
+  async onChangeBigDept1(bigDeptCode: any) {
+    if (bigDeptCode == '') {
+      await service.commonApiService.getNursingUnitSelf().then((res) => {
+        /** 默认全部 */
+        this.deptList = res.data.deptList || []
+        this.query.deptCodes = ['全部']
+      })
+    } else {
+      await service.commonApiService.groupByDeptInDeptList(bigDeptCode).then((res) => {
+        /** 默认全部 */
+        this.deptList = (res.data || []).map((item: any) => ({ name: item.deptName, code: item.deptCode }))
+        this.query.deptCodes = ['全部']
       })
     }
     this.onload()

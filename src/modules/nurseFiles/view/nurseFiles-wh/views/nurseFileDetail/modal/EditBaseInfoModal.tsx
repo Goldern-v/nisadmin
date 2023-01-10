@@ -27,7 +27,7 @@ import { AutoComplete } from "src/vendors/antd";
 import { formatIdCord } from "src/utils/idCard/idCard";
 import SelectOrAutoInput from "../components/SelectOrAutoInput";
 import tinyPic from "src/utils/img/tinyPic";
-import { CLOTHS_SIZES } from "src/modules/nurseFiles/enums";
+import { CLOTHS_SIZES, TITLE_TYPES } from "src/modules/nurseFiles/enums";
 import { strFormatIntoMoment } from "src/utils/moment/crrentMonth";
 import { Obj } from "src/libs/types";
 
@@ -48,6 +48,7 @@ const rules: Rules = {
 };
 const isSdlj = ['sdlj', 'nfsd', 'qzde'].includes(appStore.HOSPITAL_ID)
 const isQhwy = ['qhwy', 'whhk', 'dglb'].includes(appStore.HOSPITAL_ID)
+
 export default function EditWorkHistoryModal(props: Props) {
   let { visible, onCancel, onOk, data, id } = props;
   let refForm = React.createRef<Form>();
@@ -324,7 +325,7 @@ export default function EditWorkHistoryModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={12}>
-            <Form.Field label={`参加工作时间`} name={(appStore.HOSPITAL_ID === 'fsxt' || appStore.HOSPITAL_ID === '925') ? 'goWorkTime' : 'takeWorkTime'}>
+            <Form.Field label={`参加工作时间`} name={['fsxt', '925'].includes(appStore.HOSPITAL_ID)  ? 'goWorkTime' : 'takeWorkTime'}>
               <DatePicker />
             </Form.Field>
           </Col>
@@ -359,7 +360,7 @@ export default function EditWorkHistoryModal(props: Props) {
               <DatePicker />
             </Form.Field>
           </Col>
-          {(appStore.HOSPITAL_ID !== 'fsxt' && appStore.HOSPITAL_ID !== '925') && <Col span={12}>
+          {!['fsxt', '925', 'dghm'].includes(appStore.HOSPITAL_ID) && <Col span={12}>
             <Form.Field label={`初始学历`} name="initialEducation">
               <Select>
                 {nurseFileDetailViewModal.getDict("初始学历").map((item) => (
@@ -368,6 +369,11 @@ export default function EditWorkHistoryModal(props: Props) {
                   </Select.Option>
                 ))}
               </Select>
+            </Form.Field>
+          </Col>}
+          {(['dghm'].includes(appStore.HOSPITAL_ID)) && <Col span={12}>
+            <Form.Field label={`家庭住址`} name="address">
+              <Input />
             </Form.Field>
           </Col>}
           <Col span={12}>
@@ -388,7 +394,7 @@ export default function EditWorkHistoryModal(props: Props) {
               <DatePicker />
             </Form.Field>
           </Col>}
-          {(appStore.HOSPITAL_ID !== 'fsxt' && appStore.HOSPITAL_ID !== '925') && <Col span={12}>
+          {!['fsxt', '925'].includes(appStore.HOSPITAL_ID) && <Col span={12}>
             <Form.Field label={`最高学历学位`} name="highestEducationDegree">
               <AutoComplete
                 dataSource={nurseFileDetailViewModal
@@ -397,7 +403,7 @@ export default function EditWorkHistoryModal(props: Props) {
               />
             </Form.Field>
           </Col>}
-          <Col span={12} style={{ height: isQhwy ? '52px' : '53px' }}>
+          <Col span={12} style={{ height:'52px' }}>
             <Form.Field label={`职务`} name="job">
               <SelectOrAutoInput dict="职务" />
             </Form.Field>
@@ -407,7 +413,7 @@ export default function EditWorkHistoryModal(props: Props) {
               <DatePicker />
             </Form.Field>
           </Col>
-          {appStore.HOSPITAL_ID !== 'fsxt' && appStore.HOSPITAL_ID !== '925' && <Col span={12} style={{ height: isQhwy ? '52px' : '53px' }}>
+          {!['fsxt', '925'].includes(appStore.HOSPITAL_ID) && <Col span={12} style={{ height:'52px' }}>
             <Form.Field label={['wjgdszd'].includes(appStore.HOSPITAL_ID) ? '编制科室' : `院内工作地点`}
               name="workAddress">
               <SelectOrAutoInput dict="院内工作地点" />
@@ -428,18 +434,34 @@ export default function EditWorkHistoryModal(props: Props) {
               </Select>
             </Form.Field>
           </Col>
-          {appStore.HOSPITAL_ID !== 'gxjb' ?
-            <Col span={12}>
-              <Form.Field label={isSdlj ? `夏季鞋码大小` : `鞋码大小`} name="shoeSize">
-                {['lyrm', 'stmz'].includes(appStore.HOSPITAL_ID) ? <Input /> : <SelectOrAutoInput dict="鞋码大小" />}
-              </Form.Field>
-            </Col> : <Col span={12}>
-              <Form.Field label={`家庭住址`} name="address">
-                <Input />
-              </Form.Field>
-            </Col>
-          }
-          {isSdlj && <Col span={12}>
+          <Col span={12}>
+            {
+              appStore.hisMatch({
+                map: {
+                  gxjb: (
+                    <Form.Field label={`家庭住址`} name="address">
+                      <Input />
+                    </Form.Field>),
+                  dghm: (
+                    <Form.Field label={`现职称`} name="newTitle">
+                      <Select>
+                        {TITLE_TYPES.map((item:any) => (
+                          <Select.Option value={item.code} key={item.code}>
+                            {item.name}
+                          </Select.Option>
+                        ))}
+                      </Select>
+                    </Form.Field>),
+                  other: (
+                    <Form.Field label={isSdlj ? `夏季鞋码大小` : `鞋码大小`} name="shoeSize">
+                      {['lyrm', 'stmz'].includes(appStore.HOSPITAL_ID) ? <Input /> : <SelectOrAutoInput dict="鞋码大小" />}
+                    </Form.Field>)
+                },
+                vague: true
+              })
+            }
+          </Col>
+          {isSdlj && <Col span={12} style={{ height:'52px' }}>
             <Form.Field label={`冬季鞋码大小`} name="maps.winter_shoe_size">
               <SelectOrAutoInput dict="鞋码大小" />
             </Form.Field>
@@ -462,6 +484,14 @@ export default function EditWorkHistoryModal(props: Props) {
             ['lyrm', 'stmz'].includes(appStore.HOSPITAL_ID) && <Col span={12}>
               <Form.Field label='个人住址' name="address">
                 <Input />
+              </Form.Field>
+            </Col>
+          }
+          {
+            'dghm' === appStore.HOSPITAL_ID &&
+            <Col span={12}>
+              <Form.Field label={`取得现有职称时间`} name="newTitleDateDate">
+                <DatePicker />
               </Form.Field>
             </Col>
           }

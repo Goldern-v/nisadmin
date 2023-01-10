@@ -43,3 +43,23 @@ export const CLOTHS_SIZES = [
     code: 'XXXL',
   },
 ]
+/**职称 */
+export const TITLE_TYPES = [
+  { code: '见习期护士', name: '见习期护士' },
+  { code: '护士', name: '护士' },
+  { code: '护师', name: '护师' },
+  { code: '主管护师', name: '主管护师' },
+  { code: '副主任护师', name: '副主任护师' },
+  { code: '主任护师', name: '主任护师' },
+]
+/**层级 */
+export const NURSE_HIERARCHY_TYPES = [
+  { code: '', name: '全部' },
+  { code: 'N0', name: 'N0' },
+  { code: 'N1', name: 'N1' },
+  { code: 'N2', name: 'N2' },
+  { code: 'N3', name: 'N3' },
+  { code: 'N4', name: 'N4' },
+  { code: 'N5', name: 'N5' },
+  { code: 'N6', name: 'N6' },
+]

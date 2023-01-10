@@ -35,7 +35,7 @@ export default observer(function Table() {
     {
       title: '员工号',
       dataIndex: 'empNo',
-      width: 100
+      width: 70
     },
     {
       title: '姓名',
@@ -56,27 +56,57 @@ export default observer(function Table() {
       width: 90,
       align: 'center'
     },
-    {
-      title: '出生年月日',
-      dataIndex: 'birthday',
-      key: 'birthday',
-      width: 120,
-      align: 'center'
-    },
-    {
-      title: '年龄',
-      dataIndex: 'age',
-      key: 'age',
-      width: 90,
-      align: 'center'
-    },
-    {
-      title: '取得护士执业证书并从事护理岗位时间',
-      dataIndex: 'zyzsDate',
-      key: 'zyzsDate',
-      width: 200,
-      align: 'center'
-    },
+    ...appStore.hisMatch({
+      map: {
+        dghm: [
+          {
+            title: '工龄',
+            dataIndex: 'takeWorkYear',
+            key: 'takeWorkYear',
+            width: 120,
+            align: 'center'
+          },
+          {
+            title: '年龄',
+            dataIndex: 'age',
+            key: 'age',
+            width: 90,
+            align: 'center'
+          },
+          {
+            title: '在院工龄',
+            dataIndex: 'goHospitalWorkYear',
+            key: 'goHospitalWorkYear',
+            width: 200,
+            align: 'center'
+          },
+        ],
+        other: [
+          {
+            title: '出生年月日',
+            dataIndex: 'birthday',
+            key: 'birthday',
+            width: 120,
+            align: 'center'
+          },
+          {
+            title: '年龄',
+            dataIndex: 'age',
+            key: 'age',
+            width: 90,
+            align: 'center'
+          },
+          {
+            title: '取得护士执业证书并从事护理岗位时间',
+            dataIndex: 'zyzsDate',
+            key: 'zyzsDate',
+            width: 200,
+            align: 'center'
+          },
+
+        ]
+      }
+    }),
     {
       title: '离职时间',
       dataIndex: 'leaveDate',
@@ -126,8 +156,8 @@ export default observer(function Table() {
         dataSource={retiredRetireesViewModal.tableList}
         columns={columns}
         type={['index', 'fixedIndex']}
-        surplusHeight={180}
-        surplusWidth={300}
+        surplusHeight={'dghm' === appStore.HOSPITAL_ID ? 270 : 180}
+        surplusWidth={100}
         pagination={{
           current: retiredRetireesViewModal.pageIndex,
           total: retiredRetireesViewModal.total,

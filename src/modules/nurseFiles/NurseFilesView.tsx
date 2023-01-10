@@ -130,7 +130,8 @@ export default observer(function NurseFilesView(props: Props) {
     icon: <TXHSCX />,
     hide: appStore.hisMatch({
       map: {
-        "hj,lyrm,qhwy,fsxt,ytll,whhk,925,dglb,stmz,dghm": false,
+        "hj,lyrm,qhwy,fsxt,ytll,whhk,925,dglb,stmz": false,
+        'dghm': true,
         other: !appStore.isDev,
       },
       vague: true,
@@ -302,6 +303,20 @@ export default observer(function NurseFilesView(props: Props) {
       icon: <TXHSCX />,
     },
     nursingRoundsCon,
+    ...appStore.hisMatch({
+      map: {
+        'dghm': [
+          {
+            title: "人员调动查询",
+            path: "/nurseFile/staffMovementEnquiry",
+            component: StaffMovementEnquiry,
+            icon: <TXHSCX />,
+          },
+        ],
+        other: [],
+      },
+      vague: true
+    }),
   ];
 
   const LEFT_MENU_CONFIG_NFZXY = [
