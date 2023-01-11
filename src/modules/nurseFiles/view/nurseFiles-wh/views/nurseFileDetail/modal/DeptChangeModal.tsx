@@ -20,7 +20,8 @@ const rules: Rules = {
   date: (val) => !!val || '请填写调动时间',
   deptCodeNew: (val) => !!val || '请选择新科室'
 }
-const isGxjb = ['gxjb','qhwy','wjgdszd', 'whhk', 'dglb', 'lyrm'].includes(appStore.HOSPITAL_ID)
+/**护士是按护理单元进行调动 默认是按科室调动 */
+const isGxjb = ['gxjb','qhwy','wjgdszd', 'whhk', 'dglb', 'lyrm', 'dghm'].includes(appStore.HOSPITAL_ID)
 export default function DeptChangeModal(props: Props) {
   const [deptList, setDeptList]: any = useState([])
 

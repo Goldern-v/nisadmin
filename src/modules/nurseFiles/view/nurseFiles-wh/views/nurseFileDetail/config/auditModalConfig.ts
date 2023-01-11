@@ -130,7 +130,7 @@ export function openAuditModal(title: string, row: any, callBack: any,btnText?:s
                   },
                   {
                     "护士执业证书有效截止日期": 'zyzsEffectiveUpDate',
-                    "初始学历": 'initialEducation'
+                    ...'dghm' === appStore.HOSPITAL_ID ? {"家庭住址": 'address'} : {"初始学历": 'initialEducation'}
                   },
                   {
                     "最高学历": 'highestEducation',
@@ -166,6 +166,11 @@ export function openAuditModal(title: string, row: any, callBack: any,btnText?:s
                         return {
                           "冬季鞋码大小": 'winter_shoe_size',
                         }
+                      case 'dghm':
+                        return {
+                          "工作护理单元": 'deptName',
+                          "家庭住址": 'address'
+                        };
                       default:
                         return {
                           "工作护理单元": 'deptName',
@@ -175,9 +180,10 @@ export function openAuditModal(title: string, row: any, callBack: any,btnText?:s
                   })(),
                   ...appStore.hisMatch({
                     map: {
-                      'qhwy,whhk,dglb,dghm': [{
+                      'qhwy,whhk,dglb': [{
                         "护理学会会员证号": 'membershipCardNumber',
                       }],
+
                       other: []
                     },
                     vague: true
@@ -214,6 +220,12 @@ export function openAuditModal(title: string, row: any, callBack: any,btnText?:s
                       'lyrm,stmz': [
                         {
                           '个人住址': 'address'
+                        }
+                      ],
+                      'dghm': [
+                        {
+                          '现职称': 'newTitle',
+                          '取得现有职称时间': 'newTitleDateDate'
                         }
                       ],
                       other: []

@@ -49,6 +49,7 @@ export default observer(function TopCon() {
   const btnTitle = () => {
     switch (appStore.HOSPITAL_ID) {
       case "gxjb":
+      case 'dghm':
         return "院内调动"
       case "wjgdszd":
         return "科室调动"
@@ -95,25 +96,24 @@ export default observer(function TopCon() {
           // <Tip>你没有待审核的信息</Tip>
         )}
       </Name>
-      {authStore.isRoleManage && !isSelf() && (
-        <div style={{width: '100%', display: 'flex', justifyContent: 'flex-end', marginTop: '-10px'}}>
-          <React.Fragment>
-            <ExportBtn className={["gzsrm"].includes(appStore.HOSPITAL_ID) ? "gzsrmExportBtn" : ""} onClick={() => setExportVisible(true)}>导出档案</ExportBtn>
-            {
-              !["gzsrm"].includes(appStore.HOSPITAL_ID) ?
-                <DeptChangeBtn1 onClick={() => openLeaveModalModal()}>离职/退休</DeptChangeBtn1> : ""
+      
+      <div style={{width: '100%', display: 'flex', justifyContent: 'flex-end', marginTop: '-10px'}}>
+        {authStore.isRoleManage && !isSelf() && <ExportBtn className={["gzsrm"].includes(appStore.HOSPITAL_ID) ? "gzsrmExportBtn" : ""} onClick={() => setExportVisible(true)}>导出档案</ExportBtn>}
+        {
+          authStore.isRoleManage && !isSelf() && !["gzsrm"].includes(appStore.HOSPITAL_ID)
+            && <DeptChangeBtn1 onClick={() => openLeaveModalModal()}>离职/退休</DeptChangeBtn1>
+        }
+        {
+          !isSelf() && appStore.hisMatch({
+            map: {
+              // 广西江滨只有护理部才有院内调动权限
+              gxjb: authStore.isRoleManage && authStore.isDepartment,
+              dghm: authStore.isRoleManage || authStore.isDepartment,
+              other: authStore.isRoleManage
             }
-            {/* <DeptChangeBtn1 onClick={() => openLeaveModalModal()}>离职/退休</DeptChangeBtn1> */}
-            {appStore.HOSPITAL_ID === 'gxjb' ? 
-              <div>
-                {/* 广西江滨只有护理部才有院内调动权限 */}
-                { authStore.isDepartment &&  <DeptChangeBtn onClick={() => openDeptChangeModal()}>{btnTitle()}</DeptChangeBtn>}
-              </div> :
-              <DeptChangeBtn onClick={() => openDeptChangeModal()}>{btnTitle()}</DeptChangeBtn>
-            }
-          </React.Fragment>
-        </div>
-      )}
+          }) && <DeptChangeBtn onClick={() => openDeptChangeModal()}>{btnTitle()}</DeptChangeBtn>
+        }
+      </div>
 
       <deptChangeModal.Component title={btnTitle()} />
       <leaveModal.Component title='离职/退休' />

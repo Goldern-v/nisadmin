@@ -1,5 +1,5 @@
 import React from "react";
-import { authStore } from "src/stores";
+import { appStore, authStore } from "src/stores";
 import ArrangeHome from "../views/arrangeHome/ArrangeHome";
 import NurseSettingViewNew from "src/modules/personnelManagement/views/arrangeHome/page/NurseSetting/NurseSettingView";
 import ShiftSettingViewNew from "src/modules/personnelManagement/views/arrangeHome/page/ShiftSetting/ShiftSettingView";
@@ -39,12 +39,18 @@ export const meunConfig: meunConfigItem[] = [
         style: { background: "#fff" },
         iSlimit: false,
       },
-      {
-        title: "管床设置",
-        path: "/personnelManagement/tubeBed",
-        component: TubeBed,
-        iSlimit: false,
-      },
+      ...appStore.hisMatch({
+        map: {
+        'dghm': [],
+        other: [
+          {
+            title: "管床设置",
+            path: "/personnelManagement/tubeBed",
+            component: TubeBed,
+            iSlimit: false,
+          },
+        ]
+      }}),
       {
         title: "我的期望排班",
         path: "/personnelManagement/expectedRecordSelf",

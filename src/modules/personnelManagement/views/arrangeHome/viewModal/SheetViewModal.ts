@@ -332,7 +332,17 @@ class SheetViewModal {
           countObj
         );
       } else {
-        this.sheetTableData = this.handleSheetTableData(res.data.setting, {});
+        try {
+          if (this.sheetTableData.length > 0 && !res.data.setting.length) {
+            throw new Error('排班人员不能为空')
+          }
+          this.sheetTableData = this.handleSheetTableData(res.data.setting, {});
+        } catch(e) {
+          message.error((e as any).message)
+          // setTimeout(() => {
+          //   this.sheetTableData = []
+          // }, 200)
+        }
       }
       if (["whyx","whhk"].includes(appStore.HOSPITAL_ID)) {
         this.sheetTableDataCopy = _.cloneDeep(this.sheetTableData);

@@ -135,7 +135,7 @@ export default function PersonelSecondModal(props: Props) {
                 >
                   {deptList.map((item: any, index: number) => (
                     <Option value={item.code} key={index}>
-                      {item.name} 
+                      {item.name}
                     </Option>
                   ))}
                 </Select>
@@ -152,7 +152,7 @@ export default function PersonelSecondModal(props: Props) {
                 >
                   {nurseList.map((item: any, index: number) => (
                     <Option value={item.empNo} key={item.empNo + index + item.empName + index}>
-                      {item.empName}
+                      {item.empNo  + '-' + item.empName}
                     </Option>
                   ))}
                 </Select>

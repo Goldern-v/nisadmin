@@ -547,7 +547,7 @@ export const DoCon = styled.div`
     }
   }
 `;
-export const TableHeadCon = styled.div`
+export const TableHeadCon: any = styled.div`
   height: 50px;
   font-size: 13px;
   position: relative;
