@@ -5,7 +5,7 @@ import { appStore } from "src/stores";
 import { ReactComponent as PBTJ } from "../img/PBTJ.svg";
 import { ReactComponent as HLRYTJ } from "../img/HLRYTJ.svg";
 import { ReactComponent as HZCXTJ } from "../img/HZCXTJ.svg";
-import { ReactComponent as ZZHSDA } from "../img/ZZHSDA.svg"; 
+import { ReactComponent as ZZHSDA } from "../img/ZZHSDA.svg";
 // 左侧列表数据
 const LEFT_MENU_CONFIG = [
   ...appStore.hisMatch({
@@ -26,6 +26,11 @@ const LEFT_MENU_CONFIG = [
           title: "电话回访率统计",
           icon: <ZZHSDA />,
           path: "/statistic/电话回访率统计",
+        },
+        {
+          title: "患者输血情况统计",
+          icon: <ZZHSDA />,
+          path: "/statistic/患者输血情况统计",
         }
       ],
       // 其他医院
@@ -201,11 +206,11 @@ const LEFT_MENU_CONFIG = [
         //   hide: appStore.HOSPITAL_ID !== "hj",
         //   path: "/statistic/病区设备统计",
         // },
-        
+
       ]
     }
   }),
-  
+
   ...appStore.hisMatch({
     map: {
       nys: [

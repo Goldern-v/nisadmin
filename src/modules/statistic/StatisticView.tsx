@@ -2,7 +2,7 @@ import styled from "styled-components";
 import React, { useState, useEffect } from "react";
 import StatisticLeftList from "./components/StatisticLeftList";
 // import StatisticHeader from './components/StatisticHeader'
-import store, { appStore } from "src/stores";
+import store, {appStore, authStore} from "src/stores";
 
 // 护士排班表
 import NurseSchedulingView from "./views/nurseScheduling/NurseSchedulingView";
@@ -71,6 +71,7 @@ import professionalTec from "./views/professional-tec";
 // 护理人员一览表（层级）
 import NurseList_whyx from "./views/nursingStatistics/NurseList_whyx/NurseList_whyx";
 import PdaUsage from "./views/PDAusage/PdaUsage";
+import BloodTransfusion from "./views/bloodTransfusion/BloodTransfusion";
 import TelFollowUp from "./views/telFollowUp/TelFollowUp";
 // 患者查询统计   大块
 // 住院病人认知情况统计表
@@ -129,7 +130,7 @@ export default function StatisticView() {
     },
     {
       // 没有加医院判断, 导致[科室排班统计（按班次)]模块一直用这个模块: NurseSchedulingView, 医院有提问题打包即可
-      name: `科室排班统计（按班次${appStore.HOSPITAL_ID === "lcey" ? '/按工时' : ''}）`,  
+      name: `科室排班统计（按班次${appStore.HOSPITAL_ID === "lcey" ? '/按工时' : ''}）`,
       path: `/statistic/科室排班统计（按班次${appStore.HOSPITAL_ID === "lcey" ? '/按工时' : ''}）`,
       component: DepartmentByShiftView,
     },
@@ -269,7 +270,7 @@ export default function StatisticView() {
             component: 护士职务分布,
           },
         ],
-       
+
         default: [],
       },
       vague:true
@@ -289,6 +290,12 @@ export default function StatisticView() {
       title: "电话回访率统计",
       path: "/statistic/电话回访率统计",
       component: TelFollowUp,
+    },
+    {
+      title: "患者输血情况统计",
+      path: "/statistic/患者输血情况统计",
+      component: BloodTransfusion,
+      hide:authStore.isDepartment
     },
     // 病区设备统计
     {
@@ -328,7 +335,7 @@ export default function StatisticView() {
 
   let currentRoutePath = store.appStore.history.location.pathname;
   console.log(currentRoutePath);
-  
+
   let CurrentRoute = leftListPath.find(
     (item) => item.path === currentRoutePath
   );
