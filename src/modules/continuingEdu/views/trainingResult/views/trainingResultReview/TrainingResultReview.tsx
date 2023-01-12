@@ -285,7 +285,8 @@ export default observer(function TrainingResultReview() {
               <span onClick={() => onDel(record)}>删除</span>
             </DoCon>
           )
-        }]
+        }],
+        other: []
       },
       vague:true,
     })
@@ -381,7 +382,7 @@ export default observer(function TrainingResultReview() {
         return
       }
       message.error('删除失败')
-    } catch (e) {      
+    } catch (e) {
       message.error('删除失败')
     }
   }
