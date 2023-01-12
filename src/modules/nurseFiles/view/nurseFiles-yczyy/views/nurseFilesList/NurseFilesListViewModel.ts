@@ -1,5 +1,5 @@
 import { fileDownload } from "src/utils/file/file";
-import { observable, computed, action, reaction } from "mobx";
+import { observable, action, reaction } from "mobx";
 import {
   nurseFilesService,
   NurseQuery
@@ -76,6 +76,24 @@ class NurseFilesListViewModel {
       empName: this.filterText /** 工号 */
     };
     nurseFilesService.auditeNurseListExcel(obj).then(res => {
+      fileDownload(res);
+    });
+  };
+  /**导出证书 */
+  @action
+  public exportCertificate = (type = 1) => {
+    // this.title = newTitle
+    let obj: any = {
+      deptCode: authStore.selectedDeptCode /** 部门编码 */,
+      education: this.filterXl /** 学历 */,
+      title: this.filterZc /** 职称 */,
+      currentLevel: this.filterCj /** 能级、层级 */,
+      zybz: kssxMap[this.filterKs] /**  科室属性  */,
+      post: this.filterZw /**  职务  */,
+      empName: this.filterText, /** 工号 */
+      type, /**证书类型 */
+    };
+    nurseFilesService.exportAttachment(obj).then(res => {
       fileDownload(res);
     });
   };

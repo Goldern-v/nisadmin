@@ -31,6 +31,9 @@ export default observer(function SelectCon(props: any, context: any) {
   const exportFile = () => {
     nurseFilesListViewModel.exportNursingList();
   };
+  const exportCertificate = (type: number | undefined) => {
+    nurseFilesListViewModel.exportCertificate(type);
+  };
 
   useEffect(() => {
     return () => {
@@ -56,6 +59,8 @@ export default observer(function SelectCon(props: any, context: any) {
         </Button>
         <Button onClick={() => setVisible(true)}>+添加护士</Button>
         <Button onClick={exportFile}>导出</Button>
+        <Button onClick={() => exportCertificate(1)}>导出毕业证书</Button>
+        <Button onClick={() => exportCertificate(2)}>导出职称证书</Button>
       </Wrapper>
       <AddNursingModal
         visible={visible}

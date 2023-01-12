@@ -1,6 +1,7 @@
 import BaseApiService from "src/services/api/BaseApiService";
 import { appStore, authStore } from "src/stores";
 import { nurseFileDetailViewModal } from "../views/nurseFileDetail/NurseFileDetailViewModal";
+import qs from 'qs'
 export interface NurseQuery {
   deptCode?: string /** 部门编码 */;
   empNo?: string /** 员工工号 */;
@@ -289,6 +290,17 @@ export default class NurseFilesService extends BaseApiService {
       }
     });
     return this.post(`/auditeNurseList/excel`, this.stringify(obj), {
+      responseType: "blob"
+    });
+  }
+  /** 导出护士证书 */
+  public exportAttachment(obj: any) {
+    Object.keys(obj).forEach((key: any) => {
+      if (obj[key] === "全部") {
+        obj[key] = "";
+      }
+    });
+    return this.get(`/auditeNurseList/exportAttachment?${qs.stringify(obj)}`, {
       responseType: "blob"
     });
   }

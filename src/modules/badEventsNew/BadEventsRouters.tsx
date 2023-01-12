@@ -97,9 +97,8 @@ export default function BadEventsRouters(props: Props) {
     // },
     ...appStore.hisMatch({
       map: {
-        gzsrm: [],
-        lcey: [],
-        'gxjb,yczyy': [
+        'gzsrm,lcey,yczyy': [],
+        'gxjb': [
           {
             title: '不良事件汇总',
             path: `${baseRouter}/summary`,
