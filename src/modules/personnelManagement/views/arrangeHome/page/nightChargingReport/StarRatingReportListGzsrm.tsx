@@ -61,13 +61,13 @@ export default observer(function NursingWorkPlainList() {
 
   const editSchNightStandardModal = createModal(EditSchNightStandardModal);
 
-  
+
 
 
   /**
    * 渲染状态类型
-   * @param status 
-   * @returns 
+   * @param status
+   * @returns
    */
   const renderStatus = (status: string) => {
     let newStatus = parseInt(status);
@@ -75,7 +75,7 @@ export default observer(function NursingWorkPlainList() {
       <div className={'status' + newStatus}>{approvalStatusList[newStatus].str}</div>
     )
   }
-  
+
   const columns: ColumnProps<any>[] = [
     {
       key: "index",
@@ -189,7 +189,7 @@ export default observer(function NursingWorkPlainList() {
     }
     return monthArr;
   })();
-  
+
 
   const getList = (query: any) => {
     setLoading(true);
@@ -228,14 +228,14 @@ export default observer(function NursingWorkPlainList() {
    //提交审核
    const sgySubmit = (item:IGzsrmReport)=>{
     globalModal.confirm("提交确认", "你确定要提交该报告审核吗？").then(res => {
-      starRatingReportService.sgySubmit({schModelSgyId:item.id,signature:authStore.adminNurse}).then(res=>{
+      starRatingReportService.sgySubmit({schModelSgyId:item.id,signature:authStore.user?.empName}).then(res=>{
         message.success(res.desc);
         getList(query);
       }).catch(error=>{
         message.error(error)
       })
     });
-    
+
   }
   //片区护士审核驳回
   const reject = (item:IGzsrmReport)=>{
@@ -264,14 +264,14 @@ export default observer(function NursingWorkPlainList() {
   //通过
   const access = (item:IGzsrmReport)=>{
     globalModal.confirm("通过确认", "你确定要通过该报告吗？").then(res => {
-      starRatingReportService.sgyAccess({schModelSgyId:item.id,signature:authStore.adminNurse}).then(res=>{
+      starRatingReportService.sgyAccess({schModelSgyId:item.id,signature:authStore.user?.empName}).then(res=>{
         message.success(res.desc);
         getList(query)
       }).catch(error=>{
         message.error(error)
       })
     });
-    
+
   }
 
   const handleCreate = () => {
@@ -322,7 +322,7 @@ export default observer(function NursingWorkPlainList() {
     });
   };
 
-  
+
 
   useEffect(() => {
     query.deptCode && getList(query);
