@@ -72,6 +72,11 @@ export default observer((props: Props) => {
 
   const getData = async (id = appStore.queryObj.id) => {
     const { data } = await api.getItem(id)
+    let obj = {
+      wardCode: data.master?.wardCode,
+      wardName: data.master?.wardName
+    }
+    setWardCode(obj)
     setMaster(data.master)
     setProcess(data.handlenodeDto)
     setFormItem(data.itemDataMap)
@@ -81,11 +86,11 @@ export default observer((props: Props) => {
   }
   // 当前审核节点
   const currentNode = () => {
-    if (!(master.currentNodeCode && process.length)) return false
+    if (!(master.currentNodeCode && process.length)) return {}
     const current = process.find((item: any) => {
       return master.nextNodeCode === item.nodeCode
     })
-    return current
+    return current || {}
   }
 
   const hasSubmit = () => {
