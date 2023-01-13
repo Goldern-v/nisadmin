@@ -204,7 +204,7 @@ export default observer(function NavBar(props: any) {
     } else if (appStore.HOSPITAL_ID == 'zzwy') {
       return navConfig_zzwy(appStore, authStore)
     } else if (appStore.HOSPITAL_ID == 'ytll') {
-      return navConfig_ytll
+      return navConfig_ytll(appStore, authStore)
     } else if (appStore.HOSPITAL_ID == 'zhzxy') {
       return navConfig_zhzxy(appStore, authStore)
     } else if (appStore.HOSPITAL_ID == 'whhk') {
