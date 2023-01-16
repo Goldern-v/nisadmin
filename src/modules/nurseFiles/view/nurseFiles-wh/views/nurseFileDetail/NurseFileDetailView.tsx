@@ -117,11 +117,11 @@ const ROUTE_LIST = [
     component: LearnJob,
     name: '学会任职'
   },
-  {
+  ...'dghm' !== appStore.HOSPITAL_ID ? [{
     type: 'socialJob',
     component: SocialNurse,
     name: '社会兼职'
-  },
+  }] : [],
   {
     type: 'monograph',
     component: Monograph,

@@ -19,6 +19,7 @@ export default observer(function TotalCell(props: Props) {
 });
 
 export const totalCellContent = (id: any) => {
+  /**排班数组 */
   let list: any = [];
   let allTimeLimit = 0; // 根据天数结算总共可排班时长
   let user = sheetViewModal.sheetTableData.find((item: any) => {
@@ -111,7 +112,7 @@ export const totalCellContent = (id: any) => {
   }
 
   /** 标准周工时 */
-  sheetViewModal.standardTimeList;
+  // sheetViewModal.standardTimeList;
 
   for (let key in weekObj) {
     if (weekObj[key].length == 7) {

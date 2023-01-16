@@ -36,9 +36,9 @@ export default observer(function FollowUpRecord() {
 
   const editBalanceModal = createModal(EditBalanceModal);
 
-  const updateDataSource = () => {
-    setDataSource([...dataSource]);
-  };
+  // const updateDataSource = () => {
+  //   setDataSource([...dataSource]);
+  // };
   const columns: ColumnProps<any>[] = [
     {
       title: "日期",
@@ -108,7 +108,7 @@ export default observer(function FollowUpRecord() {
 
     ...appStore.hisMatch({
       map: {
-        'sdlj,qzde': [],
+        'sdlj,qzde,dghm': [],
         other: [{
           title: "积假结余",
           dataIndex: "totalHoliday",
@@ -119,7 +119,7 @@ export default observer(function FollowUpRecord() {
     }),
     ...appStore.hisMatch({
       map: {
-        'qhwy,dglb,dghm': [
+        'qhwy,dglb': [
           {
             title: "产假结余",
             dataIndex: "maternityHourNow",

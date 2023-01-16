@@ -57,6 +57,7 @@ export const weekBalanceHour = (id: any) => {
       weekDate = 40;
       break;
     case "fssdy":
+    case 'dghm':
       // 配置字典标准工时
       weekDate = sheetViewModal.standardTime
       break;

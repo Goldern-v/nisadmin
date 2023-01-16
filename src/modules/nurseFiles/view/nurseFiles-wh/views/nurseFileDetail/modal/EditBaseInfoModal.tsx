@@ -490,7 +490,7 @@ export default function EditWorkHistoryModal(props: Props) {
           {
             'dghm' === appStore.HOSPITAL_ID &&
             <Col span={12}>
-              <Form.Field label={`取得现有职称时间`} name="newTitleDateDate">
+              <Form.Field label={`取得现有职称时间`} name="newTitleDate">
                 <DatePicker />
               </Form.Field>
             </Col>

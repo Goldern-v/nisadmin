@@ -225,7 +225,7 @@ export function openAuditModal(title: string, row: any, callBack: any,btnText?:s
                       'dghm': [
                         {
                           '现职称': 'newTitle',
-                          '取得现有职称时间': 'newTitleDateDate'
+                          '取得现有职称时间': 'newTitleDate'
                         }
                       ],
                       other: []

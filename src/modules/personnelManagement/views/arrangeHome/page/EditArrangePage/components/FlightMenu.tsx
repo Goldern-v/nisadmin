@@ -40,34 +40,35 @@ export const resetArrangeCount = (userId: number, arrangeName: string) => {
     let _index = 0;
     /** 基本序号 */
     let _baseCount = baseCount;
-    let _oldTime = "";
-    list
+    // let _oldTime = "";
+    const filterArr = list
       .filter((item: ArrangeItem) => {
         return item.rangeName == arrangeName;
       })
-      .forEach((item: ArrangeItem, index: number) => {
-        if (!item) return;
+    if (!filterArr.length) return
+    filterArr.forEach((item: ArrangeItem, index: number) => {
+      if (!item) return;
 
-        const timeData: any = item.workDate;
+      // const timeData: any = item.workDate;
 
-        if (
-          (item!.rangeName == "公休" || item!.rangeName == "病假") &&
-          (item!.workDate || "").includes("-01-01")
-        ) {
-          if (!item.rangeNameCodeList) {
-            item.rangeNameCodeList = 1;
-          }
+      if (
+        (item!.rangeName == "公休" || item!.rangeName == "病假") &&
+        (item!.workDate || "").includes("-01-01")
+      ) {
+        if (!item.rangeNameCodeList) {
+          item.rangeNameCodeList = 1;
         }
+      }
 
-        if (item.rangeNameCodeList) {
-          _index = 0;
-          _baseCount = Number(item.rangeNameCodeList);
-          item.rangeNameCode = Number(item.rangeNameCodeList);
-        } else {
-          _index += 1;
-          item.rangeNameCode = _baseCount + _index;
-        }
-      });
+      if (item.rangeNameCodeList) {
+        _index = 0;
+        _baseCount = Number(item.rangeNameCodeList);
+        item.rangeNameCode = Number(item.rangeNameCodeList);
+      } else {
+        _index += 1;
+        item.rangeNameCode = _baseCount + _index;
+      }
+    });
   }
 };
 

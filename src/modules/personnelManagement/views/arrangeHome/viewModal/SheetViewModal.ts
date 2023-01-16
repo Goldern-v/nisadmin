@@ -514,7 +514,10 @@ class SheetViewModal {
     });
   }
 
-  /** 处理后台过来的表格数据，增加一些计算结果 公休节休计数等 */
+  /** 处理后台过来的表格数据，增加一些计算结果 公休节休计数等
+   * @param sheetTableData 排班列表
+   * @param countObj  护士排班需要编号的班次及开始编号
+   */
   handleSheetTableData(sheetTableData: any, countObj: any = {}) {
     /** for 优化速度 */
     let _sheetTableData = cloneJson(sheetTableData);

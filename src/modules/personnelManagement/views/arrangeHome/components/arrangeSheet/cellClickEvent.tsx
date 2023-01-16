@@ -40,9 +40,13 @@ export function getAddArrangeMenuList(
         dataSource: obj[keys[i]][j],
         async onClick(item: any) {
           sheetViewModal.tableLoading = true
-          sheetViewModal.tableLoading = true
-          if (['wh', 'lyyz', 'qhwy',"whsl", 'ytll', 'dglb', 'dghm'].includes(appStore.HOSPITAL_ID)) {
-            let res = await service.scheduleMealApiService.check(item.dataSource.id)
+          /**判断责护 */
+          try {
+            if (['wh', 'lyyz', 'qhwy',"whsl", 'ytll', 'dglb', 'dghm'].includes(appStore.HOSPITAL_ID)) {
+              let res = await service.scheduleMealApiService.check(item.dataSource.id)
+            }
+          } catch (error) {
+            sheetViewModal.tableLoading = false
           }
           if (selectedCellObj!.rangeName) {
             selectedCellObj.settings = [

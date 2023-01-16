@@ -272,7 +272,7 @@ export default observer(function BaseInfo() {
             case 'dghm':
               return {
                 现职称: data.newTitle,
-                取得现有职称时间: data.newTitleDateDate
+                取得现有职称时间: data.newTitleDate
               }
             default:
               return {
