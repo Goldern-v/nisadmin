@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import React, { useState, useLayoutEffect, lazy, Suspense, useEffect } from "react";
+import React, { useState, useLayoutEffect, lazy, Suspense, useEffect, useMemo } from "react";
 import { RouteComponentProps } from "react-router";
 import LeftMenu from "src/components/LeftMenu";
 import { meunSettingApi } from "./views/menuSettings/api/MeunSettingApi";
@@ -186,13 +186,13 @@ const CourseLibrary = lazy(() => import("./views/courseLibrary/CourseLibrary"));
 import { appStore, authStore } from "src/stores";
 import NavBar from "src/layouts/components/NavBar";
 import { Icon } from "antd";
-import { use } from "echarts";
-import { dynamicRouting } from "./DynamicRouting";
+// import { use } from "echarts";
+import DynamicRouting from "./DynamicRouting";
 
 export default function ContinuingEdu(props: Props) {
-  const [dataList, setDataList] = useState([] as any); // 动态菜单树
+  // const [dataList, setDataList] = useState([] as any); // 动态菜单树
   const [authList, setAuthList] = useState([] as any); // 固定菜单权限
-
+  const { getList, dataList, listLen } = DynamicRouting()
   // 通知管理
   const noticeCon = {
     title: "通知管理",
@@ -780,12 +780,12 @@ const getIcon = (icon: any) => {
  * 存储：页面刷新有路由
  * @returns Array
  */
-  const initDynamicRouting = ()=>{
+  const initDynamicRouting = useMemo(()=>{
     let newRouter = []
     if(localStorage.getItem("continuDynamicRouter")){
       newRouter = JSON.parse(localStorage.getItem("continuDynamicRouter") as string)
-    }else if(dynamicRouting.dataList.length>0){
-      newRouter = dynamicRouting.dataList
+    }else if(dataList.length>0){
+      newRouter = dataList
     }
     newRouter.map((it:any)=>{
       it.icon = getIcon(it.sort)
@@ -798,7 +798,7 @@ const getIcon = (icon: any) => {
       }
     })
     return newRouter
-  }
+  }, [dataList])
 
   const LEFT_MENU_CONFIG = [
     {
@@ -906,7 +906,7 @@ const getIcon = (icon: any) => {
       hide: () => !["lcey","zzwy"].includes(appStore.HOSPITAL_ID),
     },
 
-    ...initDynamicRouting(),
+    ...initDynamicRouting,
     ...appStore.hisMatch({
       map: {
         other: [],
@@ -1147,8 +1147,6 @@ const getIcon = (icon: any) => {
     // })
   ];
 
-
-
   // 查询获取动态菜单列表
   // const getList = () => {
   //   meunSettingApi.getData().then((res: any) => {
@@ -1213,12 +1211,10 @@ const getIcon = (icon: any) => {
   //   appStore.history.push(url);
   // };
 
-
-
   const baseInitMethods = async () => {
     getAuth();
     // getList();
-    await dynamicRouting.getList()
+    await getList()
   };
   //初始化的方法
   let initMethods = appStore.hisMatch({
@@ -1236,23 +1232,18 @@ const getIcon = (icon: any) => {
     // 初始化动态菜单 菜单权限
     initMethods();
     // console.log('初始化？')
-  }, [])
-  useEffect(() => {
     return () => {
       localStorage.removeItem("continuDynamicRouter")
     }
   }, [])
 
-  useLayoutEffect(() => {
-    setCurrentRoutePath(`${props.history.location.pathname}${props.history.location.search}`)
-  }, [props.history.location.pathname]);
-
-  const [currentRoutePath, setCurrentRoutePath] = useState('')
   const [currentRoute, setCurrentRoute] = useState<any>(null)
-  useEffect(() => {
-    setCurrentRoute(getTargetObj(LEFT_MENU_CONFIG, "path", currentRoutePath));
-  }, [currentRoutePath])
-  // 筛选目标对象
+  useLayoutEffect(() => {
+    const path = `${props.history.location.pathname}${props.history.location.search}`
+
+    setCurrentRoute(getTargetObj(LEFT_MENU_CONFIG, "path", path));
+  }, [props.history.location.pathname, listLen]);
+  /** 筛选目标对象 */
   function getTargetObj(listDate: any, targetKey: string, targetName: string) {
     let chooseRoute = listDate.find((item: any) => {
       if (item.children) {
@@ -1295,7 +1286,7 @@ const getIcon = (icon: any) => {
               getId={currentRoute && currentRoute.id} //菜单id
               getFormCode={currentRoute && currentRoute.formCode} //表单code值
               getFormName={currentRoute && currentRoute.formName} //表单code值
-              getList={dynamicRouting.getList} // 动态菜单树
+              getList={getList} // 动态菜单树
               getParentsName={currentRoute && currentRoute.parentsName}
             />
           </Suspense>
