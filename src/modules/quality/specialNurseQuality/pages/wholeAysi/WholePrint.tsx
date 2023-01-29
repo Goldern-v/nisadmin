@@ -48,10 +48,10 @@ export default observer(function EventReportDetailView(props: Props) {
 			dataWholeAysi.chartMap = res.data.chartMap || {}
 
 			dataWholeAysi.chartMapKey = Object.getOwnPropertyNames(res.data.chartMap)//chartMap的key值组成的数组
-			
+
 			dataWholeAysi.currentCycleMessage = res.data.currentCycleMessage || ''
 			dataWholeAysi.preCycleMessage = res.data.preCycleMessage || ''
-			
+
 			if(res.data.evaluationList.length>0){
 				res.data.evaluationList.map((it:any)=>{
 					switch (it.evaluationCode) {
@@ -96,7 +96,7 @@ export default observer(function EventReportDetailView(props: Props) {
 
 	}, [])
 
-	
+
 
 
 	const onPrint = (isPrint: boolean) => {
@@ -274,7 +274,7 @@ export default observer(function EventReportDetailView(props: Props) {
 				})
 			}
 		}
-		
+
 		// console.log(params)
 		// return false
 		setSpinning(true)
@@ -292,8 +292,8 @@ export default observer(function EventReportDetailView(props: Props) {
 		})
 	}
 
-	
-	
+
+
 
 	return (
 		<Wrapper>
@@ -308,13 +308,13 @@ export default observer(function EventReportDetailView(props: Props) {
 					</span>
 				</div>
 				<div className='tool-con'>
-					{authStore.isDepartment &&
+					{authStore.isNotANormalNurse &&
 						<>
 							<Button onClick={() => turnToDel()}>删除</Button>
 							<Button onClick={() => onSave()} loading={spinning}>保存</Button>
 						</>
 					}
-					
+
 					<Button onClick={() => onPrint(true)} loading={spinning}>打印</Button>
 					<Button onClick={() => appStore.history.goBack()}>返回</Button>
 				</div>
