@@ -60,9 +60,9 @@ const PrintContent = (props: Props) => {
 	// const [chartsImg8, setChartsImg8]: any = useState('')
 
 	const [chartsImgList, setChartsImgList] = useState([] as any); //柱状图打印的图片实例
-	
+
 	// const [tempHideCharts, setTempHideCharts] = useState(false);//临时隐藏柱状图，调试时候使用
-	
+
 	// const [gridLeft, setGridLeft] = useState('12%');
 	const [gridRight, setGridRight] = useState('12%');
 
@@ -79,7 +79,7 @@ const PrintContent = (props: Props) => {
 				dataWholeAysi.chartMapKey.map((it:any,idx:number)=>{
 					classTag='.canvas'+(idx+1)+' canvas'
 					tempCavans = document.querySelector(classTag) as any
-					
+
 					if (tempCavans) {
 						tempUrl = tempCavans.toDataURL()
 
@@ -89,10 +89,10 @@ const PrintContent = (props: Props) => {
 				setChartsImgList(tempImgUrlList)
 			}
 		}, 1000);
-		
-		
+
+
 	}, [dataWholeAysi.chartMapKey])
-	
+
 
 	const getEchartsTitle =(index:number)=> {
 		let titleMode = {left: 'center',
@@ -112,7 +112,7 @@ const PrintContent = (props: Props) => {
 		}
 
 		} as any
-		
+
 		if(dataWholeAysi.chartMap[dataWholeAysi.chartMapKey[index]][1].length<3){
 			// 标题上移一点
 			titleMode.subtext = ' '
@@ -142,7 +142,7 @@ const PrintContent = (props: Props) => {
 				}else if(dataWholeAysi.chartMap[dataWholeAysi.chartMapKey[index]][1].length>7){
 					length = 4
 				}
-				
+
 				let num = Math.ceil(len / length);//循环次数
 				if (num > 1) {
 					let str = '';
@@ -158,7 +158,7 @@ const PrintContent = (props: Props) => {
 		}
 
 		}
-		
+
 	}
 
 	// x轴文字显示，不换行
@@ -195,11 +195,11 @@ const PrintContent = (props: Props) => {
 					}else{
 						return val?.value
 					}
-					
+
 				}
 			},
 		}
-		
+
 	}
 
 	/**计算标题向下移的距离 */
@@ -222,7 +222,7 @@ const PrintContent = (props: Props) => {
 
 	// table数据
 	const getTableData = () => {
-		
+
 		return dataWholeAysi.rowList
 	}
 // 动态合并单元格
@@ -379,7 +379,7 @@ const mergeCells = (text: string, data: any, key: string, index: number) => {
 	const getBolatuOptionDiv = (index:number)=>{
 		// 临床护理质量指标对比（发生例数）
 		let legendData = []
-		
+
 		legendData = [dataWholeAysi.preCycleMessage,dataWholeAysi.currentCycleMessage]
 
 		// console.log(legendData,xAxisList,currentList,prevList)
@@ -397,7 +397,7 @@ const mergeCells = (text: string, data: any, key: string, index: number) => {
 				// bottom: '100px',
 				// containLabel: false,
 				...getEchartsGrid(index),
-				
+
 			},
 			xAxis: [
 				{
@@ -429,8 +429,8 @@ const mergeCells = (text: string, data: any, key: string, index: number) => {
 			<div className='first-title'>{`${propsData.title}`}</div>
 			<div className='title-m'>一、计划阶段</div>
 			<div className='title-s'>(一)通过{dataWholeAysi.preCycleMessage}及{dataWholeAysi.currentCycleMessage}专科临床护理及护理工作质量/管理指标的数据对比（见表1，图1-图{dataWholeAysi.chartMapKey.length}），发现主要存在问题：</div>
-			{(!isPrint && authStore.isDepartment) && <Input.TextArea onChange={(e: any) => setTextArea1_1(e.target.value)} disabled={!authStore.isDepartment} className='print-page__ipt' value={textArea1_1} placeholder='字数上限2000字' autosize={{ minRows: 3 }} maxLength={2000} />}
-			{(isPrint || !authStore.isDepartment) && <p className='print-page__ptext print-page__ipt' style={{ 'whiteSpace': 'pre-wrap' }}>{textArea1_1}</p>}
+			{(!isPrint && authStore.isNotANormalNurse) && <Input.TextArea onChange={(e: any) => setTextArea1_1(e.target.value)} disabled={!authStore.isNotANormalNurse} className='print-page__ipt' value={textArea1_1} placeholder='字数上限2000字' autosize={{ minRows: 3 }} maxLength={2000} />}
+			{(isPrint || !authStore.isNotANormalNurse) && <p className='print-page__ptext print-page__ipt' style={{ 'whiteSpace': 'pre-wrap' }}>{textArea1_1}</p>}
 			<div className='second-content-box'>
 				<div className='second-content-table'>
 					{/* <div className='second-content-table-title'>{`第${pageData ? handleNumQuarter(pageData) : '一'}季度护士长节假日/夜查房频次`}</div> */}
@@ -462,48 +462,48 @@ const mergeCells = (text: string, data: any, key: string, index: number) => {
 
 		<div>
 			<div className='title-s'>（二）针对存在的护理质量问题进行原因分析：</div>
-			{(!isPrint && authStore.isDepartment) && <TextArea className='print-page__ipt' placeholder='字数上限2000字'
+			{(!isPrint && authStore.isNotANormalNurse) && <TextArea className='print-page__ipt' placeholder='字数上限2000字'
 				value={textArea1_2} onChange={(e: any) => setTextArea1_2(e.target.value)}
 				maxLength={2000}
 				rows={3}
 				autosize={{ minRows: 3 }} />}
-			{(isPrint || !authStore.isDepartment) && <p className='print-page__ptext print-page__ipt' style={{ 'whiteSpace': 'pre-wrap' }}>{textArea1_2}</p>}
+			{(isPrint || !authStore.isNotANormalNurse) && <p className='print-page__ptext print-page__ipt' style={{ 'whiteSpace': 'pre-wrap' }}>{textArea1_2}</p>}
 		</div>
 
 		<div>
 		{dataWholeAysi.master.reportType=='2' && <div className='title-s'>（三）确定下个年护理质量改进目标为：</div>}
 		{dataWholeAysi.master.reportType=='1' && <div className='title-s'>（三）确定下个季度护理质量改进目标为：</div>}
 			{dataWholeAysi.master.reportType=='0' && <div className='title-s'>（三）确定下个月护理质量改进目标为：</div>}
-			{(!isPrint && authStore.isDepartment) && <TextArea  className='print-page__ipt' placeholder='字数上限2000字' value={textArea1_3} onChange={(e: any) => setTextArea1_3(e.target.value)} maxLength={2000} autosize={{ minRows: 3 }} />}
-			{(isPrint || !authStore.isDepartment) && <p className='print-page__ptext print-page__ipt' style={{ 'whiteSpace': 'pre-wrap' }}>{textArea1_3}</p>}
+			{(!isPrint && authStore.isNotANormalNurse) && <TextArea  className='print-page__ipt' placeholder='字数上限2000字' value={textArea1_3} onChange={(e: any) => setTextArea1_3(e.target.value)} maxLength={2000} autosize={{ minRows: 3 }} />}
+			{(isPrint || !authStore.isNotANormalNurse) && <p className='print-page__ptext print-page__ipt' style={{ 'whiteSpace': 'pre-wrap' }}>{textArea1_3}</p>}
 
 		</div>
 
 		<div>
 			<div className='title-s'>（四）针对各存在问题发生的原因，结合护理质量改进目标，制定详细的质量改进计划：</div>
-			{(!isPrint && authStore.isDepartment) && <TextArea className='print-page__ipt' placeholder='字数上限2000字' value={textArea1_4} onChange={(e: any) => setTextArea1_4(e.target.value)} maxLength={2000} autosize={{ minRows: 3 }} />}
-			{(isPrint || !authStore.isDepartment) && <p className='print-page__ptext print-page__ipt' style={{ 'whiteSpace': 'pre-wrap' }}>{textArea1_4}</p>}
+			{(!isPrint && authStore.isNotANormalNurse) && <TextArea className='print-page__ipt' placeholder='字数上限2000字' value={textArea1_4} onChange={(e: any) => setTextArea1_4(e.target.value)} maxLength={2000} autosize={{ minRows: 3 }} />}
+			{(isPrint || !authStore.isNotANormalNurse) && <p className='print-page__ptext print-page__ipt' style={{ 'whiteSpace': 'pre-wrap' }}>{textArea1_4}</p>}
 
 		</div>
 
 		<div>
 			<div className='title-m mb-15'>二、实施阶段（Do）：</div>
-			{(!isPrint && authStore.isDepartment) && <TextArea className='print-page__ipt' placeholder='字数上限2000字' value={textArea2_1} onChange={(e: any) => setTextArea2_1(e.target.value)} maxLength={2000} autosize={{ minRows: 3 }} />}
-			{(isPrint || !authStore.isDepartment) && <p className='print-page__ptext print-page__ipt' style={{ 'whiteSpace': 'pre-wrap' }}>{textArea2_1}</p>}
+			{(!isPrint && authStore.isNotANormalNurse) && <TextArea className='print-page__ipt' placeholder='字数上限2000字' value={textArea2_1} onChange={(e: any) => setTextArea2_1(e.target.value)} maxLength={2000} autosize={{ minRows: 3 }} />}
+			{(isPrint || !authStore.isNotANormalNurse) && <p className='print-page__ptext print-page__ipt' style={{ 'whiteSpace': 'pre-wrap' }}>{textArea2_1}</p>}
 
 		</div>
 
 		<div>
 			<div className='title-m mb-15'>三、检查阶段（Check）：</div>
-			{(!isPrint && authStore.isDepartment) && <TextArea className='print-page__ipt' placeholder='字数上限2000字' value={textArea3_1} onChange={(e: any) => setTextArea3_1(e.target.value)} maxLength={2000} autosize={{ minRows: 3 }} />}
-			{(isPrint || !authStore.isDepartment) && <p className='print-page__ptext print-page__ipt' style={{ 'whiteSpace': 'pre-wrap' }}>{textArea3_1}</p>}
+			{(!isPrint && authStore.isNotANormalNurse) && <TextArea className='print-page__ipt' placeholder='字数上限2000字' value={textArea3_1} onChange={(e: any) => setTextArea3_1(e.target.value)} maxLength={2000} autosize={{ minRows: 3 }} />}
+			{(isPrint || !authStore.isNotANormalNurse) && <p className='print-page__ptext print-page__ipt' style={{ 'whiteSpace': 'pre-wrap' }}>{textArea3_1}</p>}
 
 		</div>
 
 		<div>
 			<div className='title-m mb-15'>四、处理阶段(Action)：</div>
-			{(!isPrint && authStore.isDepartment) && <TextArea className='print-page__ipt' placeholder='字数上限2000字' value={textArea4_1} onChange={(e: any) => setTextArea4_1(e.target.value)} maxLength={2000} autosize={{ minRows: 3 }} />}
-			{(isPrint || !authStore.isDepartment) && <p className='print-page__ptext print-page__ipt' style={{ 'whiteSpace': 'pre-wrap' }}>{textArea4_1}</p>}
+			{(!isPrint && authStore.isNotANormalNurse) && <TextArea className='print-page__ipt' placeholder='字数上限2000字' value={textArea4_1} onChange={(e: any) => setTextArea4_1(e.target.value)} maxLength={2000} autosize={{ minRows: 3 }} />}
+			{(isPrint || !authStore.isNotANormalNurse) && <p className='print-page__ptext print-page__ipt' style={{ 'whiteSpace': 'pre-wrap' }}>{textArea4_1}</p>}
 
 		</div>
 		<div>
@@ -512,7 +512,7 @@ const mergeCells = (text: string, data: any, key: string, index: number) => {
 			{(isPrint || !authStore.isDepartment) && <p className='print-page__ptext print-page__ipt' style={{ 'whiteSpace': 'pre-wrap' }}>{textArea5_1}</p>}
 
 		</div>
-		
+
 	</Wrapper>
 }
 export default PrintContent
