@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import React, { useState, useEffect, useMemo, useLayoutEffect, Fragment, useRef } from "react";
+import React, { useState, useEffect, useLayoutEffect, Fragment, useRef } from "react";
 import { Button, Modal } from "antd";
 import BaseTable, { DoCon } from "src/components/BaseTable";
 import {
@@ -48,18 +48,19 @@ export interface Props {
 
 const throttler = throttle(500);
 const throttler2 = throttle();
+/** 可以显示选择患者的表单，以及需要获取的字段信息 */
 const configListByPatientSelect = {
   QCRG_GSY_07: (item: Obj) => ({
-      '床号': item.bedLabel,
-      '患者姓名': item.name,
+    '床号': item.bedLabel,
+    '患者姓名': item.name,
   }),
   QCRG_GSY_12: (item: Obj) => ({
-      '床号': item.bedLabel,
-      '姓名': item.name,
-      '疾病诊断': item.diagnosis,
-      '电话号码': item.phone,
-      '入院日期': item.admissionDate,
-      '出院日期': item.dischargeDate,
+    '床号': item.bedLabel,
+    '姓名': item.name,
+    '疾病诊断': item.diagnosis,
+    '电话号码': item.phone,
+    '入院日期': item.admissionDate,
+    '出院日期': item.dischargeDate,
   }),
 }
 export default observer(function 敏感指标登记本(props: Props) {
@@ -510,8 +511,6 @@ export default observer(function 敏感指标登记本(props: Props) {
                       gotoContiun(item, record, index)
                     }
                   }
-
-
                 },
               }}
             />
@@ -1066,7 +1065,7 @@ export default observer(function 敏感指标登记本(props: Props) {
 // @ts-ignore
 const Container = styled(Wrapper)`
   .ant-select-disabled .ant-select-selection{
-      background: rgba(0,0,0,0.0)!important;
+    background: rgba(0,0,0,0.0)!important;
   }
   .disabled-row{
     td.input-cell{
@@ -1074,7 +1073,7 @@ const Container = styled(Wrapper)`
     }
     .ant-input[disabled]{
       color: #000!important;
-        background: rgba(0,0,0,0.0)!important;
+      background: rgba(0,0,0,0.0)!important;
     }
   }
   

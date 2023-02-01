@@ -61,7 +61,8 @@ printing(ref, {
   `
 }
 ```
-在config-overrides.js做项目配置
+
+# 在config-overrides.js做项目配置
 
 ## 配置新医院
 1. .env.cmdrc 增加新医院配置
@@ -93,3 +94,15 @@ printing(ref, {
 编辑弹窗: /views/nurseFileDetail/modal/
 审核弹窗: /views/nurseFileDetail/config/auditModalConfig.ts
 导出档案: ExportNurseFile
+
+## printing第三方库打印ant-table字段分页
+```tsx
+.ant-table-body {
+  max-height: 10000% !important;
+  height: auto !important;
+}
+tr{
+  page-break-inside: avoid;
+  page-break-after: auto
+}
+```

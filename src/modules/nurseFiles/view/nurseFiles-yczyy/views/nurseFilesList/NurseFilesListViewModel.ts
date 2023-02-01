@@ -84,7 +84,7 @@ class NurseFilesListViewModel {
   public exportCertificate = (type = 1) => {
     // this.title = newTitle
     let obj: any = {
-      deptCode: authStore.selectedDeptCode /** 部门编码 */,
+      deptCode: authStore.selectedDeptCode === '全院' ? '' : authStore.selectedDeptCode /** 部门编码 */,
       education: this.filterXl /** 学历 */,
       title: this.filterZc /** 职称 */,
       currentLevel: this.filterCj /** 能级、层级 */,

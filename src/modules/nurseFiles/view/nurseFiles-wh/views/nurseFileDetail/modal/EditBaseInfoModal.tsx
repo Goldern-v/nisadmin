@@ -169,6 +169,7 @@ export default function EditWorkHistoryModal(props: Props) {
     momentFormatIntoStr(value, 'jobStartDate')
     momentFormatIntoStr(value, 'highestEducationDate')
     momentFormatIntoStr(value, 'zyzsEffectiveUpDate')
+    momentFormatIntoStr(value, 'newTitleDate')
     momentFormatIntoStr(value, 'maps.contract_due_date')
     value.zyzsUrl && (value.zyzsUrl = value.zyzsUrl.join(","));
 
@@ -231,6 +232,7 @@ export default function EditWorkHistoryModal(props: Props) {
           zyzsEffectiveUpDate: strFormatIntoMoment(data.zyzsEffectiveUpDate),
           zyzsUrl: data.zyzsUrl ? data.zyzsUrl.split(",") : [],
           goWorkTime: strFormatIntoMoment(data.goWorkTime),
+          newTitleDate: strFormatIntoMoment(data.newTitleDate),
         },
       }
       // maps中的数据格式化

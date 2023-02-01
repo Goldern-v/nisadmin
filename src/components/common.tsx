@@ -67,7 +67,7 @@ export const PageHeader = styled.div`
   font-size: 13px;
   position: relative;
   color: #333333;
-  //padding: 0 15px 0 15px;
+  padding: 0 15px 0 15px;
   display: flex;
   align-items: center;
   z-index: 1;
