@@ -92,7 +92,7 @@ const QualityControlRecordEdit = observer(function QualityControlRecordEdit() {
         }
       } else if (x == "bedLabel") {
         if (['whyx','whhk'].includes(appStore.HOSPITAL_ID) && baseInfo.isBedNumber == "否") {
-        } else if (["gzsrm", "nys","whsl"].includes(appStore.HOSPITAL_ID)) {
+        } else if (["gzsrm", "nys","whsl", 'zzwy'].includes(appStore.HOSPITAL_ID)) {
         } else if (
           master[x].length <= 0 &&
           Object.keys(masterErrObj).indexOf(x) >= 0
