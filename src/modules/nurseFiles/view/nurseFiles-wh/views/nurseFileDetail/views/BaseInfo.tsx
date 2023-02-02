@@ -130,7 +130,7 @@ export default observer(function BaseInfo() {
           })
         }
       }
-      
+
       if(info.completeStatus=='handle' || info.completeStatus=='fail'){
         btnList.push({
           label: info.statusColor === "1" ? "审核" : "查看",
@@ -139,7 +139,7 @@ export default observer(function BaseInfo() {
           },
         })
       }
-    } 
+    }
     // else {
     //   if (isSelf()) {
     //     btnList = [
@@ -330,12 +330,12 @@ export default observer(function BaseInfo() {
             ],
             fsxt: [
               {
-                在读学历: data.maps.current_education_background,
-                已取得最高学历毕业时间: data.maps.last_education_graduation_time,
+                在读学历: data.maps?.current_education_background,
+                已取得最高学历毕业时间: data.maps?.last_education_graduation_time,
               },
               {
-                执业注册有效期: data.maps.licensed_of_practice_time,
-                资格证书编号: data.maps.hdry_qua_cer_no,
+                执业注册有效期: data.maps?.licensed_of_practice_time,
+                资格证书编号: data.maps?.hdry_qua_cer_no,
               },
             ],
             other: []
