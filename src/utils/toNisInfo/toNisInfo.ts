@@ -30,9 +30,18 @@ export const autoLoginTnNisInfoBe = (options?: Options) => {
     timeset: new Date().getTime(),
     redictUri,
   }))
-
+  
   let nursingInfoLoginUri = `${window.location.origin}${loginUri}?formatInfo=${encodeURIComponent(secretText)}`
-
+  if (appStore.HOSPITAL_ID === 'yczyy') {
+    let obj = compileStr(JSON.stringify({
+      userId: authStore.user?.id,
+      token: authStore.authToken,
+      timeset: new Date().getTime(),
+      redictUri,
+    }))
+    // nursingInfoLoginUri = `http://localhost:4890${loginUri}?jumpInfo=${encodeURIComponent(obj)}` 
+    nursingInfoLoginUri = `${window.location.origin}${loginUri}?jumpInfo=${encodeURIComponent(obj)}` 
+  }
   if (appStore.isDev) console.log(nursingInfoLoginUri)
 
   if (blank) {

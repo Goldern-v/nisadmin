@@ -16,7 +16,7 @@ export default observer(function Table() {
   const toDetails = (record: any) => {
     service.commonApiService.getNurseInformation(record.empNo).then((res) => {
       // appStore.history.push(`/nurseAudit?${qs.stringify(res.data)}`)
-      window.open(`/crNursing/manage/#/nurseFileDetail/Leave?empNo=${res.data.empNo}`)
+      window.open(`/crNursing/manage/#/nurseFileDetail/baseInfo?empNo=${res.data.empNo}`)
     })
   }
   const columns: ColumnProps<any>[] = [

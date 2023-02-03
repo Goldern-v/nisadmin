@@ -56,7 +56,7 @@ export default interface User {
   nativePlace: string;
   nearImageUrl: string; //头像
   roleManage: string; //是否有权限进入管理系统
-  wsp?: string;
+  wsp?: string; // 密码加密
   userType: string; //是否为实习生 1——实习生
   nurseHierarchy: string;
 }
