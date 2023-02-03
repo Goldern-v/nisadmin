@@ -52,11 +52,11 @@ const baseConfig: navConfigItem[] = [
         path: "/qcOneHj",
         icon: require("../images/menu-icon/一级质控@2x.png"),
       },
-      // {
-      //   name: '病区登记本',
-      //   path: '',
-      //   icon: require('../images/menu-icon/病区登记本@2x.png')
-      // },
+      {
+        name: '病区登记本',
+        path: '',
+        icon: require('../images/menu-icon/病区登记本@2x.png')
+      },
       {
         name: "查询统计",
         path: "/queryStatistics",
