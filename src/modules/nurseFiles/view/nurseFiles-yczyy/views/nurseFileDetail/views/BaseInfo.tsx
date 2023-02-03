@@ -13,6 +13,8 @@ import BaseLayout from '../components/BaseLayout'
 import EditBaseInfoModal from '../modal/EditBaseInfoModal'
 import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
 import service from 'src/services/api'
+import Format from '../../nurseAudit/components/auditText/Format'
+import { editFlag } from 'src/modules/nurseFiles/utils'
 
 export interface Props extends RouteComponentProps { }
 export default observer(function BaseInfo() {
@@ -21,48 +23,32 @@ export default observer(function BaseInfo() {
   let [info, setInfo]: [any, any] = useState(nurseFileDetailViewModal.nurserInfo)
   const [idData, setIdData] = useState(0)
   const [id, setId] = useState(0)
-  // const btnList = [
-  //   {
-  //     label: '修改',
-  //     onClick: () => {
-  //       editBaseInfoModal.show({
-  //         id: idData,
-  //         data: info
-  //       })
-  //     }
-  //   },
-  //   {
-  //     label: '审核',
-  //     //
 
-  //     //
-  //     onClick: () => {
-  //       globalModal.auditModal.show({
-  //         id: idData,
-  //         type: 'nurseInformation',
-  //         // empNo: appStore.queryObj.empNo,
-  //         title: '审核基础信息',
-  //         tableFormat: [
-  //           {
-  //             获得时间: `empName`,
-  //             资格名称: `birthday`
-  //           },
-  //           {
-  //             资格证编号: `age`
-  //           }
-  //         ],
-  //         // fileData: [
-  //         //   {
-  //         //     附件1: info.urlImageOne,
-  //         //     附件2: 'bbb'
-  //         //   }
-  //         // ],
-  //         allData: info
-  //       })
-  //     }
-  //   }
-  // ]
   const limitsComponent = () => {
+    return editFlag() ? [
+      {
+        label: "修改",
+        onClick: () => {
+          editBaseInfoModal.show({
+            id: id,
+            data: info,
+          });
+        },
+      },
+      {
+        label: "查看",
+        onClick: () => {
+          Format({ ...info, typeName: '基本信息' }, getTableData);
+        },
+      },
+    ] : [
+      {
+        label: "查看",
+        onClick: () => {
+          Format({ ...info, typeName: '基本信息' }, getTableData);
+        },
+      },
+    ];
     if (info.statusColor === '1') {
       return [
         {
@@ -85,7 +71,6 @@ export default observer(function BaseInfo() {
               // empNo: appStore.queryObj.empNo,
               title: '审核基础信息',
               tableFormat: [
-                //
                 {
                   姓名: `empName`,
                   工号: `empNo`
@@ -151,8 +136,12 @@ export default observer(function BaseInfo() {
     }
   }
 
-  const getTableData = () =>
-    nurseFilesService.nurseInformation(appStore.queryObj.empNo).then((res) => {
+  const getTableData = () => {
+    let fun = appStore.selfNurseFile
+      ? nurseFilesService.nurseInformationSelf
+      : nurseFilesService.nurseInformation;
+    setInfo({});
+    fun.call(nurseFilesService, appStore.queryObj.empNo).then((res) => {
       let data = res.data || info
       let maps = res.data.maps || {}
       setInfo(data)
@@ -239,6 +228,7 @@ export default observer(function BaseInfo() {
           setTableData(newTableData)
         }
       }, e => { })
+  }
   useEffect(() => {
     getTableData()
   }, [appStore.queryObj])

@@ -19,10 +19,11 @@ import ExaminationResults from './views/ExaminationResults'
 import WorkRegistrationForm from './views/WorkRegistrationForm'
 import FileList from './views/FileList'
 import { nurseFileDetailViewModal } from './NurseFileDetailViewModal'
-import { appStore } from 'src/stores'
+import { appStore, authStore } from 'src/stores'
 import { Spin } from 'antd'
 import { observer } from 'mobx-react-lite'
 import { nurseFilesService } from '../../services/NurseFilesService'
+import service from 'src/services/api'
 export interface Props extends RouteComponentProps<{ type?: string }> {
   payload: HorizontalMenuItem[]
 }
@@ -101,24 +102,40 @@ export default observer(function NurseFileDetail(props: Props, context: any) {
   let CurrentRoute = ROUTE_LIST.find((item) => item.type === currentRouteType)
 
   useEffect(() => {
-    nurseFilesService.nurseInformation(appStore.queryObj.empNo).then((res) => {
-      nurseFileDetailViewModal.nurserInfo = res.data
-    })
-  }, [])
+    if (appStore.match.url.indexOf('selfNurseFile') > -1 && !appStore.queryObj.empNo) {
+      service.commonApiService.findByEmpNo(authStore!.user!.empNo).then((res) => {
+        appStore.history.replace(`${appStore.match.url}?empNo=${res.data.empNo}`)
+      })
+    }
+    if (appStore.match.url.indexOf('selfNurseFile') > -1 && appStore.queryObj.empNo) {
+      nurseFileDetailViewModal.nurserInfo = {}
+      nurseFilesService.nurseInformationSelf(appStore.queryObj.empNo).then((res) => {
+        nurseFileDetailViewModal.nurserInfo = res.data
+      })
+    } else if (appStore.queryObj.empNo) {
+      nurseFileDetailViewModal.nurserInfo = {}
+      nurseFilesService.nurseInformation(appStore.queryObj.empNo).then((res) => {
+        nurseFileDetailViewModal.nurserInfo = res.data
+      })
+    }
+  }, [appStore.queryObj.empNo])
 
   return (
     <Wrapper>
-      <TopCon />
-      <MainCon>
-        <LeftMenuCon>
-          <LeftMenu routeList={ROUTE_LIST} />
-        </LeftMenuCon>
-        <DetailCon>
-          <Spin spinning={nurseFileDetailViewModal.pageSpinning}>
-            {CurrentRoute && CurrentRoute.component && <CurrentRoute.component />}
-          </Spin>
-        </DetailCon>
-      </MainCon>
+      {appStore.queryObj.empNo &&
+        <>
+          <TopCon />
+          <MainCon>
+            <LeftMenuCon>
+              <LeftMenu routeList={ROUTE_LIST} />
+            </LeftMenuCon>
+            <DetailCon>
+              <Spin spinning={nurseFileDetailViewModal.pageSpinning}>
+                {CurrentRoute && CurrentRoute.component && <CurrentRoute.component />}
+              </Spin>
+            </DetailCon>
+          </MainCon>
+        </>}
     </Wrapper>
   )
 })

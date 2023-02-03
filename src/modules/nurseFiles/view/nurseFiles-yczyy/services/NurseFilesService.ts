@@ -16,6 +16,9 @@ export interface NurseQuery {
 }
 
 export default class NurseFilesService extends BaseApiService {
+  private getSuffix() {
+    return appStore.selfNurseFile ? 'findByEmpNo' : 'findByEmpNoSubmit'
+  }
   // 获取护士列表
   public async getByFormCodePC(obj: any) {
     Object.keys(obj).forEach((key: any) => {
@@ -30,11 +33,23 @@ export default class NurseFilesService extends BaseApiService {
   public async findByEmpNo(empNo: any) {
     return this.get(`/auditeNurseFileIndex/findByEmpNo/${empNo}`);
   }
+  /** 查看护士首页信息 个人*/
+  public async findByEmpNoSelf(empNo: any) {
+    return this.get(`/nurseFileIndex/findByEmpNo/${empNo}/123456`)
+  }
   // getByEmpNoAudite
   // 1查找护士基本信息 护长
   public async nurseInformation(empNo: any) {
     nurseFileDetailViewModal.pageSpinning = true;
     return this.get(`/nurseInformation/getByEmpNoAudite/${empNo}`).then(res => {
+      nurseFileDetailViewModal.pageSpinning = false;
+      return res;
+    });
+  }
+  /** 1查找护士基本信息 个人*/
+  public async nurseInformationSelf(empNo: any) {
+    nurseFileDetailViewModal.pageSpinning = true;
+    return this.get(`/nurseInformation/getByEmpNo/${empNo}`).then(res => {
       nurseFileDetailViewModal.pageSpinning = false;
       return res;
     });
@@ -46,7 +61,7 @@ export default class NurseFilesService extends BaseApiService {
   // 2 查找护士工作经历 //护长
   public async nurseWorkExperience(empNo: any) {
     nurseFileDetailViewModal.pageSpinning = true;
-    return this.get(`/nurseWorkExperience/findByEmpNoSubmit/${empNo}`).then(
+    return this.get(`/nurseWorkExperience/${this.getSuffix()}/${empNo}`).then(
       res => {
         nurseFileDetailViewModal.pageSpinning = false;
         return res;
@@ -61,7 +76,7 @@ export default class NurseFilesService extends BaseApiService {
   public async nurseSpecialQualification(empNo: any) {
     nurseFileDetailViewModal.pageSpinning = true;
     return this.get(
-      `/nurseSpecialQualification/findByEmpNoSubmit/${empNo}`
+      `/nurseSpecialQualification/${this.getSuffix()}/${empNo}`
     ).then(res => {
       nurseFileDetailViewModal.pageSpinning = false;
       return res;
@@ -74,7 +89,7 @@ export default class NurseFilesService extends BaseApiService {
   // 4//查找护士教育经历
   public async nurseMedicalEducation(empNo: any) {
     nurseFileDetailViewModal.pageSpinning = true;
-    return this.get(`/nurseMedicalEducation/findByEmpNoSubmit/${empNo}`).then(
+    return this.get(`/nurseMedicalEducation/${this.getSuffix()}/${empNo}`).then(
       res => {
         nurseFileDetailViewModal.pageSpinning = false;
         return res;
@@ -106,7 +121,7 @@ export default class NurseFilesService extends BaseApiService {
   public async nurseProfessionalAndLevelChange(empNo: any) {
     nurseFileDetailViewModal.pageSpinning = true;
     return this.get(
-      `/nurseProfessionalAndLevelChange/findByEmpNoSubmit/${empNo}`
+      `/nurseProfessionalAndLevelChange/${this.getSuffix()}/${empNo}`
     ).then(res => {
       nurseFileDetailViewModal.pageSpinning = false;
       return res;
@@ -121,7 +136,7 @@ export default class NurseFilesService extends BaseApiService {
   public async nurseContinuingEducation(empNo: any) {
     nurseFileDetailViewModal.pageSpinning = true;
     return this.get(
-      `/nurseContinuingEducation/findByEmpNoSubmit/${empNo}`
+      `/nurseContinuingEducation/${this.getSuffix()}/${empNo}`
     ).then(res => {
       nurseFileDetailViewModal.pageSpinning = false;
       return res;
@@ -140,7 +155,7 @@ export default class NurseFilesService extends BaseApiService {
   // 7 查找护士主要著作、译文、论文发表情况-列表(护长)
   public async nursePaperExperience(empNo: any) {
     nurseFileDetailViewModal.pageSpinning = true;
-    return this.get(`/nursePaperExperience/findByEmpNoSubmit/${empNo}`).then(
+    return this.get(`/nursePaperExperience/${this.getSuffix()}/${empNo}`).then(
       res => {
         nurseFileDetailViewModal.pageSpinning = false;
         return res;
@@ -154,7 +169,7 @@ export default class NurseFilesService extends BaseApiService {
   // 8查找护士获奖情况-列表(护长)
   public async nurseAwardWinning(empNo: any) {
     nurseFileDetailViewModal.pageSpinning = true;
-    return this.get(`/nurseAwardWinning/findByEmpNoSubmit/${empNo}`).then(
+    return this.get(`/nurseAwardWinning/${this.getSuffix()}/${empNo}`).then(
       res => {
         nurseFileDetailViewModal.pageSpinning = false;
         return res;
@@ -168,7 +183,7 @@ export default class NurseFilesService extends BaseApiService {
   // 9查找护士护理不良行为记录列表（护长）
   public async nurseBehaviorRecord(empNo: any) {
     nurseFileDetailViewModal.pageSpinning = true;
-    return this.get(`/nurseBehaviorRecord/findByEmpNoSubmit/${empNo}`).then(
+    return this.get(`/nurseBehaviorRecord/${this.getSuffix()}/${empNo}`).then(
       res => {
         nurseFileDetailViewModal.pageSpinning = false;
         return res;
@@ -182,7 +197,7 @@ export default class NurseFilesService extends BaseApiService {
   // 10 查找护士 年度考核结果-列表(护长)
   public async nurseYearCheck(empNo: any) {
     nurseFileDetailViewModal.pageSpinning = true;
-    return this.get(`/nurseYearCheck/findByEmpNoSubmit/${empNo}`).then(res => {
+    return this.get(`/nurseYearCheck/${this.getSuffix()}/${empNo}`).then(res => {
       nurseFileDetailViewModal.pageSpinning = false;
       return res;
     });
@@ -194,7 +209,7 @@ export default class NurseFilesService extends BaseApiService {
   // 11 查找护士医院三基考核-列表(护长)
   public async nurseHospitalsThreeBase(empNo: any) {
     nurseFileDetailViewModal.pageSpinning = true;
-    return this.get(`/nurseHospitalsThreeBase/findByEmpNoSubmit/${empNo}`).then(
+    return this.get(`/nurseHospitalsThreeBase/${this.getSuffix()}/${empNo}`).then(
       res => {
         nurseFileDetailViewModal.pageSpinning = false;
         return res;
@@ -208,7 +223,7 @@ export default class NurseFilesService extends BaseApiService {
   // 12 查找护士临床护理工作情况登记-列表(护长)
   public async nurseRegistrationWork(empNo: any) {
     nurseFileDetailViewModal.pageSpinning = true;
-    return this.get(`/nurseRegistrationWork/findByEmpNoSubmit/${empNo}`).then(
+    return this.get(`/nurseRegistrationWork/${this.getSuffix()}/${empNo}`).then(
       res => {
         nurseFileDetailViewModal.pageSpinning = false;
         return res;
@@ -222,7 +237,7 @@ export default class NurseFilesService extends BaseApiService {
   // 13 查找护士附件情况(护长)
   public async nurseAttachment(empNo: any) {
     nurseFileDetailViewModal.pageSpinning = true;
-    return this.get(`/nurseAttachment/findByEmpNoSubmit/${empNo}`).then(res => {
+    return this.get(`/nurseAttachment/${this.getSuffix()}/${empNo}`).then(res => {
       nurseFileDetailViewModal.pageSpinning = false;
       return res;
     });

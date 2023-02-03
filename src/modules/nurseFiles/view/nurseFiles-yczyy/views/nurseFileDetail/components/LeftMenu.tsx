@@ -1,8 +1,6 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { RouteComponentProps } from 'react-router'
 import { appStore } from 'src/stores'
-import qs from 'qs'
 
 import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
 import emitter from 'src/libs/ev'
@@ -29,7 +27,8 @@ export default function LeftMenu(props: Props) {
   let [listInfo, setListInfo] = useState([])
 
   const onLoad = () => {
-    nurseFilesService.findByEmpNo(appStore.queryObj.empNo).then((res) => {
+    let fun = appStore.selfNurseFile ? nurseFilesService.findByEmpNoSelf : nurseFilesService.findByEmpNo
+    fun.call(nurseFilesService, appStore.queryObj.empNo).then((res) => {
       setListInfo(res.data)
       let badgeTotal: number = res.data.reduce((total: number, item: any) => {
         return total + item.statusColorNum
@@ -55,7 +54,7 @@ export default function LeftMenu(props: Props) {
             className={isActive}
             key={item.name}
             onClick={() => {
-              history.push('/nurseFileDetail/' + item.type + `?${appStore.query}`)
+              history.push((appStore.selfNurseFile ? '/selfNurseFile/' : '/nurseFileDetail/') + item.type + `?${appStore.query}`)
               // emitter.emit('护士档案左侧信息', item.name)
               // console.log('点击了')
             }}

@@ -30,6 +30,10 @@ const baseConfig: navConfigItem[] = [
     path: "/nurseFile"
   },
   {
+    name: "我的档案",
+    path: "/selfNurseFile"
+  },
+  {
     name: "病区登记本",
     path: "/wardRegister",
   },
