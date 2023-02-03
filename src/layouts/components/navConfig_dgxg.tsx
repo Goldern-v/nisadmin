@@ -65,14 +65,14 @@ const baseConfig: navConfigItem[] = [
     ],
   },
   {
-    name: '病区登记本',
-    path: '',
-    icon: require('../images/menu-icon/病区登记本@2x.png')
-  },
-  {
     name: "学习培训",
     path: "/continuingEdu",
     // hidden: true
+  },
+  {
+    name: '病区登记本',
+    path: '/wardRegister',
+    icon: require('../images/menu-icon/病区登记本@2x.png')
   },
   // {
   //   name: "敏感指标",
