@@ -53,11 +53,6 @@ const baseConfig: navConfigItem[] = [
         icon: require("../images/menu-icon/一级质控@2x.png"),
       },
       {
-        name: '病区登记本',
-        path: '',
-        icon: require('../images/menu-icon/病区登记本@2x.png')
-      },
-      {
         name: "查询统计",
         path: "/queryStatistics",
         icon: require("../images/menu-icon/护理查房@2x.png"),
@@ -68,6 +63,11 @@ const baseConfig: navConfigItem[] = [
         icon: require("../images/menu-icon/护理查房@2x.png"),
       },
     ],
+  },
+  {
+    name: '病区登记本',
+    path: '',
+    icon: require('../images/menu-icon/病区登记本@2x.png')
   },
   {
     name: "学习培训",
