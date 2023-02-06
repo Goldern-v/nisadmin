@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import React, { useState, useEffect, useLayoutEffect, Fragment, useRef } from "react";
+import React, { useState, useEffect, useLayoutEffect, Fragment, useRef, useMemo } from "react";
 import { Button, Modal } from "antd";
 import BaseTable, { DoCon } from "src/components/BaseTable";
 import {
@@ -50,27 +50,41 @@ const throttler = throttle(500);
 const throttler2 = throttle();
 /** 可以显示选择患者的表单，以及需要获取的字段信息 */
 const configListByPatientSelect = {
-  QCRG_GSY_07: (item: Obj) => ({
-    '床号': item.bedLabel,
-    '患者姓名': item.name,
+  QCRG_GSY_07: (item: Obj = {}) => ({
+    '患者姓名': item?.name,
+    '床号': item?.bedLabel,
   }),
   QCRG_GSY_12: (item: Obj) => ({
-    '床号': item.bedLabel,
-    '姓名': item.name,
-    '疾病诊断': item.diagnosis,
-    '电话号码': item.phone,
-    '入院日期': item.admissionDate,
-    '出院日期': item.dischargeDate,
+    '姓名': item?.name,
+    '床号': item?.bedLabel,
+    '疾病诊断': item?.diagnosis,
+    '电话号码': item?.phone,
+    '入院日期': item?.admissionDate,
+    '出院日期': item?.dischargeDate,
   }),
 }
 export default observer(function 敏感指标登记本(props: Props) {
   const { location } = appStore
   const [patientVisible, setPatientVisible] = useState(false)
-  // 保存添加患者时所在的表code值
+  /** 保存添加患者时所在的表code值 */
   const [curCode, setCurCode] = useState('')
+  /** 当前表单选择患者对应的获取信息方法 */
+  const curConfigByPatientSelect = useMemo(() => configListByPatientSelect[curCode] || null, [curCode])
   // 选择患者
   const handlePatientSelect = (arr: any[]) => {
+    let name = Object.keys(curConfigByPatientSelect())[0] || ''
+    /**存在重复患者则不导入 */
+    const repeatNames = arr.reduce((prev: Obj[], cur: Obj) => {
+      if (dataSource.some((v: Obj) => v[name] == cur.name)) {
+        prev.push(cur.name)
+      }
+      return prev
+    }, [])
+    if (repeatNames.length) {
+      return message.warning(`${repeatNames.join('、')}患者已添加`)
+    }
     setPatientVisible(false)
+
     setDataSource([...dataSource, ...arr.map((item: Obj, i: number) => ({
       blockId: selectedBlockId,
       description: "",
@@ -81,7 +95,7 @@ export default observer(function 敏感指标登记本(props: Props) {
       recordDate: item.admissionDate,
       key: 'key' + i,
       registerCode: curCode,
-      ...configListByPatientSelect[curCode](item)
+      ...curConfigByPatientSelect(item)
     }))])
   }
   // 添加患者
