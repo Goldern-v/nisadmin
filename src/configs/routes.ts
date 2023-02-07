@@ -9,14 +9,15 @@ import SatisfiedPatSubmit from 'src/modules/mobilePage/satisfiedPatSubmit/Satisf
 import TraineeInfoSubmit from 'src/modules/mobilePage/traineeInfoSubmit/TraineeInfoSubmit'
 import AnalysisDetail from 'src/modules/quality/views/analysisDetail/AnalysisDetail'
 import committeeWorkReportDetail from 'src/modules/quality/views/committeeWorkReportDetail'
-import React, { lazy } from 'react'
+import { lazy } from 'react'
 import { setLayout } from 'src/utils/route/route-utils'
-import { appStore, authStore } from 'src/stores'
+import { appStore } from 'src/stores'
 
 import { RouteItem } from '../components/RouterView'
 import { specialModule } from './routerConfig/specialModule'
 
 import demo1 from "src/demo1";
+import dailyNightRoundsSummaryDetail from 'src/modules/quality/views/dailyNightRoundsSummary/detail'
 
 const ScheduleHomeView = lazy(() =>
   import("src/modules/schedule/views/ScheduleHome/ScheduleHomeView")
@@ -905,7 +906,13 @@ const routes: RouteItem[] = [
   ),
   setLayout("/qcThree", QcThreeRouter, layouts.MainLayout),
   setLayout("/qcFun", QcFunRouter, layouts.MainLayout),
-  setLayout("/checkWard/recordView", checkWardRecordView, layouts.MainLayout),
+  setLayout("/checkWard/recordView", appStore.hisMatch({
+    map: {
+      jmfy: lazy(() => import('src/modules/quality/views/nightRoundsRecordView/detail')),
+      other: checkWardRecordView
+    }
+  }), layouts.MainLayout),
+  setLayout('/checkWard/dailyNightRoundsSummary/detail', dailyNightRoundsSummaryDetail, layouts.MainLayout),
   setLayout("/PromotionAduit", PromotionAduit, layouts.MainLayout),
   setLayout("/checkWard/recordViewGZ", checkWardRecordViewGzsrm, layouts.MainLayout),
   setLayout("/checkWard/QuarterViewGZ", checkWardQuarterViewGzsrm, layouts.MainLayout),

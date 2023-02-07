@@ -1,8 +1,8 @@
 import LeftMenu from "src/components/LeftMenu";
 import styled from "styled-components";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { RouteComponentProps } from "src/components/RouterView";
-import { Provider, KeepAlive } from "react-keep-alive";
+import { KeepAlive } from "react-keep-alive";
 
 export interface Props extends RouteComponentProps<{ name?: string }> {
 }
@@ -23,6 +23,10 @@ import DutyRecord from './views/dutyRecord'
 import nightRoundsDutyRecord from './views/nightRoundsDutyRecord'
 import ScoringRecord from './views/scoringRecord'
 import QuarterScoringRecord from './views/quarterScoringRecord/Analysis'
+import NightRoundsRecordView from './views/nightRoundsRecordView'
+import dailyNightRoundsSummary from "src/modules/quality/views/dailyNightRoundsSummary/index";
+import NightRoundsNurse from "./views/nightRoundsNurse";
+import nightRoundsMonthSummary from "./views/nightRoundsMonthSummary";
 
 const LEFT_MENU_CONFIG: any = appStore.hisMatch({
   map: {
@@ -60,10 +64,20 @@ const LEFT_MENU_CONFIG: any = appStore.hisMatch({
         ]
       },
       {
-        title: "护长夜查房评分记录",
-        path: "/checkWard/scoringRecord",
+        title: "夜查房记录",
         icon: <CFJL />,
-        component: ScoringRecord
+        children: [
+          {
+            title: "护长夜查房评分记录",
+            path: "/checkWard/headNurNightRoundsRecordView",
+            component: () => <NightRoundsRecordView type="1" />
+          },
+          {
+            title: "二值夜查房评分记录",
+            path: "/checkWard/nightRoundsRecordView",
+            component: () => <NightRoundsRecordView type="2" />
+          },
+        ]
       },
       {
         title: "特殊时段查房统计报告",
@@ -85,6 +99,40 @@ const LEFT_MENU_CONFIG: any = appStore.hisMatch({
           //   disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
           // },
         ]
+      },
+      {
+        title: '夜查房汇总',
+        icon: <CFJHBG />,
+        hide: !appStore.isDev,
+        children: [
+          {
+            title: "每日夜查房汇总",
+            path: "/checkWard/dailyNightRoundsSummary",
+            component: dailyNightRoundsSummary,
+            keepAlive: true,
+            disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
+          },
+          {
+            title: "月度夜查房汇总",
+            path: "/checkWard/nightRoundsMonthSummary",
+            component: nightRoundsMonthSummary,
+            keepAlive: true,
+            disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
+          },
+          {
+            title: "二值护士评分汇总",
+            path: "/checkWard/nightRoundsNurseSummary",
+            component: NightRoundsNurse,
+            keepAlive: true,
+            disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
+          },
+        ]
+      },
+      {
+        title: '夜值班受表扬的护士名单',
+        icon: <CFJHBG />,
+        path: '/checkWard/ListOfPraisedNursesOnNightDuty',
+        component: () => <NightRoundsNurse type={2} />
       }
     ],
     gzsrm: [
