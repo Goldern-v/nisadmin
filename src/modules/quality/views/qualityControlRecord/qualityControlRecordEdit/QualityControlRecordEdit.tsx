@@ -76,7 +76,7 @@ const QualityControlRecordEdit = observer(function QualityControlRecordEdit() {
             errMsg = `住院号必须为数字`;
           }
         } else if (
-          ["gzhd", 'yczyy'].includes(appStore.HOSPITAL_ID) &&
+          ["gzhd"].includes(appStore.HOSPITAL_ID) &&
           (!master[x] || master[x].length === 0)
         ) {
           qcModel.setMasterErrObj(x, true);
@@ -92,7 +92,7 @@ const QualityControlRecordEdit = observer(function QualityControlRecordEdit() {
         }
       } else if (x == "bedLabel") {
         if (['whyx','whhk'].includes(appStore.HOSPITAL_ID) && baseInfo.isBedNumber == "否") {
-        } else if (["gzsrm", "nys","whsl", 'zzwy'].includes(appStore.HOSPITAL_ID)) {
+        } else if (["gzsrm", "nys","whsl", 'zzwy', 'yczyy'].includes(appStore.HOSPITAL_ID)) {
         } else if (
           master[x].length <= 0 &&
           Object.keys(masterErrObj).indexOf(x) >= 0
