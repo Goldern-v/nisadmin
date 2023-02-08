@@ -1,13 +1,11 @@
 import styled from "styled-components";
 import React, { useState, useEffect } from "react";
 import { Place } from "src/components/common";
-import { Select, Input, Button } from "antd";
+import { Input, Button, Dropdown, Menu } from "antd";
 import { nurseFilesListViewModel } from "../NurseFilesListViewModel";
 import AddNursingModal from "../modal/AddNursingModal";
 import DeptSelect from "src/components/DeptSelect";
 import { observer } from "mobx-react-lite";
-
-const Option = Select.Option;
 
 export default observer(function SelectCon(props: any, context: any) {
   const [visible, setVisible] = useState(false);
@@ -31,9 +29,21 @@ export default observer(function SelectCon(props: any, context: any) {
   const exportFile = () => {
     nurseFilesListViewModel.exportNursingList();
   };
-  const exportCertificate = (type: number | undefined) => {
+  /**导出证书 */
+  const exportCertificate = (type: any = '') => {
     nurseFilesListViewModel.exportCertificate(type);
   };
+  const exportMenus = (
+    <Menu onClick={(e) => exportCertificate(e.key)}>
+      <Menu.Item key="7">全部</Menu.Item>
+      <Menu.Item key="1">职业证书</Menu.Item>
+      <Menu.Item key="2">职称证书</Menu.Item>
+      <Menu.Item key="3">身份证</Menu.Item>
+      <Menu.Item key="4">毕业证</Menu.Item>
+      <Menu.Item key="5">资格证</Menu.Item>
+      <Menu.Item key="6">与护理相关证书</Menu.Item>
+    </Menu>
+  )
 
   useEffect(() => {
     return () => {
@@ -59,8 +69,10 @@ export default observer(function SelectCon(props: any, context: any) {
         </Button>
         <Button onClick={() => setVisible(true)}>+添加护士</Button>
         <Button onClick={exportFile}>导出</Button>
-        <Button onClick={() => exportCertificate(1)}>导出毕业证书</Button>
-        <Button onClick={() => exportCertificate(2)}>导出职称证书</Button>
+        <Dropdown overlay={exportMenus}>
+          <Button>导出证书</Button>
+        </Dropdown>
+        {/* <Button onClick={() => exportCertificate(2)}>导出职称证书</Button> */}
       </Wrapper>
       <AddNursingModal
         visible={visible}

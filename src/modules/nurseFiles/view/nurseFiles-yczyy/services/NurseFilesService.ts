@@ -56,7 +56,7 @@ export default class NurseFilesService extends BaseApiService {
   }
   // 1-1护士基本信息信息更新
   public async saveOrUpdate(obj: any) {
-    return this.post(`/nurseInformation/saveOrUpdatePC`, obj);
+    return this.post(`/nurseInformation/saveOrUpdate`, obj);
   }
   // 2 查找护士工作经历 //护长
   public async nurseWorkExperience(empNo: any) {
@@ -309,14 +309,15 @@ export default class NurseFilesService extends BaseApiService {
     });
   }
   /** 导出护士证书 */
-  public exportAttachment(obj: any) {
+  public exportAttachment(obj: any, onDownloadProgress: any) {
     Object.keys(obj).forEach((key: any) => {
       if (obj[key] === "全部") {
         obj[key] = "";
       }
     });
     return this.get(`/auditeNurseList/exportAttachment?${qs.stringify(obj)}`, {
-      responseType: "blob"
+      responseType: "blob",
+      onDownloadProgress,
     });
   }
 }

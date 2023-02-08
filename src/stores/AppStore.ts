@@ -32,7 +32,7 @@ export default class AppStore {
   }
 
   @observable public isExpand: "1" | "0" = "1";
-  @observable private appToken: string | null = null;
+  @observable public appToken: string | null = null;
 
   /** 开发环境 true-开发  false-生产*/
   @observable public isDev: boolean =

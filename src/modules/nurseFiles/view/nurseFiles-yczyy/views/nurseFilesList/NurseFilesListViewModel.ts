@@ -2,14 +2,14 @@ import { fileDownload } from "src/utils/file/file";
 import { observable, action, reaction } from "mobx";
 import {
   nurseFilesService,
-  NurseQuery
+  NurseQuery,
 } from "../../services/NurseFilesService";
-import { authStore } from "src/stores";
+import { appStore, authStore } from "src/stores";
 
 const kssxMap: any = {
   全部: "",
   住院护理单元花名册: "1",
-  门诊护理单元花名册: "2"
+  门诊护理单元花名册: "2",
 };
 
 class NurseFilesListViewModel {
@@ -53,10 +53,10 @@ class NurseFilesListViewModel {
       zybz: kssxMap[this.filterKs] /**  科室属性  */,
       pageIndex: this.pageIndex /**  当前页数 */,
       pageSize: this.pageSize /**   每页页数 */,
-      empName: this.filterText /**   工号 */
+      empName: this.filterText /**   工号 */,
     };
     this.listSpinning = true;
-    nurseFilesService.getByFormCodePC(obj).then(res => {
+    nurseFilesService.getByFormCodePC(obj).then((res) => {
       this.pageIndex = res.data.pageIndex;
       this.totalCount = res.data.totalCount;
       this.nurseList = res.data.list;
@@ -73,29 +73,45 @@ class NurseFilesListViewModel {
       currentLevel: this.filterCj /** 能级、层级 */,
       zybz: kssxMap[this.filterKs] /**  科室属性  */,
       post: this.filterZw /**  职务  */,
-      empName: this.filterText /** 工号 */
+      empName: this.filterText /** 工号 */,
     };
-    nurseFilesService.auditeNurseListExcel(obj).then(res => {
+    nurseFilesService.auditeNurseListExcel(obj).then((res) => {
       fileDownload(res);
     });
   };
   /**导出证书 */
   @action
-  public exportCertificate = (type = 1) => {
+  public exportCertificate = (type = "1") => {
     // this.title = newTitle
     let obj: any = {
-      deptCode: authStore.selectedDeptCode === '全院' ? '' : authStore.selectedDeptCode /** 部门编码 */,
+      deptCode:
+        authStore.selectedDeptCode === "全院"
+          ? ""
+          : authStore.selectedDeptCode /** 部门编码 */,
       education: this.filterXl /** 学历 */,
       title: this.filterZc /** 职称 */,
       currentLevel: this.filterCj /** 能级、层级 */,
       zybz: kssxMap[this.filterKs] /**  科室属性  */,
       post: this.filterZw /**  职务  */,
-      empName: this.filterText, /** 工号 */
-      type, /**证书类型 */
+      empName: this.filterText /** 工号 */,
+      type /**证书类型 */,
     };
-    nurseFilesService.exportAttachment(obj).then(res => {
-      fileDownload(res);
-    });
+    nurseFilesService
+      .exportAttachment(obj, (progressEvent: any) => {
+        appStore.openFullLoadingBar({
+          aside: "正在下载数据，请稍候",
+          progress: `${Number(
+            Math.min(
+              progressEvent.loaded / (progressEvent.total * 10000 || 1),
+              1
+            ) * 100
+          ).toFixed(0)}%`,
+        });
+      })
+      .then((res) => {
+        fileDownload(res);
+        appStore.closeFullLoadingBar()
+      });
   };
 }
 

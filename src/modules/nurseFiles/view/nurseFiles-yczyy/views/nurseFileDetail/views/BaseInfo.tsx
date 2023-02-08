@@ -1,10 +1,10 @@
 import Zimage from 'src/components/Zimage'
 import createModal from 'src/libs/createModal'
 import styled from 'styled-components'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { RouteComponentProps } from 'react-router'
 import { nurseFilesService } from '../../../services/NurseFilesService';
-import { appStore, authStore } from 'src/stores'
+import { appStore } from 'src/stores'
 import { sexEnum } from 'src/libs/enum/common'
 import { observer } from 'mobx-react-lite'
 import { globalModal } from 'src/global/globalModal'
@@ -15,6 +15,7 @@ import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
 import service from 'src/services/api'
 import Format from '../../nurseAudit/components/auditText/Format'
 import { editFlag } from 'src/modules/nurseFiles/utils'
+import { Col, Row } from 'antd'
 
 export interface Props extends RouteComponentProps { }
 export default observer(function BaseInfo() {
@@ -23,6 +24,8 @@ export default observer(function BaseInfo() {
   let [info, setInfo]: [any, any] = useState(nurseFileDetailViewModal.nurserInfo)
   const [idData, setIdData] = useState(0)
   const [id, setId] = useState(0)
+  /**附件列表 */
+  const otherAttachmentMap = useMemo(() => info?.otherAttachmentMap || {}, [info])
 
   const limitsComponent = () => {
     return editFlag() ? [
@@ -189,15 +192,15 @@ export default observer(function BaseInfo() {
               resolve({
                 maps,
                 mapsConfig: res.data,
-                orgin: newTableData
+                origin: newTableData
               })
             }, (e) => reject(e))
         })
     })
       .then((payload: any) => {
         if (payload) {
-          const { maps, mapsConfig, orgin } = payload
-          const newTableData = [...orgin]
+          const { maps, mapsConfig, origin } = payload
+          const newTableData = [...origin]
 
           for (let i = 0; i < mapsConfig.length; i++) {
             let mapCfgItem = mapsConfig[i]
@@ -214,10 +217,13 @@ export default observer(function BaseInfo() {
               let target = options.find((opt: any) => opt.code === val)
 
               if (target) val = target.name
+              // img不需要在表格显示
+            } else if (mapCfgItem.fieldType === 'img') {
+              continue
             }
 
             let name = mapCfgItem.fieldName
-            let lastItem = newTableData[orgin.length - 1]
+            let lastItem = newTableData[newTableData.length - 1]
             if (Object.keys(lastItem).length > 1) {
               newTableData.push({ [name]: val })
             } else {
@@ -276,10 +282,44 @@ export default observer(function BaseInfo() {
           </tbody>
         </InfoTable>
         <ZyzsCon>
-          <span>护士执业证书：</span>
+          <Row>
+            <Col span={12}>
+              <span>身份证：</span>
+              {info?.maps?.sfz_url ?
+                (<Zimage src={info?.maps?.sfz_url} alt='' />)
+                : (
+                  <img src={require('../../../images/证件空态度.png')} alt='' />
+                )}
+            </Col>
+            <Col span={12}>
+              <span>毕业证：</span>
+              {info?.maps?.byz_url ?
+                (<Zimage src={info?.maps?.byz_url} alt='' />)
+                : (
+                  <img src={require('../../../images/证件空态度.png')} alt='' />
+                )}
+            </Col>
+          </Row>
           <div className='img-con'>
+            <span>护士执业证书：</span>
             {info.zyzsUrl ? (
               info.zyzsUrl.split(',').map((item: any, index: number) => <Zimage src={item} alt='' key={index} />)
+            ) : (
+              <img src={require('../../../images/证件空态度.png')} alt='' />
+            )}
+          </div>
+          <div className='img-con'>
+            <span>资格证：</span>
+            {info?.maps?.zgz_url ? (
+              info?.maps?.zgz_url.split(',').map((item: any, index: number) => <Zimage src={item} alt='' key={index} />)
+            ) : (
+              <img src={require('../../../images/证件空态度.png')} alt='' />
+            )}
+          </div>
+          <div className='img-con'>
+            <span>与护理相关证书：</span>
+            {info?.maps?.yhlxgzs_url ? (
+              info?.maps?.yhlxgzs_url.split(',').map((item: any, index: number) => <Zimage src={item} alt='' key={index} />)
             ) : (
               <img src={require('../../../images/证件空态度.png')} alt='' />
             )}
@@ -324,24 +364,33 @@ const Value = styled.div`
 `
 
 const ZyzsCon = styled.div`
-  height: 220px;
+  min-height: 220px;
   background: rgba(255, 255, 255, 1);
   border-radius: 5px;
   border: 1px solid rgba(219, 224, 228, 1);
-  position: relative;
+  /* position: relative; */
   font-size: 13px;
   color: #666666;
   margin-top: 10px;
+  padding: 15px 10px;
   span {
-    position: absolute;
+    display: inline-block;
+    width: 110px;
+    /* position: absolute;
     left: 12px;
-    top: 19px;
+    top: 19px; */
+  }
+  .ant-col {
+    display: flex;
   }
   .img-con {
-    margin: 15px 0 0 137px;
+    /* margin: 15px 0 0 137px; */
+    display: flex;
+    flex-wrap: wrap;
+    /* overflow: hidden; */
   }
   img {
-    float: left;
+    /* float: left; */
     margin: 5px;
     width: 240px;
     height: 174px;

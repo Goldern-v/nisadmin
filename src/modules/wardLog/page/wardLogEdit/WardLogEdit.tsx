@@ -25,8 +25,11 @@ import { Obj } from 'src/libs/types'
 const Option = Select.Option
 
 export interface Props { }
-// 使用病区作为标题
+/** 使用病区作为标题 */
 const USE_WARD_AS_TITLE = 'fsxt' === appStore.HOSPITAL_ID
+/**不加形容词的医院 */
+const NO_ADJ_TITLE = 'yczyy' === appStore.HOSPITAL_ID
+
 export default observer(function WardLogEdit(props: any) {
   const { location, history } = props
   const search = qs.parse(location.search.replace('?', ''))
@@ -117,6 +120,8 @@ export default observer(function WardLogEdit(props: any) {
             setInfo(templateDto)
             if (USE_WARD_AS_TITLE) {
               setTitle(`${templateDto.deptName}的${templateDto.name}`)
+            } else if (NO_ADJ_TITLE) {
+              setTitle(templateDto.name)
             } else {
               setTitle(`${templateDto.creatorName}的${templateDto.name}`)
             }
@@ -414,7 +419,7 @@ export default observer(function WardLogEdit(props: any) {
                     textAlign: 'center'
                   }}>
                   还没有选择抄送人哦
-              </div>}
+                </div>}
               {recievers.length >= 24 &&
                 <span
                   className="view-more-recievers"
@@ -434,12 +439,12 @@ export default observer(function WardLogEdit(props: any) {
           onClick={() => saveEdit()}
           type='primary'>
           提交
-          </Button>
+        </Button>
         <Button
           disabled={loading}
           onClick={() => history.goBack()}>
           取消
-          </Button>
+        </Button>
       </div>
     </div>
     <selectPeopleModal.Component />

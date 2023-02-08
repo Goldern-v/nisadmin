@@ -1,14 +1,9 @@
-import styled from 'styled-components'
-import React, { useState, useEffect, useLayoutEffect } from 'react'
-import { RouteComponentProps } from 'react-router'
-import { Modal, Input, Button, Radio, DatePicker, Select, Row, Col, message } from 'antd'
+import React, { useState, useLayoutEffect } from 'react'
+import { Modal, Input, DatePicker, Select, Row, Col, message } from 'antd'
 import { ModalComponentProps } from 'src/libs/createModal'
 import Form from 'src/components/Form'
 
-import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
-import { TITLE_LIST, POST_LIST } from '../../nurseFilesList/modal/AddNursingModal'
 import { to } from 'src/libs/fns'
-import { Rules } from 'src/components/Form/interfaces'
 import moment from 'moment'
 // 加附件
 import ImageUploader from 'src/components/ImageUploader'
@@ -16,31 +11,17 @@ import { appStore, authStore } from 'src/stores'
 import service from 'src/services/api'
 import emitter from 'src/libs/ev'
 import MultipleImageUploader from 'src/components/ImageUploader/MultipleImageUploader'
+import { Obj } from 'src/libs/types'
 import { nurseFilesService } from '../../../services/NurseFilesService'
 const Option = Select.Option
+/**使用单个图片的code */
+const SIN_IMG_CODE = [ 'sfz_url', 'byz_url']
 export interface Props extends ModalComponentProps {
   id?: number
   data?: any
   getTableData?: () => {}
 }
-const uploadCard = () => Promise.resolve('123')
-// const rules: Rules = {
-//   empName: (val) => !!val || '请填写姓名',
-//   empNo: (val) => !!val || '请填写工号',
-//   sex: (val) => !!val || '请填写性别',
-//   nation: (val) => !!val || '请填写民族',
-//   birthday: (val) => !!val || '请选择出生日期',
-//   age: (val) => !!val || '请填写年龄',
-//   nativePlace: (val) => !!val || '',
-//   post: (val) => !!val || '',
-//   goWorkTime: (val) => !!val || '',
-//   highestEducation: (val) => !!val || '最高学历',
-//   zyzsNumber: (val) => !!val || '',
-//   cardNumber: (val) => !!val || '',
-//   socialGroup: (val) => !!val || '社会团体职务',
-//   phone: (val) => !!val || '',
-//   address: (val) => !!val || ''
-// }
+
 export default function EditWorkHistoryModal(props: Props) {
   let { visible, onCancel, onOk, data, id } = props
   let refForm = React.createRef<Form>()
@@ -82,12 +63,44 @@ export default function EditWorkHistoryModal(props: Props) {
     value.birthday && (value.birthday = value.birthday.format('YYYY-MM-DD'))
     value.goWorkTime && (value.goWorkTime = value.goWorkTime.format('YYYY-MM-DD'))
     value.zyzsUrl && (value.zyzsUrl = value.zyzsUrl.join(','))
+    if (value.maps) {
+      mapsConfig.forEach(v => {
+        if (v.fieldType === 'img' && !SIN_IMG_CODE.includes(v.fieldCode) && value.maps[v.fieldCode]) {
+          value.maps[v.fieldCode] = value.maps[v.fieldCode].join(',')
+        }
+      })
+    }
     nurseFilesService.saveOrUpdate({ ...value, ...obj }).then((res: any) => {
       message.success('保存成功')
       props.getTableData && props.getTableData()
       emitter.emit('refreshNurseFileDeatilLeftMenu')
       onCancel()
     })
+  }
+  /**maps对象的组件渲染 */
+  const renderMapsCon = (item: Obj, idx: number) => {
+    const { fieldType, fieldCode } = item
+    switch (fieldType) {
+      case 'date':
+        return <DatePicker />
+      case 'select':
+      case 'select_edit':
+        return <Select
+          showSearch={fieldType === 'select_edit'}
+          onSearch={(val: any) => {
+            if (fieldType === 'select_edit' && refForm.current) {
+              refForm.current.setField(`maps.${item.fieldCode}`, val)
+            }
+          }}>
+          {item.options.map((opt: any, optIdx: number) => <Option key={`opt-${idx}-${optIdx}`} value={opt.code}>{opt.name}</Option>)}
+        </Select>
+      case 'img':
+        if (SIN_IMG_CODE.includes(fieldCode)) return <ImageUploader upload={uploadCard} text={`添加${item.fieldName}`} />
+        return <MultipleImageUploader text={`添加${item.fieldName}`} />
+        // uploadOption={{ type: 0, empNo: appStore.queryObj.empNo }}
+      default:
+        return <Input />
+    }
   }
 
   useLayoutEffect(() => {
@@ -112,7 +125,7 @@ export default function EditWorkHistoryModal(props: Props) {
         nearImageUrl: data.nearImageUrl,
         zyzsUrl: data.zyzsUrl ? data.zyzsUrl.split(',') : [],
         newTitle: data.newTitle,
-        goWorkTime: data.goWorkTime ? moment(data.goWorkTime) : null
+        goWorkTime: data.goWorkTime ? moment(data.goWorkTime) : null,
       } as any
 
       // 处理含有扩展字段的情况
@@ -138,7 +151,12 @@ export default function EditWorkHistoryModal(props: Props) {
 
               switch (item.fieldType) {
                 case "img":
+                  if (SIN_IMG_CODE.includes(key)) {
+                    editParams[`maps.${key}`] = data.maps[key] || ''
+                    break
+                  }
                   editParams[`maps.${key}`] = data.maps[key] ? data.maps[key].split(',') : []
+                  break
                 case "date":
                   editParams[`maps.${key}`] = data.maps[key] ? moment(data.maps[key]) : null
                   break
@@ -270,29 +288,7 @@ export default function EditWorkHistoryModal(props: Props) {
           {mapsConfig.map((item: any, idx: number) => (
             <Col span={12} key={idx}>
               <Form.Field label={item.fieldName} name={`maps.${item.fieldCode}`}>
-                {((fieldType: string) => {
-                  switch (fieldType) {
-                    case 'date':
-                      return <DatePicker />
-                    case 'select':
-                    case 'select_edit':
-                      return <Select
-                        showSearch={fieldType === 'select_edit'}
-                        onSearch={(val: any) => {
-                          if (fieldType === 'select_edit' && refForm.current) {
-                            refForm.current.setField(`maps.${item.fieldCode}`, val)
-                          }
-                        }}>
-                        {item.options.map((opt: any, optIdx: number) => <Option key={`opt-${idx}-${optIdx}`} value={opt.code}>{opt.name}</Option>)}
-                      </Select>
-                    case 'img_1':
-                      return <ImageUploader upload={uploadCard} text={`添加${item.fieldName}`} />
-                    case 'img_2':
-                      return <MultipleImageUploader text={`添加${item.fieldName}`} />
-                    default:
-                      return <Input />
-                  }
-                })(item.fieldType)}
+                {renderMapsCon(item, idx)}
               </Form.Field>
             </Col>
           ))}
@@ -305,7 +301,6 @@ export default function EditWorkHistoryModal(props: Props) {
           </Col>
           <Col span={12}>
             <Form.Field label={`添加护士执业证书`} name='zyzsUrl'>
-              {/* <ImageUploader upload={uploadCard} text='添加护士执业证书' /> */}
               <MultipleImageUploader text='添加图片' />
             </Form.Field>
           </Col>
@@ -314,4 +309,3 @@ export default function EditWorkHistoryModal(props: Props) {
     </Modal>
   )
 }
-const Wrapper = styled.div``

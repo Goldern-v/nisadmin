@@ -11,6 +11,7 @@ import emitter from 'src/libs/ev'
 import { modalService } from '../services/ModalService'
 import Zimage from 'src/components/Zimage'
 import service from 'src/services/api'
+import { Obj } from 'src/libs/types'
 const defaultHead = require('../images/护士默认头像.png')
 const defaultFile = require('../images/证件空态度.png')
 const aduitSuccessIcon = require('../images/审核通过.png')
@@ -44,7 +45,8 @@ export default function AduitModal(props: Props) {
   let [auditeListDtos, setAuditeListDtos]: [any, any] = useState([])
   /** 是否需要当前用户审核 */
   let [needAudite, setNeedAudite]: [any, any] = useState(false)
-
+  /**maps的图片字段 */
+  const [mapsImg, setMapsImg] = useState<Obj[]>([])
   useEffect(() => {
     if (visible) {
       // props.tableData ? setTableData(props.tableData) : setTableData([])
@@ -140,6 +142,8 @@ export default function AduitModal(props: Props) {
             if (payload) {
               const { maps, mapsConfig, tableData } = payload
               const newTableData = [...tableData]
+              /**maps中的img */
+              const mapsImg: Obj[] = []
 
               for (let i = 0; i < mapsConfig.length; i++) {
                 let mapCfgItem = mapsConfig[i]
@@ -159,6 +163,9 @@ export default function AduitModal(props: Props) {
                   let target = options.find((opt: any) => opt.code === val)
 
                   if (target) val = target.name
+                } else if (mapCfgItem.fieldType === 'img') {
+                  mapsImg.push.apply(mapsImg, val.split(',').map((v: string, i: number) => ({ [name + (i + 1)]: v })))
+                  continue
                 }
 
                 if (Object.keys(lastItem).length > 1) {
@@ -169,6 +176,7 @@ export default function AduitModal(props: Props) {
               }
 
               setTableData(newTableData)
+              mapsImg.length && setMapsImg(mapsImg)
             }
           }, err => setSpinning(false))
       } else {
@@ -265,7 +273,7 @@ export default function AduitModal(props: Props) {
           </InfoTable>
           <div style={{ margin: '10px 0', overflow: 'hidden' }}>
             {/* {JSON.stringify(fileData)} */}
-            {fileData.map((obj: any, index: number) => (
+            {[...fileData, ...mapsImg].map((obj: any, index: number) => (
               <UploadCon key={index}>
                 {Object.keys(obj)[0] && <UploadItem label={Object.keys(obj)[0]} path={obj[Object.keys(obj)[0]]} />}
                 {/* {Object.keys(obj)[1] && <UploadItem label={Object.keys(obj)[1]} path={obj[Object.keys(obj)[1]]} />} */}
