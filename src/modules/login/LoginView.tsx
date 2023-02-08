@@ -212,7 +212,7 @@ export default withRouter(function LoginView(props: Props) {
   }
   // 设置正则规则
   const setHospitalReg = () => {
-    if (appStore.HOSPITAL_ID === 'gzsrm') {
+    if (['gzsrm','gxjb'].includes(appStore.HOSPITAL_ID)) {
       getPasswordRule()
     }
   }
