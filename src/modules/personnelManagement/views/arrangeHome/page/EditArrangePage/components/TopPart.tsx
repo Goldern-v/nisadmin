@@ -385,7 +385,7 @@ export default observer(function TopPart() {
             统计
           </Button>
         </div>}
-        {['hj', 'dgxg','nfzxy'].includes(appStore.HOSPITAL_ID) && (
+        {['hj', 'dgxg','nfzxy', 'sdlj', 'jmfy'].includes(appStore.HOSPITAL_ID) && (
           <div className="item">
             <Button onClick={findSysnNurse}>同步排班人员</Button>
           </div>

@@ -78,7 +78,7 @@ export default function ToolBar() {
                 .map((item: any, key: number) => ({
                   ...item,
                   key,
-                  sortValue: key
+                  sortValue: key + 1
                 }))
                 .filter((item: any) => item.empName);
               return service.scheduleUserApiService.save(list).then(res => {
