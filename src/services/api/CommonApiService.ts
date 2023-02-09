@@ -229,7 +229,7 @@ export default class CommonApiService extends BaseApiService {
     let HOSPITAL_ID = appStore.HOSPITAL_ID
     if (HOSPITAL_ID == "hj") {
       return this.get(`/nurseInformation/getByEmpNoAudite/${empNo}`);
-    } else if (HOSPITAL_ID == "wh" || HOSPITAL_ID == "gzsrm"||HOSPITAL_ID == "whyx"|| HOSPITAL_ID == "whhk" ) {
+    } else if (["wh", "gzsrm", "whyx", "whhk", "dghm"].includes(HOSPITAL_ID)) {
       return this.get(`/nurseWHInformation/findByEmpNoSubmit/${empNo}`);
     } else {
       return this.get(`/nurseInformation/getByEmpNoAudite/${empNo}`);
@@ -281,7 +281,7 @@ export default class CommonApiService extends BaseApiService {
     }else{
       return this.post(`/studyAndTrain/praticalGradeManageForFSXT/getDetailByPaperId`,qs.stringify({paperId}))
     }
-   
+
   }
 
   /**
@@ -323,7 +323,7 @@ export default class CommonApiService extends BaseApiService {
   }
   /**
    * 获取片区列表
-   * @returns 
+   * @returns
    */
   public getBigDeptList() {
     return  this.get('/dept/bigDeptList')
