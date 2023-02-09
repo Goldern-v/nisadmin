@@ -80,15 +80,15 @@ const baseConfig: navConfigItem[] = [
       }
     ]
   },
-  // {
-  //   name: "学习培训",
-  //   path: "/continuingEdu"
-  //   // hidden: !appStore.isDev
-  // },
-  // {
-  //   name: "敏感指标",
-  //   path: "/indicator"
-  // },
+  {
+    name: "学习培训",
+    path: "/continuingEdu"
+    // hidden: !appStore.isDev
+  },
+  {
+    name: "敏感指标",
+    path: "/indicator"
+  },
   // {
   //   name: "敏感指标登记本",
   //   path: "/sensitiveRegister",
