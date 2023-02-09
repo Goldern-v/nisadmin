@@ -217,7 +217,7 @@ export default observer(function AduitModal(props: Props) {
           <div className='form1'>
             <Row>
               <Col span={6} className="row-title">
-                是否为不良事件：
+                不良事件：
               </Col>
               <Col span={18}>
                 <Radio.Group
@@ -231,8 +231,8 @@ export default observer(function AduitModal(props: Props) {
                   }>
                   {/* <Radio value={false} >是</Radio>
                   <Radio value={true}>否</Radio> */}
-                  <Radio value={"1"} >是</Radio>
-                  <Radio value={"0"}>否</Radio>
+                  <Radio value={"1"} >通过</Radio>
+                  <Radio value={"0"}>退回</Radio>
                   <Radio value={"2"}>非护理不良事件</Radio>
                 </Radio.Group>
               </Col>

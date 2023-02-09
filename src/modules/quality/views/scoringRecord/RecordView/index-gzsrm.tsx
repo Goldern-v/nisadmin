@@ -237,6 +237,22 @@ export default observer((props: Props) => {
     return ['ward_nurse_audit'].includes(checkStatus) ? '病区整改' : '审核';
   }
 
+  const getAuditStr = () => {
+    if(process === null || process.length === 0){
+      return '审核';
+    }
+    for (let i = 0; i < process.length; i++) {
+      let obj = process[i];
+      if(obj.status == '0'){
+        return obj.nodeName;
+      }
+    }
+    return '审核';
+    // const checkStatus = master?.nextNodeCode;//下一步审核状态
+    // return ['ward_nurse_audit'].includes(checkStatus) ? '病区整改' : '审核';
+  }
+
+
   const saveOpinion = async() => {
     try {
       const res = await api.saveOpinion({
@@ -281,7 +297,7 @@ export default observer((props: Props) => {
         <div className='right-bottom'>
           {<Button type='primary' className="con-item" onClick={() => handleSubmit(false)}>暂存</Button>}
           {<Button type='primary' className="con-item" onClick={() => handleSubmit(true)}>提交</Button>}
-          {(hasAudit() && master.status !== '0') && <Button type='primary' className="con-item" onClick={() => handleAudit()}>审核</Button>}
+          {(hasAudit() && master.status !== '0') && <Button type='primary' className="con-item" onClick={() => handleAudit()}>{getAuditStr()}</Button>}
           {<Button type='primary' className="con-item" onClick={() => setDeleteVisible(true)}>删除</Button>}
           {<Button type='primary' className="con-item" onClick={() => cancelCommit()}>撤销提交</Button>}
           <Button className="con-item" onClick={() => history.goBack()}>返回</Button>
