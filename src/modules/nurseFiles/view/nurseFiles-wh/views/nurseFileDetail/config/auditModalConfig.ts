@@ -17,7 +17,6 @@ export function openAuditModal(title: string, row: any, callBack: any,btnText?:s
           tableFormat: (() => {
             switch(appStore.HOSPITAL_ID) {
               case 'fsxt':
-              case '925':
                 return [
                   {
                     "民族": 'nation',
@@ -81,6 +80,72 @@ export function openAuditModal(title: string, row: any, callBack: any,btnText?:s
                       other: []
                     },
                   }),
+                  {
+                    "鞋款式": "nurse_shoes_style",
+                    '夏装-上衣': 'summer_jacket_size'
+                  },
+                  {
+                    "夏装-裤子": "summer_trousers_size",
+                    "冬装-上衣": "winter_jacket_size",
+                  },
+                  {
+                    "冬装-裤子": "winter_trousers_size",
+                    "夏装-医生款": "summer_isolation_suit_size",
+                  },
+                  {
+                    "冬装-医生款": "winter_isolation_suit_size",
+                  },
+                ]
+              case '925':
+                return [
+                  {
+                    "民族": 'nation',
+                    "籍贯": 'nativePlace',
+                  },
+                  {
+                    "工号": 'empNo',
+                    "身份证号": 'cardNumber',
+                  },
+                  {
+                    "政治面貌": 'politicsLook',
+                    "出生年月": 'birthday',
+                  },
+                  {
+                    "年龄": 'age',
+                    "手机号": 'phone',
+                  },
+                  {
+                    "来院工作时间": 'goHospitalWorkDate',
+                    "护士执业证书编号": 'zyzsNumber'
+                  },
+                  {
+                    "取得护士执业证书时间": 'zyzsDate',
+                    "最高学历": 'highestEducation'
+                  },
+                  {
+                    "最高学历学位": 'highestEducationDegree',
+                    "职务": 'job'
+                  },
+                  {
+                    "现职称" : 'newTitle',
+                    "现职务任职起始时间": 'jobStartDate'
+                  },
+                  {
+                    "工作护理单元": 'deptName',
+                    "鞋码": 'shoeSize',
+                  },
+                  {
+                    '身高': 'height',
+                    '护士服尺码': 'nurse_dress_size',
+                  },
+                  {
+                    '家庭住址': 'address',
+                    '合同截至日期': 'contract_due_date',
+                  },
+                  {
+                    "立功表现": 'meritorious_performance',
+                    "新入职护士带教资质与实习生带教资质": 'teaching_qualification'
+                  },
                   {
                     "鞋款式": "nurse_shoes_style",
                     '夏装-上衣': 'summer_jacket_size'

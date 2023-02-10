@@ -27,7 +27,7 @@ import { AutoComplete } from "src/vendors/antd";
 import { formatIdCord } from "src/utils/idCard/idCard";
 import SelectOrAutoInput from "../components/SelectOrAutoInput";
 import tinyPic from "src/utils/img/tinyPic";
-import { CLOTHS_SIZES, TITLE_TYPES } from "src/modules/nurseFiles/enums";
+import { CLOTHS_SIZES, TITLE_TYPES, MERITORIOUS_PERFORMANCE } from "src/modules/nurseFiles/enums";
 import { strFormatIntoMoment } from "src/utils/moment/crrentMonth";
 import { Obj } from "src/libs/types";
 
@@ -56,7 +56,7 @@ export default function EditWorkHistoryModal(props: Props) {
   const initFooterList = () => {
     let footerList = [] as any
     // if (['ytll'].includes(appStore.HOSPITAL_ID)) {
-      footerList = [ 
+      footerList = [
         <Button key="back" onClick={onCancel}>
           关闭
         </Button>
@@ -70,7 +70,7 @@ export default function EditWorkHistoryModal(props: Props) {
           保存
         </Button>)
       }
-    // } 
+    // }
     // else {
     //   footerList = [
     //     <Button key="back" onClick={onCancel}>
@@ -172,6 +172,7 @@ export default function EditWorkHistoryModal(props: Props) {
     momentFormatIntoStr(value, 'newTitleDate')
     momentFormatIntoStr(value, 'maps.contract_due_date')
     value.zyzsUrl && (value.zyzsUrl = value.zyzsUrl.join(","));
+    value?.maps?.meritorious_performance && (value!.maps!.meritorious_performance = value!.maps!.meritorious_performance.join(","));
 
     nurseFilesService
       .saveOrUpdate({ ...value, ...obj, sign })
@@ -238,6 +239,10 @@ export default function EditWorkHistoryModal(props: Props) {
       // maps中的数据格式化
       if (newObj?.maps?.contract_due_date !== undefined) {
         newObj!.maps!.contract_due_date = strFormatIntoMoment(newObj?.maps?.contract_due_date)
+      }
+
+      if (newObj?.maps?.meritorious_performance !== undefined) {
+        newObj!.maps!.meritorious_performance = newObj!.maps!.meritorious_performance ? newObj!.maps!.meritorious_performance.split(",") : []
       }
       refForm!.current!.setFields(newObj);
     }
@@ -326,11 +331,11 @@ export default function EditWorkHistoryModal(props: Props) {
               <Input />
             </Form.Field>
           </Col>
-          <Col span={12}>
+          {!['925'].includes(appStore.HOSPITAL_ID) && <Col span={12}>
             <Form.Field label={`参加工作时间`} name={['fsxt', '925'].includes(appStore.HOSPITAL_ID)  ? 'goWorkTime' : 'takeWorkTime'}>
               <DatePicker />
             </Form.Field>
-          </Col>
+          </Col>}
           <Col span={12}>
             <Form.Field label={`来院工作时间`} name="goHospitalWorkDate">
               <DatePicker />
@@ -346,14 +351,14 @@ export default function EditWorkHistoryModal(props: Props) {
               <DatePicker />
             </Form.Field>
           </Col>
-          <Col span={12}>
+          {!['925'].includes(appStore.HOSPITAL_ID) && <Col span={12}>
             <Form.Field
               label={isSdlj ? '参加护理工作时间' : `取得执业证书并从事护理岗位时间`}
               name="zyzsNursingPostDate"
             >
               <DatePicker />
             </Form.Field>
-          </Col>
+          </Col>}
           <Col span={12}>
             <Form.Field
               label={`护士执业证书有效截止日期`}
@@ -396,7 +401,7 @@ export default function EditWorkHistoryModal(props: Props) {
               <DatePicker />
             </Form.Field>
           </Col>}
-          {!['fsxt', '925'].includes(appStore.HOSPITAL_ID) && <Col span={12}>
+          {!['fsxt'].includes(appStore.HOSPITAL_ID) && <Col span={12}>
             <Form.Field label={`最高学历学位`} name="highestEducationDegree">
               <AutoComplete
                 dataSource={nurseFileDetailViewModal
@@ -444,7 +449,7 @@ export default function EditWorkHistoryModal(props: Props) {
                     <Form.Field label={`家庭住址`} name="address">
                       <Input />
                     </Form.Field>),
-                  dghm: (
+                  "dghm,925": (
                     <Form.Field label={`现职称`} name="newTitle">
                       <Select>
                         {TITLE_TYPES.map((item:any) => (
@@ -527,6 +532,30 @@ export default function EditWorkHistoryModal(props: Props) {
               </Col>
             </>
           }
+
+          <Col span={12}>
+            <Form.Field label='新入职护士带教资质与实习生带教资质' name="maps.teaching_qualification">
+              <Select>
+                {
+                  [{"code" : "有", "name" : "有"}, {"code" : "无", "name" : "无"}].map(v => (
+                      <Select.Option value={v.code} key={v.code}>{v.name}</Select.Option>
+                  ))
+                }
+              </Select>
+            </Form.Field>
+          </Col>
+
+          <Col span={12}>
+            <Form.Field label='立功表现' name="maps.meritorious_performance">
+              <Select mode="multiple">
+                {
+                  MERITORIOUS_PERFORMANCE.map(v => (
+                      <Select.Option value={v.code} key={v.code}>{v.name}</Select.Option>
+                  ))
+                }
+              </Select>
+            </Form.Field>
+          </Col>
         </Row>
         <Row>
           <Col span={12}>

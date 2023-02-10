@@ -342,11 +342,68 @@ export default observer(function BaseInfo() {
           }
         })
       ]
+
+      let newTableData925 = [
+        {
+          民族: data.nation,
+          籍贯: data.nativePlace,
+        },
+        {
+          工号: data.empNo,
+          身份证号: data.cardNumber,
+        },
+        {
+          政治面貌: data.politicsLook,
+          出生年月: data.birthday,
+        },
+        {
+          年龄: data.age,
+          手机号: data.phone,
+        },
+        {
+          // 参加工作时间: data.goWorkTime,
+          来院工作时间: data.goHospitalWorkDate,
+          护士执业证书编号: data.zyzsNumber
+        },
+        {
+
+          取得护士执业证书时间: data.zyzsDate,
+          最高学历: data.highestEducation
+        },
+        {
+          最高学历学位: data.highestEducationDegree,
+          职务: data.job
+        },
+        // {
+          // 取得执业证书并从事护理岗位时间: data.zyzsNursingPostDate,
+          // 护士执业证书有效截止日期: data.zyzsEffectiveUpDate,
+        // },
+        {
+          // 最高学历: data.highestEducation,
+          现职称: data.newTitle,
+          现职务任职起始时间: data.jobStartDate
+
+        },
+        {
+
+          // 现职务任职起始时间: data.jobStartDate,
+          工作护理单元: data.deptName,
+          鞋码: data.shoeSize
+        },
+        {
+          家庭住址: data.address,
+          立功表现: data?.maps?.meritorious_performance
+        },
+        {
+          新入职护士带教资质与实习生带教资质: data?.maps?.teaching_qualification
+        }
+      ]
       let newTableData = (() => {
         switch (appStore.HOSPITAL_ID) {
           case "fsxt":
-          case "925":
             return newTableDataFsxt
+          case "925":
+            return newTableData925
           default:
           return newTableDataDefault
         }

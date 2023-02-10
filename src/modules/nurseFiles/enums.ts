@@ -43,6 +43,14 @@ export const CLOTHS_SIZES = [
     code: 'XXXL',
   },
 ]
+
+/**立功表现 */
+export const MERITORIOUS_PERFORMANCE = [
+  { code: '三等功', name: '三等功' },
+  { code: '四有', name: '四有' },
+  { code: '嘉奖', name: '嘉奖' }
+]
+
 /**职称 */
 export const TITLE_TYPES = [
   { code: '见习期护士', name: '见习期护士' },

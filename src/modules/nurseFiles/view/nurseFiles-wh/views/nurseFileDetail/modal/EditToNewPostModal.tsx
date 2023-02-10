@@ -128,18 +128,26 @@ export default function EditToNewPostModal(props: Props) {
           {!isSdlj ? <Col span={24}>
             <Form.Field label={`原工作科室`} name="oldDeptCode" required>
               <Select placeholder="选择原工作科室">
-                {list.map((item: any) => (
+                {["925"].includes(appStore.HOSPITAL_ID) ?
+                nurseFileDetailViewModal.getDict("全部科室").map((item: any) => (
                   <Option value={item.code} key={item.code}>
                     {item.name}
                   </Option>
-                ))}
+                )) :
+                list.map((item: any) => (
+                      <Option value={item.code} key={item.code}>
+                        {item.name}
+                      </Option>
+                  ))
+                }
               </Select>
             </Form.Field>
-          </Col> : 
+          </Col> :
           <Col span={24}>
             <Form.Field label={`原工作科室`} name="oldDeptCode" required>
               <AutoComplete
-                dataSource={list.map((item: any) => item.name)}
+                dataSource={nurseFileDetailViewModal
+                    .getDict("全部科室").map((item: any) => item.name)}
                 placeholder="选择原工作科室"
                 filterOption={(inputValue: any, option: any) =>
                   option.props.children.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
