@@ -13,6 +13,7 @@ import emitter from 'src/libs/ev'
 import MultipleImageUploader from 'src/components/ImageUploader/MultipleImageUploader'
 import { Obj } from 'src/libs/types'
 import { nurseFilesService } from '../../../services/NurseFilesService'
+import styled from 'styled-components'
 const Option = Select.Option
 /**使用单个图片的code */
 const SIN_IMG_CODE = [ 'sfz_url', 'byz_url']
@@ -186,6 +187,7 @@ export default function EditWorkHistoryModal(props: Props) {
       okText='保存'
       forceRender
     >
+      <Wrapper>
       <Form ref={refForm} labelWidth={140} onChange={onFieldChange} rules={{}}>
         <Row>
           <Col span={12}>
@@ -306,6 +308,14 @@ export default function EditWorkHistoryModal(props: Props) {
           </Col>
         </Row>
       </Form>
+      </Wrapper>
     </Modal>
   )
 }
+
+const Wrapper = styled.div`
+  .formField-wrapper .label {
+    font-weight: bold;
+    color: rgba(0, 0, 0, 1)
+  }
+`

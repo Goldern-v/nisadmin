@@ -19,6 +19,7 @@ import { Obj } from "src/libs/types";
 const reportLevel = 3;
 const templateName = getSearchTempName(reportLevel);
 /**
+ * 弃用  
  * 三级质控结果汇总表 by亚心
  */
 export default observer(function QcThreeResult(props) {

@@ -38,12 +38,10 @@ export default function DynamicRouting() {
             newArr.push(obj1);
           });
           localStorage.setItem("continuDynamicRouter", JSON.stringify(cloneDeep(newArr)));
-          console.log('test-newArr', [...newArr])
           setDataList(newArr)
         } else {
           setDataList([])
         }
-        console.log('test-1', 1)
       }
     });
   };

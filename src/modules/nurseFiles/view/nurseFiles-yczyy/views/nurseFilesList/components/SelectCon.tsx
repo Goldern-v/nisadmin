@@ -36,8 +36,8 @@ export default observer(function SelectCon(props: any, context: any) {
   const exportMenus = (
     <Menu onClick={(e) => exportCertificate(e.key)}>
       <Menu.Item key="7">全部</Menu.Item>
-      <Menu.Item key="1">职业证书</Menu.Item>
-      <Menu.Item key="2">职称证书</Menu.Item>
+      <Menu.Item key="1">护士执业证书</Menu.Item>
+      {/* <Menu.Item key="2">职称证书</Menu.Item> */}
       <Menu.Item key="3">身份证</Menu.Item>
       <Menu.Item key="4">毕业证</Menu.Item>
       <Menu.Item key="5">资格证</Menu.Item>

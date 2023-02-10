@@ -62,7 +62,7 @@ export const PageTitle = styled.div`
 `
 
 /* 页面头部 */
-export const PageHeader = styled.div`
+export const PageHeader: any = styled.div`
   height: 50px;
   font-size: 13px;
   position: relative;
