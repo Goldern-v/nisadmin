@@ -5,6 +5,7 @@ const { TextArea } = Input
 import ReactEcharts from 'echarts-for-react';
 import { authStore } from 'src/stores'
 import { dataWholeAysi } from './DataWholeAysi';
+import { numberFormat } from 'src/utils/number/numberFormat';
 interface Props {
 	// 输入框
 	textArea1_1: string,
@@ -303,7 +304,7 @@ const mergeCells = (text: string, data: any, key: string, index: number) => {
 							if(record.itemType=='1'){
 								return ''
 							}else{
-								return <>{Number(text)>0?Math.trunc(Number(text)*10000)/100+'%':'0%'}</>
+								return <>{Number(text)>0?numberFormat(Number(text)*100,2)+'%':'0%'}</>
 							}
 						},
 						onCell(record: any, rowIndex: any) {
@@ -357,7 +358,7 @@ const mergeCells = (text: string, data: any, key: string, index: number) => {
 							if(record.itemType=='1'){
 								return ''
 							}else{
-								return <>{Number(text)>0?Math.trunc(Number(text)*10000)/100+'%':'0%'}</>
+								return <>{Number(text)>0?numberFormat(Number(text)*100,2)+'%':'0%'}</>
 							}
 						},
 						onCell(record: any, rowIndex: any) {
