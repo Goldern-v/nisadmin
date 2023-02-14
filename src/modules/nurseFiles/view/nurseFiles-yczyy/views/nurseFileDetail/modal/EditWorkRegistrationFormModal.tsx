@@ -24,13 +24,13 @@ export interface Props extends ModalComponentProps {
 const uploadCard = () => Promise.resolve('123')
 const rules: Rules = {
   year: (val) => !!val || '年度',
-  nightShift: (val) => !!val || '夜班',
-  checkOut: (val) => !!val || '查房',
-  nursingConsultation: (val) => !!val || '护理会诊',
-  caseDiscussion: (val) => !!val || '病区讨论',
-  individualCase: (val) => !!val || '个案',
-  lecture: (val) => !!val || '小讲课',
-  teaching: (val) => !!val || '带教',
+  nightShift: (val) => val >= 0 || '夜班',
+  checkOut: (val) => val >= 0 || '查房',
+  nursingConsultation: (val) => val >= 0 || '护理会诊',
+  caseDiscussion: (val) => val >= 0 || '病区讨论',
+  individualCase: (val) => val >= 0 || '个案',
+  lecture: (val) => val >= 0 || '小讲课',
+  teaching: (val) => val >= 0 || '带教',
   witness: (val) => !!val || '证明人'
 }
 export default function EditWorkHistoryModal(props: Props) {
