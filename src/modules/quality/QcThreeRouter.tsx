@@ -155,6 +155,8 @@ export default function QcThreeRouter(props: Props) {
     path: "/qcThree/administrativeWard",
     icon: <JCTJ />,
     component: AdministrativeWard,
+    keepAlive: true,
+    disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP',
   };
 
   const route_satisfactionAnalysis = {

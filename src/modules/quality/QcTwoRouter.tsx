@@ -72,9 +72,9 @@ export default observer(function QcTwoRouter(props: Props) {
     path: "/qcTwo/administrativeWard",
     icon: <EJZK />,
     component: AdministrativeWard,
-    // keepAlive: true,
-    // disabledKeepAlive:
-    //   (appStore.history && appStore.history.action) !== "POP",
+    keepAlive: true,
+    disabledKeepAlive:
+      (appStore.history && appStore.history.action) !== "POP",
   };
   // 行政查房
   const route_safetyChecklist = {
@@ -82,9 +82,9 @@ export default observer(function QcTwoRouter(props: Props) {
     path: "/qcTwo/safetyChecklist",
     icon: <EJZK />,
     component: SafetyChecklist,
-    // keepAlive: true,
-    // disabledKeepAlive:
-    //   (appStore.history && appStore.history.action) !== "POP",
+    keepAlive: true,
+    disabledKeepAlive:
+      (appStore.history && appStore.history.action) !== "POP",
   };
   const route_analysis = {
     title: "二级质控月度报告",

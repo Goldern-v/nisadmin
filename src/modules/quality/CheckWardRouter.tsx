@@ -145,7 +145,9 @@ const LEFT_MENU_CONFIG: any = appStore.hisMatch({
         title: "护士长夜查房评分记录",
         path: "/checkWard/scoringRecord",
         icon: <CFJL />,
-        component: ScoringRecord
+        component: ScoringRecord,
+        keepAlive: true,
+        disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP',
       },
       {
         title: "护士长季度查房报告分析",
