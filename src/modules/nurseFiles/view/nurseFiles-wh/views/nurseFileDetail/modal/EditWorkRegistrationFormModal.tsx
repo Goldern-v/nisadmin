@@ -25,13 +25,13 @@ export interface Props extends ModalComponentProps {
 const uploadCard = () => Promise.resolve('123')
 const rules: Rules = {
   year: (val) => !!val || '年度',
-  nightShift: (val) => !!val || '夜班',
-  checkOut: (val) => !!val || '查房',
-  nursingConsultation: (val) => !!val || '护理会诊',
-  caseDiscussion: (val) => !!val || '病区讨论',
-  individualCase: (val) => !!val || '个案',
-  lecture: (val) => !!val || '小讲课',
-  teaching: (val) => !!val || '带教',
+  // nightShift: (val) => val >= 0 || '夜班',
+  // checkOut: (val) => val >= 0 || '查房',
+  // nursingConsultation: (val) => val >= 0 || '护理会诊',
+  // caseDiscussion: (val) => val >= 0 || '病区讨论',
+  // individualCase: (val) => val >= 0 || '个案',
+  // lecture: (val) => val >= 0 || '小讲课',
+  // teaching: (val) => val >= 0 || '带教',
   witness: (val) => !!val || '证明人'
 }
 export default function EditWorkHistoryModal(props: Props) {
@@ -90,6 +90,19 @@ export default function EditWorkHistoryModal(props: Props) {
         witness: data.witness
       })
       // refForm.current.setField('unit', 123)
+    } else if (refForm.current && visible) {
+      refForm!.current!.setFields({
+        year: null,
+        nightShift: 0,
+        checkOut: 0,
+        professional: 0,
+        nursingConsultation: 0,
+        caseDiscussion: 0,
+        individualCase: 0,
+        lecture: 0,
+        teaching: 0,
+        witness: null
+      })
     }
     if (signShow === '修改') {
       setTitle('修改工作情况登记表')
@@ -121,51 +134,51 @@ export default function EditWorkHistoryModal(props: Props) {
         <Row>
           <Row>
             <Col span={24}>
-              <Form.Field label={`年度`} name='year'>
+              <Form.Field label={`年度`} name='year' required>
                 <YearPicker />
               </Form.Field>
             </Col>
           </Row>
           <Row>
             <Col span={12}>
-              <Form.Field label={`夜班`} name='nightShift' required>
-                <InputNumber />
+              <Form.Field label={`夜班`} name='nightShift'>
+                <InputNumber/>
               </Form.Field>
             </Col>
             <Col span={12}>
-              <Form.Field label={`查房`} name='checkOut' required>
-                <InputNumber />
-              </Form.Field>
-            </Col>
-          </Row>
-          <Row>
-            <Col span={12}>
-              <Form.Field label={`护理会诊`} name='nursingConsultation' required>
-                <InputNumber />
-              </Form.Field>
-            </Col>
-            <Col span={12}>
-              <Form.Field label={`病例讨论`} name='caseDiscussion' required>
-                <InputNumber />
+              <Form.Field label={`查房`} name='checkOut'>
+                <InputNumber/>
               </Form.Field>
             </Col>
           </Row>
           <Row>
             <Col span={12}>
-              <Form.Field label={`个案`} name='individualCase' required>
-                <InputNumber />
+              <Form.Field label={`护理会诊`} name='nursingConsultation'>
+                <InputNumber/>
               </Form.Field>
             </Col>
             <Col span={12}>
-              <Form.Field label={`小讲课`} name='lecture' required>
-                <InputNumber />
+              <Form.Field label={`病例讨论`} name='caseDiscussion'>
+                <InputNumber/>
               </Form.Field>
             </Col>
           </Row>
           <Row>
             <Col span={12}>
-              <Form.Field label={`带教`} name='teaching' required>
-                <InputNumber />
+              <Form.Field label={`个案`} name='individualCase'>
+                <InputNumber/>
+              </Form.Field>
+            </Col>
+            <Col span={12}>
+              <Form.Field label={`小讲课`} name='lecture'>
+                <InputNumber/>
+              </Form.Field>
+            </Col>
+          </Row>
+          <Row>
+            <Col span={12}>
+              <Form.Field label={`带教`} name='teaching'>
+                <InputNumber/>
               </Form.Field>
             </Col>
             <Col span={12}>

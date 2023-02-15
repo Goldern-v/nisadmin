@@ -16,7 +16,7 @@ import { nurseFilesService } from '../../../services/NurseFilesService'
 import styled from 'styled-components'
 const Option = Select.Option
 /**使用单个图片的code */
-const SIN_IMG_CODE = [ 'sfz_url', 'byz_url']
+const SIN_IMG_CODE = [ 'sfz_url']
 export interface Props extends ModalComponentProps {
   id?: number
   data?: any
@@ -96,8 +96,8 @@ export default function EditWorkHistoryModal(props: Props) {
           {item.options.map((opt: any, optIdx: number) => <Option key={`opt-${idx}-${optIdx}`} value={opt.code}>{opt.name}</Option>)}
         </Select>
       case 'img':
-        if (SIN_IMG_CODE.includes(fieldCode)) return <ImageUploader upload={uploadCard} text={`添加${item.fieldName}`} />
-        return <MultipleImageUploader text={`添加${item.fieldName}`} />
+        if (SIN_IMG_CODE.includes(fieldCode)) return <ImageUploader maxSize = {1024 * 100} upload={uploadCard} text={`添加${item.fieldName}`} />
+        return <MultipleImageUploader tip = "支持jpg、jpeg、png、bmp，单个文件不能超过100kb" imgLimitedMb={0.1} text={`添加${item.fieldName}`} />
         // uploadOption={{ type: 0, empNo: appStore.queryObj.empNo }}
       default:
         return <Input />
@@ -180,7 +180,7 @@ export default function EditWorkHistoryModal(props: Props) {
   return (
     <Modal
       title='修改基本信息'
-      width={1000}
+      width={1100}
       visible={visible}
       onCancel={onCancel}
       onOk={onSave}
