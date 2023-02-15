@@ -293,11 +293,11 @@ export default observer(function BaseInfo() {
             </Col>
             <Col span={12}>
               <span>毕业证：</span>
-              {info?.maps?.byz_url ?
-                (<Zimage src={info?.maps?.byz_url} alt='' />)
-                : (
+              {info?.maps?.byz_url ? (
+                  info?.maps?.byz_url.split(',').map((item: any, index: number) => <Zimage src={item} alt='' key={index} />)
+              ) : (
                   <img src={require('../../../images/证件空态度.png')} alt='' />
-                )}
+              )}
             </Col>
           </Row>
           <div className='img-con'>
