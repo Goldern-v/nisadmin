@@ -10,7 +10,7 @@ export default withRouter(function SingleSignOnDefault(props: any) {
   const searchObj = qs.parse(search.replace('?', ''))
 
   const authorizeAndSignIn = () => {
-    singleSignOnDefaultServices.autoLogin(searchObj.token)
+    singleSignOnDefaultServices.autoLogin(searchObj.autoLogin_token)
   }
 
   useEffect(() => {
