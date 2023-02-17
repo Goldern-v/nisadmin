@@ -24,8 +24,8 @@ export default function BreadcrumbBox(props: Props) {
       <BreadcrumbContainer style={props.style}>
         <Breadcrumb>
           {props && props.data ? (
-            props.data.map((item) => (
-              <Breadcrumb.Item key={item.name}>
+            props.data.map((item, index: number) => (
+              <Breadcrumb.Item key={index}>
                 {item.link ? <Link to={item.link}>{item.name}</Link> : item.name}
               </Breadcrumb.Item>
             ))

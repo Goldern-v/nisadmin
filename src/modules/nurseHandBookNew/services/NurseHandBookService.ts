@@ -1,6 +1,7 @@
 import BaseApiService from 'src/services/api/BaseApiService'
 import { PageOptions } from 'src/components/BaseTable'
 import { appStore } from 'src/stores'
+import { Obj } from 'src/libs/types'
 
 const hospital: string =
 appStore.hisMatch({
@@ -76,6 +77,55 @@ export default class NurseHandBookService extends BaseApiService {
   public getCalculate(id: string) {
     return this.get(`/nurseManualJM/getCalculate?id=${id}`)
   }
+
+  /**表单 by临邑 */
+  /**获取两级 科室单元列表 */
+  public getTreeDept() {
+    return this.get(`/nurseHandbook/common/treeDept`)
+  }
+  /**获取菜单 */
+  public getMenuList() {
+    return this.get(`/nurseHandbook/common/menuList`)
+  }
+  /**获取table列表 */
+  public getTableDataList(params: Obj) {
+    return this.post(`/nurseHandbookRecord/list`, params)
+  }
+  /**创建/修改记录 */
+  public createOrUpdate(params: Obj) {
+    return this.post(`/nurseHandbookRecord/createOrUpdate`, params)
+  }
+  /**获取详情 */
+  public getNHRById(params: Obj) {
+    return this.post(`/nurseHandbookRecord/getById`, params)
+  }
+  /**保存提交  
+   * status 0暂存 1提交
+   */
+  public saveNHRDetail(params: Obj) {
+    return this.post(`/nurseHandbookRecord/save`, params)
+  }
+  /**
+   * 撤回
+   * @param params 
+   * @returns 
+   */
+  public cancelNHR(params: Obj) {
+    return this.post(`/nurseHandbookRecord/cancel`, params)
+  }
+
+  /**
+   * 审核
+   * @param params 
+   * @returns 
+   */
+  public handleNodeNHR(params: Obj) {
+    return this.post(`/nurseHandbookRecord/handNode`, params)
+  }
+  public delNHR(params: Obj) {
+    return this.post(`/nurseHandbookRecord/delete`, params)
+  }
+  
 }
 
 export const nurseHandBookService = new NurseHandBookService()

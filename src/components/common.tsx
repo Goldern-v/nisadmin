@@ -84,6 +84,9 @@ export const PageHeader: any = styled.div`
   > .ant-select {
     min-width: 100px;
   }
+  > .select-year {
+    width: 100px;
+  }
 `
 
 export const Pre = styled.pre`

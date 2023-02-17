@@ -1,3 +1,4 @@
+import { authStore } from 'src/stores';
 import { action, observable, computed } from "mobx";
 import * as H from "history";
 import * as reactRouter from "react-router";
@@ -165,6 +166,12 @@ export default class AppStore {
   @computed
   public get selfNurseFile() {
     return this.match.path == '/selfNurseFile/:type'
+  }
+
+  /**cKE编辑器的图片上传路径 */
+  @computed
+  public get uploadCKEUrl () {
+    return `/crNursing/api/briefMission/uploadPicture?App-Token-Nursing=${this.appToken}&Auth-Token-Nursing=${authStore.authToken}`
   }
 
   @action

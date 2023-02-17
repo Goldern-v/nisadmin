@@ -1,7 +1,6 @@
 import LeftMenu from "src/components/LeftMenu";
 import styled from "styled-components";
-import React, { useEffect, useState } from "react";
-import { RouteComponentProps } from "src/components/RouterView";
+import React from "react";
 import { appStore } from "src/stores";
 import { KeepAlive } from "src/vendors/keep-alive";
 import { Spin } from "antd";
@@ -12,13 +11,13 @@ export interface Props {
   /**菜单项目为hidden时是否匹配下一个项目 */
   stopActiveNext?: boolean,
   loading?: boolean,
-  stopRedict?: boolean
+  stopRedirect?: boolean
 }
 
 // const leftMenuConfig = []
 
 export default function LeftMenuPage(props: Props) {
-  let { leftMenuConfig, loading, stopRedict } = props;
+  let { leftMenuConfig, loading, stopRedirect } = props;
   let currentRoutePath = appStore.location.pathname || "";
   let currentRoute = getTargetObj(leftMenuConfig, "path", currentRoutePath);
   // 筛选目标对象
@@ -41,7 +40,7 @@ export default function LeftMenuPage(props: Props) {
     return chooseRoute;
   }
   if (!currentRoute) {
-    if (!stopRedict)
+    if (!stopRedirect)
       appStore.history.replace(
         leftMenuConfig[0].children
           ? leftMenuConfig[0].children[0].path
@@ -55,7 +54,7 @@ export default function LeftMenuPage(props: Props) {
         {loading && (
           <Spin
             spinning={true}
-            className="spining-wrapper">
+            className="spinning-wrapper">
             <FullCon></FullCon>
           </Spin>
         )}
@@ -93,7 +92,7 @@ const Wrapper = styled.div`
   height: calc(100vh - 50px);
   display: flex;
   align-items: stretch;
-  .spining-wrapper{
+  .spinning-wrapper{
     border-right: 1px solid #ddd;
     background: #eee;
   }

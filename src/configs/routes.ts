@@ -18,6 +18,8 @@ import { specialModule } from './routerConfig/specialModule'
 
 import demo1 from "src/demo1";
 import dailyNightRoundsSummaryDetail from 'src/modules/quality/views/dailyNightRoundsSummary/detail'
+import detailLyrm from 'src/modules/nurseHandBookNew/views/detail-lyrm'
+import detailGzsrm from 'src/modules/nurseHandBookNew/views/detail-gzsrm'
 
 const ScheduleHomeView = lazy(() =>
   import("src/modules/schedule/views/ScheduleHome/ScheduleHomeView")
@@ -930,6 +932,14 @@ const routes: RouteItem[] = [
   setLayout("/queryStatistics", QueryStatisticsRouter, layouts.MainLayout),
   setLayout("/nurseHandBook", NurseHandBookRouter, layouts.MainLayout),
   setLayout("/nurseHandBookNew", NurseHandBookRouterNew, layouts.MainLayout),
+  setLayout("/nurseHandBookNewForm/detail", appStore.hisMatch(
+    {
+      map: {
+        gzsrm: detailGzsrm,
+        other: detailLyrm
+      }
+    })
+    , layouts.MainLayout),
   setLayout("/nurseSatisfactionSurvey", NurseSatisfactionSurveyRouter, layouts.MainLayout),
   setLayout("/nurseSatisfactionSurveyDetailView", NurseSatisfactionSurveyDetailView, layouts.MainLayout),
   setLayout("/nurseHandBookDetailView", NurseHandBookDetailView, layouts.MainLayout),

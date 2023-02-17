@@ -546,6 +546,11 @@ export const DoCon = styled.div`
       font-weight: bold;
     }
   }
+  .disabled {
+    cursor: not-allowed;
+    pointer-events: none;
+    color: #888
+  }
 `;
 export const TableHeadCon: any = styled.div`
   height: 50px;

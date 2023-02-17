@@ -21,3 +21,6 @@ export interface navConfigItem {
   icon?: any;
   menuStyle?: React.CSSProperties;
 }
+export interface ColumnPropsT extends Obj {
+  align?: 'center' | 'left' | 'right' | undefined
+}
