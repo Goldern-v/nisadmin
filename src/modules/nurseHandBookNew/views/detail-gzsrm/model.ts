@@ -8,7 +8,7 @@ import config from "./config";
 import createModal from "src/libs/createModal";
 import auditModal from "./components/auditModal";
 import { Modal } from "antd";
-import { preview } from "printing";
+import { preview, print } from "printing";
 import moment from 'moment'
 const dateFormat = 'YYYY-MM-DD HH:mm:ss'
 
@@ -150,7 +150,7 @@ class NurseHandBookRecordModel {
   public onPrint = () => {
     setTimeout(() => {
       this.isPrint = true
-      preview(this.ctxRef.current, {
+      print(this.ctxRef.current, {
         injectGlobalCss: true,
         scanStyles: false,
         direction: "vertical",

@@ -28,7 +28,7 @@ export default observer(function (props: Props) {
         // temporary ok
         authStore.isDepartment ?
           <>
-            <Button type='primary' onClick={() => model.onCommit('2')}>编辑</Button>
+            <Button type='primary' onClick={() => model.onCommit('2')}>保存</Button>
           </>
           :
         <Button type='primary' onClick={() => model.onCancel()}>撤回</Button>

@@ -17,7 +17,7 @@ export default observer(function (props: Props) {
     }
     const newData = {
       ...model.editorData,
-      [key]: e.target.value
+      [key]: e.target?.value || e.currentTarget.innerText
     }
     model.handleEditorChange(newData)
   }
@@ -69,7 +69,7 @@ export default observer(function (props: Props) {
           <tr>
             <td>本科室需解决的问题</td>
             <td colSpan={3}>
-              <div contentEditable={true} className='cell-ipt ant-input' onBlur={(e) => onChange(e, 'v3')}>
+              <div contentEditable={true} className='cell-ipt ant-input' onBlur={(e) => onChange(e, 'v3')} suppressContentEditableWarning>
                 {model.editorData?.v3}
               </div>
             </td>
@@ -77,7 +77,7 @@ export default observer(function (props: Props) {
           <tr>
             <td>本科室已解决的问题</td>
             <td colSpan={3}>
-              <div contentEditable={true} className='cell-ipt ant-input' onBlur={(e) => onChange(e, 'v4')}>
+              <div contentEditable={true} className='cell-ipt ant-input' onBlur={(e) => onChange(e, 'v4')} suppressContentEditableWarning>
                 {model.editorData?.v4}
               </div>
             </td>
