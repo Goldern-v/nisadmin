@@ -278,7 +278,7 @@ export default function NurseHandBookRouter() {
 
   const formatList = (list: Obj[]): Obj[] => {
     return list.map((v: Obj) => {
-      if (!v.child) {
+      if (!v.child || !v.child.length) {
         return {
           title: v.name,
           path: `/nurseHandBookNew/form29/${v.menuCode}`,

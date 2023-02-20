@@ -41,6 +41,13 @@ export default observer(function (props: Props, ref) {
 })
 
 const Wrapper = styled(DetailCtxCon)`
-  
-
+  .title {
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    border-radius: 0;
+    :focus {
+      box-shadow: none;
+    }
+  }
 `

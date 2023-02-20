@@ -2,6 +2,7 @@ import BaseApiService from 'src/services/api/BaseApiService'
 import { PageOptions } from 'src/components/BaseTable'
 import { appStore } from 'src/stores'
 import { Obj } from 'src/libs/types'
+import qs from 'qs'
 
 const hospital: string =
 appStore.hisMatch({
@@ -122,10 +123,22 @@ export default class NurseHandBookService extends BaseApiService {
   public handleNodeNHR(params: Obj) {
     return this.post(`/nurseHandbookRecord/handNode`, params)
   }
+  /**
+   * 删除
+   * @param params 
+   * @returns 
+   */
   public delNHR(params: Obj) {
     return this.post(`/nurseHandbookRecord/delete`, params)
   }
-  
+  /**
+   * 获取对应表单
+   * @param params 
+   * @returns 
+   */
+  public getFormListNHR(params: Obj) {
+    return this.post(`/nurseHandbook/common/formList?${qs.stringify(params)}`)
+  }
 }
 
 export const nurseHandBookService = new NurseHandBookService()
