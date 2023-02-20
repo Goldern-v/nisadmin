@@ -2,6 +2,7 @@ import styled from "styled-components";
 import React from "react";
 import Zimage from "src/components/Zimage";
 import { Radio, Icon, Input } from "antd";
+import {appStore} from "src/stores";
 const { TextArea } = Input;
 
 interface Props {
@@ -186,77 +187,77 @@ export default function Left(props: Props) {
           </div>
 
           {/* -------疫情防控落实 */}
-          <div className="titleCon">
+          {appStore.HOSPITAL_ID !== 'wh' && <div className="titleCon">
             <div className="titleLeftCon">四、疫情防控落实</div>
-          </div>
-          <div className="itemCon itemCon1">
+          </div>}
+          {appStore.HOSPITAL_ID !== 'wh' && <div className="itemCon itemCon1">
             <div className="itemQuestionCon">
               {/* 选择项 */}
               <Radio.Group
-                value={pageItem.epidemicStatus}
-                disabled
-                buttonStyle="solid"
+                  value={pageItem.epidemicStatus}
+                  disabled
+                  buttonStyle="solid"
               >
                 <span className="problemPro">有无问题：</span>
                 <Radio
-                  value={"0"}
-                  style={{ marginLeft: "20px", marginRight: "30px" }}
+                    value={"0"}
+                    style={{ marginLeft: "20px", marginRight: "30px" }}
                 >
                   无问题
                 </Radio>
                 <Radio
-                  value={"1"}
-                  style={{ marginLeft: "20px", marginRight: "30px" }}
+                    value={"1"}
+                    style={{ marginLeft: "20px", marginRight: "30px" }}
                 >
                   有问题
                 </Radio>
               </Radio.Group>
               {/* //问题详情+附件 */}
               {pageItem.epidemicStatus == "1" && (
-                <div>
-                  <div className="notesCon">
-                    <div className="notesLeftCon">问题详情</div>
-                    <div className="notesRightCon">
-                      <TextArea
-                        rows={4}
-                        readOnly
-                        value={pageItem.epidemicProblem}
-                        autosize
-                        disabled
-                      />
-                    </div>
-                  </div>
-                  <div className="fujian">
-                    <span className="problemPro">附件：</span>
-                    {/* {attachment.map((item: any, itemIndex: number) => ( */}
-                    <div className="imgCon">
-                      {
-                        <Zimage
-                          text={
-                            <span style={{ fontSize: "13px" }}>
-                              <Icon
-                                type="paper-clip"
-                                style={{ fontSize: "13px" }}
-                              />
-                              {
-                                attachment.filter(
-                                  (item: any) => item.type === "2"
-                                ).length
-                              }
-                            </span>
-                          }
-                          list={attachment
-                            .filter((item: any) => item.type === "2")
-                            .map((item: any) => item.path)}
+                  <div>
+                    <div className="notesCon">
+                      <div className="notesLeftCon">问题详情</div>
+                      <div className="notesRightCon">
+                        <TextArea
+                            rows={4}
+                            readOnly
+                            value={pageItem.epidemicProblem}
+                            autosize
+                            disabled
                         />
-                      }
+                      </div>
                     </div>
-                    {/* ))} */}
+                    <div className="fujian">
+                      <span className="problemPro">附件：</span>
+                      {/* {attachment.map((item: any, itemIndex: number) => ( */}
+                      <div className="imgCon">
+                        {
+                          <Zimage
+                              text={
+                                <span style={{ fontSize: "13px" }}>
+                              <Icon
+                                  type="paper-clip"
+                                  style={{ fontSize: "13px" }}
+                              />
+                                  {
+                                    attachment.filter(
+                                        (item: any) => item.type === "2"
+                                    ).length
+                                  }
+                            </span>
+                              }
+                              list={attachment
+                                  .filter((item: any) => item.type === "2")
+                                  .map((item: any) => item.path)}
+                          />
+                        }
+                      </div>
+                      {/* ))} */}
+                    </div>
                   </div>
-                </div>
               )}
             </div>
-          </div>
+          </div>}
         </QuestionItem>
       </ContentCon>
     </Wrapper>
