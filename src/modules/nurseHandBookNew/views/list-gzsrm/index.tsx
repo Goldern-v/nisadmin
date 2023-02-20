@@ -19,7 +19,9 @@ export interface Props {
   options: Obj
 }
 /**是否允许查看 */
-const allowOpen = (status: number) => {
+const allowOpen = (row: Obj) => {
+  const { status, empNo} = row
+  if (authStore.user?.empNo === empNo) return true
   if (authStore.isDepartment) {
     return [2, 1].includes(status)
   }
@@ -78,7 +80,7 @@ export default observer(function (props: Props) {
       render: (text: string, row: Obj) => {
         return (
           <DoCon>
-            <span className={allowOpen(row.status) ? '' : 'disabled'} onClick={() => appStore.history.push(`/nurseHandBookNewForm/detail?id=${row.id}`)}>查看</span>
+            <span className={allowOpen(row) ? '' : 'disabled'} onClick={() => appStore.history.push(`/nurseHandBookNewForm/detail?id=${row.id}`)}>查看</span>
             <span className={allowDel(row.status) ? '' : 'disabled'} onClick={() => { onDel(row.id) }}>删除</span>
           </DoCon>
         )
@@ -88,6 +90,11 @@ export default observer(function (props: Props) {
   /**动态  
    * 创建弹窗 */
   const addModal = createModal(AddModal)
+  useEffect(() => {
+    return () => {
+      addModal.unMount()
+    }
+  }, [appStore.location.pathname])
   /**动态 */
   const [query, setQuery] = useState<Obj>({
     deptCode: '',
@@ -118,7 +125,7 @@ export default observer(function (props: Props) {
     year_no_create_more: () => {
       setQuery({
         ...query,
-        year: moment()
+        year: null
       })
       setAddQuery({
         ...addQuery,
@@ -137,8 +144,7 @@ export default observer(function (props: Props) {
     month_no_create_more: () => {
       setQuery({
         ...query,
-        month: moment().format('M'),
-        year: moment()
+        year: null
       })
       
       setAddQuery({
