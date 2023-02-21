@@ -12,6 +12,13 @@ export const DetailCtxCon: any = styled.div`
     font-size: 18px;
     line-height: 32px;
     font-weight: bold;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    border-radius: 0;
+    :focus {
+      box-shadow: none;
+    }
   }
   .cell-ipt, .cell-ipt.ant-calendar-picker input, .cell-ipt.ant-calendar-picker pre {
     width: 100%;
@@ -23,6 +30,7 @@ export const DetailCtxCon: any = styled.div`
     resize: none;
     &[contentEditable=true] {
       min-height: 176px;
+      white-space: pre-wrap;
     }
     &:focus {
       background: ${(p) => p.theme.$mlc};

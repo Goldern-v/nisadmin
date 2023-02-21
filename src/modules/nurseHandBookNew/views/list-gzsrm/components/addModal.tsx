@@ -30,7 +30,6 @@ export default function (props: Props) {
   const [rules, setRules] = useState<Obj>({})
   useEffect(() => {
     if (visible) {
-      console.log('test-addQuery', addQuery)
       if (addQuery) {
         setRules(Object.keys(addQuery).reduce((prev, cur) => {
           if (ALL_RULE[cur]) {

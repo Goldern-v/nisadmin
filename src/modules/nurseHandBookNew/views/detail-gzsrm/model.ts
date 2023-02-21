@@ -33,9 +33,9 @@ class NurseHandBookRecordModel {
   /**编辑权限 */
   @computed
   get allowEdit() {
-    const { status = '' } = this.detail?.record || {}
+    const { status = '', empNo } = this.detail?.record || {}
     // temporary ok
-    // return [0, -1].includes(status)
+    if (authStore.user?.empNo === empNo) return true
     if (authStore.isDepartment) {
       return [2, 1].includes(status)
     }

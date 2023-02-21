@@ -18,7 +18,7 @@ export default observer(function (props: Props) {
     // 待提交，已撤回
     if (status === 0 || status === -1) {
       return (<>
-        <Button type='primary' onClick={() => model.onCommit('0')}>编辑</Button>
+        {status === -1 && <Button type='primary' onClick={() => model.onCommit('0')}>编辑</Button>}
         <Button type='primary' onClick={() => model.onCommit('2')}>保存</Button>
       </>)
     }
@@ -31,7 +31,7 @@ export default observer(function (props: Props) {
             <Button type='primary' onClick={() => model.onCommit('2')}>保存</Button>
           </>
           :
-        <Button type='primary' onClick={() => model.onCancel()}>撤回</Button>
+          <Button type='primary' onClick={() => model.onCancel()}>撤回</Button>
       )
     }
     // 撤回中
@@ -44,7 +44,13 @@ export default observer(function (props: Props) {
 
     return ''
   }, [model.detail])
-  
+
+  useEffect(() => {
+    return () => {
+      model.auditModal.unMount()
+    }
+  }, [appStore.location.pathname])
+
   useEffect(() => {
     model.init()
     model.ctxRef = ctxRef

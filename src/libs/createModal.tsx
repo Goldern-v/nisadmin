@@ -148,5 +148,8 @@ export default function createModal<
         );
       }
     },
+    unMount() {
+      instance = null
+    }
   };
 }
