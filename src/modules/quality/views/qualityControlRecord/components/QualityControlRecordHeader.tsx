@@ -159,7 +159,7 @@ export default observer(function TopCon(props: any) {
     return "";
   }, [qcCodeList]);
   const qcDeptCon = useCallback(() => {
-    if (isWhyx) {
+    if (isWhyx||appStore.HOSPITAL_ID==='yczyy') {
       return (
         <React.Fragment>
           <span style={{ margin: "0 3px 0 15px" }}>质控人员:</span>
