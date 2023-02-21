@@ -12,7 +12,7 @@ import PlanMonth from './bookGdrm/workPlan/planing/PlanMonth'
 import ManageMonth from './bookGdrm/workPlan/planManage/ManageMonth'
 import { nurseHandBookService } from './services/NurseHandBookService'
 import { Obj } from 'src/libs/types'
-import ListLyrm from './views/list-lyrm'
+// import ListLyrm from './views/list-lyrm'
 import ListGzsrm from './views/list-gzsrm'
 
 /**是否拥有menuList */
@@ -285,7 +285,7 @@ export default function NurseHandBookRouter() {
           component: () => appStore.hisMatch({
             map: {
               gzsrm: <ListGzsrm options={v} />,
-              other: <ListLyrm options={v} />
+              other: null
             }
           }),
           disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
