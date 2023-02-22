@@ -126,7 +126,7 @@ export default observer(function TopCon(props: any) {
   };
   const isWhyx = ["whyx","whhk"].includes(appStore.HOSPITAL_ID);
   const qcCodeCon = useCallback(() => {
-    if (isWhyx||['gzsrm'].includes(appStore.HOSPITAL_ID)) {
+    if (isWhyx||['gzsrm','yczyy'].includes(appStore.HOSPITAL_ID)) {
       return (
         <React.Fragment>
           <span style={{ margin: "0 3px 0 15px" }}>质控表单:</span>
@@ -159,7 +159,7 @@ export default observer(function TopCon(props: any) {
     return "";
   }, [qcCodeList]);
   const qcDeptCon = useCallback(() => {
-    if (isWhyx||appStore.HOSPITAL_ID==='yczyy') {
+    if (isWhyx) {
       return (
         <React.Fragment>
           <span style={{ margin: "0 3px 0 15px" }}>质控人员:</span>
