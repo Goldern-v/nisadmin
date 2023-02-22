@@ -72,6 +72,9 @@ export const DetailCtxCon: any = styled.div`
     }
   }
   /* 打印样式 */
+  pre {
+    white-space: pre-wrap;
+  }
   pre.te-8 {
     min-height: 300px;
   }
@@ -82,6 +85,12 @@ export const DetailCtxCon: any = styled.div`
     pre.title {
       width: auto;
     }
+  }
+  pre.te-150 {
+    min-height: 150px;
+  }
+  pre.te-200 {
+    min-height: 200px;
   }
 
   .ta-l {

@@ -24,3 +24,5 @@ export interface navConfigItem {
 export interface ColumnPropsT extends Obj {
   align?: 'center' | 'left' | 'right' | undefined
 }
+
+export type ChangeOrFocus = React.ChangeEvent<any> | React.FocusEvent<any>

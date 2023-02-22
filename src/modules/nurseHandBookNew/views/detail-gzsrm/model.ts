@@ -87,6 +87,7 @@ class NurseHandBookRecordModel {
   };
   @action
   public init = async (cb?: Function) => {
+    this.configFn = null
     const { id } = appStore.queryObj;
     this.id = id;
     this.getDetail();
@@ -99,7 +100,7 @@ class NurseHandBookRecordModel {
   public onCommit = (status: string) => {
     let detail = this.editorData;
     if (typeof this.editorData !== "string") {
-      // // 对富文本的数据做转义
+      // 对富文本的数据做转义
       // data.detail = data.detail.replace(/\n\r/g, '')
       detail = JSON.stringify(detail);
     }
@@ -162,6 +163,15 @@ class NurseHandBookRecordModel {
         .con--a4 {
           min-height: 0px !important;
           width: 100% !important;
+          margin: 0;
+          word-break: break-all;
+        }
+        table {
+          table-layout: fixed
+        }
+        tr, pre {
+          page-break-inside: auto;
+          page-break-after: auto
         }
         .title {
           border: none;
