@@ -840,6 +840,9 @@ export function getFun(context: any) {
         delete newItem.id
         newItem['班次'] = data.type ? data.type : newItem['班次']
         newItem[data.signName] = data.sign ? authStore.user?.empName : ""
+        if (appStore.HOSPITAL_ID === 'whyx' && data.sign) {
+          newItem['护士长签名'] = '';
+        }
         // newItem[data.signName] = data.sign ? item[data.signName] : ""
         return {
           ...newItem,
