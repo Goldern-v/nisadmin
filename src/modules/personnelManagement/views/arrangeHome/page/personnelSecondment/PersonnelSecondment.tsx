@@ -53,7 +53,7 @@ export default function PersonnelSecondment() {
     },
     ...appStore.hisMatch({
       map: {
-        'qhwy,dglb,dghm': [
+        'qhwy,dglb': [
           {
             title: "护士总数",
             dataIndex: "nurseNum",

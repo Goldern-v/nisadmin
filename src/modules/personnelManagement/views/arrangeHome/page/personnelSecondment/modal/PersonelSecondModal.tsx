@@ -13,7 +13,7 @@ import { globalModal } from 'src/global/globalModal'
 
 const Option = Select.Option
 /**青海借调 */
-const IS_QHWY = ['qhwy', 'dglb', 'dghm'].includes(appStore.HOSPITAL_ID)
+const IS_QHWY = ['qhwy', 'dglb'].includes(appStore.HOSPITAL_ID)
 export interface Props extends ModalComponentProps {
   /** 表单提交成功后的回调 */
   onOkCallBack?: () => void,
