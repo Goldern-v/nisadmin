@@ -24,7 +24,7 @@ export default observer(function (props: Props) {
   }
 
   return (
-    <Wrapper ref={model.ctxRef}  style={{ pointerEvents: model.allowEdit ? 'auto' : 'none' }}>
+    <Wrapper className='con--a4' ref={model.ctxRef} style={{ pointerEvents: model.allowEdit ? 'auto' : 'none' }}>
       <table>
         <colgroup>
           <col width='20%' />
@@ -74,7 +74,7 @@ export default observer(function (props: Props) {
           </tr>
           <tr>
             <td colSpan={4}>
-              <TextArea rows={8} className='cell-ipt te-8' value={model.editorData?.v4} onChange={(e) => onChange(e, 'v4')}></TextArea>
+              <TextArea autosize={{minRows: 20}} className='cell-ipt te-8' value={model.editorData?.v4} onChange={(e) => onChange(e, 'v4')}></TextArea>
             </td>
           </tr>
         </tbody>

@@ -150,13 +150,18 @@ class NurseHandBookRecordModel {
   public onPrint = () => {
     setTimeout(() => {
       this.isPrint = true
+      // preview(this.ctxRef.current, {
       print(this.ctxRef.current, {
         injectGlobalCss: true,
         scanStyles: false,
-        direction: "vertical",
+        // direction: "vertical",
         css: `
         @page {
           margin: 0;
+        }
+        .con--a4 {
+          min-height: 0px !important;
+          width: 100% !important;
         }
         .title {
           border: none;

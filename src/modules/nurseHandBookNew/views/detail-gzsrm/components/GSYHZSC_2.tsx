@@ -53,24 +53,24 @@ export default observer(function (props: Props) {
               return (
                 <>
                   <tr key={i}>
-                    {v.title !== undefined && <td rowSpan={4} key={`${i}-0`}>
-                      <TextArea className='cell-ipt' rows={8} value={v.title} onChange={(e) => onChange(e, { index: i, key: 'title' })}></TextArea>
+                    {v.title !== undefined && <td rowSpan={4} className='ta-l'>
+                      <TextArea className='cell-ipt' autosize={{minRows: 4}} value={v.title} onChange={(e) => onChange(e, { index: i, key: 'title' })}></TextArea>
                     </td>}
-                    <td key={`${i}-1`}>{i % 4 + 1}</td>
-                    <td key={`${i}-2`}>
-                      <TextArea className='cell-ipt' value={v.v1} onChange={(e) => onChange(e, { index: i, key: 'v1' })}></TextArea>
+                    <td>{i % 4 + 1}</td>
+                    <td className='ta-l'>
+                      <TextArea className='cell-ipt' autosize={{minRows: 1}} value={v.v1} onChange={(e) => onChange(e, { index: i, key: 'v1' })}></TextArea>
                     </td>
-                    <td key={`${i}-3`}>
+                    <td className='ta-l'>
                       <Input className='cell-ipt' value={v.v2} onChange={(e) => onChange(e, { index: i, key: 'v2' })}></Input>
                     </td>
-                    <td key={`${i}-4`}>
+                    <td className='ta-l'>
                       <Input className='cell-ipt' value={v.v3} onChange={(e) => onChange(e, { index: i, key: 'v3' })}></Input>
                     </td>
-                    <td key={`${i}-5`}>
+                    <td className='ta-l'>
                       <Input className='cell-ipt' value={v.v4} onChange={(e) => onChange(e, { index: i, key: 'v4' })}></Input>
                     </td>
-                    <td key={`${i}-6`}>
-                      <TextArea className='cell-ipt' value={v.v5} onChange={(e) => onChange(e, { index: i, key: 'v5' })}></TextArea>
+                    <td className='ta-l'>
+                      <TextArea className='cell-ipt' autosize={{minRows: 1}} value={v.v5} onChange={(e) => onChange(e, { index: i, key: 'v5' })}></TextArea>
                     </td>
                   </tr>
                 </>
