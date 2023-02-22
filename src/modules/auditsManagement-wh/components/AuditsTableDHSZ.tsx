@@ -282,7 +282,7 @@ export default observer(function AuditsTableDHSZ(props: Props) {
           emitter.emit("refreshNurseAuditTable");
         },
       });
-    } else if (showType == "qc" || showType == "qcTwoLevel") {
+    } else if (showType == "qc" || showType == "qcTwoLevel" || showType == "qcOneLevel") {
       groupsHlbModal.show({
         selectedRows,
         getTableData: () => {
