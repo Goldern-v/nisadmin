@@ -285,7 +285,7 @@ export default function NurseHandBookRouter() {
           component: () => appStore.hisMatch({
             map: {
               gzsrm: <ListGzsrm options={v} />,
-              // other: <ListLyrm options={v} />
+              other: null
             }
           }),
           disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'

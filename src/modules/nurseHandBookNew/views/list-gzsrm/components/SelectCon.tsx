@@ -26,8 +26,7 @@ export default observer(function (props: Props) {
       setQuery({
         ...query,
         startTime: d1 ? d1 : null,
-        endTime: d2 ? d1 : null,
-
+        endTime: d2 ? d2 : null,
       })
       return
     }
@@ -66,7 +65,6 @@ export default observer(function (props: Props) {
         <Option key={0} value={''}>全部</Option>
         {
           authStore.deptList.map(v => (
-
             <Option key={v.code} value={v.code}>{v.name}</Option>
           ))
         }

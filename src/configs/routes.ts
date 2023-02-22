@@ -936,7 +936,7 @@ const routes: RouteItem[] = [
     {
       map: {
         gzsrm: detailGzsrm,
-        // other: detailLyrm
+        other: null
       }
     })
     , layouts.MainLayout),

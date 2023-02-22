@@ -1,17 +1,35 @@
 import styled from "styled-components";
-
+const TEXT_SIZE = '14px'
 export const DetailCtxCon: any = styled.div`
   background: #fff;
   padding: 15px;
   margin: 0px auto;
-  font-size: 16px;
-  line-height: 24px;
+  white-space: pre-wrap;
+  * {
+    font-size: ${TEXT_SIZE};
+    line-height: 24px;
+  }
+  &.con--a4 {
+    width: 780px;
+    min-height: 1080px;
+  }
+  .ant-input {
+    font-size: ${TEXT_SIZE};
+  }
+  .title-con {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    input.title {
+      width: 100px;
+    }
+  }
   .title {
     margin-bottom: 20px;
     text-align: center;
     font-size: 18px;
-    line-height: 32px;
-    font-weight: bold;
+    line-height: 40px;
+    font-weight: 800;
     border-left: none;
     border-right: none;
     border-top: none;
@@ -29,19 +47,20 @@ export const DetailCtxCon: any = styled.div`
     border-radius: 0;
     resize: none;
     &[contentEditable=true] {
-      min-height: 176px;
+      min-height: 200px;
       white-space: pre-wrap;
+      &:not(:focus):empty::before {
+        content: attr(data-placeholder);
+        color: #888;
+      }
     }
     &:focus {
       background: ${(p) => p.theme.$mlc};
       box-shadow: none;
     }
   }
-  
-  .ta-l {
-    text-align: left;
-  }
   table {
+    width: 100%;
     border: 1px solid #000;
     margin: auto;
     td,th {
@@ -52,10 +71,29 @@ export const DetailCtxCon: any = styled.div`
       line-height: 32px;
     }
   }
+  /* 打印样式 */
   pre.te-8 {
-    min-height: 200px;
+    min-height: 300px;
   }
-  .ant-input {
-    font-size: 16px;
+  pre.title {
+    border: none;
+  }
+  .title-con {
+    pre.title {
+      width: auto;
+    }
+  }
+
+  .ta-l {
+    text-align: left;
+  }
+  .ta-c {
+    text-align: center;
+  }
+  .fw-b {
+    font-weight: bold;
+  }
+  .f-s {
+    font-size: 13px;
   }
 `

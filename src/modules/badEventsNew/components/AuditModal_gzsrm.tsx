@@ -49,6 +49,12 @@ export default observer(function AduitModal(props: Props) {
   //   }
   // }, [visible])
   const handleOkBtn = () => {
+    if(nodeCode === 'nursing_minister_audit') {
+      if(auditInfo.eventLevel === '' || auditInfo.eventLevel === null) {
+        message.error("事件等级不能为空！");
+        return false;
+      }
+    }
     setUserCheckVisible(true)
   }
   const handleUserCheckOk = (userAudit: any) => {

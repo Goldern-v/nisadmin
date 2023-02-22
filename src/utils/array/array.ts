@@ -39,3 +39,7 @@ export function itemToArray(count: number, callback: Cb) {
   }
   return arr
 }
+/**创建数组 */
+export const createArr = (len: number, cb: (v: any, k: number) => any) => {
+  return Array.from(Array(len), cb)
+}
