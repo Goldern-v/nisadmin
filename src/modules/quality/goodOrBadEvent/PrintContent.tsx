@@ -59,7 +59,7 @@ const PrintContent = (props: Props) => {
 	const [chartsImg6, setChartsImg6]: any = useState('')
 	const [chartsImg7, setChartsImg7]: any = useState('')
 	const [chartsImg8, setChartsImg8]: any = useState('')
-	
+
 	const [gridLeft, setGridLeft] = useState('12%');
 	const [gridRight, setGridRight] = useState('12%');
 	const [gridBottom, setgridBottom] = useState('66px');
@@ -248,7 +248,7 @@ const PrintContent = (props: Props) => {
 		}
 		let dataList = [prevNum, currentNum]
 		let XaxisList = [`${Number(wholePrintData.master.belongsYear) - 1}`, `${wholePrintData.master.belongsYear}`]
-		
+
 		return {
 			title: {
 				text: '图1 临床护理质量指标对比（发生例数）',
@@ -288,7 +288,7 @@ const PrintContent = (props: Props) => {
 				},
 			]
 		}
-		
+
 	}
 
 	// table数据
@@ -372,7 +372,7 @@ const PrintContent = (props: Props) => {
 							}else{
 								<span></span>
 							}
-							
+
 						},
 						onCell(record: any, rowIndex: any) {
 							if (!record.isRate) {
@@ -421,11 +421,11 @@ const PrintContent = (props: Props) => {
 								}else{
 									return <span>0%</span>
 								}
-								
+
 							}else{
 								<span></span>
 							}
-							
+
 						},
 						onCell(record: any, rowIndex: any) {
 							if (!record.isRate) {
@@ -831,7 +831,7 @@ const PrintContent = (props: Props) => {
 
 		return {
 			title: {
-				text: '图8 工作量及管理质量指标对比（发生率）',
+				text: '图8 工作量及管理质量指标对比（例数）',
 				...getEchartsTitle,
 				subtext: ' ',
 			},
@@ -846,7 +846,7 @@ const PrintContent = (props: Props) => {
 			},
 			xAxis: [
 				{
-					data: wholePrintData.chartMap['图八 工作量及管理质量指标对比（发生率）'][0],
+					data: wholePrintData.chartMap['图八 工作量及管理质量指标对比（例数）'][0],
 					...xAxisSettingNoWrap,
 				}
 			],
@@ -858,13 +858,13 @@ const PrintContent = (props: Props) => {
 			series: [
 				{
 					name: legendData[0],
-					...yAxisSettingRate,
-					data: wholePrintData.chartMap['图八 工作量及管理质量指标对比（发生率）'][2]
+					...yAxisSetting,
+					data: wholePrintData.chartMap['图八 工作量及管理质量指标对比（例数）'][2]
 				},
 				{
 					name: legendData[1],
-					...yAxisSettingRate,
-					data: wholePrintData.chartMap['图八 工作量及管理质量指标对比（发生率）'][1]
+					...yAxisSetting,
+					data: wholePrintData.chartMap['图八 工作量及管理质量指标对比（例数）'][1]
 				},
 			]
 		}
@@ -978,7 +978,7 @@ const PrintContent = (props: Props) => {
 			{(isPrint || !authStore.isDepartment) && <p className='print-page__ptext print-page__ipt' style={{ 'whiteSpace': 'pre-wrap' }}>{textArea5_1}</p>}
 
 		</div>
-		
+
 	</Wrapper>
 }
 export default PrintContent

@@ -14,7 +14,7 @@ class DataWholeAysi {
     '图五 临床护理质量指标对比（发生率）':[],
     '图六 工作量及管理质量指标对比（发生率）':[],
     '图七 工作量及管理质量指标对比（发生率）':[],
-    '图八 工作量及管理质量指标对比（发生率）':[]
+    '图八 工作量及管理质量指标对比（例数）':[]
 
   } as any
   @observable public chartMapKey = [] as any; //chartMap的key值组成的数组
