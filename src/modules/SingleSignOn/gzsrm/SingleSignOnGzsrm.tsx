@@ -23,7 +23,8 @@ export default withRouter(function SingleSignOnGzsrm(props: any) {
         appCode: "HLTLXT",
         appName: "护理管理系统",
         autoLogin_token: searchObj.autoLogin_token,
-        tradeCode: "nursing_ssoLogin_2"
+        tradeCode: "nursing_ssoLogin_2",
+        v_token: searchObj.token || searchObj.ticket || '',
       }
     }
     singleSignOnGzsrmServices.autoLogin(params)
