@@ -71,19 +71,27 @@ export default observer(function Table() {
         );
       }
     },
-    {
-      title: "疫情防控落实",
-      dataIndex: "epidemicStatus",
-      width: 250,
-      align: "left",
-      render(status: string, record: any) {
-        return status == "0" ? (
-          "无问题"
-        ) : (
-          <span style={{ color: "red" }}>有问题({record.epidemicProblem})</span>
-        );
+    ...appStore.hisMatch({
+      map:{
+        wh: [],
+        other:[
+          {
+            title: "疫情防控落实",
+            dataIndex: "epidemicStatus",
+            width: 250,
+            align: "left",
+            hide: ["wh"].includes(appStore.HOSPITAL_ID),
+            render(status: string, record: any) {
+              return status == "0" ? (
+                  "无问题"
+              ) : (
+                  <span style={{ color: "red" }}>有问题({record.epidemicProblem})</span>
+              );
+            }
+          }
+        ]
       }
-    },
+    }),
     {
       title: "状态",
       dataIndex: "nextNodePendingName",
