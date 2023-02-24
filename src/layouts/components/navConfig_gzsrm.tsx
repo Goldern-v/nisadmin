@@ -53,7 +53,12 @@ const baseConfig: navConfigItem[] = [
         icon: require("../images/menu-icon/护理查房@2x.png")
       },
       {
-        name: "护士长手册",
+        name: "护士长手册--旧",
+        path: "/nurseHandBook",
+        icon: require("../images/menu-icon/护理查房@2x.png"),
+      },
+      {
+        name: "护士长手册--新",
         path: "/nurseHandBookNew",
         icon: require("../images/menu-icon/护理查房@2x.png"),
       },
