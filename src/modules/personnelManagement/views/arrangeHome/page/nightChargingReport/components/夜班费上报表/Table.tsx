@@ -22,6 +22,11 @@ export default observer(function Table(props: Props) {
   const data = starRatingReportEditModel.getSectionData(sectionId);
   const list = data.list || []
   const remark = data.remark || ''
+  const sumTotalMoney = data.sumTotalMoney || ''
+  const sumTotalNum = data.sumTotalNum || ''
+  const sumTotalWanbaNum = data.sumTotalWanbaNum || ''
+  const sumTotalZaobaNum = data.sumTotalZaobaNum || ''
+  const sumTotalZbNum = data.sumTotalZbNum || ''
   const otherObj = data.list2 || {}
 
   const updateOtherObj = (key: string, value: any) => {
@@ -45,7 +50,7 @@ export default observer(function Table(props: Props) {
           fqfybjy: configFqfybjy.getTable(list, otherObj, updateOtherObj),
           'sdlj,nfsd,qzde': configSdlj.getTable(list, otherObj, updateOtherObj),
           //暂时隐藏20210926
-          gzsrm: configGzsrm.getTable(list,remark),
+          gzsrm: configGzsrm.getTable(list,remark,sumTotalMoney,sumTotalNum,sumTotalWanbaNum,sumTotalZaobaNum,sumTotalZbNum),
           default: configDefault.getTable(list)
         },
         vague: true
