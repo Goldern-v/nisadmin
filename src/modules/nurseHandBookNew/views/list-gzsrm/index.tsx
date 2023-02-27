@@ -28,10 +28,10 @@ const allowOpen = (row: Obj) => {
   return true
 }
 /**是否允许删除 */
-const allowDel = (status: number) => {
-  if (authStore.isDepartment) {
-    return false
-  }
+const allowDel = (row: Obj) => {
+  const { status, empNo} = row
+  if (authStore.user?.empNo !== empNo) return false
+  if (authStore.isDepartment) return true
   return [0, -1].includes(status)
 }
 
@@ -81,7 +81,7 @@ export default observer(function (props: Props) {
         return (
           <DoCon>
             <span className={allowOpen(row) ? '' : 'disabled'} onClick={() => appStore.history.push(`/nurseHandBookNewForm/detail?id=${row.id}`)}>查看</span>
-            <span className={allowDel(row.status) ? '' : 'disabled'} onClick={() => { onDel(row.id) }}>删除</span>
+            <span className={allowDel(row) ? '' : 'disabled'} onClick={() => { onDel(row.id) }}>删除</span>
           </DoCon>
         )
       }

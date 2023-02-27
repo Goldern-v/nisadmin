@@ -30,3 +30,16 @@ export function getVarType(obj: any): VarType {
     .call(obj)
     .replace(/^\[object (\S+)\]$/, "$1") as VarType;
 }
+/**
+ * 创建 v*属性的对象 
+ * @param count 对象属性个数
+ * @param defVal 初始值
+ * @returns 
+ */
+export const createObjV = function(count: number, defVal = {}) {
+  let newObj: any = {}
+  for (let i = 1; i <= count; i++) {
+    newObj[`v${i}`] = defVal[`v${i}`] || '' 
+  }
+  return newObj
+}

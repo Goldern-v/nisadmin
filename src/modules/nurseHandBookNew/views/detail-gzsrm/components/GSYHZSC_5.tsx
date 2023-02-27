@@ -56,7 +56,7 @@ export default observer(function (props: Props) {
           <tr>
             <td>参加人员</td>
             <td colSpan={3}>
-              <Input className='cell-ipt' value={model.editorData?.v2} onChange={(e) => onChange(e, 'v2')}></Input>
+            <TextArea autosize={{minRows: 1}} className='cell-ipt' value={model.editorData?.v2} onChange={(e) => onChange(e, 'v2')}></TextArea> 
             </td>
           </tr>
 

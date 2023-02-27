@@ -18,7 +18,7 @@ export default observer(function (props: Props) {
     // 待提交，已撤回
     if (status === 0 || status === -1) {
       return (<>
-        {status === -1 && <Button type='primary' onClick={() => model.onCommit('0')}>编辑</Button>}
+        {<Button type='primary' onClick={() => model.onCommit('0')}>{status === 0 ? '暂存' : '编辑'}</Button>}
         <Button type='primary' onClick={() => model.onCommit('2')}>保存</Button>
       </>)
     }
