@@ -171,11 +171,22 @@ class StarRatingReportEditModel {
   async initData(query?: any) {
     let data;
     let remark;
+    let sumTotalMoney;
+    let sumTotalNum;
+    let sumTotalWanbaNum;
+    let sumTotalZaobaNum;
+    let sumTotalZbNum;
+
     //暂时隐藏20210926
     if (['gzsrm'].includes(appStore.HOSPITAL_ID)) {
       let res = await starRatingReportService.getSgyReport(query.id)
       data = res.data.contentSgyList
-      remark = res.data.remark || '护理信息系统无护工/工人信息，请手填输入姓名及个数。'
+      remark = res.data.remark || '表中个数为班次数，即实际上的班次数（未乘系数），标准夜班费中的「个」指的是乘完系数后，助班费用按定额计划，统一为60元/个。'
+      sumTotalMoney = res.data.sumTotalMoney
+      sumTotalNum = res.data.sumTotalNum
+      sumTotalWanbaNum = res.data.sumTotalWanbaNum
+      sumTotalZaobaNum = res.data.sumTotalZaobaNum
+      sumTotalZbNum = res.data.sumTotalZbNum
       this.gzsrmReport = res.data
     }else if (['fqfybjy'].includes(appStore.HOSPITAL_ID)) {
       let res = await starRatingReportService.getReportFQ(query)
@@ -214,6 +225,11 @@ class StarRatingReportEditModel {
       this.getSectionData("夜班费上报表")!.list = data
       if(['gzsrm'].includes(appStore.HOSPITAL_ID)){
         this.getSectionData("夜班费上报表")!.remark = remark
+        this.getSectionData("夜班费上报表")!.sumTotalMoney = sumTotalMoney
+        this.getSectionData("夜班费上报表")!.sumTotalNum = sumTotalNum
+        this.getSectionData("夜班费上报表")!.sumTotalWanbaNum = sumTotalWanbaNum
+        this.getSectionData("夜班费上报表")!.sumTotalZaobaNum = sumTotalZaobaNum
+        this.getSectionData("夜班费上报表")!.sumTotalZbNum = sumTotalZbNum
       }
     }
   }

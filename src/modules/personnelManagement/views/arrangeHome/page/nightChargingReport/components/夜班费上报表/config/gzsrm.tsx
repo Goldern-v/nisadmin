@@ -249,15 +249,15 @@ const item = () => {
   return newItem
 }
 
-const getTitle = (list: any) => {
-  if (!list || JSON.stringify(list) == '{}' || list.length <= 0) return 0;
-  let total = list.reduce((total: number, item: any, index: number) => {
-    return total = total + parseFloat(item.totalMoney)
-  }, 0);
-  return parseFloat(total).toFixed(2);
-}
+// const getTitle = (list: any) => {
+//   if (!list || JSON.stringify(list) == '{}' || list.length <= 0) return 0;
+//   let total = list.reduce((total: number, item: any, index: number) => {
+//     return total = total + parseFloat(item.totalMoney)
+//   }, 0);
+//   return parseFloat(total).toFixed(2);
+// }
 
-const getTable = (list: any[],remark:any) => {
+const getTable = (list: any[],remark:any, sumTotalMoney:any, sumTotalNum:any, sumTotalWanbaNum:any, sumTotalZaobaNum:any, sumTotalZbNum:any) => {
   /**计算班次个数合计 */
   const calcCount = useMemo(() => {
     if (!(list && list.length)) return 0
@@ -269,19 +269,31 @@ const getTable = (list: any[],remark:any) => {
     <div>
       <table>
         <colgroup>
-          <col width="120" />
-          <col width="120" />
+          <col />
+          <col />
+          <col />
+          <col width={60}/>
+          <col width={60} />
+          <col width={60} />
+          <col width={60} />
+          <col />
+          <col />
+          <col />
         </colgroup>
         <tbody>
           <tr className="header">
-            <td>序号</td>
-            <td>姓名</td>
-            <td>职称</td>
-            <td>数量（个）</td>
-            <td>助班</td>
-            <td style={{width:180}}>标准</td>
-            <td>合计金额(元)</td>
-            <td>认可签名</td>
+            <td rowSpan={2}>序号</td>
+            <td rowSpan={2}>姓名</td>
+            <td rowSpan={2}>职称</td>
+            <td rowSpan={2}>晚夜班</td>
+            <td rowSpan={2}>早8-晚8</td>
+            <td rowSpan={2}>晚8-早8</td>
+            <td rowSpan={2}>助班</td>
+            <td rowSpan={2} style={{width:180}}>夜班费标准</td>
+            <td rowSpan={2}>合计金额(元)</td>
+            <td rowSpan={2}>认可签名</td>
+          </tr>
+          <tr className="header">
           </tr>
           {list.map((item, index) => (
             <tr key={index}>
@@ -289,6 +301,8 @@ const getTable = (list: any[],remark:any) => {
               <td style={{ textAlign: "center" }}>{item.empName}</td>
               <td style={{ textAlign: "center" }}>{item.newTitle}</td>
               <td style={{ textAlign: "center" }}>{item.num}</td>
+              <td style={{ textAlign: "center" }}>{item.zaobaNum}</td>
+              <td style={{ textAlign: "center" }}>{item.wanbaNum}</td>
               <td style={{ textAlign: "center" }}>{item.zbNum}</td>
               <td style={{ textAlign: "center",width:180 }}>{item.standard}</td>
               <td style={{ textAlign: "center" }}>{item.totalMoney}</td>
@@ -296,13 +310,20 @@ const getTable = (list: any[],remark:any) => {
             </tr>
           ))}
           <tr>
-            <td colSpan={3}>班次个数合计</td>
-            <td colSpan={2}>{calcCount}</td>
+            <td colSpan={3}>合计</td>
+            <td colSpan={1}>{sumTotalNum || 0}</td>
+            <td colSpan={1}>{sumTotalZaobaNum || 0}</td>
+            <td colSpan={1}>{sumTotalWanbaNum || 0}</td>
+            <td colSpan={1}>{sumTotalZbNum || 0}</td>
             <td>金额合计</td>
-            <td className="table-gzsrm-total" colSpan={2}>{getTitle(list)}</td>
+            <td colSpan={1}>{sumTotalMoney || 0}</td>
+            <td></td>
           </tr>
           <tr>
-            <td colSpan={8} className="table-gzsrm-total">备注：{remark || '护理信息系统无护工/工人信息，请手填输入姓名及个数。'}</td>
+            <td colSpan={10} className="table-gzsrm-total">
+              合计金额 = 晚夜班*1+(早8-晚8)*0.5+(晚8-早8)*1.5]*班费标准+助班（一个助班定额60元）<br/>
+              说明：{remark}
+            </td>
           </tr>
         </tbody>
       </table>
