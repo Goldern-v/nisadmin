@@ -273,6 +273,13 @@ export default observer(function (props: Props) {
             pageSize: query.pageSize,
             total,
           }}
+          onChange={(pagination) => {
+            setQuery({
+              ...query,
+              pageNum:pagination.current,
+              pageSize:pagination.pageSize,
+            })
+          }}
         />
       </PageContainer>
       <addModal.Component />
