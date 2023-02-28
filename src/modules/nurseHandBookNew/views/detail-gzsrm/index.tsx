@@ -19,7 +19,7 @@ export default observer(function (props: Props) {
     if (status === 0 || status === -1) {
       return (<>
         {<Button type='primary' onClick={() => model.onCommit('0')}>{status === 0 ? '暂存' : '编辑'}</Button>}
-        <Button type='primary' onClick={() => model.onCommit('2')}>保存</Button>
+        <Button type='primary' onClick={() => model.onCommit('2')}>提交</Button>
       </>)
     }
     // 已提交
@@ -55,7 +55,11 @@ export default observer(function (props: Props) {
     model.init()
     model.ctxRef = ctxRef
   }, [appStore.queryObj])
-
+  useEffect(() => {
+    return () => {
+      model.reset()
+    }
+  }, [])
   return (
     <Wrapper>
       <Spin style={{ height: '100%' }} spinning={model.loading}>

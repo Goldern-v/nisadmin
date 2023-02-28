@@ -26,7 +26,7 @@ class NurseHandBookRecordModel {
   @observable public auditModal: any = null
   @observable public isPrint: boolean = false
   @observable public ctxRef: any = null
-  
+
   constructor() {
     this.auditModal = createModal(auditModal)
   }
@@ -67,8 +67,8 @@ class NurseHandBookRecordModel {
         }
         // 初始化新建的detail, title, time
         if (config[menuCode]) {
-          this.configFn = 
-          config[menuCode]
+          this.configFn =
+            config[menuCode]
           this.editorTime = time ? moment(time) : '';
           this.editorTitle = title;
         } else {
@@ -92,6 +92,14 @@ class NurseHandBookRecordModel {
     this.id = id;
     this.getDetail();
   };
+  /**重置 */
+  public reset = () => {
+    this.configFn = null
+    this.id = "";
+    this.editorData = "";
+    this.editorTitle = null;
+    this.editorTime = null;
+  }
 
   /**
    * 保存状态

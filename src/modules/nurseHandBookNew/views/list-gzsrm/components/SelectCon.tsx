@@ -21,6 +21,7 @@ export interface Props {
 export default observer(function (props: Props) {
   const { query, openCreate, setQuery, title } = props
   const changeQuery = (e: any, key: string) => {
+    console.log('test-1', 1)
     if (key === 'date') {
       const [d1, d2] = e
       setQuery({

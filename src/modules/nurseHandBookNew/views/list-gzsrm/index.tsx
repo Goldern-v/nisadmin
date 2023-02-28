@@ -20,7 +20,7 @@ export interface Props {
 }
 /**是否允许查看 */
 const allowOpen = (row: Obj) => {
-  const { status, empNo} = row
+  const { status, empNo } = row
   if (authStore.user?.empNo === empNo) return true
   if (authStore.isDepartment) {
     return [2, 1].includes(status)
@@ -29,7 +29,7 @@ const allowOpen = (row: Obj) => {
 }
 /**是否允许删除 */
 const allowDel = (row: Obj) => {
-  const { status, empNo} = row
+  const { status, empNo } = row
   if (authStore.user?.empNo !== empNo) return false
   if (authStore.isDepartment) return true
   return [0, -1].includes(status)
@@ -39,54 +39,6 @@ const allowDel = (row: Obj) => {
 export default observer(function (props: Props) {
   const { options } = props
 
-  const defColumns: any[] = [
-    {
-      title: '序号',
-      align: 'center',
-      dataIndex: '',
-      render: (text: string, row: Obj, index: number) => index + 1
-    },
-    {
-      title: '标题',
-      align: 'center',
-      dataIndex: 'title'
-    },
-    {
-      title: '科室',
-      align: 'center',
-      dataIndex: 'deptName'
-    },
-    {
-      title: '状态',
-      align: 'center',
-      dataIndex: 'status',
-      render(text: number, row: Obj) {
-        const cur = STATUS_LIST.find(v => v.value === text)
-        return <span style={{color: cur?.color}}>{cur?.label || row.statusDesc}</span>
-      }
-    },
-    {
-      title: '创建时间',
-      align: 'center',
-      dataIndex: 'createdTime'
-    },
-    {
-      title: '创建人',
-      align: 'center',
-      dataIndex: 'empName'
-    },
-    {
-      title: '操作',
-      render: (text: string, row: Obj) => {
-        return (
-          <DoCon>
-            <span className={allowOpen(row) ? '' : 'disabled'} onClick={() => appStore.history.push(`/nurseHandBookNewForm/detail?id=${row.id}`)}>查看</span>
-            <span className={allowDel(row) ? '' : 'disabled'} onClick={() => { onDel(row.id) }}>删除</span>
-          </DoCon>
-        )
-      }
-    },
-  ]
   /**动态  
    * 创建弹窗 */
   const addModal = createModal(AddModal)
@@ -111,9 +63,57 @@ export default observer(function (props: Props) {
   })
   const [total, setTotal] = useState(0)
   const [tableData, setTableData] = useState([])
-  const [columns, setColumns] = useState(defColumns)
+  const [columns, setColumns] = useState<any[]>([])
   const [loading, setLoading] = useState(false)
-
+  const defColumns: any[] = [
+    {
+      title: '序号',
+      align: 'center',
+      dataIndex: '',
+      render: (text: string, row: Obj, index: number) => index + 1
+    },
+    {
+      title: '标题',
+      align: 'center',
+      dataIndex: 'title'
+    },
+    {
+      title: '科室',
+      align: 'center',
+      dataIndex: 'deptName'
+    },
+    {
+      title: '状态',
+      align: 'center',
+      dataIndex: 'status',
+      render(text: number, row: Obj) {
+        const cur = STATUS_LIST.find(v => v.value === text)
+        return <span style={{ color: cur?.color }}>{cur?.label || row.statusDesc}</span>
+      }
+    },
+    ...columns,
+    {
+      title: '创建时间',
+      align: 'center',
+      dataIndex: 'createdTime'
+    },
+    {
+      title: '创建人',
+      align: 'center',
+      dataIndex: 'empName'
+    },
+    {
+      title: '操作',
+      render: (text: string, row: Obj) => {
+        return (
+          <DoCon>
+            <span className={allowOpen(row) ? '' : 'disabled'} onClick={() => appStore.history.push(`/nurseHandBookNewForm/detail?id=${row.id}`)}>查看</span>
+            <span className={allowDel(row) ? '' : 'disabled'} onClick={() => onDel(row.id)}>删除</span>
+          </DoCon>
+        )
+      }
+    },
+  ]
   /**
    * 动态  
    * 初始化设置  
@@ -131,14 +131,13 @@ export default observer(function (props: Props) {
         ...addQuery,
         year: moment()
       })
-      const newColumns = [...defColumns]
-      newColumns.splice(3, 0, ...[
+      const newColumns = [
         {
           title: '年份',
           align: 'center',
           dataIndex: 'year'
         },
-      ])
+      ]
       setColumns(newColumns)
     },
     month_no_create_more: () => {
@@ -146,14 +145,12 @@ export default observer(function (props: Props) {
         ...query,
         year: null
       })
-      
       setAddQuery({
         ...addQuery,
         month: moment().format('M'),
         year: moment()
       })
-      const newColumns = [...defColumns]
-      newColumns.splice(3, 0, ...[
+      const newColumns = [
         {
           title: '年份',
           align: 'center',
@@ -164,7 +161,7 @@ export default observer(function (props: Props) {
           align: 'center',
           dataIndex: 'month'
         },
-      ])
+      ]
       setColumns(newColumns)
     },
     no_validate_create_more: () => {
@@ -174,14 +171,13 @@ export default observer(function (props: Props) {
         startTime,
         endTime,
       })
-      const newColumns = [...defColumns]
-      newColumns.splice(3, 0, ...[
+      const newColumns = [
         {
           title: '日期',
           align: 'center',
           dataIndex: 'time'
         },
-      ])
+      ]
       setColumns(newColumns)
     },
   }
@@ -266,7 +262,7 @@ export default observer(function (props: Props) {
         <BaseTable
           surplusHeight={250}
           dataSource={tableData}
-          columns={columns}
+          columns={defColumns}
           loading={loading}
           pagination={{
             current: query.pageNum,
@@ -276,8 +272,8 @@ export default observer(function (props: Props) {
           onChange={(pagination) => {
             setQuery({
               ...query,
-              pageNum:pagination.current,
-              pageSize:pagination.pageSize,
+              pageNum: pagination.current,
+              pageSize: pagination.pageSize,
             })
           }}
         />
