@@ -106,6 +106,7 @@ export const DetailCtxCon: any = styled.div`
   .date-con {
     display: flex;
     justify-content: flex-end;
+    align-items: center;
     width: 140px;
     margin-left: auto;
   }
@@ -126,7 +127,7 @@ export const DetailCtxCon: any = styled.div`
     }
   }
   pre.te-60 {
-    min-height: 60px;
+    min-height: 56px;
   }
   pre.te-150 {
     min-height: 150px;

@@ -18,7 +18,7 @@ import { specialModule } from './routerConfig/specialModule'
 
 import demo1 from "src/demo1";
 import dailyNightRoundsSummaryDetail from 'src/modules/quality/views/dailyNightRoundsSummary/detail'
-// import detailLyrm from 'src/modules/nurseHandBookNew/views/detail-lyrm'
+import detailLyrm from 'src/modules/nurseHandBookNew/views/detail-lyrm'
 import detailGzsrm from 'src/modules/nurseHandBookNew/views/detail-gzsrm'
 
 const ScheduleHomeView = lazy(() =>
@@ -936,7 +936,8 @@ const routes: RouteItem[] = [
     {
       map: {
         gzsrm: detailGzsrm,
-        other: null
+        other: detailLyrm
+        // other: null
       }
     })
     , layouts.MainLayout),

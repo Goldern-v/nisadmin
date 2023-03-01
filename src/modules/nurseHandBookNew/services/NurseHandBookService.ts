@@ -124,6 +124,14 @@ export default class NurseHandBookService extends BaseApiService {
     return this.post(`/nurseHandbookRecord/handNode`, params)
   }
   /**
+   * 批量审核
+   * @param params 
+   * @returns 
+   */
+  public multiHandleNodeNHR(params: Obj) {
+    return this.post(`/nurseHandbookRecord/multipleHandNode`, params)
+  }
+  /**
    * 删除
    * @param params 
    * @returns 
