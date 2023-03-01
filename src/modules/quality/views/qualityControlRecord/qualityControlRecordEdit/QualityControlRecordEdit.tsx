@@ -302,7 +302,7 @@ const QualityControlRecordEdit = observer(function QualityControlRecordEdit() {
       {/* 患者弹窗 */}
       {qcModel.needPatientModal && <PatientDialog
         visible={qcModel.patientVisible}
-        searchCodes={['wardCode', 'name', 'patientId', 'inpNo', 'bedLabel']}
+        searchCodes={['wardCode', 'name', 'patientId', 'inpNo', 'bedLabel', 'time']}
         onOk={qcModel.handlePatientSelect.bind(qcModel)}
         onCancel={() => qcModel.patientVisible = false}
       />}

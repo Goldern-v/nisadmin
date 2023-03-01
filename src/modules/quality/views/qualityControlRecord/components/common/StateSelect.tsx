@@ -1,12 +1,9 @@
 /** 状态选择器  */
 import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
-import { RouteComponentProps } from 'react-router'
+import React from 'react'
 import { Select } from 'antd'
 import { observer } from 'mobx-react-lite'
-import { authStore } from 'src/stores'
-import { qualityControlRecordApi } from 'src/modules/quality/views/qualityControlRecord/api/QualityControlRecordApi'
-import { qualityControlRecordVM } from 'src/modules/quality/views/qualityControlRecord/QualityControlRecordVM.ts'
+import { qualityControlRecordVM } from 'src/modules/quality/views/qualityControlRecord/QualityControlRecordVM'
 
 export interface DeptType {
   code: string
@@ -30,7 +27,7 @@ export default observer(function StateSelect(props: Props) {
         filterOption={(input: any, option: any) =>
           option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
         }
-        style={{ width: 150 }}
+        style={{ width: 140 }}
         onChange={onChange}
       >
         <Select.Option key='' value=''>

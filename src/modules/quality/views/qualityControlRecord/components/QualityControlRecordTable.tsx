@@ -1,13 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 import BaseTable, { DoCon } from "src/components/BaseTable";
-import store from "src/stores";
 import { appStore } from "src/stores";
 import { observer } from "mobx-react-lite";
 import { numberFormat } from "src/utils/number/numberFormat";
-// import PaginationCon from './PaginationCon'
-import qs from "qs";
-import { qualityControlRecordApi } from "src/modules/quality/views/qualityControlRecord/api/QualityControlRecordApi";
 export interface Props {
   tableData: any;
   allData: any;
@@ -26,8 +22,6 @@ export default observer(function qualityControlRecordTable(props: Props) {
     showSelection,
     selectionChange,
   } = props;
-  // .list
-  // const tableRowData:any[] = tableData.list
   const columns: any[] = [
     {
       title: "序号",
@@ -280,19 +274,11 @@ export default observer(function qualityControlRecordTable(props: Props) {
     },
   ];
 
-  useEffect(() => {
-    // qualityControlRecordApi.instanceGetPageByCondition().then((res:any) => {
-    //   let cacheData = res.data.list
-    //   // let cacheData1 = [...cacheData]
-    //   setTableDataApi(cacheData)
-    // })
-  }, []);
   const onDoubleClick = (record: any) => {
     // appStore.history.push('/continuingEduEmpDetail')
     appStore.history.push(
       `/qualityControlRecordDetail/${record.id}?qcCode=${record.qcCode}`
     );
-    // store.appStore.history.push(`/quality/qualityControlRecord/${qs.stringify(record)}`)
   };
   const onChange = (e: any) => {
     props.getTableData({
@@ -304,11 +290,8 @@ export default observer(function qualityControlRecordTable(props: Props) {
     <Con>
       <TableScrollCon>
         <TableCon>
-          {/* {JSON.stringify(tableData)} */}
-          {/* {allData.pageIndex} */}
           <BaseTable
             surplusHeight={225}
-            // surplusHeight={135}
             loading={loadingGet}
             dataSource={tableData}
             columns={columns}

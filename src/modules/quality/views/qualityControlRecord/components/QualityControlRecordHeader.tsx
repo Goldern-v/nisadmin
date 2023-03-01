@@ -22,7 +22,6 @@ export interface Props extends RouteComponentProps {}
 const Option = Select.Option;
 
 export default observer(function TopCon(props: any) {
-  // const [readWay, setReadWay] = useState(1)
   const [formCreateVisible, setFormCreateVisible] = useState(false);
 
   const handleCreate = () => {
@@ -126,7 +125,7 @@ export default observer(function TopCon(props: any) {
   };
   const isWhyx = ["whyx","whhk"].includes(appStore.HOSPITAL_ID);
   const qcCodeCon = useCallback(() => {
-    if (isWhyx||['gzsrm','yczyy'].includes(appStore.HOSPITAL_ID)) {
+    if (isWhyx || ['gzsrm','yczyy', 'whsl'].includes(appStore.HOSPITAL_ID)) {
       return (
         <React.Fragment>
           <span style={{ margin: "0 3px 0 15px" }}>质控表单:</span>
@@ -138,19 +137,17 @@ export default observer(function TopCon(props: any) {
                 .indexOf(input.toLowerCase()) >= 0
             }
             dropdownMatchSelectWidth={false}
-            style={{ width: 200 }}
+            style={{ width: 180 }}
             value={qualityControlRecordVM.qcCode}
             onChange={(value: any) => {
               qualityControlRecordVM.qcCode = value;
               props.refreshData();
             }}
           >
-
             {qcCodeList.map((item: any) => (
               <Option value={item.qcCode} key={item.qcCode} style={{fontSize:'12px'}} title={item.qcName}>
                 {item.qcName}
               </Option >
-
             ))}
           </Select>
         </React.Fragment>
@@ -298,7 +295,7 @@ export default observer(function TopCon(props: any) {
                 .toLowerCase()
                 .indexOf(input.toLowerCase()) >= 0
             }
-            style={{ width: 180 }}
+            style={{ width: 150 }}
             value={qualityControlRecordVM.filterDeptCode}
             onChange={(value: any) => {
               qualityControlRecordVM.filterDeptCode = value;
@@ -371,7 +368,6 @@ const Wrapper = styled.div`
   border-bottom: 1px solid #dbe0e4; */
   font-size: 13px;
   position: relative;
-  font-size: 13px;
   color: #333333;
   padding: 0 15px 0 15px;
   line-height: 50px;
@@ -396,7 +392,11 @@ const Wrapper = styled.div`
     padding: 0 4px 0 10px;
     margin-left: 15px;
     overflow: auto;
-    min-width: 248px;
+    /* min-width: 248px; */
+    .ant-radio-wrapper {
+      font-size: 13px;
+      margin-right: 0px;
+    }
   }
   .dropdown-style {
     color:red;
