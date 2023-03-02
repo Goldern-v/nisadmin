@@ -70,10 +70,7 @@ export default observer(function BaseModal(props: Props) {
       starRatingReportService.editReport(params).then(res => {
         message.success("修改成功");
         if(['gzsrm'].includes(appStore.HOSPITAL_ID)){
-          starRatingReportEditModel.setSectionData(sectionData.sectionId, {
-            list: data.list,
-            remark:data.remark
-          });
+          starRatingReportEditModel.initData(appStore.queryObj);
         }else{
           starRatingReportEditModel.setSectionData(sectionData.sectionId, {
             list: data.list

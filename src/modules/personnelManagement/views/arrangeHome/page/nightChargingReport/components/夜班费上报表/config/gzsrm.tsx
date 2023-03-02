@@ -20,7 +20,7 @@ const getColumns = (cloneData: any, calBack: Function) => {
       title: "姓名",
       render(text: any, record: any, index: number) {
         return (
-          <Input
+          <Input readOnly
             value={record.empName}
             onChange={(e: any) => {
               record.empName = e.target.value;
@@ -35,7 +35,7 @@ const getColumns = (cloneData: any, calBack: Function) => {
       title: "工号",
       render(text: any, record: any, index: number) {
         return (
-          <Input
+          <Input readOnly
             value={record.empNo}
             onChange={(e: any) => {
               record.empNo = e.target.value;
@@ -50,7 +50,7 @@ const getColumns = (cloneData: any, calBack: Function) => {
       title: "职称",
       render(text: any, record: any, index: number) {
         return (
-          <Input
+          <Input readOnly
             value={record.newTitle}
             onChange={(e: any) => {
               record.newTitle = e.target.value;
@@ -65,7 +65,7 @@ const getColumns = (cloneData: any, calBack: Function) => {
       title: "科室编码",
       render(text: any, record: any, index: number) {
         return (
-          <Input
+          <Input readOnly
             value={record.deptCode}
             onChange={(e: any) => {
               record.deptCode = e.target.value;
@@ -80,7 +80,7 @@ const getColumns = (cloneData: any, calBack: Function) => {
       title: "科室信息",
       render(text: any, record: any, index: number) {
         return (
-          <Input
+          <Input readOnly
             value={record.deptName}
             onChange={(e: any) => {
               record.deptName = e.target.value;
@@ -92,14 +92,14 @@ const getColumns = (cloneData: any, calBack: Function) => {
       width: 90
     },
     {
-      title: "数量(个)",
+      title: "晚夜班",
       render(text: any, record: any, index: number) {
         return (
-          <Input
+          <Input type = "number" min = {0}
             value={record.num}
             onChange={(e: any) => {
               record.num = e.target.value;
-              record.totalMoney = parseInt(standardItem.name) * record.num + record.zbNum * 60;
+              record.totalMoney = parseInt(standardItem.name) * (parseInt(record.num) + parseInt(record.zaobaNum) * 0.5 + parseInt(record.wanbaNum) * 1.5) + parseInt(record.zbNum) * 60;
               calBack('setData', cloneData)
             }}
           />
@@ -108,14 +108,46 @@ const getColumns = (cloneData: any, calBack: Function) => {
       width: 90
     },
     {
+      title: "早8-晚8",
+      render(text: any, record: any, index: number) {
+        return (
+            <Input type = "number" min = {0}
+                value={record.zaobaNum}
+                onChange={(e: any) => {
+                  record.zaobaNum = e.target.value;
+                  record.totalMoney = parseInt(standardItem.name) * (parseInt(record.num) + parseInt(record.zaobaNum) * 0.5 + parseInt(record.wanbaNum) * 1.5) + parseInt(record.zbNum) * 60;
+                  calBack('setData', cloneData)
+                }}
+            />
+        );
+      },
+      width: 90
+    },
+    {
+      title: "晚8-早8",
+      render(text: any, record: any, index: number) {
+        return (
+            <Input type = "number" min = {0}
+                value={record.wanbaNum}
+                onChange={(e: any) => {
+                  record.wanbaNum = e.target.value;
+                  record.totalMoney = parseInt(standardItem.name) * (parseInt(record.num) + parseInt(record.zaobaNum) * 0.5 + parseInt(record.wanbaNum) * 1.5) + parseInt(record.zbNum) * 60;
+                  calBack('setData', cloneData)
+                }}
+            />
+        );
+      },
+      width: 90
+    },
+    {
       title: '助班',
       width: 90,
       render(text: any, record: any, index: number) {
-        return (<Input
+        return (<Input type = "number" min = {0}
           value={record.zbNum}
           onChange={(e: any) => {
             record.zbNum = e.target.value;
-            record.totalMoney = parseInt(standardItem.name) * record.num + record.zbNum * 60;
+            record.totalMoney = parseInt(standardItem.name) * (parseInt(record.num) + parseInt(record.zaobaNum) * 0.5 + parseInt(record.wanbaNum) * 1.5) + parseInt(record.zbNum) * 60;
             calBack('setData', cloneData)
           }}
         />)
@@ -125,14 +157,14 @@ const getColumns = (cloneData: any, calBack: Function) => {
       title: "标准",
       render(text: any, record: any, index: number) {
         return (
-          <Select
+          <Select value = {record.standard}
           defaultValue={standardItem.code}
           style={{ width: "100%" }}
           onChange={(value:string)=>{
             const findItem=standardList.find(item=>item.code==value);
             if(findItem){
               standardItem=findItem;
-              record.totalMoney = parseInt(findItem.name) * record.num + record.zbNum * 60;
+              record.totalMoney = parseInt(standardItem.name) * (parseInt(record.num) + parseInt(record.zaobaNum) * 0.5 + parseInt(record.wanbaNum) * 1.5) + parseInt(record.zbNum) * 60;
               record.standard=value;
               calBack('setData', cloneData)
             }
@@ -152,7 +184,7 @@ const getColumns = (cloneData: any, calBack: Function) => {
       title: "合计金额(元)",
       render(text: any, record: any, index: number) {
         return (
-          <Input
+          <Input readOnly
             value={record.totalMoney}
             onChange={(e: any) => {
               record.totalMoney = e.target.value;
