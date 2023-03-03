@@ -40,6 +40,7 @@ import technologiesAndProjects_sdlj from './views/technologiesAndProjects_sdlj'
 import MajorErrors from './views/MajorErrors'
 import ToNewPost_sdlj from './views/ToNewPost_sdlj'
 import SocialNurse from './views/SocialNurse'
+import MakeAwards from './views/MakeAwards'
 export interface Props extends RouteComponentProps<{ type?: string }> {
   payload: HorizontalMenuItem[]
 }
@@ -190,7 +191,12 @@ const ROUTE_LIST = [
     type: 'WardInnovate',
     component: WardInnovate,
     name: '科室创新'
-  }] : []
+  }] : [],
+  ...appStore.HOSPITAL_ID === '925'? [{
+    type: 'MakeAwards',
+    component: MakeAwards,
+    name: '立功嘉奖'
+  }] : [],
 ]
 
 

@@ -13,7 +13,7 @@ import { appStore } from "src/stores";
 import emitter from "src/libs/ev";
 import { cleanObj } from "src/utils/object/cleanObj";
 import { Obj } from "src/libs/types";
-import { IDENTITY_TYPES } from "src/modules/nurseFiles/enums";
+import { IDENTITY_TYPES,MERITORIOUS_PERFORMANCE } from "src/modules/nurseFiles/enums";
 
 export default observer(function FilterCon() {
   let refForm = React.createRef<Form>();
@@ -113,6 +113,7 @@ export default observer(function FilterCon() {
     }
     if (['925'].includes(appStore.HOSPITAL_ID)) {
       postObj.identityType = value.identityType 
+      postObj.rewardName = value.rewardName 
     }
     statisticsViewModal.selectedDeptCode = value.deptCode;
     nurseFilesListViewModel.postObj = postObj;
@@ -147,7 +148,7 @@ export default observer(function FilterCon() {
               </Form.Field>
             </Col>
             <Col span={7} className="long">
-              <Form.Field label={"来院工作时间"} name={"goHospitalWork"}>
+              <Form.Field label={['925'].includes(appStore.HOSPITAL_ID)?"来院工作年限":"来院工作时间"} name={"goHospitalWork"}>
                 <YearTimeRangePicker />
               </Form.Field>
             </Col>
@@ -296,7 +297,7 @@ export default observer(function FilterCon() {
                   </Select>
                 </Form.Field>
               </Col>}
-            {['925'].includes(appStore.HOSPITAL_ID) &&
+            {['925'].includes(appStore.HOSPITAL_ID) &&<>
               <Col span={4} className="short">
                 <Form.Field label={"身份类别"} name={"identityType"}>
                   <Select>
@@ -310,7 +311,22 @@ export default observer(function FilterCon() {
                     }
                   </Select>
                 </Form.Field>
-              </Col>}
+              </Col>
+              <Col span={4} className="short">
+                <Form.Field label={"立功嘉奖"} name={"rewardName"}>
+                  <Select>
+                    {
+                      [
+                        { code: '', name: '全部' },
+                        ...MERITORIOUS_PERFORMANCE
+                      ].map(v => (
+                        <Select.Option value={v.code} key={v.code}>{v.name}</Select.Option>
+                      ))
+                    }
+                  </Select>
+                </Form.Field>
+              </Col>
+              </>}
           </Row>
         </Form>
       </Inner>

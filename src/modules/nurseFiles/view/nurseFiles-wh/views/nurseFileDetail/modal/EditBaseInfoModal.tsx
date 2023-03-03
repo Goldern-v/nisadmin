@@ -27,7 +27,7 @@ import { AutoComplete } from "src/vendors/antd";
 import { formatIdCord } from "src/utils/idCard/idCard";
 import SelectOrAutoInput from "../components/SelectOrAutoInput";
 import tinyPic from "src/utils/img/tinyPic";
-import { CLOTHS_SIZES, TITLE_TYPES, MERITORIOUS_PERFORMANCE } from "src/modules/nurseFiles/enums";
+import { CLOTHS_SIZES, TITLE_TYPES, IDENTITY_TYPES } from "src/modules/nurseFiles/enums";
 import { strFormatIntoMoment } from "src/utils/moment/crrentMonth";
 import { Obj } from "src/libs/types";
 
@@ -172,7 +172,7 @@ export default function EditWorkHistoryModal(props: Props) {
     momentFormatIntoStr(value, 'newTitleDate')
     momentFormatIntoStr(value, 'maps.contract_due_date')
     value.zyzsUrl && (value.zyzsUrl = value.zyzsUrl.join(","));
-    value?.maps?.meritorious_performance && (value!.maps!.meritorious_performance = value!.maps!.meritorious_performance.join(","));
+    value?.maps?.meritorious_performance && delete value.maps.meritorious_performance
 
     nurseFilesService
       .saveOrUpdate({ ...value, ...obj, sign })
@@ -242,7 +242,7 @@ export default function EditWorkHistoryModal(props: Props) {
       }
 
       if (newObj?.maps?.meritorious_performance !== undefined) {
-        newObj!.maps!.meritorious_performance = newObj!.maps!.meritorious_performance ? newObj!.maps!.meritorious_performance.split(",") : []
+        newObj!.maps!.meritorious_performance = newObj!.maps!.meritorious_performance ? newObj!.maps!.meritorious_performance?.toString().split(",") : []
       }
       refForm!.current!.setFields(newObj);
     }
@@ -530,22 +530,45 @@ export default function EditWorkHistoryModal(props: Props) {
                   <DatePicker />
                 </Form.Field>
               </Col>
+              <Col span={12}>
+                <Form.Field label='身份类别' name="maps.identity_category">
+                  <Select>
+                    {
+                      IDENTITY_TYPES.map(v => (
+                          <Select.Option value={v.code} key={v.code}>{v.name}</Select.Option>
+                      ))
+                    }
+                  </Select>
+                </Form.Field>
+              </Col>
+              <Col span={12}>
+                <Form.Field label='新入职护士带教资质' name="maps.teaching_qualification">
+                  <Select>
+                    {
+                      [{"code" : "有", "name" : "有"}, {"code" : "无", "name" : "无"}].map(v => (
+                          <Select.Option value={v.code} key={v.code}>{v.name}</Select.Option>
+                      ))
+                    }
+                  </Select>
+                </Form.Field>
+              </Col>
+              <Col span={12}>
+                <Form.Field label='实习生带教资质' name="maps.teaching_trainee_qualification">
+                  <Select>
+                    {
+                      [{"code" : "有", "name" : "有"}, {"code" : "无", "name" : "无"}].map(v => (
+                          <Select.Option value={v.code} key={v.code}>{v.name}</Select.Option>
+                      ))
+                    }
+                  </Select>
+                </Form.Field>
+              </Col>
             </>
           }
 
-          <Col span={12}>
-            <Form.Field label='新入职护士带教资质与实习生带教资质' name="maps.teaching_qualification">
-              <Select>
-                {
-                  [{"code" : "有", "name" : "有"}, {"code" : "无", "name" : "无"}].map(v => (
-                      <Select.Option value={v.code} key={v.code}>{v.name}</Select.Option>
-                  ))
-                }
-              </Select>
-            </Form.Field>
-          </Col>
+          
 
-          <Col span={12}>
+          {/* <Col span={12}>
             <Form.Field label='立功表现' name="maps.meritorious_performance">
               <Select mode="multiple">
                 {
@@ -555,7 +578,7 @@ export default function EditWorkHistoryModal(props: Props) {
                 }
               </Select>
             </Form.Field>
-          </Col>
+          </Col> */}
         </Row>
         <Row>
           <Col span={12}>

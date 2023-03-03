@@ -116,6 +116,10 @@ export function openAuditModal(title: string, row: any, callBack: any,btnText?:s
                   },
                   {
                     "来院工作时间": 'goHospitalWorkDate',
+                    "工作年限":'goHospitalWorkYear',
+                  },
+                  {
+                    "身份类别":'identity_category',
                     "护士执业证书编号": 'zyzsNumber'
                   },
                   {
@@ -143,8 +147,8 @@ export function openAuditModal(title: string, row: any, callBack: any,btnText?:s
                     '合同截至日期': 'contract_due_date',
                   },
                   {
-                    "立功表现": 'meritorious_performance',
-                    "新入职护士带教资质与实习生带教资质": 'teaching_qualification'
+                    "新入职护士带教资质": 'teaching_qualification',
+                    "实习生带教资质": 'teaching_trainee_qualification'
                   },
                   {
                     "鞋款式": "nurse_shoes_style",
@@ -1115,6 +1119,25 @@ export function openAuditModal(title: string, row: any, callBack: any,btnText?:s
         })
       }
       break
+    case '立功嘉奖':
+      {
+        globalModal.auditModal.show({
+          getTableData: callBack,
+          id: row.id,
+          empNo: row.empNo || row.commiterNo,
+          type: 'nurseWHRewardExperience',
+          title: '审核立功嘉奖',
+          tableFormat: [
+            {
+              "年度": `year`,
+              '嘉奖名称': `rewardName`
+            },
+          ],
+
+          allData: row
+        })
+      }
+    break
     case '临床护理工作情况登记表':
       {
         globalModal.auditModal.show({

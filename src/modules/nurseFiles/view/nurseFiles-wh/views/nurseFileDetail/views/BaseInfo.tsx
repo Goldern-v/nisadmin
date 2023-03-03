@@ -363,6 +363,10 @@ export default observer(function BaseInfo() {
         {
           // 参加工作时间: data.goWorkTime,
           来院工作时间: data.goHospitalWorkDate,
+          工作年限:data.goHospitalWorkYear,
+        },
+        {
+          身份类别:data?.maps?.identity_category,
           护士执业证书编号: data.zyzsNumber
         },
         {
@@ -391,12 +395,14 @@ export default observer(function BaseInfo() {
           鞋码: data.shoeSize
         },
         {
-          家庭住址: data.address,
-          立功表现: data?.maps?.meritorious_performance
+          新入职护士带教资质:data?.maps?.teaching_qualification,
+          实习生带教资质: data?.maps?.teaching_trainee_qualification
         },
         {
-          新入职护士带教资质与实习生带教资质: data?.maps?.teaching_qualification
-        }
+          家庭住址: data.address,
+          // 立功表现: data?.maps?.meritorious_performance
+        },
+        
       ]
       let newTableData = (() => {
         switch (appStore.HOSPITAL_ID) {

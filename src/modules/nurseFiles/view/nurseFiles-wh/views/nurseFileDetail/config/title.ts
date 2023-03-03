@@ -25,13 +25,14 @@ let titleEC: any = {
   nurseWHChanges: '职务变动',
   nurseWHEduSanki: '继续教育及三基考试',
   nurseWHCarryOut: '新技术、新项目开展情况',
-  nurseWHPunishment: '重大差错事故及惩罚'
+  nurseWHPunishment: '重大差错事故及惩罚',
+  nurseWHRewardExperience: '立功嘉奖'
 }
 
 let titleCE: any = reverseKeyValue(titleEC)
 
 export const getTitle = (title: string) => {
-  console.log(title, 889)
+  // console.log(title, 889)
   if (titleCE[title] || titleEC[title]) {
     return titleCE[title] || titleEC[title]
   } else {
