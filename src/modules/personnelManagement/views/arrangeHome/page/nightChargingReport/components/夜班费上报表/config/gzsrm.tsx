@@ -20,7 +20,7 @@ const getColumns = (cloneData: any, calBack: Function) => {
       title: "姓名",
       render(text: any, record: any, index: number) {
         return (
-          <Input readOnly
+          <Input
             value={record.empName}
             onChange={(e: any) => {
               record.empName = e.target.value;
@@ -35,7 +35,7 @@ const getColumns = (cloneData: any, calBack: Function) => {
       title: "工号",
       render(text: any, record: any, index: number) {
         return (
-          <Input readOnly
+          <Input
             value={record.empNo}
             onChange={(e: any) => {
               record.empNo = e.target.value;
@@ -50,7 +50,7 @@ const getColumns = (cloneData: any, calBack: Function) => {
       title: "职称",
       render(text: any, record: any, index: number) {
         return (
-          <Input readOnly
+          <Input
             value={record.newTitle}
             onChange={(e: any) => {
               record.newTitle = e.target.value;
@@ -65,7 +65,7 @@ const getColumns = (cloneData: any, calBack: Function) => {
       title: "科室编码",
       render(text: any, record: any, index: number) {
         return (
-          <Input readOnly
+          <Input
             value={record.deptCode}
             onChange={(e: any) => {
               record.deptCode = e.target.value;
@@ -80,7 +80,7 @@ const getColumns = (cloneData: any, calBack: Function) => {
       title: "科室信息",
       render(text: any, record: any, index: number) {
         return (
-          <Input readOnly
+          <Input
             value={record.deptName}
             onChange={(e: any) => {
               record.deptName = e.target.value;
