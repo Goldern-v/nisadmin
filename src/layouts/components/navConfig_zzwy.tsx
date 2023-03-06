@@ -51,43 +51,38 @@ export const navConfig = (appStore:any,authStore?:any)=>{
     // },
     {
       name: "质量管理",
-        children: [
-            {
-                name: "三级质量",
-                path: "/qcThree",
-                icon: require("../images/menu-icon/三级质控@2x.png"),
-            },
-            {
-                name: "二级质量",
-                path: "/qcTwo",
-                icon: require("../images/menu-icon/二级质控@2x.png"),
-            },
-            {
-                name: "一级质量",
-                path: "/qcOneDghl",
-                icon: require("../images/menu-icon/一级质控@2x.png"),
-            },
-            {
-                name: "查询统计",
-                path: "/queryStatistics",
-                icon: require("../images/menu-icon/护理查房@2x.png")
-            },
-            {
-                name: "护理查房",
-                path: "/checkWard",
-                icon: require("../images/menu-icon/护理查房@2x.png")
-            },
-            {
-                name: "护士长手册",
-                path: "/nurseHandBook",
-                icon: require("../images/menu-icon/护理查房@2x.png"),
-            },
-            {
-                name: "护士长满意度调查表",
-                path: "/nurseSatisfactionSurvey",
-                icon: require("../images/menu-icon/护理查房@2x.png"),
-            }
-        ]
+      children: [
+        {
+          name: "三级质量",
+          path: "/qcThree",
+          icon: require("../images/menu-icon/三级质控@2x.png")
+        },
+        {
+          name: "二级质量",
+          path: "/qcTwo",
+          icon: require("../images/menu-icon/二级质控@2x.png")
+        },
+        {
+          name: "一级质量",
+          path: "/qcOneHj",
+          icon: require("../images/menu-icon/一级质控@2x.png")
+        },
+        // {
+        //   name: '病区登记本',
+        //   path: '',
+        //   icon: require('../images/menu-icon/病区登记本@2x.png')
+        // },
+        // {
+        //   name: "查询统计",
+        //   path: "/queryStatistics",
+        //   icon: require("../images/menu-icon/护理查房@2x.png")
+        // },
+        // {
+        //   name: "护理查房",
+        //   path: "/checkWard",
+        //   icon: require("../images/menu-icon/护理查房@2x.png")
+        // }
+      ]
     },
     // {
     //   name: "护士长满意度调查表",
