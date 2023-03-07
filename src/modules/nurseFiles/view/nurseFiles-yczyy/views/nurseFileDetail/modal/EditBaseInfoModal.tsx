@@ -97,7 +97,7 @@ export default function EditWorkHistoryModal(props: Props) {
         </Select>
       case 'img':
         if (SIN_IMG_CODE.includes(fieldCode)) return <ImageUploader maxSize = {1024 * 100} upload={uploadCard} text={`添加${item.fieldName}`} />
-        return <MultipleImageUploader tip = "支持jpg、jpeg、png、bmp，单个文件不能超过100kb" imgLimitedMb={0.1} text={`添加${item.fieldName}`} />
+        return <MultipleImageUploader tip = "支持jpg、jpeg、png、bmp，单个文件不能超过1m" imgLimitedMb={1} text={`添加${item.fieldName}`} />
         // uploadOption={{ type: 0, empNo: appStore.queryObj.empNo }}
       default:
         return <Input />

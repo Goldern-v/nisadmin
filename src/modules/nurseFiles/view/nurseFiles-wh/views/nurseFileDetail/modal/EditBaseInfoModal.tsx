@@ -30,6 +30,8 @@ import tinyPic from "src/utils/img/tinyPic";
 import { CLOTHS_SIZES, TITLE_TYPES, IDENTITY_TYPES } from "src/modules/nurseFiles/enums";
 import { strFormatIntoMoment } from "src/utils/moment/crrentMonth";
 import { Obj } from "src/libs/types";
+import DatePickerCheckbox from "../components/DatePickerCheckbox";
+import cloneDeep from 'lodash/cloneDeep'
 
 export interface Props extends ModalComponentProps {
   id?: number;
@@ -48,6 +50,7 @@ const rules: Rules = {
 };
 const isSdlj = ['sdlj', 'nfsd', 'qzde'].includes(appStore.HOSPITAL_ID)
 const isQhwy = ['qhwy', 'whhk', 'dglb'].includes(appStore.HOSPITAL_ID)
+const Indef = '无限期'
 
 export default function EditWorkHistoryModal(props: Props) {
   let { visible, onCancel, onOk, data, id } = props;
@@ -56,20 +59,20 @@ export default function EditWorkHistoryModal(props: Props) {
   const initFooterList = () => {
     let footerList = [] as any
     // if (['ytll'].includes(appStore.HOSPITAL_ID)) {
-      footerList = [
-        <Button key="back" onClick={onCancel}>
-          关闭
-        </Button>
-      ]
-      if (data?.needAudit) {
-        footerList.push(<Button key="submit" type="primary" onClick={() => onSave(true)}>
-          提交审核
-        </Button>)
-      } else {
-        footerList.push(<Button key="save" type="primary" onClick={() => onSave(false)}>
-          保存
-        </Button>)
-      }
+    footerList = [
+      <Button key="back" onClick={onCancel}>
+        关闭
+      </Button>
+    ]
+    if (data?.needAudit) {
+      footerList.push(<Button key="submit" type="primary" onClick={() => onSave(true)}>
+        提交审核
+      </Button>)
+    } else {
+      footerList.push(<Button key="save" type="primary" onClick={() => onSave(false)}>
+        保存
+      </Button>)
+    }
     // }
     // else {
     //   footerList = [
@@ -134,8 +137,8 @@ export default function EditWorkHistoryModal(props: Props) {
     // val的上级
     let parentObj = obj
     let i = 0
-    while(i < len) {
-      if(parentObj === null){
+    while (i < len) {
+      if (parentObj === null) {
         return
       }
       val = parentObj[keys[i]]
@@ -143,7 +146,7 @@ export default function EditWorkHistoryModal(props: Props) {
       if (i < len - 1) parentObj = val
       ++i
     }
-    return val && (parentObj[keys[len - 1]] = val.format(formatText))
+    return val && (parentObj[keys[len - 1]] = moment.isMoment(val) ? val.format(formatText) : val)
   }
 
   const onSave = async (sign: boolean) => {
@@ -220,8 +223,9 @@ export default function EditWorkHistoryModal(props: Props) {
     if (refForm.current && visible) refForm!.current!.clean();
     /** 如果是修改 */
     if (data && refForm.current && visible) {
+      const newData = cloneDeep(data)
       const newObj = {
-        ...data,
+        ...newData,
         ...{
           birthday: strFormatIntoMoment(data.birthday),
           zyzsDate: strFormatIntoMoment(data.zyzsDate),
@@ -237,7 +241,7 @@ export default function EditWorkHistoryModal(props: Props) {
         },
       }
       // maps中的数据格式化
-      if (newObj?.maps?.contract_due_date !== undefined) {
+      if (newObj?.maps?.contract_due_date !== undefined && newObj?.maps?.contract_due_date != Indef) {
         newObj!.maps!.contract_due_date = strFormatIntoMoment(newObj?.maps?.contract_due_date)
       }
 
@@ -332,7 +336,7 @@ export default function EditWorkHistoryModal(props: Props) {
             </Form.Field>
           </Col>
           {!['925'].includes(appStore.HOSPITAL_ID) && <Col span={12}>
-            <Form.Field label={`参加工作时间`} name={['fsxt', '925'].includes(appStore.HOSPITAL_ID)  ? 'goWorkTime' : 'takeWorkTime'}>
+            <Form.Field label={`参加工作时间`} name={['fsxt', '925'].includes(appStore.HOSPITAL_ID) ? 'goWorkTime' : 'takeWorkTime'}>
               <DatePicker />
             </Form.Field>
           </Col>}
@@ -410,7 +414,7 @@ export default function EditWorkHistoryModal(props: Props) {
               />
             </Form.Field>
           </Col>}
-          <Col span={12} style={{ height:'52px' }}>
+          <Col span={12} style={{ height: '52px' }}>
             <Form.Field label={`职务`} name="job">
               <SelectOrAutoInput dict="职务" />
             </Form.Field>
@@ -420,7 +424,7 @@ export default function EditWorkHistoryModal(props: Props) {
               <DatePicker />
             </Form.Field>
           </Col>
-          {!['fsxt', '925'].includes(appStore.HOSPITAL_ID) && <Col span={12} style={{ height:'52px' }}>
+          {!['fsxt', '925'].includes(appStore.HOSPITAL_ID) && <Col span={12} style={{ height: '52px' }}>
             <Form.Field label={['wjgdszd'].includes(appStore.HOSPITAL_ID) ? '编制科室' : `院内工作地点`}
               name="workAddress">
               <SelectOrAutoInput dict="院内工作地点" />
@@ -452,7 +456,7 @@ export default function EditWorkHistoryModal(props: Props) {
                   "dghm,925": (
                     <Form.Field label={`现职称`} name="newTitle">
                       <Select>
-                        {TITLE_TYPES.map((item:any) => (
+                        {TITLE_TYPES.map((item: any) => (
                           <Select.Option value={item.code} key={item.code}>
                             {item.name}
                           </Select.Option>
@@ -468,7 +472,7 @@ export default function EditWorkHistoryModal(props: Props) {
               })
             }
           </Col>
-          {isSdlj && <Col span={12} style={{ height:'52px' }}>
+          {isSdlj && <Col span={12} style={{ height: '52px' }}>
             <Form.Field label={`冬季鞋码大小`} name="maps.winter_shoe_size">
               <SelectOrAutoInput dict="鞋码大小" />
             </Form.Field>
@@ -527,7 +531,8 @@ export default function EditWorkHistoryModal(props: Props) {
               </Col>
               <Col span={12}>
                 <Form.Field label='合同截至日期' name="maps.contract_due_date">
-                  <DatePicker />
+                  {/* <DatePicker /> */}
+                  <DatePickerCheckbox text={Indef} />
                 </Form.Field>
               </Col>
               <Col span={12}>
@@ -535,7 +540,7 @@ export default function EditWorkHistoryModal(props: Props) {
                   <Select>
                     {
                       IDENTITY_TYPES.map(v => (
-                          <Select.Option value={v.code} key={v.code}>{v.name}</Select.Option>
+                        <Select.Option value={v.code} key={v.code}>{v.name}</Select.Option>
                       ))
                     }
                   </Select>
@@ -545,8 +550,8 @@ export default function EditWorkHistoryModal(props: Props) {
                 <Form.Field label='新入职护士带教资质' name="maps.teaching_qualification">
                   <Select>
                     {
-                      [{"code" : "有", "name" : "有"}, {"code" : "无", "name" : "无"}].map(v => (
-                          <Select.Option value={v.code} key={v.code}>{v.name}</Select.Option>
+                      [{ "code": "有", "name": "有" }, { "code": "无", "name": "无" }].map(v => (
+                        <Select.Option value={v.code} key={v.code}>{v.name}</Select.Option>
                       ))
                     }
                   </Select>
@@ -556,8 +561,8 @@ export default function EditWorkHistoryModal(props: Props) {
                 <Form.Field label='实习生带教资质' name="maps.teaching_trainee_qualification">
                   <Select>
                     {
-                      [{"code" : "有", "name" : "有"}, {"code" : "无", "name" : "无"}].map(v => (
-                          <Select.Option value={v.code} key={v.code}>{v.name}</Select.Option>
+                      [{ "code": "有", "name": "有" }, { "code": "无", "name": "无" }].map(v => (
+                        <Select.Option value={v.code} key={v.code}>{v.name}</Select.Option>
                       ))
                     }
                   </Select>
@@ -566,7 +571,7 @@ export default function EditWorkHistoryModal(props: Props) {
             </>
           }
 
-          
+
 
           {/* <Col span={12}>
             <Form.Field label='立功表现' name="maps.meritorious_performance">
