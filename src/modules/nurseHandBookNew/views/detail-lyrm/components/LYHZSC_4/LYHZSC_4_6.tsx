@@ -89,4 +89,7 @@ const Wrapper = styled(DetailCtxCon)`
 table td {
   text-align: left;
 }
+.ant-calendar-picker-icon {
+  display: none;
+}
 `

@@ -62,6 +62,7 @@ export default observer(function (props: Props) {
           会议纪要：
         </div>
         <TextArea className='cell-ipt te-8' autosize={{ minRows: 10 }} value={model.editorData?.v6} onChange={(e) => onChange(e, 'v6')} placeholder={PH_1} />
+        <div className="f-s">备注：科室每月至少召开例会井记录1次。</div>
       </div>
     </Wrapper >
   )

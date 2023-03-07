@@ -34,6 +34,10 @@ export default observer(function (props: Props) {
         {model.detail?.record?.menuName}
       </div>
       <TextArea className='cell-ipt ' autosize={{ minRows: 20 }} value={model.editorData?.v1} onChange={(e) => onChange(e, 'v1')} />
+      <div className="f-s">
+        {`备注：1、填写悲者对科室护理人员的妆诉，包括书面，日头及其他形式的投诉等。
+2、记录内容包括时问、投诉者、被投诉人、投诉事由及处理结果等。`}
+      </div>
     </Wrapper>
   )
 })

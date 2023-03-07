@@ -15,7 +15,7 @@ export interface Props {
 export default observer(function (props: Props) {
   const { curNode } = useAuditStatus(model.detail)
   const ctxRef = useRef<any>(null)
-  const isAdd = useMemo(() => tableConConfig[model.detail?.record?.menuCode]?.isAdd || [], [model.id])
+  const isAdd = useMemo(() => tableConConfig[model.detail?.record?.menuCode]?.isAdd || false, [model.id])
 
   const btnList = useMemo(() => {
     const { canHandle, nodeCode, state } = curNode

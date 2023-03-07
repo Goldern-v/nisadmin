@@ -1,11 +1,13 @@
 import React from 'react'
 import styled from 'styled-components'
 import { nurseHandbookRecordModel as model } from '../../model'
-import { Input } from 'antd'
+import { DatePicker, Input } from 'antd'
 import { observer } from 'mobx-react'
 import { DetailCtxCon } from 'src/modules/nurseHandBookNew/style'
 import { Obj } from 'src/libs/types'
 import cloneDeep from 'lodash/cloneDeep'
+import { dateFormat, dateFormat4 } from '../../config'
+import moment, { isMoment } from 'moment'
 
 const DEF_TEXTS = [
   {
@@ -64,16 +66,24 @@ export interface Props {
 }
 export default observer(function (props: Props) {
 
-  const onChange = (e: any, config: Obj) => {
-    const { index, key } = config
+  const onChange = (e: any, config: Obj | string) => {
     const newData = cloneDeep(model.editorData)
-    newData[index][key] = e.target.value
+    if (typeof config === 'string') {
+      newData[config] = e.format(dateFormat)
+      return model.handleEditorChange(newData)
+    }
+    const { index, key } = config
+    newData.v2[index][key] = e.target.value
     model.handleEditorChange(newData)
   }
 
   return (
     <Wrapper className='con--a4' ref={model.ctxRef}>
       <div className='title'>{model.detail?.record?.title}</div>
+      <div className='date-con'>
+        <DatePicker className='cell-ipt'
+          format={dateFormat4} value={model.editorData?.v1 ? moment(model.editorData?.v1) : undefined} onChange={(e) => onChange(e, 'v1')} />
+      </div>
       <table>
         <colgroup>
           <col width='5%' />
@@ -93,7 +103,7 @@ export default observer(function (props: Props) {
         </thead>
         <tbody>
           {
-            (model.editorData || []).map((v: Obj, i: number) => {
+            (model.editorData.v2 || []).map((v: Obj, i: number) => {
               const isDef = i < 10
               return (
                 <tr>

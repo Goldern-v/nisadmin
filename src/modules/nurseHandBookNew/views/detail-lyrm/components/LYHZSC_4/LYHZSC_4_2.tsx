@@ -113,10 +113,4 @@ export default observer(function (props: Props) {
 })
 
 const Wrapper = styled(DetailCtxCon)`
-.date-con {
-  display: flex;
-  justify-content: flex-end;
-  width: 140px;
-  margin-left: auto;
-}
 `

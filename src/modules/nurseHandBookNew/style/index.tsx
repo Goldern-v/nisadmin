@@ -32,6 +32,7 @@ export const DetailCtxCon: any = styled.div`
   .ant-input {
     font-size: ${TEXT_SIZE};
     line-height: ${LINE};
+    padding: 4px;
   }
   .title-con {
     display: flex;
@@ -109,6 +110,9 @@ export const DetailCtxCon: any = styled.div`
     align-items: center;
     width: 140px;
     margin-left: auto;
+    .label {
+      white-space: nowrap;
+    }
   }
   /* 打印样式 */
   pre {

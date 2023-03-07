@@ -162,14 +162,6 @@ export default observer(function (props: Props) {
 })
 
 const Wrapper = styled(DetailCtxCon)`
-.date-con {
-  display: flex;
-  justify-content: flex-end;
-  margin-left: auto;
-  .cell-ipt {
-    width: 140px;
-  }
-}
 table td {
   text-align: left;
 }

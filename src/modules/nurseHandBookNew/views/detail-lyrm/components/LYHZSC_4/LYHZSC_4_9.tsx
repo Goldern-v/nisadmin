@@ -63,7 +63,8 @@ export default observer(function (props: Props) {
         <colgroup>
           <col width='6%' />
           <col width='6%' />
-          <col />
+          <col width='6%' />
+          <col width='50%' />
           <col width='10%' />
           <col width='12%' />
           <col width='10%' />
@@ -72,7 +73,7 @@ export default observer(function (props: Props) {
           <tr>
             <td>周次</td>
             <td>项目</td>
-            <td>计划内容</td>
+            <td colSpan={2}>计划内容</td>
             <td>负责人</td>
             <td>落实时间</td>
             <td>护士长签名</td>
@@ -90,7 +91,7 @@ export default observer(function (props: Props) {
                     <td></td>
                     <td>教学查房</td>
                   </>}
-                  <td>
+                  <td colSpan={2}>
                     <Input className='cell-ipt ta-c' value={v.v1} onChange={(e) => onChange1(e, { index: i, key: 'v1' })} />
                   </td>
                   <td>
@@ -106,21 +107,21 @@ export default observer(function (props: Props) {
             })
           }
           <tr>
-            <td colSpan={6}>带教学生情况</td>
+            <td colSpan={7}>带教学生情况</td>
           </tr>
           <tr>
-            <td>院校</td>
-            <td colSpan={4}>学生姓名</td>
+            <td colSpan={3}>院校</td>
+            <td colSpan={3}>学生姓名</td>
             <td>人数</td>
           </tr>
           {
             (model.editorData?.v4 || []).map((v: Obj, i: number) => {
               return (
                 <tr key={i}>
-                  <td>
+                  <td colSpan={3}>
                     <Input className='cell-ipt ta-c' value={v.v1} onChange={(e) => onChange2(e, { index: i, key: 'v1' })} />
                   </td>
-                  <td colSpan={4}>
+                  <td colSpan={3}>
                     <Input className='cell-ipt ta-c' value={v.v2} onChange={(e) => onChange2(e, { index: i, key: 'v2' })} />
                   </td>
                   <td><Input className='cell-ipt ta-c' value={v.v3} onChange={(e) => onChange2(e, { index: i, key: 'v3' })} /></td>
