@@ -8,7 +8,7 @@ import moment from "moment"
 import { getCurrentMonth } from "src/utils/date/currentMonth"
 import api from "./api"
 import BaseTable from "src/components/BaseTable";
-import { authStore } from "src/stores";
+import { appStore, authStore } from "src/stores";
 import { Obj } from "src/libs/types"
 
 
@@ -20,13 +20,17 @@ interface Props {
   // 可显示的搜索参数
   searchCodes?: string[]
 }
-
+const getLastSixMonths = () => {
+  const currentDate = moment(moment().format('YYYY-MM-DD'))
+  const preSixMonthDate = moment(moment().subtract(6, 'month').format('YYYY-MM-DD'))
+  return [preSixMonthDate, currentDate]
+}
 export default observer((props: Props) => {
   const { visible, onOk, onCancel, isMulti = false, searchCodes = ['wardCode', 'status', 'time', 'name', 'patientId', 'inpNo', 'bedLabel'] } = props
   const [loading, setLoading] = useState(false)
   const [form, setForm]: any = useState({
     status: '1',
-    time: getCurrentMonth()
+    time: appStore.HOSPITAL_ID === 'whsl' ? getLastSixMonths() : getCurrentMonth()
   })
   const setFormItem = (item: {}) => {
     setForm({ ...form, ...item })
@@ -38,7 +42,6 @@ export default observer((props: Props) => {
     pageSize: 20
   })
   const [pages, setPages] = useState(1)
-
   const columns: any = [
     {
       title: '护理单元',
