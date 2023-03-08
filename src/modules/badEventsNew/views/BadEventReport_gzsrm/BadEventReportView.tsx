@@ -21,7 +21,7 @@ export default observer(function NursingReportDetailView() {
   const pageRef: any = useRef<HTMLElement>()
   const [isPrint, setIsPrint] = useState(false)
   const [spinning, setSpinning] = useState(false)
-  const showText = ['gzsrm'].includes(appStore.HOSPITAL_ID)
+  const showText = ['gzsrm', '925'].includes(appStore.HOSPITAL_ID)
 
   useEffect(() => {
     let search = appStore.location.search

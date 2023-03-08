@@ -39,11 +39,12 @@ const baseConfig: navConfigItem[] = [
     hidden: appStore.HOSPITAL_ID !== '925'
   },
   // 不良事件功能暂时屏蔽
-  // {
-  //   name: "不良事件",
-  //   path: "/badEventsNew",
-  //   // hidden: !appStore.isDev,
-  // },
+  {
+    name: "不良事件",
+    path: "/badEventsNew",
+    hidden: appStore.HOSPITAL_ID !== '925'
+    // hidden: !appStore.isDev,
+  },
   // {
   //   name: '不良事件',
   //   path: '/badEventsNewList',

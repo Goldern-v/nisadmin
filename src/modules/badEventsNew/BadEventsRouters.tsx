@@ -39,7 +39,7 @@ export default function BadEventsRouters(props: Props) {
             disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
           },
         ],
-        'gzsrm': [
+        'gzsrm,925': [
           {
             title: " 不良事件查询",
             // icon: <SJZK />,
@@ -97,7 +97,7 @@ export default function BadEventsRouters(props: Props) {
     // },
     ...appStore.hisMatch({
       map: {
-        'gzsrm,lcey,yczyy': [],
+        'gzsrm,lcey,yczyy,925': [],
         'gxjb': [
           {
             title: '不良事件汇总',
@@ -156,7 +156,7 @@ export default function BadEventsRouters(props: Props) {
             disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
           }
         ],
-        gzsrm:[
+        'gzsrm,925':[
           {
             title: '不良事件分析报告',
             path: `${baseRouter}/不良事件分析报告`,
@@ -167,7 +167,8 @@ export default function BadEventsRouters(props: Props) {
           }
         ],
         other: []
-      }
+      },
+      vague: true
     }),
     // ...appStore.hisMatch({
     //   map: {
