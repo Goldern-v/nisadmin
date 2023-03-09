@@ -51,11 +51,11 @@ const ROUTE_LIST = [
     component: BaseInfo,
     name: '基本信息'
   },
-  ...appStore.HOSPITAL_ID !== 'zzwy' ? [ {
+ {
     type: 'article',
     component: Article,
     name: '文章'
-  }] : [],
+  },
   {
     /** 方明处理 */
     type: 'personWinning',

@@ -66,13 +66,14 @@ export default observer(function Awards() {
       width: 200,
       align: 'center'
     },
-    {
+    ... appStore.HOSPITAL_ID !== 'zzwy'? [{
       title: '作者',
       dataIndex: 'articleAuthor',
       key: 'articleAuthor',
       width: 80,
       align: 'center',
-    },
+    }] : [],
+    
     {
       title: '期刊号',
       dataIndex: 'periodicalNumber',
