@@ -51,11 +51,11 @@ const ROUTE_LIST = [
     component: BaseInfo,
     name: '基本信息'
   },
-  {
+  ...appStore.HOSPITAL_ID !== 'zzwy' ? [ {
     type: 'article',
     component: Article,
     name: '文章'
-  },
+  }] : [],
   {
     /** 方明处理 */
     type: 'personWinning',
@@ -118,7 +118,7 @@ const ROUTE_LIST = [
     component: LearnJob,
     name: '学会任职'
   },
-  ...'dghm' !== appStore.HOSPITAL_ID ? [{
+  ...appStore.HOSPITAL_ID === 'dghm' || appStore.HOSPITAL_ID !== 'zzwy'? [{
     type: 'socialJob',
     component: SocialNurse,
     name: '社会兼职'
