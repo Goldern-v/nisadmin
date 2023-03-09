@@ -106,3 +106,7 @@ tr{
   page-break-after: auto
 }
 ```
+
+### 查看全局弹窗的声明位置
+
+> src/layouts/MainLayout.tsx

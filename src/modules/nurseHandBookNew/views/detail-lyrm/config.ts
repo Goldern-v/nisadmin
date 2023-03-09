@@ -23,6 +23,8 @@ import LYHZSC_6_7 from "./components/LYHZSC_6/LYHZSC_6_7";
 import LYHZSC_6_6 from "./components/LYHZSC_6/LYHZSC_6_6";
 import LYHZSC_6_5 from "./components/LYHZSC_6/LYHZSC_6_5";
 import tableCon from "./components/tableCon";
+
+export const LYHZSC_2_3_NAME = '护理质量检查分析及改进记录'
 /**不同表单的初始化操作 */
 export default function config(code: string) {
   return appStore.hisMatch({
@@ -269,7 +271,9 @@ export const formatTitle = (params: Obj, options: Obj) => {
     menuCode: menuCodeP,
   } = params;
   if (menuCodeP) {
-    if (["LYHZSC_4_2", "LYHZSC_4_3"].includes(menuCodeP))
+    if ("LYHZSC_4_2" === menuCodeP)
+      return `${moment().format("M月")}${LYHZSC_2_3_NAME}`;
+    else if ("LYHZSC_4_3" === menuCodeP)
       return `${moment().format("M月")}${menuName}`;
     return `${deptName}${menuName}`;
   }

@@ -5,7 +5,7 @@ import { DatePicker, Input } from 'antd'
 import { observer } from 'mobx-react'
 import { DetailCtxCon } from 'src/modules/nurseHandBookNew/style'
 import moment, { isMoment } from 'moment'
-import { dateFormat, timeFormat } from '../../config'
+import { dateFormat, LYHZSC_2_3_NAME, timeFormat } from '../../config'
 import { isOfType } from 'src/utils/ts.utils'
 import { ChangeOrFocus } from 'src/libs/types'
 const { TextArea } = Input
@@ -24,7 +24,7 @@ export interface Props {
 export default observer(function (props: Props) {
   const onChangeTitle = (e: any) => {
     onChange(e, 'v1')
-    model.editorTitle = e.target.value + model.detail?.record?.menuName
+    model.editorTitle = e.target.value + LYHZSC_2_3_NAME
   }
   const onChange = (e: any, key: string) => {
     let value: any = e
@@ -45,7 +45,7 @@ export default observer(function (props: Props) {
       <div className='title-con'>
         <Input className='title' value={model.editorData?.v1} onChange={(e) => onChangeTitle(e)} />
         <div className='title'>
-          {model.detail?.record?.menuName}
+          {LYHZSC_2_3_NAME}
         </div>
       </div>
       <table>
