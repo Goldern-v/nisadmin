@@ -113,38 +113,39 @@ export default observer(function WorkRegistrationForm() {
       align: 'center',
       width: 140
     },
-    {
-      title: '操作',
-      dataIndex: '操作',
-      key: '操作',
-      width: 120,
-      align: 'center',
-      render: (text: any, row: any, index: number) => {
-        return (
-          <DoCon>
-            {isSelf() ? (
-              <React.Fragment>
-                <span
-                  onClick={() => {
-                    openAuditModal(getTitle('nurseWHRegistrationWork'), row, getTableData)
-                  }}
-                >
-                  查看
-                </span>
-              </React.Fragment>
-            ) : (
-              <span
-                onClick={() => {
-                  openAuditModal(getTitle('nurseWHRegistrationWork'), row, getTableData)
-                }}
-              >
-                {limitUtils(row) ? '审核' : '查看'}
-              </span>
-            )}
-          </DoCon>
-        )
-      }
-    }
+    Do('nurseWHRegistrationWork', editWorkRegistrationFormModal, getTableData)
+    // {
+    //   title: '操作',
+    //   dataIndex: '操作',
+    //   key: '操作',
+    //   width: 120,
+    //   align: 'center',
+    //   render: (text: any, row: any, index: number) => {
+    //     return (
+    //       <DoCon>
+    //         {isSelf() ? (
+    //           <React.Fragment>
+    //             <span
+    //               onClick={() => {
+    //                 openAuditModal(getTitle('nurseWHRegistrationWork'), row, getTableData)
+    //               }}
+    //             >
+    //               查看
+    //             </span>
+    //           </React.Fragment>
+    //         ) : (
+    //           <span
+    //             onClick={() => {
+    //               openAuditModal(getTitle('nurseWHRegistrationWork'), row, getTableData)
+    //             }}
+    //           >
+    //             {limitUtils(row) ? '审核' : '查看'}
+    //           </span>
+    //         )}
+    //       </DoCon>
+    //     )
+    //   }
+    // }
   ]
 
   useEffect(() => {
