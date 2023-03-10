@@ -41,7 +41,6 @@ export default observer(function MyCreateList() {
   }
   const path = window.location.hash.split('/').reverse()[0]
   const status = pathMap[path]
-
   const columns: ColumnProps<any>[] = [
     {
       title: '创建日期',
@@ -236,19 +235,15 @@ export default observer(function MyCreateList() {
           value={date}
           onChange={(value: any) => setDate(value)}
         />
-        <span className='label'>科室:</span>
-        {/* <DeptSelect onChange={(val) => setDeptSelect(val)} /> */}
-        <Select
+       { status != '2' && <><span className='label'>科室:</span><Select
           value={deptSelect}
           style={{ width: 180 }}
           showSearch
-          filterOption={(input: any, option: any) =>
-            option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+          filterOption={(input: any, option: any) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
           onChange={(val: string) => setDeptSelect(val)}>
           <Select.Option value={''}>全部</Select.Option>
-          {deptListAll.map((item: any, idx: any) =>
-            <Select.Option key={idx} value={item.code}>{item.name}</Select.Option>)}
-        </Select>
+          {deptListAll.map((item: any, idx: any) => <Select.Option key={idx} value={item.code}>{item.name}</Select.Option>)}
+        </Select></>}
         <span className='label'>应用:</span>
         <Select style={{ width: 160 }} value={selectedTemplate} onChange={(value: any) => setSelectedTemplate(value)}>
           <Select.Option value=''>全部</Select.Option>
