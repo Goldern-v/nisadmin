@@ -123,5 +123,10 @@ export default observer(function (props: Props) {
 })
 
 const Wrapper = styled(DetailCtxCon)`
-
+.date-con {
+  width: 100px;
+ .cell-ipt {
+    min-width: 100px !important;
+  }
+}
 `

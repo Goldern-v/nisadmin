@@ -210,6 +210,9 @@ class NurseHandBookRecordModel {
           border: none;
           padding: 0;
         }
+        .title-con .ant-input.title {
+          padding: 0px;
+        }
         `,
       }).then(() => this.isPrint = false)
     })
