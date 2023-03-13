@@ -55,7 +55,21 @@ export default observer(function PersonWinning() {
       key: 'projectName',
       width: 210,
       align: 'center'
-    }, 
+    },
+    {
+      title: '项目号',
+      dataIndex: 'projectNumber',
+      key: 'projectNumber',
+      width: 90,
+      align: 'center'
+    },
+    {
+      title: '项目级别',
+      dataIndex: 'projectLevel',
+      key: 'projectLevel',
+      width: 90,
+      align: 'center'
+    },
     {
       title: '课时数',
       dataIndex: 'courseHour',
@@ -107,7 +121,7 @@ export default observer(function PersonWinning() {
       key: 'projectName',
       width: 210,
       align: 'center'
-    }, 
+    },
     {
       title: '授予学分',
       dataIndex: 'creditGranted',
@@ -139,7 +153,7 @@ export default observer(function PersonWinning() {
     case 'sdlj':
     case 'nfsd':
     case 'qzde':
-      columns = columnsSDLJ 
+      columns = columnsSDLJ
       break;
     default: columns = columnsDefault
   }
