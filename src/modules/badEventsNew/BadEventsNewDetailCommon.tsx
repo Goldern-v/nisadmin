@@ -322,7 +322,7 @@ export default withRouter(function BadEventsNewDetail(props: any) {
           </Button> */}
           {appStore.hisMatch({
             map: {
-              'fqfybjy,gxjb': <React.Fragment>
+              'fqfybjy,gxjb,yczyy': <React.Fragment>
                 <Button
                   disabled={iframeLoading}
                   className='audit'
