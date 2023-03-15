@@ -8,14 +8,8 @@ import { observer } from 'mobx-react-lite'
 import { ColumnProps } from 'antd/lib/table'
 import createModal from 'src/libs/createModal'
 
-import { globalModal } from 'src/global/globalModal'
-import { authStore } from 'src/stores'
-import limitUtils from '../utils/limit'
-import Zimage from 'src/components/Zimage'
-import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
 import EditToNewPostModal from '../modal/EditToNewPostModal'
 import { nurseFilesService } from '../../../services/NurseFilesService'
-import { openAuditModal } from '../config/auditModalConfig'
 import { isSelf,editFlag } from './BaseInfo'
 import Do from '../components/Do'
 export interface Props extends RouteComponentProps {}
@@ -67,6 +61,13 @@ export default observer(function PersonWinning() {
       title: '现科室隶属部门',
       dataIndex: 'deptBeDepartment',
       key: 'deptBeDepartment',
+      width: 130,
+      align: 'center'
+    }] : [],
+    ...['zhzxy'].includes(appStore.HOSPITAL_ID) ? [{
+      title: '职务',
+      dataIndex: 'post',
+      key: 'post',
       width: 130,
       align: 'center'
     }] : [],

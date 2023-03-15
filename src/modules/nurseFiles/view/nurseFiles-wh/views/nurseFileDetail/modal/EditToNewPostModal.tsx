@@ -21,6 +21,7 @@ import { authStore, appStore } from "src/stores";
 import emitter from "src/libs/ev";
 const Option = Select.Option;
 const isSdlj = ['sdlj', 'nfsd', 'qzde'].includes(appStore.HOSPITAL_ID)
+const isZhzxy = ['zhzxy'].includes(appStore.HOSPITAL_ID)
 
 export interface Props extends ModalComponentProps {
   data?: any;
@@ -177,6 +178,23 @@ export default function EditToNewPostModal(props: Props) {
               <Select placeholder="现科室隶属部门">
                 {nurseFileDetailViewModal
                   .getDict("现科室隶属部门")
+                  .map((item: any) => (
+                    <Option value={item.code} key={item.code}>
+                      {item.name}
+                    </Option>
+                  ))}
+              </Select>
+            </Form.Field>
+          </Col>}
+          {isZhzxy && <Col span={24}>
+            <Form.Field
+              label={`职务`}
+              name="post"
+              required
+            >
+              <Select placeholder="职务">
+                {nurseFileDetailViewModal
+                  .getDict("职务")
                   .map((item: any) => (
                     <Option value={item.code} key={item.code}>
                       {item.name}
