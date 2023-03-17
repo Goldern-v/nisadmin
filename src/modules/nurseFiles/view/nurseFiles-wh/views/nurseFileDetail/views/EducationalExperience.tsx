@@ -169,15 +169,12 @@ export default observer(function EducationalExperience() {
     getTableData()
   }, [])
   return (
-    <BaseLayout title='医学学历教育' btnList={isSelf() || editFlag() ? btnList : []}>
+    <BaseLayout title='护理专业教育及工作经历' btnList={isSelf() || editFlag() ? btnList : []}>
       <BaseTable
         dataSource={tableData}
         columns={columns}
         surplusHeight={255}
         type={['spaceRow']}
-        tip={
-          '填写说明：记录专业医学学历教育，从第一学历至最高学历逐一填写。照片上传务必上传彩色原图、照片内容与学历信息内容一致。'
-        }
       />
       <editEducationalExperienceModal.Component getTableData={getTableData} />
     </BaseLayout>

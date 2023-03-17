@@ -85,6 +85,15 @@ export default observer(function Monograph() {
       width: 90,
       align: 'center'
     },
+    ...['zhzxy'].includes(appStore.HOSPITAL_ID) ? [
+      {
+      title: '起止页码',
+      dataIndex: 'pageNumber',
+      key: 'pageNumber',
+      width: 90,
+      align: 'center'
+    
+    }]: [],
     {
       title: '附件',
       dataIndex: 'fj',

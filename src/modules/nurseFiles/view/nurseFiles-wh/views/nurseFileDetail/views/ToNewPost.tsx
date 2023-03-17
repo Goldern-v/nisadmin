@@ -101,9 +101,9 @@ export default observer(function PersonWinning() {
   useEffect(() => {
     getTableData()
   }, [])
-
+  const title = ['zhzxy'].includes(appStore.HOSPITAL_ID) ? '院内转科工作经历' : '岗位变动'
   return (
-    <BaseLayout title='岗位变动' btnList={isSelf() || editFlag() ? btnList : []}>
+    <BaseLayout title={title} btnList={isSelf() || editFlag() ? btnList : []}>
       <BaseTable dataSource={tableData} columns={columns} surplusHeight={255} surplusWidth={250} type={['spaceRow']} />
       <editToNewPostModal.Component getTableData={getTableData} />
     </BaseLayout>

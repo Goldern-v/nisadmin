@@ -13,13 +13,14 @@ import createModal from 'src/libs/createModal'
 import Zimage from 'src/components/Zimage'
 // import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
 import EditContinuingEducationModal from '../modal/EditContinuingEducationModal'
+import EditContinuingEducationModalZhzxy from '../modal/EditContinuingEducationModalZhzxy'
 import { nurseFilesService } from '../../../services/NurseFilesService'
 // import { openAuditModal } from '../config/auditModalConfig'
 import { isSelf,editFlag } from './BaseInfo'
 import Do from '../components/Do'
 export interface Props extends RouteComponentProps {}
 export default observer(function PersonWinning() {
-  const editContinuingEducationModal = createModal(EditContinuingEducationModal)
+  const editContinuingEducationModal = createModal(['zhzxy'].includes(appStore.HOSPITAL_ID) ? EditContinuingEducationModalZhzxy : EditContinuingEducationModal)
   const [tableData, setTableData] = useState([])
   const getTableData = () => {
     nurseFilesService.commonfindByEmpNoSubmit('nurseWHContinueStudy', appStore.queryObj.empNo).then((res) => {
@@ -99,6 +100,74 @@ export default observer(function PersonWinning() {
       align: 'center'
     },
   ]
+  //后端不加字段了 直接在原来的字段上改
+  const columnsZhzxy: ColumnProps<any>[] = [
+    {
+      title: '序号',
+      dataIndex: '',
+      key: '序号',
+      render: (text: any, record: any, index: number) => index + 1,
+      align: 'center',
+      width: 55
+    },
+    {
+      title: '日期',
+      dataIndex: 'year',
+      key: 'year',
+      width: 90,
+      align: 'center'
+    },
+    {
+      title: '项目名称',
+      dataIndex: 'projectName',
+      key: 'projectName',
+      width: 210,
+      align: 'center'
+    },
+    {
+      title: '授课题目',
+      dataIndex: 'schoolArea',
+      key: 'schoolArea',
+      width: 210,
+      align: 'center'
+    },
+    {
+      title: '学分类别',
+      dataIndex: 'personTitleArea',
+      key: 'personTitleArea',
+      width: 90,
+      align: 'center'
+    },
+    {
+      title: '学分',
+      dataIndex: 'projectNumber',
+      key: 'projectNumber',
+      width: 90,
+      align: 'center'
+    },
+    {
+      title: '级别',
+      dataIndex: 'projectLevel',
+      key: 'projectLevel',
+      width: 90,
+      align: 'center'
+    },
+    {
+      title: '课时数',
+      dataIndex: 'courseHour',
+      key: 'courseHour',
+      width: 90,
+      align: 'center'
+    },
+    {
+      title: '学员总数',
+      dataIndex: 'personTotal',
+      key: 'personTotal',
+      width: 90,
+      align: 'center'
+    },
+    
+  ]
   const columnsSDLJ: ColumnProps<any>[] = [
     {
       title: '序号',
@@ -155,6 +224,9 @@ export default observer(function PersonWinning() {
     case 'qzde':
       columns = columnsSDLJ
       break;
+    case 'zhzxy':
+      columns = columnsZhzxy
+      break
     default: columns = columnsDefault
   }
 

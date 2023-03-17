@@ -149,6 +149,11 @@ export default function EditMonographModal(props: Props) {
                 <AutoComplete dataSource={nurseFileDetailViewModal.getDict('参编').map((item) => item.name)} />
               </Form.Field>
             </Col>
+            { ['zhzxy'].includes(appStore.HOSPITAL_ID)&&<Col span={24}>
+              <Form.Field label={`起止页码`} name='pageNumber'>
+                <Input />
+              </Form.Field>
+            </Col>}
             <Col span={24}>
               <Form.Field label={`附件`} name='urlImageOne'>
                 <MultipleImageUploader

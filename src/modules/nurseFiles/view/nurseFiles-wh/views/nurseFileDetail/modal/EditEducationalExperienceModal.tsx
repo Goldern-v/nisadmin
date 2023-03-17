@@ -86,9 +86,9 @@ export default function EditWorkHistoryModal(props: Props) {
       // refForm.current.setField('unit', 123)
     }
     if (signShow === '修改') {
-      setTitle('修改医学学历教育')
+      setTitle('修改护理专业教育及工作经历')
     } else if (signShow === '添加') {
-      setTitle('添加医学学历教育')
+      setTitle('添加护理专业教育及工作经历')
     }
   }, [visible])
 
@@ -155,6 +155,11 @@ export default function EditWorkHistoryModal(props: Props) {
                   </Select.Option>
                 ))}
               </Select>
+            </Form.Field>
+          </Col>
+          <Col span={24}>
+            <Form.Field label={`工作单位`} name='workCompany'>
+              <Input />
             </Form.Field>
           </Col>
           <Col span={24}>

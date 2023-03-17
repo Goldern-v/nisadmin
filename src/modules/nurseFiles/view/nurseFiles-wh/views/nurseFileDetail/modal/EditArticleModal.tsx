@@ -70,7 +70,7 @@ export default function EditArticleModal(props: Props) {
       return message.warning('数据不能为空')
     }
 
-    value.publicYear && (value.publicYear = value.publicYear.format('YYYY'))
+    value.publicYear && (value.publicYear = ['zhzxy'].includes(appStore.HOSPITAL_ID) ? value.publicYear.format('YYYY-MM-DD') : value.publicYear.format('YYYY'))
     value.urlImageOne && (value.urlImageOne = value.urlImageOne.join(','))
     value.urlImageTwo && (value.urlImageTwo = value.urlImageTwo.join(','))
     nurseFilesService.commonSaveOrUpdate('nurseWHArticle', { ...obj, ...value, sign }).then((res: any) => {
@@ -123,11 +123,15 @@ export default function EditArticleModal(props: Props) {
       <Wrapper>
         <Form ref={refForm} rules={rules} labelWidth={120} onChange={onFieldChange}>
           <Row>
-            <Col span={24}>
+            {['zhzxy'].includes(appStore.HOSPITAL_ID)?<Col span={24}>
+              <Form.Field label={`发表年份`} name='publicYear'>
+                <DatePicker />
+              </Form.Field>
+            </Col>:<Col span={24}>
               <Form.Field label={`发表年份`} name='publicYear'>
                 <YearPicker />
               </Form.Field>
-            </Col>
+            </Col>}
             <Col span={24}>
               <Form.Field label={`杂志名称`} name='magazineName'>
                 <Input />
