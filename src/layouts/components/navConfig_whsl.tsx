@@ -116,6 +116,17 @@ export const navConfig = (appStore:any,authStore?:any)=>{
       // hidden: () => !appStore.isDev
     },
     {
+      name: "敏感指标",
+      onClick: () => {
+        // http://10.108.4.43:9091/bcyNursingQuality/index
+        // const [http, host, port] = location.origin.split(':');
+        // console.log('敏感指标', http, host, port)
+        const url = `http://10.108.4.43:9091/bcyNursingQuality/index`
+        window.open(url)
+      }
+      // hidden: () => !appStore.isDev
+    },
+    {
       name: "系统设置",
       path: "/setting",
     },
