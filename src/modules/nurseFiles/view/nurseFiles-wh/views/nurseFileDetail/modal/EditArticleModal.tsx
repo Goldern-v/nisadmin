@@ -64,8 +64,7 @@ export default function EditArticleModal(props: Props) {
     if (!Object.keys(value).length) {
       return message.warning('数据不能为空')
     }
-
-    value.publicYear && (value.publicYear = value.publicYear.format('YYYY-MM-DD'))
+    value.publicYear && (value.publicYear = ['zhzxy'].includes(appStore.HOSPITAL_ID) ? value.publicYear.format('YYYY-MM-DD') : value.publicYear.format('YYYY'))
     value.urlImageOne && (value.urlImageOne = value.urlImageOne.join(','))
     value.urlImageTwo && (value.urlImageTwo = value.urlImageTwo.join(','))
     nurseFilesService.commonSaveOrUpdate('nurseWHArticle', { ...obj, ...value, sign }).then((res: any) => {

@@ -188,6 +188,14 @@ export function openAuditModal(title: string, row: any, callBack: any,btnText?:s
                     "年龄": 'age',
                     "手机号": 'phone'
                   },
+                  appStore.hisMatch({
+                    map: {
+                      zhzxy: {
+                      "毕业学校": "data.schoolName",
+                      "所学专业": "data.major",
+                      },
+                    }
+                  }),
                   {
                     "参加工作时间": 'takeWorkTime',
                     "护士执业证书编号": 'zyzsNumber'

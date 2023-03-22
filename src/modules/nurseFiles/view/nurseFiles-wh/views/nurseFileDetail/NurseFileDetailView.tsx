@@ -12,6 +12,7 @@ import Article from './views/Article'
 import PersonWinning from './views/PersonWinning'
 import SpecializNurse from './views/SpecializNurse'
 import BaseInfo from './views/BaseInfo'
+import SpecialCard from './views/SpecialCard'
 import OnEducation from './views/OnEducation'
 import HostingScientific from './views/HostingScientific'
 import JoinScientific from './views/JoinScientific'
@@ -45,22 +46,48 @@ export interface Props extends RouteComponentProps<{ type?: string }> {
   payload: HorizontalMenuItem[]
 }
 const isSdlj = ['sdlj', 'nfsd', 'qzde'].includes(appStore.HOSPITAL_ID)
-const ROUTE_LIST = [
+const ROUTE_LIST = ['zhzxy'].includes(appStore.HOSPITAL_ID) ? [
   {
     type: 'baseInfo',
     component: BaseInfo,
     name: '基本信息'
   },
- {
-    type: 'article',
-    component: Article,
-    name: '文章'
+  {
+    type: 'PositionChange',
+    component: PositionChange,
+    name: '职称变动'
+  },
+  {
+    type: 'RankChange',
+    component: RankChange,
+    name: '层级变动'
+  },
+  {
+    type: 'specialCard',
+    component: SpecialCard,
+    name: '其他资格证书取得情况'
+  },
+  {
+    type: 'educationalExperience',
+    component: EducationalExperience,
+    name: '护理专业教育及工作经历'
+  },
+  {
+    type: 'toNewPost',
+    component: ToNewPost,
+    name: '院内转科工作经历'
   },
   {
     /** 方明处理 */
     type: 'personWinning',
     component: PersonWinning,
     name: '个人获奖'
+  },
+  {
+    /** 方明处理 */
+    type: 'onEducation',
+    component: OnEducation,
+    name: '外出进修'
   },
   {
     /** 吴敏处理 */
@@ -70,10 +97,68 @@ const ROUTE_LIST = [
   },
   {
     /** 方明处理 */
-    type: 'onEducation',
-    component: OnEducation,
-    name: '外出进修'
+    type: 'hostingScientific',
+    component: HostingScientific,
+    name: '主持科研课题'
   },
+  {
+    type: 'joinScientific',
+    component: JoinScientific,
+    name: '参与科研课题'
+  },
+  {
+    /** 方明处理 */
+    type: 'scientificResearch',
+    component: ScientificResearch,
+    name: '科研课题获奖'
+  },
+  {
+    type: 'patent',
+    component: Patent,
+    name: '专利'
+  },
+  {
+    type: 'article',
+    component: Article,
+    name: '文章'
+  },
+  {
+    type: 'monograph',
+    component: Monograph,
+    name: '专著'
+  },
+  {
+    type: 'continuingEducation',
+    component: ContinuingEducation,
+    name: '举办继续教育培训班'
+  },
+  {
+    type: 'learnJob',
+    component: LearnJob,
+    name: '学会任职'
+  },
+  {
+    type: 'workHistory',
+    component: WorkHistory,
+    name: '工作经历'
+  },
+  {
+    type: 'workRegistrationForm',
+    component: WorkRegistrationForm,
+    name: '在院工作情况'
+  },
+] : [
+  {
+    type: 'baseInfo',
+    component: BaseInfo,
+    name: '基本信息'
+  },
+  {
+    type: 'article',
+    component: Article,
+    name: '文章'
+  },
+
   ...isSdlj ? [
     {
       type: 'continuingEducation_sdlj',
@@ -118,7 +203,7 @@ const ROUTE_LIST = [
     component: LearnJob,
     name: '学会任职'
   },
-  ...appStore.HOSPITAL_ID === 'dghm' || appStore.HOSPITAL_ID !== 'zzwy'? [{
+  ...appStore.HOSPITAL_ID === 'dghm' || appStore.HOSPITAL_ID !== 'zzwy' ? [{
     type: 'socialJob',
     component: SocialNurse,
     name: '社会兼职'
@@ -187,12 +272,12 @@ const ROUTE_LIST = [
   //   component: Leave,
   //   name: '离职'
   // }
-  ...appStore.HOSPITAL_ID === 'wh' || appStore.HOSPITAL_ID === 'fsxt' ||appStore.HOSPITAL_ID === '925' || appStore.HOSPITAL_ID === 'ytll' ? [{
+  ...appStore.HOSPITAL_ID === 'wh' || appStore.HOSPITAL_ID === 'fsxt' || appStore.HOSPITAL_ID === '925' || appStore.HOSPITAL_ID === 'ytll' ? [{
     type: 'WardInnovate',
     component: WardInnovate,
     name: '科室创新'
   }] : [],
-  ...appStore.HOSPITAL_ID === '925'? [{
+  ...appStore.HOSPITAL_ID === '925' ? [{
     type: 'MakeAwards',
     component: MakeAwards,
     name: '立功嘉奖'

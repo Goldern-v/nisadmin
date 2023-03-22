@@ -201,11 +201,18 @@ export default observer(function BaseInfo() {
           年龄: data.age,
           手机号: data.phone,
         },
+        appStore.hisMatch({
+          map: {
+            zhzxy: {
+              毕业学校: data.schoolName,
+              所学专业: data.major,
+            },
+          }
+        }),
         {
           参加工作时间: (appStore.HOSPITAL_ID === 'fsxt' || appStore.HOSPITAL_ID === '925') ? data.goWorkTime : data.takeWorkTime,
           来院工作时间: data.goHospitalWorkDate,
         },
-
         {
           护士执业证书编号: data.zyzsNumber,
           取得护士执业证书时间: data.zyzsDate,

@@ -51,6 +51,7 @@ export default observer(function SpecializNurse() {
       width: 180,
       align: 'center'
     },
+
     {
       title: '专科护士名称',
       dataIndex: 'nurseName',
@@ -58,7 +59,6 @@ export default observer(function SpecializNurse() {
       width: 170,
       align: 'center'
     },
-
     {
       title: '证书编号',
       dataIndex: 'cardNumber',

@@ -140,6 +140,20 @@ export default class NurseFilesService extends BaseApiService {
   public findNurseFilePendingFlow(empNo: any, pageIndex: any, pageSize: any) {
     return this.post(`/auditeNurseFileIndexWH/findNurseFilePendingFlow`, this.stringify({ empNo, pageIndex, pageSize }))
   }
+    // 3-1护士特殊资格证 新增 //护长
+    public async nurseSpecialQualificationAdd(obj: any) {
+      return this.post(`/nurseSpecialQualification/saveOrUpdatePC`, obj);
+    }
+      // 3// 查找护士特殊资格证 //护长
+  public async nurseSpecialQualification(empNo: any) {
+    nurseFileDetailViewModal.pageSpinning = true;
+    return this.get(
+      `/nurseSpecialQualification/findByEmpNoSubmit/${empNo}`
+    ).then(res => {
+      nurseFileDetailViewModal.pageSpinning = false;
+      return res;
+    });
+  }
   /** 我已审核 */
   public findNurseFileProcessedFlow(empNo: any, pageIndex: any, pageSize: any) {
     return this.post(

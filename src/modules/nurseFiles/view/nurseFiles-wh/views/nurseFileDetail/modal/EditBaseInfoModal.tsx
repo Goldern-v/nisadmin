@@ -410,6 +410,19 @@ export default function EditWorkHistoryModal(props: Props) {
               </Select>
             </Form.Field>
           </Col>
+          {appStore.HOSPITAL_ID  == 'zhzxy' &&(<span>
+            <Col span={12}>
+            <Form.Field label={`毕业学校`} name="schoolName">
+              <Input />
+            </Form.Field>
+          </Col>
+          <Col span={12}>
+          <Form.Field label={`所学专业`} name="major">
+            <Input />
+          </Form.Field>
+        </Col>
+          </span>)
+          }
           {appStore.HOSPITAL_ID !== 'fsxt' && <Col span={12}>
             <Form.Field label={`取得最高学历时间`} name="highestEducationDate">
               <DatePicker />

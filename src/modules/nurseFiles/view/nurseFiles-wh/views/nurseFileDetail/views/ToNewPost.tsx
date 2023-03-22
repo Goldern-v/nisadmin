@@ -8,14 +8,8 @@ import { observer } from 'mobx-react-lite'
 import { ColumnProps } from 'antd/lib/table'
 import createModal from 'src/libs/createModal'
 
-import { globalModal } from 'src/global/globalModal'
-import { authStore } from 'src/stores'
-import limitUtils from '../utils/limit'
-import Zimage from 'src/components/Zimage'
-import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
 import EditToNewPostModal from '../modal/EditToNewPostModal'
 import { nurseFilesService } from '../../../services/NurseFilesService'
-import { openAuditModal } from '../config/auditModalConfig'
 import { isSelf,editFlag } from './BaseInfo'
 import Do from '../components/Do'
 export interface Props extends RouteComponentProps {}
@@ -70,6 +64,13 @@ export default observer(function PersonWinning() {
       width: 130,
       align: 'center'
     }] : [],
+    ...['zhzxy'].includes(appStore.HOSPITAL_ID) ? [{
+      title: '职务',
+      dataIndex: 'post',
+      key: 'post',
+      width: 130,
+      align: 'center'
+    }] : [],
     {
       title: '转岗时间',
       dataIndex: 'transferDate',
@@ -100,9 +101,9 @@ export default observer(function PersonWinning() {
   useEffect(() => {
     getTableData()
   }, [])
-
+  const title = ['zhzxy'].includes(appStore.HOSPITAL_ID) ? '院内转科工作经历' : '岗位变动'
   return (
-    <BaseLayout title='岗位变动' btnList={isSelf() || editFlag() ? btnList : []}>
+    <BaseLayout title={title} btnList={isSelf() || editFlag() ? btnList : []}>
       <BaseTable dataSource={tableData} columns={columns} surplusHeight={255} surplusWidth={250} type={['spaceRow']} />
       <editToNewPostModal.Component getTableData={getTableData} />
     </BaseLayout>

@@ -78,6 +78,13 @@ export default observer(function PersonWinning() {
             align: 'center'
           },
           {
+            title: '证书编码',
+            dataIndex: 'titleNumber',
+            key: 'titleNumber',
+            width: 100,
+            align: 'center'
+          },
+          {
             title: '现层级开始时间',
             dataIndex: 'startDate',
             key: 'startDate',
