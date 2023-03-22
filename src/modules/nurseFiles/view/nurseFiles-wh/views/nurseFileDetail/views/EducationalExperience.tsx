@@ -43,7 +43,7 @@ export default observer(function EducationalExperience() {
       width: 60
     },
     {
-      title: '就读时间2222',
+      title: '就读时间',
       dataIndex: 'readTime',
       key: '2',
       width: 120,
