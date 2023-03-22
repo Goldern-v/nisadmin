@@ -176,7 +176,7 @@ export default function EditWorkHistoryModal(props: Props) {
     momentFormatIntoStr(value, 'maps.contract_due_date')
     value.zyzsUrl && (value.zyzsUrl = value.zyzsUrl.join(","));
     value?.maps?.meritorious_performance && delete value.maps.meritorious_performance
-
+    // value?.maps?.schoolname && delete value.maps.schoolname
     nurseFilesService
       .saveOrUpdate({ ...value, ...obj, sign })
       .then((res: any) => {
@@ -384,6 +384,16 @@ export default function EditWorkHistoryModal(props: Props) {
           </Col>}
           {(['dghm'].includes(appStore.HOSPITAL_ID)) && <Col span={12}>
             <Form.Field label={`家庭住址`} name="address">
+              <Input />
+            </Form.Field>
+          </Col>}
+          {(['zhzxy'].includes(appStore.HOSPITAL_ID)) && <Col span={12}>
+            <Form.Field label={`毕业学校`} name="maps.school_name">
+              <Input />
+            </Form.Field>
+          </Col>}
+          {(['zhzxy'].includes(appStore.HOSPITAL_ID)) && <Col span={12}>
+            <Form.Field label={`所学专业`} name="maps.major">
               <Input />
             </Form.Field>
           </Col>}

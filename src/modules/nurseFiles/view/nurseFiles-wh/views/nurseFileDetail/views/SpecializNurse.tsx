@@ -45,19 +45,20 @@ export default observer(function SpecializNurse() {
       width: 55
     },
     {
-      title: '专科护士名称',
-      dataIndex: 'nurseName',
-      key: 'nurseName',
-      width: 170,
-      align: 'center'
-    },
-    {
       title: '发证单位',
       dataIndex: 'cardUnit',
       key: 'cardUnit',
       width: 180,
       align: 'center'
     },
+    {
+      title: '专科护士名称',
+      dataIndex: 'nurseName',
+      key: 'nurseName',
+      width: 170,
+      align: 'center'
+    },
+
     {
       title: '证书编号',
       dataIndex: 'cardNumber',

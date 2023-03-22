@@ -226,6 +226,16 @@ export default observer(function BaseInfo() {
             }
           }
         }),
+        appStore.hisMatch({
+          map: {
+            zhzxy: {
+              毕业学校: maps.school_name,
+              所学专业: maps.major
+            },
+            other: {
+            }
+          }
+        }),
         {
           取得最高学历时间: data.highestEducationDate,
           最高学历学位: data.highestEducationDegree,
@@ -402,7 +412,7 @@ export default observer(function BaseInfo() {
           家庭住址: data.address,
           // 立功表现: data?.maps?.meritorious_performance
         },
-        
+
       ]
       let newTableData = (() => {
         switch (appStore.HOSPITAL_ID) {
@@ -437,7 +447,6 @@ export default observer(function BaseInfo() {
           let mapCfgItem = mapsConfig[i]
           let key = mapCfgItem.fieldCode
           let val = maps[key] || ''
-
           if (mapCfgItem.fieldType === 'select_edit' || mapCfgItem.fieldType === 'select') {
             let options = []
             try {
@@ -460,6 +469,7 @@ export default observer(function BaseInfo() {
             if (name) lastItem[name] = val
           }
         }
+        console.log(newTableData, 11111)
         if (['fsxt', '925'].includes(appStore.HOSPITAL_ID)) {
           console.log(newTableData, 9998)
           setTableData(newTableData)

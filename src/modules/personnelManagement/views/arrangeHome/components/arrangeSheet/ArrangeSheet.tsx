@@ -868,7 +868,7 @@ export default observer(function ArrangeSheet(props: Props) {
       case "qhwy":
       case 'whhk':
       case 'dglb':
-      case 'dghm':
+      // case 'dghm':
         const dragRowWhyx = sheetViewModal.sheetTableData[dragIndex];
         if (!dragRowWhyx) return;
         sheetViewModal.sheetTableData = update(sheetViewModal.sheetTableData, {

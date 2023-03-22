@@ -16,6 +16,7 @@ import loginViewModel from 'src/modules/login/LoginViewModel'
 import ImageUploader from 'src/components/ImageUploader'
 import emitter from 'src/libs/ev'
 import YearPicker from 'src/components/YearPicker'
+import {numberToArray} from "src/utils/array/array";
 const Option = Select.Option
 export interface Props extends ModalComponentProps {
   data?: any
@@ -25,6 +26,7 @@ export interface Props extends ModalComponentProps {
 const uploadCard = () => Promise.resolve('123')
 const rules: Rules = {
   year: (val) => !!val || '年度',
+  month: (val) => !!val || '月份',
   // nightShift: (val) => val >= 0 || '夜班',
   // checkOut: (val) => val >= 0 || '查房',
   // nursingConsultation: (val) => val >= 0 || '护理会诊',
@@ -136,6 +138,19 @@ export default function EditWorkHistoryModal(props: Props) {
             <Col span={24}>
               <Form.Field label={`年度`} name='year' required>
                 <YearPicker />
+              </Form.Field>
+            </Col>
+          </Row>
+          <Row>
+            <Col span={24}>
+              <Form.Field label={`月份`} name='month' required>
+                <Select>
+                  {numberToArray(12).map((item) => (
+                      <Select.Option value={item + 1} key={item}>
+                        {item + 1}月
+                      </Select.Option>
+                  ))}
+                </Select>
               </Form.Field>
             </Col>
           </Row>

@@ -257,7 +257,21 @@ export default function EditBalanceModal(props: Props) {
                             </Select>
                         </Form.Field>
                     </Col>
-
+                    <Col span={24}>
+                        <Form.Field label={`产假`} name="holidayHourNow">
+                            <InputNumber/>
+                        </Form.Field>
+                    </Col>
+                    <Col span={24}>
+                        <Form.Field label={`婚假`} name="holidayHourNow">
+                            <InputNumber/>
+                        </Form.Field>
+                    </Col>
+                    <Col span={24}>
+                        <Form.Field label={`丧假`} name="holidayHourNow">
+                            <InputNumber/>
+                        </Form.Field>
+                    </Col>
                     <Col span={24}>
                         <Form.Field label={`备注`} name="remark">
                             <Input.TextArea

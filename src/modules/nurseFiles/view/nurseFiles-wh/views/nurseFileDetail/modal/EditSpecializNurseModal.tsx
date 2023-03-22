@@ -112,15 +112,16 @@ export default function EditSpecializNurseModal(props: Props) {
       <Form ref={refForm} rules={rules} labelWidth={120} onChange={onFieldChange}>
         <Row>
           <Col span={24}>
-            <Form.Field label={`专科护士名称`} name='nurseName'>
-              <Input />
-            </Form.Field>
-          </Col>
-          <Col span={24}>
             <Form.Field label={`发证单位`} name='cardUnit'>
               <Input />
             </Form.Field>
           </Col>
+          <Col span={24}>
+            <Form.Field label={`专科护士名称`} name='nurseName'>
+              <Input />
+            </Form.Field>
+          </Col>
+
           <Col span={24}>
             <Form.Field label={`证书编号`} name='cardNumber'>
               <Input />

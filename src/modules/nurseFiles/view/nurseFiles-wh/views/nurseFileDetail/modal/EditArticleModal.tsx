@@ -1,20 +1,15 @@
 import styled from 'styled-components'
-import React, { useState, useEffect, useLayoutEffect } from 'react'
-import { RouteComponentProps } from 'react-router'
-import { Modal, Input, Button, Radio, DatePicker, Select, Row, Col, message } from 'antd'
+import React, { useState,  useLayoutEffect } from 'react'
+import { Modal, Input, Button, DatePicker, Select, Row, Col, message } from 'antd'
 import { ModalComponentProps } from 'src/libs/createModal'
 import Form from 'src/components/Form'
 import { nurseFilesService } from '../../../services/NurseFilesService'
 import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
-import { TITLE_LIST, POST_LIST } from '../../nurseFilesList/modal/AddNursingModal'
 import { to } from 'src/libs/fns'
 import { Rules } from 'src/components/Form/interfaces'
 import moment from 'moment'
-import loginViewModel from 'src/modules/login/LoginViewModel'
 // 加附件
-import ImageUploader from 'src/components/ImageUploader'
-import { authStore, appStore } from 'src/stores'
-import service from 'src/services/api'
+import {  appStore } from 'src/stores'
 import emitter from 'src/libs/ev'
 import MultipleImageUploader from 'src/components/ImageUploader/MultipleImageUploader'
 import YearPicker from 'src/components/YearPicker'
@@ -70,7 +65,7 @@ export default function EditArticleModal(props: Props) {
       return message.warning('数据不能为空')
     }
 
-    value.publicYear && (value.publicYear = value.publicYear.format('YYYY'))
+    value.publicYear && (value.publicYear = value.publicYear.format('YYYY-MM-DD'))
     value.urlImageOne && (value.urlImageOne = value.urlImageOne.join(','))
     value.urlImageTwo && (value.urlImageTwo = value.urlImageTwo.join(','))
     nurseFilesService.commonSaveOrUpdate('nurseWHArticle', { ...obj, ...value, sign }).then((res: any) => {
@@ -124,9 +119,11 @@ export default function EditArticleModal(props: Props) {
         <Form ref={refForm} rules={rules} labelWidth={120} onChange={onFieldChange}>
           <Row>
             <Col span={24}>
-              <Form.Field label={`发表年份`} name='publicYear'>
+              {appStore.HOSPITAL_ID ==='zhzxy'?<Form.Field label={`出版时间`} name='publicYear'>
+                <DatePicker format='YYYY-MM-DD' />
+              </Form.Field>:  <Form.Field label={`发表年份`} name='publicYear'>
                 <YearPicker />
-              </Form.Field>
+              </Form.Field>}
             </Col>
             <Col span={24}>
               <Form.Field label={`杂志名称`} name='magazineName'>

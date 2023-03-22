@@ -201,6 +201,16 @@ export function openAuditModal(title: string, row: any, callBack: any,btnText?:s
                     "护士执业证书有效截止日期": 'zyzsEffectiveUpDate',
                     ...'dghm' === appStore.HOSPITAL_ID ? {"家庭住址": 'address'} : {"初始学历": 'initialEducation'}
                   },
+                  ...appStore.hisMatch({
+                    map: {
+                      ['zhzxy']: [{
+                        "毕业学校": 'school_name',
+                        "所学专业": 'major'
+                      }],
+                      other: []
+                    },
+                    vague: true
+                  }),
                   {
                     "最高学历": 'highestEducation',
                     "取得最高学历时间": 'highestEducationDate'

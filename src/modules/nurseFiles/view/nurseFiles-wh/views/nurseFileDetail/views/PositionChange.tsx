@@ -63,7 +63,7 @@ export default observer(function PersonWinning() {
     ],
     ...appStore.hisMatch({
       map: {
-        'sdlj,nfsd,qzde': [
+        'sdlj,nfsd,qzde,zhzxy': [
           {
             title: '证书编号',
             dataIndex: 'titleNumber',

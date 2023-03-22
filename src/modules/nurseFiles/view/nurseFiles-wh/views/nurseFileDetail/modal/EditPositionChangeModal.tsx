@@ -38,6 +38,7 @@ const rules: Rules = {
     titleOld: val => !!val || "请填写原职称名称",
     titleNew: val => !!val || "请填写现职称名称"
   } : { titleNew: val => !!val || "请填写职称名称" },
+  // ...appStore.HOSPITAL_ID==='zhzxy'?{titleNumber:val=>!!val||'请填写证书编号'}:null,
   winNewTiTleDate: val => !!val || "请选择考取专业技术资格证书时间",
   employNewTiTleDate: val => !!val || "请选择聘用专业技术资格时间"
 };
@@ -106,7 +107,7 @@ export default function EditPositionChangeModal(props: Props) {
         urlImageOne: data.urlImageOne ? data.urlImageOne.split(",") : [],
         ...appStore.hisMatch({
           map: {
-            'sdlj,nfsd,qzde': {
+            'sdlj,nfsd,qzde,zhzxy': {
               titleNumber: data.titleNumber
             },
             other: {}
@@ -185,6 +186,11 @@ export default function EditPositionChangeModal(props: Props) {
             </Form.Field>
           </Col>
           {isSdlj && <Col span={24}>
+            <Form.Field label="证书编号" name="titleNumber">
+              <Input />
+            </Form.Field>
+          </Col>}
+          {appStore.HOSPITAL_ID==='zhzxy' && <Col span={24}>
             <Form.Field label="证书编号" name="titleNumber">
               <Input />
             </Form.Field>
