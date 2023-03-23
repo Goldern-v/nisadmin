@@ -562,15 +562,15 @@ if (process.env.REACT_APP_HOSPITAL_ID == "hj") {
   specialModule = [
     setLayout("/indicator/:name", IndicatorNew, layouts.MainLayout),
     setLayout("/indicator", IndicatorNew, layouts.MainLayout),
-    setLayout("/nurseAudit", NurseAudit_whyx, layouts.MainLayout),
+    setLayout("/nurseAudit", NurseAudit_wh, layouts.MainLayout),
     setLayout(
         "/selfNurseFile/:type",
-        NurseFileDetailView_whyx,
+        NurseFileDetailView_wh,
         layouts.MainLayout
     ),
     setLayout(
         "/nurseFileDetail/:type",
-        NurseFileDetailView_whyx,
+        NurseFileDetailView_wh,
         layouts.MainLayout
     ),
     setLayout("/auditsManagement", AuditsManagementView_wh, layouts.MainLayout),//武汉版本审核管理
