@@ -33,7 +33,13 @@ export const pageObj: PageObj = {
       type: 'dateRangePicker',
       name: 'startDate',
       nameList: ['startDateStart', 'startDateEnd']
-    }
+    },
+    {
+      label: '变动时间',
+      type: 'dateRangePicker',
+      name: 'auditedTime',
+      nameList: ['auditStartDate', 'auditEndDate']
+    },
   ],
   tableList: [
     {
@@ -54,6 +60,13 @@ export const pageObj: PageObj = {
       title: '现层级开始时间',
       dataIndex: 'startDate',
       key: 'startDate',
+      width: 130,
+      align: 'center'
+    },
+    {
+      title: '层级变动时间',
+      dataIndex: 'auditedTime',
+      key: 'auditedTime',
       width: 130,
       align: 'center'
     },
