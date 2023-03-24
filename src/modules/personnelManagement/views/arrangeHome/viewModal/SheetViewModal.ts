@@ -588,6 +588,17 @@ class SheetViewModal {
       _sheetTableData[i].current_holidayHour = current_holidayHour;
       _sheetTableData[i].current_publicHour = current_publicHour;
       _sheetTableData[i].current_periodHour = current_periodHour;
+      // 额外字段 by谢岗
+      !_sheetTableData[i].userExpend && appStore.HOSPITAL_ID === 'dgxg' && (_sheetTableData[i].userExpend = {
+        expend1: '',
+        expend2: '',
+        expend3: '',
+        expend4: '',
+        expend5: '',
+        expend6: '',
+        expend7: '',
+        expend8: '',
+      });
 
       /** 计数班次的基础次数 */
       let countArrangeBaseIndexObj: any = {};
