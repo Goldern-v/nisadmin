@@ -39,7 +39,13 @@ export const pageObj: PageObj = {
       type: 'dateRangePicker',
       name: 'employNewTiTleDate',
       nameList: ['employNewTiTleStartDate', 'employNewTiTleEndDate']
-    }
+    },
+    {
+      label: '变动时间',
+      type: 'dateRangePicker',
+      name: 'auditedTime',
+      nameList: ['auditStartDate', 'auditEndDate']
+    },
   ],
   tableList: [
     {
@@ -68,6 +74,13 @@ export const pageObj: PageObj = {
       dataIndex: 'employNewTiTleDate',
       key: 'employNewTiTleDate',
       width: 140,
+      align: 'center'
+    },
+    {
+      title: '职称变动时间',
+      dataIndex: 'auditedTime',
+      key: 'auditedTime',
+      width: 130,
       align: 'center'
     },
     {

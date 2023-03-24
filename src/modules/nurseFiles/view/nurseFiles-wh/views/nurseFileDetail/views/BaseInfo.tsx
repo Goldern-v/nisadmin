@@ -207,6 +207,7 @@ export default observer(function BaseInfo() {
               毕业学校: data.schoolName,
               所学专业: data.major,
             },
+            other: {}
           }
         }),
         {
