@@ -3,16 +3,13 @@ import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 import BaseLayout from '../components/BaseLayout'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
-import { authStore, appStore } from 'src/stores'
+import {  appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import { ColumnProps } from 'antd/lib/table'
 import createModal from 'src/libs/createModal'
 import EditEducationalExperienceModal from '../modal/EditEducationalExperienceModal'
 import { nurseFilesService } from '../../../services/NurseFilesService'
-import { globalModal } from 'src/global/globalModal'
-import limitUtils from '../utils/limit'
 import Zimage from 'src/components/Zimage'
-import { openAuditModal } from '../config/auditModalConfig'
 import { isSelf, editFlag } from './BaseInfo'
 import Do from '../components/Do'
 export interface Props extends RouteComponentProps { }
@@ -101,6 +98,7 @@ export default observer(function EducationalExperience() {
         return <DoCon>{row.urlImageOne ? <Zimage text='查看' list={row.urlImageOne.split(',')} /> : ''}</DoCon>
       }
     },
+    Do('nurseWHMedicalEducation', editEducationalExperienceModal, getTableData)
   ] : [
     {
       title: '序号',

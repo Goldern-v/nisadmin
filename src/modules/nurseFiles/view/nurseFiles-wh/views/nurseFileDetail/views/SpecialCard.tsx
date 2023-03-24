@@ -1,6 +1,5 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { RouteComponentProps } from 'react-router'
 import BaseLayout from '../components/BaseLayout'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
 import {appStore } from 'src/stores'
@@ -11,12 +10,17 @@ import { nurseFilesService } from '../../../services/NurseFilesService'
 import { globalModal } from 'src/global/globalModal'
 import Zimage from 'src/components/Zimage'
 import limitUtils from '../utils/limit'
+import EditContinuingEducationModalZhzxy
+  from "src/modules/nurseFiles/view/nurseFiles-wh/views/nurseFileDetail/modal/EditContinuingEducationModalZhzxy";
+import EditContinuingEducationModal
+  from "src/modules/nurseFiles/view/nurseFiles-wh/views/nurseFileDetail/modal/EditContinuingEducationModal";
+import Do from "src/modules/nurseFiles/view/nurseFiles-wh/views/nurseFileDetail/components/Do";
 export interface Props {
   addBtnHide?: boolean
 }
 export default function SpecialCard(props: Props) {
   let { addBtnHide } = props
-
+  const editContinuingEducationModal = createModal(['zhzxy'].includes(appStore.HOSPITAL_ID) ? EditContinuingEducationModalZhzxy : EditContinuingEducationModal)
   const editSpecialCardModal = createModal(EditSpecialCardModal)
   const btnList = addBtnHide ? [] : [
     {
@@ -73,6 +77,7 @@ export default function SpecialCard(props: Props) {
       width: 120,
       align: 'center'
     },
+    // Do('nurseSpecialQualification', editContinuingEducationModal, getTableData)
     {
       title: '操作',
       width: 100,
@@ -80,17 +85,24 @@ export default function SpecialCard(props: Props) {
       render: (text: any, row: any, index: any) => {
         return (
           <DoCon>
-            {limitUtils(row) ? (
-              <span
-                onClick={() => {
-                  editSpecialCardModal.show({ data: row, signShow: '修改' })
-                }}
-              >
+                <span
+                    onClick={() => {
+                      editSpecialCardModal.show({ data: row, signShow: '修改' })
+                    }}
+                >
                 修改
               </span>
-            ) : (
-                ''
-              )}
+            {/*{limitUtils(row) ? (*/}
+            {/*  <span*/}
+            {/*    onClick={() => {*/}
+            {/*      editSpecialCardModal.show({ data: row, signShow: '修改' })*/}
+            {/*    }}*/}
+            {/*  >*/}
+            {/*    修改*/}
+            {/*  </span>*/}
+            {/*) : (*/}
+            {/*    ''*/}
+            {/*  )}*/}
 
             <span
               onClick={() => {
@@ -121,6 +133,16 @@ export default function SpecialCard(props: Props) {
             >
               {limitUtils(row) ? '审核' : '查看'}
             </span>
+            <span
+                onClick={() => {
+                  globalModal.confirm('删除确定', '你确定要删除该记录吗?').then((res) => {
+                    nurseFilesService.commonDelById('nurseSpecialQualification', row.id).then((res) => {
+                      getTableData()
+                    })
+                  })
+                }}>
+                删除
+              </span>
           </DoCon>
         )
       }
@@ -144,7 +166,7 @@ export default function SpecialCard(props: Props) {
         type={['fixedWidth']}
       />
       <editSpecialCardModal.Component getTableData={getTableData} />
+
     </BaseLayout>
   )
 }
-const Wrapper = styled.div``

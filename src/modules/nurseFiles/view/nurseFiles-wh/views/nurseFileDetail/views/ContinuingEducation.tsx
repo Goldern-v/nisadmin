@@ -166,7 +166,9 @@ export default observer(function PersonWinning() {
       width: 90,
       align: 'center'
     },
-    
+    Do('nurseWHContinueStudy', editContinuingEducationModal, getTableData)
+
+
   ]
   const columnsSDLJ: ColumnProps<any>[] = [
     {
@@ -241,4 +243,3 @@ export default observer(function PersonWinning() {
     </BaseLayout>
   )
 })
-const Wrapper = styled.div``
