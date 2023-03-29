@@ -75,6 +75,7 @@ class SheetViewModal {
   // 标准工时
   @observable public standardTime: number = 0;
   @observable public groupName: any;
+  @observable public countObj: any = {}
 
   getAllDeptList() {
     arrangeService.getAllDeptList().then((res: any) => {
@@ -764,6 +765,26 @@ class SheetViewModal {
         (v: any) => v.empName === curItem.empName && v.empNo === curItem.empNo
       );
     }
+  }
+  /*修改table数据*/
+  uniteTableData(data: any, field: any) {
+    let count = 0;//重复项的第一项
+    let indexCount = 1;//下一项
+    let data1 = JSON.parse(JSON.stringify(data))
+    while (indexCount < data1.length) {
+      var item = data1.slice(count, count + 1)[0];//获取没有比较的第一个对象
+      if (!item[`${field}rowSpan`]) {
+        item[`${field}rowSpan`] = 1;//初始化为1
+      }
+      if (item[field] === data1[indexCount][field]) {//第一个对象与后面的对象相比，有相同项就累加，并且后面相同项设置为0
+        item[`${field}rowSpan`]++;
+        data1[indexCount][`${field}rowSpan`] = 0;
+      } else {
+        count = indexCount;
+      }
+      indexCount++;
+    }
+    return data1
   }
 }
 

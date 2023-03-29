@@ -375,7 +375,71 @@ export default observer(function SelectCon() {
       printModal.printArrange();
     }
   };
+  const handlePrint = () => {
+    let visibleArr = ['empNo','empName','flag','nurseHierarchy', 'newTitle', 'year', 'WeekBalanceHour','BalanceHour','WorkNightCount','PostScoreCell','TotalHoliday']
+    Modal.confirm({
+      title: '选择要打印的列',
+      centered: true,
+      width: 660,
+      content: <div style={{ marginTop: 30 }}>
+        <Checkbox.Group
+            defaultValue={visibleArr}
+            onChange={(newArr: any[]) => visibleArr = newArr}>
+          <Checkbox value="empNo">工号</Checkbox>
+          <Checkbox value="empName">姓名</Checkbox>
+          <Checkbox value="flag">标志</Checkbox>
+          {/* <Checkbox value="groupName">分组名称</Checkbox> */}
+          <Checkbox value="nurseHierarchy">层级</Checkbox>
+          <Checkbox value="newTitle">职称</Checkbox>
+          <Checkbox value="year">年限</Checkbox><br />
+          <Checkbox value="WeekBalanceHour">本轮积时</Checkbox>
+          <Checkbox value="BalanceHour">累计时数</Checkbox>
+          <Checkbox value="WorkNightCount">累计夜班数</Checkbox>
+          <Checkbox value="PostScoreCell">累计系数</Checkbox>
+          <Checkbox value="TotalHoliday">本年余假</Checkbox>
+        </Checkbox.Group>
+      </div>,
+      onOk: () => {
+        printModal.printArrangeDghl(visibleArr)
+      }
+    })
+  };
+  const findSyncNurse = () => {
+    Modal.confirm({
+      title: "同步人员",
+      content: "确定要同步此排班人员吗？",
+      okText: "确认",
+      cancelText: "取消",
+      centered: true,
+      maskClosable: true,
+      onOk: () => {
+        let data = {
+          startTime: moment(selectViewModal.params.startTime).format("YYYY-MM-DD"),
+          endTime: moment(selectViewModal.params.endTime).format("YYYY-MM-DD"),
+          deptCode: selectViewModal.params.deptCode,
+          nurseGroup: selectViewModal.params.group,
+          startTimeWeek: moment(selectViewModal.params.startTime)
+              .weekday(0)
+              .format("YYYY-MM-DD"),
+          endTimeWeek: moment(selectViewModal.params.endTime)
+              .weekday(6)
+              .format("YYYY-MM-DD"),
+          sync:true
+        }
+        sheetViewModal.tableLoading = true
+        try {
+          service.scheduleUserApiService.findSyncNurse(data).then((res) => {
+            message.success("同步成功");
+            sheetViewModal.sheetTableData = sheetViewModal.handleSheetTableData(res.data.setting,sheetViewModal.countObj)
+            sheetViewModal.tableLoading = false
+          });
+        } catch (error) {
+          sheetViewModal.tableLoading = false
+        }
 
+      },
+    });
+  }
   const bigDeptmenu = (
     <Menu onClick={exportBigDeptExcel}>
       <Menu.Item key='全院'>全院</Menu.Item>
@@ -638,6 +702,31 @@ export default observer(function SelectCon() {
                 </Button>
               </div>
             </React.Fragment>,
+            'zhzxy':<>
+              <div className="item">
+                <Upload showUploadList={false} customRequest={handleUpload}>
+                  <Button className="statistics getExcel">
+                    导入排班
+                  </Button>
+                </Upload>
+              </div>
+              <div className="item">
+                <Button
+                    className="statistics getExcel"
+                    disabled={sheetViewModal.tableLoading}
+                    onClick={handlePrint}>
+                  打印
+                </Button>
+              </div>
+              <div className="item">
+                <Button
+                    className="statistics getExcel"
+                    disabled={!authStore.isRoleManage}
+                    onClick={findSyncNurse}>
+                  同步排班人员
+                </Button>
+              </div>
+            </>,
             other: <div className="item">
               <Button className="statistics getExcel" onClick={exportExcel}>
                 导出科室

@@ -45,4 +45,8 @@ export default class ScheduleUserApiService extends BaseApiService {
   public async setTotur(data: any) {
     return this.post('/schShiftUser/setTutor',data)
   }
+  //同步排班人员
+  public async findSyncNurse(data: any) {
+    return this.post('/scheduling/findSyncNurse', data)
+  }
 }
