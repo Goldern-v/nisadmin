@@ -172,12 +172,14 @@ export class AnalysisDetailModal {
         creatorNo,
         publisherName,
         status,
+        statusName,
         reportName,
         reportMonth,
         updateTime,
         tableDataMap,
         reportYear,
-        reportTemplateDto
+        reportTemplateDto,
+        handleList
       } = res.data
       for(let keys of Object.keys(this.allData)){
           for(let item of Object.keys(this.allData[keys])){
@@ -192,6 +194,7 @@ export class AnalysisDetailModal {
         creatorNo,
         publisherName,
         status,
+        statusName,
         reportMonth,
         reportYear,
         reportName,
@@ -199,7 +202,8 @@ export class AnalysisDetailModal {
       }
       this.allData.tableDataMap = tableDataMap
       this.configData = {
-        tableTempList: reportTemplateDto?.reportTableFieldTemplateList || ({} as Record<string, any>)
+        tableTempList: reportTemplateDto?.reportTableFieldTemplateList || ({} as Record<string, any>),
+        handleList
       }
       this.formatData()
     } catch (error) {

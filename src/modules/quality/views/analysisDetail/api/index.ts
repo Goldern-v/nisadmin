@@ -22,6 +22,10 @@ export default class AnalysisDetailApi extends BaseApiService {
   public publishReport(reportId: string) {
     return this.get(`/baseReport/publish/${reportId}`);
   }
+  /**审核报告 */
+  public auditReport(data: any) {
+    return this.post(`/baseReport/audit`, data);
+  }
   /**撤销报告 */
   public revokeReport(reportId: string) {
     return this.get(`/baseReport/revoke/${reportId}`);

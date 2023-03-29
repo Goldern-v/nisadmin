@@ -11,10 +11,10 @@ import { appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import { PageHeader, PageTitle, Place } from 'src/components/common'
 
-import AnalysisService from './api'
+import AnalysisService, {analysisService} from './api'
 import CreateAnalysisModal from './components/CreateAnalysisModal'
 import useLevel from './utils/useLevel'
-import { getSearchTempName, getTempName } from './utils'
+import {getModuleCode, getSearchTempName, getTempName} from './utils'
 import { MonthList } from '../../utils/toolCon'
 import { analysisModal } from './AnalysisModal'
 import { obj as obj1Dept } from '../analysisDetail/config/callback/callback1_dept'
@@ -31,6 +31,8 @@ export default observer(function Analysis() {
   const { history } = appStore;
   // 科室列表、2级质控是片区列表
   const [wardList, setWardList] = useState([]);
+  // 状态列表
+  const [statusList, setStatusList] = useState([]);
   // 默认科室
   const [defDept, setDefDept] = useState('');
 
@@ -71,6 +73,12 @@ export default observer(function Analysis() {
       });
     }
 
+  }, []);
+
+  useEffect(() => {
+    analysisService.getModuleNodeList(getModuleCode(level)).then((res) => {
+      setStatusList(res.data);
+    });
   }, []);
 
   useEffect(() => {
@@ -143,20 +151,20 @@ export default observer(function Analysis() {
     },
     {
       title: "状态",
-      key: "status",
-      dataIndex: "status",
+      key: "statusName",
+      dataIndex: "statusName",
       width: 80,
-      align: "center",
-      render: (status: any) => {
-        switch (status) {
-          case 0:
-            return <span style={{ color: "red" }}>保存</span>;
-          case 1:
-            return "发布";
-          default:
-            return "-";
-        }
-      },
+      align: "center"
+      // render: (status: any) => {
+      //   switch (status) {
+      //     case 0:
+      //       return <span style={{ color: "red" }}>保存</span>;
+      //     case 1:
+      //       return "发布";
+      //     default:
+      //       return "-";
+      //   }
+      // },
     },
     {
       title: "操作",
@@ -238,6 +246,7 @@ export default observer(function Analysis() {
         ...params,
         reportLevel: level,
         templateName: getTempName(level, params.wardCode),
+        moduleCode: getModuleCode(level),
       })
       .then((res) => {
         if (res.code == '200') {
@@ -319,15 +328,20 @@ export default observer(function Analysis() {
         </Select>
         <div className="label">状态：</div>
         <Select
-          style={{ width: 100 }}
+          style={{ width: 130 }}
           value={query.status}
           onChange={(status: any) => {
             setQuery({ ...query, status });
           }}
         >
           <Option value="">全部</Option>
-          <Option value="0">保存</Option>
-          <Option value="1">发布</Option>
+          <Option value="0">待提交</Option>
+          {statusList.map((item: any) => (
+              <Option value={item.stateNo} key={item.stateNo}>
+                {item.unHandledMessage}
+              </Option>
+          ))}
+          {/*<Option value="1">发布</Option>*/}
         </Select>
         <div className="label">{level == 1 ? "科室：" : "片区："}</div>
         <Select

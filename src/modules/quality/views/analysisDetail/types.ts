@@ -9,6 +9,7 @@ export interface Report extends Record<string, any> {
   beginDate: string
   endDate: string
   status: string
+  statusName: string
   creatorNo: string
   creatorName: string
   createTime: string
