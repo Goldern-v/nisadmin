@@ -244,6 +244,7 @@ export default function OperateSetting(props: Props) {
             <span className="label w-98">及格分数线:</span>
             <span className="content">{info.passScores}</span>
           </div>
+          {/*    */}
           <div className="row">
             <span className="label w-98">实操考核评分项:</span>
             <span className="content">{info.scoreItemList.length || 0}项</span>
