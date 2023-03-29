@@ -233,6 +233,136 @@ export default function OperateSetting(props: Props) {
             )}
         </Wrapper>,
       ],
+      'fssdy':[
+        <Wrapper>
+          <div className="content-item-title">上传设置</div>
+          <div className="row">
+            <span className="label w-98">总成绩:</span>
+            <span className="content">{info.totalScores}</span>
+          </div>
+          <div className="row">
+            <span className="label w-98">及格分数线:</span>
+            <span className="content">{info.passScores}</span>
+          </div>
+          <div className="row">
+            <span className="label w-98">实操考核评分项:</span>
+            <span className="content">{info.scoreItemList.length || 0}项</span>
+          </div>
+          <div className="table-title">实操评分管理表</div>
+          <table className="modal-table">
+            {info.latPraticalGradePaperDto && (
+                <tbody>
+                <tr>
+                  <td
+                      colSpan={2}
+                      className="td-center"
+                      style={{ fontSize: 14 }}
+                  >
+                    {info.latPraticalGradePaperDto.paperName}
+                  </td>
+                </tr>
+                <tr className="td-bold td-center">
+                  <td colSpan={2}>
+                    得分：{info.latPraticalGradePaperDto.totalScore}
+                  </td>
+                </tr>
+                </tbody>
+            )}
+          </table>
+          {info.latPraticalGradePaperDto &&
+              info.latPraticalGradePaperDto.latPraticalGradeSubjectDtoList && (
+                  <table className="modal-table">
+                    <colgroup>
+                      <col width={140} />
+                      <col />
+                      <col width={60} />
+                      <col width={220} />
+                      <col width={60} />
+                    </colgroup>
+                    <thead>
+                    <tr className="td-center">
+                      <td>考核阶段</td>
+                      <td>项目</td>
+                      <td>项目得分</td>
+                      <td>扣分细则</td>
+                      <td>应扣分</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {info.latPraticalGradePaperDto &&
+                        info.latPraticalGradePaperDto
+                            .latPraticalGradeSubjectDtoList &&
+                        info.latPraticalGradePaperDto.latPraticalGradeSubjectDtoList.map(
+                            (item: any, index: any) => {
+                              console.log(item);
+                              const length = item.latPraticalGradeOperationDtoList.reduce(
+                                  (pre: number, cur: any) => {
+                                    return (
+                                        pre +
+                                        cur.latPraticalGradeDeductPointsDtoList.length
+                                    );
+                                  },
+                                  0
+                              );
+                              console.log('length',length);
+                              return item.latPraticalGradeOperationDtoList.map(
+                                  (itemDto: any, indexDot: any) => itemDto.latPraticalGradeDeductPointsDtoList.map(
+                                      (itemDeuct: any, indexDeuct: any) => {
+                                        return (
+                                            <tr key={indexDeuct + "fds"}>
+                                              {indexDot == 0 && indexDeuct == 0 && (
+                                                  <td
+                                                      className="td-center"
+                                                      rowSpan={length}
+                                                  >
+                                                    {item.name}
+                                                  </td>
+                                              )}
+                                              {indexDeuct == 0 && (
+                                                  <td
+                                                      className="td-center"
+                                                      rowSpan={
+                                                          itemDto.latPraticalGradeDeductPointsDtoList &&
+                                                          itemDto
+                                                              .latPraticalGradeDeductPointsDtoList
+                                                              .length
+                                                      }
+                                                  >
+                                                    {itemDto.content}
+                                                  </td>
+                                              )}
+                                              {indexDeuct == 0 && (
+                                                  <td
+                                                      className="td-center"
+                                                      rowSpan={
+                                                          itemDto.latPraticalGradeDeductPointsDtoList &&
+                                                          itemDto
+                                                              .latPraticalGradeDeductPointsDtoList
+                                                              .length
+                                                      }
+                                                  >
+                                                    {itemDto.score}
+                                                  </td>
+                                              )}
+
+                                              <td className="td-center">
+                                                {itemDeuct.deductionRules}
+                                              </td>
+                                              <td className="td-center">
+                                                {itemDeuct.deductionScore}
+                                              </td>
+                                            </tr>
+                                        );
+                                      }
+                                  )
+                              );
+                            }
+                        )}
+                    </tbody>
+                  </table>
+              )}
+        </Wrapper>,
+      ],
       other: [
         <Wrapper>
           <div className="content-item-title">上传设置</div>
