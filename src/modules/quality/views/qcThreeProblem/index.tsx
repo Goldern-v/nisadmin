@@ -17,6 +17,7 @@ import { authStore } from "src/stores";
 import { fileDownload } from "src/utils/file/file";
 import { PUBLISH_STATUS_ARR } from "../../utils/enums";
 import { globalModal } from "src/global/globalModal";
+import { Obj } from "src/libs/types";
 
 const columns = [
   "A级评价标准",
@@ -82,6 +83,8 @@ export default observer(function QcThreeProblem(props) {
   const [groupRoleListSelf, setGroupRoleListSelf] = useState([]);
   const [data, setData] = useState<Record<string, any>>({});
   const [list, setList] = useState(initList);
+  const [dataList, setDataList] = useState<Obj[]>([]);
+  const [id, setId] = useState('');
 
   const handleYear = (e: any) => {
     setQuery({ ...query, reportYear: e });
@@ -97,6 +100,29 @@ export default observer(function QcThreeProblem(props) {
     }
   }, [])
 
+  const getList = () => {
+    setLoading(true);
+    let reportYear = "";
+    if (query.reportYear !== null) reportYear = query.reportYear.format("YYYY");
+
+    let reqQuery = {
+      ...query,
+      reportLevel: 3,
+      reportYear,
+      templateName: getTempName(3.3),
+    };
+    analysisService.getPage(reqQuery).then(res => {
+      setDataList(res?.data?.list || [])
+      if (res?.data?.list?.length) {
+        setId(res?.data?.list[0].id)
+      } else (
+          setId('')
+      )
+      setLoading(false);
+    })
+        .catch((e) => setLoading(false));
+  }
+
   const getData = () => {
     setLoading(true);
     let reportYear = "";
@@ -108,22 +134,27 @@ export default observer(function QcThreeProblem(props) {
       reportYear,
       templateName: getTempName(3.3),
     };
-    analysisService
-      .getOneReport(reqQuery)
-      .then((res: any) => {
-        if (authStore.level3Check || (res.data && res.data.status === 1)) {
-          setData(res.data || {});
-          setList({ ...initList(), ...(res?.data?.fieldDataMap || {}) })
-        } else {
-          setData({});
-          setList(initList)
-        }
-        setLoading(false);
-      })
-      .catch((e) => setLoading(false));
+    if (id) {
+      analysisDetailApi
+          .getPageDetaile(id)
+          .then((res: any) => {
+            if (authStore.level3Check || (res.data && res.data.status === 1)) {
+              setData(res.data || {});
+              setList({ ...initList(), ...(res?.data?.fieldDataMap || {}) })
+            } else {
+              setData({});
+              setList(initList)
+            }
+            setLoading(false);
+          })
+          .catch((e) => setLoading(false));
+    } else {
+      setLoading(false);
+    }
+
   };
   const handleSearch = () => {
-    getData();
+    getList();
   };
 
   const handleExport = () => {
@@ -166,11 +197,15 @@ export default observer(function QcThreeProblem(props) {
     handleSearch();
     return () => {};
   }, [query]);
+  useEffect(() => {
+    getData();
+    return () => {};
+  }, [id]);
   /**
    * 撤销、发布、保存权限
    */
   const btnRules = useMemo(() => authStore.level3Check && data.id, [data])
-  
+
   const handleCreate = () => {
     setCreateAnalysisVisible(true);
   };
@@ -207,7 +242,7 @@ export default observer(function QcThreeProblem(props) {
       analysisDetailApi.deleteReport(data.id).then((res) => {
         message.success('删除成功')
         setTimeout(() => {
-          getData()
+          getList()
         }, 500)
       })
     })
@@ -238,6 +273,19 @@ export default observer(function QcThreeProblem(props) {
             {MonthList()}
           </Select>
 
+          <Select
+              value={id}
+              onChange={(e: any) => {
+                setId(e)
+              }}
+          >
+            {
+              dataList.map(v => (
+                  <Select.Option value={v.id}>{v.reportName}</Select.Option>
+              ))
+            }
+          </Select>
+
           <Button onClick={handleSearch}>查询</Button>
 
           {authStore.level3Check && <Button onClick={handleCreate} type="primary">
@@ -248,12 +296,12 @@ export default observer(function QcThreeProblem(props) {
           {authStore.level3Check && data.id && <Button onClick={handleDel}>删除</Button>}
           <Button disabled={!data.id} onClick={handleExport}>导出</Button>
         </PageHeader>
-        {!data.id && (
+        {!id && (
           <div className="contain--empty">
             <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
           </div>
         )}
-        {data.id && (
+        {id && (
           <Main>
             <div className="contain">
               <div className="contain__title">
@@ -309,6 +357,9 @@ const Wrapper = styled.div`
   }
   .ant-spin-container {
     height: 100%;
+  }
+  .month-select {
+    margin-right: 15px;
   }
 `;
 const Main = styled.div`

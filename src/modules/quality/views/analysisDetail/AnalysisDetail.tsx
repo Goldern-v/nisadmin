@@ -13,6 +13,9 @@ import { globalModal } from 'src/global/globalModal'
 import { analysisDetailApi } from './api'
 import Header from '../analysisDetail/components/header/headerSection'
 import { routePath, checkRole } from './util/tool'
+import AuditProcess from 'src/components/audit-page/AuditProcess'
+import AuditModal from "./components/base/AuditModal";
+import * as types from "src/libs/types";
 export interface Props extends RouteComponentProps {}
 
 export default observer(function AnalysisDetail() {
@@ -22,7 +25,9 @@ export default observer(function AnalysisDetail() {
   const { queryObj } = appStore
   useEffect(() => {
     analysisDetailModal.current.init()
-  }, [])
+  }, []);
+
+  const [visible, setVisible] = useState(false);
 
   let report: Report = analysisDetailModal.current.getDataInAllData('pageInfo')
   const onPrint = (isPrint: boolean) => {
@@ -101,6 +106,15 @@ export default observer(function AnalysisDetail() {
       })
     })
   }
+
+  const onOkCb = (params: types.Obj) => {
+    const data = { ...params, formId : appStore.queryObj.id, handleTime: new Date().getTime()}
+    analysisDetailApi.auditReport(data).then((res) => {
+      setTimeout(() => {
+        appStore.history.push(routePath())
+      }, 500)
+    });
+  }
   return (
     <Wrapper>
       <HeadCon>
@@ -115,11 +129,16 @@ export default observer(function AnalysisDetail() {
         <div className='tool-con'>
           {report.status == '0'&&checkRole()&&(<Button onClick={onDelete}>删除</Button>)}
           {/* <Button onClick={() => onPrint(false)}>预览</Button> */}
-          {report.status == '1' && checkRole() && (
+          {report.status != '0' && report.statusName != '审核完成' && checkRole() && (
             <Button onClick={onCancelPublish}>撤销</Button>
           )}
-          { report.status != '1' && checkRole() && (
-            <Button onClick={onPublish}>发布</Button>
+          { report.status == '0' && checkRole() && (
+            <Button onClick={onPublish}>发布 </Button>
+          )}
+
+
+          { Number(report.status) > 0 && report.statusName != '审核完成' && (
+            <Button type='primary' onClick={() => setVisible(true)}>审核</Button>
           )}
 
           <Button onClick={() => onPrint(true)}>打印</Button>
@@ -146,7 +165,9 @@ export default observer(function AnalysisDetail() {
             }
           })}
         </Page>
+        {report.status != '0' && <AuditProcess process={analysisDetailModal.current.configData?.handleList || []} />}
         {analysisDetailModal.current.baseModal && <analysisDetailModal.current.baseModal.Component />}
+        <AuditModal visible={visible} onCancel={() => setVisible(false) } onOkCb={onOkCb}/>
       </ScrollCon>
     </Wrapper>
   )
@@ -209,6 +230,7 @@ const Page = styled.div`
 `
 const ScrollCon = styled(ScrollBox)`
   height: calc(100vh - 150px);
+  position: relative;
   .ant-btn {
     display:${props => props.status=='1' ? "none" : "block"};
     
@@ -216,4 +238,6 @@ const ScrollCon = styled(ScrollBox)`
   input {
     -moz-appearance: textfield;
   }
+  
+  
 `

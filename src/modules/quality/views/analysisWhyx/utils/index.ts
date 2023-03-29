@@ -31,6 +31,24 @@ export const getTempName = (level: number | string, deptCode?: string): string =
   return ''
 }
 
+/**获取模块编码 */
+export const getModuleCode = (level: number | string): string => {
+  switch(level+ '') {
+    case '1':
+      return 'qc_one_report'
+    case '2':
+      return 'qc_second_report'
+    case '3.1':
+      return ''
+    case '3.3':
+      return ''
+    case '3':
+      return ''
+    default:
+      return ''
+  }
+}
+
 export const getTypeName = (level: number | string, deptCode?: string): string => {
   if (level == 2) {
     return '区域'

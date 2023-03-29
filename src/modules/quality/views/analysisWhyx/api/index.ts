@@ -55,8 +55,8 @@ export default class AnalysisService extends BaseApiService {
   }
   /**
    * 分页查询报告
-   * @param params 
-   * @returns 
+   * @param params
+   * @returns
    */
   public getPage(params: getPageIn) {
   return this.post(`${this.path}getPage`, { ...params, reportLevel: parseInt(params.reportLevel + ''), hospitalCode: appStore.HOSPITAL_ID})
@@ -70,6 +70,12 @@ export default class AnalysisService extends BaseApiService {
   public getOneReport(params: getPageIn) {
   return this.post(`${this.path}getOneReport`, { ...params, hospitalCode: appStore.HOSPITAL_ID})
   }
+
+  /**查询流程节点信息 */
+  public getModuleNodeList(moduleCode: string) {
+    return this.get(`/audit/settings/getModuleNodeList/` + moduleCode)
+  }
+
 }
 
 export const analysisService = new AnalysisService()
