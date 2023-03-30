@@ -120,8 +120,8 @@ export default observer((props: Props) => {
             <Col span={18}>
               <Select
                 value={form.empName}
-                onChange={(empName: string) => {
-                  setFormItem({ 'empName': empName })
+                onChange={(empName : any, option : any) => {
+                  setFormItem({ 'empName': empName, 'empNo': option.key })
                 }}>
                 {nursingList.map((item: { empName: string, empNo: string }, index) => (
                   <Select.Option value={item.empName} key={item.empNo + index}>
