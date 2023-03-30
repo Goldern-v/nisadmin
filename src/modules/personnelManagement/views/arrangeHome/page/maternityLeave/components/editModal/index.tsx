@@ -124,7 +124,7 @@ export default observer((props: Props) => {
                   setFormItem({ 'empName': empName, 'empNo': option.key })
                 }}>
                 {nursingList.map((item: { empName: string, empNo: string }, index) => (
-                  <Select.Option value={item.empName} key={item.empNo + index}>
+                  <Select.Option value={item.empName} key={item.empNo}>
                     {item.empName}
                   </Select.Option>
                 ))}
