@@ -101,6 +101,12 @@ export default observer(function NursingQualityCheck() {
       align: 'left',
     },
     {
+      dataIndex: 'rectification',
+      title: '整改情况',
+      width: 200,
+      align: 'left',
+    },
+    {
       dataIndex: 'deductScore',
       title: '星级扣分',
       align: 'center',
