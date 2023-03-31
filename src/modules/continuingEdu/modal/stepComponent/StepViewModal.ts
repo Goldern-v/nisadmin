@@ -176,7 +176,8 @@ class StepViewModal {
         []
       ),
       detailInfo: {
-        ...(this.getCurrentStepViewModal.decodeData().detailInfo || {})
+        ...(this.getCurrentStepViewModal.decodeData().detailInfo || {}),
+       ... appStore.HOSPITAL_ID === 'fssdy'? {scoreInApp:1} : null
       },
       studyLinkList: this.stepData4XX.studyLinkList, // 学习外网链接（吴敏）
       isNeedQuestionnaire: this.stepData4PX.isNeedQuestionnaire
