@@ -112,11 +112,16 @@ export default observer(function NursingQualityCheckEdit() {
                 }
               })
 
-              handleRecordChange({ ...record, result, checkItemList, type: '', description: '' }, idx)
+              handleRecordChange({ ...record, result, checkItemList, type: '', description: '',rectification:'' }, idx)
               let descriptionIpt =
                 document.querySelector(`.description-${idx}`) as HTMLInputElement
 
               if (descriptionIpt) descriptionIpt.value = ''
+              
+              let rectificationIpt =
+                document.querySelector(`.rectification-${idx}`) as HTMLInputElement
+
+              if (rectificationIpt) rectificationIpt.value = ''
             }}>
             {resultList.map((item: any, resultIdx: number) =>
               <Option key={resultIdx} value={item.code}>{item.name}</Option>
@@ -139,6 +144,23 @@ export default observer(function NursingQualityCheckEdit() {
             disabled={record.result == '无问题'}
             onBlur={(e: any) =>
               handleRecordChange({ ...record, description: e.target.value }, idx)} />
+        </EditCon>
+      }
+    },
+    {
+      dataIndex: 'rectification',
+      key: 'rectification',
+      title: '整改情况',
+      render: (text: string, record: any, idx: number) => {
+        return <EditCon>
+          <Input.TextArea
+            autosize
+            className={`rectification-${idx}`}
+            style={{ width: '100%', resize: 'none' }}
+            defaultValue={text}
+            disabled={record.result == '无问题'}
+            onBlur={(e: any) =>
+              handleRecordChange({ ...record, rectification: e.target.value }, idx)} />
         </EditCon>
       }
     },

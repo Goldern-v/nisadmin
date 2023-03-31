@@ -121,7 +121,7 @@ export const navConfig = (appStore:any,authStore?:any)=>{
         // http://10.108.4.43:9091/bcyNursingQuality/index
         // const [http, host, port] = location.origin.split(':');
         // console.log('敏感指标', http, host, port)
-        const url = `http://10.108.4.43:9091/bcyNursingQuality/index`
+        const url = `http://10.108.4.43:9091/bcyNursingQuality/ssoLogin?token=${authStore.authToken}`
         window.open(url)
       }
       // hidden: () => !appStore.isDev
@@ -131,6 +131,6 @@ export const navConfig = (appStore:any,authStore?:any)=>{
       path: "/setting",
     },
   ];
-	
+
 	return  navList
 }
