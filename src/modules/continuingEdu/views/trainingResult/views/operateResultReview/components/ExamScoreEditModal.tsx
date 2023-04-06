@@ -66,7 +66,7 @@ export default observer(function ExamScoreEditModal(props: Props) {
 
   const getOperateScoreList = () => {
     setLoading(true)
-    if(['whyx','fsxt','925','whhk'].includes(appStore.HOSPITAL_ID)){
+    if(['whyx','fsxt','925','whhk','fssdy'].includes(appStore.HOSPITAL_ID)){
       trainingResultService.reviewPaperScoreItemsByCetpId({
         cetpId,
         empNo
@@ -96,7 +96,7 @@ export default observer(function ExamScoreEditModal(props: Props) {
     if (visible) getOperateScoreList()
   }, [visible])
 
-  return (!['whyx','fsxt','925','whhk'].includes(appStore.HOSPITAL_ID) ? <Modal
+  return (!['whyx','fsxt','925','whhk','fssdy'].includes(appStore.HOSPITAL_ID) ? <Modal
     width={500}
     confirmLoading={loading}
     visible={visible}
