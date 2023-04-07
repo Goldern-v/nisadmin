@@ -188,14 +188,14 @@ export function openAuditModal(title: string, row: any, callBack: any,btnText?:s
                     "年龄": 'age',
                     "手机号": 'phone'
                   },
-                  appStore.hisMatch({
-                    map: {
-                      zhzxy: {
-                      "毕业学校": "data.schoolName",
-                      "所学专业": "data.major",
-                      },
-                    }
-                  }),
+                  // appStore.hisMatch({
+                  //   map: {
+                  //     zhzxy: {
+                  //     "毕业学校": "data.schoolName",
+                  //     "所学专业": "data.major",
+                  //     },
+                  //   }
+                  // }),
                   {
                     "参加工作时间": 'takeWorkTime',
                     "护士执业证书编号": 'zyzsNumber'
@@ -424,37 +424,61 @@ export function openAuditModal(title: string, row: any, callBack: any,btnText?:s
           type: 'nurseWHContinueStudy',
           title: '审核举办继续教育培训班',
 
-          tableFormat: [
-            {
-              "年份": `year`,
-              "项目名称": `projectName`,
-
-            },
-            {
-              "项目号": `projectNumber`,
-              "项目级别": `projectLevel`,
-            },
-            ...appStore.hisMatch({
-              map: {
-                [isSdljText]: [
+          tableFormat:(()=>{
+            switch(appStore.HOSPITAL_ID){
+              case 'zhzxy':
+                return [
                   {
-                    "授予学分": `creditGranted`
-                  }
-                ],
-                other: [
+                    "日期": `year`,
+                    "项目名称": `projectName`,
+                  },
+                  {
+                    "授课题目": `schoolArea`,
+                    "学分类别": `personTitleArea`,
+                  },
+                  {
+                    "学分": `projectNumber`,
+                    "级别": `projectLevel`,
+                  },
                   {
                     "课时数": `courseHour`,
                     "学员总数": `personTotal`,
                   },
-                  {
-                    "学员分布区域": `schoolArea`,
-                    "学员职称分布": `personTitleArea`
-                  },
                 ]
-              },
-              vague: true
-            }),
-          ],
+              default:
+                return [
+                  {
+                    "年份": `year`,
+                    "项目名称": `projectName`,
+      
+                  },
+                  {
+                    "项目号": `projectNumber`,
+                    "项目级别": `projectLevel`,
+                  },
+                  ...appStore.hisMatch({
+                    map: {
+                      [isSdljText]: [
+                        {
+                          "授予学分": `creditGranted`
+                        }
+                      ],
+                      other: [
+                        {
+                          "课时数": `courseHour`,
+                          "学员总数": `personTotal`,
+                        },
+                        {
+                          "学员分布区域": `schoolArea`,
+                          "学员职称分布": `personTitleArea`
+                        },
+                      ]
+                    },
+                    vague: true
+                  }),
+                ]
+            }
+          })(),
           fileData: row.urlImageOne
             ? row.urlImageOne.split(',').map((item: any, index: number) => {
               return {
@@ -486,7 +510,17 @@ export function openAuditModal(title: string, row: any, callBack: any,btnText?:s
             {
               "就读学历": `education`,
               "学位": `degree`
-            }
+            },
+            ...appStore.hisMatch({
+              map: {
+                ['zhzxy']: [
+                  {
+                    "工作单位": `workCompany`
+                  }
+                ],
+              },
+              vague: true
+            }),
           ],
           fileData: row.urlImageOne
             ? row.urlImageOne.split(',').map((item: any, index: number) => {
@@ -518,14 +552,14 @@ export function openAuditModal(title: string, row: any, callBack: any,btnText?:s
             },
             {
               "课题批文号": `approvalNumber`,
-              "登记号": `registerNumber`
+              ...'zhzxy'==appStore.HOSPITAL_ID?{"项目编号": `registerNumber`}:{"登记号": `registerNumber`}
             },
             {
-              "授予单位": `grantUnit`,
-              "开始时间": `startDate`
+              "开始时间": `startDate`,
+              "截止时间": `endDate`
             },
-            {
-              "截止时间": `endDate`,
+            { 
+              ...'zhzxy'==appStore.HOSPITAL_ID?{}:{"授予单位": `grantUnit`},
               "完成情况": `courseCompletion`,
               "时间": `completionDate`
             }
@@ -596,15 +630,16 @@ export function openAuditModal(title: string, row: any, callBack: any,btnText?:s
                 },
                 {
                   登记号: `registerNumber`,
-                  授予单位: `grantUnit`,
-                },
-                {
                   完成情况: `courseCompletion`,
-                  开始时间: `startDate`,
+                  
                 },
                 {
+                  开始时间: `startDate`,
                   截止时间: `endDate`,
+                },
+                {
                   时间: `completionDate`,
+                  ...'zhzxy'==appStore.HOSPITAL_ID?{}:{授予单位: `grantUnit`,}
                 },
               ],
             },
@@ -833,7 +868,16 @@ export function openAuditModal(title: string, row: any, callBack: any,btnText?:s
             {
               "专利类型": `patentType`,
               "是否成果转化": `isResultTransfor`
-            }
+            },
+            ...appStore.hisMatch({
+              map: {
+                ['zhzxy']: [{
+                  '专利排名': `patentLevel`
+                }],
+                other: []
+              },
+              vague: true
+            }),
           ],
           fileData: row.urlImageOne
             ? row.urlImageOne.split(',').map((item: any, index: number) => {
@@ -894,7 +938,16 @@ export function openAuditModal(title: string, row: any, callBack: any,btnText?:s
             {
               "考取专业资格证书时间": `winNewTiTleDate`,
               "聘用专业技术资格时间": `employNewTiTleDate`
-            }
+            },
+            ...appStore.hisMatch({
+              map: {
+                ['zhzxy']: [{
+                  '证书编号': `titleNumber`
+                }],
+                other: []
+              },
+              vague: true
+            }),
           ],
           fileData: row.urlImageOne
             ? row.urlImageOne.split(',').map((item: any, index: number) => {
@@ -962,6 +1015,15 @@ export function openAuditModal(title: string, row: any, callBack: any,btnText?:s
               "现科室隶属部门": `deptBeDepartment`,
               "转岗时间": `transferDate`
             },
+            ...appStore.hisMatch({
+              map: {
+                ['zhzxy']: [{
+                  '职务': `post`
+                }],
+                other: []
+              },
+              vague: true
+            }),
 
           ],
           fileData: row.urlImageOne
@@ -1300,6 +1362,7 @@ export function openAuditModal(title: string, row: any, callBack: any,btnText?:s
           },
           {
             "证明人": `witness`,
+            ...'zhzxy'==appStore.HOSPITAL_ID?{'月份':'month'}:{}
           }
         ],
         fileData: row.urlImageOne
