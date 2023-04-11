@@ -163,7 +163,9 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
     case 'lyyz':
       return "http://192.168.1.54:9866";
     case 'dghm':
-      return  'http://59.36.17.191:9094' //正式
+      return 'http://59.36.17.191:9094' //正式
+    case 'zhzxy':
+      return 'http://192.168.1.54:9898' //测试
     default:
       // return "http://192.168.1.54:9866";
            return "http://183.234.20.149:19094";
