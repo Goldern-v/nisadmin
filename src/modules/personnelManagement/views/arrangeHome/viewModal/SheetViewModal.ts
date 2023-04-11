@@ -329,7 +329,7 @@ class SheetViewModal {
         this.standardTimeList = standardTimeList;
 
         this.sheetTableData = this.handleSheetTableData(
-          res.data.setting,
+         this.getGroupNameSort(res.data.setting),
           countObj
         );
       } else {
@@ -600,7 +600,10 @@ class SheetViewModal {
         expend7: '',
         expend8: '',
       });
-
+      // 额外字段 by珠海中西医
+      !_sheetTableData[i].userExpend && appStore.HOSPITAL_ID === 'zhzxy' && (_sheetTableData[i].userExpend = {
+        expend2: '',  //管床
+      });
       /** 计数班次的基础次数 */
       let countArrangeBaseIndexObj: any = {};
       for (let key of this.countArrangeNameList) {
@@ -652,7 +655,6 @@ class SheetViewModal {
       }
     }
 
-    // console.log(sheetTableData, "sheetTableData");
     return _sheetTableData;
   }
 
@@ -681,7 +683,6 @@ class SheetViewModal {
   /** 根据日期获取当前的时间的标准工时 */
   getStandTime(date: string) {
     let initialHour = 37.5;
-    // console.log(this.standardTimeList, "this.standardTimeList");
     for (let i = 0; i < this.standardTimeList.length; i++) {
       let dateNum = new Date(date).getTime();
       let standardTime = new Date(this.standardTimeList[i].startDate).getTime();
@@ -767,9 +768,9 @@ class SheetViewModal {
     }
   }
   /*修改table数据*/
-  uniteTableData(data: any, field: any) {
-    let count = 0;//重复项的第一项
-    let indexCount = 1;//下一项
+   uniteTableData (data: any, field: any){
+    let count:number = 0;//重复项的第一项
+    let indexCount:number = 1;//下一项
     let data1 = JSON.parse(JSON.stringify(data))
     while (indexCount < data1.length) {
       var item = data1.slice(count, count + 1)[0];//获取没有比较的第一个对象
@@ -785,6 +786,24 @@ class SheetViewModal {
       indexCount++;
     }
     return data1
+  }
+  getGroupNameSort(data:any){
+    let propsList = ["groupName"];
+    let tableData: any[] = [];
+    const list:any = data.sort((a:any, b:any) => {
+      if (a.groupName < b.groupName) {
+        return 1;
+      } else if (a.groupName > b.groupName) {
+        return -1;
+      } else {
+        return 0;
+      }
+    });
+    propsList.map(item => {
+      tableData = this.uniteTableData(list, item);
+    });
+    let _tableData =cloneJson(tableData)
+   return _tableData
   }
 }
 

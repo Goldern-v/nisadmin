@@ -265,7 +265,8 @@ export default observer(function SelectCon() {
   // 下载模板
   const handleUpload = async (info: any) => {
     const { data } = await arrangeService.importExcel(info.file)
-    setModalData(data)
+    data.errorMag && message.error(data.errorMag,4)
+    setModalData(data.schedulingDtos)
     setModalVisible(true)
   }
 
@@ -339,7 +340,6 @@ export default observer(function SelectCon() {
           </Checkbox.Group>
         </div>,
         onOk: () => {
-          // console.log(visibleArr)
           printModal.printArrangeNys(visibleArr)
         }
       })
@@ -365,7 +365,6 @@ export default observer(function SelectCon() {
           </Checkbox.Group>
         </div>,
         onOk: () => {
-          // console.log(visibleArr)
           printModal.printArrangeDghl(visibleArr)
         }
       })
@@ -652,6 +651,14 @@ export default observer(function SelectCon() {
                   </Button>
                 </Upload>
               </div>
+              <ImportModal
+                  visible={modalVisible}
+                  modalData={modalData}
+                  onOk={() => {
+                    setModalVisible(false)
+                    sheetViewModal.getSheetTableData()
+                  }}
+                  onCancel={() => setModalVisible(false)} />
               <div className="item">
                 <Button className="statistics getExcel" onClick={downloadExcel}>
                   下载模板

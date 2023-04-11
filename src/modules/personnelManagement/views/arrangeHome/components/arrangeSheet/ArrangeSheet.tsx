@@ -4,7 +4,7 @@ import moment from 'moment'
 import createModal from 'src/libs/createModal'
 import service from 'src/services/api'
 import styled from 'styled-components'
-import React, { useLayoutEffect, useState } from 'react'
+import React, {useEffect, useLayoutEffect, useState} from 'react'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
 import { Input, message, Modal, Tooltip } from 'src/vendors/antd'
 import { getWeekString, getWeekString2 } from 'src/utils/date/week'
@@ -30,7 +30,8 @@ import { createContextMenu } from './ContextMenu'
 import { sheetViewModal } from '../../viewModal/SheetViewModal'
 
 // import CellLeft from './CellLeft'  // 产品提的新需求  等待产品整理好再做
-import WeekBalanceHour from "./WeekBalanceHour"; //本周结余时数
+import WeekBalanceHour from "./WeekBalanceHour";
+import {toJS} from "mobx"; //本周结余时数
 export interface Props {
   /** 编辑模式 */
   isEdit: boolean;
@@ -119,6 +120,33 @@ export default observer(function ArrangeSheet(props: Props) {
   };
 
   let columns: any = [
+    ...appStore.hisMatch({
+      map: {
+        'zhzxy': [
+          {
+            title: "组名",
+            dataIndex: "groupName",
+            fixed: "left",
+            width: 70,
+            key: 'groupName',
+            align: "center",
+            onCell: (record: any, rowIndex: number) => {
+              return { className: `${record.groupName}` };
+            },
+            render: (value: string, row: any, index: number) => {
+              const obj = {
+                children:<span style={{background:row.groupColor||""}}>{value}</span>,
+                props: { rowSpan: 0 }
+              };
+              obj.props.rowSpan = row.groupNamerowSpan;
+              return obj;
+            }
+          }
+        ],
+        default: [],
+      },
+      vague: true
+    }),
     {
       title: "序号",
       dataIndex: "sortValue",
@@ -189,8 +217,8 @@ export default observer(function ArrangeSheet(props: Props) {
             align: "center",
             render(text: any, record: any) {
               return (
-                <div style={{ color: record.groupColor }}>
-                  {record.groupName}
+                <div style={{ color: record.groupColor||'red' }}>
+                  {record.groupName}{record.groupColor}
                 </div>
               );
             },
@@ -280,6 +308,31 @@ export default observer(function ArrangeSheet(props: Props) {
       },
       vague: true
     }),
+      ...appStore.hisMatch({
+        map:{
+          zhzxy:[  {
+            title: "管床",
+            dataIndex: "expend2",
+            width: 70,
+            fixed: "left",
+            align: "center",
+            render: (text: string, record: any) => {
+              return isEditable ? (
+                  <Input
+                      style={{ background: "#fff" }}
+                      defaultValue={record?.userExpend?.expend2}
+                      onChange={(e: any) => {
+                        record.userExpend.expend2 = e.target.value;
+                      }}
+                  />
+              ) : (
+                  <span>{record?.userExpend?.expend2}</span>
+              );
+            },
+          }],
+          other:[]
+        }
+      }),
     ...appStore.hisMatch({
       map: {
         dgxg: [
@@ -879,7 +932,8 @@ useLayoutEffect(() => {
                 hj: 3,
                 fqfybjy: 5,
                 nys: (isEdit ? 6 : 5),
-                'wjgdszd,wh,gxjb,jmfy,dghl,gzsrm,fsxt,925,whyx,whhk,gdtj,lyyz,qhwy,whsl,ytll,zhzxy,whhk,nfsd,dglb,zzwy,dghm': 6,
+                'wjgdszd,wh,gxjb,jmfy,dghl,gzsrm,fsxt,925,whyx,whhk,gdtj,lyyz,qhwy,whsl,ytll,whhk,nfsd,dglb,zzwy,dghm': 6,
+                zhzxy:7,
                 fssdy: 7,
                 'sdlj,qzde': 3,
                 other: 2
@@ -910,7 +964,6 @@ useLayoutEffect(() => {
 
 // 拖拽排序
 const moveRow = (dragIndex: number, hoverIndex: number) => {
-  console.log("dragIndex, hoverIndex===", dragIndex, hoverIndex);
   switch (appStore.HOSPITAL_ID) {
     case "hj":
     case "wjgdszd":
@@ -987,7 +1040,7 @@ return (
       surplusWidth={surplusWidth}
       columns={columns}
       // fixedFooter={true}
-      dataSource={sheetViewModal.sheetTableData.concat([])}
+      dataSource={sheetViewModal.sheetTableData}
       footer={() => {
         return (
           <React.Fragment>
