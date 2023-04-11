@@ -304,11 +304,14 @@ export default observer(function 敏感指标登记本(props: Props) {
     }),
     ...!config.hiddenDate ? [{
       title: "日期",
-      dataIndex: "recordDate",
+      dataIndex: (['gzsrm'].includes(appStore.HOSPITAL_ID) && location.pathname.includes('QCRG_GSY_12'))?"createTime":"recordDate",
       align: "center",
       className: "input-cell",
       width: 100,
       render(text: string, record: any, index: number) {
+        if(['gzsrm'].includes(appStore.HOSPITAL_ID)&&location.pathname.includes('QCRG_GSY_12')) return (
+          <span>{moment(text).format('YYYY-MM-DD')}</span>
+        )
         return (
           <Input
             disabled={cellDisabled(record)}
