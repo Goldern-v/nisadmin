@@ -250,21 +250,24 @@ const columns: ColumnProps<any>[] = [
     dataIndex: 'deptName',
     key: 'deptName',
     width: ['lyrm', 'stmz'].includes(appStore.HOSPITAL_ID) ? 120 : 200,
-    align: 'left'
+    align: 'left',
+    fixed:['925'].includes(appStore.HOSPITAL_ID) ? 'left': false
   },
   {
     title: '员工号',
     dataIndex: 'empNo',
     key: 'empNo',
     width: 70,
-    align: 'center'
+    align: 'center',
+    fixed:['925'].includes(appStore.HOSPITAL_ID) ? 'left': false
   },
   {
     title: '姓名',
     dataIndex: 'empName',
     key: 'empName',
     width: 70,
-    align: 'center'
+    align: 'center',
+    fixed:['925'].includes(appStore.HOSPITAL_ID) ? 'left': false
   },
 
   {
