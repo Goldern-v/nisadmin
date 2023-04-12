@@ -116,12 +116,15 @@ export default observer(function SelectCon() {
 
   // 导出科室Excel
   const exportExcel = () => {
-    let data = {
+    let data: any = {
       deptCode: selectViewModal.params.deptCode,
       startTime: selectViewModal.params.startTime,
       endTime: selectViewModal.params.endTime,
       nurseGroup: selectViewModal.params.group,
     };
+    if ('zhzxy' === appStore.HOSPITAL_ID) {
+      data.schedulingExportVersion = 'zhuhai'
+    }
     arrangeService.export(data).then(res => {
       fileDownload(res);
     });
@@ -731,6 +734,11 @@ export default observer(function SelectCon() {
                     disabled={!authStore.isRoleManage}
                     onClick={findSyncNurse}>
                   同步排班人员
+                </Button>
+              </div>
+              <div className="item">
+                <Button className="statistics getExcel" onClick={exportExcel}>
+                  导出科室
                 </Button>
               </div>
             </>,
