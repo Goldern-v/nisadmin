@@ -1362,7 +1362,6 @@ export function openAuditModal(title: string, row: any, callBack: any,btnText?:s
           },
           {
             "证明人": `witness`,
-            ...'zhzxy'==appStore.HOSPITAL_ID?{'月份':'month'}:{}
           }
         ],
         fileData: row.urlImageOne
