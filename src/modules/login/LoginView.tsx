@@ -90,6 +90,16 @@ export default withRouter(function LoginView(props: Props) {
     if (isMd5 || ["sdlj"].includes(appStore.HOSPITAL_ID)) {
       _password = md5(_password);
     }
+    let regexpDghm = new RegExp(
+      "(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[~!@#$%^&*._?+-])^.{10,}$"
+    );
+    console.log(regexpDghm.test(_password),'ddddd');
+    
+    if(['dghm'].includes(appStore.HOSPITAL_ID) && !regexpDghm.test(_password)){
+      message.warning("当前登录密码强度较弱，请修改密码后登录!");
+      history.push('/resetpassword');
+      return;
+    }
     service.authApiService
       .login(_username, _password, verificationCode, "",options?.password || password)
       .then(() => {
@@ -314,7 +324,7 @@ export default withRouter(function LoginView(props: Props) {
             </div>
             {appStore.hisMatch({
               map: {
-                "whyx,sdlj,dghl,gzsrm,whhk": <div className="resetpassword CheckItem" onClick={() => {
+                "whyx,sdlj,dghl,gzsrm,whhk,dghm": <div className="resetpassword CheckItem" onClick={() => {
                   history.push('/resetpassword')
                 }}>
                   <span>重置密码</span>

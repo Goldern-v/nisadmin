@@ -163,6 +163,9 @@ export default withRouter(function ResetPasswordView(props: Props) {
             >
               <Input type="password" placeholder="请输入原密码" className={isOldPswd ? 'error' : ''} />
             </Form.Field>
+            {!isNewPswd ? <div style={{ 'position': 'relative' , 'color':'red'}}>请修改密码/英文大写+小写+数字+符号且至少10位</div> :
+              ""
+            }
             <div style={{ 'position': 'relative' }}>
               <Form.Field
                 label="新  密  码:"
