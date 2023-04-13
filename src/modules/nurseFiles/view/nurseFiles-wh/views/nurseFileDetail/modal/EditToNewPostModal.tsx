@@ -87,7 +87,8 @@ export default function EditToNewPostModal(props: Props) {
         oldDeptCode: data.oldDeptCode,
         newDeptCode: data.newDeptCode,
         deptBeDepartment: data.deptBeDepartment,
-        transferDate: data.transferDate ? moment(data.transferDate) : null
+        transferDate: data.transferDate ? moment(data.transferDate) : null,
+        post:data.post || '',
         // urlImageOne: data.urlImageOne ? data.urlImageOne.split(',') : []
       });
     }

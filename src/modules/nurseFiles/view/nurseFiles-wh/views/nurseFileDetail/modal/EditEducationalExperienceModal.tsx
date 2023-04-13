@@ -80,7 +80,8 @@ export default function EditWorkHistoryModal(props: Props) {
         readProfessional: data.readProfessional,
         degree: data.degree,
         education: data.education,
-        urlImageOne: data.urlImageOne ? data.urlImageOne.split(',') : []
+        urlImageOne: data.urlImageOne ? data.urlImageOne.split(',') : [],
+        workCompany:data.workCompany
       })
 
       // refForm.current.setField('unit', 123)
