@@ -312,21 +312,21 @@ export default observer(function ArrangeSheet(props: Props) {
         map:{
           zhzxy:[  {
             title: "管床",
-            dataIndex: "expend2",
+            dataIndex: "chargeBed",
             width: 70,
             fixed: "left",
             align: "center",
             render: (text: string, record: any) => {
               return isEditable ? (
-                  <Input
-                      style={{ background: "#fff" }}
-                      defaultValue={record?.userExpend?.expend2}
-                      onChange={(e: any) => {
-                        record.userExpend.expend2 = e.target.value;
-                      }}
-                  />
+                <Input
+                  style={{ background: "#fff" }}
+                  defaultValue={text}
+                  onChange={(e: any) => {
+                    record.chargeBed = e.target.value;
+                  }}
+                />
               ) : (
-                  <span>{record?.userExpend?.expend2}</span>
+                <span>{text}</span>
               );
             },
           }],
