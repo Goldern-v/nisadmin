@@ -1,4 +1,5 @@
 import qs from 'qs'
+import { Obj } from 'src/libs/types';
 import BaseApiService from 'src/services/api/BaseApiService'
 
 export interface dateIn {
@@ -247,6 +248,9 @@ export default class BadEventsNewService extends BaseApiService {
    */
   public async deleteBE(id: string) {
     return await this.post(`form/badEventMaster/master/delete`, { id })
+  }
+  public async pageBadEventSummary4(params: Obj) {
+    return await this.post(`/badEvent/summary/pageBadEventSummary4Yangchun`, params)
   }
 }
 

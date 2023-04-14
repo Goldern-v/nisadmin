@@ -8,6 +8,7 @@ import { badEventsNewService } from '../api/badEventsNewService'
 import moment from 'moment'
 
 import UserCheckModal from './UserCheckModal'
+import auditSubmit from '../utils/auditSubmit'
 // const commonApiService = services.commonApiService
 
 const TextArea = Input.TextArea
@@ -65,52 +66,54 @@ export default observer(function AduitModal(props: Props) {
     /**
      * 还未与后端协商修改统一字段名
      */
-    switch (nodeCode) {
-      case 'nurse_handle':  //科护士长审核
-        saveParams['B0028024'] = auditInfo.handleContent  //科护士长审核意见
-        if (auditInfo.noPass) {
-          // saveParams['B0002060'] = auditInfo.handleContent
-          if (auditInfo.handleContent.trim().length <= 0) {
-            message.warning('审核意见不能为空')
-            return
-          }
-        }
-        break
-      case 'nursing_minister_audit': //护理部审核
-        // 是否不良事件
-        if (auditInfo.noPass) {
-          if (auditInfo.handleContent.trim().length <= 0) {
-            message.warning('审核意见不能为空')
-            return
-          }
-        }
-        saveParams['B0002061'] = auditInfo.noPass ? '0' : '1'
-        // 意见和日期
-        saveParams['B0002054'] = auditInfo.handleContent  //护理部审核意见
-        saveParams['B0002053'] = auditInfo.auditDate   // 护理部审核日期
-        saveParams['B0009020'] = userInfo.empName   //B0009020未跟后端做统一（待修改）
-        saveParams["B0010018"] = userInfo.empName   //护理优良事件报告表（待修改）
-        break
-      case 'dept_handle':  //病区处理
-        // 意见和日期
-        saveParams['B0002062'] = auditInfo.handleContent
-        saveParams['B0002057'] = auditInfo.handleContent
-        saveParams['B0002056'] = auditInfo.auditDate
-        params.noPass = false
-        break
-      case 'nursing_minister_comfirm': //护理部确认
-        // 意见和日期
-        saveParams['B0002059'] = auditInfo.handleContent
-        saveParams['B0002058'] = auditInfo.auditDate
-        break
-        // 追踪评论
-        case 'nursing_minister_flowcomment':
-        saveParams['B0009023'] = auditInfo.handleContent
-        saveParams['B0009024'] = userInfo.empName
-        saveParams['B0009025'] = auditInfo.auditDate
-        break
-      default:
-    }
+    // switch (nodeCode) {
+    //   case 'nurse_handle':  //科护士长审核
+    //     saveParams['B0028024'] = auditInfo.handleContent  //科护士长审核意见
+    //     if (auditInfo.noPass) {
+    //       // saveParams['B0002060'] = auditInfo.handleContent
+    //       if (auditInfo.handleContent.trim().length <= 0) {
+    //         message.warning('审核意见不能为空')
+    //         return
+    //       }
+    //     }
+    //     break
+    //   case 'nursing_minister_audit': //护理部审核
+    //     // 是否不良事件
+    //     if (auditInfo.noPass) {
+    //       if (auditInfo.handleContent.trim().length <= 0) {
+    //         message.warning('审核意见不能为空')
+    //         return
+    //       }
+    //     }
+    //     saveParams['B0002061'] = auditInfo.noPass ? '0' : '1'
+    //     // 意见和日期
+    //     saveParams['B0002054'] = auditInfo.handleContent  //护理部审核意见
+    //     saveParams['B0002053'] = auditInfo.auditDate   // 护理部审核日期
+    //     saveParams['B0009020'] = userInfo.empName   //B0009020未跟后端做统一（待修改）
+    //     saveParams["B0010018"] = userInfo.empName   //护理优良事件报告表（待修改）
+    //     break
+    //   case 'dept_handle':  //病区处理
+    //     // 意见和日期
+    //     saveParams['B0002062'] = auditInfo.handleContent
+    //     saveParams['B0002057'] = auditInfo.handleContent
+    //     saveParams['B0002056'] = auditInfo.auditDate
+    //     params.noPass = false
+    //     break
+    //   case 'nursing_minister_comfirm': //护理部确认
+    //     // 意见和日期
+    //     saveParams['B0002059'] = auditInfo.handleContent
+    //     saveParams['B0002058'] = auditInfo.auditDate
+    //     break
+    //     // 追踪评论
+    //     case 'nursing_minister_flowcomment':
+    //     saveParams['B0009023'] = auditInfo.handleContent
+    //     saveParams['B0009024'] = userInfo.empName
+    //     saveParams['B0009025'] = auditInfo.auditDate
+    //     break
+    //   default:
+    // }
+    const flag = auditSubmit({ nodeCode, auditInfo, saveParams, userInfo, params })
+    if (!flag) return
 
     const handleResponse = (res: any) => {
       setConfirmLoading(false)

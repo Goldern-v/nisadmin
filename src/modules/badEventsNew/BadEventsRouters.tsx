@@ -5,8 +5,6 @@ import { RouteComponentProps } from "src/components/RouterView";
 
 import { KeepAlive } from "react-keep-alive";
 
-export interface Props extends RouteComponentProps<{ name?: string }> { }
-
 import { appStore} from "src/stores";
 import BadEventsNewList from './BadEventsNewList'
 import BadEventsNewList_nys from './BadEventsNewList_nys'
@@ -21,6 +19,8 @@ import { autoLoginTnNisInfoBe } from "src/utils/toNisInfo/toNisInfo";
 import BadEventSummaryQuarterGxjb from "./views/BadEventSummary_gxjb/BadEventSummaryQuarterGxjb";
 import BadEventSummaryCaseGxjb from "./views/BadEventSummary_gxjb/BadEventSummaryCaseGxjb";
 import BadEventSummaryClassfiyGxjb from "./views/BadEventSummary_gxjb/BadEventSummaryClassfiyGxjb";
+import BadEventSummaryTotal from "./views/BadEventSummary_yczyy/index";
+export interface Props extends RouteComponentProps<{ name?: string }> { };
 
 export default function BadEventsRouters(props: Props) {
   useEffect(() => { }, [props.history.location.pathname]);
@@ -97,7 +97,15 @@ export default function BadEventsRouters(props: Props) {
     // },
     ...appStore.hisMatch({
       map: {
-        'gzsrm,lcey,yczyy,925': [],
+        'gzsrm,lcey,925': [],
+        yczyy: [
+
+          {
+            title: '不良事件报告登记总表',
+            path: `${baseRouter}/summaryTotal`,
+            component: BadEventSummaryTotal
+          },
+        ],
         'gxjb': [
           {
             title: '不良事件汇总',
