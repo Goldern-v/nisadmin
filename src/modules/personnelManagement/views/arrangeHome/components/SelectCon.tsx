@@ -16,6 +16,7 @@ import { selectViewModal } from '../viewModal/SelectViewModal'
 import { arrangeService } from '../services/ArrangeService'
 import { sheetViewModal } from '../viewModal/SheetViewModal'
 import { printModal } from '../viewModal/PrintModal'
+import { Obj } from 'src/libs/types'
 
 export interface Props {
 }
@@ -267,7 +268,23 @@ export default observer(function SelectCon() {
 
   // 下载模板
   const handleUpload = async (info: any) => {
-    const { data } = await arrangeService.importExcel(info.file)
+    let fn = () => arrangeService.importExcel(info.file)
+    if ('zhzxy' === appStore.HOSPITAL_ID) {
+      console.log('test-1', 1)
+      const list = authStore.deptList;
+      const current = list.find(
+        (item: any) => item.code === selectViewModal.params.deptCode
+      ) || { name: "" };
+      let params: Obj = {
+        upfile: info.file,
+        deptCode: selectViewModal.params.deptCode,
+        deptName: current.name,
+        startTime: moment(selectViewModal.params.startTime).format("YYYY-MM-DD"),
+        endTime: moment(selectViewModal.params.endTime).format("YYYY-MM-DD"),
+      }
+      fn = () => arrangeService.importExcel1(params)
+    }
+    const { data } = await fn()
     data.errorMag && message.error(data.errorMag,4)
     setModalData(data.schedulingDtos)
     setModalVisible(true)
@@ -378,7 +395,8 @@ export default observer(function SelectCon() {
     }
   };
   const handlePrint = () => {
-    let visibleArr = ['empNo','empName','flag','nurseHierarchy', 'newTitle', 'year', 'WeekBalanceHour','BalanceHour','WorkNightCount','PostScoreCell','TotalHoliday']
+    // let visibleArr = ['empNo','empName','flag','nurseHierarchy', 'newTitle', 'year', 'WeekBalanceHour','BalanceHour','WorkNightCount','PostScoreCell','TotalHoliday']
+    let visibleArr = ['empName', 'groupName', 'flag','nurseHierarchy', 'newTitle', 'year', 'chargeBed']
     Modal.confirm({
       title: '选择要打印的列',
       centered: true,
@@ -387,18 +405,20 @@ export default observer(function SelectCon() {
         <Checkbox.Group
             defaultValue={visibleArr}
             onChange={(newArr: any[]) => visibleArr = newArr}>
-          <Checkbox value="empNo">工号</Checkbox>
+          <Checkbox value="groupName">分组名称</Checkbox>
+          {/* <Checkbox value="empNo">工号</Checkbox> */}
           <Checkbox value="empName">姓名</Checkbox>
-          <Checkbox value="flag">标志</Checkbox>
-          {/* <Checkbox value="groupName">分组名称</Checkbox> */}
+          {/* <Checkbox value="flag">标志</Checkbox> */}
           <Checkbox value="nurseHierarchy">层级</Checkbox>
           <Checkbox value="newTitle">职称</Checkbox>
-          <Checkbox value="year">年限</Checkbox><br />
-          <Checkbox value="WeekBalanceHour">本轮积时</Checkbox>
-          <Checkbox value="BalanceHour">累计时数</Checkbox>
-          <Checkbox value="WorkNightCount">累计夜班数</Checkbox>
-          <Checkbox value="PostScoreCell">累计系数</Checkbox>
-          <Checkbox value="TotalHoliday">本年余假</Checkbox>
+          <Checkbox value="year">年限</Checkbox>
+          <Checkbox value="chargeBed">分管床位</Checkbox>
+
+          {/* <Checkbox value="WeekBalanceHour">本轮积时</Checkbox> */}
+          {/* <Checkbox value="BalanceHour">累计时数</Checkbox> */}
+          {/* <Checkbox value="WorkNightCount">累计夜班数</Checkbox> */}
+          {/* <Checkbox value="PostScoreCell">累计系数</Checkbox> */}
+          {/* <Checkbox value="TotalHoliday">本年余假</Checkbox> */}
         </Checkbox.Group>
       </div>,
       onOk: () => {

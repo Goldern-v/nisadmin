@@ -3,9 +3,9 @@ import { numToChinese } from "src/utils/number/numToChinese";
 import { selectViewModal } from "./SelectViewModal";
 import { sheetViewModal } from "./SheetViewModal";
 import { scheduleStore, appStore } from "src/stores";
-import { totalCellContent } from './../components/arrangeSheet/TotalCell'
-import { nightHourCellContent } from './../components/arrangeSheet/NightHourCell'
-import { weekBalanceHour } from './../components/arrangeSheet/WeekBalanceHour'
+import { totalCellContent } from "./../components/arrangeSheet/TotalCell";
+import { nightHourCellContent } from "./../components/arrangeSheet/NightHourCell";
+import { weekBalanceHour } from "./../components/arrangeSheet/WeekBalanceHour";
 import { balanceHour } from "./../components/arrangeSheet/BalanceHour";
 import { publicHour } from "./../components/arrangeSheet/PublicHour";
 import { holidayHour } from "./../components/arrangeSheet/HolidayHour";
@@ -60,7 +60,7 @@ class PrintModal {
       dateRowGroup[appendIdx].push({
         moment: newMoment,
         date,
-        weekDay: numToChinese(weekDay)
+        weekDay: numToChinese(weekDay),
       });
     }
 
@@ -116,16 +116,18 @@ class PrintModal {
       let tableId = "";
       //计算每列宽度
       let cols = [
-        col1Width, col2Width, col3Width,
+        col1Width,
+        col2Width,
+        col3Width,
         ...dateRow.map(() => othersWidth / dateLength),
-        col4Width
-      ]
+        col4Width,
+      ];
 
       let colgroup = `
         <colgroup>
           ${cols
-          .map((item: any) => `<col width="${Math.floor(item)}"/>`)
-          .join("")}
+            .map((item: any) => `<col width="${Math.floor(item)}"/>`)
+            .join("")}
         </colgroup>
         <colgroup></colgroup>
       `;
@@ -133,12 +135,12 @@ class PrintModal {
       let thead = `
         <tr>
           ${tdEl({
-        colSpan: dateRow.length + 4,
-        class: "main-title",
-        content: `${dateRow[0].moment.format(
-          "YYYY年M月"
-        )}${deptName}护士排班表`
-      })}
+            colSpan: dateRow.length + 4,
+            class: "main-title",
+            content: `${dateRow[0].moment.format(
+              "YYYY年M月"
+            )}${deptName}护士排班表`,
+          })}
         </tr>
         <tr class="header-row">
           ${tdEl({ content: "姓名", rowSpan: 2 })}
@@ -149,14 +151,14 @@ class PrintModal {
         </tr>
         <tr class="header-row">
           ${dateRow
-          .map((item: any) =>
-            tdEl({
-              class:
-                item.weekDay == "六" || item.weekDay == "七" ? "bg-gray" : "",
-              content: item.weekDay == "七" ? "日" : item.weekDay
-            })
-          )
-          .join("")}
+            .map((item: any) =>
+              tdEl({
+                class:
+                  item.weekDay == "六" || item.weekDay == "七" ? "bg-gray" : "",
+                content: item.weekDay == "七" ? "日" : item.weekDay,
+              })
+            )
+            .join("")}
         </tr>
       `;
       //表格底部模板
@@ -176,7 +178,11 @@ class PrintModal {
             ${tdEl({ colSpan: dateRow.length + 4 })}
           </tr>
           <tr>
-            ${tdEl({ colSpan: dateRow.length + 4, class: "text-left", content: "休假要求：" })}
+            ${tdEl({
+              colSpan: dateRow.length + 4,
+              class: "text-left",
+              content: "休假要求：",
+            })}
           </tr>
           <tr>
             ${tdEl({ colSpan: dateRow.length + 4 })}
@@ -244,7 +250,7 @@ class PrintModal {
           if (!target) {
             groups.push({
               rangeName: "",
-              col: 1
+              col: 1,
             });
             continue;
           }
@@ -277,13 +283,13 @@ class PrintModal {
               default:
                 groups.push({
                   rangeName: rangeName,
-                  col: 1
+                  col: 1,
                 });
             }
           } else {
             groups.push({
               rangeName: rangeName,
-              col: 1
+              col: 1,
             });
           }
         }
@@ -307,8 +313,7 @@ class PrintModal {
             let prevEl = prevEls[prevEls.length - 1];
             try {
               targetTable.insertBefore(newTr, prevEl);
-            } catch (error) {
-            }
+            } catch (error) {}
           }
         }
       }
@@ -383,12 +388,12 @@ class PrintModal {
       }
     `;
     //调用打印函数
-    let prtintFn = printing as any
-    if (appStore.isDev) prtintFn = printing.preview
+    let prtintFn = printing as any;
+    if (appStore.isDev) prtintFn = printing.preview;
     prtintFn(document.getElementById(printId) as HTMLElement, {
       injectGlobalCss: true,
       scanStyles: false,
-      css: defaultPrintCss
+      css: defaultPrintCss,
     });
     //删除打印容器
     document.body.removeChild(div);
@@ -439,7 +444,7 @@ class PrintModal {
       dateRowGroup[appendIdx].push({
         moment: newMoment,
         date,
-        weekDay: numToChinese(weekDay)
+        weekDay: numToChinese(weekDay),
       });
     }
 
@@ -499,16 +504,20 @@ class PrintModal {
       let tableId = "";
       //计算每列宽度
       let cols = [
-        col1Width, col2Width, col3Width, col31Width, col32Width,
+        col1Width,
+        col2Width,
+        col3Width,
+        col31Width,
+        col32Width,
         ...dateRow.map(() => othersWidth / dateLength),
-        col4Width
-      ]
+        col4Width,
+      ];
 
       let colgroup = `
         <colgroup>
           ${cols
-          .map((item: any) => `<col width="${Math.floor(item)}"/>`)
-          .join("")}
+            .map((item: any) => `<col width="${Math.floor(item)}"/>`)
+            .join("")}
         </colgroup>
         <colgroup></colgroup>
       `;
@@ -516,12 +525,12 @@ class PrintModal {
       let thead = `
         <tr>
           ${tdEl({
-        colSpan: dateRow.length + 6,
-        class: "main-title",
-        content: `${dateRow[0].moment.format(
-          "YYYY年M月"
-        )}${deptName}护士排班表`
-      })}
+            colSpan: dateRow.length + 6,
+            class: "main-title",
+            content: `${dateRow[0].moment.format(
+              "YYYY年M月"
+            )}${deptName}护士排班表`,
+          })}
         </tr>
         <tr class="header-row">
           ${tdEl({ content: "姓名", rowSpan: 2 })}
@@ -534,14 +543,14 @@ class PrintModal {
         </tr>
         <tr class="header-row">
           ${dateRow
-          .map((item: any) =>
-            tdEl({
-              class:
-                item.weekDay == "六" || item.weekDay == "七" ? "bg-gray" : "",
-              content: item.weekDay == "七" ? "日" : item.weekDay
-            })
-          )
-          .join("")}
+            .map((item: any) =>
+              tdEl({
+                class:
+                  item.weekDay == "六" || item.weekDay == "七" ? "bg-gray" : "",
+                content: item.weekDay == "七" ? "日" : item.weekDay,
+              })
+            )
+            .join("")}
         </tr>
       `;
       //表格底部模板
@@ -561,7 +570,11 @@ class PrintModal {
             ${tdEl({ colSpan: dateRow.length + 6 })}
           </tr>
           <tr>
-            ${tdEl({ colSpan: dateRow.length + 6, class: "text-left", content: "休假要求：" })}
+            ${tdEl({
+              colSpan: dateRow.length + 6,
+              class: "text-left",
+              content: "休假要求：",
+            })}
           </tr>
           <tr>
             ${tdEl({ colSpan: dateRow.length + 6 })}
@@ -633,7 +646,7 @@ class PrintModal {
           if (!target) {
             groups.push({
               rangeName: "",
-              col: 1
+              col: 1,
             });
             continue;
           }
@@ -666,13 +679,13 @@ class PrintModal {
               default:
                 groups.push({
                   rangeName: rangeName,
-                  col: 1
+                  col: 1,
                 });
             }
           } else {
             groups.push({
               rangeName: rangeName,
-              col: 1
+              col: 1,
             });
           }
         }
@@ -696,8 +709,7 @@ class PrintModal {
             let prevEl = prevEls[prevEls.length - 1];
             try {
               targetTable.insertBefore(newTr, prevEl);
-            } catch (error) {
-            }
+            } catch (error) {}
           }
         }
       }
@@ -772,17 +784,16 @@ class PrintModal {
       }
     `;
     //调用打印函数
-    let prtintFn = printing as any
-    if (appStore.isDev) prtintFn = printing.preview
+    let prtintFn = printing as any;
+    if (appStore.isDev) prtintFn = printing.preview;
     prtintFn(document.getElementById(printId) as HTMLElement, {
       injectGlobalCss: true,
       scanStyles: false,
-      css: defaultPrintCss
+      css: defaultPrintCss,
     });
     //删除打印容器
     document.body.removeChild(div);
   }
-
 
   //南医三打印排班
   //可通过传入的key动态的隐藏非排班列
@@ -797,66 +808,64 @@ class PrintModal {
 
     //要显示的固定列配置
     interface column {
-      title: string,
-      key: string,
-      width: number,
-      visible: boolean,
-      render?: (record: any) => string
+      title: string;
+      key: string;
+      width: number;
+      visible: boolean;
+      render?: (record: any) => string;
     }
 
     //排班前显示的列
     const colsBefore = [
       {
-        title: '组别',
-        key: 'groupName',
+        title: "组别",
+        key: "groupName",
         width: 30,
-        visible: colVisibleList.indexOf('groupName') >= 0,
+        visible: colVisibleList.indexOf("groupName") >= 0,
       },
       {
-        title: '姓名',
-        key: 'empName',
+        title: "姓名",
+        key: "empName",
         width: 60,
         visible: true,
       },
       {
-        title: '层级',
-        key: 'nurseHierarchy',
+        title: "层级",
+        key: "nurseHierarchy",
         width: 30,
-        visible: colVisibleList.indexOf('nurseHierarchy') >= 0,
+        visible: colVisibleList.indexOf("nurseHierarchy") >= 0,
       },
       {
-        title: '职称',
-        key: 'newTitle',
+        title: "职称",
+        key: "newTitle",
         width: 60,
-        visible: colVisibleList.indexOf('newTitle') >= 0,
+        visible: colVisibleList.indexOf("newTitle") >= 0,
       },
       {
-        title: '年限',
-        key: 'year',
+        title: "年限",
+        key: "year",
         width: 30,
-        visible: colVisibleList.indexOf('year') >= 0,
+        visible: colVisibleList.indexOf("year") >= 0,
         render: (record: any) => {
-          if (!record.empName)
-            return ''
+          if (!record.empName) return "";
 
-          return record.year || '0'
-        }
-      }
-    ] as column[]
-    const colsBeforeVisible = colsBefore.filter((item) => item.visible)
+          return record.year || "0";
+        },
+      },
+    ] as column[];
+    const colsBeforeVisible = colsBefore.filter((item) => item.visible);
     //排班后显示的列
     let colsAfter = [
       {
-        title: '工时小计（小时）',
-        key: 'total1',
+        title: "工时小计（小时）",
+        key: "total1",
         width: 60,
-        visible: colVisibleList.indexOf('total1') >= 0,
+        visible: colVisibleList.indexOf("total1") >= 0,
         render: (record: any) => {
-          if (!record.empName)
-            return ''
+          if (!record.empName) return "";
 
-          return totalCellContent(record.id)
-        }
+          return totalCellContent(record.id);
+        },
       },
       // {
       //   title: '夜小时数（小时）',
@@ -868,19 +877,19 @@ class PrintModal {
       //   }
       // }
       {
-        title: '本周积假',
-        key: 'thisWeekHoliday',
+        title: "本周积假",
+        key: "thisWeekHoliday",
         width: 60,
-        visible: colVisibleList.indexOf('thisWeekHoliday') >= 0,
+        visible: colVisibleList.indexOf("thisWeekHoliday") >= 0,
       },
       {
-        title: '累积积假',
-        key: 'totalHoliday',
+        title: "累积积假",
+        key: "totalHoliday",
         width: 60,
-        visible: colVisibleList.indexOf('totalHoliday') >= 0,
+        visible: colVisibleList.indexOf("totalHoliday") >= 0,
       },
-    ] as column[]
-    const colsAfterVisible = colsAfter.filter((item) => item.visible)
+    ] as column[];
+    const colsAfterVisible = colsAfter.filter((item) => item.visible);
 
     //创建打印容器
     let div = document.createElement("div");
@@ -914,21 +923,20 @@ class PrintModal {
       dateRowGroup[appendIdx].push({
         moment: newMoment,
         date,
-        weekDay: numToChinese(weekDay)
+        weekDay: numToChinese(weekDay),
       });
     }
 
     //排班的护士列表及其排班内容
     let NurseGroup = [] as any[];
     for (let i = 0; i < nurseGroup.length; i++) {
-      let item = nurseGroup[i]
-      let nextItem = nurseGroup[i + 1] || null
-      NurseGroup.push(item)
+      let item = nurseGroup[i];
+      let nextItem = nurseGroup[i + 1] || null;
+      NurseGroup.push(item);
       if (nextItem) {
-        let groupName = item.groupName
-        let nextGroupName = nextItem.groupName
-        if (groupName !== nextGroupName)
-          NurseGroup.push({})
+        let groupName = item.groupName;
+        let nextGroupName = nextItem.groupName;
+        if (groupName !== nextGroupName) NurseGroup.push({});
       }
     }
 
@@ -950,7 +958,8 @@ class PrintModal {
     }
     //td指定样式
     let tdStyle = (other?: string) => {
-      return `height:${tdHeight}px!important;padding:0!important;${other || ""}`;
+      return `height:${tdHeight}px!important;padding:0!important;${other ||
+        ""}`;
     };
     let tdEl = (option?: any) => {
       option = option || {};
@@ -963,13 +972,15 @@ class PrintModal {
       </td>`;
     };
     //部分列固定宽度
-    let fixWidthList = [...colsBeforeVisible, ...colsAfterVisible].map((col) => col.width)
-    let fixWidth = 0
+    let fixWidthList = [...colsBeforeVisible, ...colsAfterVisible].map(
+      (col) => col.width
+    );
+    let fixWidth = 0;
     for (let i = 0; i < fixWidthList.length; i++) {
-      fixWidth += fixWidthList[i]
+      fixWidth += fixWidthList[i];
     }
     //排版列总宽度
-    let othersWidth = pageWidth - fixWidth
+    let othersWidth = pageWidth - fixWidth;
 
     //根据护士列表和表头组动态插入表格和计算分页
     for (let i = 0; i < dateRowGroup.length; i++) {
@@ -977,18 +988,17 @@ class PrintModal {
       let pageNo = 0;
       let tableId = "";
       //计算每列宽度
-      let cols =
-        [
-          ...colsBeforeVisible.map((col) => col.width),
-          ...dateRow.map(() => othersWidth / dateLength),
-          ...colsAfterVisible.map((col) => col.width)
-        ]
+      let cols = [
+        ...colsBeforeVisible.map((col) => col.width),
+        ...dateRow.map(() => othersWidth / dateLength),
+        ...colsAfterVisible.map((col) => col.width),
+      ];
 
       let colgroup = `
         <colgroup>
           ${cols
-          .map((item: any) => `<col width="${Math.floor(item)}"/>`)
-          .join("")}
+            .map((item: any) => `<col width="${Math.floor(item)}"/>`)
+            .join("")}
         </colgroup>
         <colgroup></colgroup>
       `;
@@ -996,28 +1006,35 @@ class PrintModal {
       let thead = `
         <tr>
           ${tdEl({
-        colSpan: dateRow.length + colsBeforeVisible.length + colsAfterVisible.length,
-        class: "main-title",
-        content: `${dateRow[0].moment.format(
-          "YYYY年M月"
-        )}${deptName}护士排班表`
-      })}
+            colSpan:
+              dateRow.length +
+              colsBeforeVisible.length +
+              colsAfterVisible.length,
+            class: "main-title",
+            content: `${dateRow[0].moment.format(
+              "YYYY年M月"
+            )}${deptName}护士排班表`,
+          })}
         </tr>
         <tr class="header-row">
-          ${colsBeforeVisible.map((item) => tdEl({ content: item.title, rowSpan: 2 })).join("")}
+          ${colsBeforeVisible
+            .map((item) => tdEl({ content: item.title, rowSpan: 2 }))
+            .join("")}
           ${dateRow.map((item: any) => tdEl({ content: item.date })).join("")}
-          ${colsAfterVisible.map((item) => tdEl({ content: item.title, rowSpan: 2 })).join("")}
+          ${colsAfterVisible
+            .map((item) => tdEl({ content: item.title, rowSpan: 2 }))
+            .join("")}
         </tr>
         <tr class="header-row">
           ${dateRow
-          .map((item: any) =>
-            tdEl({
-              class:
-                item.weekDay == "六" || item.weekDay == "七" ? "bg-gray" : "",
-              content: item.weekDay == "七" ? "日" : item.weekDay
-            })
-          )
-          .join("")}
+            .map((item: any) =>
+              tdEl({
+                class:
+                  item.weekDay == "六" || item.weekDay == "七" ? "bg-gray" : "",
+                content: item.weekDay == "七" ? "日" : item.weekDay,
+              })
+            )
+            .join("")}
         </tr>
       `;
 
@@ -1063,17 +1080,16 @@ class PrintModal {
         let tr = "";
         //排班内容前的固定列内容
         for (let k = 0; k < colsBeforeVisible.length; k++) {
-          let column = colsBeforeVisible[k]
-          let content = ''
+          let column = colsBeforeVisible[k];
+          let content = "";
           //如果固定列能在nurse对象里找到对应的key返回对应的value
           if (Object.keys(nurse).indexOf(column.key) >= 0)
-            content = nurse[column.key]
+            content = nurse[column.key];
 
           //如果固定列有render方法返回render返回的内容
-          if (column.render)
-            content = column.render(nurse)
+          if (column.render) content = column.render(nurse);
 
-          tr += tdEl({ content })
+          tr += tdEl({ content });
         }
         //排班列
         let groups = [] as any;
@@ -1086,7 +1102,7 @@ class PrintModal {
           if (!target) {
             groups.push({
               rangeName: "",
-              col: 1
+              col: 1,
             });
             continue;
           }
@@ -1121,42 +1137,40 @@ class PrintModal {
               default:
                 groups.push({
                   rangeName: rangeName,
-                  col: 1
+                  col: 1,
                 });
             }
           } else {
             groups.push({
               rangeName: rangeName,
-              col: 1
+              col: 1,
             });
           }
         }
 
         //组合排班信息
         groups = groups.map((item1: any) => {
-          let rangeName = ''
-          if (nurse.empName)
-            rangeName = item1.rangeName || "/"
+          let rangeName = "";
+          if (nurse.empName) rangeName = item1.rangeName || "/";
 
           return tdEl({
             colSpan: item1.col,
-            content: rangeName
+            content: rangeName,
           });
         });
         tr += groups.join("");
         //排班内容后的固定列内容
         for (let k = 0; k < colsAfterVisible.length; k++) {
-          let column = colsAfterVisible[k]
-          let content = ''
+          let column = colsAfterVisible[k];
+          let content = "";
           //如果固定列能在nurse对象里找到对应的key返回对应的value
           if (Object.keys(nurse).indexOf(column.key) >= 0)
-            content = nurse[column.key]
+            content = nurse[column.key];
 
           //如果固定列有render方法返回render返回的内容
-          if (column.render)
-            content = column.render(nurse)
+          if (column.render) content = column.render(nurse);
 
-          tr += tdEl({ content })
+          tr += tdEl({ content });
         }
         //动态插入行
         let newTr = document.createElement("tr");
@@ -1165,7 +1179,7 @@ class PrintModal {
         let targetTable = document.querySelector(`#${tableId} tbody`);
 
         if (targetTable) {
-          targetTable.appendChild(newTr)
+          targetTable.appendChild(newTr);
         }
       }
     }
@@ -1240,12 +1254,12 @@ class PrintModal {
       }
     `;
     //调用打印函数
-    let prtintFn = printing as any
-    if (appStore.isDev) prtintFn = printing.preview
+    let prtintFn = printing as any;
+    if (appStore.isDev) prtintFn = printing.preview;
     prtintFn(document.getElementById(printId) as HTMLElement, {
       injectGlobalCss: true,
       scanStyles: false,
-      css: defaultPrintCss
+      css: defaultPrintCss,
     });
     //删除打印容器
     document.body.removeChild(div);
@@ -1263,119 +1277,122 @@ class PrintModal {
 
     //要显示的固定列配置
     interface column {
-      title: string,
-      key: string,
-      width: number,
-      visible: boolean,
-      render?: (record: any) => string
+      title: string;
+      key: string;
+      width: number;
+      visible: boolean;
+      render?: (record: any) => string;
     }
 
     //排班前显示的列
     const colsBefore = [
       {
-        title: '工号',
-        key: 'empNo',
+        title: "工号",
+        key: "empNo",
         width: 50,
-        visible: colVisibleList.indexOf('empNo') >= 0,
+        visible: colVisibleList.indexOf("empNo") >= 0,
       },
       {
-        title: '分组名称',
-        key: 'groupName',
+        title: "分组名称",
+        key: "groupName",
         width: 60,
-        visible: colVisibleList.indexOf('groupName') >= 0,
+        visible: colVisibleList.indexOf("groupName") >= 0,
       },
       {
-        title: '姓名',
-        key: 'empName',
+        title: "姓名",
+        key: "empName",
         width: 70,
         visible: true,
       },
       {
-        title: '层级',
-        key: 'nurseHierarchy',
+        title: "层级",
+        key: "nurseHierarchy",
         width: 30,
-        visible: colVisibleList.indexOf('nurseHierarchy') >= 0,
+        visible: colVisibleList.indexOf("nurseHierarchy") >= 0,
       },
       {
-        title: '职称',
-        key: 'newTitle',
+        title: "职称",
+        key: "newTitle",
         width: 70,
-        visible: colVisibleList.indexOf('newTitle') >= 0,
+        visible: colVisibleList.indexOf("newTitle") >= 0,
       },
       {
-        title: '年限',
-        key: 'year',
+        title: "年限",
+        key: "year",
         width: 30,
-        visible: colVisibleList.indexOf('year') >= 0,
+        visible: colVisibleList.indexOf("year") >= 0,
         render: (record: any) => {
-          if (!record.empName)
-            return ''
+          if (!record.empName) return "";
 
-          return record.year || '0'
-        }
-      }
-    ] as column[]
-    const colsBeforeVisible = colsBefore.filter((item) => item.visible)
+          return record.year || "0";
+        },
+      },
+      {
+        title: "分管床位",
+        key: "chargeBed",
+        width: 60,
+        visible: colVisibleList.indexOf("chargeBed") >= 0,
+        render: (record: any) => {
+          return record.chargeBed || "";
+        },
+      },
+    ] as column[];
+    const colsBeforeVisible = colsBefore.filter((item) => item.visible);
     //排班后显示的列
     let colsAfter = [
       {
-        title: '本周上班时数<br/>（小时）',
-        key: 'thisWeekHour',
+        title: "本周上班时数<br/>（小时）",
+        key: "thisWeekHour",
         width: 60,
-        visible: colVisibleList.indexOf('thisWeekHour') >= 0,
+        visible: colVisibleList.indexOf("thisWeekHour") >= 0,
         render: (record: any) => {
-          if (!record.empName)
-            return ''
-          return totalCellContent(record.id)
-        }
+          if (!record.empName) return "";
+          return totalCellContent(record.id);
+        },
       },
       {
-        title: '本周结余时数 <br/>（小时）',
-        key: 'thisWeekHoliday',
+        title: "本周结余时数 <br/>（小时）",
+        key: "thisWeekHoliday",
         width: 60,
-        visible: colVisibleList.indexOf('thisWeekHoliday') >= 0,
+        visible: colVisibleList.indexOf("thisWeekHoliday") >= 0,
         render: (record: any) => {
-          if (!record.empName)
-            return ''
-          return weekBalanceHour(record.id)
-        }
+          if (!record.empName) return "";
+          return weekBalanceHour(record.id);
+        },
       },
       {
-        title: '累计结余（小时）',
-        key: 'balanceHour',
+        title: "累计结余（小时）",
+        key: "balanceHour",
         width: 60,
-        visible: colVisibleList.indexOf('balanceHour') >= 0,
+        visible: colVisibleList.indexOf("balanceHour") >= 0,
         render: (record: any) => {
-          if (!record.empName)
-            return ''
-          return balanceHour(record.id)
-        }
+          if (!record.empName) return "";
+          return balanceHour(record.id);
+        },
       },
       {
-        title: '年假天数（天）',
-        key: 'totalHoliday',
+        title: "年假天数（天）",
+        key: "totalHoliday",
         width: 60,
-        visible: colVisibleList.indexOf('totalHoliday') >= 0,
+        visible: colVisibleList.indexOf("totalHoliday") >= 0,
         render: (record: any) => {
-          if (!record.empName)
-            return ''
-          return publicHour(record.id) || '0'
-        }
+          if (!record.empName) return "";
+          return publicHour(record.id) || "0";
+        },
       },
       {
-        title: '工时小计（小时）',
-        key: 'total1',
+        title: "工时小计（小时）",
+        key: "total1",
         width: 60,
-        visible: colVisibleList.indexOf('total1') >= 0,
+        visible: colVisibleList.indexOf("total1") >= 0,
         render: (record: any) => {
-          if (!record.empName)
-            return ''
+          if (!record.empName) return "";
 
-          return totalCellContent(record.id)
-        }
+          return totalCellContent(record.id);
+        },
       },
-    ] as column[]
-    const colsAfterVisible = colsAfter.filter((item) => item.visible)
+    ] as column[];
+    const colsAfterVisible = colsAfter.filter((item) => item.visible);
 
     //创建打印容器
     let div = document.createElement("div");
@@ -1406,7 +1423,7 @@ class PrintModal {
         dateRowGroup.push([] as any);
       }
 
-      if (date == '1' && i != 0) {
+      if (date == "1" && i != 0) {
         appendIdx++;
         dateRowGroup.push([] as any);
       }
@@ -1414,21 +1431,20 @@ class PrintModal {
       dateRowGroup[appendIdx].push({
         moment: newMoment,
         date,
-        weekDay: numToChinese(weekDay)
+        weekDay: numToChinese(weekDay),
       });
     }
 
     //排班的护士列表及其排班内容
     let NurseGroup = [] as any[];
     for (let i = 0; i < nurseGroup.length; i++) {
-      let item = nurseGroup[i]
-      let nextItem = nurseGroup[i + 1] || null
-      NurseGroup.push(item)
+      let item = nurseGroup[i];
+      let nextItem = nurseGroup[i + 1] || null;
+      NurseGroup.push(item);
       if (nextItem) {
-        let groupName = item.groupName
-        let nextGroupName = nextItem.groupName
-        if (groupName !== nextGroupName)
-          NurseGroup.push({})
+        let groupName = item.groupName;
+        let nextGroupName = nextItem.groupName;
+        if (groupName !== nextGroupName) NurseGroup.push({});
       }
     }
 
@@ -1450,7 +1466,8 @@ class PrintModal {
     }
     //td指定样式
     let tdStyle = (other?: string) => {
-      return `height:${tdHeight}px!important;padding:0!important;${other || ""}`;
+      return `height:${tdHeight}px!important;padding:0!important;${other ||
+        ""}`;
     };
     let tdEl = (option?: any) => {
       option = option || {};
@@ -1463,13 +1480,15 @@ class PrintModal {
       </td>`;
     };
     //部分列固定宽度
-    let fixWidthList = [...colsBeforeVisible, ...colsAfterVisible].map((col) => col.width)
-    let fixWidth = 0
+    let fixWidthList = [...colsBeforeVisible, ...colsAfterVisible].map(
+      (col) => col.width
+    );
+    let fixWidth = 0;
     for (let i = 0; i < fixWidthList.length; i++) {
-      fixWidth += fixWidthList[i]
+      fixWidth += fixWidthList[i];
     }
     //排版列总宽度
-    let othersWidth = pageWidth - fixWidth
+    let othersWidth = pageWidth - fixWidth;
 
     //根据护士列表和表头组动态插入表格和计算分页
     for (let i = 0; i < dateRowGroup.length; i++) {
@@ -1477,18 +1496,17 @@ class PrintModal {
       let pageNo = 0;
       let tableId = "";
       //计算每列宽度
-      let cols =
-        [
-          ...colsBeforeVisible.map((col) => col.width),
-          ...dateRow.map(() => othersWidth / dateLength),
-          ...colsAfterVisible.map((col) => col.width)
-        ]
+      let cols = [
+        ...colsBeforeVisible.map((col) => col.width),
+        ...dateRow.map(() => othersWidth / dateLength),
+        ...colsAfterVisible.map((col) => col.width),
+      ];
 
       let colgroup = `
         <colgroup>
           ${cols
-          .map((item: any) => `<col width="${Math.floor(item)}"/>`)
-          .join("")}
+            .map((item: any) => `<col width="${Math.floor(item)}"/>`)
+            .join("")}
         </colgroup>
         <colgroup></colgroup>
       `;
@@ -1496,31 +1514,38 @@ class PrintModal {
       let thead = `
         <tr>
           ${tdEl({
-        colSpan: dateRow.length + colsBeforeVisible.length + colsAfterVisible.length,
-        class: "main-title",
-        content: `${dateRow[0].moment.format(
-          "YYYY年M月"
-        )}${deptName}护士排班表`
-      })}
+            colSpan:
+              dateRow.length +
+              colsBeforeVisible.length +
+              colsAfterVisible.length,
+            class: "main-title",
+            content: `${dateRow[0].moment.format(
+              "YYYY年M月"
+            )}${deptName}护士排班表`,
+          })}
         </tr>
         <tr class="header-row">
-          ${colsBeforeVisible.map((item) => tdEl({ content: item.title, rowSpan: 2 })).join("")}
+          ${colsBeforeVisible
+            .map((item) => tdEl({ content: item.title, rowSpan: 2 }))
+            .join("")}
           ${dateRow.map((item: any) => tdEl({ content: item.date })).join("")}
-          ${colsAfterVisible.map((item) => tdEl({ content: item.title, rowSpan: 2 })).join("")}
+          ${colsAfterVisible
+            .map((item) => tdEl({ content: item.title, rowSpan: 2 }))
+            .join("")}
         </tr>
         <tr class="header-row">
           ${dateRow
-          .map((item: any) =>
-            tdEl({
-              class:
-                item.weekDay == "六" || item.weekDay == "七" ? "bg-gray" : "",
-              content: item.weekDay == "七" ? "日" : item.weekDay
-            })
-          )
-          .join("")}
+            .map((item: any) =>
+              tdEl({
+                class:
+                  item.weekDay == "六" || item.weekDay == "七" ? "bg-gray" : "",
+                content: item.weekDay == "七" ? "日" : item.weekDay,
+              })
+            )
+            .join("")}
         </tr>
       `;
-      let renderNurse = NurseGroup.filter((item: any) => item.id)
+      let renderNurse = NurseGroup.filter((item: any) => item.id);
       for (let j = 0; j < renderNurse.length; j++) {
         let nurse = renderNurse[j];
         let nowPageEl = document.getElementById(tableId);
@@ -1562,17 +1587,16 @@ class PrintModal {
         let tr = "";
         //排班内容前的固定列内容
         for (let k = 0; k < colsBeforeVisible.length; k++) {
-          let column = colsBeforeVisible[k]
-          let content = ''
+          let column = colsBeforeVisible[k];
+          let content = "";
           //如果固定列能在nurse对象里找到对应的key返回对应的value
           if (Object.keys(nurse).indexOf(column.key) >= 0)
-            content = nurse[column.key]
+            content = nurse[column.key];
 
           //如果固定列有render方法返回render返回的内容
-          if (column.render)
-            content = column.render(nurse)
+          if (column.render) content = column.render(nurse);
 
-          tr += tdEl({ content })
+          tr += tdEl({ content });
         }
         //排班列
         let groups = [] as any;
@@ -1585,7 +1609,7 @@ class PrintModal {
           if (!target) {
             groups.push({
               rangeName: "",
-              col: 1
+              col: 1,
             });
             continue;
           }
@@ -1620,49 +1644,47 @@ class PrintModal {
               default:
                 groups.push({
                   rangeName: rangeName,
-                  col: 1
+                  col: 1,
                 });
             }
           } else {
             groups.push({
               rangeName: rangeName,
-              col: 1
+              col: 1,
             });
           }
         }
 
         //组合排班信息
         groups = groups.map((item1: any) => {
-          let rangeName = ''
-          if (nurse.empName)
-            rangeName = item1.rangeName || "/"
+          let rangeName = "";
+          if (nurse.empName) rangeName = item1.rangeName || "/";
 
           return tdEl({
             colSpan: item1.col,
-            content: rangeName
+            content: rangeName,
           });
         });
         tr += groups.join("");
         //排班内容后的固定列内容
         for (let k = 0; k < colsAfterVisible.length; k++) {
-          let column = colsAfterVisible[k]
-          let content = ''
+          let column = colsAfterVisible[k];
+          let content = "";
           //如果固定列能在nurse对象里找到对应的key返回对应的value
           if (Object.keys(nurse).indexOf(column.key) >= 0)
-            content = nurse[column.key]
+            content = nurse[column.key];
 
           //如果固定列有render方法返回render返回的内容
-          if (column.render)
-            content = column.render(nurse)
+          if (column.render) content = column.render(nurse);
 
-          tr += tdEl({ content })
+          tr += tdEl({ content });
         }
         //动态插入行
         let newTr = document.createElement("tr");
         newTr.innerHTML = tr;
         let targetTable = document.querySelector(`#${tableId} tbody`);
         if (targetTable) {
-          targetTable.appendChild(newTr)
+          targetTable.appendChild(newTr);
         }
       }
     }
@@ -1724,7 +1746,7 @@ class PrintModal {
     .header,.footer{
       display:none;
     }
-  `;
+    `;
     //横向排版额外打印样式
     if (dateLength > 7)
       defaultPrintCss += `
@@ -1737,21 +1759,21 @@ class PrintModal {
       }
     `;
     //调用打印函数
-    let prtintFn = printing as any
-    if (appStore.isDev) prtintFn = printing.preview
+    let prtintFn = printing as any;
+    if (appStore.isDev) prtintFn = printing.preview;
     prtintFn(document.getElementById(printId) as HTMLElement, {
       injectGlobalCss: true,
       scanStyles: false,
-      css: defaultPrintCss
+      css: defaultPrintCss,
     });
     //删除打印容器
     document.body.removeChild(div);
   }
 
-  public printArrangeNew(colVisibleList: string[],sheetTableData:any[]) {
+  public printArrangeNew(colVisibleList: string[], sheetTableData: any[]) {
     let params = selectViewModal.params;
     // let nurseGroup = sheetViewModal.sheetTableData;
-    let nurseGroup = sheetTableData
+    let nurseGroup = sheetTableData;
     let deptName = scheduleStore.getDeptName();
     let remark = sheetViewModal.remark || "";
     if (!params) return;
@@ -1760,154 +1782,148 @@ class PrintModal {
 
     //要显示的固定列配置
     interface column {
-      title: string,
-      key: string,
-      width: number,
-      visible: boolean,
-      render?: (record: any) => string
+      title: string;
+      key: string;
+      width: number;
+      visible: boolean;
+      render?: (record: any) => string;
     }
 
     //排班前显示的列
     const colsBefore = [
       {
-        title: '工号',
-        key: 'empNo',
+        title: "工号",
+        key: "empNo",
         width: 50,
-        visible: colVisibleList.indexOf('empNo') >= 0,
+        visible: colVisibleList.indexOf("empNo") >= 0,
       },
       {
-        title: '分组名称',
-        key: 'groupName',
+        title: "分组名称",
+        key: "groupName",
         width: 60,
-        visible: colVisibleList.indexOf('groupName') >= 0,
+        visible: colVisibleList.indexOf("groupName") >= 0,
       },
       {
-        title: '姓名',
-        key: 'empName',
+        title: "姓名",
+        key: "empName",
         width: 70,
         visible: true,
       },
       {
-        title: '层级',
-        key: 'nurseHierarchy',
+        title: "层级",
+        key: "nurseHierarchy",
         width: 30,
-        visible: colVisibleList.indexOf('nurseHierarchy') >= 0,
+        visible: colVisibleList.indexOf("nurseHierarchy") >= 0,
       },
       {
-        title: '职称',
-        key: 'newTitle',
+        title: "职称",
+        key: "newTitle",
         width: 70,
-        visible: colVisibleList.indexOf('newTitle') >= 0,
+        visible: colVisibleList.indexOf("newTitle") >= 0,
       },
       {
-        title: '年限',
-        key: 'year',
+        title: "年限",
+        key: "year",
         width: 30,
-        visible: colVisibleList.indexOf('year') >= 0,
+        visible: colVisibleList.indexOf("year") >= 0,
         render: (record: any) => {
-          if (!record.empName)
-            return ''
+          if (!record.empName) return "";
 
-          return record.year || '0'
-        }
-      }
-    ] as column[]
-    const colsBeforeVisible = colsBefore.filter((item) => item.visible)
+          return record.year || "0";
+        },
+      },
+    ] as column[];
+    const colsBeforeVisible = colsBefore.filter((item) => item.visible);
     //排班后显示的列
     let colsAfter = [
       {
-        title: '本周上班时数<br/>（小时）',
-        key: 'thisWeekHour',
+        title: "本周上班时数<br/>（小时）",
+        key: "thisWeekHour",
         width: 60,
-        visible: colVisibleList.indexOf('thisWeekHour') >= 0,
+        visible: colVisibleList.indexOf("thisWeekHour") >= 0,
         render: (record: any) => {
-          if (!record.empName)
-            return ''
-          return totalCellContent(record.id)
-        }
+          if (!record.empName) return "";
+          return totalCellContent(record.id);
+        },
       },
       {
-        title: '本周结余时数 <br/>（小时）',
-        key: 'thisWeekHoliday',
+        title: "本周结余时数 <br/>（小时）",
+        key: "thisWeekHoliday",
         width: 60,
-        visible: colVisibleList.indexOf('thisWeekHoliday') >= 0,
+        visible: colVisibleList.indexOf("thisWeekHoliday") >= 0,
         render: (record: any) => {
-          if (!record.empName)
-            return ''
-          return weekBalanceHour(record.id)
-        }
+          if (!record.empName) return "";
+          return weekBalanceHour(record.id);
+        },
       },
       {
-        title: '累计结余（小时）',
-        key: 'balanceHour',
+        title: "累计结余（小时）",
+        key: "balanceHour",
         width: 60,
-        visible: colVisibleList.indexOf('balanceHour') >= 0,
+        visible: colVisibleList.indexOf("balanceHour") >= 0,
         render: (record: any) => {
-          if (!record.empName)
-            return ''
-          return balanceHour(record.id)
-        }
+          if (!record.empName) return "";
+          return balanceHour(record.id);
+        },
       },
       {
-        title: '年假天数（天）',
-        key: 'totalHoliday',
+        title: "年假天数（天）",
+        key: "totalHoliday",
         width: 60,
-        visible: colVisibleList.indexOf('totalHoliday') >= 0,
+        visible: colVisibleList.indexOf("totalHoliday") >= 0,
         render: (record: any) => {
-          if (!record.empName)
-            return ''
-          return publicHour(record.id) || '0'
-        }
+          if (!record.empName) return "";
+          return publicHour(record.id) || "0";
+        },
       },
       {
-        title: '工时小计（小时）',
-        key: 'total1',
+        title: "工时小计（小时）",
+        key: "total1",
         width: 60,
-        visible: colVisibleList.indexOf('total1') >= 0,
+        visible: colVisibleList.indexOf("total1") >= 0,
         render: (record: any) => {
-          if (!record.empName)
-            return ''
+          if (!record.empName) return "";
 
-          return totalCellContent(record.id)
-        }
+          return totalCellContent(record.id);
+        },
       },
       {
-        title: '夜小时数（小时）',
-        key: 'total2',
+        title: "夜小时数（小时）",
+        key: "total2",
         width: 60,
-        visible: colVisibleList.indexOf('total2') >= 0,
+        visible: colVisibleList.indexOf("total2") >= 0,
         render: (record: any) => {
-          return nightHourCellContent(record.id)
-        }
+          return nightHourCellContent(record.id);
+        },
       },
       {
-        title: '公休结余（天）',
-        key: 'publicHour',
+        title: "公休结余（天）",
+        key: "publicHour",
         width: 60,
-        visible: colVisibleList.indexOf('publicHour') >= 0,
+        visible: colVisibleList.indexOf("publicHour") >= 0,
         render: (record: any) => {
-          if (!record.empName) return ''
-          return publicHour(record.id) || '0'
-        }
+          if (!record.empName) return "";
+          return publicHour(record.id) || "0";
+        },
       },
       {
-        title: '节休结余（天）',
-        key: 'holidayHour',
+        title: "节休结余（天）",
+        key: "holidayHour",
         width: 60,
-        visible: colVisibleList.indexOf('holidayHour') >= 0,
+        visible: colVisibleList.indexOf("holidayHour") >= 0,
         render: (record: any) => {
-          if (!record.empName) return ''
-          return holidayHour(record.id) || '0'
-        }
+          if (!record.empName) return "";
+          return holidayHour(record.id) || "0";
+        },
       },
       {
-        title: '备注',
-        key: 'empRemark',
+        title: "备注",
+        key: "empRemark",
         width: 70,
-        visible: colVisibleList.indexOf('empRemark') >= 0,
+        visible: colVisibleList.indexOf("empRemark") >= 0,
       },
-    ] as column[]
-    const colsAfterVisible = colsAfter.filter((item) => item.visible)
+    ] as column[];
+    const colsAfterVisible = colsAfter.filter((item) => item.visible);
 
     //创建打印容器
     let div = document.createElement("div");
@@ -1947,21 +1963,20 @@ class PrintModal {
       dateRowGroup[appendIdx].push({
         moment: newMoment,
         date,
-        weekDay: numToChinese(weekDay)
+        weekDay: numToChinese(weekDay),
       });
     }
 
     //排班的护士列表及其排班内容
     let NurseGroup = [] as any[];
     for (let i = 0; i < nurseGroup.length; i++) {
-      let item = nurseGroup[i]
-      let nextItem = nurseGroup[i + 1] || null
-      NurseGroup.push(item)
+      let item = nurseGroup[i];
+      let nextItem = nurseGroup[i + 1] || null;
+      NurseGroup.push(item);
       if (nextItem) {
-        let groupName = item.groupName
-        let nextGroupName = nextItem.groupName
-        if (groupName !== nextGroupName)
-          NurseGroup.push({})
+        let groupName = item.groupName;
+        let nextGroupName = nextItem.groupName;
+        if (groupName !== nextGroupName) NurseGroup.push({});
       }
     }
 
@@ -1971,19 +1986,20 @@ class PrintModal {
     //页面总宽度
     let pageWidth = 700;
     // //页面高度 超过换页
-    let pageHeight = 1010;  //1090
+    let pageHeight = 1010; //1090
     // //td计算用高度 和打印样式保持一致
     let tdHeight = 24;
 
     //如果总排班超过1周 横向显示
     if (dateLength > 7) {
       pageWidth = 1100;
-      pageHeight = 720 //720;
+      pageHeight = 720; //720;
       tdHeight = 20;
     }
     //td指定样式
     let tdStyle = (other?: string) => {
-      return `height:${tdHeight}px!important;padding:0!important;${other || ""}`;
+      return `height:${tdHeight}px!important;padding:0!important;${other ||
+        ""}`;
     };
     let tdEl = (option?: any) => {
       option = option || {};
@@ -1996,17 +2012,19 @@ class PrintModal {
       </td>`;
     };
     //部分列固定宽度
-    let fixWidthList = [...colsBeforeVisible, ...colsAfterVisible].map((col) => col.width)
-    let fixWidth = 0
+    let fixWidthList = [...colsBeforeVisible, ...colsAfterVisible].map(
+      (col) => col.width
+    );
+    let fixWidth = 0;
     for (let i = 0; i < fixWidthList.length; i++) {
-      fixWidth += fixWidthList[i]
+      fixWidth += fixWidthList[i];
     }
     //排版列总宽度
-    let othersWidth = pageWidth - fixWidth
+    let othersWidth = pageWidth - fixWidth;
 
-    let theadDom = '';
-    let trDom = '';
-    let colgroupDom = '';
+    let theadDom = "";
+    let trDom = "";
+    let colgroupDom = "";
 
     //根据护士列表和表头组动态插入表格和计算分页
     let tableId = "";
@@ -2014,18 +2032,17 @@ class PrintModal {
       let dateRow = dateRowGroup[i];
       let pageNo = 0;
       //计算每列宽度
-      let cols =
-        [
-          ...colsBeforeVisible.map((col) => col.width),
-          ...dateRow.map(() => othersWidth / dateLength),
-          ...colsAfterVisible.map((col) => col.width)
-        ]
+      let cols = [
+        ...colsBeforeVisible.map((col) => col.width),
+        ...dateRow.map(() => othersWidth / dateLength),
+        ...colsAfterVisible.map((col) => col.width),
+      ];
 
       let colgroup = `
         <colgroup>
           ${cols
-          .map((item: any) => `<col width="${Math.floor(item)}"/>`)
-          .join("")}
+            .map((item: any) => `<col width="${Math.floor(item)}"/>`)
+            .join("")}
         </colgroup>
         <colgroup></colgroup>
       `;
@@ -2033,41 +2050,50 @@ class PrintModal {
       let thead = `
         <tr>
           ${tdEl({
-        style: "",
-        colSpan: dateRow.length + colsBeforeVisible.length + colsAfterVisible.length,
-        class: "main-title",
-        content: `${deptName}护士排班表
-            (${moment(params.startTime).format('YYYY-MM-DD')}至${moment(params.endTime).format('YYYY-MM-DD')})
-            `
-      })}
+            style: "",
+            colSpan:
+              dateRow.length +
+              colsBeforeVisible.length +
+              colsAfterVisible.length,
+            class: "main-title",
+            content: `${deptName}护士排班表
+            (${moment(params.startTime).format("YYYY-MM-DD")}至${moment(
+              params.endTime
+            ).format("YYYY-MM-DD")})
+            `,
+          })}
         </tr>
         <tr class="header-row">
-          ${colsBeforeVisible.map((item) => tdEl({ content: item.title, rowSpan: 2 })).join("")}
+          ${colsBeforeVisible
+            .map((item) => tdEl({ content: item.title, rowSpan: 2 }))
+            .join("")}
           ${dateRow.map((item: any) => tdEl({ content: item.date })).join("")}
-          ${colsAfterVisible.map((item) => tdEl({ content: item.title, rowSpan: 2 })).join("")}
+          ${colsAfterVisible
+            .map((item) => tdEl({ content: item.title, rowSpan: 2 }))
+            .join("")}
         </tr>
         <tr class="header-row">
           ${dateRow
-          .map((item: any) =>
-            tdEl({
-              class:
-                item.weekDay == "六" || item.weekDay == "七" ? "bg-gray" : "",
-              content: item.weekDay == "七" ? "日" : item.weekDay
-            })
-          )
-          .join("")}
+            .map((item: any) =>
+              tdEl({
+                class:
+                  item.weekDay == "六" || item.weekDay == "七" ? "bg-gray" : "",
+                content: item.weekDay == "七" ? "日" : item.weekDay,
+              })
+            )
+            .join("")}
         </tr>
       `;
-      theadDom = thead
-      colgroupDom = colgroup
-      let renderNurse = NurseGroup.filter((item: any) => item.id)
-      let flag = false
+      theadDom = thead;
+      colgroupDom = colgroup;
+      let renderNurse = NurseGroup.filter((item: any) => item.id);
+      let flag = false;
       for (let j = 0; j < renderNurse.length; j++) {
         let nurse = renderNurse[j];
         let nowPageEl = document.getElementById(tableId);
         // if (nowPageEl) console.log(nowPageEl.offsetHeight, pageHeight);
         let nextPage = !!(nowPageEl && nowPageEl.offsetHeight > pageHeight);
-        flag = (j == 0 || nextPage)
+        flag = j == 0 || nextPage;
         if (j == 0 || nextPage) {
           tableId = `table-${i}-${pageNo}`;
           let newTable = `
@@ -2100,48 +2126,52 @@ class PrintModal {
           pageNo++;
         }
         //最后一页才打印备注
-        if ((j + 1) == sheetTableData.length) {
-          let printContent = document.querySelector(
-            `#table-0-${pageNo - 1}`
+        if (j + 1 == sheetTableData.length) {
+          let printContent = document.querySelector(`#table-0-${pageNo - 1}`);
+          let remove = document.querySelector(
+            `#table-0-${pageNo - 1} .page-no`
+          ) as never;
+          let remove2 = document.querySelector(
+            `#table-0-${pageNo - 1} .page-split`
           );
-          let remove = document.querySelector(`#table-0-${pageNo - 1} .page-no`) as never
-          let remove2 = document.querySelector(`#table-0-${pageNo - 1} .page-split`)
           let onePage = document.createElement("div");
           if (printContent && remove2) {
-            printContent.removeChild(remove)
-            printContent.removeChild(remove2)
-            let pageHtml =` <div class="page-no">第 ${pageNo} 页</div>`
+            printContent.removeChild(remove);
+            printContent.removeChild(remove2);
+            let pageHtml = ` <div class="page-no">第 ${pageNo} 页</div>`;
             // <div class="page-no">第 ${pageNo} 页</div>
-            onePage.innerHTML = `${remarkEl}${pageHtml}`
-            printContent.appendChild(onePage)
+            onePage.innerHTML = `${remarkEl}${pageHtml}`;
+            printContent.appendChild(onePage);
           }
         }
         //拼装行
         let tr = "";
         if (nurse.groupNameTitle) {
           let newTr = document.createElement("tr");
-          let tdDom = tdEl({colSpan:nurse.colSpan,content:nurse.groupNameTitle})
+          let tdDom = tdEl({
+            colSpan: nurse.colSpan,
+            content: nurse.groupNameTitle,
+          });
           newTr.innerHTML = tdDom;
           let targetTable = document.querySelector(`#${tableId} tbody`);
           if (targetTable) {
-            targetTable.appendChild(newTr)
+            targetTable.appendChild(newTr);
           }
-          trDom += `<tr class="page-split">${tdDom}<tr>`
+          trDom += `<tr class="page-split">${tdDom}<tr>`;
           continue;
         }
         //排班内容前的固定列内容
         for (let k = 0; k < colsBeforeVisible.length; k++) {
-          let column = colsBeforeVisible[k]
-          let content = ''
+          let column = colsBeforeVisible[k];
+          let content = "";
           //如果固定列能在nurse对象里找到对应的key返回对应的value
           if (Object.keys(nurse).indexOf(column.key) >= 0)
-            content = nurse[column.key]
+            content = nurse[column.key];
 
           //如果固定列有render方法返回render返回的内容
-          if (column.render)
-            content = column.render(nurse)
+          if (column.render) content = column.render(nurse);
 
-          tr += tdEl({ content })
+          tr += tdEl({ content });
         }
         //排班列
         let groups = [] as any;
@@ -2154,7 +2184,7 @@ class PrintModal {
           if (!target) {
             groups.push({
               rangeName: "",
-              col: 1
+              col: 1,
             });
             continue;
           }
@@ -2167,7 +2197,7 @@ class PrintModal {
             }
           }
           if (target.rangeNameCode) {
-            rangeName += target.rangeNameCode
+            rangeName += target.rangeNameCode;
           }
 
           if (target.settings && target.settings[0]) {
@@ -2179,7 +2209,10 @@ class PrintModal {
           }
 
           if (target.schAddOrSubs && target.schAddOrSubs[0]) {
-            if (target.schAddOrSubs[0] && target.schAddOrSubs[0].statusType == '1') {
+            if (
+              target.schAddOrSubs[0] &&
+              target.schAddOrSubs[0].statusType == "1"
+            ) {
               rangeName += `+${target.schAddOrSubs[0].hour}h`;
             } else {
               rangeName += `-${target.schAddOrSubs[0].hour}h`;
@@ -2212,52 +2245,50 @@ class PrintModal {
                 groups.push({
                   rangeName: rangeName,
                   nameColor: target.nameColor,
-                  col: 1
+                  col: 1,
                 });
             }
           } else {
             groups.push({
               rangeName: rangeName,
               nameColor: target.nameColor,
-              col: 1
+              col: 1,
             });
           }
         }
 
         //组合排班信息
         groups = groups.map((item1: any) => {
-          let rangeName = ''
-          if (nurse.empName)
-            rangeName = item1.rangeName || "/"
+          let rangeName = "";
+          if (nurse.empName) rangeName = item1.rangeName || "/";
           return tdEl({
             colSpan: item1.col,
             content: rangeName,
-            style: `color:${item1.nameColor}`
+            style: `color:${item1.nameColor}`,
           });
         });
         tr += groups.join("");
         //排班内容后的固定列内容
         for (let k = 0; k < colsAfterVisible.length; k++) {
-          let column = colsAfterVisible[k]
-          let content = ''
+          let column = colsAfterVisible[k];
+          let content = "";
           //如果固定列能在nurse对象里找到对应的key返回对应的value
           if (Object.keys(nurse).indexOf(column.key) >= 0)
-            content = nurse[column.key]
+            content = nurse[column.key];
 
           //如果固定列有render方法返回render返回的内容
-          if (column.render)
-            content = column.render(nurse)
+          if (column.render) content = column.render(nurse);
 
-          tr += tdEl({ content })
+          tr += tdEl({ content });
         }
         //动态插入行
         let newTr = document.createElement("tr");
         newTr.innerHTML = tr;
         let targetTable = document.querySelector(`#${tableId} tbody`);
         if (targetTable) {
-          targetTable.appendChild(newTr)
+          targetTable.appendChild(newTr);
         }
-        trDom += `<tr class="page-split">${tr}<tr>`
+        trDom += `<tr class="page-split">${tr}<tr>`;
       }
     }
     let newTable = `
@@ -2270,9 +2301,7 @@ class PrintModal {
       </table>
       <div>${remarkEl}</div>
     `;
-    let printContent = document.querySelector(
-      `.arrange-page-print`
-    );
+    let printContent = document.querySelector(`.arrange-page-print`);
     if (printContent) {
       let onePage = document.createElement("div");
       onePage.innerHTML = `${newTable}`;
@@ -2362,12 +2391,12 @@ class PrintModal {
       }
     `;
     //调用打印函数
-    let prtintFn = printing as any
-    if (appStore.isDev) prtintFn = printing.preview
+    let prtintFn = printing as any;
+    if (appStore.isDev) prtintFn = printing.preview;
     prtintFn(document.getElementById(printId) as HTMLElement, {
       injectGlobalCss: true,
       scanStyles: false,
-      css: defaultPrintCss
+      css: defaultPrintCss,
     });
     //删除打印容器
     document.body.removeChild(div);

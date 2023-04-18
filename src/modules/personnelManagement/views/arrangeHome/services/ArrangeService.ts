@@ -4,6 +4,7 @@ import { sheetViewModal } from "../viewModal/SheetViewModal";
 import { selectViewModal } from "../viewModal/SelectViewModal";
 import moment from "moment";
 import { PageObj } from "src/modules/nurseFiles/view/statistics/config/getPageObj";
+import { Obj } from "src/libs/types";
 
 export default class ArrangeService extends BaseApiService {
   /** 获取排班信息 */
@@ -459,6 +460,14 @@ export default class ArrangeService extends BaseApiService {
     return this.get(`/schExpectAddOrSub/delete/${id}`)
   }
   //
+  
+  public importExcel1(params: Obj) {
+    let formData = new FormData()
+    for (const key in params) { 
+      formData.append(key, params[key])
+    }
+    return this.post(`/scheduling/importExcel`, formData, { headers: { 'Content-Type': 'multipart/form-data' } });
+  }
 }
 
 export const arrangeService = new ArrangeService();
