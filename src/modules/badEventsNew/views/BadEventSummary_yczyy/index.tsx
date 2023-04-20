@@ -30,13 +30,13 @@ export default observer(function BadEventSummary(props) {
   const columns: ColumnProps<any>[] = [
     {
       title: '报告日期',
-      dataIndex: 'happentime',
+      dataIndex: 'createtime',
       width: 100,
       align: 'center'
     },
     {
       title: '事件发生时间',
-      dataIndex: 'createtime',
+      dataIndex: 'happentime',
       width: 100,
       align: 'center'
     },
@@ -116,7 +116,9 @@ export default observer(function BadEventSummary(props) {
   const search = async () => {
     try {
       setLoading(true)
-      const res = await badEventsNewService.pageBadEventSummary4(params)
+      const data = {...params}
+      if (data.deptCode === '全院') data.deptCode = ''
+      const res = await badEventsNewService.pageBadEventSummary4(data)
       if (res.code == 200) {
         setData(res?.data?.list || [])
         setTotal(res.data.totalCount)
@@ -130,7 +132,6 @@ export default observer(function BadEventSummary(props) {
     search()
   }
   useEffect(() => {
-    console.log('test-params', JSON.stringify(params))
     init()
   }, [params])
   return (
@@ -138,7 +139,7 @@ export default observer(function BadEventSummary(props) {
       <PageHeader>
         <PageTitle>不良事件报告登记总表</PageTitle>
         <Place />
-        <DeptSelect onChange={e => setParams({
+        <DeptSelect hasAllDept={true} onChange={e => setParams({
           ...params, 
           deptCode: e
         })}/>
