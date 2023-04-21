@@ -216,7 +216,7 @@ export default function ContinuingEdu(props: Props) {
             authStore.isOnlyInternsManage,
         },
       ],
-      "whyx,whhk":[
+      "whhk":[
         {
           title: "晋升管理",
           icon: <JSGL />,
@@ -745,7 +745,7 @@ export default function ContinuingEdu(props: Props) {
       icon: <TKGL />,
       path: "/continuingEdu/PracticalOperationScore",
       component: PracticalOperationScore,
-      hide: !['whyx','whhk'].includes(appStore.HOSPITAL_ID)
+      hide: !['whhk'].includes(appStore.HOSPITAL_ID)
     },
     {
       title: "实操评分管理",
@@ -800,9 +800,9 @@ const getIcon = (icon: any) => {
     return newRouter
   }, [dataList])
 
-  const LEFT_MENU_CONFIG = [
+  const LEFT_MENU_CONFIG_DEFAULT = [
     {
-      hide: !["whyx","whhk"].includes(appStore.HOSPITAL_ID),
+      hide: !["whhk"].includes(appStore.HOSPITAL_ID),
       title: "培训日历",
       icon: <RYGL />,
       path: "/continuingEdu/TariningCalendars",
@@ -993,7 +993,7 @@ const getIcon = (icon: any) => {
       title: "实习生管理",
       path: "/continuingEdu",
       icon: <JXJH />,
-      hide:!["whyx","whhk"].includes(appStore.HOSPITAL_ID),
+      hide:!["whhk"].includes(appStore.HOSPITAL_ID),
       children: [
         ...appStore.hisMatch({
           map: {
@@ -1028,7 +1028,7 @@ const getIcon = (icon: any) => {
       title: "规培生管理",
       path: "/continuingEdu",
       icon: <JXJH />,
-      hide:!["whyx","whhk"].includes(appStore.HOSPITAL_ID),
+      hide:!["whhk"].includes(appStore.HOSPITAL_ID),
       children: [
         {
           title: "规培生基本信息汇总表",
@@ -1051,7 +1051,7 @@ const getIcon = (icon: any) => {
       title: "进修生管理",
       path: "/continuingEdu",
       icon: <JXJH />,
-      hide:!["whyx","whhk"].includes(appStore.HOSPITAL_ID),
+      hide:!["whhk"].includes(appStore.HOSPITAL_ID),
       children: [
         ...appStore.hisMatch({
           map: {
@@ -1106,7 +1106,7 @@ const getIcon = (icon: any) => {
       icon: <JSGL />,
       path: "/continuingEdu/PromotionApplication",
       component: PromotionApplication,
-      hide: !['whyx','whhk'].includes(appStore.HOSPITAL_ID)
+      hide: !['whhk'].includes(appStore.HOSPITAL_ID)
     },
     {
       title: "类型管理",
@@ -1146,6 +1146,180 @@ const getIcon = (icon: any) => {
     //   vague: true
     // })
   ];
+
+  const LEFT_MENU_CONFIG_WHYX = [
+    {
+      title: "人员管理",
+      icon: <RYGL />,
+      path: "/continuingEdu/人员管理",
+      component: 人员管理,
+      hide: () =>
+        queyMenuAuthInfo("nm_lat_personelManage") ||
+        authStore.isOnlyInternsManage,
+    },
+    {
+      title: "在职护士管理",
+      path: "/continuingEdu",
+      icon: <JSGL />,
+      children: [
+        {
+          title: "培训日历",
+          path: "/continuingEdu/TariningCalendars",
+          component: TariningCalendars,
+        },
+        {
+          title: "晋升申请",
+          path: "/continuingEdu/PromotionApplication",
+          component: PromotionApplication,
+        },
+        {
+          title: "晋升管理",
+          path: "/continuingEdu/PromotionManagement",
+          component: PromotionManagement,
+        }
+        
+      ],
+    },
+    {
+      title: "规培生管理",
+      path: "/continuingEdu",
+      icon: <TKGL />,
+      children: [
+        {
+          title: "规培生基本信息汇总表",
+          path: "/continuingEdu/规培生基本信息汇总表",
+          component: gaugePearson_BacisManagement,
+        },
+        {
+          title: "规培生轮转计划",
+          path: "/continuingEdu/规培生轮转计划",
+          component: gaugePearson_TraineeShift,
+        },
+        {
+          title: "规培生出科评价",
+          path: "/continuingEdu/规培生出科评价",
+          component: gaugePearson_evaluate,
+        },
+      ],
+    },
+    {
+      title: "实习生管理",
+      path: "/continuingEdu",
+      icon: <YNXXB />,
+      children: [
+        {
+          title: "实习人员基本信息汇总表",
+          path: "/continuingEdu/实习人员基本信息汇总表",
+          component: BacisManagement,
+        },
+        {
+          title: "实习生教学计划",
+          path: "/continuingEdu/实习生教学计划",
+          component: TeachingProgramme,
+          hide: () => !authStore.isTeachingNurse,
+        },
+        {
+          title: "实习生轮转计划",
+          path: "/continuingEdu/实习生轮转计划",
+          component: InterntraineeRound,
+        },
+        {
+          title: "实习生临床评定",
+          path: "/continuingEdu/实习生临床评定",
+          component: ClinicalEvaluation,
+        },   
+      ],
+    },
+    {
+      title: "进修生管理",
+      path: "/continuingEdu",
+      icon: <LXGL />,
+      children: [
+        {
+          title: "进修生基本信息汇总表",
+          path: "/continuingEdu/进修生基本信息汇总表",
+          component: BaciPostgraduate,
+        },
+        {
+          title: "进修生教学计划",
+          path: "/continuingEdu/进修生教学计划",
+          component: TeachingPostgraduate,
+          hide: () => !authStore.isTeachingNurse,
+        },   
+      ],
+    },
+    {
+      title: "培训管理",
+      path: "/continuingEdu",
+      icon: <KSGL />,
+      children: [
+        {
+          title: "在线学习",
+          path: "/continuingEdu/在线学习",
+          component: 在线学习,
+        },
+        {
+          title: "审核发布",
+          path: "/continuingEdu/审核发布",
+          component: 审核发布,
+          hide: () =>
+            queyMenuAuthInfo("nm_lat_auditmanage") ||
+            authStore.isOnlyInternsManage,
+        },
+        {
+          title: "评分管理",
+          path: "/continuingEdu/评分管理",
+          component: 评分管理,
+          hide: () =>queyMenuAuthInfo("nm_lat_scoremanage") ||
+                authStore.isOnlyInternsManage
+        },
+        {
+          title: "实操评分管理",
+          path: "/continuingEdu/PracticalOperationScore",
+          component: PracticalOperationScore,
+        },
+        {
+          title: "题库管理",
+          path: "/continuingEdu/questionBankManagement",
+          component: 题库管理,
+          hide: () =>
+            queyMenuAuthInfo("nm_lat_questionbankmanage") ||
+            authStore.isOnlyInternsManage,
+        },
+        {
+          title: "类型管理",
+          path: "/continuingEdu/TypeManagement",
+          component: 类型管理,
+          hide: () =>
+            queyMenuAuthInfo("nm_lat_typemanage") ||
+            authStore.isOnlyInternsManage,
+        },
+        {
+          title: "菜单设置",
+          path: "/continuingEdu/菜单设置",
+          component: 菜单设置,
+          hide: () =>
+            queyMenuAuthInfo("nm_lat_menusetting") ||
+            authStore.isOnlyInternsManage,
+        },
+        {
+          title: "通知管理",
+          path: "/continuingEdu/通知管理",
+          component: 通知管理,
+          hide: () =>
+            queyMenuAuthInfo("nm_lat_noticemanage") || authStore.isOnlyInternsManage,
+        },
+      ],
+    },
+    ...initDynamicRouting,
+  ];
+  const LEFT_MENU_CONFIG = appStore.hisMatch({
+    map: {
+      whyx: LEFT_MENU_CONFIG_WHYX,
+      default:LEFT_MENU_CONFIG_DEFAULT
+    },
+    vague: true,
+  })
 
   // 查询获取动态菜单列表
   // const getList = () => {
