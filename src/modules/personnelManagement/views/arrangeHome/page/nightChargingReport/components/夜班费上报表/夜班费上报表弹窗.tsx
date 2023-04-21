@@ -111,7 +111,7 @@ export default observer(function 夜班费上报表弹窗(props: Props) {
       <div style={{marginTop:'5px',display:'flex'}}>
       {/* // setTextArea3_1(e.target.value) */}
         <span style={{flex:'none'}}>备注：</span>
-        <TextArea className='print-page__ipt' placeholder='字数上限2000字' value={cloneData.remark}
+        <TextArea className='print-page_ipt' placeholder='字数上限2000字' value={cloneData.remark}
          onChange={(e: any) => {
           cloneData.remark = e.target.value 
           setData(cloneData)

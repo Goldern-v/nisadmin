@@ -1,6 +1,7 @@
 import { DatePicker, Input } from "src/vendors/antd";
 import { DoCon } from "src/components/BaseTable";
 import React from "react";
+import { appStore } from "src/stores";
 import moment from "moment";
 import DateTimePicker from "src/components/DateTimePicker";
 
@@ -189,7 +190,14 @@ const getTable = (list: any[], otherObj: any, setOtherObj: Function) => {
     </table>
   )
 }
-const remark = "备注：P班 50元/个，N班100元/个";
+// const remark = "备注：P班 50元/个，N班100元/个";
+const remark = appStore.hisMatch({
+  map: {
+    925: "备注：P班 100元/个，N班100元/个",
+    default:"备注：P班 50元/个，N班100元/个"
+  },
+  vague: true,
+})
 export default {
   getColumns,
   item,
