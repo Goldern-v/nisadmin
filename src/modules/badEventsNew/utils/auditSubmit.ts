@@ -98,7 +98,6 @@ const fn1 = ({
   params,
 }: AuditSubmitIn): boolean => {
   if (!NODE_CODE_CONFIG[nodeCode]) return true;
-  console.log('test-nodeCode', nodeCode, NODE_CODE_CONFIG[nodeCode])
   const { handleContent, auditDate, empName } = NODE_CODE_CONFIG[nodeCode];
   saveParams[handleContent] = auditInfo.handleContent;
   saveParams[auditDate] = auditInfo.auditDate;

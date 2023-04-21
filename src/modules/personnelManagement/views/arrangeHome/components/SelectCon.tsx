@@ -270,7 +270,6 @@ export default observer(function SelectCon() {
   const handleUpload = async (info: any) => {
     let fn = () => arrangeService.importExcel(info.file)
     if ('zhzxy' === appStore.HOSPITAL_ID) {
-      console.log('test-1', 1)
       const list = authStore.deptList;
       const current = list.find(
         (item: any) => item.code === selectViewModal.params.deptCode
@@ -674,14 +673,6 @@ export default observer(function SelectCon() {
                   </Button>
                 </Upload>
               </div>
-              <ImportModal
-                  visible={modalVisible}
-                  modalData={modalData}
-                  onOk={() => {
-                    setModalVisible(false)
-                    sheetViewModal.getSheetTableData()
-                  }}
-                  onCancel={() => setModalVisible(false)} />
               <div className="item">
                 <Button className="statistics getExcel" onClick={downloadExcel}>
                   下载模板
@@ -761,6 +752,14 @@ export default observer(function SelectCon() {
                   导出科室
                 </Button>
               </div>
+              <ImportModal
+                visible={modalVisible}
+                modalData={modalData}
+                onOk={() => {
+                  setModalVisible(false)
+                  sheetViewModal.getSheetTableData()
+                }}
+                onCancel={() => setModalVisible(false)} />
             </>,
             other: <div className="item">
               <Button className="statistics getExcel" onClick={exportExcel}>
