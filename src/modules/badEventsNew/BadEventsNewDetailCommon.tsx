@@ -297,6 +297,10 @@ export default withRouter(function BadEventsNewDetail(props: any) {
             className='audit'
             onClick={() => {
               // appStore.history.goBack()
+              if (appStore.HOSPITAL_ID === 'yczyy') {
+                appStore.history.length == 1 ? window.close() : appStore.history.goBack();
+                return
+              }
               appStore.history.push('/badEventsNew')
             }}>
             返回
