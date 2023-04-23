@@ -869,6 +869,7 @@ export default observer(function NurseFilesView(props: Props) {
         'whhk',
         'zzwy',
         'dglb',
+        'lyrm',
         'zhzxy', 'dghm',
         appStore.isDev ? "wh" : "wh_production",
       ].indexOf(appStore.HOSPITAL_ID) >= 0
