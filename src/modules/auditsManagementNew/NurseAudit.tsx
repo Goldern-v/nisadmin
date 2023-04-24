@@ -15,6 +15,7 @@ interface Props {
   needAudit: any
   setNeedAudit: any
   selectedDate: any
+  qcCode:any
 }
 
 export default observer(function NurseAudit(props: Props) {
@@ -24,6 +25,7 @@ export default observer(function NurseAudit(props: Props) {
     showType={props.showType}
     keyword={props.keyword}
     needAudit={needAudit}
+    qcCode={props.qcCode}
     selectedDate={props.selectedDate}
   />
 

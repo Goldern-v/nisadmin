@@ -8,7 +8,8 @@ export default class AMServices extends BaseApiService {
     current?: number,
     pageSize?: number,
     showType?: string,
-    keyword?: string
+    keyword?: string,
+    additionalField?:any,
   ) {
     let deptCodes: any;
     if (
@@ -25,10 +26,12 @@ export default class AMServices extends BaseApiService {
       pageSize: pageSize || 10,
       type: showType,
       keyword,
-      // wardCode: authStore.selectedDeptCode,
       wardCode:deptCodes,
       deptCodes: deptCodes,
-    };
+    } as any
+    if(appStore.HOSPITAL_ID === 'yczyy'&&showType=='qc'){
+      obj.additionalField = additionalField
+    }
     return this.post(`/flow/task/pendingPage`, obj);
   }
   /** 已审核列表 */
@@ -37,7 +40,8 @@ export default class AMServices extends BaseApiService {
     pageSize?: number,
     showType?: string,
     keyword?: string,
-    selectedDate?: any
+    selectedDate?: any,
+    additionalField?:any
   ) {
     let deptCodes;
     if (
@@ -60,7 +64,9 @@ export default class AMServices extends BaseApiService {
       // wardCode: authStore.selectedDeptCode,
       deptCodes: deptCodes
     };
-
+    if(appStore.HOSPITAL_ID === 'yczyy'&&showType=='qc'){
+      obj.additionalField = additionalField
+    }
     if (selectedDate) {
       obj.startDate = selectedDate[0]
         ? selectedDate[0].format("YYYY-MM-DD")
@@ -74,6 +80,12 @@ export default class AMServices extends BaseApiService {
   public auditeList(obj: any) {
     return this.post(`/auditeNurseFileIndexNys/findNurseFileAudited`, obj);
   }
+
+  /** 质控表单列表 */
+  public getQcCodeList(obj: any) {
+    return this.post(`/qcItem/template/findList`, obj);
+  }
+
   /** 批量审核质控表 */
   public batchHandleNode(obj: any) {
     return this.post(`/qcItem/instance/batchHandleNode`, obj);

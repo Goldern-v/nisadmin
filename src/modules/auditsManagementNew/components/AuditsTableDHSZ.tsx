@@ -26,10 +26,11 @@ export interface Props {
   keyword: string;
   needAudit: boolean;
   selectedDate: any;
+  qcCode:string;
 }
 
 export default observer(function AuditsTableDHSZ(props: Props) {
-  let { showType, needAudit, keyword } = props;
+  let { showType, needAudit, keyword,qcCode } = props;
   let {
     empName,
     post,
@@ -129,7 +130,22 @@ export default observer(function AuditsTableDHSZ(props: Props) {
       align: "center",
       width: 100,
     },
-
+    ...appStore.hisMatch({
+      map: {
+        'yczyy': showType=='qc'?[{
+          title: "质量结果",
+          dataIndex: "evalRate",
+          key: "evalRate",
+          align: "center",
+          width: 100,
+          render: (text: any, row: any, c: any)=>{
+            return <span>{row.othersMessage.evalRate}%</span>
+          }
+        }]:[],
+        other: [],
+      },
+      vague: true,
+    }),
     {
       title: "提交人",
       dataIndex: "commiterName",
@@ -187,17 +203,17 @@ export default observer(function AuditsTableDHSZ(props: Props) {
   ) => {
     setCurrent(current);
     setLoading(true);
-
+    let additionalField = {} as any
+    if(appStore.HOSPITAL_ID === 'yczyy'&&showType=='qc'){
+      if(qcCode!=''){
+        additionalField={
+          qcCodes:[qcCode]
+        }
+      }
+    }
     let getDataFun = props.needAudit
-      ? aMServices.pendingPage(current, pageSize, showType, keyword)
-      : aMServices.solvedPage(
-        current,
-        pageSize,
-        showType,
-        keyword,
-        selectedDate
-      );
-
+      ? aMServices.pendingPage(current, pageSize, showType, keyword,additionalField)
+      : aMServices.solvedPage(current, pageSize, showType, keyword,selectedDate,additionalField);
     getDataFun.then((res) => {
       setLoading(false);
       setTableData(res.data?.list);

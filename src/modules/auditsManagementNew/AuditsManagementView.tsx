@@ -15,11 +15,14 @@ export default function AuditsManagementView() {
   const [needAudit, setNeedAudit] = useState(true)
   const [selectedDate, setSelectedDate] = useState(getCurrentMonth())
   const [keyword, setKeyword] = useState('')
+  const [qcCode, setQcCode] = useState('');//阳春中医，添加质控表单
   return (
     <Wrapper>
       <SelectCon
         showType={showType}
         setShowType={setShowType}
+        qcCode={qcCode}
+          setQcCode={setQcCode}
         keyword={keyword}
         setKeyword={setKeyword}
         needAudit={needAudit}
@@ -30,6 +33,7 @@ export default function AuditsManagementView() {
         <NurseAudit
           showType={showType}
           keyword={keyword}
+          qcCode={qcCode}
           needAudit={needAudit}
           setNeedAudit={setNeedAudit}
           selectedDate={selectedDate}
