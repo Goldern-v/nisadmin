@@ -529,6 +529,12 @@ class SheetViewModal {
       let current_holidayHour = 0;
       let current_publicHour = 0;
       let current_periodHour = 0;
+      /**产假结余 */
+      let current_maternityHour = 0
+      /**婚假结余 */
+      let current_marriageHour = 0
+      /**丧假结余 */
+      let current_funeralHour = 0
       current_holidayHourNys += Number(_sheetTableData[i].thisWeekHoliday) || 0;
 
       for (let j = 0; j < _sheetTableData[i].settingDtos.length; j++) {
@@ -542,6 +548,12 @@ class SheetViewModal {
           _sheetTableData[i].settingDtos[j].rangeName == "节休" ? 1 : 0;
         current_publicHour +=
           _sheetTableData[i].settingDtos[j].rangeName == "公休" ? 1 : 0;
+        current_maternityHour +=
+          _sheetTableData[i].settingDtos[j].rangeName == "产假" ? 1 : 0;
+        current_marriageHour +=
+          _sheetTableData[i].settingDtos[j].rangeName == "婚假" ? 1 : 0;
+        current_funeralHour +=
+          _sheetTableData[i].settingDtos[j].rangeName == "丧假" ? 1 : 0;
         current_periodHour +=
           _sheetTableData[i].settingDtos[j].shiftType == "例假"
             ? _sheetTableData[i].settingDtos[j].schSpecial
@@ -589,6 +601,9 @@ class SheetViewModal {
       _sheetTableData[i].current_holidayHour = current_holidayHour;
       _sheetTableData[i].current_publicHour = current_publicHour;
       _sheetTableData[i].current_periodHour = current_periodHour;
+      _sheetTableData[i].current_maternityHour = current_maternityHour;
+      _sheetTableData[i].current_marriageHour = current_marriageHour;
+      _sheetTableData[i].current_funeralHour = current_funeralHour;
       // 额外字段 by谢岗
       !_sheetTableData[i].userExpend && appStore.HOSPITAL_ID === 'dgxg' && (_sheetTableData[i].userExpend = {
         expend1: '',

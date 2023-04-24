@@ -139,6 +139,26 @@ export default observer(function FollowUpRecord() {
             align: "center",
           },
         ],
+        dghm: [
+          {
+            title: "产假结余",
+            dataIndex: "maternityHourNow",
+            width: 100,
+            align: "center",
+          },
+          {
+            title: "婚假结余",
+            dataIndex: "marriageHourNow",
+            width: 100,
+            align: "center",
+          },
+          {
+            title: "丧假结余",
+            dataIndex: "funeralHourNow",
+            width: 100,
+            align: "center",
+          },
+        ],
         other: [],
       },
       vague: true

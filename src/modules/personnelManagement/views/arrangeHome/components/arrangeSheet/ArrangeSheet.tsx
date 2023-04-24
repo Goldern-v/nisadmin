@@ -28,10 +28,10 @@ import TotalHoliday from './TotalHoliday'
 import PeriodHour from './PeriodHour'
 import { createContextMenu } from './ContextMenu'
 import { sheetViewModal } from '../../viewModal/SheetViewModal'
-
 // import CellLeft from './CellLeft'  // 产品提的新需求  等待产品整理好再做
 import WeekBalanceHour from "./WeekBalanceHour";
-import {toJS} from "mobx"; //本周结余时数
+// import {toJS} from "mobx"; //本周结余时数
+import CommonHour from './CommonHour'
 export interface Props {
   /** 编辑模式 */
   isEdit: boolean;
@@ -874,6 +874,45 @@ if (["whyx", "whhk"].includes(appStore.HOSPITAL_ID)) {
       },
     },
   );
+}
+if (appStore.HOSPITAL_ID === 'dghm') {
+  columns.push({
+    title: (
+      <div>
+        <div>产假结余</div>
+        <div>（天）</div>
+      </div>
+    ),
+    width: 70,
+    align: "center",
+    render(text: string, record: any) {
+      return <CommonHour id={record.id} flag='maternityHour' />;
+    },
+  },{
+    title: (
+      <div>
+        <div>婚假结余</div>
+        <div>（天）</div>
+      </div>
+    ),
+    width: 70,
+    align: "center",
+    render(text: string, record: any) {
+      return <CommonHour id={record.id} flag='marriageHour' />;
+    },
+  },{
+    title: (
+      <div>
+        <div>丧假结余</div>
+        <div>（天）</div>
+      </div>
+    ),
+    width: 70,
+    align: "center",
+    render(text: string, record: any) {
+      return <CommonHour id={record.id} flag='funeralHour' />;
+    },
+  })
 }
 
 useLayoutEffect(() => {

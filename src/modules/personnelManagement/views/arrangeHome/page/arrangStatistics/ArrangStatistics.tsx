@@ -34,7 +34,7 @@ export default observer(function ArrangStatistics() {
       name: "工时统计"
     }
   ];
-
+  console.log('test-dataSource', Object.getOwnPropertyNames(dataSource[0] || {}))
   const columns_1: ColumnProps<any>[] | any = [
     {
       title: "序号",
@@ -52,8 +52,15 @@ export default observer(function ArrangStatistics() {
       align: "center",
       fixed: 'left',
     },
-    ...Object.keys(dataSource[0] || {})
-      .filter(item => !(item == "姓名" || item == "合计" || item == "序列"))
+    
+    {
+      title: "工号",
+      dataIndex: "EMPNO",
+      width: 80,
+      align: "center",
+    },
+    ...Object.getOwnPropertyNames(dataSource[0] || {})
+      .filter(item => !(["姓名", "合计", "序列", "EMPNO"].includes(item)))
       .map(item => {
         return {
           title: item,

@@ -1,4 +1,4 @@
-import React, {useState, useLayoutEffect} from "react";
+import React, { useState, useLayoutEffect } from "react";
 import {
     Modal,
     Input,
@@ -8,14 +8,14 @@ import {
     Col,
     message,
 } from "antd";
-import {ModalComponentProps} from "src/libs/createModal";
+import { ModalComponentProps } from "src/libs/createModal";
 import Form from "src/components/Form";
-import {to} from "src/libs/fns";
-import {Rules} from "src/components/Form/interfaces";
-import {InputNumber} from "src/vendors/antd";
-import {arrangeService} from "../../../services/ArrangeService";
+import { to } from "src/libs/fns";
+import { Rules } from "src/components/Form/interfaces";
+import { InputNumber } from "src/vendors/antd";
+import { arrangeService } from "../../../services/ArrangeService";
 import moment from "moment";
-import {appStore, authStore} from "src/stores";
+import { appStore, authStore } from "src/stores";
 export interface Props extends ModalComponentProps {
     /** 表单提交成功后的回调 */
     onOkCallBack?: () => any;
@@ -34,14 +34,14 @@ const rules: Rules = {
 
 export default function EditBalanceModal(props: Props) {
     const [title, setTitle] = useState("新建结余工时");
-    let {visible, onCancel, nurseList, status} = props;
+    let { visible, onCancel, nurseList, status } = props;
     let refForm = React.createRef<Form>();
     const onSave = async () => {
         if (!refForm.current) return;
         let [err, value] = await to(refForm.current.validateFields());
         if (err) return;
 
-        let data = {...(props.oldData || {}), ...value};
+        let data = { ...(props.oldData || {}), ...value };
         data.endDate = data.endDate.format("YYYY-MM-DD");
         data.workDate = data.endDate;
         data.startDate = moment(data.endDate)
@@ -58,6 +58,8 @@ export default function EditBalanceModal(props: Props) {
         data.totalHoliday = Number(data.totalHoliday) || 0;
 
         data.maternityHourNow = Number(data.maternityHourNow) || 0;
+        data.marriageHourNow = Number(data.marriageHourNow) || 0;
+        data.funeralHourNow = Number(data.funeralHourNow) || 0;
         data.homeHourNow = Number(data.homeHourNow) || 0;
         data.toleranceHourNow = Number(data.toleranceHourNow) || 0;
         /** 保存接口 */
@@ -86,6 +88,8 @@ export default function EditBalanceModal(props: Props) {
                     holidayHourNow: props.oldData.holidayHourNow,
                     balanceHourNow: props.oldData.balanceHourNow,
                     maternityHourNow: props.oldData.maternityHourNow,
+                    marriageHourNow: props.oldData.marriageHourNow,
+                    funeralHourNow: props.oldData.funeralHourNow,
                     homeHourNow: props.oldData.homeHourNow,
                     toleranceHourNow: props.oldData.toleranceHourNow,
                     totalHoliday: props.oldData.totalHoliday,
@@ -97,12 +101,14 @@ export default function EditBalanceModal(props: Props) {
                 setTitle("新建结余工时");
                 /** 表单数据初始化 */
                 refForm!.current!.setFields({
-                    empName:'',
+                    empName: '',
                     endDate: null,
                     publicHourNow: 0,
                     holidayHourNow: 0,
                     balanceHourNow: 0,
                     maternityHourNow: 0,
+                    marriageHourNow: 0,
+                    funeralHourNow: 0,
                     homeHourNow: 0,
                     toleranceHourNow: 0,
                     totalHoliday: 0,
@@ -115,13 +121,13 @@ export default function EditBalanceModal(props: Props) {
     }, [visible]);
     const onChangeSelect = (value: any) => {
         if (!!value) {
-            refForm!.current!.setFields({empName: value})
+            refForm!.current!.setFields({ empName: value })
         }
     };
 
     const onSearchSelect = (value: any) => {
         if (!!value) {
-            refForm!.current!.setFields({empName: value})
+            refForm!.current!.setFields({ empName: value })
         }
     };
 
@@ -167,7 +173,7 @@ export default function EditBalanceModal(props: Props) {
                                 >
                                     {(nurseList || []).map((item: any, index: number) => (
                                         <Select.Option value={item.empName} key={index}>
-                                            {item.empName||""}
+                                            {item.empName || ""}
                                         </Select.Option>
                                     ))}
                                 </Select>
@@ -176,12 +182,12 @@ export default function EditBalanceModal(props: Props) {
                     </Col>
                     <Col span={24}>
                         <Form.Field label={`结余日期`} name="endDate" required>
-                            <DatePicker disabledDate={disabledDate}/>
+                            <DatePicker disabledDate={disabledDate} />
                         </Form.Field>
                     </Col>
                     <Col span={24}>
                         <Form.Field label={`工时结余`} name="balanceHourNow">
-                            <InputNumber/>
+                            <InputNumber />
                         </Form.Field>
                     </Col>
 
@@ -189,15 +195,15 @@ export default function EditBalanceModal(props: Props) {
                         appStore.HOSPITAL_ID === 'jmfy' && (
                             <Col span={24}>
                                 <Form.Field label={`积假结余`} name="totalHoliday">
-                                    <InputNumber/>
+                                    <InputNumber />
                                 </Form.Field>
                             </Col>
                         )
                     }
                     <Col span={24}>
                         <Form.Field label={['sdlj', 'nfsd', 'qzde'].includes(appStore.HOSPITAL_ID) ? '工休结余' : `公休结余`}
-                                    name="publicHourNow">
-                            <InputNumber/>
+                            name="publicHourNow">
+                            <InputNumber />
                         </Form.Field>
                     </Col>
                     {
@@ -206,21 +212,21 @@ export default function EditBalanceModal(props: Props) {
                                 'sdlj,qzde': <React.Fragment>
                                     <Col span={24}>
                                         <Form.Field label={`例假结余`} name="periodHourNow">
-                                            <InputNumber min={-999} step={0.5} precision={1}/>
+                                            <InputNumber min={-999} step={0.5} precision={1} />
                                         </Form.Field>
                                     </Col>
                                 </React.Fragment>,
                                 'nfsd': <React.Fragment>
                                     <Col span={24}>
                                         <Form.Field label={`例假结余`} name="periodHourNow">
-                                            <InputNumber min={0} step={0.5} precision={1}/>
+                                            <InputNumber min={0} step={0.5} precision={1} />
                                         </Form.Field>
                                     </Col>
                                 </React.Fragment>,
                                 default: <React.Fragment>
                                     <Col span={24}>
                                         <Form.Field label={`节休结余`} name="holidayHourNow">
-                                            <InputNumber/>
+                                            <InputNumber />
                                         </Form.Field>
                                     </Col>
                                 </React.Fragment>,
@@ -233,21 +239,40 @@ export default function EditBalanceModal(props: Props) {
                             <React.Fragment>
                                 <Col span={24}>
                                     <Form.Field label={`产假结余`} name="maternityHourNow">
-                                        <InputNumber/>
+                                        <InputNumber />
                                     </Form.Field>
                                 </Col>
                                 <Col span={24}>
                                     <Form.Field label={`探亲假`} name="homeHourNow">
-                                        <InputNumber/>
+                                        <InputNumber />
                                     </Form.Field>
                                 </Col>
                                 <Col span={24}>
                                     <Form.Field label={`公差结余`} name="toleranceHourNow">
-                                        <InputNumber/>
+                                        <InputNumber />
                                     </Form.Field>
                                 </Col>
                             </React.Fragment>
                         )
+                    }
+                    {
+                        appStore.HOSPITAL_ID === 'dghm' && <>
+                            <Col span={24}>
+                                <Form.Field label={`产假结余`} name="maternityHourNow">
+                                    <InputNumber />
+                                </Form.Field>
+                            </Col>
+                            <Col span={24}>
+                                <Form.Field label={`婚假结余`} name="marriageHourNow">
+                                    <InputNumber />
+                                </Form.Field>
+                            </Col>
+                            <Col span={24}>
+                                <Form.Field label={`丧假结余`} name="funeralHourNow">
+                                    <InputNumber />
+                                </Form.Field>
+                            </Col>˝
+                        </>
                     }
                     <Col span={24}>
                         <Form.Field label={`结余类型`} name="status">
@@ -258,24 +283,9 @@ export default function EditBalanceModal(props: Props) {
                         </Form.Field>
                     </Col>
                     <Col span={24}>
-                        <Form.Field label={`产假`} name="holidayHourNow">
-                            <InputNumber/>
-                        </Form.Field>
-                    </Col>
-                    <Col span={24}>
-                        <Form.Field label={`婚假`} name="holidayHourNow">
-                            <InputNumber/>
-                        </Form.Field>
-                    </Col>
-                    <Col span={24}>
-                        <Form.Field label={`丧假`} name="holidayHourNow">
-                            <InputNumber/>
-                        </Form.Field>
-                    </Col>
-                    <Col span={24}>
                         <Form.Field label={`备注`} name="remark">
                             <Input.TextArea
-                                style={{resize: "none", minHeight: 60}}
+                                style={{ resize: "none", minHeight: 60 }}
                                 autosize={true}
                             />
                         </Form.Field>

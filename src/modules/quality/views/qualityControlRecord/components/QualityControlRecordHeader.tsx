@@ -295,7 +295,7 @@ export default observer(function TopCon(props: any) {
                 .toLowerCase()
                 .indexOf(input.toLowerCase()) >= 0
             }
-            style={{ width: 150 }}
+            style={appStore.HOSPITAL_ID === 'gzsrm' ? {width: 200} : { width: 150 }}
             value={qualityControlRecordVM.filterDeptCode}
             onChange={(value: any) => {
               qualityControlRecordVM.filterDeptCode = value;

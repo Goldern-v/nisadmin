@@ -95,11 +95,11 @@ export default withRouter(function LoginView(props: Props) {
     );
     console.log(regexpDghm.test(_password),'ddddd');
     
-    // if(['dghm'].includes(appStore.HOSPITAL_ID) && !regexpDghm.test(_password)){
-    //   message.warning("当前登录密码强度较弱，请修改密码后登录!");
-    //   history.push('/resetpassword');
-    //   return;
-    // }
+    if(['dghm'].includes(appStore.HOSPITAL_ID) && !regexpDghm.test(_password)){
+      message.warning("当前登录密码强度较弱，请修改密码后登录!");
+      history.push('/resetpassword');
+      return;
+    }
     service.authApiService
       .login(_username, _password, verificationCode, "",options?.password || password)
       .then(() => {
