@@ -615,10 +615,6 @@ class SheetViewModal {
         expend7: '',
         expend8: '',
       });
-      // 额外字段 by珠海中西医
-      !_sheetTableData[i].userExpend && appStore.HOSPITAL_ID === 'zhzxy' && (_sheetTableData[i].userExpend = {
-        expend2: '',  //管床
-      });
       /** 计数班次的基础次数 */
       let countArrangeBaseIndexObj: any = {};
       for (let key of this.countArrangeNameList) {

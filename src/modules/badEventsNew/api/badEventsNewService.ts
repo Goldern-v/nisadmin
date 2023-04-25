@@ -252,6 +252,11 @@ export default class BadEventsNewService extends BaseApiService {
   public async pageBadEventSummary4(params: Obj) {
     return await this.post(`/badEvent/summary/pageBadEventSummary4Yangchun`, params)
   }
+  public async exportBadEventSummary4(params: Obj) {
+    return await this.post(`/badEvent/summary/exportBadEventSummary4Yangchun`, params, {
+      responseType: 'blob'
+    })
+  }
 }
 
 export const badEventsNewService = new BadEventsNewService()

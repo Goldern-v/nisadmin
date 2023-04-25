@@ -101,18 +101,20 @@ export default observer(function BadEventSummary(props) {
       align: 'center'
     },
   ]
-  // const exportExcel = async () => {
-  //   try {
-  //     setLoading(true)
-  //     const res = await badEventsNewService.exportBeSummaryYc(params)
-  //     if (res) {
-  //       setLoading(false)
-  //       fileDownload(res)
-  //     }
-  //   } catch (e) {
-  //     setLoading(false)
-  //   }
-  // }
+  const exportExcel = async () => {
+    try {
+      setLoading(true)
+      const data = {...params}
+      if (data.deptCode === '全院') data.deptCode = ''
+      const res = await badEventsNewService.exportBadEventSummary4(data)
+      if (res) {
+        setLoading(false)
+        fileDownload(res)
+      }
+    } catch (e) {
+      setLoading(false)
+    }
+  }
   const search = async () => {
     try {
       setLoading(true)
@@ -157,14 +159,14 @@ export default observer(function BadEventSummary(props) {
         <Button type="primary" className="statistics" onClick={search}>
           查询
         </Button>
-        {/* <Button
+        <Button
           className="excel"
           onClick={() => {
             exportExcel();
           }}
         >
           导出Excel
-        </Button> */}
+        </Button>
       </PageHeader>
       <ContentCon>
         <div className="content-title">
