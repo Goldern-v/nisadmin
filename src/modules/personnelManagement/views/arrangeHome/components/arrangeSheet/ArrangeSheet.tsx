@@ -119,6 +119,26 @@ export default observer(function ArrangeSheet(props: Props) {
     return title;
   };
 
+  // 动态合并单元格
+	const mergeCells = (text: string, data: any, key: string, index: number) => {
+		// if (text == '') {
+		// 	// 没有code值的时候
+		// 	return 1
+		// }
+		if (index !== 0 && text === data[index - 1][key]) {
+			return 0
+		}
+		let rowSpan = 1
+
+		for (let i = index + 1; i < data.length; i++) {
+			if (text !== data[i][key]) {
+				break;
+			}
+			rowSpan++
+		}
+		return rowSpan
+	}
+
   let columns: any = [
     ...appStore.hisMatch({
       map: {
@@ -135,11 +155,17 @@ export default observer(function ArrangeSheet(props: Props) {
             },
             render: (value: string, row: any, index: number) => {
               const obj = {
-                children:<span style={{background:row.groupColor||""}}>{value}</span>,
-                props: { rowSpan: 0 }
-              };
-              obj.props.rowSpan = row.groupNamerowSpan;
-              return obj;
+                children: value,
+                props: {},
+              } as any;
+              obj.props.rowSpan = mergeCells(row.groupName, sheetViewModal.sheetTableData, 'groupName', index)
+              return obj
+              // const obj = {
+              //   children:<span style={{background:row.groupColor||""}}>{value}</span>,
+              //   props: { rowSpan: 0 }
+              // };
+              // obj.props.rowSpan = row.groupNamerowSpan;
+              // return obj;
             }
           }
         ],
@@ -154,7 +180,10 @@ export default observer(function ArrangeSheet(props: Props) {
       width: 40,
       key: 'sortValue',
       align: "center",
-      render: (text: string, record: any) => {
+      render: (text: string, record: any,rowIndex:number) => {
+        if(appStore.HOSPITAL_ID == "zhzxy"){
+          return <span>{rowIndex+1}</span> 
+        }
         return isEditable ? (
           <Input
             type="text"
@@ -1023,6 +1052,52 @@ const moveRow = (dragIndex: number, hoverIndex: number) => {
         $splice: [[dragIndex, 1], [hoverIndex, 0, dragRowWhyx]],
       });
       break;
+    case 'zhzxy':
+        try {
+          const dragRowZhzxy = sheetViewModal.sheetTableData[dragIndex];
+        if (!dragRowZhzxy) return;
+        if(sheetViewModal.sheetTableData[dragIndex].groupId!=sheetViewModal.sheetTableData[hoverIndex].groupId){
+          return message.warning('跨组啦！')
+        }
+          let pc = (document as any).querySelector(
+            ".drop-over-downward,  .drop-over-upward"
+          ).offsetParent.offsetParent.className;
+
+          let sheetTableData = cloneJson(sheetViewModal.sheetTableData);
+          let rightList = sheetTableData.map((item: any) => {
+            return item.settingDtos;
+          });
+          let leftList = sheetTableData.map((item: any) => {
+            delete item.settingDtos;
+            return item;
+          });
+
+          if (pc == "ant-table-body") {
+            /** min */
+            rightList = update(rightList, {
+              $splice: [[dragIndex, 1], [hoverIndex, 0, rightList[dragIndex]]],
+            });
+           
+          } else if (pc == "ant-table-body-outer") {
+            /** left */
+            leftList = update(leftList, {
+              $splice: [[dragIndex, 1], [hoverIndex, 0, leftList[dragIndex]]],
+            });
+          }
+
+          let list = leftList.map((item: any, index: number) => {
+            item.settingDtos = rightList[index].map((r: any) => ({
+              ...r,
+              userId: item.id,
+            }));
+            return item;
+          });
+          /*需要手动更改对应的sortValue*/
+          list[hoverIndex].sortValue = hoverIndex + 1
+          sheetViewModal.sheetTableData = list;
+          sheetViewModal.allCell = sheetViewModal.getAllCell(true);
+        } catch (error) { }
+        break;
     default:
       try {
         let pc = (document as any).querySelector(

@@ -803,16 +803,21 @@ class SheetViewModal {
     return data1
   }
   getGroupNameSort(data:any){
-    let propsList = ["groupName"];
+    let propsList = ["groupId"];
     let tableData: any[] = [];
     const list:any = data.sort((a:any, b:any) => {
-      if (a.groupName < b.groupName) {
-        return 1;
-      } else if (a.groupName > b.groupName) {
-        return -1;
-      } else {
+      if(a.groupId!=null && b.groupId!=null){
+        return a.groupId - b.groupId
+      }else{
         return 0;
       }
+      // if (a.groupId > b.groupId) {
+      //   return 1;
+      // } else if (a.groupId < b.groupId) {
+      //   return -1;
+      // } else {
+      //   return 0;
+      // }
     });
     propsList.map(item => {
       tableData = this.uniteTableData(list, item);
