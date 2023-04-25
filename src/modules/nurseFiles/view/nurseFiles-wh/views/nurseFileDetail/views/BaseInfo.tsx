@@ -12,6 +12,7 @@ import EditBaseInfoModal from "../modal/EditBaseInfoModal";
 import { nurseFileDetailViewModal } from "../NurseFileDetailViewModal";
 import { ScrollBox } from "src/components/common";
 import { openAuditModal } from "../config/auditModalConfig";
+import { modalService } from "src/global/services/ModalService-wh";
 export interface Props extends RouteComponentProps { }
 /* 判断是否本人 */
 export const isSelf = () => {
@@ -85,33 +86,33 @@ export default observer(function BaseInfo() {
     //   name: "鞋码"
     // },
   ]
+  const getAuditInfo = (cb: Function) => {
+    const empNo = appStore.queryObj.empNo
+    modalService.getByIdAuditeDis('nurseWHInformation', empNo, '查看').then(res => {
+      cb(res.data)
+    })
+  }
   const limitsComponent = () => {
     let btnList: Array<object> = [];
     if (['gxjb', 'dghm'].includes(appStore.HOSPITAL_ID)) {
-      btnList = editFlag() ? [
-        {
+      editFlag() && 
+        btnList.push({
           label: "修改",
           onClick: () => {
-            editBaseInfoModal.show({
-              id: id,
-              data: info,
-            });
+            getAuditInfo(((data: any) => {
+              editBaseInfoModal.show({
+                id: id,
+                data,
+              });
+            }))
           },
-        },
-        {
+        })
+      btnList.push({
           label: "查看",
           onClick: () => {
             openAuditModal("基本信息", info, getTableData,'查看');
           },
-        },
-      ] : [
-        {
-          label: "查看",
-          onClick: () => {
-            openAuditModal("基本信息", info, getTableData,'查看');
-          },
-        },
-      ];
+        })
     }else{
       // SAVE("noSubmit", "未提交"),
       // HANDLE("handle", "审核中"),
