@@ -210,6 +210,18 @@ const LEFT_MENU_CONFIG = [
       ]
     }
   }),
+  ...appStore.hisMatch({
+    map: {
+      gzhd:[
+        {
+          title: "执行单统计",
+          icon: <HZCXTJ />,
+          path: "/statistic/wardExecute",
+        },
+      ]
+    },
+    vague:true
+  }),
 
   ...appStore.hisMatch({
     map: {

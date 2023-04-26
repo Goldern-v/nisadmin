@@ -10,6 +10,7 @@ import BaseTable from "src/components/BaseTable.tsx";
 export default observer(function PerformChart() {
   const [dataSource, setDataSource] = useState([]);
   const [tableLoading, setTableLoading] = useState(false);
+  const { history } = appStore
   useEffect(() => {
     let postData = {
       wardCode: authStore.selectedDeptCode, // 科室编码
@@ -36,6 +37,10 @@ export default observer(function PerformChart() {
         });
     }
   }, [authStore.selectedDeptCode,authStore.selectDateTime]);
+
+  const turnToMore = ()=>{
+    history.push(`/statistic/wardExecute`)
+  }
 
   // 表格
   const columns: any = [
@@ -81,7 +86,7 @@ export default observer(function PerformChart() {
     <div>
       <Head>
         <div className="headLeft">执行单情况</div>
-        <div className="headRight">更多></div>
+        <div className="headRight" onClick={()=>turnToMore()}>更多></div>
       </Head>
       <Mid>
         <BaseTable
@@ -112,6 +117,10 @@ const Head = styled.div`
     font-size: 13px;
     letter-spacing: 1px;
     color: #999999;
+    &:hover{
+      cursor: pointer;
+      color: #00A680;
+    }
   }
 `;
 const Mid = styled.div`

@@ -356,6 +356,11 @@ class StatisticsApi extends BaseApiService {
     return this.post('/countInformation/countProfessional', query)
 
   }
+
+  /** 执行单执行情况 */
+  public getWardExecuteHomeStatus(query: any) {
+    return this.post('/execute/getWardExecuteHomeStatus', query)
+  }
 }
 
 let statisticsApi = new StatisticsApi()

@@ -73,6 +73,7 @@ import NurseList_whyx from "./views/nursingStatistics/NurseList_whyx/NurseList_w
 import PdaUsage from "./views/PDAusage/PdaUsage";
 import BloodTransfusion from "./views/bloodTransfusion/BloodTransfusion";
 import TelFollowUp from "./views/telFollowUp/TelFollowUp";
+import WardExecute from "./views/wardExecute/WardExecute";
 // 患者查询统计   大块
 // 住院病人认知情况统计表
 // import 住院病人认知情况统计表 from 'src/modules/statistic/PatientQueryView/住院病人认知情况统计表/住院病人认知情况统计表.tsx'
@@ -329,6 +330,20 @@ export default function StatisticView() {
         ],
         other: [],
       },
+    }),
+    ...appStore.hisMatch({
+      map: {
+        'gzhd': [
+          {
+            name: "执行单统计",
+            path: "/statistic/wardExecute",
+            component: WardExecute,
+          },
+        ],
+
+        default: [],
+      },
+      vague:true
     }),
   ];
   // const leftNursingStatistics = [{ name: '护理人员一览表', path: '/statistic/护理人员一览表', component: NurseList }]
