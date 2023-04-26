@@ -327,6 +327,9 @@ class SheetViewModal {
           endDate: selectViewModal.params.endTime,
         });
         this.standardTimeList = standardTimeList;
+        // 把所有的groupId找出来，去重
+      //   let arrnew = Array.from(new Set(res.data.setting.map((item:any,index:number) => item.groupId) || []))
+      //    console.log('arrnew===',arrnew)
 
         this.sheetTableData = this.handleSheetTableData(
          this.getGroupNameSort(res.data.setting),
@@ -801,12 +804,14 @@ class SheetViewModal {
   getGroupNameSort(data:any){
     let propsList = ["groupId"];
     let tableData: any[] = [];
-    const list:any = data.sort((a:any, b:any) => {
-      if(a.groupId!=null && b.groupId!=null){
-        return a.groupId - b.groupId
-      }else{
-        return 0;
+    data.forEach((it:any)=>{
+      if(it.groupId==null){
+        // 如果碰到null，给一个无穷大的数，让没有分组的人排到最后
+        it.groupId = 9999999
       }
+    })
+    const list:any = data.sort((a:any, b:any) => {
+      return a.groupId - b.groupId
       // if (a.groupId > b.groupId) {
       //   return 1;
       // } else if (a.groupId < b.groupId) {
