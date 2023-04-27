@@ -302,7 +302,7 @@ export default observer(function 敏感指标登记本(props: Props) {
         other: []
       }
     }),
-    ...!config.hiddenDate ? [{
+    ...(!config.hiddenDate&&!location.pathname.includes('QCRG_GSY_12')) ? [{
       title: "日期",
       dataIndex: "recordDate",
       align: "center",
