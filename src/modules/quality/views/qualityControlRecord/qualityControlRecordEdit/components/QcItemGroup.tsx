@@ -193,7 +193,8 @@ export default observer(function QcItemGroup(props: Props) {
                 span={8}
                 key={`fillItem-${index}-${itemIndex}-${fillItemIdx}`}
                 style={{ display: 'flex', margin: '2.5px 0' }}>
-                <div style={{ lineHeight: '20px', color: '#666' }}>自定义内容{fillItemIdx + 1}：</div>
+                  {/* fillItemIdx + 1 */}
+                <div style={{ lineHeight: '20px', color: '#666' }}>{fillItem.itemName?fillItem.itemName:'自定义内容'+(fillItemIdx + 1)}：</div>
                 <Input
                   size="small"
                   style={{ flex: 1, fontSize: '12px' }}
