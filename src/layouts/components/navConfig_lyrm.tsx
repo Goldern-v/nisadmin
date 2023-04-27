@@ -85,6 +85,10 @@ export const navConfig: (appStore:any,authStore?:any) => navConfigItem[] = (appS
     }
   },
   {
+    name: "统计查询",
+    path: "/statistic",
+  },
+  {
     name: "系统设置",
     path: "/setting", 
   },

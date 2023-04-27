@@ -174,7 +174,7 @@ const LEFT_MENU_CONFIG = [
                 },
                 ...appStore.hisMatch({
                   map: {
-                    'lcey,hj,sdlj,nfsd,qzde,qzde': [
+                    'lcey,hj,sdlj,nfsd,qzde,qzde,lyrm': [
                       {
                         title: "护士职称分布",
                         path: "/statistic/护士职称分布",
