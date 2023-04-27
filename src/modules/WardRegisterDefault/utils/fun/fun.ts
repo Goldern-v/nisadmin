@@ -5,6 +5,7 @@ import { message, Modal } from "src/vendors/antd";
 import moment from "moment";
 import service from "src/services/api";
 import { fileDownload } from "src/utils/file/file";
+const { location } = appStore
 
 export interface ItemConfigItem {
   blockId: number;
@@ -195,7 +196,7 @@ export function getFun(context: any) {
             })
           });
         }
-
+        if(location.pathname.includes('QCRG_GSY_12')) res.data.config.hiddenDate=true
         setItemConfigList(thMerge(res.data.itemConfigList));
         setConfig(res.data.config || {})
         setRangeConfigList(res.data.rangeConfigList);
