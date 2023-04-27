@@ -84,7 +84,7 @@ export default observer(function 敏感指标登记本(props: Props) {
       return message.warning(`${repeatNames.join('、')}患者已添加`)
     }
     setPatientVisible(false)
-
+    // QCRG_GSY_12==电话登记本用出院日期排序
     setDataSource([...dataSource, ...arr.map((item: Obj, i: number) => ({
       blockId: selectedBlockId,
       description: "",
@@ -92,7 +92,7 @@ export default observer(function 敏感指标登记本(props: Props) {
       modified: true,
       range: "",
       rangeIndexNo: 0,
-      recordDate: item.admissionDate,
+      recordDate: location.pathname.includes('QCRG_GSY_12')?item.dischargeDate:item.admissionDate,
       key: 'key' + i,
       registerCode: curCode,
       ...curConfigByPatientSelect(item)
@@ -304,14 +304,14 @@ export default observer(function 敏感指标登记本(props: Props) {
     }),
     ...!config.hiddenDate ? [{
       title: "日期",
-      dataIndex: (['gzsrm'].includes(appStore.HOSPITAL_ID) && location.pathname.includes('QCRG_GSY_12'))?"createTime":"recordDate",
+      dataIndex: "recordDate",
       align: "center",
       className: "input-cell",
       width: 100,
       render(text: string, record: any, index: number) {
-        if(['gzsrm'].includes(appStore.HOSPITAL_ID)&&location.pathname.includes('QCRG_GSY_12')) return (
-          <span>{moment(text).format('YYYY-MM-DD')}</span>
-        )
+        // if(['gzsrm'].includes(appStore.HOSPITAL_ID)&&location.pathname.includes('QCRG_GSY_12')) return (
+        //   <span>{moment(text).format('YYYY-MM-DD')}</span>
+        // )
         return (
           <Input
             disabled={cellDisabled(record)}
@@ -572,7 +572,10 @@ export default observer(function 敏感指标登记本(props: Props) {
                 updateDataSource,
                 handleNextIptFocus,
                 multiple,
-                onBlur: (newVal: string, oldVal: any) => { },
+                onBlur: (newVal: string, oldVal: any) => {
+                  if(location.pathname.includes('QCRG_GSY_12') && item.itemCode=='出院日期') record.recordDate=newVal
+                  
+                },
                 selectAll: multiple,
               }}
             />
@@ -810,6 +813,10 @@ export default observer(function 敏感指标登记本(props: Props) {
         } : {})}>
         删除
       </Button>
+      {/* QCRG_WQZD_11-每日狂犬疫苗  院前急救交班表没有,QCRG_WQZD_09=急诊科输液区工作,QCRG_WQZD_08=急诊分诊区工作量,QCRG_WQZD_02=抢救室工作量统 */}
+      {/* {(appStore.HOSPITAL_ID == "wjgdszd"&&(registerCode=='QCRG_WQZD_11'||registerCode=='QCRG_WQZD_09'||registerCode=='QCRG_WQZD_08'||registerCode=='QCRG_WQZD_02')) && <span className="count-text" style={{marginLeft:'10px',fontSize:'14px',color:'#00A680'}}>
+        合计：破伤风：234，二倍体456
+      </span>} */}
     </Fragment>)
   })
 
