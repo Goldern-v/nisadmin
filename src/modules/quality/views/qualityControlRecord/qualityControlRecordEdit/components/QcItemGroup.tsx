@@ -198,7 +198,7 @@ export default observer(function QcItemGroup(props: Props) {
                   size="small"
                   style={{ flex: 1, fontSize: '12px' }}
                   value={fillItem.itemValue}
-                  type={appStore.HOSPITAL_ID == 'gzsrm' ? 'number' : 'text'}
+                  // type={appStore.HOSPITAL_ID == 'gzsrm' ? 'number' : 'text'}
                   onChange={(e) => {
                     let newFillDataList = [...item.fillDataList]
                     newFillDataList[fillItemIdx].itemValue = e.target.value
