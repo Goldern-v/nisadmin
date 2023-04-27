@@ -218,9 +218,9 @@ const LEFT_MENU_CONFIG = [
           icon: <HZCXTJ />,
           path: "/statistic/wardExecute",
         },
-      ]
+      ],
+      other: []
     },
-    vague:true
   }),
 
   ...appStore.hisMatch({
