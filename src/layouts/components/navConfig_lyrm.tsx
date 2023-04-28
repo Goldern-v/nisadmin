@@ -68,11 +68,6 @@ export const navConfig: (appStore:any,authStore?:any) => navConfigItem[] = (appS
     path: "/nursingRulesNew"
   },
   {
-    name: "统计查询",
-    path: "/statistic",
-    hidden: () => !appStore.isDev,
-  },
-  {
     name: "我的档案",
     path: "/selfNurseFile",
   },
