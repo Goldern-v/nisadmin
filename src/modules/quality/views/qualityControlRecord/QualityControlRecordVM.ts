@@ -22,6 +22,7 @@ class QualityControlRecordVM {
   ]
   /** 筛选条件 */
   @observable public filterDate: any = [moment(moment().format('YYYY-MM') + '-01'), moment()]
+  @observable public consultationDate: any = [moment(moment().subtract(1, 'month').format('YYYY-MM-DD')), moment()]
   @observable public filterForm: any = ''
   @observable public filterState: any = ''
   @observable public filterDeptCode: any = ''

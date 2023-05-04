@@ -12,6 +12,7 @@ export interface Props extends RouteComponentProps<{ name?: string }> {}
 import QueryStatistics from "./views/queryStatistics/QueryStatistics";
 import WritingForm from "./views/writingForm/WritingForm";
 import VTEForm from "./views/VTEForm/vteForm";
+import ConsultationForm from "./views/consultationForm/ConsultationForm";
 import NotVTEForm from "./views/VTEForm/notVteForm";
 import { ReactComponent as JCTJ } from "./images/icon/JCTJ.svg";
 import { ReactComponent as WJSX } from "./images/icon/WJSX.svg";
@@ -43,7 +44,14 @@ const LEFT_MENU_CONFIG: any = [
     path: "/queryStatistics/notVTE",
     icon: <WJSX />,
     component: NotVTEForm
-  }
+  },
+  appStore.HOSPITAL_ID === "gzhd" && 
+  {
+    title: "护理会诊统计",
+    path: "/queryStatistics/Consultation",
+    icon: <WJSX />,
+    component: ConsultationForm
+  },
 ].filter((item: any) => item)
 
 
