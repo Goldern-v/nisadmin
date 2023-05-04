@@ -44,12 +44,16 @@ export function getFun(context: any) {
     pageOptions,
     setTotal,
     setDataSource,
+    setData2,
+    setData3,
     setItemConfigList,
     setRangeConfigList,
     setPageLoading,
     date,
     selectedBlockId,
     dataSource,
+    data2,
+    data3,
     paramMap,
     rangeConfigList,
     selectedRowKeys,
@@ -84,6 +88,8 @@ export function getFun(context: any) {
           setSelectedBlockId(null);
           setTotal(0);
           setDataSource([]);
+          setData2([])
+          setData3([])
           setConfig({})
           setItemConfigList([]);
           setRangeConfigList([]);
@@ -217,12 +223,33 @@ export function getFun(context: any) {
           } else {
             setDataSource(newList.map((item: any) => ({ ...item, modified: false })))
           }
+          getStatistics()
         })
       });
 
     // if (registerCode === 'QCRG_02')
     //   getMsgList()
   };
+ 
+
+  /**获取统计项 */
+  const getStatistics = (blockId?: any,)=>{
+    setData2([])
+    setData3([])
+    let params = {
+      startDate: date[0] ? date[0].format("YYYY-MM-DD") : "",
+      endDate: date[1] ? date[1].format("YYYY-MM-DD") : "",
+      blockId: selectedBlockId || blockId,
+    } as any
+    wardRegisterDefaultService.statisticsItem(registerCode,params).then(res=>{
+        let resultType2 = res.data.filter((it:any)=>{ return it.resultType=='2'}) || []
+        let resultType1 = res.data.filter((it:any)=>{ return it.resultType=='1'}) || []
+        setData2([...resultType1])
+        setData3([...resultType2])
+    }).catch(err=>{
+
+    })
+  }
 
   /**获取提醒列表 */
   const getMsgList = (showLoading = false) => {
@@ -914,7 +941,8 @@ export function getFun(context: any) {
     getMsgList,
     handleBatchSign,
     handleBatchSet,
-    handleGeneralSet
+    handleGeneralSet,
+    getStatistics
   };
 }
 /**获取当月最后一周的日期 */

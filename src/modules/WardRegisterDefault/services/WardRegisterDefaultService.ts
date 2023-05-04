@@ -22,6 +22,11 @@ export default class WardRegisterDefaultService extends BaseApiService {
     return this.post(`/qcRegisterData/${registerCode}/getPage`, obj);
   }
 
+  /** 获取登记本统计 */
+  public statisticsItem(registerCode: string, obj: any) {
+    return this.post(`/qcRegisterItem/${registerCode}/statisticsItem`, obj);
+  }
+
   // 贵州-特殊处理 QCRG_GSY_09  QCRG_GSY_10  QCRG_GSY_11 全院情况
   public getPageGZSRM(registerCode: string, obj: any) {
     return this.post(`/qcRegisterData/${registerCode}/getAll`, obj);

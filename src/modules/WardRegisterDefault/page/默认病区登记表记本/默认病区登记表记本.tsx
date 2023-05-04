@@ -11,7 +11,8 @@ import {
   Select,
   DatePicker,
   // Popover,
-  InputNumber
+  InputNumber,
+  Table
 } from "src/vendors/antd";
 import { authStore, appStore } from "src/stores";
 import { observer } from "mobx-react-lite";
@@ -104,6 +105,8 @@ export default observer(function 敏感指标登记本(props: Props) {
     const list: string[] = location.pathname.split('/')
     setCurCode(list.pop() || '')
   }
+  const [data2, setData2]:any = useState([]);
+  const [data3, setData3]:any = useState([]);
   const registerCode = props.payload && props.payload.registerCode;
   const registerName = props.payload && props.payload.registerName;
   const [dataSource, setDataSource]: any = useState([]);
@@ -185,9 +188,6 @@ export default observer(function 敏感指标登记本(props: Props) {
 
   //是否显示护理单元
   const isShowWardCode = (): boolean => {
-    // && ["gzsrm"].includes(appStore.HOSPITAL_ID)
-    // console.log(authStore.deptList)
-    // console.log(authStore.selectedDeptCode)
     if (registerName === "新生儿科空气消毒登记本") return true;
     return false;
   }
@@ -641,6 +641,82 @@ export default observer(function 敏感指标登记本(props: Props) {
       }
     }])
   ];
+
+
+  const signListWidth = ()=>{
+    let widthNum:number = 0;
+    // 备注? 150
+    if(config.showDesc) {widthNum=150} 
+    (config.signList || []).map((signItem: any)=>{
+      widthNum+=Number(signItem.width)
+    })
+    return Number(15*widthNum || 50)
+  }
+
+  const footerColumns: ColumnProps<any>[] | any =[
+    {
+      title: "多选",
+      dataIndex: "rowkey",
+      align: "center",
+      className: "input-cell",
+      width: 60,
+      render: (text:any, row:any, index:number) => {
+        return {
+          children: <span>合计：</span>,
+          props: {
+            colSpan: 2,
+          },
+        };
+      },
+    },
+    {
+      title: "日期",
+      dataIndex: "recordDate",
+      align: "center",
+      className: "input-cell",
+      width: 100,
+      render: (text:any, row:any, index:number) => {
+        return {
+          props: {
+            colSpan: 0,
+          },
+        };
+      },
+    },
+    ...config.showRange ? [
+      {
+        title: "班次",
+        width: 73,
+        dataIndex: "range",
+        className: "input-cell",
+        align: "center",
+      }
+    ] : [],
+    //后端返回的自定义项目
+    ...itemConfigList.map((item: any, index: number) => {
+      return {
+        title: item.itemCode || item.label,
+        align: "center",
+        className: "input-cell",
+        colSpan: item.colSpan,
+        width: (15 * item.width || 50) + 8,
+        dataIndex: item.itemCode,
+      };
+    }),
+    {
+      // 200=备注150+操作50
+      title: "合计",
+      width: 50+signListWidth(),
+      dataIndex:"total",
+      className: "",
+      render: (text:any, row:any, index:number) => {
+        return <span>总计：{text}</span>
+      },
+    },
+  ]
+
+  
+
   let handlePer = (arr: string[], data: any) => {
     let hours: any = ''
     if (data[arr[0]] && data[arr[1]]) {
@@ -813,10 +889,6 @@ export default observer(function 敏感指标登记本(props: Props) {
         } : {})}>
         删除
       </Button>
-      {/* QCRG_WQZD_11-每日狂犬疫苗  院前急救交班表没有,QCRG_WQZD_09=急诊科输液区工作,QCRG_WQZD_08=急诊分诊区工作量,QCRG_WQZD_02=抢救室工作量统 */}
-      {/* {(appStore.HOSPITAL_ID == "wjgdszd"&&(registerCode=='QCRG_WQZD_11'||registerCode=='QCRG_WQZD_09'||registerCode=='QCRG_WQZD_08'||registerCode=='QCRG_WQZD_02')) && <span className="count-text" style={{marginLeft:'10px',fontSize:'14px',color:'#00A680'}}>
-        合计：破伤风：234，二倍体456
-      </span>} */}
     </Fragment>)
   })
 
@@ -839,7 +911,8 @@ export default observer(function 敏感指标登记本(props: Props) {
     deleteSelectedRows,
     handleBatchSign,
     handleBatchSet,
-    handleGeneralSet
+    handleGeneralSet,
+    getStatistics
   } = getFun({
     registerCode,
     registerName,
@@ -850,12 +923,16 @@ export default observer(function 敏感指标登记本(props: Props) {
     pageOptions,
     setTotal,
     setDataSource,
+    setData2,
+    setData3,
     setItemConfigList,
     setRangeConfigList,
     setPageLoading,
     date,
     selectedBlockId,
     dataSource,
+    data2,
+    data3,
     selectedRowKeys,
     setSelectedRowKeys,
     setConfig,
@@ -876,15 +953,27 @@ export default observer(function 敏感指标登记本(props: Props) {
   useEffect(() => {
     // selectedBlockId && getPage();
     selectedBlockId && throttler(getPage);
+    // selectedBlockId && throttler(getStatistics)
   }, [pageOptions, date, selectedBlockId, selectedRange]);
 
   const pageHeaderRef = useRef<HTMLDivElement>(null)
   useLayoutEffect(() => {
     let tableHead: any = document.querySelector(".ant-table-thead");
-    if (tableHead && pageHeaderRef?.current) {
+    if(appStore.HOSPITAL_ID === 'wjgdszd'&& tableHead && pageHeaderRef?.current){
+      let footerHeight:any= 0;
+      if(data2.length>0){
+        footerHeight+=30
+      }
+      if(data3.length>0){
+        footerHeight+=data3.length*21
+      }
+      setSurplusHeight(footerHeight+tableHead.offsetHeight + 140 + pageHeaderRef.current?.offsetHeight);
+    }else if (tableHead && pageHeaderRef?.current) {
       setSurplusHeight(tableHead.offsetHeight + 140 + pageHeaderRef.current?.offsetHeight);
     }
+    
   });
+ 
 
   return (
     <Container>
@@ -1042,6 +1131,21 @@ export default observer(function 敏感指标登记本(props: Props) {
 
                 return ''
               }}
+               fixedFooter={true}
+              footer={()=>{ return(<>
+                  {data2.length>0 && <><Table pagination={false} className="footer-page-table" showHeader={false} columns={footerColumns || []} dataSource={data2 || []} /></>}
+                  {data3.length>0 && <div>
+                  {data3.map((item:any)=>(
+                    <div className="count-text" style={{marginLeft:'10px',fontSize:'14px',color:'#00A680'}}>
+                      {item.valueKey}{item.groupKey}合计：
+                      {(item.classfy || []).map((it:any)=>(
+                      <span style={{marginRight:'10px'}} key={it.key}>{it.key}:{it.value}</span>
+                    ))}
+                    总计：{item.total}</div>
+                  ))}
+                </div>
+                }
+                </>)}}
             />
             {
               !isWhyx &&
@@ -1119,6 +1223,18 @@ const Container = styled(Wrapper)`
   .disabled-row .color-orange *[disabled] {
     color: orange !important;
   }
+  #baseTable .footer-page-table .ant-table-body{
+        overflow-y: auto !important;
+    }
+  .ant-table-footer{
+    padding: 0 !important;
+    .footer-page-table td{
+      color: #00A680;
+      /* padding: 0; */
+      
+    }
+  }
+  
 `;
 const NewPageHeader = styled(PageHeader)`
 height: auto;
