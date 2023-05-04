@@ -91,7 +91,7 @@ export default observer(function ExamineTable() {
           ...(values[3].data.list || []),
           ...(values[4].data.list || []),
         ];
-        console.log(array, "array");
+        // console.log(array, "array");
         //按照提交时间先后排序
         array.length > 1 &&
           array.sort((a: any, b: any) => {
