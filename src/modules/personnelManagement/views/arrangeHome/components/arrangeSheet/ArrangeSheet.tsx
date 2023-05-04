@@ -1093,7 +1093,12 @@ const moveRow = (dragIndex: number, hoverIndex: number) => {
             return item;
           });
           /*需要手动更改对应的sortValue*/
-          list[hoverIndex].sortValue = hoverIndex + 1
+          // list[hoverIndex].sortValue = hoverIndex + 1
+          let max = Math.max(hoverIndex,dragIndex)
+          let min = Math.min(hoverIndex,dragIndex)
+          for (let num = min; num < max+1; num++) {
+            list[num].sortValue = num+1
+          }
           sheetViewModal.sheetTableData = list;
           sheetViewModal.allCell = sheetViewModal.getAllCell(true);
         } catch (error) { }
