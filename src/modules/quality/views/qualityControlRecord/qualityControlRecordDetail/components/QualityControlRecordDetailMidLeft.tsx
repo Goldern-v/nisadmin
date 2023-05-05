@@ -164,7 +164,7 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
   }
 
   // 当前医院是否为亚心
-  const isWhyx = ['whyx','whhk'].includes(appStore.HOSPITAL_ID)
+  const isWhyx = ['whyx','whhk','925'].includes(appStore.HOSPITAL_ID)
 
   return (
     <Con ref={pageRef} className="print-page">

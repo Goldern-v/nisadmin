@@ -315,7 +315,7 @@ export default observer(function QcItemGroup(props: Props) {
             {
               appStore.hisMatch({
                 map: {
-                  "whyx,whhk": '',
+                  "whyx,whhk,925": '',
                   other: (<div>
                     <span
                       style={{
@@ -380,7 +380,7 @@ export default observer(function QcItemGroup(props: Props) {
                 value={item.remark}
                 autosize={{ minRows: 2 }}
                 placeholder="备注"
-                disabled={['whyx','whhk'].includes(appStore.HOSPITAL_ID) && (item.qcItemValue == '是' || item.qcItemValue == '')}
+                disabled={['whyx','whhk','925'].includes(appStore.HOSPITAL_ID) && (item.qcItemValue == '是' || item.qcItemValue == '')}
                 onChange={(e) => handleItemChange({
                   ...item,
                   remark: e.target.value,
