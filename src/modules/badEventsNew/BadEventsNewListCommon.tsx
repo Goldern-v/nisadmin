@@ -17,18 +17,9 @@ import BaseTabs from "src/components/BaseTabs";
 
 const api = new BadEventsNewService();
 
-const { RangePicker } = DatePicker;
-
 export default observer(function BadEventNewList() {
   const [date, setDate]: any = useState(getCurrentMonth());
-  const defaultDateRange = () => {
-    let startDate = moment(moment().format("YYYY-MM-") + "01");
-    let ednDate = moment(moment().format("YYYY-MM-DD"));
 
-    return [startDate, ednDate] as [moment.Moment, moment.Moment];
-  };
-
-  // let dateRange = defaultDateRange()
   const defaultWardCode = authStore.isDepartment ? '' : authStore.defaultDeptCode
   //列表请求参数
   const [query, setQuery] = useState({

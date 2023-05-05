@@ -2,9 +2,9 @@ import styled from "styled-components";
 import React, { useState, useEffect, useLayoutEffect } from "react";
 import { RouteComponentProps } from "react-router";
 import { Radio, DatePicker, Button } from "antd";
-import BaseTable from "src/components/BaseTable";
+// import BaseTable from "src/components/BaseTable";
 import { observer } from "mobx-react-lite";
-import { qualityControlRecordVM } from "../qualityControlRecord/QualityControlRecordVM";
+// import { qualityControlRecordVM } from "../qualityControlRecord/QualityControlRecordVM";
 
 import { Select } from "src/vendors/antd";
 import YearPicker from "src/components/YearPicker";
@@ -14,6 +14,7 @@ import { problemSummaryServices } from "./services/ProblemSummaryServices";
 import { ScrollBox, PageTitle } from "src/components/common";
 import { appStore } from "src/stores";
 import qs from "qs";
+import { CONFIG_TITLE } from "../../utils/enums";
 
 export interface Props extends RouteComponentProps {}
 
@@ -64,7 +65,9 @@ export default observer(function ProblemSummary(props: any) {
     <Wrapper>
       <HeaderCon>
         <LeftIcon>
-          <PageTitle>{rankTextList[level]}级质控问题汇总</PageTitle>
+          <PageTitle>
+            {'fqfybjy' === appStore.HOSPITAL_ID ? CONFIG_TITLE[level] : rankTextList[level] + '级质控'}问题汇总
+          </PageTitle>
         </LeftIcon>
         <RightIcon>
           <div className="item">

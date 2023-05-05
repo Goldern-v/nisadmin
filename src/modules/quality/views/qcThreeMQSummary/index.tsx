@@ -15,6 +15,7 @@ import {EXTRA_QUARTER, TYPE_LIST} from './enums'
 import {Obj} from 'src/libs/types'
 import YearPicker from 'src/components/YearPicker'
 import {useInstance} from '../committeeWorkReportDetail/hook/useModel'
+import { CONFIG_TITLE } from '../../utils/enums'
 
 const api = new AnalysisService();
 const Option = Select.Option;
@@ -247,7 +248,7 @@ export default observer(function QcThreeMQSummary() {
   return (
     <Wrapper>
       <PageHeader>
-        <PageTitle>三级质控月季度汇总报告</PageTitle>
+        <PageTitle>{CONFIG_TITLE[3]}月季度汇总报告</PageTitle>
         <Place />
 
         <div className="label">汇报年度：</div>

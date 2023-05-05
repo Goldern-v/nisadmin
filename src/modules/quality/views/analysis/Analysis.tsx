@@ -13,12 +13,12 @@ import AnalysisCreateProgress from "./components/AnalysisCreateProgress";
 import qs from "qs";
 import { PageTitle } from "src/components/common";
 import { useKeepAliveEffect } from "src/vendors/keep-alive";
+import { CONFIG_TITLE } from "../../utils/enums";
 
 const api = new QualityAnalysisService();
 const Option = Select.Option;
 
 export default observer(function Analysis() {
-  //
   const [yearPickerIsOpen, setYearPickerIsOpen] = useState(false);
   const [createAnalysisVisible, setCreateAnalysisVisible] = useState(false);
   const [createClear, setCreateClear] = useState(true);
@@ -379,7 +379,7 @@ export default observer(function Analysis() {
     <Wrapper>
       <div className="topbar">
         <div className="float-left">
-          <PageTitle>{rankTextList[level]}级质控月度报告</PageTitle>
+          <PageTitle>{'fqfybjy' === appStore.HOSPITAL_ID ? CONFIG_TITLE[level] : rankTextList[level] + '级质控'}月度报告</PageTitle>
         </div>
         <div className="float-right">
           <div className="item">

@@ -297,7 +297,7 @@ export default withRouter(function BadEventsNewDetail(props: any) {
             className='audit'
             onClick={() => {
               // appStore.history.goBack()
-              if (appStore.HOSPITAL_ID === 'yczyy') {
+              if (['yczyy', 'fqfybjy'].includes(appStore.HOSPITAL_ID)) {
                 appStore.history.length == 1 ? window.close() : appStore.history.goBack();
                 return
               }

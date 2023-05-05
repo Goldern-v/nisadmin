@@ -40,12 +40,13 @@ class NurseFilesListViewModel {
   @observable public listSpinning: boolean = false;
   @observable public nurseList: any = [];
   @observable public isOpenFilter: boolean = true;
+  @observable public deptCode: string = authStore.selectedDeptCode;
 
   @action
   public loadNursingList = () => {
     // this.title = newTitle
     let obj: NurseQuery = {
-      deptCode: authStore.selectedDeptCode /** 部门编码 */,
+      deptCode: this.deptCode /** 部门编码 */,
       education: this.filterXl /** 学历 */,
       title: this.filterZc /** 职称 */,
       currentLevel: this.filterCj /** 能级、层级 */,
@@ -67,7 +68,7 @@ class NurseFilesListViewModel {
   public exportNursingList = () => {
     // this.title = newTitle
     let obj: any = {
-      deptCode: authStore.selectedDeptCode /** 部门编码 */,
+      deptCode: this.deptCode /** 部门编码 */,
       education: this.filterXl /** 学历 */,
       title: this.filterZc /** 职称 */,
       currentLevel: this.filterCj /** 能级、层级 */,

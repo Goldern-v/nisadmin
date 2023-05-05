@@ -11,3 +11,10 @@ export const PUBLISH_STATUS_ARR = [
     btn: '撤销',
   },
 ]
+/**福清质控标题 */
+export const CONFIG_TITLE = [
+  '',
+  '病区质控',
+  '重点环节专项质控',
+  '护理部质控'
+]

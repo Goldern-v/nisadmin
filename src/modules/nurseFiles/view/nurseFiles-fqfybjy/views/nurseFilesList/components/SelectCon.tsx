@@ -20,6 +20,7 @@ export default observer(function SelectCon(props: any, context: any) {
   };
 
   const onChange = (value: string) => {
+    nurseFilesListViewModel.deptCode = value
     nurseFilesListViewModel.loadNursingList();
   };
   const onSearch = () => {
@@ -32,11 +33,11 @@ export default observer(function SelectCon(props: any, context: any) {
     nurseFilesListViewModel.exportNursingList();
   };
 
-  useEffect(() => {
-    return () => {
-      nurseFilesListViewModel.filterText = "";
-    };
-  }, []);
+  // useEffect(() => {
+  //   return () => {
+  //     // nurseFilesListViewModel.filterText = "";
+  //   };
+  // }, []);
 
   return (
     <React.Fragment>
@@ -44,7 +45,7 @@ export default observer(function SelectCon(props: any, context: any) {
         <Title>护士档案</Title>
         <Place />
         <span>科室：</span>
-        <DeptSelect onChange={onChange} />
+        <DeptSelect deptCode={nurseFilesListViewModel.deptCode} onChange={onChange} />
         <Input
           placeholder="请输入搜索关键字"
           value={nurseFilesListViewModel.filterText}

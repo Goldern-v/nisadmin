@@ -24,14 +24,15 @@ import 护理质量巡查情况汇总表 from "./views/qcFormHj/护理质量巡�
 import 防疫专项检查片区汇总 from "./views/防疫专项检查片区汇总列表/防疫专项检查片区汇总列表";
 import 防疫专项检查汇总 from "./views/防疫专项检查汇总列表/防疫专项检查汇总列表";
 
-export interface Props extends RouteComponentProps<{ name?: string }> {}
 
 import 护理质量检查小结 from "./views/qcFormHj/护理质量检查小结";
 import Gzsrm_护理质量检查小结 from "./views/qcFormGzsrm/护理质量检查小结";
 import 质控表单汇总 from "./views/qcDghl/质控表单汇总";
 import 二级质控问题原因措施汇总 from "./views/qcFormGzsrm/二级质控问题原因措施汇总";
 import 福清二级质控问题原因措施汇总 from "./views/qcFormFqfybjy/二级质控问题原因措施汇总";
+import { CONFIG_TITLE } from './utils/enums'
 // import Analysis from "./views/analysis/Analysis";
+export interface Props extends RouteComponentProps<{ name?: string }> {}
 export default observer(function QcTwoRouter(props: Props) {
   const route_质控表单汇总 = {
     title: "单个质控表单汇总",
@@ -42,15 +43,13 @@ export default observer(function QcTwoRouter(props: Props) {
     disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP",
   };
   const route_二级质控问题原因措施汇总 = {
-    // title: "二级质控问题原因措施汇总",
-    // path: "/qcTwo/二级质控问题原因措施汇总?qcLevel=2",
     title: "专科护理质量评价",
     path: "/qcTwo/专科护理质量评价?qcLevel=2",
     icon: <JCTJ />,
     component: 二级质控问题原因措施汇总,
   };
   const route_福清二级质控问题原因措施汇总 = {
-    title: "二级质控问题原因措施汇总",
+    title: CONFIG_TITLE[2] + "问题原因措施汇总",
     path: "/qcTwo/二级质控问题原因措施汇总?qcLevel=2",
     icon: <JCTJ />,
     component: 福清二级质控问题原因措施汇总,
@@ -187,7 +186,7 @@ export default observer(function QcTwoRouter(props: Props) {
       ],
       fqfybjy: [
         {
-          title: "二级质控月度报告",
+          title: CONFIG_TITLE[2] + "月度报告",
           icon: <YDBG />,
           path: "/qcTwo/workSummaryReportList",
           component: WorkSummaryReportList,
@@ -256,7 +255,13 @@ export default observer(function QcTwoRouter(props: Props) {
 
   const LEFT_MENU_CONFIG: any = [
     {
-      title: ['fssdy'].includes(appStore.HOSPITAL_ID)?"交叉检查记录":"二级质控记录",
+      title: appStore.hisMatch({
+        map: {
+          fqfybjy: CONFIG_TITLE[2],
+          fssdy: '交叉检查记录',
+          other: '二级质控记录'
+        }
+      }),
       path: "/qcTwo",
       icon: <EJZK />,
       component: { ...QualityControlRecord },

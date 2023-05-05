@@ -16,6 +16,7 @@ import FormCreateModal from "./common/FormCreateModal";
 import FormCreateByTagModal from "./common/FormCreateByTagModal";
 
 import { qcFunTitle, qcOneTitle, qcThreeTitle } from "./../../../data/qcTitle";
+import { CONFIG_TITLE } from "src/modules/quality/utils/enums";
 
 export interface Props extends RouteComponentProps {}
 
@@ -47,6 +48,7 @@ export default observer(function TopCon(props: any) {
           }
           return defaultTitle;
         })(),
+        fqfybjy: CONFIG_TITLE[qualityControlRecordVM.level],
         other: defaultTitle,
       },
       vague:true
@@ -363,9 +365,6 @@ export default observer(function TopCon(props: any) {
 const Wrapper = styled.div`
   /* max-height: 100px; */
   min-height: 50px;
-  /* background: rgba(248, 248, 248, 1);
-  box-shadow: 3px 3px 6px 0px rgba(0, 0, 0, 0.15);
-  border-bottom: 1px solid #dbe0e4; */
   font-size: 13px;
   position: relative;
   color: #333333;
@@ -375,10 +374,7 @@ const Wrapper = styled.div`
   flex-wrap: wrap;
   align-items: center;
   z-index: 1;
-  /* .ant-calendar-range-picker-separator {
-    position: relative;
-    top: 5px;
-  } */
+
   .radio-con {
     background: #fff;
     border: 1px solid #ddd;

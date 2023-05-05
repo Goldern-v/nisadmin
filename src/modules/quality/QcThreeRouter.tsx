@@ -1,8 +1,8 @@
 import LeftMenu from 'src/components/LeftMenu'
 import styled from 'styled-components'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { RouteComponentProps } from 'src/components/RouterView'
-import { KeepAlive, Provider } from 'react-keep-alive'
+import { KeepAlive } from 'react-keep-alive'
 import { appStore, authStore } from 'src/stores'
 
 import AdministrativeWard from './views/administrativeWard'
@@ -19,7 +19,7 @@ import QualityControlRecord from './views/qualityControlRecord/QualityControlRec
 import QueryStatistics from './views/queryStatistics/QueryStatistics'
 import SatisfactionAnalysis from './views/satisfactionAnalysis'
 import SummaryReport from './views/summaryReport/SummaryReport'
-import WorkSummaryReportList from './views/workSummaryReportList/WorkSummaryReportList'
+// import WorkSummaryReportList from './views/workSummaryReportList/WorkSummaryReportList'
 import WritingForm from './views/writingForm/WritingForm'
 import { ReactComponent as CFJL } from './images/icon/CFJL.svg'
 import { ReactComponent as CFJHB } from './images/icon/CFJHB.svg'
@@ -48,6 +48,7 @@ import 福清三级质控问题原因措施汇总 from "./views/qcFormFqfybjy/�
 import 质控表单汇总 from "./views/qcDghl/质控表单汇总";
 import 三级质控护理质量统计汇总 from "./views/qcFormGzsrm/三级质控护理质量统计汇总";
 import qcThreeMQSummary from './views/qcThreeMQSummary/index'
+import { CONFIG_TITLE } from './utils/enums'
 export interface Props extends RouteComponentProps<{ name?: string }> {}
 export default function QcThreeRouter(props: Props) {
   useEffect(() => {}, [props.history.location.pathname]);
@@ -86,23 +87,18 @@ export default function QcThreeRouter(props: Props) {
   };
 
   const route_三级质控问题汇总 = {
-    title: ['fssdy'].includes(appStore.HOSPITAL_ID)?"专项检查问题汇总":"三级质控问题汇总",
+    title: appStore.hisMatch({
+      map: {
+        fqfybjy: CONFIG_TITLE[3] + '问题汇总',
+        fssdy: '专项检查问题汇总',
+        other: '三级质控问题汇总'
+      }
+    }),
     icon: <WTBG />,
     path: "/qcThree/problemSummary",
     component: ProblemSummary,
   };
-  // const route_一级质控问题原因措施汇总 = {
-  //   title: "一级质控问题原因措施汇总",
-  //   path: "/qcThree/一级质控问题原因措施汇总?qcLevel=1",
-  //   icon: <JCTJ />,
-  //   component: 一级质控问题原因措施汇总
-  // }
-  // const route_二级质控问题原因措施汇总 = {
-  //   title: "二级质控问题原因措施汇总",
-  //   path: "/qcThree/二级质控问题原因措施汇总?qcLevel=2",
-  //   icon: <JCTJ />,
-  //   component: 二级质控问题原因措施汇总
-  // }
+
   const route_三级质控问题原因措施汇总 = {
     title: "三级质控问题原因措施汇总",
     path: "/qcThree/三级质控问题原因措施汇总?qcLevel=3",
@@ -110,13 +106,19 @@ export default function QcThreeRouter(props: Props) {
     component: 三级质控问题原因措施汇总,
   };
   const route_福清三级质控问题原因措施汇总 = {
-    title: "三级质控问题原因措施汇总",
+    title: CONFIG_TITLE[3] + "原因措施汇总",
     path: "/qcThree/三级质控问题原因措施汇总?qcLevel=3",
     icon: <JCTJ />,
     component: 福清三级质控问题原因措施汇总,
   };
   const route_三级质控月度报告 = {
-    title: ['fssdy'].includes(appStore.HOSPITAL_ID)?"专项检查月度报告":"三级质控月度报告",
+    title: appStore.hisMatch({
+      map: {
+        fqfybjy: CONFIG_TITLE[3] + '月度报告',
+        fssdy: '专项检查月度报告',
+        other: '三级质控月度报告'
+      }
+    }),
     icon: <YDBG />,
     path: "/qcThree/analysis",
     component: Analysis,
@@ -125,7 +127,13 @@ export default function QcThreeRouter(props: Props) {
   };
 
   const route_三级质控汇总报告 = {
-    title: ['fssdy'].includes(appStore.HOSPITAL_ID)?"专项检查汇总报告":"三级质控汇总报告",
+    title: appStore.hisMatch({
+      map: {
+        fqfybjy: CONFIG_TITLE[3] + '汇总报告',
+        fssdy: '专项检查汇总报告',
+        other: '三级质控汇总报告'
+      }
+    }),
     icon: <HZBG />,
     path: "/qcThree/summaryReport",
     component: SummaryReport,
@@ -267,7 +275,7 @@ export default function QcThreeRouter(props: Props) {
         route_福清三级质控问题原因措施汇总,
         {
 
-          title: "三级质控月季度汇总报告",
+          title: CONFIG_TITLE[3] + "月季度汇总报告",
           icon: <HZBG />,
           path: "/qcThree/qcThreeMQSummary",
           component: qcThreeMQSummary,

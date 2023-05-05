@@ -1,4 +1,5 @@
 import { appStore } from "src/stores";
+import { CONFIG_TITLE } from "../utils/enums";
 
 export const qcOneTitle = appStore.hisMatch({
   map: {
@@ -26,6 +27,12 @@ export const qcThreeTitle = appStore.hisMatch({
       leftNavTitle: "专项检查记录",
       listViewTitle: "专项检查控制",
       detailViewTitle: "专项检查控制",
+    },
+    fqfybjy: {
+
+      leftNavTitle: CONFIG_TITLE[3],
+      listViewTitle: CONFIG_TITLE[3],
+      detailViewTitle: "质控记录",
     },
     other: {
       leftNavTitle: "三级质控记录",

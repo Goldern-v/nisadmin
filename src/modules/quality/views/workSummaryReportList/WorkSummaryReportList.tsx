@@ -5,13 +5,14 @@ import BaseTable, { DoCon } from 'src/components/BaseTable'
 import { ColumnProps } from 'antd/lib/table'
 import { appStore, authStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
-import moment, { duration } from 'moment'
+import moment from 'moment'
 import { PageTitle } from 'src/components/common'
 import WorkSummaryReportListService from './api/WorkSummaryReportListService'
 
 import CreateWorkSummaryReportModal from './components/CreateWorkSummaryReportModal'
 import qs from 'qs'
 import { useKeepAliveEffect } from 'src/vendors/keep-alive'
+import { CONFIG_TITLE } from '../../utils/enums'
 
 const api = new WorkSummaryReportListService()
 const Option = Select.Option
@@ -245,7 +246,7 @@ export default observer(function WorkSummaryReportList() {
     <Wrapper>
       <div className='topbar'>
         <div className='float-left'>
-          <PageTitle>二级质控月度报告</PageTitle>
+          <PageTitle>{'fqfybjy' === appStore.HOSPITAL_ID ? CONFIG_TITLE[2] : '二级质控'}月度报告</PageTitle>
         </div>
         <div className='float-right'>
           <div className='item'>

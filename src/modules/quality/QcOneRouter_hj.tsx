@@ -1,6 +1,6 @@
 import LeftMenu from 'src/components/LeftMenu'
 import styled from 'styled-components'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { RouteComponentProps } from 'src/components/RouterView'
 import QualityControlRecord from './views/qualityControlRecord/QualityControlRecord'
 // import QueryStatistics from './views/queryStatistics/QueryStatistics'
@@ -8,8 +8,7 @@ import QualityControlRecord from './views/qualityControlRecord/QualityControlRec
 // import SummaryReport from './views/summaryReport/SummaryReport'
 // import WorkSummaryReportList from './views/workSummaryReportList/WorkSummaryReportList'
 // import ProblemSummary from './views/problemSummary/ProblemSummary'
-import { Provider, KeepAlive } from 'react-keep-alive'
-export interface Props extends RouteComponentProps<{ name?: string }> { }
+import { KeepAlive } from 'react-keep-alive'
 
 import { ReactComponent as EJZK } from './images/icon/EJZK.svg'
 import { ReactComponent as YDBG } from './images/icon/YDBG2.svg'
@@ -21,11 +20,19 @@ import 质控表单汇总 from './views/qcDghl/质控表单汇总'
 import 一级质控问题原因措施汇总 from './views/qcFormGzsrm/一级质控问题原因措施汇总'
 import 福清一级质控问题原因措施汇总 from './views/qcFormFqfybjy/一级质控问题原因措施汇总'
 import { ReactComponent as JCTJ } from "./images/icon/JCTJ.svg";
+import { CONFIG_TITLE } from './utils/enums'
+export interface Props extends RouteComponentProps<{ name?: string }> { }
 
 export default function QcOneRouterHj(props: Props) {
 
   const route_质控记录 = {
-    title: ['fssdy'].includes(appStore.HOSPITAL_ID)?'科室自查记录':'一级质控记录',
+    title: appStore.hisMatch({
+      map: {
+        fqfybjy: CONFIG_TITLE[1],
+        fssdy: '科室自查记录',
+        other: '一级质控记录'
+      }
+    }),
     path: '/qcOneHj',
     icon: <EJZK />,
     component: { ...QualityControlRecord },
@@ -68,7 +75,7 @@ export default function QcOneRouterHj(props: Props) {
     component: 一级质控问题原因措施汇总
   }
   const route_福清一级质控问题原因措施汇总 = {
-    title: "一级质控问题原因措施汇总",
+    title: CONFIG_TITLE[1] + "问题原因措施汇总",
     path: "/qcOneHj/一级质控问题原因措施汇总?qcLevel=1",
     icon: <JCTJ />,
     component: 福清一级质控问题原因措施汇总

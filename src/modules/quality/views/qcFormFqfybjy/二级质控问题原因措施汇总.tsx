@@ -14,6 +14,7 @@ import { numToChinese } from "src/utils/number/numToChinese";
 import { qualityControlRecordApi } from "../qualityControlRecord/api/QualityControlRecordApi";
 import SampleInput from "./components/SampleInput";
 import EditList from "./components/EditList";
+import { CONFIG_TITLE } from "../../utils/enums";
 
 const Option = Select.Option;
 const RangePicker = DatePicker.RangePicker;
@@ -313,8 +314,8 @@ export default observer(function 三级问题原因措施汇总() {
     <Wrapper>
       <PageHeader>
         <PageTitle>
-          {numToChinese(Number(queryObj.qclevel || "2")) + "级"}
-          质控问题原因措施汇总
+          {CONFIG_TITLE[queryObj.qcLevel]}
+          问题原因措施汇总
         </PageTitle>
         <Place />
         <span>表单：</span>

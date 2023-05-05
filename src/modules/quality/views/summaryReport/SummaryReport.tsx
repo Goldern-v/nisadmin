@@ -12,6 +12,7 @@ import CreateSummaryReport from "./components/CreateSummaryReport";
 import { useKeepAliveEffect } from "react-keep-alive";
 import qs from "qs";
 import { PageTitle } from "src/components/common";
+import { CONFIG_TITLE } from "../../utils/enums";
 
 const Option = Select.Option;
 
@@ -236,7 +237,7 @@ export default observer(function SummeryReportList() {
     <Wrapper>
       <div className="topbar">
         <div className="float-left">
-          <PageTitle>{rankTextList[level]}级质控汇总报告</PageTitle>
+          <PageTitle>{'fqfybjy' === appStore.HOSPITAL_ID ? CONFIG_TITLE[level] : rankTextList[level] + '级质控'}汇总报告</PageTitle>
         </div>
         <div className="float-right">
           <div className="item">

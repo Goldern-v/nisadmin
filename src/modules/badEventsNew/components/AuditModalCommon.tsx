@@ -212,7 +212,7 @@ export default observer(function AduitModal(props: Props) {
           <div className='form1'>
             <Row>
               <Col span={6} className="row-title">
-                是否为不良事件：
+                {'fqfybjy'=== appStore.HOSPITAL_ID ? '是否审核通过：' : '是否为不良事件：'}
               </Col>
               <Col span={18}>
                 <Radio.Group
