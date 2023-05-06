@@ -1,11 +1,12 @@
 import React from 'react'
 import styled from 'styled-components'
 import { nurseHandbookRecordModel as model } from '../model'
-import { Input } from 'antd'
+import { Button, Input,message} from 'antd'
 import { observer } from 'mobx-react'
 import { DetailCtxCon } from '../../../style'
 import { Obj } from 'src/libs/types'
 import cloneDeep from 'lodash/cloneDeep'
+import { globalModal } from "src/global/globalModal"
 const { TextArea } = Input
 export interface Props {
 }
@@ -18,6 +19,19 @@ export default observer(function (props: Props) {
     const newData = cloneDeep(model.editorData)
     newData[index][key] = e.target.value
     model.handleEditorChange(newData)
+  }
+
+
+  const removeObj = (idx:number)=>{
+    globalModal
+		.confirm( `提示`,`是否确认删除？`)
+		.then((res) => {
+      model.editorData.splice(idx,4)
+      message.success('删除成功！')
+     
+		}).catch(err=>{
+
+		})
   }
 
   return (
@@ -53,7 +67,8 @@ export default observer(function (props: Props) {
               return (
                 <>
                   <tr key={i}>
-                    {v.title !== undefined && <td rowSpan={4} className='ta-l'>
+                    {v.title !== undefined && <td rowSpan={4} className='ta-l' style={{position:'relative'}}>
+                    {(!model.isPrint && model.editorData.length/4>3) && <Button className='delete-btn' type='danger' shape="circle" size='small' icon="delete" onClick={()=>{removeObj(i)}}></Button>}
                       <TextArea className='cell-ipt' autosize={{minRows: 4}} value={v.title} onChange={(e) => onChange(e, { index: i, key: 'title' })}></TextArea>
                     </td>}
                     <td>{i % 4 + 1}</td>
@@ -86,6 +101,12 @@ export default observer(function (props: Props) {
 const Wrapper = styled(DetailCtxCon)`
   th {
     line-height: 32px;
+  }
+  .delete-btn{
+    position: absolute;
+    right: -5px;
+    top: -10px;
+    z-index: 2;
   }
   /* textarea {
     min-height: 80px;

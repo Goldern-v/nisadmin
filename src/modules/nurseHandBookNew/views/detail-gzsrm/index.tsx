@@ -45,6 +45,16 @@ export default observer(function (props: Props) {
     return ''
   }, [model.detail])
 
+  const btnListGSYHZSC_2 = useMemo(()=>{
+    if(model.detail?.record?.menuCode=='GSYHZSC_2'){
+      return (<>
+          <Button type='primary' onClick={()=>model.addEditorData(12)}>添加下一页</Button>
+          <Button type='primary' onClick={()=>model.addEditorData(4)}>添加工作目标</Button>
+      </>)
+    }
+    return ''
+  },[model.detail])
+
   useEffect(() => {
     return () => {
       model.auditModal.unMount()
@@ -76,6 +86,7 @@ export default observer(function (props: Props) {
             <Button onClick={() => appStore.history.goBack()}>返回</Button>
             <Button onClick={model.onPrint}>打印</Button>
             {btnList}
+            {btnListGSYHZSC_2}
           </>}
         />
         <MainWrapper>

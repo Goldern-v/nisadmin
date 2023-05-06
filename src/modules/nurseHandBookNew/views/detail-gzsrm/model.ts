@@ -10,6 +10,7 @@ import auditModal from "./components/auditModal";
 import { Modal } from "antd";
 import { preview, print } from "printing";
 import moment from 'moment'
+import { Obj } from "src/libs/types";
 const dateFormat = 'YYYY-MM-DD HH:mm:ss'
 
 class NurseHandBookRecordModel {
@@ -46,9 +47,38 @@ class NurseHandBookRecordModel {
   public handleEditorChange = (data: any) => {
     this.editorData = data;
   };
+
+  addPageData(count:number){
+    const arr2 = Array.from(Array(count), (j,k) => k)
+    const arr = arr2.map((v, i) => {
+      const obj: Obj = {
+        v1: "",
+        v2: "",
+        v3: "",
+        v4: "",
+        v5: "",
+      };
+      return i % 4 === 0 ? { ...obj, title: ""} : obj;
+    });
+    return arr
+  };
   /**编辑标题 */
   public onChangeTitle = (e: any) => {
     this.editorTitle = e.target.value;
+  };
+
+  public addEditorData = (count:number)=>{
+    this.editorData = [...this.editorData, ...this.addPageData(count)]
+  };
+
+  public createObjV=(count: number, defVal = {})=>{
+    let newObj: any = {}
+  for (let i = 1; i <= count; i++) {
+    newObj[`v${i}`] = defVal[`v${i}`] || '' ;
+    if(i%4===0) newObj['title'] = ''
+    
+  }
+  return newObj
   };
 
   public getDetail = async () => {

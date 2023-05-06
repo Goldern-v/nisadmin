@@ -22,7 +22,7 @@ export default {
           v4: "",
           v5: "",
         };
-        return i % 4 === 0 ? { ...obj, title: "" } : obj;
+        return i % 4 === 0 ? { ...obj, title: ""} : obj;
       });
       self.handleEditorChange(arr);
     },
@@ -71,6 +71,7 @@ export default {
         v3: "",
         v4: "",
         v5: "",
+        v6:'',
       });
     },
     editTime: true,

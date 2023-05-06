@@ -60,12 +60,10 @@ export default observer(function (props: Props) {
             <TextArea autosize={{minRows: 1}} className='cell-ipt' value={model.editorData?.v2} onChange={(e) => onChange(e, 'v2')}></TextArea>
             </td>
           </tr>
-
           <tr>
-            <td colSpan={4}>
-              <div className='label'>
-                会议内容
-              </div>
+            <td>会议内容</td>
+            <td colSpan={3}>
+            <TextArea autosize={{minRows: 1}} className='cell-ipt' value={model.editorData?.v6} onChange={(e) => onChange(e, 'v6')}></TextArea>
             </td>
           </tr>
           <tr>
