@@ -222,7 +222,7 @@ export default function BadEventsRouters(props: Props) {
     redictUri: '/crNursing/badEvent',
     loginUri: '/crNursing/login'
   }
-  if (['gxjb','yczyy'].includes(appStore.HOSPITAL_ID)) { //跳转单独的上报系统
+  if (['gxjb','yczyy', 'fqfybjy'].includes(appStore.HOSPITAL_ID)) { //跳转单独的上报系统
     autoLoginInfo = {
       blank: true,
       redictUri: '/crNursing/badevents/index',

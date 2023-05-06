@@ -56,7 +56,6 @@ export default observer(function 敏感指标登记本(props: Props) {
   const [blockList, setBlockList] = useState([]);
   const [selectedBlockId, setSelectedBlockId]: any = useState(null);
   const [date, setDate]: any = useState(getCurrentMonth());
-  const [popoverVisible, setPopoverVisible]: any = useState(false);
   const [surplusHeight, setSurplusHeight]: any = useState(220);
   const [pageOptions, setPageOptions]: any = useState({
     pageIndex: 1,
@@ -85,270 +84,7 @@ export default observer(function 敏感指标登记本(props: Props) {
   };
   const [isDate, setIsDate]: any = useState(false);
   const [year, setYear]: any = useState(moment(new Date(moment().format('YYYY'))));
-  // const flFilterItem = createFilterItem(
-  //   "分类",
-  //   itemConfigList,
-  //   rangConfigList,
-  //   () => {
-  //     setPopoverVisible(false)
-  //     setPageOptions({ ...pageOptions, pageIndex: 1 })
-  //   }
-  // );
 
-  // const bcFilterItem = createFilterItem(
-  //   "班次",
-  //   itemConfigList,
-  //   rangConfigList,
-  //   () => {
-  //     setPopoverVisible(false)
-  //     setPageOptions({ ...pageOptions, pageIndex: 1 })
-  //   }
-  // );
-  // const wzcdFilterItem = createFilterItem(
-  //   "危重程度",
-  //   itemConfigList,
-  //   rangConfigList,
-  //   () => {
-  //     setPopoverVisible(false)
-  //     setPageOptions({ ...pageOptions, pageIndex: 1 })
-  //   }
-  // );
-
-  // const hljbFilterItem = createFilterItem(
-  //   "护理级别",
-  //   itemConfigList,
-  //   rangConfigList,
-  //   () => {
-  //     setPopoverVisible(false)
-  //     setPageOptions({ ...pageOptions, pageIndex: 1 })
-  //   }
-  // );
-
-  // const zlnlFilterItem = createFilterItem(
-  //   "自理能力",
-  //   itemConfigList,
-  //   rangConfigList,
-  //   () => {
-  //     setPopoverVisible(false)
-  //     setPageOptions({ ...pageOptions, pageIndex: 1 })
-  //   }
-  // );
-  // const yzlxFilterItem = createFilterItem(
-  //   "医嘱类型",
-  //   itemConfigList,
-  //   rangConfigList,
-  //   () => {
-  //     setPopoverVisible(false)
-  //     setPageOptions({ ...pageOptions, pageIndex: 1 })
-  //   }
-  // );
-  // const zgFilterItem = createFilterItem(
-  //   "转归",
-  //   itemConfigList,
-  //   rangConfigList,
-  //   () => {
-  //     setPopoverVisible(false)
-  //     setPageOptions({ ...pageOptions, pageIndex: 1 })
-  //   }
-  // );
-  // const ypglflFilterItem = createFilterItem(
-  //   "药品管理分类",
-  //   itemConfigList,
-  //   rangConfigList,
-  //   () => {
-  //     setPopoverVisible(false)
-  //     setPageOptions({ ...pageOptions, pageIndex: 1 })
-  //   }
-  // );
-  // const ymFilterItem = createFilterItem(
-  //   "药名",
-  //   itemConfigList,
-  //   rangConfigList,
-  //   () => {
-  //     setPopoverVisible(false)
-  //     setPageOptions({ ...pageOptions, pageIndex: 1 })
-  //   }
-  // );
-  // const wpmcFilterItem = createFilterItem(
-  //   "物品名称",
-  //   itemConfigList,
-  //   rangConfigList,
-  //   () => {
-  //     setPopoverVisible(false);
-  //     setPageOptions({ ...pageOptions, pageIndex: 1 })
-  //   }
-  // );
-  // const bfzlxFilterItem = createFilterItem(
-  //   "并发症类型",
-  //   itemConfigList,
-  //   rangConfigList,
-  //   () => {
-  //     setPopoverVisible(false);
-  //     setPageOptions({ ...pageOptions, pageIndex: 1 })
-  //   }
-  // );
-  // const jmlxFilterItem = createFilterItem(
-  //   "静脉类型",
-  //   itemConfigList,
-  //   rangConfigList,
-  //   () => {
-  //     setPopoverVisible(false);
-  //     setPageOptions({ ...pageOptions, pageIndex: 1 })
-  //   }
-  // );
-  // const zhpjlxFilterItem = createFilterItem(
-  //   "综合评价类型",
-  //   itemConfigList,
-  //   rangConfigList,
-  //   () => {
-  //     setPopoverVisible(false);
-  //     setPageOptions({ ...pageOptions, pageIndex: 1 })
-  //   }
-  // );
-  // const rylxFilterItem = createFilterItem(
-  //   "人员类别",
-  //   itemConfigList,
-  //   rangConfigList,
-  //   () => {
-  //     setPopoverVisible(false);
-  //     setPageOptions({ ...pageOptions, pageIndex: 1 })
-  //   }
-  // );
-  // const yqmcFilterItem = createFilterItem(
-  //   "仪器名称",
-  //   itemConfigList,
-  //   rangConfigList,
-  //   () => {
-  //     setPopoverVisible(false);
-  //     setPageOptions({ ...pageOptions, pageIndex: 1 })
-  //   }
-  // );
-  // const sbztFilterItem = createFilterItem(
-  //   "设备状态",
-  //   itemConfigList,
-  //   rangConfigList,
-  //   () => {
-  //     setPopoverVisible(false);
-  //     setPageOptions({ ...pageOptions, pageIndex: 1 })
-  //   }
-  // );
-  // const chFilterItem = createFilterInput(
-  //   "床号",
-  //   () => {
-  //     setPopoverVisible(false);
-  //     setPageOptions({ ...pageOptions, pageIndex: 1 })
-  //   });
-
-  // const xmFilterItem = createFilterInput(
-  //   "姓名",
-  //   () => {
-  //     setPopoverVisible(false);
-  //     setPageOptions({ ...pageOptions, pageIndex: 1 })
-  //   });
-  // const zyzdFilterItem = createFilterItem(
-  //   "中医诊断",
-  //   itemConfigList,
-  //   rangConfigList,
-  //   () => {
-  //     setPopoverVisible(false);
-  //     setPageOptions({ ...pageOptions, pageIndex: 1 })
-  //   }
-  // )
-
-  // const popoverContent = codeAdapter(
-  //   {
-  //     QCRG_03: (
-  //       <div>
-  //         <wzcdFilterItem.Component />
-  //         <hljbFilterItem.Component />
-  //         <zlnlFilterItem.Component />
-  //       </div>
-  //     ),
-  //     QCRG_04: (
-  //       <div>
-  //         <bcFilterItem.Component />
-  //         <yzlxFilterItem.Component />
-  //       </div>
-  //     ),
-  //     QCRG_05: null,
-  //     QCRG_08: (
-  //       <div>
-  //         <zgFilterItem.Component />
-  //       </div>
-  //     ),
-  //     QCRG_10: (
-  //       <div>
-  //         <ypglflFilterItem.Component />
-  //       </div>
-  //     ),
-  //     QCRG_13: (
-  //       <div>
-  //         <ymFilterItem.Component />
-  //       </div>
-  //     ),
-  //     QCRG_14_1: (
-  //       <div>
-  //         <wpmcFilterItem.Component />
-  //       </div>
-  //     ),
-  //     QCRG_14_2: (
-  //       <div>
-  //         <wpmcFilterItem.Component />
-  //       </div>
-  //     ),
-  //     QCRG_16_1: (
-  //       <div>
-  //         <bfzlxFilterItem.Component />
-  //       </div>
-  //     ),
-  //     QCRG_16_2: (
-  //       <div>
-  //         <jmlxFilterItem.Component />
-  //         <bfzlxFilterItem.Component />
-  //       </div>
-  //     ),
-  //     // QCRG_19_1: (
-  //     //   <div>
-  //     //     <jmlxFilterItem.Component />
-  //     //   </div>
-  //     // ),
-  //     QCRG_19_2: (
-  //       <div>
-  //         <rylxFilterItem.Component />
-  //         {/* <jmlxFilterItem.Component /> */}
-  //       </div>
-  //     ),
-  //     QCRG_19_3: (
-  //       <div>
-  //         <jmlxFilterItem.Component />
-  //       </div>
-  //     ),
-  //     QCRG_20_2: (
-  //       <div>
-  //         <yqmcFilterItem.Component />
-  //         <sbztFilterItem.Component />
-  //       </div>
-  //     ),
-  //     QCRG_15_1: (
-  //       <div>
-  //         <chFilterItem.Component />
-  //         <xmFilterItem.Component />
-  //         <zyzdFilterItem.Component />
-  //       </div>
-  //     ),
-  //     QCRG_12_2: (
-  //       <div>
-  //         <flFilterItem.Component />
-  //       </div>
-  //     ),
-  //     QCRG_21: (
-  //       <div>
-  //         <wpmcFilterItem.Component />
-  //       </div>
-  //     ),
-  //   },
-  //   registerCode
-  // );
 
   /** 查询参数 */
   const paramMap = {
@@ -399,28 +135,9 @@ export default observer(function 敏感指标登记本(props: Props) {
     ) {
       let m = endTimeDate.diff(currentDate, "d");
       if (m <= 90) return "color-red";
-      // if (m < 3) return "color-orange";
     }
     return "";
   };
-
-  // const isEndTimeQCRG_12_2 = (record: any, item: any) => {
-  //   const { itemCode, itemType } = item
-
-  //   if (itemType == 'date' && record[itemCode]) {
-  //     var currentDate = moment()
-  //     var endDate = moment(record[itemCode])
-  //     if (
-  //       currentDate.isValid() &&
-  //       endDate.isValid()
-  //     ) {
-  //       let m = endDate.diff(currentDate, "d");
-  //       if (m <= 90) return "color-red";
-  //     }
-  //   }
-
-  //   return ''
-  // }
 
   const isEndTimeQCRG_14_2 = (record: any, item: any) => {
     const { itemCode } = item
@@ -466,35 +183,7 @@ export default observer(function 敏感指标登记本(props: Props) {
         );
       }
     },
-    // codeAdapter(
-    //   {
-    //     'QCRG_04,QCRG_20_1': {
-    //       title: "班次",
-    //       width: 73,
-    //       dataIndex: "range",
-    //       className: "input-cell",
-    //       align: "center",
-    //       render(text: string, record: any, index: number) {
-    //         let children = <InputColumnRender
-    //           {...{
-    //             cellDisabled,
-    //             options: rangConfigList.map((item: any) => item.itemCode),
-    //             record,
-    //             itemCode: 'range',
-    //             updateDataSource,
-    //             handleNextIptFocus
-    //           }}
-    //         />
-    //         let obj = {
-    //           children
-    //         };
-    //         return obj;
-    //       }
-    //     }
-    //   },
-    //   registerCode,
-    //   true
-    // ),
+
     //后端返回的自定义项目
     ...itemConfigList.map((item: any) => {
       return {
@@ -636,58 +325,6 @@ export default observer(function 敏感指标登记本(props: Props) {
       };
     }),
     //不同登记本固定的项目
-    ...codeAdapter(
-      {
-        // QCRG_04: [
-        //   {
-        //     title: "备注",
-        //     width: 150,
-        //     dataIndex: "description",
-        //     className: "input-cell",
-        //     render(text: string, record: any, index: number) {
-        //       return <InputColumnRender
-        //         {...{
-        //           cellDisabled,
-        //           itemCode: 'description',
-        //           handleNextIptFocus,
-        //           record,
-        //           updateDataSource,
-        //         }} />
-        //     }
-        //   },
-        //   signRowObj({
-        //     title: "签名",
-        //     width: 70,
-        //     dataIndex: "signerName",
-        //     aside: "",
-        //     registerCode,
-        //     updateDataSource,
-        //     selectedBlockId
-        //   }),
-        //   signRowObj({
-        //     title: "核对者签名",
-        //     width: 70,
-        //     dataIndex: "checkerName",
-        //     aside: "核对者",
-        //     registerCode,
-        //     updateDataSource,
-        //     selectedBlockId
-        //   }),
-        //   signRowObj({
-        //     title: "负责人签名",
-        //     width: 70,
-        //     dataIndex: "auditorName",
-        //     aside: "负责人",
-        //     registerCode,
-        //     updateDataSource,
-        //     selectedBlockId
-        //   })
-        // ],
-        other: []
-      },
-      registerCode,
-      true
-    ),
     ...codeAdapter({
       "QCRG_22_3": [],
       other: [{
@@ -840,7 +477,12 @@ export default observer(function 敏感指标登记本(props: Props) {
 
   const handleSelectedChange = (payload: any[]) => {
     setSelectedRowKeys(payload)
-    // console.log(payload)
+  }
+  const changeDept = (val: string) => {
+    if (registerCode === 'QCRG_22_3') {
+      baseRegisterMode.isAll = (val == '全院' ? 1 : 0)
+      authStore.selectedDeptCode = val;
+    }
   }
 
   /** 公共函数 */
@@ -888,7 +530,7 @@ export default observer(function 敏感指标登记本(props: Props) {
   }, [])
   useEffect(() => {
     onInitData();
-    baseRegisterMode.isAll = (authStore.selectedDeptCode == '0000' ? 1 : 0)
+    baseRegisterMode.isAll = (authStore.selectedDeptCode == '全院' ? 1 : 0)
   }, [authStore.selectedDeptCode]);
 
   useEffect(() => {
@@ -1003,42 +645,7 @@ export default observer(function 敏感指标登记本(props: Props) {
         /> */}
         <span className="label">科室</span>
         {/* <DeptSelect onChange={() => { }} style={{ width: 150 }} /> */}
-        {codeAdapter({
-          "QCRG_22_3": <React.Fragment>
-            <Select
-              style={{ width: 150 }}
-              value={authStore.selectedDeptCode}
-              onChange={(val: string) => {
-                baseRegisterMode.isAll = (val == '0000' ? 1 : 0)
-                authStore.selectedDeptCode = val;
-              }}
-            >
-              <Select.Option value="0000">全院</Select.Option>
-              {authStore.deptList.map((item: any, index: number) => (
-                <Select.Option value={item.code} key={item.code}>
-                  {item.name}
-                </Select.Option>
-              ))}
-            </Select>
-          </React.Fragment>,
-          other: <DeptSelect onChange={() => { }} style={{ width: 150 }} />
-        },
-          registerCode,
-          true,
-        )}
-        {/* {popoverContent && (
-          <Popover
-            placement="bottom"
-            title={"筛选条件"}
-            visible={popoverVisible}
-            content={popoverContent}
-            trigger="hover"
-            onVisibleChange={visible => setPopoverVisible(visible)}
-          >
-            <Button>筛选</Button>
-          </Popover>
-        )} */}
-
+        <DeptSelect hasAllDept={registerCode === 'QCRG_22_3'} onChange={(e) => changeDept(e)} style={{ width: 150 }} />
         <Place />
 
         {selectedBlockId && (
@@ -1118,42 +725,6 @@ export default observer(function 敏感指标登记本(props: Props) {
             />
             <div className="selected-operate-con">
               {codeAdapter({
-                // 'QCRG_14_1,QCRG_10,QCRG_03,QCRG_14_2,QCRG_21': (
-                //   <React.Fragment>
-                //     <Button
-                //       disabled={
-                //         pageLoading ||
-                //         selectedRowKeys.length <= 0
-                //       }
-                //       type="primary"
-                //       onClick={() => handleAuditAll(
-                //         '负责人',
-                //         codeAdapter({
-                //           QCRG_03: 'sign',
-                //           other: 'audit'
-                //         }, registerCode)
-                //       )}>
-                //       负责人签名
-                //     </Button>
-                //     <Button
-                //       disabled={
-                //         pageLoading ||
-                //         selectedRowKeys.length <= 0
-                //       }
-                //       type="primary"
-                //       onClick={() => handleCopyCreateRow()}>
-                //       复制新增
-                //     </Button>
-                //     <Button
-                //       disabled={
-                //         pageLoading ||
-                //         selectedRowKeys.length <= 0
-                //       } type="primary"
-                //       onClick={() => deleteSelectedRows()}>
-                //       删除
-                //     </Button>
-                //   </React.Fragment>
-                // ),
                 QCRG_22_3: [],
                 other: (<React.Fragment>
                   <Button

@@ -154,6 +154,12 @@ export default withRouter(function BadEventsNewDetail(props: any) {
   }
 
   const handleOk = () => {
+    if ('fqfybjy' === appStore.HOSPITAL_ID && master.formCode === 'B0009') {
+      let iframeEl = iframeRef.current
+      if (iframeEl) {
+        iframeEl.contentWindow.saveBadEvent()
+      }
+    }
     setTimeout(() => {
       // appStore.history.goBack()
       appStore.history.push('/badEventsNew')

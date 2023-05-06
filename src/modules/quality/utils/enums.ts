@@ -15,6 +15,6 @@ export const PUBLISH_STATUS_ARR = [
 export const CONFIG_TITLE = [
   '',
   '病区质控',
+  '护理部质控',
   '重点环节专项质控',
-  '护理部质控'
 ]
