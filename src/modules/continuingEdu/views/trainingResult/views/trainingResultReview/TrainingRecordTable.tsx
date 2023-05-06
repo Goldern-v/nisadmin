@@ -18,6 +18,7 @@ export interface Props {
 
 //查看培训结果
 export default observer(function TrainingRecordTable() {
+  const [isPrint, setIsPrint] = useState(false)
   //初始化表格数据
   useEffect(() => {
     trainingResultModel.onload();
@@ -40,33 +41,41 @@ export default observer(function TrainingRecordTable() {
 
   //打印
   const handlePrint = () => {
-    let printEl = document.getElementById('tableID')
-
-    // let documentTitle = window.document.title
-    // window.document.title = '护理人员信息档案'
-
-    if (printEl) printing(printEl, {
-      injectGlobalCss: true,
-      scanStyles: false,
-      css: `
-        @page {
-          margin: 10mm;
-        }
-        *{
-          color:#000;
-        }
-        .textarea {
-          text-align:left;
-          height: auto;
-          word-wrap:break-word;
-          white-space:pre-line;
-        }
-        #${'tableID'} {
-          display:block!important;
-        }
-      `
-    })
-
+    setIsPrint(true)
+    setTimeout(() => {
+      console.log('test-isPrint', isPrint)
+      let printEl = document.getElementById('tableID')
+      
+      // let documentTitle = window.document.title
+      // window.document.title = '护理人员信息档案'
+      
+      if (printEl) 
+        printing(printEl, {
+          injectGlobalCss: true,
+          scanStyles: false,
+          css: `
+          @page {
+            margin: 10mm;
+          }
+          *{
+            color:#000;
+          }
+          .textarea {
+            text-align:left;
+            height: auto;
+            word-wrap:break-word;
+            white-space:pre-line;
+          }
+          #${'tableID'} {
+            display:block!important;
+          }
+          `
+        }).then(() => {
+          setIsPrint(false)
+        })
+      setIsPrint(false)  
+      // return v
+    }, 500)
     // setTimeout(() => window.document.title = documentTitle, 1000)
   }
 
@@ -127,7 +136,13 @@ export default observer(function TrainingRecordTable() {
             <tr className='additional'>
               <td>培训照片</td>
               <td colSpan={3}>
-                <MultipleImageUploader
+                {
+                  isPrint ?
+                    trainingResultModel.trainingPhotos.split(',').map(v => (
+                      <img className='img--print' alt={v} src={v} />
+                    ))
+                  :
+                  <MultipleImageUploader
                   accept='image/jpg'
                   text="添加图片"
                   imgLimitedMb={20}
@@ -137,12 +152,11 @@ export default observer(function TrainingRecordTable() {
                   }
                   sizeLimited={10}
                   onChange={(imgs) => {
-                    console.log(imgs);
-                    
                     trainingResultModel.trainingPhotos = imgs.join(',')
                     updateData(trainingResultModel.trainingPhotos)
                   }}
-                />
+                  />
+                }
               </td>
             </tr>
             <tr className='comment'>
@@ -209,6 +223,11 @@ const Table = styled.div`
       resize: none;
       outline: none;
     }
+  }
+  .img--print {
+    margin: 10px;
+    width: calc(100% - 20px);
+    height: auto;
   }
 `
 const Header = styled.div`

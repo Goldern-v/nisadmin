@@ -499,9 +499,11 @@ export default observer(function WritingForm(props: any) {
           // setTableData(res.data || [])
           setCacheTableData(res.data || [])
           const data = res.data.filter((item: any) => {
-            return item.EVAL_DESC.indexOf(defaultValue) !== -1;
+            return item.EVAL_DESC?.indexOf(defaultValue) !== -1;
           })
           setTableData(data)
+          setLoadingTable(false)
+        }).catch((err) => {
           setLoadingTable(false)
         })
     } else {

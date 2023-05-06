@@ -178,7 +178,7 @@ export default observer(function QcThreeResult(props) {
       analysisDetailApi.deleteReport(id).then((res) => {
         message.success('删除成功')
         setTimeout(() => {
-          getData()
+          handleSearch()
         }, 500)
       })
     })
