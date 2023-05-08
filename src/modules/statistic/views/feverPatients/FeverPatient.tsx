@@ -88,7 +88,10 @@ export default observer(function FeverPatient() {
             title: '患者总数',
             width: 90,
             dataIndex: 'inHospitalCount',
-            align: 'center'
+            align: 'center',
+            render:(value:any,row:any,index:number)=>{
+              return <span>{row.shoushu+row.ruyuan+row.ruyuanshoushu+row.qita}</span>
+            }
           }
         ],
         other: []
@@ -103,6 +106,19 @@ export default observer(function FeverPatient() {
       { title: 'Name', dataIndex: 'patientNameTwo', key: 'patientNameTwo', width: 90, align: 'center' },
       { title: 'Name', dataIndex: 'patientNameThree', key: 'patientNameThree', width: 90, align: 'center' },
       { title: 'Name', dataIndex: 'patientNameFour', key: 'patientNameFour', width: 90, align: 'center' },
+      ...appStore.hisMatch({
+        map: {
+          gzsrm: [
+            {
+              title: '患者总数',
+              width: 90,
+              dataIndex: 'hahah',
+              align: 'center'
+            }
+          ],
+          other: []
+        }
+      })
     ];
     
     return <BaseTable 
@@ -124,7 +140,6 @@ export default observer(function FeverPatient() {
     const result = await statisticsApi.countFeverPatient(query)
     // 获取未发热患者
     const noFever = await statisticsApi.countNoFeverPatient(query)
-    // console.log('noFever', noFever)
     let resultData = result.data
     const rData = setResData(resultData)
     setData(rData.tableData)
@@ -132,7 +147,7 @@ export default observer(function FeverPatient() {
     // 获取折线图数据
     resultData.nofever = noFever.data
     const lineData = getLineData(resultData, query, searchMode)
-    console.log('lineData', lineData)
+    // console.log('lineData', lineData)
     setLineData(lineData)
     setSearchMode(lineData.searchMode || 'year')
     setLoading(false)
@@ -194,7 +209,7 @@ export default observer(function FeverPatient() {
             }
           }} 
           onPanelChange={(payload: any) => {
-            console.log('payload', payload)
+            // console.log('payload', payload)
             setOpen(false)
             setQuery({
               ...query,
@@ -264,7 +279,7 @@ export default observer(function FeverPatient() {
         expandIconAsCell={false}
         expandIconColumnIndex={-1}
         surplusWidth={500}
-        surplusHeight={300}
+        surplusHeight={250}
         columns={columns}
         expandedRowRender={expandedRowRender}
         dataSource={data} />}
