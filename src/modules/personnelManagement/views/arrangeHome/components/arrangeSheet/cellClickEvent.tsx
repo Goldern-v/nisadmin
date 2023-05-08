@@ -123,7 +123,7 @@ export function copyRowClick(list: any, copyRow: any, isClean: boolean) {
         copyRow[i].settings = [];
         copyRow[i].addSymbols = [];
         copyRow[i].backgroundColor = "";
-
+        
 
         if (IS_WH_SCH_ADD_OR_SUB) {
           copyRow[i].schAddOrSubs = [];
@@ -145,6 +145,7 @@ export function copyRowClick(list: any, copyRow: any, isClean: boolean) {
       }
     }
     if (isClean) {
+      sheetViewModal.isCut = false
       copyRow.splice(0, copyRow.length);
     }
   } else {

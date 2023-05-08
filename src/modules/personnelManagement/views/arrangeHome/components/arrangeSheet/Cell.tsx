@@ -445,7 +445,7 @@ export default observer(function Cell(props: Props) {
                     onClick() {
                         let list = sheetViewModal.getSelectCellList(true);
                         let copyRow = sheetViewModal.copyRow;
-                        copyRowClick(list, copyRow, false);
+                        copyRowClick(list, copyRow, sheetViewModal.isCut);
                     }
                 },
                 {
@@ -453,9 +453,9 @@ export default observer(function Cell(props: Props) {
                     label: "剪切行",
                     type: "text",
                     onClick() {
-                        let list = sheetViewModal.getSelectCellList(true);
-                        let copyRow = sheetViewModal.copyRow;
-                        copyRowClick(list, copyRow, true);
+                        sheetViewModal.copyRow = sheetViewModal.getSelectCellList(true);
+                        message.success("剪切行成功");
+                        sheetViewModal.isCut = true
                     }
                 },
                 // 亚心同步

@@ -46,6 +46,8 @@ class SheetViewModal {
   @observable public tableLoading: boolean = false;
   /** 复制行 */
   @observable public copyRow: any[] = [];
+  /**是否剪切行 true=剪切，false=复制 */
+  @observable public isCut:boolean = false
   /** 复杂单个格子 */
   @observable public copyCell: any = null;
   /** 复杂多个格子 */
