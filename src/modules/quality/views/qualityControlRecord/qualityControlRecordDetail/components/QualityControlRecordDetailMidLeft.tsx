@@ -23,7 +23,13 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
   let [bedNurseList, setBedNurseList]: any = useState([]);
   let [onlyReadError, setOnlyReadError]: any = useState(false);
   let [causeList, setCauseList]: any = useState([]);
-  let hushi = appStore.HOSPITAL_ID == 'wh' ? '执行护士' : '管床护士'
+  let hushi = appStore.hisMatch({
+    map: {
+      wh: '执行护士',
+      lyrm: '责任护士',
+      other: '管床护士'
+    }
+  })
   let zhuyuanhao = appStore.HOSPITAL_ID == 'wh' ? '诊疗号' : '住院号'
 
   const { detailData } = props;

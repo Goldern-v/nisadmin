@@ -12,18 +12,18 @@ interface Props {
 
 }
 
+const defaultForm = {
+  wardCode: authStore.selectedDeptCode,
+  status: undefined,
+  beginDate: undefined,
+  endDate: undefined,
+  formCodes: [],
+  pageIndex: 1,
+  pageSize: 20
+}
 export default observer((props: Props) => {
   const [tableLoading, setTableLoading] = useState(false)
   const [tableData, setTableData] = useState([])
-  const defaultForm = {
-    wardCode: authStore.selectedDeptCode,
-    status: undefined,
-    beginDate: undefined,
-    endDate: undefined,
-    formCodes: [],
-    pageIndex: 1,
-    pageSize: 20
-  }
   const [form, setForm]: any = useState(defaultForm)
   const setFormItem = (item = {}) => {
     //(['gzsrm'].includes(appStore.HOSPITAL_ID)) && (item?.status===0) && (item.status='')
