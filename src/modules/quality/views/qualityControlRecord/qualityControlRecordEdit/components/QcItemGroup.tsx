@@ -269,8 +269,8 @@ export default observer(function QcItemGroup(props: Props) {
                     newItem.subItemList = newItem.subItemList.map((subItem: any) => ({ ...subItem, checked: false }))
                 }
               }
-              console.log('newItem', newItem)
-              console.log('itemIndex', itemIndex)
+              // console.log('newItem', newItem)
+              // console.log('itemIndex', itemIndex)
               handleItemChange({ ...newItem }, itemIndex)
             }}>
             <Radio value={'是'} style={{ marginLeft: '20px', marginRight: '30px' }}>
@@ -380,13 +380,31 @@ export default observer(function QcItemGroup(props: Props) {
                 value={item.remark}
                 autosize={{ minRows: 2 }}
                 placeholder="备注"
-                disabled={['whyx','whhk','925'].includes(appStore.HOSPITAL_ID) && (item.qcItemValue == '是' || item.qcItemValue == '')}
+                disabled={['whyx','whhk'].includes(appStore.HOSPITAL_ID) && (item.qcItemValue == '是' || item.qcItemValue == '')}
                 onChange={(e) => handleItemChange({
                   ...item,
                   remark: e.target.value,
                 }, itemIndex)} />
             </div>
           </div>}
+          {appStore.hisMatch({
+            map:{
+              '925':!qcModel.baseInfo.useScore && <div className="sub-item-list">
+              <div style={{ marginTop: 5 }}>
+                <Input.TextArea
+                  value={item.remark}
+                  autosize={{ minRows: 2 }}
+                  placeholder="备注"
+                  onChange={(e) => handleItemChange({
+                  ...item,
+                  remark: e.target.value,
+                  }, itemIndex)} />
+              </div>
+            </div>,
+              other:''
+            },
+            vague:true
+          })}
           {appStore.hisMatch({
             map: {
               "whyx,whhk": '',
