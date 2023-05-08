@@ -105,7 +105,8 @@ export const setResData = (options?: any) => {
         // 如果有当前字段
         if (dataItem[countName] !== undefined) {
           // 数量+=住院次数
-          dataItem[countName] += item.visitId
+          // dataItem[countName] += item.visitId
+          dataItem[countName]+=1
           let cIndex: number = curOption.findIndex((cItem: any) => cItem[extraName] === '')
           // 如果子表当前患者名称+床号字段为空数据
           if (cIndex !== -1) {
@@ -116,7 +117,8 @@ export const setResData = (options?: any) => {
         } else {
           dataItem = {
             ...dataItem,
-            [countName]: item.visitId,
+            // [countName]: item.visitId,
+            [countName]:1,
             option: [optionItem]
           }
         }
@@ -124,10 +126,10 @@ export const setResData = (options?: any) => {
         // 没有数据或者没有这个科室
         dataItem = {
           wardName: deptName,
-          shoushu: 'shoushu' == countName ? item.visitId : 0,
-          ruyuan: 'ruyuan' == countName ? item.visitId : 0,
-          ruyuanshoushu: 'ruyuanshoushu' == countName ? item.visitId : 0,
-          qita: 'qita' == countName ? item.visitId : 0,
+          shoushu: 'shoushu' == countName ? 1 : 0,
+          ruyuan: 'ruyuan' == countName ? 1 : 0,
+          ruyuanshoushu: 'ruyuanshoushu' == countName ? 1 : 0,
+          qita: 'qita' == countName ? 1 : 0,
           inHospitalCount: 'countList' === countName ? item.inHospitalCount : 0,
           option: [optionItem]
         }
@@ -234,7 +236,7 @@ const getLineDataByYear = <K, T>(data: K, start: T, end: T): ILineData => {
       // 过滤指定年份的数据并汇总每年的住院次数visitId
       let count: number = currentData
       .filter((item: any) => +(item.year) == (+start + index))
-      .reduce((pre: any, cur: any) => { return pre + cur.visitId }, 0)
+      .reduce((pre: any, cur: any) => { return pre + 1 }, 0)
       lineArr.push(count)
     }
     resultData = {
@@ -267,7 +269,7 @@ const getLineDataByQuarter = <K, T>(data: K, start: T, end: T): ILineData => {
       let count: number = currentData
       .filter((item: any) => moment(item.recordDate).month() + 1 >= +start && moment(item.recordDate).month() + 1 <= +end)
       .filter((item: any) => getQuarter<number>(moment(item.recordDate).month()+1) == startQuarter + index)
-      .reduce((pre: any, cur: any) => { return pre + cur.visitId }, 0)
+      .reduce((pre: any, cur: any) => { return pre + 1 }, 0)
       lineArr.push(count)
     }
     resultData = {
@@ -301,7 +303,7 @@ const getLineDataByMonth = <K, T>(data: K, startM: T, endM: T, startY: T, endY: 
       if (endY == startY) {
         count = currentData
         .filter((item: any) => +(item.recordDate.split('-')[1]) == +startM + index)
-        .reduce((pre: any, cur: any) => { return pre + cur.visitId }, 0)
+        .reduce((pre: any, cur: any) => { return pre + 1 }, 0)
         // lineArr.push(count)
       } else {
         // 获取当前月
@@ -311,7 +313,7 @@ const getLineDataByMonth = <K, T>(data: K, startM: T, endM: T, startY: T, endY: 
         count = currentData
         .filter((item: any) => item.recordDate.split('-')[0] == curYear) // 过滤当前年
         .filter((item: any) => +(item.recordDate.split('-')[1]) == curMonth) // 过滤当前月
-        .reduce((pre: any, cur: any) => { return pre + cur.visitId }, 0) // 计算总和
+        .reduce((pre: any, cur: any) => { return pre + 1 }, 0) // 计算总和
       }
       lineArr.push(count)
     }
@@ -340,7 +342,7 @@ const getLineDataByDay = <K, T>(data: K, startDay: T, endDay: T): ILineData => {
       let count: number = 0
       count = currentData
       .filter((item: any) => moment(item.recordDate).date() == +startDay + index)
-      .reduce((pre: any, cur: any) => { return pre + cur.visitId }, 0)
+      .reduce((pre: any, cur: any) => { return pre + 1 }, 0)
       lineArr.push(count);
     }
     resultData = {
@@ -360,7 +362,7 @@ const getYearMonthDay = (dateStr: string): IDate => {
 }
 // 返回折线图数据
 export const getLineData = (options: any, query: IQuery, mode: string): ILineData => {
-  console.log('折线图数据', query, mode)
+  // console.log('折线图数据', query, mode)
   let lineData: ILineData|any = {}
   // 年份查询
   if (mode === 'year') {
