@@ -34,7 +34,7 @@ export default function DateTimePicker(props: Props) {
         placeholder={"选择日期"}
         onChange={_date => {
           // setDate(_date)
-          onChange && onChange(moment(_date).format("YYYY-MM-DD HH:mm:ss"));
+          onChange && onChange(_date ? moment(_date).format("YYYY-MM-DD HH:mm:ss"): null);
         }}
       />
       <TimePicker
@@ -45,7 +45,7 @@ export default function DateTimePicker(props: Props) {
         placeholder={"选择时间"}
         format="HH:mm"
         onChange={_time => {
-          onChange && onChange(moment(_time).format("YYYY-MM-DD HH:mm:ss"));
+          onChange && onChange(_time ? moment(_time).format("YYYY-MM-DD HH:mm:ss") : null);
         }}
       />
     </Wrapper>
