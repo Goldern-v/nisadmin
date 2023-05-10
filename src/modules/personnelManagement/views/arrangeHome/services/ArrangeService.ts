@@ -47,14 +47,25 @@ export default class ArrangeService extends BaseApiService {
     let obj = {
       startTime: selectViewModal.params.startTime,
       endTime: selectViewModal.params.endTime,
-      setting: sheetViewModal.sheetTableData.sort((a: any, b: any) => a.sortValue - b.sortValue).map(
+      setting: appStore.hisMatch({
+        map: {
+          '925,wh': sheetViewModal.sheetTableData.map(
+            (item: any, index: number) => ({
+              ...item,
+              status,
+              sortValue: index + 1,
+              timeLimit: item.timeLimit
+            })),
+        other: sheetViewModal.sheetTableData.sort((a: any, b: any) => a.sortValue - b.sortValue).map(
           (item: any, index: number) => ({
             ...item,
             status,
             sortValue: index + 1,
             timeLimit: item.timeLimit
-          })
-      ),
+          })),
+        },
+        vague: true,
+      }),
       remark: sheetViewModal.remark,
       deptCode: selectViewModal.params.deptCode,
       startTimeWeek: moment(selectViewModal.params.startTime)

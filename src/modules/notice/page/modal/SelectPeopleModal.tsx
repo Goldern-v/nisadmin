@@ -4,11 +4,7 @@ import {
   Modal,
   Input,
   Button,
-  Radio,
-  DatePicker,
   Select,
-  Row,
-  Col,
   message,
   Icon,
   Checkbox,
@@ -17,12 +13,10 @@ import {
 } from 'antd'
 import { ModalComponentProps } from 'src/libs/createModal'
 import { ScrollBox } from 'src/components/common'
-import { authStore } from 'src/stores'
 import { selectPeopleViewModel } from './SelectPeopleViewModel'
-import { noticeService } from '../../serveices/NoticeService'
+// import { noticeService } from '../../serveices/NoticeService'
 import { observer } from 'mobx-react-lite'
 const { Search } = Input
-const Option = Select.Option
 
 import { CheckboxChangeEvent } from 'antd/lib/checkbox/index'
 import { CheckUserItem } from '../SentNoticeView'

@@ -1032,10 +1032,6 @@ const routes: RouteItem[] = [
   setLayout("/nursingFollowUp", NursingFollowUp, layouts.MainLayout),
   setLayout("/nursingFollowUpDetail", FollowUpDetailView, layouts.MainLayout),
   {
-    path: "/nurseFile",
-    redirect: "/nurseFile/onTheJob"
-  },
-  {
     path: "/continuingEdu",
     redirect: "/continuingEdu/人员管理"
   },

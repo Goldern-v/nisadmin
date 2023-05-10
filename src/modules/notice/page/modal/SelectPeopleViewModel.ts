@@ -1,6 +1,6 @@
 import { observable, computed, action } from 'mobx'
-import { authStore } from 'src/stores'
-import { noticeService } from '../../serveices/NoticeService'
+import { appStore, authStore } from 'src/stores'
+// import { noticeService } from '../../serveices/NoticeService'
 import service from 'src/services/api'
 class SelectPeopleViewModel {
   @observable modalLoading: boolean = false
@@ -11,12 +11,18 @@ class SelectPeopleViewModel {
       data: [],
       dataLabel: 'deptName'
     },
-    {
-      step: '默认科室',
-      label: authStore.selectedDeptName || authStore.defaultDeptName,
-      data: []
-    },
-
+    ...appStore.hisMatch({
+      map: {
+        925: [],
+        other: [
+          {
+            step: '默认科室',
+            label: authStore.selectedDeptName || authStore.defaultDeptName,
+            data: []
+          },
+        ]
+      }
+    }),
     {
       step: '按护理单元选择',
       label: '按护理单元选择',
@@ -109,14 +115,22 @@ class SelectPeopleViewModel {
     this.modalLoading = true
     let ser = service.commonApiService
     this.stepState = []
-    return Promise.all([
+    let arr = [
       ser.groupByBigDeptInDeptList(),
-      ser.defaultDeptUser(),
+      ...appStore.hisMatch({
+        map: {
+          925: [],
+          other: [
+            ser.defaultDeptUser(),
+          ]
+        }
+      }),
       ser.groupByDeptInDeptList(),
       ser.groupByJobInDeptList(),
       ser.groupByTitleInDeptList(),
       ser.groupByLevelInDeptList()
-    ]).then((res) => {
+    ]
+    return Promise.all(arr).then((res) => {
       this.modalLoading = false
       res.forEach((item, index) => {
         this.selectTreeData[index].data = item.data

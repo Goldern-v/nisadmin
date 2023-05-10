@@ -249,7 +249,7 @@ const columns: ColumnProps<any>[] = [
     title: '科室',
     dataIndex: 'deptName',
     key: 'deptName',
-    width: ['lyrm', 'stmz'].includes(appStore.HOSPITAL_ID) ? 120 : 200,
+    width: ['lyrm', 'stmz', '925'].includes(appStore.HOSPITAL_ID) ? 120 : 200,
     align: 'left',
     fixed:['925'].includes(appStore.HOSPITAL_ID) ? 'left': false
   },
@@ -518,9 +518,9 @@ export default observer(function NurseFilesListView() {
           boxShadow: theme.$shadow
         }}
         dataSource={nurseFilesListViewModel.nurseList}
-        columns={appStore.HOSPITAL_ID == 'nfzxy' ? columns1 : columns}
+        columns={appStore.HOSPITAL_ID === 'nfzxy' ? columns1 : columns}
         surplusWidth={80}
-        surplusHeight={430}
+        surplusHeight={'925' === appStore.HOSPITAL_ID ? 478 : 430}
         type={['index', 'fixedIndex']}
         pagination={{
           total: nurseFilesListViewModel.totalCount,

@@ -1041,16 +1041,19 @@ const moveRow = (dragIndex: number, hoverIndex: number) => {
         $splice: [[dragIndex, 1], [hoverIndex, 0, dragRow]],
       });
       break;
+    // 整行拖拽
     case "whyx":
     case "qhwy":
     case 'whhk':
     case 'dglb':
+    case '925':
       // case 'dghm':
       const dragRowWhyx = sheetViewModal.sheetTableData[dragIndex];
       if (!dragRowWhyx) return;
       sheetViewModal.sheetTableData = update(sheetViewModal.sheetTableData, {
         $splice: [[dragIndex, 1], [hoverIndex, 0, dragRowWhyx]],
       });
+      console.log('test-sheet', sheetViewModal.sheetTableData)
       break;
     case 'zhzxy':
         try {
