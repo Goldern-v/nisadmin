@@ -111,7 +111,27 @@ export default observer(function BloodTransfusion() {
         setLoading(true)
         BloodApi.getCountSummary(params).then((res: any) => {
             if (res.code == 200) {
-                setData(res.data.countDatas || [])
+                let countDatas = res.data.countDatas || []
+                if(countDatas.length>0){
+                    countDatas.map((item:any)=>{
+                        let options = [] as any;
+                        (item.bloodList || []).map((bl:any,inx:number)=>{
+                            
+                            options.push({bloodOption:bl.patientName+' '+bl.bedNo+'床'})
+                        });
+                        (item.reactionBloodList || []).map((rbl:any,idx:number)=>{
+                            if(options.length===idx){
+                                options.push({reactionBloodOption:rbl.patientName+' '+rbl.bedNo+'床'})
+                            }else{
+                                options[idx].reactionBloodOption=rbl.patientName+' '+rbl.bedNo+'床'
+                            }
+                            
+                        });
+                        item.options = options
+                    })
+                    
+                }
+                setData(countDatas || [])
                 setSummaryData(res.data.summaryData || {})
             }
         }).catch(() => {
@@ -123,6 +143,38 @@ export default observer(function BloodTransfusion() {
     useEffect(() => {
         getList()
     }, [])
+
+    const expandedRowRender = (record: any): JSX.Element=>{
+        const expandedColumns: ColumnProps<IHeaderType>[]=[
+            { title: '序号', dataIndex: '', key: 'empty', width: 50, align: 'center' },
+            {title: '科室名称', dataIndex: '', key: 'empty2', width: 150, align: 'center'},
+            {
+                title: '输血总人次',
+                width: 100,
+                dataIndex: 'bloodOption',
+                align: 'center',
+            },
+            {
+                title: '发生输血不良反应人次',
+                width: 140,
+                dataIndex: 'reactionBloodOption',
+                align: 'center',
+            },
+            { 
+                title: '发生输血不良反应率(%)',
+                width: 140,
+                dataIndex: 'effectRate',
+                align: 'center',
+            }
+        ]
+        return <BaseTable className='subTable'
+        bordered={false} 
+        scroll={{y: false}}
+        columns={expandedColumns} 
+        showHeader={false} 
+        pagination={false} 
+        dataSource={record.options} />
+    }
 
     return (
         <Wrapper>
@@ -153,7 +205,9 @@ export default observer(function BloodTransfusion() {
                 body={
                     <Spin spinning={loading}>
                         <div className="main-title">患者输血情况统计</div>
-                        {<BaseTable
+                        {<BaseTable 
+                            expandRowByClick={true}
+                            expandedRowRender={expandedRowRender}
                             rowClassName={(record, index) => {
                                 if (Object.values(record).indexOf('汇总') > -1) {
                                     return 'fixedTr'
@@ -200,7 +254,15 @@ const Wrapper = styled.div`
     background-color: rgba(247, 247, 247, 1);
 
   }
-
+  .subTable {
+    background-color: rgba(47, 46, 63, 0.08);
+  }
+  #baseTable{
+    padding: 0;
+    .ant-table-wrapper td{
+        padding: 0;
+    }
+  }
 `
 const FooterElement = styled.div`
   display: flex;
