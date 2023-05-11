@@ -360,7 +360,7 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
                     >
                       不适用
                     </Radio>}
-                  </Radio.Group>
+                  </Radio.Group> 
                   {detailData.master.useScore ? <div className="sub-item-list">
                     {!isWhyx && item.qcItemValue === "否" && <React.Fragment>
                       {(item.subItemList || []).map((subItem: any, subItemIdx: number) => (
@@ -431,6 +431,21 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
                         placeholder="备注" />
                     </div>
                   </div> : ''}
+                  {appStore.hisMatch({
+                    map:{
+                      '925':!detailData.master.useScore && <div className="sub-item-list">
+                      <div style={{ marginTop: 5 }}>
+                        <Input.TextArea
+                          value={item.remark}
+                          readOnly
+                          style={{ resize: 'none' }}
+                          placeholder="备注" />
+                      </div>
+                    </div>,
+                      other:''
+                    },
+                    vague:true
+                  })}
 
                   <div className="itemAttachmentCon">
                     {item.attachUrls && (
