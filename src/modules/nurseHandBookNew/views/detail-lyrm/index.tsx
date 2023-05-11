@@ -8,6 +8,7 @@ import { nurseHandbookRecordModel as model } from './model'
 import { Button, Spin } from 'antd'
 import useAuditStatus from 'src/hooks/useAuditStatus'
 import { tableConConfig } from './config'
+import Upload from './components/upload'
 
 export interface Props {
 }
@@ -55,7 +56,6 @@ export default observer(function (props: Props) {
       model.reset()
     }
   }, [])
-  
 
   return (
     <Wrapper>
@@ -74,10 +74,13 @@ export default observer(function (props: Props) {
             <Button onClick={model.onPrint}>打印</Button>
             {btnList}
           </>}
+          bottomCon={
+            model?.detail?.record?.menuCode === 'LYHZSC_4_7' && <Upload uploadable={curNode.canHandle && (curNode.nodeCode === 'commit' || curNode.nodeCode === undefined)} list={model.editorData?.v5 ? JSON.parse(model.editorData?.v5) : []} setList={(e: any) => model.handleEditorChange({ ...model.editorData, v5: JSON.stringify(e) })} />
+          }
         />
         <MainWrapper>
           <AuditProcess process={model.detail?.nodeList || []} />
-          <div className={(model.allowEdit ? '': 'con--disabled ') + 'main-ctx'}>
+          <div className={(model.allowEdit ? '' : 'con--disabled ') + 'main-ctx'}>
             {model.configFn && <model.configFn.Component />}
           </div>
         </MainWrapper>

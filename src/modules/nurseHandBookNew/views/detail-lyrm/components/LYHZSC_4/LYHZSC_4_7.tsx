@@ -54,9 +54,9 @@ export default observer(function (props: Props) {
           记录人：
           <Input className='cell-ipt' value={model.editorData?.v3} onChange={(e) => onChange(e, 'v3')} />
         </div>
-        <div className='multi_underline' style={{height: '90px'}}>
+        <div className=''>
           参加人员：（需本人亲自签名）：
-          {/* <Input className='cell-ipt' value={model.editorData?.v4} onChange={(e) => onChange(e, 'v4')} /> */}
+          <TextArea className='cell-ipt' autosize={{ minRows: 2 }} value={model.editorData?.v4} onChange={(e) => onChange(e, 'v4')} />
         </div>
         <div className="label">
           会议纪要：

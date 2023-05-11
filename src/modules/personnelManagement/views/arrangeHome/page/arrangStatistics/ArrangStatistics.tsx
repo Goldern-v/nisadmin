@@ -34,7 +34,6 @@ export default observer(function ArrangStatistics() {
       name: "工时统计"
     }
   ];
-  console.log('test-dataSource', Object.getOwnPropertyNames(dataSource[0] || {}))
   const columns_1: ColumnProps<any>[] | any = [
     {
       title: "序号",

@@ -98,7 +98,7 @@ export default function PersonnelManagementView() {
 
   return (
     <Wrapper>
-      <LeftMenuPage leftMenuConfig={list(leftMenuConfig)} />
+      <LeftMenuPage showSwitch={'lyrm' === appStore.HOSPITAL_ID} leftMenuConfig={list(leftMenuConfig)} />
     </Wrapper>
   );
 }

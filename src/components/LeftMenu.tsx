@@ -4,6 +4,7 @@ import { Menu } from "antd";
 import { appStore } from "src/stores";
 import { traineeShiftModal } from "../modules/nurseFiles/view/traineeShift/TraineeShiftModal";
 import { observer } from "mobx-react-lite";
+import { LeftMenuConIn } from "./LeftMenuPage";
 
 const SubMenu = Menu.SubMenu;
 
@@ -13,9 +14,11 @@ export interface Props {
   /**菜单项目为hidden时是否匹配下一个项目 */
   stopActiveNext?: boolean;
   beforeRouter?: (payload: any) => boolean; //跳转前方法 返回boolean代表是否跳转
+  showLeft?: boolean
 }
 
 export default observer(function LeftMenu(props: Props) {
+  const { showLeft = true } = props
   const [openKeys, setOpenKeys]: any = useState("");
 
   const handleSelect = (e: any) => {
@@ -144,7 +147,7 @@ export default observer(function LeftMenu(props: Props) {
   ) || [[], []];
 
   return (
-    <Wrapper id="left-menu-con">
+    <Wrapper id="left-menu-con" showLeft={showLeft}>
       {/* {JSON.stringify(openKeys)} */}
       <Menu
         onSelect={handleSelect}
@@ -169,7 +172,7 @@ const sub_ul_bg = "#fff"; // 二级菜单背景颜色
 const hover_li_bg = "#fff"; // 划过item背景颜色
 const menu_li_bottom_line = "1px solid #E5E5E5"; // 划过item背景颜色
 const sub_li_bottom_line = "1px dashed #E5E5E5"; // 划过item背景颜色
-const Wrapper = styled.div`
+const Wrapper = styled.div<LeftMenuConIn>`
   &#left-menu-con {
     * {
       font-size: ${normal_text_size};
@@ -181,7 +184,7 @@ const Wrapper = styled.div`
     bottom: 0;
     overflow: auto;
     background: ${menu_bg_color};
-    width: 200px;
+    width: ${(p) => p.showLeft ? '200px' : 0};
     border-right: 1px solid #cccccc;
     .ant-menu-inline {
       /* width: calc(100% + 0px); */

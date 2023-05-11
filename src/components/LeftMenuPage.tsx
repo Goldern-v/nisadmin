@@ -1,9 +1,9 @@
 import LeftMenu from "src/components/LeftMenu";
 import styled from "styled-components";
-import React from "react";
+import React, { useState } from "react";
 import { appStore } from "src/stores";
 import { KeepAlive } from "src/vendors/keep-alive";
-import { Spin } from "antd";
+import { Icon, Spin } from "antd";
 
 // 引入自动推送设置页面
 export interface Props {
@@ -11,13 +11,14 @@ export interface Props {
   /**菜单项目为hidden时是否匹配下一个项目 */
   stopActiveNext?: boolean,
   loading?: boolean,
-  stopRedirect?: boolean
+  stopRedirect?: boolean,
+  /**是否展示按钮 */
+  showSwitch?: boolean
 }
 
-// const leftMenuConfig = []
-
 export default function LeftMenuPage(props: Props) {
-  let { leftMenuConfig, loading, stopRedirect } = props;
+  let { leftMenuConfig, loading, stopRedirect, showSwitch = false } = props;
+  const [showLeft, setShowLeft] = useState(true)
   let currentRoutePath = appStore.location.pathname || "";
   let currentRoute = getTargetObj(leftMenuConfig, "path", currentRoutePath);
   // 筛选目标对象
@@ -50,7 +51,7 @@ export default function LeftMenuPage(props: Props) {
   // console.log(currentRoute, 'currentRoute')
   return (
     <Wrapper>
-      <LeftMenuCon>
+      <LeftMenuCon showLeft={showLeft}>
         {loading && (
           <Spin
             spinning={true}
@@ -59,8 +60,11 @@ export default function LeftMenuPage(props: Props) {
           </Spin>
         )}
         {!loading && currentRoute && currentRoute.component && (
-          <LeftMenu config={leftMenuConfig} stopActiveNext={!!props.stopActiveNext} />
+          <LeftMenu showLeft={showLeft} config={leftMenuConfig} stopActiveNext={!!props.stopActiveNext} />
         )}
+        {showSwitch && <div className="btn" onClick={() => setShowLeft(!showLeft)}>
+          <Icon type={showLeft ? 'right' : 'left'} style={{ lineHeight: '73px',fontSize: '12px'}} />
+        </div>}
       </LeftMenuCon>
       <MainCon
         style={currentRoute && currentRoute.style ? currentRoute.style : {}}
@@ -97,9 +101,22 @@ const Wrapper = styled.div`
     background: #eee;
   }
 `;
-
-const LeftMenuCon = styled.div`
-  width: 200px;
+export interface LeftMenuConIn {showLeft: boolean}
+const LeftMenuCon = styled.div<LeftMenuConIn>`
+  width: ${(p) => p.showLeft ? `200px`: 0};
+  position: relative;
+  .btn {
+    position: absolute;
+    top: 49%;
+    left: 100%;
+    width: 10px;
+    height: 73px;
+    background-color: #fff;
+    border-top-right-radius: 40px;
+    border-bottom-right-radius: 40px;
+    box-shadow: 2px 1px 10px 1px #ccc;
+    cursor: pointer;
+  }
 `;
 const MainCon = styled.div`
   flex: 1;
@@ -109,27 +126,27 @@ const MainCon = styled.div`
   flex-direction: column;
 `;
 
-const TopCon = styled.div`
-  height: 45px;
-  background: #f8f8f8;
-  box-shadow: 3px 3px 6px 0px rgba(0, 0, 0, 0.15);
-  border-bottom: 1px solid #dbe0e4;
-  font-size: 13px;
-  position: relative;
-  font-size: 16px;
-  color: #333333;
-  padding: 0 20px;
-  display: flex;
-  align-items: center;
-  z-index: 1;
-`;
+// const TopCon = styled.div`
+//   height: 45px;
+//   background: #f8f8f8;
+//   box-shadow: 3px 3px 6px 0px rgba(0, 0, 0, 0.15);
+//   border-bottom: 1px solid #dbe0e4;
+//   font-size: 13px;
+//   position: relative;
+//   font-size: 16px;
+//   color: #333333;
+//   padding: 0 20px;
+//   display: flex;
+//   align-items: center;
+//   z-index: 1;
+// `;
 
-const TableCon = styled.div`
-  flex: 1;
-  margin: 15px;
-  background: #fff;
-  border: 1px solid rgba(228, 228, 228, 1);
-`;
+// const TableCon = styled.div`
+//   flex: 1;
+//   margin: 15px;
+//   background: #fff;
+//   border: 1px solid rgba(228, 228, 228, 1);
+// `;
 
 const FullCon = styled.div`
   width: 100%;
