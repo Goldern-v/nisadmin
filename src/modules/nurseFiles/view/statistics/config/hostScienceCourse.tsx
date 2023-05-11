@@ -4,6 +4,7 @@ import { PageObj } from './getPageObj'
 import { statisticsViewModal } from '../StatisticsViewModal'
 import { DoCon } from 'src/components/BaseTable'
 import Zimage from 'src/components/Zimage'
+import { appStore } from 'src/stores'
 
 export const pageObj: PageObj = {
   title: '主持科研课题',
@@ -19,7 +20,7 @@ export const pageObj: PageObj = {
     {
       label: '科研课题',
       type: 'input',
-      name: 'goName'
+      name: 'zzwy' === appStore.HOSPITAL_ID ? 'name' : 'goName'
     },
 
     {

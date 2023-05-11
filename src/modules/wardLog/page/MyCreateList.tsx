@@ -113,7 +113,7 @@ export default observer(function MyCreateList() {
     wardLogService
       .findLog({
         ...pageOptions,
-        wardCode: deptSelect,
+        wardCode: status === '2' ? authStore.defaultDeptCode : deptSelect,
         startDate,
         endDate,
         templateId: selectedTemplate,

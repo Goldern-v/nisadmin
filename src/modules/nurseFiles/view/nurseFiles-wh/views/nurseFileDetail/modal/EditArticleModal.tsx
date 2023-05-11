@@ -134,15 +134,18 @@ export default function EditArticleModal(props: Props) {
                 <Input />
               </Form.Field>
             </Col>
-            <Col span={24}>
-              <Form.Field label={`作者`} name='articleAuthor'>
-                <Select>
-                  {nurseFileDetailViewModal.getDict('作者').map((item) => (
-                    <Option value={item.name} key={'zuozhe-' + item.name}>{item.name}</Option>
-                  ))}
-                </Select>
-              </Form.Field>
-            </Col>
+            {
+              'zzwy' !== appStore.HOSPITAL_ID &&
+              <Col span={24}>
+                <Form.Field label={`作者`} name='articleAuthor'>
+                  <Select>
+                    {nurseFileDetailViewModal.getDict('作者').map((item) => (
+                      <Option value={item.name} key={'zuozhe-' + item.name}>{item.name}</Option>
+                    ))}
+                  </Select>
+                </Form.Field>
+              </Col>
+            }
             <Col span={24}>
               <Form.Field label={`期刊号`} name='periodicalNumber'>
                 <Input />
