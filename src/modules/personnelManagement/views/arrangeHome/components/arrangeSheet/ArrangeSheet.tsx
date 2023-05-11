@@ -173,32 +173,40 @@ export default observer(function ArrangeSheet(props: Props) {
       },
       vague: true
     }),
-    {
-      title: "序号",
-      dataIndex: "sortValue",
-      fixed: "left",
-      width: 40,
-      key: 'sortValue',
-      align: "center",
-      render: (text: string, record: any,rowIndex:number) => {
-        if(appStore.HOSPITAL_ID == "zhzxy"){
-          return <span>{rowIndex+1}</span> 
-        }
-        return isEditable ? (
-          <Input
-            type="text"
-            style={{ background: "#fff" }}
-            defaultValue={record.sortValue}
-            key={record.sortValue}
-            onChange={(e: any) => {
-              record.sortValue = e.target.value;
-            }}
-            max={100}
-            min={-100}
-          />
-        ) : <span>{record.sortValue}</span>;
+    ...appStore.hisMatch({
+      map: {
+        'lyrm': [],
+        other: [
+
+          {
+            title: "序号",
+            dataIndex: "sortValue",
+            fixed: "left",
+            width: 40,
+            key: 'sortValue',
+            align: "center",
+            render: (text: string, record: any,rowIndex:number) => {
+              if(appStore.HOSPITAL_ID == "zhzxy"){
+                return <span>{rowIndex+1}</span> 
+              }
+              return isEditable ? (
+                <Input
+                  type="text"
+                  style={{ background: "#fff" }}
+                  defaultValue={record.sortValue}
+                  key={record.sortValue}
+                  onChange={(e: any) => {
+                    record.sortValue = e.target.value;
+                  }}
+                  max={100}
+                  min={-100}
+                />
+              ) : <span>{record.sortValue}</span>;
+            }
+          },
+        ]
       }
-    },
+    }),
     ...nysGroupName,
     ...appStore.hisMatch({
       map: {
@@ -224,7 +232,7 @@ export default observer(function ArrangeSheet(props: Props) {
     }),
     ...appStore.hisMatch({
       map: {
-        'wjgdszd': [],
+        'wjgdszd,lyrm': [],
         other: [{
           title: "工号",
           dataIndex: "empNo",
@@ -232,7 +240,8 @@ export default observer(function ArrangeSheet(props: Props) {
           fixed: "left",
           align: "center",
         }],
-      }
+      },
+      vague: true
     }),
     //  分组名称 分组颜色
     ...appStore.hisMatch({
@@ -318,6 +327,7 @@ export default observer(function ArrangeSheet(props: Props) {
             align: "center",
           },
         ],
+        lyrm: [],
         other: [
           {
             title: "职称",
@@ -1004,6 +1014,7 @@ useLayoutEffect(() => {
                 zhzxy: 9,
                 fssdy: 7,
                 'sdlj,qzde': 3,
+                lyrm: 0,
                 other: 2
               },
               vague: true
@@ -1053,7 +1064,6 @@ const moveRow = (dragIndex: number, hoverIndex: number) => {
       sheetViewModal.sheetTableData = update(sheetViewModal.sheetTableData, {
         $splice: [[dragIndex, 1], [hoverIndex, 0, dragRowWhyx]],
       });
-      console.log('test-sheet', sheetViewModal.sheetTableData)
       break;
     case 'zhzxy':
         try {
@@ -1269,9 +1279,6 @@ const Wrapper = styled.div`
     td {
       word-break: break-all;
     }
-    /* tr {
-      cursor: auto !important;
-    } */
     .ant-table-column-title {
       font-size: 12px !important;
     }

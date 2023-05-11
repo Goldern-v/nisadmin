@@ -1,4 +1,3 @@
-import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 import BaseLayout from '../components/BaseLayout'
@@ -8,14 +7,9 @@ import { observer } from 'mobx-react-lite'
 import { ColumnProps } from 'antd/lib/table'
 import createModal from 'src/libs/createModal'
 
-import { globalModal } from 'src/global/globalModal'
-import { authStore } from 'src/stores'
-import limitUtils from '../utils/limit'
 import Zimage from 'src/components/Zimage'
-import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
 import EditArticleModal from '../modal/EditArticleModal'
 import { nurseFilesService } from '../../../services/NurseFilesService'
-import { openAuditModal } from '../config/auditModalConfig'
 import { isSelf,editFlag } from './BaseInfo'
 import Do from '../components/Do'
 
@@ -165,14 +159,20 @@ export default observer(function Awards() {
       width: 200,
       align: 'center'
     },
-    {
-      title: '作者',
-      dataIndex: 'articleAuthor',
-      key: 'articleAuthor',
-      width: 80,
-      align: 'center',
-    },
-    
+    ...appStore.hisMatch({
+      map: {
+        zzwy: [],
+        other: [
+          {
+            title: '作者',
+            dataIndex: 'articleAuthor',
+            key: 'articleAuthor',
+            width: 80,
+            align: 'center',
+          },
+        ]
+      }
+    }),    
     {
       title: '期刊号',
       dataIndex: 'periodicalNumber',
@@ -250,4 +250,3 @@ export default observer(function Awards() {
     </BaseLayout>
   )
 })
-const Wrapper = styled.div``

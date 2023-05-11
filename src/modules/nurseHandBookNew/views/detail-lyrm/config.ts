@@ -170,7 +170,7 @@ export default function config(code: string) {
       LYHZSC_4_7: {
         initContent() {
           const self: any = this;
-          self.handleEditorChange(createObjV(4));
+          self.handleEditorChange(createObjV(6));
         },
         Component: LYHZSC_4_7,
       },

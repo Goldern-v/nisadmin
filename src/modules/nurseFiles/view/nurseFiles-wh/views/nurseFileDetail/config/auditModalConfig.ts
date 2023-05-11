@@ -378,13 +378,25 @@ export function openAuditModal(
               卷号: `volumeNumber`,
               起止页码: `pageNumber`,
             },
-            {
-              文章类别: `articleType`,
-              作者: `articleAuthor`,
-            },
-            {
-              论文收录网站: `influencingFactors`,
-            },
+            ...appStore.hisMatch({
+              map: {
+                zzwy: [
+                  {
+                    文章类别: `articleType`,
+                    论文收录网站: `influencingFactors`,
+                  },
+                ],
+                other: [
+                  {
+                    文章类别: `articleType`,
+                    作者: `articleAuthor`,
+                  },
+                  {
+                    论文收录网站: `influencingFactors`,
+                  },  
+                ]
+              }
+            })
           ],
           fileFormat: {
             文章扫描件: `urlImageOne`,

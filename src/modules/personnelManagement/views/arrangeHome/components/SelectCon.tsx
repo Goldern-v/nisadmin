@@ -17,6 +17,7 @@ import { arrangeService } from '../services/ArrangeService'
 import { sheetViewModal } from '../viewModal/SheetViewModal'
 import { printModal } from '../viewModal/PrintModal'
 import { Obj } from 'src/libs/types'
+import { currentMonth } from 'src/utils/date/rangeMethod'
 
 export interface Props {
 }
@@ -304,18 +305,34 @@ export default observer(function SelectCon() {
   };
 
   let handleStatusChange = () => {
-    setDate([
-      moment(getMonday(), "YYYY-MM-DD"),
-      moment(getSunday(), "YYYY-MM-DD")
-    ]);
-    selectViewModal.setParams(
-      "startTime",
-      moment(getMonday(), "YYYY-MM-DD").format("YYYY-MM-DD")
-    );
-    selectViewModal.setParams(
-      "endTime",
-      moment(getSunday(), "YYYY-MM-DD").format("YYYY-MM-DD")
-    );
+    if ('lyrm' === appStore.HOSPITAL_ID) {
+      const [m1, m2] = currentMonth()
+      setDate([
+        m1,
+        m2
+      ]);
+      selectViewModal.setParams(
+        "startTime",
+        m1.format("YYYY-MM-DD")
+      );
+      selectViewModal.setParams(
+        "endTime",
+        m2.format("YYYY-MM-DD")
+      );
+    } else {
+      setDate([
+        moment(getMonday(), "YYYY-MM-DD"),
+        moment(getSunday(), "YYYY-MM-DD")
+      ]);
+      selectViewModal.setParams(
+        "startTime",
+        moment(getMonday(), "YYYY-MM-DD").format("YYYY-MM-DD")
+      );
+      selectViewModal.setParams(
+        "endTime",
+        moment(getSunday(), "YYYY-MM-DD").format("YYYY-MM-DD")
+      );
+    }
     selectViewModal.setParams("group", "");
     setIsInit(false);
   };

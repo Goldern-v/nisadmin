@@ -1,12 +1,10 @@
 import styled from "styled-components";
-import React, { useState, useEffect, useLayoutEffect } from "react";
+import React, { useState, useLayoutEffect } from "react";
 import {
   Modal,
   Input,
-  Button,
   Radio,
   DatePicker,
-  Select,
   Row,
   Col,
   message
@@ -20,8 +18,8 @@ import { ArrangeItem } from "../types/Sheet";
 import moment from "moment";
 import { appStore } from "src/stores";
 
-const Option = Select.Option;
-
+/**工时支持编辑且不与开始结束时间联动 */
+const CUSTOM_EFFECTIVE_TIME = ['dghl', 'fqfybjy', 'whsl', 'zzwy'].includes(appStore.HOSPITAL_ID)
 export interface Props extends ModalComponentProps {
   /** 表单提交成功后的回调 */
   onOkCallBack?: (value?: any) => {};
@@ -72,7 +70,7 @@ export default function EditEffectiveTimeModal(props: Props) {
   };
 
   const onFormChange = (name: string, value: any, form: Form<any>) => {
-    if (['dghl', 'fqfybjy'].includes(appStore.HOSPITAL_ID)) return
+    if (CUSTOM_EFFECTIVE_TIME) return
     let time_1 = form.getField("startDate_2");
     let time_2 = form.getField("endDate_2");
     if (time_1 && time_2 && (name == "startDate_2" || name == "endDate_2")) {
@@ -170,7 +168,7 @@ export default function EditEffectiveTimeModal(props: Props) {
           </Col>
           <Col span={24}>
             <Form.Field label={`工时`} name="effectiveTime" required>
-              <InputNumber readOnly={!['dghl', 'fqfybjy','whsl'].includes(appStore.HOSPITAL_ID)} />
+              <InputNumber readOnly={!CUSTOM_EFFECTIVE_TIME} />
             </Form.Field>
           </Col>
           <Col span={24}>

@@ -116,7 +116,6 @@ export default observer(function FilterCon() {
     if (['925'].includes(appStore.HOSPITAL_ID)) {
       postObj.identityType = value.identityType
       postObj.rewardName = value.rewardName
-      console.log('test-', value.goHospitalWorkDate)
       const [d1, d2] = value.goHospitalWorkDate || []
       postObj.goHospitalWorkDateStart = d1 ? d1.format(dateFormat3) : ''
       postObj.goHospitalWorkDateEnd = d2 ? d1.format(dateFormat3) : ''
