@@ -32,6 +32,7 @@ import { sheetViewModal } from '../../viewModal/SheetViewModal'
 import WeekBalanceHour from "./WeekBalanceHour";
 // import {toJS} from "mobx"; //本周结余时数
 import CommonHour from './CommonHour'
+import { selectViewModal } from '../../viewModal/SelectViewModal'
 export interface Props {
   /** 编辑模式 */
   isEdit: boolean;
@@ -689,6 +690,19 @@ const handleDelete = (record: any) => {
     centered: true,
     maskClosable: true,
     onOk: () => {
+      if ('sdlj' === appStore.HOSPITAL_ID) {
+        let data = {
+          startTime: moment(selectViewModal.params.startTime).format("YYYY-MM-DD"),
+          endTime: moment(selectViewModal.params.endTime).format("YYYY-MM-DD"),
+          deptCode: record.deptCode,
+          empNo: record.empNo
+        };
+        service.scheduleUserApiService.deleteSchSetting(data).then((res) => {
+          message.success("删除成功");
+          sheetViewModal.init();
+        });
+        return
+      }
       service.scheduleUserApiService.delete(record.id).then(() => {
         message.success("删除成功");
         sheetViewModal.init();
