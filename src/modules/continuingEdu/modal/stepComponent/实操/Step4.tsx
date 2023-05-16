@@ -60,7 +60,14 @@ export default observer(function Step4() {
       let praticalList: any = [];
       res.data.list.map((item: any) => {
         let operObj = {
-          value: ['whyx', 'whhk'].includes(appStore.HOSPITAL_ID) ? `${item.paperName}/${item.chapter}` : `${item.paperName}`,
+          value: appStore.hisMatch({
+            map: {
+              'whyx': `${item.paperName}/${item.chapter}-${item.technology}`,
+              'whhk': `${item.paperName}/${item.chapter}`,
+              other: `${item.paperName}`,
+            },
+            vague: true,
+          }),
           code: item.id,
           paperName: item.paperName,
           chapter: item.chapter,

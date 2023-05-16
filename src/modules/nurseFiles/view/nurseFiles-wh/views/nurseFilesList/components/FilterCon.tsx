@@ -118,7 +118,7 @@ export default observer(function FilterCon() {
       postObj.rewardName = value.rewardName
       const [d1, d2] = value.goHospitalWorkDate || []
       postObj.goHospitalWorkDateStart = d1 ? d1.format(dateFormat3) : ''
-      postObj.goHospitalWorkDateEnd = d2 ? d1.format(dateFormat3) : ''
+      postObj.goHospitalWorkDateEnd = d2 ? d2.format(dateFormat3) : ''
     }
     statisticsViewModal.selectedDeptCode = value.deptCode;
     nurseFilesListViewModel.postObj = postObj;

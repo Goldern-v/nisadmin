@@ -154,17 +154,11 @@ export default observer(function Analysis() {
       key: "statusName",
       dataIndex: "statusName",
       width: 80,
-      align: "center"
-      // render: (status: any) => {
-      //   switch (status) {
-      //     case 0:
-      //       return <span style={{ color: "red" }}>保存</span>;
-      //     case 1:
-      //       return "发布";
-      //     default:
-      //       return "-";
-      //   }
-      // },
+      align: "center",
+      render: (value: any, record: any) => {
+        if ('whyx' === appStore.HOSPITAL_ID && level == 1 && record.status === 0) return '待发布'
+        return value
+      },
     },
     {
       title: "操作",
@@ -335,7 +329,7 @@ export default observer(function Analysis() {
           }}
         >
           <Option value="">全部</Option>
-          <Option value="0">待提交</Option>
+          <Option value="0">{'whyx' === appStore.HOSPITAL_ID && level == 1 ? '待发布' : '待提交'}</Option>
           {statusList.map((item: any) => (
               <Option value={item.stateNo} key={item.stateNo}>
                 {item.unHandledMessage}

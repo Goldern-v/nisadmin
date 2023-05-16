@@ -330,6 +330,20 @@ const columns: ColumnProps<any>[] = [
     width: 70,
     align: 'center'
   },
+  ...appStore.hisMatch({
+    map: {
+      '925': [
+        {
+          title: '来院工作时间',
+          dataIndex: 'goHospitalWorkDate',
+          key: 'goHospitalWorkDate',
+          width: 100,
+          align: 'center'
+        },
+      ],
+      other: []
+    }
+  }),
   {
     title: '护士执业证书编号',
     dataIndex: 'zyzsNumber',

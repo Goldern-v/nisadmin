@@ -123,7 +123,7 @@ export default observer(function AnalysisDetail() {
         <div className='title'>{report.reportName}</div>
         <div className='aside'>
           <span>
-            由{report.creatorName}创建{report.updateTime && <span>，最后修改于{report.updateTime}{report.status=='0'?<span className='status_save'>保存</span>:<span className='status_publish'>发布</span>}</span>}
+            由{report.creatorName}创建{report.updateTime && <span>，最后修改于{report.updateTime}{report.status=='0'?<span className='status_save'>{'whyx' === appStore.HOSPITAL_ID && queryObj?.level === '1' ? '待发布' : '保存'}</span>:<span className='status_publish'>发布</span>}</span>}
           </span>
         </div>
         <div className='tool-con'>
@@ -133,7 +133,7 @@ export default observer(function AnalysisDetail() {
             <Button onClick={onCancelPublish}>撤销</Button>
           )}
           { report.status == '0' && checkRole() && (
-            <Button onClick={onPublish}>发布 </Button>
+            <Button onClick={onPublish}>发布</Button>
           )}
 
 

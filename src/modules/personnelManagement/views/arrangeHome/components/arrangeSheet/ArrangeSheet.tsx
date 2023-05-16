@@ -84,7 +84,7 @@ export default observer(function ArrangeSheet(props: Props) {
       : [];
 
   const nysHandleDel =
-    appStore.HOSPITAL_ID == "nys" && isEdit
+    ['nys', 'sdlj'].includes(appStore.HOSPITAL_ID) && isEdit
       ? [
         {
           title: "操作",
@@ -177,7 +177,6 @@ export default observer(function ArrangeSheet(props: Props) {
       map: {
         'lyrm': [],
         other: [
-
           {
             title: "序号",
             dataIndex: "sortValue",
@@ -703,7 +702,6 @@ if (["wh", "gzsrm", "gxjb", "fsxt", '925', "whyx", 'whhk', 'sdlj', 'fssdy', "gdt
   columns.push(
     ...appStore.hisMatch({
       map: {
-        //,sdlj
         'sdlj,qzde': [],//佛山杏坛去除累计结余添加本周结余
         other: [
           {
@@ -725,7 +723,6 @@ if (["wh", "gzsrm", "gxjb", "fsxt", '925', "whyx", 'whhk', 'sdlj', 'fssdy', "gdt
     }),
     ...appStore.hisMatch({
       map: {
-        //,sdlj
         'fsxt,925,sdlj,zzwy,qzde': [],//佛山杏坛去除累计结余添加本周结余
         other: [
           {
@@ -769,7 +766,7 @@ if (["wh", "gzsrm", "gxjb", "fsxt", '925', "whyx", 'whhk', 'sdlj', 'fssdy', "gdt
     }),
     ...appStore.hisMatch({
       map: {
-        'sdlj,nfsd,qzde': [
+        'nfsd,qzde': [
           {
             title: (
               <div>
@@ -783,6 +780,22 @@ if (["wh", "gzsrm", "gxjb", "fsxt", '925', "whyx", 'whhk', 'sdlj', 'fssdy', "gdt
               return <PeriodHour id={record.id} />;
             },
           }
+        ],
+        'sdlj': [
+          {
+            title: (
+              <div>
+                <div>例假结余</div>
+                <div>（天）</div>
+              </div>
+            ),
+            width: 70,
+            align: "center",
+            render(text: string, record: any) {
+              return <PeriodHour id={record.id} />;
+            },
+          },
+          ...nysHandleDel
         ],
         other: [
           {
@@ -802,7 +815,6 @@ if (["wh", "gzsrm", "gxjb", "fsxt", '925', "whyx", 'whhk', 'sdlj', 'fssdy', "gdt
       },
       vague: true
     }),
-
   );
 }
 
@@ -1007,13 +1019,13 @@ useLayoutEffect(() => {
           (sheetViewModal.dateList.length +
             appStore.hisMatch({
               map: {
-                hj: 3,
+                'hj,qzde': 3,
                 fqfybjy: 5,
                 nys: (isEdit ? 6 : 5),
                 'wjgdszd,wh,gxjb,jmfy,dghl,gzsrm,fsxt,925,whyx,whhk,gdtj,lyyz,qhwy,whsl,ytll,whhk,nfsd,dglb,zzwy,dghm': 6,
                 zhzxy: 9,
                 fssdy: 7,
-                'sdlj,qzde': 3,
+                'sdlj': 4,
                 lyrm: 0,
                 other: 2
               },
