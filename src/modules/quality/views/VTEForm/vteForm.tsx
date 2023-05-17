@@ -590,7 +590,7 @@ export default observer(function WritingForm(props: any) {
           }
         },
         {
-          title: '院级签名',
+          title: '院级质控',
           dataIndex: 'hospitalLevelSignature',
           width: 80,
           align: 'center',
