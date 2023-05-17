@@ -336,14 +336,52 @@ export default observer(function WritingForm(props: any) {
       fixed: 'right',
       children: [
         {
-          title: '点击签名',
+          title: '审核签名',
           dataIndex: 'autograph',
           width: 80,
           align: 'center',
           render(text: any, record: any) {
             return (
               <Signature>
-                <span onClick={() => handleSign(text, record)}>{text ? text : '签名'}</span>
+                <span onClick={() => handleSign(text, record,'autograph')}>{text ? text : '签名'}</span>
+              </Signature>
+            )
+          }
+        },
+        {
+          title: '终审签名',
+          dataIndex: 'finalReviewSignature',
+          width: 80,
+          align: 'center',
+          render(text: any, record: any) {
+            return (
+              <Signature>
+                <span onClick={() => {
+                  if(record.autograph=='' || !record.autograph){
+                    message.warning('审核未签名！')
+                    return
+                  }
+                  handleSign(text, record,'finalReviewSignature')
+                  }}>{text ? text : '签名'}</span>
+              </Signature>
+            )
+          }
+        },
+        {
+          title: '院级签名',
+          dataIndex: 'hospitalLevelSignature',
+          width: 80,
+          align: 'center',
+          render(text: any, record: any) {
+            return (
+              <Signature>
+                <span onClick={() => {
+                  if(record.finalReviewSignature=='' || !record.finalReviewSignature){
+                    message.warning('终审未签名！')
+                    return
+                  }
+                  handleSign(text, record,'hospitalLevelSignature')
+                  }}>{text ? text : '签名'}</span>
               </Signature>
             )
           }
@@ -374,6 +412,7 @@ export default observer(function WritingForm(props: any) {
         }
       ]
     })
+    record['autograph'] = authStore.user?.empName
     setTableList(tableData);
     const arrOne = tableData.slice();
     setTableData([])
@@ -381,36 +420,37 @@ export default observer(function WritingForm(props: any) {
 
   }
 
-  const handleSign = (text: any, record: any) => {
+  const handleSign = (text: any, record: any,keyName:string) => {
     if (!text) {
-      saveSign('确认', '签名', record, authStore.user?.empName)
+      saveSign('确认', '签名', record, authStore.user?.empName,keyName)
     } else {
       // saveSign('取消', '取消签名', record, '')
       message.warning(`不能取消签名！`)
     }
   }
 
-  const saveSign = (text: string, sign: string, record:any, empName: string | undefined = '') => {
+  const saveSign = (text: string, sign: string, record:any, empName: string | undefined = '',keyName:string) => {
     confirm({
       title: `${text}签名?`,
       content: '',
       onOk() {
-        writingFormService.saveNurseVet({
+        writingFormService.saveNurseVetNew({
           formName: '广州市花都人民医院非术科VTE质量表',
           wardCode: selectedDept,
           listMonth: moment(date).format("MM"),
           listYear: moment(date).format("YYYY"),
-          list: [
-            {
-              formId: record.ID,
-              isAppropriate: record.isAppropriate,
-              autograph: empName
-            }
-          ]
+          ids:[record.ID]
+          // list: [
+          //   {
+          //     formId: record.ID,
+          //     isAppropriate: record.isAppropriate,
+          //     autograph: empName
+          //   }
+          // ]
         }).then((res) => {
           if (res.code === '200') {
             message.success(`${sign}成功！`)
-            record.autograph = empName
+            record[keyName] = empName
             setTableList(tableData);
             const arrOne = tableData.slice();
             setTableData([])
@@ -528,19 +568,22 @@ export default observer(function WritingForm(props: any) {
   // }
 
   const batchSign = () => {
-    let listArr = checkData.map((row: any) => {
-      return {
-        formId: row.ID,
-        isAppropriate: row.isAppropriate,
-        autograph: authStore.user?.empName
-      }
-    })
-    writingFormService.saveNurseVet({
+    let ids = checkData.map((row: any)=>row.ID)
+    // return
+    // let listArr = checkData.map((row: any) => {
+    //   return {
+    //     formId: row.ID,
+    //     isAppropriate: row.isAppropriate,
+    //     autograph: authStore.user?.empName
+    //   }
+    // })
+    writingFormService.saveNurseVetNew({
       formName: '广州市花都人民医院非术科VTE质量表',
       wardCode: selectedDept,
       listMonth: moment(date).format("MM"),
       listYear: moment(date).format("YYYY"),
-      list: listArr
+      // list: listArr
+      ids
     }).then((res) => {
       if (res.code === '200') {
         message.success(`批量签名成功！`)
