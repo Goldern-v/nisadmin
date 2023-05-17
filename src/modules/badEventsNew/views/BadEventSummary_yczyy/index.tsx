@@ -77,8 +77,26 @@ export default observer(function BadEventSummary(props) {
       align: 'center'
     },
     {
-      title: '类型',
+      title: '表单名称',
       dataIndex: 'formname',
+      width: 60,
+      align: 'center'
+    },
+    {
+      title: '类型',
+      dataIndex: 'b0046008',
+      width: 60,
+      align: 'center'
+    },
+    {
+      title: '类型:其他',
+      dataIndex: 'b0046009',
+      width: 60,
+      align: 'center'
+    },
+    {
+      title: '具体描述',
+      dataIndex: 'b0046016',
       width: 60,
       align: 'center'
     },
