@@ -184,7 +184,7 @@ export default observer(function QcThreeResult(props) {
     })
   }
 
-  const [activeTab, setActiveTab] = useState(0);
+  const [activeTab, setActiveTab] = useState(1);
   
   const handleShow: (id: string)=> boolean = (id) => {
     if (id === '2') return activeTab === 0
@@ -251,8 +251,9 @@ export default observer(function QcThreeResult(props) {
             buttonStyle="solid"
             onChange={(e) => setActiveTab(e.target.value)}
           >
-            <Radio.Button value={0}>科室问题汇总表</Radio.Button>
             <Radio.Button value={1}>指标监测结果表</Radio.Button>
+            <Radio.Button value={0}>科室问题汇总表</Radio.Button>
+            
           </Radio.Group>
           <div className="contain__title">
             <p>{data.reportName}</p>
@@ -260,6 +261,9 @@ export default observer(function QcThreeResult(props) {
           </div>
           {instance.sectionList.map((item: any, index: number) => {
             if (item.sectionId) {
+              if(activeTab===0 && item.sectionId=='1'){
+                return (<></>)
+              }
               let Components = instance.getSection(item.sectionId)
               if (Components && Components.section && handleShow(item.sectionId)) {
                 return (
