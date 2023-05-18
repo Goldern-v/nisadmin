@@ -14,6 +14,7 @@ import { authStore, appStore, scheduleStore } from "src/stores";
 import moment from 'moment'
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import { Obj } from 'src/libs/types'
 const api = new NurseHandBookService();
 export interface Props { }
 export default observer(function NurseHandBookFormPageAudit(props: any) {
@@ -188,13 +189,18 @@ export default observer(function NurseHandBookFormPageAudit(props: any) {
     computeRow.map((item:any)=>{
       computeList.push({computeRow:JSON.stringify(item)}) 
     })
+    let params: Obj = {}
+    if (queryObj.deptCode) {
+      params.deptCode = queryObj.deptCode
+      params.deptName = authStore.deptList.find(v => queryObj.deptCode === v.code)?.name || ''
+    }
 
     api.saveDraft(queryObj.type, {
       id: queryObj.id || "",
       fileIds: fileIdList,
       manualType: queryObj.manualType,
       title: tableTitle,
-      year:year,
+      year: year,
       formDataDtoList: [
         {
           tableType: "tableHead",
@@ -220,7 +226,8 @@ export default observer(function NurseHandBookFormPageAudit(props: any) {
           tableType: "recordName",
           formContent: submitSign,
         }
-      ]
+      ],
+      ...params
     })
       .then((res) => {
         message.success('保存成功')
@@ -275,12 +282,18 @@ export default observer(function NurseHandBookFormPageAudit(props: any) {
     computeRow.map((item:any)=>{
       computeList.push({computeRow:JSON.stringify(item)}) 
     })
+    let params: Obj = {}
+    if (queryObj.deptCode) {
+      params.deptCode = queryObj.deptCode
+      params.deptName = authStore.deptList.find(v => queryObj.deptCode === v.code)?.name || ''
+    }
+
     api.auditJM(queryObj.type, {
       id: queryObj.id || "",
       manualType: queryObj.manualType,
       fileIds: fileIdList,
       title: tableTitle,
-      year:year,
+      year: year,
       formDataDtoList: [
         {
           tableType:"tableHead",
@@ -306,7 +319,8 @@ export default observer(function NurseHandBookFormPageAudit(props: any) {
           tableType: "recordName",
           formContent: submitSign,
         }
-      ]
+      ],
+      ...params
     })
       .then((res) => {
         message.success('提交成功')
@@ -436,7 +450,7 @@ export default observer(function NurseHandBookFormPageAudit(props: any) {
     });
   }
   const toPrint = () => {
-    let iframeEl = document.getElementById("iframe") as any
+    let iframeEl: any = document.getElementById("iframe")
     if (iframeEl && isPrint) {
       iframeEl.contentWindow.print()
       setIsPrint(false)

@@ -1,9 +1,9 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button } from 'antd'
+import { Button, Row, Col } from 'antd'
 import { PageHeader, PageTitle, Place } from 'src/components/common'
 import { DatePicker, Select, PaginationConfig, Modal, message, Input } from 'src/vendors/antd'
-import { appStore } from 'src/stores'
+import { appStore, authStore } from 'src/stores'
 import BaseTable from 'src/components/BaseTable'
 import { nurseHandBookService } from '../services/NurseHandBookService'
 import { DoCon } from 'src/components/BaseTable'
@@ -12,12 +12,13 @@ import moment from 'moment'
 import { fileDownload } from 'src/utils/file/file'
 import service from 'src/services/api'
 import FormPageBody from '../components/FormPageBody'
+import DeptSelect from 'src/components/DeptSelect'
 export interface Props { }
 export default observer(function NurseHandBook_jmfy() {
   const [weekDate, setWeekDate]: any = useState([moment().startOf("month"), moment().endOf("month")])
   const [dataSource, setDataSource] = useState([])
   const [deptSelect, setDeptSelect] = useState('')
-  const [deptListAll, setDeptListAll] = useState([] as any[])
+  const [deptListAll, setDeptListAll] = useState<any[]>([])
   const [pageLoading, setPageLoading] = useState(false)
   const [searchText, setSearchText] = useState('')
   const [editVisible, setEditVisible] = useState(false)
@@ -119,12 +120,12 @@ export default observer(function NurseHandBook_jmfy() {
     pageSize: 20
   })
   const [total, setTotal]: any = useState(0)
-  const findManualTypeName = (manualType:any) => {
-    let obj:any = typeList.find((item:any) => {
+  const findManualTypeName = (manualType: any) => {
+    let obj: any = typeList.find((item: any) => {
       return item.code == manualType
     })
-    if(obj){
-      return obj.name 
+    if (obj) {
+      return obj.name
     }
   }
   const getTypeList = () => {
@@ -165,24 +166,37 @@ export default observer(function NurseHandBook_jmfy() {
   }
   const handleAddNew = (record: any) => {
     let manualTypeAddNew = ""
+    let deptCode = authStore.selectedDeptCode
     Modal.confirm({
-      title: "请选择类型",
+      title: "新建",
       centered: true,
       content: <div style={{ marginTop: 30 }}>
-        <Select
-          defaultValue={manualTypeAddNew}
-          style={{ width: 280 }}
-          onChange={(val: any) => manualTypeAddNew = val}>
-          {typeList.map((item: any, idx: any) =>
-            <Select.Option key={idx} value={item.code}>{item.name}</Select.Option>)}
-        </Select>
+        <Row>
+          <Col span={7} style={{marginBottom: '10px'}}>类型</Col>
+          <Col span={17} style={{marginBottom: '10px'}}>
+            <Select
+              defaultValue={manualTypeAddNew}
+              style={{ width: '100%' }}
+              onChange={(val: any) => manualTypeAddNew = val}>
+              {typeList.map((item: any, idx: any) =>
+                <Select.Option key={idx} value={item.code}>{item.name}</Select.Option>)}
+            </Select>
+          </Col>
+          <Col span={7}>科室</Col>
+          <Col span={17}>
+            <DeptSelect
+              deptCode={deptCode}
+              style={{ width: '100%' }}
+              onChange={(val) => deptCode = val} />
+          </Col>
+        </Row>
       </div>,
       onOk: () => {
         if (manualTypeAddNew == "") {
           message.error('类型不能为空')
           return
         } else {
-          appStore.history.push(`/NurseHandBookFormPageAudit/?type=${path}&&manualType=${manualTypeAddNew}&&isAdd=true`) //3.0版本
+          appStore.history.push(`/NurseHandBookFormPageAudit/?type=${path}&manualType=${manualTypeAddNew}&isAdd=true&deptCode=${deptCode}`) //3.0版本
         }
       }
     })
@@ -338,7 +352,7 @@ export default observer(function NurseHandBook_jmfy() {
         <span className='label ml-20'>类型:</span>
         <Select
           value={manualType}
-          style={{ width: 220 , marginRight: '235px'}}
+          style={{ width: 220, marginRight: '235px' }}
           onChange={(val: any) => setManualType(val)}>
           <Select.Option value={''}>全部</Select.Option>
           {typeList.map((item: any, idx: any) =>
