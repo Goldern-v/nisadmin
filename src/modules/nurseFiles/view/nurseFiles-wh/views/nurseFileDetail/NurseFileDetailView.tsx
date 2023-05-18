@@ -158,7 +158,24 @@ const ROUTE_LIST = ['zhzxy'].includes(appStore.HOSPITAL_ID) ? [
     component: Article,
     name: '文章'
   },
-
+  ...appStore.HOSPITAL_ID === 'wh' ? [{
+    /** 方明处理 */
+    type: 'personWinning',
+    component: PersonWinning,
+    name: '个人获奖'
+  },
+  {
+    /** 吴敏处理 */
+    type: 'specializNurse',
+    component: SpecializNurse,
+    name: '专科护士'
+  },
+  {
+    /** 方明处理 */
+    type: 'onEducation',
+    component: OnEducation,
+    name: '外出进修'
+  },] : [],
   ...isSdlj ? [
     {
       type: 'continuingEducation_sdlj',
