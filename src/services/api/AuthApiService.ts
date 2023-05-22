@@ -21,7 +21,7 @@ export default class AuthApiService extends BaseApiService {
       if(res.errorCode){
         return res
       }
-      // let regexp = new RegExp("^(?![A-Za-z0-9]+$)(?![a-z0-9\\W]+$)(?![A-Za-z\\W]+$)(?![A-Z0-9\\W]+$)[a-zA-Z0-9\\W]{8,}$") 
+      // let regexp = new RegExp("^(?![A-Za-z0-9]+$)(?![a-z0-9\\W]+$)(?![A-Za-z\\W]+$)(?![A-Z0-9\\W]+$)[a-zA-Z0-9\\W]{8,}$")
       let regexp = new RegExp("^(?![A-Z]*$)(?![a-z]*$)(?![0-9]*$)(?![^a-zA-Z0-9]*$)\\S{8,}$")
       if (['sdlj','dghl', 'qzde'].includes(appStore.HOSPITAL_ID) && !regexp.test(orgPsd||'')) {
         message.error('当前登录密码强度较弱，请修改密码后登录!')
@@ -79,7 +79,7 @@ export default class AuthApiService extends BaseApiService {
     })
   }
   public logout(stopComfirm?: boolean) {
-    
+
     // 退出就删除专科护理质量--佛山杏坛
     sessionStorage.removeItem('specialmenu')
 
@@ -121,11 +121,24 @@ export default class AuthApiService extends BaseApiService {
    * @param oldPswd 旧密码
    * @param newPswd 新密码
    * @param rePswd 确认密码
-   * @returns 
+   * @returns
    */
   //  empNo: string, oldPswd: string, newPswd: string, rePswd: string
   public updatePassword(data:any) {
     return httpLoginToken.post('/updatePassword',data)
+  }
+
+  /**
+   * 重置密码（密码入参已做md5加密）
+   * @param empNo 工号
+   * @param oldPswd 旧密码
+   * @param newPswd 新密码
+   * @param rePswd 确认密码
+   * @returns
+   */
+  //  empNo: string, oldPswd: string, newPswd: string, rePswd: string
+  public updatePasswordMd5(data:any) {
+    return httpLoginToken.post('/updatePasswordMd5',data)
   }
 
   /**
@@ -148,7 +161,7 @@ export default class AuthApiService extends BaseApiService {
   /**
    * 获取配置项字典
    * @param params DictItemIn
-   * @returns 
+   * @returns
    */
   public getDictItem(params: DictItemIn) {
     return httpLoginToken.get(`/dict/common/getDictItem?${qs.stringify(params)}`)

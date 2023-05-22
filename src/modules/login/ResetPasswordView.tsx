@@ -13,6 +13,7 @@ import { Rules } from 'src/components/Form/interfaces'
 // import qs from "qs";
 // import md5 from 'js-md5';
 import Form from 'src/components/Form'
+import md5 from "js-md5";
 export interface Props extends RouteComponentProps { }
 
 export default withRouter(function ResetPasswordView(props: Props) {
@@ -82,7 +83,16 @@ export default withRouter(function ResetPasswordView(props: Props) {
     setIsErrorRe(!isRePswd)
     if (!(isNewPswd && isRePswd) || !value.empNo || !value.oldPswd) return
     setLoginLoading(true)
-    service.authApiService.updatePassword(value).then((res: any) => {
+    let updatePassword;
+    if (['gzsrm'].includes(appStore.HOSPITAL_ID)) {
+      value.oldPswd = md5(value.oldPswd);
+      value.newPswd = md5(value.newPswd);
+      value.rePswd = md5(value.rePswd);
+      updatePassword = service.authApiService.updatePasswordMd5(value);
+    } else {
+      updatePassword = service.authApiService.updatePassword(value);
+    }
+    updatePassword.then((res: any) => {
       if (res.code == 200) {
         message.success(res.desc)
         setTimeout(() => {
