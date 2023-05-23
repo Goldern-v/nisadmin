@@ -20,6 +20,10 @@ import demo1 from "src/demo1";
 import dailyNightRoundsSummaryDetail from 'src/modules/quality/views/dailyNightRoundsSummary/detail'
 import detailLyrm from 'src/modules/nurseHandBookNew/views/detail-lyrm'
 import detailGzsrm from 'src/modules/nurseHandBookNew/views/detail-gzsrm'
+import TheoryExamDetail from 'src/modules/continuingEdu/views/preJobTraining/theoryExam/TheoryExamDetail'
+import TheoryExamScore from 'src/modules/continuingEdu/views/preJobTraining/theoryExam/TheoryExamScore'
+import TrainExamDetail from 'src/modules/continuingEdu/views/preJobManage/trainingExamManage/TrainExamDetail'
+import TrainExamScore from 'src/modules/continuingEdu/views/preJobManage/trainingExamManage/TrainExamScore'
 
 const ScheduleHomeView = lazy(() =>
   import("src/modules/schedule/views/ScheduleHome/ScheduleHomeView")
@@ -1008,6 +1012,10 @@ const routes: RouteItem[] = [
   setLayout("/WardLogDetail", WardLogDetail, layouts.MainLayout),
   setLayout("/WardLogEdit", WardLogEdit),
   setLayout("/checkWardReportView", CheckWardReportView, layouts.MainLayout),
+  setLayout("/theoryExamDetail", TheoryExamDetail, layouts.MainLayout),
+  setLayout("/theoryExamScore", TheoryExamScore, layouts.MainLayout),
+  setLayout("/trainExamDetail", TrainExamDetail, layouts.MainLayout),
+  setLayout("/trainExamScore", TrainExamScore, layouts.MainLayout),
   ...appStore.hisMatch({
     map: {
       jmfy: [

@@ -188,6 +188,13 @@ import NavBar from "src/layouts/components/NavBar";
 import { Icon } from "antd";
 // import { use } from "echarts";
 import DynamicRouting from "./DynamicRouting";
+import PreJobList from "./views/preJobTraining/list/PreJobList";
+import PreJobTrainingPlan from "./views/preJobTraining/trainingPlan/PreJobTrainingPlan";
+import TheoryExam from "./views/preJobTraining/theoryExam/TheoryExam";
+import ImplementRecord from "./views/preJobTraining/implementRecord/ImplementRecord";
+import TrainingExamManage from "./views/preJobManage/trainingExamManage/TrainingExamManage";
+import TrainingPlanManage from "./views/preJobManage/trainingPlanManage/TrainingPlanManage";
+
 
 export default function ContinuingEdu(props: Props) {
   // const [dataList, setDataList] = useState([] as any); // 动态菜单树
@@ -1178,6 +1185,60 @@ const getIcon = (icon: any) => {
           component: PromotionManagement,
         }
         
+      ],
+    },
+    {
+      title: "护士管理-岗前培训",
+      path: "/continuingEdu",
+      icon: <YNXXB />,
+      children: [
+        {
+          title: "人员名单",
+          path: "/continuingEdu/preJobList",
+          component: PreJobList,
+        },
+        {
+          title: "培训计划",
+          path: "/continuingEdu/preJobTrainingPlan",
+          component: PreJobTrainingPlan,
+        },
+        {
+          title: "岗前理论考核",
+          path: "/continuingEdu/preJobTheory",
+          component: TheoryExam,
+        },
+        {
+          title: "岗前实操考核",
+          path: "/continuingEdu/preJobPractice",
+          component: TheoryExam,
+        },
+        {
+          title: "实施记录",
+          path: "/continuingEdu/preJobRecord",
+          component: ImplementRecord,
+        },
+      ],
+    },
+    {
+      title: "护士管理-临床培训",
+      path: "/continuingEdu",
+      icon: <YNXXB />,
+      children: [
+        {
+          title: "培训计划",
+          path: "/continuingEdu/trainingPlanManage",
+          component: TrainingPlanManage,
+        },
+        {
+          title: "临床培训考核",
+          path: "/continuingEdu/trainingExamManage",
+          component: TrainingExamManage,
+        },
+        {
+          title: "临床实操考核",
+          path: "/continuingEdu/practiceExamManage",
+          component: TrainingExamManage,
+        },
       ],
     },
     {
