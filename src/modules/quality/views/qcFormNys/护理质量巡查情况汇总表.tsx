@@ -28,6 +28,12 @@ export default observer(function 护理质量巡查情况汇总表(props: Props)
     endDate: moment()
   })
 
+  /**阳春中医 科室、表单的查询条件改为多选 */
+  const [multiplQuery, setMultiplQuery] = useState({
+    qcCodes:[''],
+    wardCodes:['']
+  });
+
   const [loading, setLoading] = useState(false)
   const [tableData, setTableData] = useState([] as any[])
   const [qcNameList, setQcNameList] = useState([] as any[])
@@ -70,12 +76,28 @@ export default observer(function 护理质量巡查情况汇总表(props: Props)
   const getTableData = () => {
     // console.log(queryObj.qcLevel)
     setLoading(true)
-    qcFormNysService.countResult({
+    let paramter:any = {
       qcLevel: queryObj.qcLevel || '1',
       ...query,
       beginDate: query.beginDate.format('YYYY-MM-DD'),
       endDate: query.endDate.format('YYYY-MM-DD'),
-    })
+    }
+	// 阳春中医 科室、表单的查询条件改为多选
+    if(['yczyy'].includes(appStore.HOSPITAL_ID)){
+		if(multiplQuery.qcCodes[0]=='' || multiplQuery.qcCodes.length<1){
+			paramter.qcCodes = null
+		}else{
+			paramter.qcCodes = multiplQuery.qcCodes
+		}
+		if(multiplQuery.wardCodes[0]=='' || multiplQuery.wardCodes.length<1){
+			paramter.wardCodes = null
+		}else{
+			paramter.wardCodes = multiplQuery.wardCodes
+		}
+		delete paramter.wardCode
+		delete paramter.qcCode
+    }
+    qcFormNysService.countResult(paramter)
       .then(res => {
         setLoading(false)
         if (res.data) {
@@ -102,13 +124,29 @@ export default observer(function 护理质量巡查情况汇总表(props: Props)
   const handleExport = () => {
     //fileDownload
     setLoading(true)
+	let paramter:any = {
+		qcLevel: queryObj.qcLevel || '1',
+		...query,
+		beginDate: query.beginDate.format('YYYY-MM-DD'),
+		endDate: query.endDate.format('YYYY-MM-DD'),
+	  }
+	  // 阳春中医 科室、表单的查询条件改为多选
+	  if(['yczyy'].includes(appStore.HOSPITAL_ID)){
+		  if(multiplQuery.qcCodes[0]=='' || multiplQuery.qcCodes.length<1){
+			  paramter.qcCodes = null
+		  }else{
+			  paramter.qcCodes = multiplQuery.qcCodes
+		  }
+		  if(multiplQuery.wardCodes[0]=='' || multiplQuery.wardCodes.length<1){
+			  paramter.wardCodes = null
+		  }else{
+			  paramter.wardCodes = multiplQuery.wardCodes
+		  }
+		  delete paramter.wardCode
+		  delete paramter.qcCode
+	  }
     qcFormNysService
-      .countResultExport({
-        qcLevel: queryObj.qcLevel || '1',
-        ...query,
-        beginDate: query.beginDate.format('YYYY-MM-DD'),
-        endDate: query.endDate.format('YYYY-MM-DD'),
-      })
+      .countResultExport(paramter)
       .then(res => {
         setLoading(false)
         fileDownload(res)
@@ -133,7 +171,7 @@ export default observer(function 护理质量巡查情况汇总表(props: Props)
 
   useEffect(() => {
     getTableData()
-  }, [query])
+  }, [query,multiplQuery])
 
   return <Wrapper>
     <HeaderCon>
@@ -146,36 +184,107 @@ export default observer(function 护理质量巡查情况汇总表(props: Props)
         <div className="item">
           <div className="label">表单：</div>
           <div className="content">
-            <Select
-              value={query.qcCode}
-              loading={formListLoading}
-              style={{ width: 180 }}
-              showSearch
-              onChange={(qcCode: string) => setQuery({ ...query, qcCode })}
-              filterOption={(input: any, option: any) =>
-                option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-              }>
-              <Option value="">全部</Option>
-              {formList.map((item: any, index: number) =>
-                <Option value={item.qcCode} key={index}>{item.qcName}</Option>)}
-            </Select>
+          {appStore.hisMatch({
+				map: {
+				'yczyy': (
+					<Select
+					value={multiplQuery.qcCodes}
+					mode="multiple"
+					autoClearSearchValue
+					loading={formListLoading}
+					style={{ width: 250 }}
+					className='multi-select'
+					maxTagCount={1}
+					showSearch
+					onChange={(qcCodes: any) => {
+						// 阳春中医 科室、表单的查询条件改为多选
+					if(qcCodes[qcCodes.length-1]==''){
+						// 如果选择了全部，就剩一个
+						setMultiplQuery({ ...multiplQuery, qcCodes:['']})
+					}else{
+						// 选择的不是全部，就把全部去掉
+						setMultiplQuery({ ...multiplQuery, qcCodes:qcCodes.filter((tt:string)=>tt!='')})
+					}
+					}}
+					filterOption={(input: any, option: any) =>
+					option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+					}>
+					<Option value="">全部</Option>
+					{formList.map((item: any, index: number) =>
+					<Option value={item.qcCode} key={index}>{item.qcName}</Option>)}
+				</Select>
+				),
+				default: (
+					<Select
+					value={query.qcCode}
+					loading={formListLoading}
+					style={{ width: 180 }}
+					showSearch
+					onChange={(qcCode: string) => setQuery({ ...query, qcCode })}
+					filterOption={(input: any, option: any) =>
+					option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+					}>
+					<Option value="">全部</Option>
+					{formList.map((item: any, index: number) =>
+					<Option value={item.qcCode} key={index}>{item.qcName}</Option>)}
+				</Select>
+				),
+				},
+				vague:true
+		})}
+           
           </div>
         </div>
         <div className="item">
           <div className="label">科室：</div>
           <div className="content">
-            <Select
-              value={query.wardCode}
-              style={{ width: 180 }}
-              showSearch
-              onChange={(wardCode: string) => setQuery({ ...query, wardCode })}
-              filterOption={(input: any, option: any) =>
-                option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-              }>
-              {(authStore.isDepartment || authStore.isSupervisorNurse) && <Option value="">全部</Option>}
-              {deptList.map((item: any, index: number) =>
-                <Option value={item.code} key={index}>{item.name}</Option>)}
-            </Select>
+		  {appStore.hisMatch({
+				map: {
+				'yczyy': (
+					<Select
+					mode="multiple"
+					value={multiplQuery.wardCodes}
+					style={{ width: 250 }}
+					autoClearSearchValue
+					className='multi-select'
+					maxTagCount={1}
+					showSearch
+					onChange={(wardCodes: any) => {
+						// 阳春中医 科室、表单的查询条件改为多选
+						if(wardCodes[wardCodes.length-1]==''){
+							// 如果选择了全部，就剩一个
+							setMultiplQuery({ ...multiplQuery, wardCodes:['']})
+						}else{
+							// 选择的不是全部，就把全部去掉
+							setMultiplQuery({ ...multiplQuery, wardCodes:wardCodes.filter((tt:string)=>tt!='')})
+						}
+					}}
+					filterOption={(input: any, option: any) =>
+						option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+					}>
+					{(authStore.isDepartment || authStore.isSupervisorNurse) && <Option value="">全部</Option>}
+					{deptList.map((item: any, index: number) =>
+						<Option value={item.code} key={index}>{item.name}</Option>)}
+					</Select>
+				),
+				default: (
+					<Select
+					value={query.wardCode}
+					style={{ width: 186 }}
+					showSearch
+					onChange={(wardCode: string) => setQuery({ ...query, wardCode })}
+					filterOption={(input: any, option: any) =>
+						option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+					}>
+					{(authStore.isDepartment || authStore.isSupervisorNurse) && <Option value="">全部</Option>}
+					{deptList.map((item: any, index: number) =>
+						<Option value={item.code} key={index}>{item.name}</Option>)}
+					</Select>
+				),
+				},
+				vague:true
+		})}
+            
           </div>
         </div>
         <div className="item">
@@ -189,7 +298,7 @@ export default observer(function 护理质量巡查情况汇总表(props: Props)
                 beginDate: value[0],
                 endDate: value[1]
               })}
-              style={{ width: 220 }}
+              style={{ width: 180 }}
             />
           </div>
         </div>
@@ -283,6 +392,11 @@ const RightIcon = styled.div`
   padding: 0 0 0 15px;
   display: flex;
   align-items: center;
+  .multi-select{
+    .ant-select-selection--multiple .ant-select-selection__choice{
+      max-width:144px
+    }
+  }
 `
 
 const HeaderCon = styled.div`
