@@ -308,7 +308,6 @@ class SheetViewModal {
       if (
         [
           "wh",
-          "fqfybjy",
           "gxjb",
           "nys",
           "lyyz",

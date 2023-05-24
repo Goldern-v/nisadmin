@@ -246,7 +246,7 @@ export default observer(function ArrangeSheet(props: Props) {
     //  分组名称 分组颜色
     ...appStore.hisMatch({
       map: {
-        "dghl,fqfybjy": [
+        "dghl": [
           {
             title: "分组名称",
             dataIndex: "groupName",
@@ -257,6 +257,22 @@ export default observer(function ArrangeSheet(props: Props) {
               return (
                 <div style={{ color: record.groupColor||'red' }}>
                   {record.groupName}{record.groupColor}
+                </div>
+              );
+            },
+          },
+        ],
+        "fqfybjy": [
+          {
+            title: "分组名称",
+            dataIndex: "groupName",
+            width: 70,
+            fixed: "left",
+            align: "center",
+            render(text: any, record: any) {
+              return (
+                <div style={{ color: record.groupColor||'red' }}>
+                  {text}
                 </div>
               );
             },
