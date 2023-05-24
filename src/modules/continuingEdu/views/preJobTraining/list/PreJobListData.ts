@@ -2,6 +2,7 @@ import { observable, computed } from "mobx";
 import moment from "moment";
 import { preJobApi } from "../PreJobApi";
 import { fileDownload } from "src/utils/file/file";
+import { appStore, authStore } from 'src/stores'
 class PreJobListData {
     @observable public tableLoading = false; //表格loading
     @observable public tableList:any = []; //表格内容
@@ -95,7 +96,8 @@ class PreJobListData {
 		preJobApi.export({
 			year:this.year?.format('YYYY'),
 			keyWord:this.keyWord || '',
-			batch:this.selectBatch+''
+			batch:this.selectBatch+'',
+			hospitalName:appStore.HOSPITAL_Name,
 		}).then(res=>{
 			fileDownload(res);
 		}).catch(err=>{

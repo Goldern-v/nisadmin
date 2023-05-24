@@ -50,17 +50,28 @@ export default observer(function PreJobTrainingPlan() {
 			title: "时间",
 			dataIndex: "time",
 			align: "center",
-			width: 160,
+			width: 220,
 			render:(text: any, record: any, index: number)=>{
-				
+				let startTime = text,endTime = ''
+				if(text.indexOf('-')>-1){
+					// 有时间范围
+					startTime = text.split('-')[0] || ''
+					endTime = text.split('-')[1] || ''
+				}
 				return (
-					<TimePicker className='none-border'
-					defaultValue={text!=''?moment(text, 'HH:mm') :undefined}
-					 key={record.id} format={'HH:mm'}
+					<><TimePicker className='none-border' allowClear={false} style={{width:'95px'}}
+					defaultValue={startTime!=''?moment(startTime, 'HH:mm') :undefined}
+					 key={record.id} format={'HH:mm'} placeholder='开始时间'
 					onChange={(time: any, timeString: string)=>{
-						
-						preJobTrainingPlanData.tableList[index].time = timeString
-					}} />
+						startTime = timeString
+						preJobTrainingPlanData.tableList[index].time = startTime+'-'+endTime
+					}} />~<TimePicker className='none-border' allowClear={false} style={{width:'95px'}}
+					defaultValue={endTime!=''?moment(endTime, 'HH:mm') :undefined}
+					 key={record.id+'end'} format={'HH:mm'} placeholder='结束时间'
+					onChange={(time: any, timeString: string)=>{
+						endTime = timeString
+						preJobTrainingPlanData.tableList[index].time = startTime+'-'+endTime
+					}} /></>
 				)
 			}
 		},
@@ -184,6 +195,15 @@ export default observer(function PreJobTrainingPlan() {
 	/**保存 */
 	const saveTableItem = (index:number)=>{
 		let paramter = preJobTrainingPlanData.tableList[index]
+		if(paramter.time.indexOf('-')>-1){
+			if(paramter.time.split('-')[0]>paramter.time.split('-')[1]){
+				message.warning('开始时间不得大于结束时间！')
+				return false
+			}
+		}
+		// console.log(paramter)
+		// return false
+		
 		if((paramter.id+'').indexOf('save')>-1){
 			// 就是新建
 			paramter.id = null

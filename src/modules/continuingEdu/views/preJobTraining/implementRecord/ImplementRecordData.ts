@@ -48,13 +48,24 @@ class ImplementRecordData {
 		if((this.master.id+'').indexOf('save')>-1){
 			delete this.master.id
 		}
+		if(this.master.id){
+			// 修改
+			preJobApi.implementUpdate(this.master).then(res=>{
+				message.success('保存成功')
+				this.isEdit = false
+			}).catch(err=>{
+	
+			})
+		}else{
+			preJobApi.implementSave(this.master).then(res=>{
+				message.success('保存成功')
+				this.isEdit = false
+			}).catch(err=>{
+	
+			})
+		}
 
-		preJobApi.implementSave(this.master).then(res=>{
-			message.success('保存成功')
-			this.isEdit = false
-		}).catch(err=>{
-
-		})
+		
 	}
 
 	getImplement() {

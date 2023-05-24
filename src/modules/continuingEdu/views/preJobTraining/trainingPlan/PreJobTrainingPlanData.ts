@@ -23,11 +23,22 @@ class PreJobTrainingPlanData {
 	};
 	// CopyBatch end
 
+// 	years	y
+// quarters	Q
+// months	M
+// weeks	w
+// days	d
+// hours	h
+// minutes	m
+// seconds	s
+// milliseconds	ms
+// moment().add(1, 'h')   加一小时
+
 	@computed get tableItem() {
 		return {
 			batch: this.selectBatch || '1',
 			batchDate: moment().format('MM-DD'),
-			time: moment().format('HH:mm'),
+			time: moment().format('HH:mm')+'-'+moment().add(1, 'h').format('HH:mm'),
 			content: '',
 			teacher: '',
 			way: '',

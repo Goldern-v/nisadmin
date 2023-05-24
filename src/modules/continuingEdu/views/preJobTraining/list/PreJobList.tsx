@@ -7,12 +7,14 @@ import { PageTitle } from "src/components/common";
 import YearPicker from "src/components/YearPicker";
 import { preJobListData } from './PreJobListData';
 import AddNewNurseModal from './AddNewNurseModal';
+import store, { appStore } from 'src/stores'
 import ConfirmBatch from './ConfirmBatch';
 import { preJobApi } from '../PreJobApi';
 import { globalModal } from "src/global/globalModal"
 const Option = Select.Option;
 const TextArea = Input.TextArea;
 export default observer(function PreJobList() {
+	let history = store.appStore.history
 	//选中的行下标
 	const [selectedRowKeys, setSelectedRowKeys] = useState([] as any[]);
 	
@@ -163,6 +165,7 @@ export default observer(function PreJobList() {
 			render:(text: any, record: any, index: number)=>{
 				return (
 					<DoCon>
+						<span onClick={() => history.push(`/nurseFileDetail/baseInfo?empNo=${record.empNo}`)}>查看</span>
 						<span onClick={()=>{openDeptModal(index)}}>分配科室</span>
                         <span onClick={()=>{saveTableItem(record)}}>保存</span>
 						<span onClick={()=>{removeTableItem(record,index)}}>移出</span>
