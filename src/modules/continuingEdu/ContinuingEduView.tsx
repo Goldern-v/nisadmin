@@ -214,7 +214,7 @@ export default function ContinuingEdu(props: Props) {
     map: {
       "hj,dgxg,lyyz,qhwy,nfsd,dglb,qzde,dghm": [
         {
-          title: "晋升管理",
+          title: "晋升管理", 
           icon: <JSGL />,
           path: "/continuingEdu/晋升管理",
           component: 晋升管理_hj,
@@ -223,14 +223,7 @@ export default function ContinuingEdu(props: Props) {
             authStore.isOnlyInternsManage,
         },
       ],
-      "whhk":[
-        {
-          title: "晋升管理",
-          icon: <JSGL />,
-          path: "/continuingEdu/PromotionManagement",
-          component: PromotionManagement,
-        }
-      ],
+      
       other: [
         {
           title: "晋升管理",
@@ -752,7 +745,6 @@ export default function ContinuingEdu(props: Props) {
       icon: <TKGL />,
       path: "/continuingEdu/PracticalOperationScore",
       component: PracticalOperationScore,
-      hide: !['whhk'].includes(appStore.HOSPITAL_ID)
     },
     {
       title: "实操评分管理",
@@ -809,7 +801,6 @@ const getIcon = (icon: any) => {
 
   const LEFT_MENU_CONFIG_DEFAULT = [
     {
-      hide: !["whhk"].includes(appStore.HOSPITAL_ID),
       title: "培训日历",
       icon: <RYGL />,
       path: "/continuingEdu/TariningCalendars",
@@ -1000,7 +991,7 @@ const getIcon = (icon: any) => {
       title: "实习生管理",
       path: "/continuingEdu",
       icon: <JXJH />,
-      hide:!["whhk"].includes(appStore.HOSPITAL_ID),
+      
       children: [
         ...appStore.hisMatch({
           map: {
@@ -1035,7 +1026,6 @@ const getIcon = (icon: any) => {
       title: "规培生管理",
       path: "/continuingEdu",
       icon: <JXJH />,
-      hide:!["whhk"].includes(appStore.HOSPITAL_ID),
       children: [
         {
           title: "规培生基本信息汇总表",
@@ -1058,7 +1048,6 @@ const getIcon = (icon: any) => {
       title: "进修生管理",
       path: "/continuingEdu",
       icon: <JXJH />,
-      hide:!["whhk"].includes(appStore.HOSPITAL_ID),
       children: [
         ...appStore.hisMatch({
           map: {
@@ -1079,13 +1068,7 @@ const getIcon = (icon: any) => {
         })
       ],
     },
-    // {
-    //   title: "实操评分管理",
-    //   icon: <TKGL />,
-    //   path: "/continuingEdu/PracticalOperationScore",
-    //   component: PracticalOperationScore,
-    //   hide: !['whyx'].includes(appStore.HOSPITAL_ID)
-    // },
+    
     ...appStore.hisMatch({
       map:{
         other:[
@@ -1113,7 +1096,6 @@ const getIcon = (icon: any) => {
       icon: <JSGL />,
       path: "/continuingEdu/PromotionApplication",
       component: PromotionApplication,
-      hide: !['whhk'].includes(appStore.HOSPITAL_ID)
     },
     {
       title: "类型管理",
@@ -1191,6 +1173,7 @@ const getIcon = (icon: any) => {
       title: "护士管理-岗前培训",
       path: "/continuingEdu",
       icon: <YNXXB />,
+      hide: ['whhk'].includes(appStore.HOSPITAL_ID),
       children: [
         {
           title: "人员名单",
@@ -1223,6 +1206,7 @@ const getIcon = (icon: any) => {
       title: "护士管理-临床培训",
       path: "/continuingEdu",
       icon: <YNXXB />,
+      hide: ['whhk'].includes(appStore.HOSPITAL_ID),
       children: [
         {
           title: "培训计划",
@@ -1376,12 +1360,12 @@ const getIcon = (icon: any) => {
   ];
   const LEFT_MENU_CONFIG = appStore.hisMatch({
     map: {
-      whyx: LEFT_MENU_CONFIG_WHYX,
+      'whyx,whhk': LEFT_MENU_CONFIG_WHYX,
       default:LEFT_MENU_CONFIG_DEFAULT
     },
     vague: true,
   })
-
+ 
   // 查询获取动态菜单列表
   // const getList = () => {
   //   meunSettingApi.getData().then((res: any) => {
