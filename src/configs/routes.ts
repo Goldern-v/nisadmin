@@ -1073,7 +1073,7 @@ const routes: RouteItem[] = [
   },
   ...appStore.hisMatch({
     map: {
-      "gzsrm,lyrm,gdtj,whfk,stmz": [
+      "gzsrm,lyrm,gdtj,whfk,stmz,925": [
         {
           path: "/setting",
           redirect: "/setting/健康宣教字典"
