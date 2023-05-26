@@ -20,6 +20,7 @@ import BadEventSummaryQuarterGxjb from "./views/BadEventSummary_gxjb/BadEventSum
 import BadEventSummaryCaseGxjb from "./views/BadEventSummary_gxjb/BadEventSummaryCaseGxjb";
 import BadEventSummaryClassfiyGxjb from "./views/BadEventSummary_gxjb/BadEventSummaryClassfiyGxjb";
 import BadEventSummaryTotal from "./views/BadEventSummary_yczyy/index";
+import BadEventReportExport_gzsrm from "./views/BadEventReportExport_gzsrm";
 export interface Props extends RouteComponentProps<{ name?: string }> { };
 
 export default function BadEventsRouters(props: Props) {
@@ -178,23 +179,18 @@ export default function BadEventsRouters(props: Props) {
       },
       vague: true
     }),
-    // ...appStore.hisMatch({
-    //   map: {
-    //     yczyy: [
-    //       {
-    //         title: '不良事件汇总',
-    //         path: `${baseRouter}/BadEventSummary`,
-    //         component: BadEventSummary
-    //       },
-    //       {
-    //         title: '不良事件报告登记汇总',
-    //         path: `${baseRouter}/BadEventReportSummary`,
-    //         component: BadEventReportSummary
-    //       },
-    //     ],
-    //     other: []
-    //   }
-    // })
+    ...appStore.hisMatch({
+      map: {
+        gzsrm: [
+          {
+            title: '不良事件导出',
+            path: `${baseRouter}/BadEventExport`,
+            component: BadEventReportExport_gzsrm
+          },
+        ],
+        other: []
+      }
+    })
   ];
 
   let currentRoutePath = props.history.location.pathname || "";

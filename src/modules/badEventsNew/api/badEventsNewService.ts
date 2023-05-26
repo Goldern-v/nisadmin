@@ -257,6 +257,18 @@ export default class BadEventsNewService extends BaseApiService {
       responseType: 'blob'
     })
   }
+  /**
+   * 不良事件导出 by贵州
+   * @param params 
+   * @returns
+   */
+  public async exportBadEvent_gzsrm(params: any) {
+    return await this.post(`/badEvent/summary/exportDetailSummary`, params,{ responseType: 'blob' })
+  }
+   /**不良事件类型列表 by贵州 */
+   public async getDetailFormDict() {
+    return this.get(`/badEvent/summary/getDetailFormDict`);
+  }
 }
 
 export const badEventsNewService = new BadEventsNewService()
