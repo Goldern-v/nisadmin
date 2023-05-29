@@ -21,6 +21,7 @@ import BadEventSummaryCaseGxjb from "./views/BadEventSummary_gxjb/BadEventSummar
 import BadEventSummaryClassfiyGxjb from "./views/BadEventSummary_gxjb/BadEventSummaryClassfiyGxjb";
 import BadEventSummaryTotal from "./views/BadEventSummary_yczyy/index";
 import BadEventReportExport_gzsrm from "./views/BadEventReportExport_gzsrm";
+import BadEventStatisticalReport from "./views/BadEventStatisticalReport";
 export interface Props extends RouteComponentProps<{ name?: string }> { };
 
 export default function BadEventsRouters(props: Props) {
@@ -160,6 +161,16 @@ export default function BadEventsRouters(props: Props) {
             title: '不良事件分析报告',
             path: `${baseRouter}/不良事件分析报告`,
             component: BadEventReportList,
+            // hide: appStore.isDev ? false : true,
+            keepAlive: true,
+            disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
+          }
+        ],
+        fqfybjy: [
+          {
+            title: '不良事件分析报告',
+            path: `${baseRouter}/不良事件统计报告`,
+            component: BadEventStatisticalReport,
             // hide: appStore.isDev ? false : true,
             keepAlive: true,
             disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"

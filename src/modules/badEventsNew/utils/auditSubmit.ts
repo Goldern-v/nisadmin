@@ -6,6 +6,7 @@ export interface AuditSubmitIn {
   saveParams: any;
   userInfo: any;
   params: any;
+  config?: any
 }
 
 const commonFn = ({
@@ -90,15 +91,44 @@ const NODE_CODE_CONFIG = {
     handleContent: "B0046048",
   },
 };
+/** 福清 */
+const NODE_CODE_CONFIG_1 = {
+  head_nurse_audit: {
+    empName: "B0062101",
+    auditDate: "B0062102",
+    handleContent: "B0062103",
+  },
+  head_nurse_follow: {
+    empName: "B0062122",
+    auditDate: "B0062123",
+    handleContent: "B0062124",
+  },
+  nursing_minister_audit: {
+    empName: "B0062111",
+    auditDate: "B0062111",
+    handleContent: "B0062111",
+  },
+  qc_group_audit: {
+    empName: "B0062116",
+    auditDate: "B0062117",
+    handleContent: "B0062118",
+  },
+  nursing_minister_follow: {
+    empName: "B0062126",
+    auditDate: "B0062127",
+    handleContent: "B0062128",
+  },
+};
 const fn1 = ({
   nodeCode,
   auditInfo,
   saveParams,
   userInfo,
   params,
+  config,
 }: AuditSubmitIn): boolean => {
-  if (!NODE_CODE_CONFIG[nodeCode]) return true;
-  const { handleContent, auditDate, empName } = NODE_CODE_CONFIG[nodeCode];
+  if (!config[nodeCode]) return true;
+  const { handleContent, auditDate, empName } = config[nodeCode];
   saveParams[handleContent] = auditInfo.handleContent;
   saveParams[auditDate] = auditInfo.auditDate;
   saveParams[empName] = userInfo.empName;
@@ -110,7 +140,8 @@ const fn1 = ({
 export default (data: AuditSubmitIn) => {
   const fn = appStore.hisMatch({
     map: {
-      yczyy: () => fn1(data),
+      yczyy: () => fn1({...data, config: NODE_CODE_CONFIG}),
+      fqfybjy: () => fn1({...data, config: NODE_CODE_CONFIG_1}),
       other: () => commonFn(data),
     },
   });

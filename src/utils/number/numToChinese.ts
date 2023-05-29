@@ -4,7 +4,8 @@
 var chnNumChar = ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九']
 var chnUnitSection = ['', '万', '亿', '万亿', '亿亿']
 var chnUnitChar = ['', '十', '百', '千']
-
+/**中文数字2 */
+export const chnNumChar1 = ['零', '一', '两', '三', '四', '五', '六', '七', '八', '九']
 var numToChn = function(num: any) {
   var index = num.toString().indexOf('.')
   if (index != -1) {

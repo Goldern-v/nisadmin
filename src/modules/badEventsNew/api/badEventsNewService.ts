@@ -269,6 +269,58 @@ export default class BadEventsNewService extends BaseApiService {
    public async getDetailFormDict() {
     return this.get(`/badEvent/summary/getDetailFormDict`);
   }
+    /**
+   * 福清 不良事件分析报告
+   * 查询列表
+   * @param params
+   * @returns
+   */
+    public async getPageWithBeReport(params: Obj) {
+      return await this.post(`/beReport/getPage`, params);
+    }
+    /**
+     * 福清 不良事件分析报告
+     * 创建
+     * @param params
+     * @returns
+     */
+    public async createCommonWithBeReport(params: Obj) {
+      return await this.post(`/beReport/createCommon`, params);
+    }
+    /**
+     * 获取报告信息
+     * @param id
+     * @returns
+     */
+    public async getCommonWithBeReport(id: string | number) {
+      return await this.get(`/beReport/getCommon?id=${id}`);
+    }
+    /**
+     * 删除
+     * @param masterId
+     * @returns
+     */
+    public async deleteCommonWithBeReport(masterId: string) {
+      let formData = new FormData();
+      formData.append('masterId', masterId);
+      return await this.post(`/beReport/deleteCommon`, formData);
+    }
+    /**
+     * 发布
+     * @param formData
+     * @returns
+     */
+    public async updateCommonStatusWithBeReport(params: any) {
+      return await this.post(`/beReport/updateCommonStatus`, params);
+    }
+    /**
+     * 暂存
+     * @param obj
+     * @returns
+     */
+    public async saveCommonWithBeReport(params: any) {
+      return await this.post(`/beReport/saveCommon`, params);
+    }
 }
 
 export const badEventsNewService = new BadEventsNewService()

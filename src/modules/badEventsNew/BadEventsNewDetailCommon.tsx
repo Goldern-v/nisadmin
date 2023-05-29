@@ -8,6 +8,7 @@ import badEventsNewService from './api/badEventsNewService'
 import { authStore, appStore } from 'src/stores'
 import qs from 'qs'
 import { message } from 'antd/es'
+import { Obj } from 'src/libs/types'
 
 const api = new badEventsNewService()
 
@@ -153,11 +154,11 @@ export default withRouter(function BadEventsNewDetail(props: any) {
     }
   }
 
-  const handleOk = () => {
-    if ('fqfybjy' === appStore.HOSPITAL_ID && master.formCode === 'B0009') {
+  const handleOk = (data: Obj) => {
+    if ('fqfybjy' === appStore.HOSPITAL_ID && ['B0009', 'B0062'].indexOf(master.formCode)) {
       let iframeEl = iframeRef.current
       if (iframeEl) {
-        iframeEl.contentWindow.saveBadEvent()
+        iframeEl.contentWindow.saveBadEvent(data)
       }
     }
     setTimeout(() => {

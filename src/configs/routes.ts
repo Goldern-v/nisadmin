@@ -24,6 +24,7 @@ import TheoryExamDetail from 'src/modules/continuingEdu/views/preJobTraining/the
 import TheoryExamScore from 'src/modules/continuingEdu/views/preJobTraining/theoryExam/TheoryExamScore'
 import TrainExamDetail from 'src/modules/continuingEdu/views/preJobManage/trainingExamManage/TrainExamDetail'
 import TrainExamScore from 'src/modules/continuingEdu/views/preJobManage/trainingExamManage/TrainExamScore'
+import BadEventStatisticalReportDetail from 'src/modules/badEventsNew/views/BadEventStatisticalReportDetail'
 
 const ScheduleHomeView = lazy(() =>
   import("src/modules/schedule/views/ScheduleHome/ScheduleHomeView")
@@ -714,6 +715,7 @@ const routes: RouteItem[] = [
     }),
     layouts.MainLayout
   ),
+  setLayout("/BadEventStatisticalReportDetail/:id", BadEventStatisticalReportDetail, layouts.MainLayout),
   setLayout("/deptBorrow", DeptBorrow, layouts.BreadcrumbLayout, [
     { name: "排班管理", link: "/scheduleHome" },
     { name: "科室借用", link: "" }
@@ -840,6 +842,13 @@ const routes: RouteItem[] = [
     "/qcThreeMQSummaryDetail",
     lazy(() =>
     import("src/modules/quality/views/qcThreeMQSummary/detail/index")
+  ),
+    layouts.MainLayout
+  ),
+  setLayout(
+    "/qcQSummaryDetail",
+    lazy(() =>
+    import("src/modules/quality/views/qcQSummary/detail/index")
   ),
     layouts.MainLayout
   ),

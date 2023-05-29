@@ -100,3 +100,27 @@ export const PageContainer: any = styled.div`
   margin: 0 15px 15px;
   /* border-radius: 5px; */
 `
+
+/**分析报告类型的内容部分 */
+export const ReportContainer: any = styled.div<{ height?: number }>`
+  height: calc(100% - ${p => p.height || 76}px);
+  position: relative;
+  .main-ctx {
+    /* width: calc(100% - 250px); */
+    height: 100%;
+    padding: 15px 120px 15px;
+    overflow-y: auto;
+  }
+`
+export const ReportCtx: any = styled.div`
+  width: 750px;
+  background: #fff;
+  padding: 15px;
+  margin: 0px auto;
+  white-space: pre-wrap;
+  font-size: 14px;
+  line-height: 24px;
+  &.ctx--view {
+    pointer-events: none;
+  }
+`

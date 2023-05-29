@@ -4,17 +4,17 @@ import React, { useEffect } from 'react'
 import BreadcrumbBox from '../../layouts/components/BreadcrumbBox'
 
 interface Item {
-  link?: string
-  name: string
+  link?: string,
+  name: string,
 }
 export interface Props {
-  breadData: Item[]
-  breadStyle?: any
-  statusCon?: any
-  btnCon?: any
-  title?: string
-  statusDes?: string
-  bottomCon?: any
+  breadData: Item[],
+  breadStyle?: any,
+  statusCon?: any,
+  btnCon?: any,
+  title?: string,
+  statusDes?: string,
+  bottomCon?: any,
 }
 
 /**审核页面的头部 包含面包屑，状态，按钮 */
@@ -59,6 +59,9 @@ const StatusBtnCon = styled.div`
   
   .fw-b {
     font-weight: bold;
+  }
+  .title {
+    font-size: 20px;
   }
   .btn-con {
     .ant-btn + .ant-btn {

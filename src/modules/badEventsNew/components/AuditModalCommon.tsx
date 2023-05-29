@@ -9,6 +9,7 @@ import moment from 'moment'
 
 import UserCheckModal from './UserCheckModal'
 import auditSubmit from '../utils/auditSubmit'
+import { Obj } from 'src/libs/types'
 // const commonApiService = services.commonApiService
 
 const TextArea = Input.TextArea
@@ -34,6 +35,7 @@ export interface Props {
 export default observer(function AduitModal(props: Props) {
   const { visible, onOk, onCancel, dataOrigin, nodeInfo } = props
   const nodeCode = nodeInfo?.nodeCode || ''
+  console.log('test-nodeCode', nodeCode)
 
   const [auditInfo, setAuditInfo] = useState(initAuditInfo())
 
@@ -115,10 +117,10 @@ export default observer(function AduitModal(props: Props) {
     const flag = auditSubmit({ nodeCode, auditInfo, saveParams, userInfo, params })
     if (!flag) return
 
-    const handleResponse = (res: any) => {
+    const handleResponse = (res: any, saveParams: Obj = {}) => {
       setConfirmLoading(false)
       if (res.code === "200") {
-        onOk()
+        onOk(saveParams)
         Message.success('操作成功')
         setUserCheckVisible(false)
         onCancel()
@@ -128,8 +130,7 @@ export default observer(function AduitModal(props: Props) {
     }
 
     setConfirmLoading(true)
-
-    if (Object.keys(saveParams).length > 0) {
+    if (Object.keys(saveParams).length > 0 && 'fqfybjy' !== appStore.HOSPITAL_ID) {
       badEventsNewService
         .badEventMasterSave({
           master: dataOrigin.master,
@@ -152,7 +153,7 @@ export default observer(function AduitModal(props: Props) {
       badEventsNewService
         .auditBadEventMaster(params)
         .then(
-          (res) => handleResponse(res),
+          (res) => handleResponse(res, saveParams),
           () => setConfirmLoading(false)
         )
     }
@@ -202,7 +203,7 @@ export default observer(function AduitModal(props: Props) {
         auditDateTitle = nodeInfo?.nodeName + '日期'
         if (appStore.HOSPITAL_ID === 'fqfybjy') auditTimeEditable = true
         break
-        
+
       default:
     }
 
@@ -212,7 +213,7 @@ export default observer(function AduitModal(props: Props) {
           <div className='form1'>
             <Row>
               <Col span={6} className="row-title">
-                {'fqfybjy'=== appStore.HOSPITAL_ID ? '是否审核通过：' : '是否为不良事件：'}
+                {'fqfybjy' === appStore.HOSPITAL_ID ? '是否审核通过：' : '是否为不良事件：'}
               </Col>
               <Col span={18}>
                 <Radio.Group
