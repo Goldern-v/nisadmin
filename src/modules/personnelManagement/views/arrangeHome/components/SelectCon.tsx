@@ -9,6 +9,8 @@ import { Button, Checkbox, DatePicker, Dropdown, Menu, message, Modal, Select, U
 import { fileDownload } from 'src/utils/file/file'
 import { appStore, authStore } from 'src/stores'
 import { DictItem } from 'src/services/api/CommonApiService'
+import { Obj } from 'src/libs/types'
+import { currentMonth } from 'src/utils/date/rangeMethod'
 
 import ShowStandardTimeModal from '../modal/ShowStandardTimeModal'
 import ImportModal from './importModal'
@@ -16,8 +18,6 @@ import { selectViewModal } from '../viewModal/SelectViewModal'
 import { arrangeService } from '../services/ArrangeService'
 import { sheetViewModal } from '../viewModal/SheetViewModal'
 import { printModal } from '../viewModal/PrintModal'
-import { Obj } from 'src/libs/types'
-import { currentMonth } from 'src/utils/date/rangeMethod'
 
 export interface Props {
 }
@@ -270,7 +270,7 @@ export default observer(function SelectCon() {
   // 下载模板
   const handleUpload = async (info: any) => {
     let fn = () => arrangeService.importExcel(info.file)
-    if ('zhzxy' === appStore.HOSPITAL_ID) {
+    if (['zhzxy', 'hj'].includes(appStore.HOSPITAL_ID)) {
       const list = authStore.deptList;
       const current = list.find(
         (item: any) => item.code === selectViewModal.params.deptCode
@@ -778,6 +778,22 @@ export default observer(function SelectCon() {
                 }}
                 onCancel={() => setModalVisible(false)} />
             </>,
+
+            hj: <>
+              <div className="item">
+                <Button className="statistics getExcel" onClick={exportExcel}>
+                  导出科室
+                </Button>
+              </div>
+              <div className="item">
+                <Upload showUploadList={false} customRequest={handleUpload}>
+                  <Button className="statistics getExcel">
+                    导入排班
+                  </Button>
+                </Upload>
+              </div>
+            </>,
+            
             other: <div className="item">
               <Button className="statistics getExcel" onClick={exportExcel}>
                 导出科室
