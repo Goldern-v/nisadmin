@@ -391,7 +391,14 @@ const columns: ColumnProps<any>[] = [
       width: 80,
       align: 'center'
     },
+    ['925'].includes(appStore.HOSPITAL_ID) ?
   {
+    title: '身高(cm)',
+    dataIndex: 'height',
+    key: 'height',
+    width: 110,
+    align: 'center'
+  } : {
     title: '编制',
     dataIndex: 'workConversion',
     key: 'workConversion',
@@ -434,13 +441,21 @@ const columns: ColumnProps<any>[] = [
     width: 100,
     align: 'center'
   },
-  {
-    title: '院内工作地点',
-    dataIndex: 'workAddress',
-    key: 'workAddress',
-    width: 100,
-    align: 'center'
-  },
+  
+  ...appStore.hisMatch({
+    map: {
+      925: [],
+      other: [
+        {
+          title: '院内工作地点',
+          dataIndex: 'workAddress',
+          key: 'workAddress',
+          width: 100,
+          align: 'center'
+        },
+      ]
+    }
+  }),
   ...appStore.hisMatch({
     map: {
       fsxt: [

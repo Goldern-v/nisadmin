@@ -4,16 +4,16 @@ export const IDENTITY_TYPES = [
     code: '聘用人员',
   },
   {
-    name: 'Ⅰ类',
-    code: 'Ⅰ类',
+    name: 'Ⅰ类(官)',
+    code: 'Ⅰ类(官)',
   },
   {
-    name: 'Ⅱ类',
-    code: 'Ⅱ类',
+    name: 'Ⅱ类(士)',
+    code: 'Ⅱ类(士)',
   },
   {
-    name: 'Ⅲ类',
-    code: 'Ⅲ类',
+    name: 'Ⅲ类(文)',
+    code: 'Ⅲ类(文)',
   }
 ]
 

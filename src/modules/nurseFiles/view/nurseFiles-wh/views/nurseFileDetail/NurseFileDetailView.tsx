@@ -46,7 +46,7 @@ export interface Props extends RouteComponentProps<{ type?: string }> {
   payload: HorizontalMenuItem[]
 }
 const isSdlj = ['sdlj', 'nfsd', 'qzde'].includes(appStore.HOSPITAL_ID)
-const ROUTE_LIST = ['zhzxy'].includes(appStore.HOSPITAL_ID) ? [
+const ROUTE_LIST_DEFAULT = ['zhzxy'].includes(appStore.HOSPITAL_ID) ? [
   {
     type: 'baseInfo',
     component: BaseInfo,
@@ -301,10 +301,94 @@ const ROUTE_LIST = ['zhzxy'].includes(appStore.HOSPITAL_ID) ? [
   }] : [],
 ]
 
+const ROUTE_LIST_925 = [
+  {
+    type: 'baseInfo',
+    component: BaseInfo,
+    name: '基本信息'
+  },
+  {
+    type: 'article',
+    component: Article,
+    name: '文章'
+  },
+  
+ 
+  {
+    /** 方明处理 */
+    type: 'hostingScientific',
+    component: HostingScientific,
+    name: '主持科研课题'
+  },
+  {
+    type: 'joinScientific',
+    component: JoinScientific,
+    name: '参与科研课题'
+  },
+  {
+    /** 方明处理 */
+    type: 'scientificResearch',
+    component: ScientificResearch,
+    name: '科研课题获奖'
+  },
+  {
+    type: 'patent',
+    component: Patent,
+    name: '专利'
+  },
+  {
+    type: 'learnJob',
+    component: LearnJob,
+    name: '学会任职'
+  },
+  
+  {
+    type: 'monograph',
+    component: Monograph,
+    name: '专著'
+  },
+  {
+    type: 'continuingEducation',
+    component: ContinuingEducation,
+    name: '举办继续教育培训班'
+  },
+
+
+  {
+    type: 'workRegistrationForm',
+    component: WorkRegistrationForm,
+    name: '在院工作情况'
+  },
+    {
+      type: 'toNewPost',
+      component: ToNewPost,
+      name: '岗位变动'
+    },
+ 
+  
+  {
+    type: 'RankChange',
+    component: RankChange,
+    name: '层级变动'
+  },
+ 
+  {
+    type: 'WardInnovate',
+    component: WardInnovate,
+    name: '科室创新'
+  },
+  {
+    type: 'MakeAwards',
+    component: MakeAwards,
+    name: '立功嘉奖'
+  }
+]
+
 
 
 export default observer(function NurseFileDetail(props: Props, context: any) {
   let currentRouteType = props.match.params.type
+  let ROUTE_LIST = ['925'].includes(appStore.HOSPITAL_ID)?ROUTE_LIST_925:ROUTE_LIST_DEFAULT
   let CurrentRoute = ROUTE_LIST.find((item) => item.type === currentRouteType)
   useEffect(() => {
     if (appStore.match.url.indexOf('selfNurseFile') > -1 && !appStore.queryObj.empNo) {

@@ -350,11 +350,11 @@ export default function EditWorkHistoryModal(props: Props) {
               <Input />
             </Form.Field>
           </Col>
-          <Col span={12}>
+          {!['925'].includes(appStore.HOSPITAL_ID) &&<Col span={12}>
             <Form.Field label={`取得护士执业证书时间`} name="zyzsDate">
               <DatePicker />
             </Form.Field>
-          </Col>
+          </Col>}
           {!['925'].includes(appStore.HOSPITAL_ID) && <Col span={12}>
             <Form.Field
               label={isSdlj ? '参加护理工作时间' : `取得执业证书并从事护理岗位时间`}
@@ -582,6 +582,39 @@ export default function EditWorkHistoryModal(props: Props) {
               </Col>
               <Col span={12}>
                 <Form.Field label='实习生带教资质' name="maps.teaching_trainee_qualification">
+                  <Select>
+                    {
+                      [{ "code": "有", "name": "有" }, { "code": "无", "name": "无" }].map(v => (
+                        <Select.Option value={v.code} key={v.code}>{v.name}</Select.Option>
+                      ))
+                    }
+                  </Select>
+                </Form.Field>
+              </Col>
+              <Col span={12}>
+                <Form.Field label='管理培训班资质' name="maps.qualification_manage_training">
+                  <Select>
+                    {
+                      [{ "code": "有", "name": "有" }, { "code": "无", "name": "无" }].map(v => (
+                        <Select.Option value={v.code} key={v.code}>{v.name}</Select.Option>
+                      ))
+                    }
+                  </Select>
+                </Form.Field>
+              </Col>
+              <Col span={12}>
+                <Form.Field label='专科护士' name="maps.specialist_nurse">
+                  <Select>
+                    {
+                      [{ "code": "有", "name": "有" }, { "code": "无", "name": "无" }].map(v => (
+                        <Select.Option value={v.code} key={v.code}>{v.name}</Select.Option>
+                      ))
+                    }
+                  </Select>
+                </Form.Field>
+              </Col>
+              <Col span={12}>
+                <Form.Field label='护理教员' name="maps.nursing_instructor">
                   <Select>
                     {
                       [{ "code": "有", "name": "有" }, { "code": "无", "name": "无" }].map(v => (

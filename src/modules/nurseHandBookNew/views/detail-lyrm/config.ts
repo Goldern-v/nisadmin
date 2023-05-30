@@ -514,6 +514,7 @@ export const dateFormat1 = "YYYY年MM月DD日 星期d HH:mm";
 export const dateFormat2 = "YYYY年MM月DD日";
 export const dateFormat3 = "YYYY-MM-DD";
 export const dateFormat4 = "YYYY年MM月";
+export const dateFormat5 = "YYYY-MM";
 export const timeFormat = "HH:mm";
 
 export const phD = "   年  月  日";

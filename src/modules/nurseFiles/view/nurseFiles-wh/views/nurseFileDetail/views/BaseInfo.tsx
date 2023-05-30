@@ -388,14 +388,19 @@ export default observer(function BaseInfo() {
           身份类别:data?.maps?.identity_category,
           护士执业证书编号: data.zyzsNumber
         },
+        // 取得护士执业证书时间: data.zyzsDate,
         {
-
-          取得护士执业证书时间: data.zyzsDate,
-          最高学历: data.highestEducation
+          最高学历: data.highestEducation,
+          最高学历学位: data.highestEducationDegree,
         },
         {
-          最高学历学位: data.highestEducationDegree,
-          职务: data.job
+          
+          职务: data.job,
+          管理培训班资质:data?.maps?.qualification_manage_training,
+        },
+        {
+          专科护士: data?.maps?.specialist_nurse,
+          护理教员: data?.maps?.nursing_instructor,
         },
         // {
           // 取得执业证书并从事护理岗位时间: data.zyzsNursingPostDate,
@@ -408,7 +413,6 @@ export default observer(function BaseInfo() {
 
         },
         {
-
           // 现职务任职起始时间: data.jobStartDate,
           工作护理单元: data.deptName,
           鞋码: data.shoeSize

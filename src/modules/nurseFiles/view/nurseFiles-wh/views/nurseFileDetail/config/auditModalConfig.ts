@@ -126,33 +126,43 @@ export function openAuditModal(
                     身份类别: "identity_category",
                     护士执业证书编号: "zyzsNumber",
                   },
+                  // 取得护士执业证书时间: "zyzsDate",
                   {
-                    取得护士执业证书时间: "zyzsDate",
                     最高学历: "highestEducation",
-                  },
-                  {
                     最高学历学位: "highestEducationDegree",
+                  },
+                  {
+                    
                     职务: "job",
-                  },
-                  {
                     现职称: "newTitle",
+                  },
+                  {
+                    
                     现职务任职起始时间: "jobStartDate",
-                  },
-                  {
                     工作护理单元: "deptName",
+                  },
+                  {
+                    
                     鞋码: "shoeSize",
-                  },
-                  {
                     身高: "height",
-                    护士服尺码: "nurse_dress_size",
                   },
                   {
+                    
+                    护士服尺码: "nurse_dress_size",
                     家庭住址: "address",
+                  },
+                  {
+                    
                     合同截至日期: "contract_due_date",
+                    管理培训班资质:"qualification_manage_training",
                   },
                   {
                     新入职护士带教资质: "teaching_qualification",
                     实习生带教资质: "teaching_trainee_qualification",
+                  },
+                  {
+                    专科护士: "specialist_nurse",
+                    护理教员: "nursing_instructor",
                   },
                   {
                     鞋款式: "nurse_shoes_style",

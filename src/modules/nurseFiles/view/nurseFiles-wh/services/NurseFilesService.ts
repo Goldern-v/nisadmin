@@ -22,6 +22,9 @@ export default class NurseFilesService extends BaseApiService {
     //     obj[key] = ''
     //   }
     // })
+    if(appStore.HOSPITAL_ID == '925'){
+      return this.post(`/auditeNurseListWH/getByFormCodePCFor925`, obj)
+    }
     return this.post(`/auditeNurseListWH/${appStore.HOSPITAL_ID == 'nfzxy' ? 'getByFormCodePcNFZXY' : 'getByFormCodePC'}`, obj)
   }
   // 导出护士列表

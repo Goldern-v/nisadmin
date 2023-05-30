@@ -4,7 +4,7 @@ import { nurseFilesListViewModel } from "../NurseFilesListViewModel";
 import { observer } from "mobx-react-lite";
 import { to } from "src/libs/fns";
 import Form from "src/components/Form";
-import { Row, Col, Input, Select } from "src/vendors/antd";
+import { Row, Col, Input, Select,InputNumber } from "src/vendors/antd";
 import { statisticsViewModal } from "src/modules/nurseFiles/view/statistics/StatisticsViewModal";
 import AgeRangePicker from "src/components/AgeRangePicker";
 import YearTimeRangePicker from "src/components/YearTimeRangePicker";
@@ -15,7 +15,8 @@ import { cleanObj } from "src/utils/object/cleanObj";
 import { Obj } from "src/libs/types";
 import { IDENTITY_TYPES,MERITORIOUS_PERFORMANCE } from "src/modules/nurseFiles/enums";
 import { DatePicker } from "antd";
-import { dateFormat3 } from "src/modules/nurseHandBookNew/views/detail-lyrm/config";
+import { dateFormat3, dateFormat5} from "src/modules/nurseHandBookNew/views/detail-lyrm/config";
+import HeightRangePicker from "src/components/HeightRangePicker";
 
 export default observer(function FilterCon() {
   let refForm = React.createRef<Form>();
@@ -82,7 +83,7 @@ export default observer(function FilterCon() {
     } else {
       deptCodes = value.deptCode;
     }
-    let postObj: Obj = {
+    let postObj: any = {
       deptCodes: deptCodes,
       name: value.name,
       newTitle: value.newTitle,
@@ -115,10 +116,21 @@ export default observer(function FilterCon() {
     }
     if (['925'].includes(appStore.HOSPITAL_ID)) {
       postObj.identityType = value.identityType
-      postObj.rewardName = value.rewardName
+      // postObj.rewardName = value.rewardName
       const [d1, d2] = value.goHospitalWorkDate || []
       postObj.goHospitalWorkDateStart = d1 ? d1.format(dateFormat3) : ''
       postObj.goHospitalWorkDateEnd = d2 ? d2.format(dateFormat3) : ''
+      if(value.heightRange){
+        if(Number(value.heightRange[0])>0 && Number(value.heightRange[1])==0){
+          // 只有开始身高或者只有结束身高
+          return false
+        }
+        if(Number(value.heightRange[0])==0 && Number(value.heightRange[1])>0){
+          return false
+        }
+      }
+      postObj.heightBeginIndex = value.heightRange?Number(value.heightRange[0]):null //身高起始坐标
+      postObj.heightEndIndex = value.heightRange?Number(value.heightRange[1]):null //身高终止坐标
     }
     statisticsViewModal.selectedDeptCode = value.deptCode;
     nurseFilesListViewModel.postObj = postObj;
@@ -229,7 +241,7 @@ export default observer(function FilterCon() {
               </Form.Field>
             </Col>
 
-            <Col span={4} className="long">
+            {appStore.HOSPITAL_ID !== '925'&&<Col span={4} className="long">
               <Form.Field label={"院内工作地点"} name={"workAddress"}>
                 <Select allowClear={true}>
                   {statisticsViewModal
@@ -241,7 +253,7 @@ export default observer(function FilterCon() {
                     ))}
                 </Select>
               </Form.Field>
-            </Col>
+            </Col>}
             {appStore.HOSPITAL_ID === 'gxjb' ?
               <Col span={5}>
                 <Form.Field label={"家庭住址"} name={"address"}>
@@ -267,6 +279,12 @@ export default observer(function FilterCon() {
                 <MonthTimeRangePicker />
               </Form.Field>
             </Col>
+            {appStore.HOSPITAL_ID === '925' ?<Col span={4} className="short">
+                <Form.Field label={"身高"} name={"heightRange"}>
+                  <HeightRangePicker />
+                </Form.Field>
+                
+              </Col>:
             <Col span={4} className="short">
               <Form.Field label={"编制"} name={"workConversion"}>
                 <Select allowClear={true}>
@@ -279,7 +297,7 @@ export default observer(function FilterCon() {
                     ))}
                 </Select>
               </Form.Field>
-            </Col>
+            </Col>}
             {['qhwy', 'whhk', 'dglb', 'dghm'].includes(appStore.HOSPITAL_ID) &&
               <Col span={4} className="long--static">
                 <Form.Field label={"护理学会会员证号"} name={"membershipCardNumber"}>
@@ -317,7 +335,7 @@ export default observer(function FilterCon() {
                   </Select>
                 </Form.Field>
               </Col>
-              <Col span={4} className="short">
+              {/* <Col span={4} className="short">
                 <Form.Field label={"立功嘉奖"} name={"rewardName"}>
                   <Select>
                     {
@@ -330,7 +348,7 @@ export default observer(function FilterCon() {
                     }
                   </Select>
                 </Form.Field>
-              </Col>
+              </Col> */}
               <Col span={6} className="long">
                 <Form.Field label={"来院工作时间"} name={"goHospitalWorkDate"}>
                   <DatePicker.RangePicker />
