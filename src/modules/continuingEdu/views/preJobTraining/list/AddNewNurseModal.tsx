@@ -59,7 +59,7 @@ export default observer(function AddNewNurseModal(props: Props) {
 		  align: 'center',
 		  width: 50,
 		  render: (text: any, record: any, index: number)=>{
-			return <span>{text=='1'?'男':'女'}</span>
+			return <span>{text=='1'?'女':'男'}</span>
 		  }
 		},
 		{

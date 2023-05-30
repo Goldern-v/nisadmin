@@ -1170,7 +1170,7 @@ const getIcon = (icon: any) => {
       ],
     },
     {
-      title: "护士管理-岗前培训",
+      title: "新护士管理-岗前培训",
       path: "/continuingEdu",
       icon: <YNXXB />,
       hide: ['whhk'].includes(appStore.HOSPITAL_ID),
@@ -1203,7 +1203,7 @@ const getIcon = (icon: any) => {
       ],
     },
     {
-      title: "护士管理-临床培训",
+      title: "新护士管理-临床培训",
       path: "/continuingEdu",
       icon: <YNXXB />,
       hide: ['whhk'].includes(appStore.HOSPITAL_ID),
