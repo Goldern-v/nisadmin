@@ -1,47 +1,49 @@
+import service from 'src/services/api'
 import styled from 'styled-components'
 import React, { useEffect } from 'react'
 import { RouteComponentProps } from 'src/components/RouterView'
 import { HorizontalMenuItem } from 'src/types/horizontalMenu'
-import TopCon from './components/TopCon'
-import LeftMenu from './components/LeftMenu'
-import { nurseFileDetailViewModal } from './NurseFileDetailViewModal'
 import { appStore, authStore } from 'src/stores'
 import { Spin } from 'antd'
 import { observer } from 'mobx-react-lite'
-import Article from './views/Article'
-import PersonWinning from './views/PersonWinning'
-import SpecializNurse from './views/SpecializNurse'
-import BaseInfo from './views/BaseInfo'
-import SpecialCard from './views/SpecialCard'
-import OnEducation from './views/OnEducation'
-import HostingScientific from './views/HostingScientific'
-import JoinScientific from './views/JoinScientific'
-import ToNewPost from './views/ToNewPost'
-import WorkHistory from './views/WorkHistory'
-import EducationalExperience from './views/EducationalExperience'
-import WorkRegistrationForm from './views/WorkRegistrationForm'
-import Patent from './views/Patent'
-import LearnJob from './views/LearnJob'
-import ScientificResearch from './views/ScientificResearch'
-import Monograph from './views/Monograph'
-import ContinuingEducation from './views/ContinuingEducation'
-// import Leave from './views/Leave'
-import PositionChange from './views/PositionChange'
-import jobChange from './views/jobChange'
-import RankChange from './views/RankChange'
-// import PostChange from './views/PostChange'
-import WardInnovate from './views/WardInnovate'
-import OrganizationChange from './views/OrganizationChange'
 import { ScrollBox } from 'src/components/common'
-import service from 'src/services/api'
-// import qs from 'qs'
-import { nurseFilesService } from '../../services/NurseFilesService'
+
+import LeftMenu from './components/LeftMenu'
+import TopCon from './components/TopCon'
+import Article from './views/Article'
+import BaseInfo from './views/BaseInfo'
+import ContinuingEducation from './views/ContinuingEducation'
 import continuingEducation_sdlj from './views/continuingEducation_sdlj'
-import technologiesAndProjects_sdlj from './views/technologiesAndProjects_sdlj'
+import EducationalExperience from './views/EducationalExperience'
+import HostingScientific from './views/HostingScientific'
+import jobChange from './views/jobChange'
+import JoinScientific from './views/JoinScientific'
+import LearnJob from './views/LearnJob'
 import MajorErrors from './views/MajorErrors'
-import ToNewPost_sdlj from './views/ToNewPost_sdlj'
-import SocialNurse from './views/SocialNurse'
 import MakeAwards from './views/MakeAwards'
+import Monograph from './views/Monograph'
+import OnEducation from './views/OnEducation'
+import OrganizationChange from './views/OrganizationChange'
+import Patent from './views/Patent'
+import PersonWinning from './views/PersonWinning'
+import PositionChange from './views/PositionChange'
+import RankChange from './views/RankChange'
+import ScientificResearch from './views/ScientificResearch'
+import SocialNurse from './views/SocialNurse'
+import SpecialCard from './views/SpecialCard'
+import SpecializNurse from './views/SpecializNurse'
+import technologiesAndProjects_sdlj from './views/technologiesAndProjects_sdlj'
+import ToNewPost from './views/ToNewPost'
+import ToNewPost_sdlj from './views/ToNewPost_sdlj'
+import WardInnovate from './views/WardInnovate'
+import WorkHistory from './views/WorkHistory'
+import WorkRegistrationForm from './views/WorkRegistrationForm'
+import { nurseFileDetailViewModal } from './NurseFileDetailViewModal'
+import { nurseFilesService } from '../../services/NurseFilesService'
+
+// import Leave from './views/Leave'
+// import PostChange from './views/PostChange'
+// import qs from 'qs'
 export interface Props extends RouteComponentProps<{ type?: string }> {
   payload: HorizontalMenuItem[]
 }
@@ -158,7 +160,8 @@ const ROUTE_LIST_DEFAULT = ['zhzxy'].includes(appStore.HOSPITAL_ID) ? [
     component: Article,
     name: '文章'
   },
-  ...appStore.HOSPITAL_ID === 'wh' ? [{
+  
+  ...(['wh','zzwy'].includes(appStore.HOSPITAL_ID) ? [{
     /** 方明处理 */
     type: 'personWinning',
     component: PersonWinning,
@@ -175,7 +178,7 @@ const ROUTE_LIST_DEFAULT = ['zhzxy'].includes(appStore.HOSPITAL_ID) ? [
     type: 'onEducation',
     component: OnEducation,
     name: '外出进修'
-  },] : [],
+  },] : []),
   ...isSdlj ? [
     {
       type: 'continuingEducation_sdlj',
