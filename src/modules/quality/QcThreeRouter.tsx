@@ -49,6 +49,7 @@ import 质控表单汇总 from "./views/qcDghl/质控表单汇总";
 import 三级质控护理质量统计汇总 from "./views/qcFormGzsrm/三级质控护理质量统计汇总";
 import qcThreeMQSummary from './views/qcThreeMQSummary/index'
 import { CONFIG_TITLE } from './utils/enums'
+import qcQSummary from './views/qcQSummary'
 export interface Props extends RouteComponentProps<{ name?: string }> {}
 export default function QcThreeRouter(props: Props) {
   useEffect(() => {}, [props.history.location.pathname]);
@@ -274,7 +275,6 @@ export default function QcThreeRouter(props: Props) {
         route_检查表单统计表,
         route_福清三级质控问题原因措施汇总,
         {
-
           title: CONFIG_TITLE[3] + "月季度汇总报告",
           icon: <HZBG />,
           path: "/qcThree/qcThreeMQSummary",
@@ -282,8 +282,16 @@ export default function QcThreeRouter(props: Props) {
           hide: !authStore.level3publishedWatch,
           keepAlive: true,
           disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP",
-
-        }
+        },
+        {
+          title: CONFIG_TITLE[3] + "季度汇总报告",
+          icon: <HZBG />,
+          path: "/qcThree/qcQSummary?level=3.6",
+          component: qcQSummary,
+          hide: !authStore.level3publishedWatch,
+          keepAlive: true,
+          disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP",
+        },
       ],
       "whyx,whhk": [
         // route_三级质控月度报告,

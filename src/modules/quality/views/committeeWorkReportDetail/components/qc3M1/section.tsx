@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from 'react'
 import EditButton from 'src/modules/quality/components/EditButton'
 import LevelTitle from 'src/modules/quality/components/LevelTitle'
+import Line from 'src/modules/quality/components/Line'
 import styled from 'styled-components'
+import React, { useEffect, useState } from 'react'
 import { observer } from 'src/vendors/mobx-react-lite'
+import { numberToArray } from 'src/utils/array/array'
+import { Obj } from 'src/libs/types'
 
 import { useInstance } from '../../hook/useModel'
-import { numberToArray } from 'src/utils/array/array'
 import { SectionCon } from '../../style/section'
-import { Obj } from 'src/libs/types'
 
 export interface Props {
   sectionId: string
@@ -19,6 +20,7 @@ export default observer(function (props: Props) {
   let { sectionId, sectionTitle } = props
   const { instance } = useInstance()
   const [data, setData] = useState(instance.getSectionData(sectionId))
+  const [config, setConfig] = useState(instance.getSectionConfig(sectionId))
   let list = (data ? data.list : []) || []
   useEffect(() => {
     setData(instance.getSectionData(sectionId))
@@ -31,9 +33,13 @@ export default observer(function (props: Props) {
   const rowNumber = Math.ceil(list.length / maxCol) * columns.length
   return (
     <Wrapper>
-      <LevelTitle level={2} text={sectionTitle} />
+      <LevelTitle level={config?.title ? 1 : 2} text={sectionTitle} />
 
-      <EditButton onClick={() => instance.openEditModal(sectionId)}>编辑</EditButton>
+      {config?.showEdit !== false && <EditButton onClick={() => instance.openEditModal(sectionId)}>编辑</EditButton>}
+      {config?.title && <div className='title'>
+        {config.title}
+      </div>
+      }
       <table>
         <colgroup>
           <col width={60}></col>
@@ -81,6 +87,18 @@ export default observer(function (props: Props) {
           }
         </tbody>
       </table>
+      {config?.title1 && <>
+        <div className='title'>
+          {config.title1}
+        </div>
+        {
+          !instance?.isPrint ?
+          <Line list={list} xKey='deptName' yKey="score0,score1,score2" isHorizon={false} />
+          :
+          <img className="chart-img" src={instance.imgList[config.imgIdx]} alt={config.imgIdx} />
+        }
+      </>
+      }
     </Wrapper >
   )
 })

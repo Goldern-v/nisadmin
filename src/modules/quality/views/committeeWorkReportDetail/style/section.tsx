@@ -12,6 +12,10 @@ export const SectionCon: any = styled.div`
   td {
     white-space: pre-wrap;
   }
+  .title {
+    text-align: center;
+    font-size: 16px;
+  }
 `
 export const OperationSecCon = styled.div`
   padding-bottom: 5px;

@@ -1,19 +1,21 @@
-import { appStore } from "src/stores";
-import { createArr } from "src/utils/array/array";
-import moment from "moment";
+import moment from 'moment'
+import { appStore } from 'src/stores'
+import { createArr } from 'src/utils/array/array'
+import { Obj } from 'src/libs/types'
+import { createObjV } from 'src/utils/object/object'
 
-import EditPage from "./components/editPage";
+import EditPage from './components/editPage'
+import tableCon from './components/tableCon'
+
 import LYHZSC_1_2 from "./components/LYHZSC_1_2";
 import LYHZSC_2_3 from "./components/LYHZSC_2_3";
 import LYHZSC_4_1 from "./components/LYHZSC_4/LYHZSC_4_1";
 import LYHZSC_4_2 from "./components/LYHZSC_4/LYHZSC_4_2";
-import { Obj } from "src/libs/types";
 import LYHZSC_4_3 from "./components/LYHZSC_4/LYHZSC_4_3";
 import LYHZSC_4_4 from "./components/LYHZSC_4/LYHZSC_4_4";
 import LYHZSC_4_5 from "./components/LYHZSC_4/LYHZSC_4_5";
 import LYHZSC_4_6 from "./components/LYHZSC_4/LYHZSC_4_6";
 import LYHZSC_4_7 from "./components/LYHZSC_4/LYHZSC_4_7";
-import { createObjV } from "src/utils/object/object";
 import LYHZSC_4_8 from "./components/LYHZSC_4/LYHZSC_4_8";
 import LYHZSC_4_9 from "./components/LYHZSC_4/LYHZSC_4_9";
 import LYHZSC_4_10 from "./components/LYHZSC_4/LYHZSC_4_10";
@@ -22,8 +24,6 @@ import LYHZSC_4_12 from "./components/LYHZSC_4/LYHZSC_4_12";
 import LYHZSC_6_7 from "./components/LYHZSC_6/LYHZSC_6_7";
 import LYHZSC_6_6 from "./components/LYHZSC_6/LYHZSC_6_6";
 import LYHZSC_6_5 from "./components/LYHZSC_6/LYHZSC_6_5";
-import tableCon from "./components/tableCon";
-
 export const LYHZSC_2_3_NAME = '护理质量检查分析及改进记录'
 /**不同表单的初始化操作 */
 export default function config(code: string) {
@@ -515,6 +515,7 @@ export const dateFormat2 = "YYYY年MM月DD日";
 export const dateFormat3 = "YYYY-MM-DD";
 export const dateFormat4 = "YYYY年MM月";
 export const dateFormat5 = "YYYY-MM";
+export const dateFormat6 = "MM月DD日";
 export const timeFormat = "HH:mm";
 
 export const phD = "   年  月  日";

@@ -8,18 +8,20 @@ import { observer } from 'src/vendors/mobx-react-lite'
 
 import AdministrativeWard from './views/administrativeWard'
 import Analysis from './views/analysisWhyx/Analysis'
-// import ProblemSummary from './views/problemSummary/ProblemSummary'
+import qcQSummary from './views/qcQSummary'
 import QualityControlKey from './views/qualityControlKey/QualityControlKey'
 import QualityControlRecord from './views/qualityControlRecord/QualityControlRecord'
 import SafetyChecklist from './views/safetyChecklist'
-// import SummaryReport from './views/summaryReport/SummaryReport'
 import WorkSummaryReportList from './views/workSummaryReportList/WorkSummaryReportList'
 import { ReactComponent as HZBG } from './images/icon/HZBG.svg'
 import { ReactComponent as EJZK } from './images/icon/EJZK.svg'
 import { ReactComponent as YDBG } from './images/icon/YDBG2.svg'
-// import { ReactComponent as WTBG } from './images/icon/WTBG.svg'
 import { ReactComponent as JCTJ } from './images/icon/JCTJ.svg'
+import { CONFIG_TITLE } from './utils/enums'
 
+// import ProblemSummary from './views/problemSummary/ProblemSummary'
+// import SummaryReport from './views/summaryReport/SummaryReport'
+// import { ReactComponent as WTBG } from './images/icon/WTBG.svg'
 import 护理质量巡查情况汇总表 from "./views/qcFormHj/护理质量巡查情况汇总表";
 import 防疫专项检查片区汇总 from "./views/防疫专项检查片区汇总列表/防疫专项检查片区汇总列表";
 import 防疫专项检查汇总 from "./views/防疫专项检查汇总列表/防疫专项检查汇总列表";
@@ -30,7 +32,6 @@ import Gzsrm_护理质量检查小结 from "./views/qcFormGzsrm/护理质量检�
 import 质控表单汇总 from "./views/qcDghl/质控表单汇总";
 import 二级质控问题原因措施汇总 from "./views/qcFormGzsrm/二级质控问题原因措施汇总";
 import 福清二级质控问题原因措施汇总 from "./views/qcFormFqfybjy/二级质控问题原因措施汇总";
-import { CONFIG_TITLE } from './utils/enums'
 // import Analysis from "./views/analysis/Analysis";
 export interface Props extends RouteComponentProps<{ name?: string }> {}
 export default observer(function QcTwoRouter(props: Props) {
@@ -215,6 +216,15 @@ export default observer(function QcTwoRouter(props: Props) {
             (appStore.history && appStore.history.action) !== "POP",
         },
         route_福清二级质控问题原因措施汇总,
+        {
+          title: CONFIG_TITLE[2] + "季度汇总报告",
+          icon: <HZBG />,
+          path: "/qcTwo/qcQSummary?level=2.1",
+          component: qcQSummary,
+          hide: !authStore.level2Watch,
+          keepAlive: true,
+          disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP",
+        },
       ],
       'whyx,whhk': [route_analysis],
       // whyx: [route_analysis, route_summaryReport, route_problemSummary],

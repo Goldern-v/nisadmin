@@ -25,6 +25,7 @@ interface ModalCase {
 }
 
 interface SectionCase {
+  config?: any
   sectionId?: string
   sectionTitle?: string
   modalTitle?: string
@@ -58,6 +59,9 @@ export class ReportDetail {
   @observable public initRender: Function = () => { }
   public id: string = ''
   @observable public loading = false
+  @observable public isPrint = false
+  /**chart图片 */
+  @observable public imgList:string[] = []
 
   constructor({
     sectionList,
@@ -94,6 +98,16 @@ export class ReportDetail {
       })
   }
 
+  /** 获取组件配置 */
+  @action
+  getSectionConfig(sectionId: string) {
+    let obj = this.getSection(sectionId)
+    if (obj) {
+      return obj.config
+    } else {
+      return null
+    }
+  }
   /** 获取组件数据 */
   @action
   getSectionData(sectionId: string) {

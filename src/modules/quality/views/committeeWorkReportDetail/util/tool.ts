@@ -49,6 +49,9 @@ export const routePath = () => {
   if (level == 3.4) return '/qcThree/qcThreeMQSummary'
   // 三级季度汇总 by福清
   if (level == 3.5) return '/qcThree/qcThreeMQSummary'
+  if (level === '3.6') return '/qcThree/qcQSummary?level=3.6'
+  if (level === '2.1') return '/qcTwo/qcQSummary?level=2.1'
+  if (level === '1.1') return '/qcOneHj/qcQSummary?level=1.1'
   return ''
 }
 

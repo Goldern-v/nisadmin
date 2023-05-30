@@ -2,25 +2,27 @@ import LeftMenu from 'src/components/LeftMenu'
 import styled from 'styled-components'
 import React, { useEffect } from 'react'
 import { RouteComponentProps } from 'src/components/RouterView'
+import { KeepAlive } from 'react-keep-alive'
+import { appStore } from 'src/stores'
+
+import qcQSummary from './views/qcQSummary'
 import QualityControlRecord from './views/qualityControlRecord/QualityControlRecord'
+import { ReactComponent as EJZK } from './images/icon/EJZK.svg'
+import { ReactComponent as YDBG } from './images/icon/YDBG2.svg'
+import { ReactComponent as HZBG } from './images/icon/HZBG.svg'
+import { ReactComponent as JCTJ } from './images/icon/JCTJ.svg'
+import { CONFIG_TITLE } from './utils/enums'
+
 // import QueryStatistics from './views/queryStatistics/QueryStatistics'
 // import Analysis from './views/analysis/Analysis'
 // import SummaryReport from './views/summaryReport/SummaryReport'
 // import WorkSummaryReportList from './views/workSummaryReportList/WorkSummaryReportList'
 // import ProblemSummary from './views/problemSummary/ProblemSummary'
-import { KeepAlive } from 'react-keep-alive'
-
-import { ReactComponent as EJZK } from './images/icon/EJZK.svg'
-import { ReactComponent as YDBG } from './images/icon/YDBG2.svg'
-import { ReactComponent as HZBG } from "./images/icon/HZBG.svg"
 import 护理质量巡查情况汇总表 from './views/qcFormHj/护理质量巡查情况汇总表'
-import { appStore } from 'src/stores'
 import 护理质量检查小结 from './views/qcFormHj/护理质量检查小结'
 import 质控表单汇总 from './views/qcDghl/质控表单汇总'
 import 一级质控问题原因措施汇总 from './views/qcFormGzsrm/一级质控问题原因措施汇总'
 import 福清一级质控问题原因措施汇总 from './views/qcFormFqfybjy/一级质控问题原因措施汇总'
-import { ReactComponent as JCTJ } from "./images/icon/JCTJ.svg";
-import { CONFIG_TITLE } from './utils/enums'
 export interface Props extends RouteComponentProps<{ name?: string }> { }
 
 export default function QcOneRouterHj(props: Props) {
@@ -89,7 +91,16 @@ export default function QcOneRouterHj(props: Props) {
       map: {
         dghl: [route_质控表单汇总],
         gzsrm: [route_一级质控问题原因措施汇总,],
-        fqfybjy: [route_福清一级质控问题原因措施汇总],
+        fqfybjy: [route_福清一级质控问题原因措施汇总,
+          {
+            title: CONFIG_TITLE[1] + "季度汇总报告",
+            icon: <HZBG />,
+            path: "/qcOneHj/qcQSummary?level=1.1",
+            component: qcQSummary,
+            // hide: !authStore.level3publishedWatch,
+            keepAlive: true,
+            disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP",
+          },],
         other: []
       }
     })
