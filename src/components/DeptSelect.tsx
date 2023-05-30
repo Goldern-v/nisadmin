@@ -48,13 +48,16 @@ export default observer(function DeptSelect(props: Props) {
   }, [props.deptCode]);
 
   useEffect(() => {
-    const hasAllDeptRouteList = [
+    let hasAllDeptRouteList = [
       "/home",
       "/nurseFile/:path",
       // "/statistic/:name",统计查询科室筛选去掉全院
       "/auditsManagement",
       "/quality/:name",
     ];
+    if(['925'].includes(appStore.HOSPITAL_ID)){
+        hasAllDeptRouteList.push("/statistic/:name")
+    }
     if (
       authStore.post === "护理部" ||
       authStore.isAdmin ||
