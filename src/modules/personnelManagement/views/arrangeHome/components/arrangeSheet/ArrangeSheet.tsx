@@ -4,7 +4,7 @@ import moment from 'moment'
 import createModal from 'src/libs/createModal'
 import service from 'src/services/api'
 import styled from 'styled-components'
-import React, {useEffect, useLayoutEffect, useState} from 'react'
+import React, { useEffect, useLayoutEffect, useState } from 'react'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
 import { Input, message, Modal, Tooltip } from 'src/vendors/antd'
 import { getWeekString, getWeekString2 } from 'src/utils/date/week'
@@ -19,20 +19,21 @@ import EditVacationCountModal_wh from '../../modal/EditEffectiveTimeModal_wh'
 import EditVacationCountModal from '../../modal/EditVacationCountModal'
 import BalanceHour from './BalanceHour'
 import Cell from './Cell'
+import CommonHour from './CommonHour'
 import HolidayHour from './HolidayHour'
 import NightHourCell from './NightHourCell'
+import PeriodHour from './PeriodHour'
 import PostScoreCell from './postScoreCell'
 import PublicHour from './PublicHour'
 import TotalCell from './TotalCell'
 import TotalHoliday from './TotalHoliday'
-import PeriodHour from './PeriodHour'
+import WeekBalanceHour from './WeekBalanceHour'
 import { createContextMenu } from './ContextMenu'
 import { sheetViewModal } from '../../viewModal/SheetViewModal'
-// import CellLeft from './CellLeft'  // 产品提的新需求  等待产品整理好再做
-import WeekBalanceHour from "./WeekBalanceHour";
-// import {toJS} from "mobx"; //本周结余时数
-import CommonHour from './CommonHour'
 import { selectViewModal } from '../../viewModal/SelectViewModal'
+
+// import CellLeft from './CellLeft'  // 产品提的新需求  等待产品整理好再做
+// import {toJS} from "mobx"; //本周结余时数
 export interface Props {
   /** 编辑模式 */
   isEdit: boolean;
@@ -1227,7 +1228,7 @@ return (
                         系统标注:
                       </div>
                       <div>
-                        <p>1.符号标识："▲" 代表全院应急；"★" 代表科室应急班；"<span style={{ color: "red", fontSize: "18px" }}>➁</span>"代表二线；"<span style={{ color: "red", fontSize: "18px" }}>➂</span>"代表三线；</p>
+                        <p>1.符号标识："▲" 代表全院应急；"★" 代表科室应急班；"<span style={{ color: "red", fontSize: "18px" }}>②</span>"代表二线；"<span style={{ color: "red", fontSize: "18px" }}>➂</span>"代表三线；</p>
                       </div>
                     </div>,
                   'whyx,whhk':

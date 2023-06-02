@@ -1,20 +1,20 @@
-import BaseTable, { DoCon } from "src/components/BaseTable";
-// import Form from "src/components/Form";
-import styled from "styled-components";
-import React, { useEffect, useState } from "react";
-import { Button, DatePicker, message, Modal, Select } from "antd";
+import moment from 'moment'
+import BaseTabs from 'src/components/BaseTabs'
 import service from 'src/services/api'
+import styled from 'styled-components'
+import React, { useEffect, useState } from 'react'
+import BaseTable, { DoCon } from 'src/components/BaseTable'
+import { Button, DatePicker, message, Modal, Select } from 'antd'
+import { ColumnProps } from 'antd/lib/table'
+import { appStore, authStore } from 'src/stores'
+import { observer } from 'mobx-react-lite'
+import { useKeepAliveEffect } from 'react-keep-alive'
+
+import BadEventsNewService from './api/badEventsNewService'
+
+// import Form from "src/components/Form";
 // import { Link } from "react-router-dom";
-import { ColumnProps } from "antd/lib/table";
-import { authStore, appStore } from "src/stores";
-import { observer } from "mobx-react-lite";
-
-import BadEventsNewService from "./api/badEventsNewService";
 // import CustomPagination from './components/CustomPagination'
-import moment from "moment";
-import { useKeepAliveEffect } from "react-keep-alive";
-import BaseTabs from "src/components/BaseTabs";
-
 const api = new BadEventsNewService();
 
 const { RangePicker } = DatePicker;

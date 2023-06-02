@@ -1,11 +1,13 @@
-import styled from "styled-components";
-import React, { useEffect } from "react";
-import LeftMenu from "src/components/LeftMenu";
-import { appStore } from "src/stores";
-import { ReactComponent as PBTJ } from "../img/PBTJ.svg";
-import { ReactComponent as HLRYTJ } from "../img/HLRYTJ.svg";
-import { ReactComponent as HZCXTJ } from "../img/HZCXTJ.svg";
-import { ReactComponent as ZZHSDA } from "../img/ZZHSDA.svg";
+import LeftMenu from 'src/components/LeftMenu'
+import styled from 'styled-components'
+import React, { useEffect } from 'react'
+import { appStore } from 'src/stores'
+
+import { ReactComponent as PBTJ } from '../img/PBTJ.svg'
+import { ReactComponent as HLRYTJ } from '../img/HLRYTJ.svg'
+import { ReactComponent as HZCXTJ } from '../img/HZCXTJ.svg'
+import { ReactComponent as ZZHSDA } from '../img/ZZHSDA.svg'
+
 // 左侧列表数据
 const LEFT_MENU_CONFIG = [
   ...appStore.hisMatch({
@@ -219,6 +221,11 @@ const LEFT_MENU_CONFIG = [
           path: "/statistic/wardExecute",
         },
       ],
+      '925': [{
+        title: '病人流转统计',
+        icon: <HZCXTJ />,
+        path: '/statistic/patientFlow',
+      }],
       other: []
     },
   }),

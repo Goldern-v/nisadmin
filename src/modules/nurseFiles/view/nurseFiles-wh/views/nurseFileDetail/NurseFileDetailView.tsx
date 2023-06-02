@@ -166,7 +166,8 @@ const ROUTE_LIST_DEFAULT = ['zhzxy'].includes(appStore.HOSPITAL_ID) ? [
     type: 'personWinning',
     component: PersonWinning,
     name: '个人获奖'
-  },
+  }]: []),
+  ...(['wh','zzwy', 'qhwy'].includes(appStore.HOSPITAL_ID) ? [
   {
     /** 吴敏处理 */
     type: 'specializNurse',

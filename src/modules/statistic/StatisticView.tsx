@@ -1,37 +1,51 @@
-import styled from "styled-components";
-import React, { useState, useEffect } from "react";
-import StatisticLeftList from "./components/StatisticLeftList";
-// import StatisticHeader from './components/StatisticHeader'
-import store, {appStore, authStore} from "src/stores";
+import styled from 'styled-components'
+import React, { lazy, useEffect, useState } from 'react'
+import store, { appStore, authStore } from 'src/stores'
 
+import StatisticLeftList from './components/StatisticLeftList'
+import BloodTransfusion from './views/bloodTransfusion/BloodTransfusion'
+import DepartmentByShiftView from './views/departmentByShift/DepartmentByShiftView'
+import DepartmentHolidayScheduleView from './views/departmentHolidaySchedule/DepartmentHolidayScheduleView'
+import DepartmentNightByMonthView from './views/departmentNightByMonth/DepartmentNightByMonthView'
+import DepartmentNightByQuarterView from './views/departmentNightByQuarter/DepartmentNightByQuarterView'
+import DepartmentVacationByMonthView from './views/departmentVacationByMonth/DepartmentVacationByMonthView'
+import DepartmentVacationByQuarterView from './views/departmentVacationByQuarter/DepartmentVacationByQuarterView'
+import DepartmentWhiteByMonthView from './views/departmentWhiteByMonth/DepartmentWhiteByMonthView'
+import DepartmentWhiteByQuarterView from './views/departmentWhiteByQuarter/DepartmentWhiteByQuarterView'
+import FeverPatient from './views/feverPatients/FeverPatient'
+import NurseByShiftView from './views/nurseByShift/NurseByShiftView'
+import NurseHolidayScheduleView from './views/nurseHolidaySchedule/NurseHolidayScheduleView'
+import NurseNightShiftByMonthView from './views/nurseNightShiftByMonth/NurseNightShiftByMonthView'
+import NurseSchedulingView from './views/nurseScheduling/NurseSchedulingView'
+import NurseVacationByMonthView from './views/nurseVacationByMonth/NurseVacationByMonthView'
+import NurseWhiteShiftByMonthView from './views/nurseWhiteShiftByMonth/NurseWhiteShiftByMonthView'
+import NurseList_jmfy from './views/nursingStatistics/nurseList_jmfy/NurseList'
+import NurseList_lcey from './views/nursingStatistics/nurseList_lcey/NurseList'
+import NurseList_nys from './views/nursingStatistics/nurseList_nys/NurseList'
+import NurseList_whyx from './views/nursingStatistics/NurseList_whyx/NurseList_whyx'
+import NurseList from './views/nursingStatistics/nurseList/NurseList'
+import PatientFlow from './views/patientFlow/index'
+import PdaUsage from './views/PDAusage/PdaUsage'
+import professionalTec from './views/professional-tec'
+import TelFollowUp from './views/telFollowUp/TelFollowUp'
+import WardEquipment from './views/wardEquipment/WardEquipment'
+import WardExecute from './views/wardExecute/WardExecute'
+
+// import StatisticHeader from './components/StatisticHeader'
 // 护士排班表
-import NurseSchedulingView from "./views/nurseScheduling/NurseSchedulingView";
 // 护士排班统计（按班次）
-import NurseByShiftView from "./views/nurseByShift/NurseByShiftView";
 // 护士白班统计（按月份)
-import NurseWhiteShiftByMonthView from "./views/nurseWhiteShiftByMonth/NurseWhiteShiftByMonthView";
 // 护士夜班统计（按月份）
-import NurseNightShiftByMonthView from "./views/nurseNightShiftByMonth/NurseNightShiftByMonthView";
 // 护士休假统计（按月份）
-import NurseVacationByMonthView from "./views/nurseVacationByMonth/NurseVacationByMonthView";
 // 护士节假日排班表
-import NurseHolidayScheduleView from "./views/nurseHolidaySchedule/NurseHolidayScheduleView";
 // 科室排班统计（按班次）
-import DepartmentByShiftView from "./views/departmentByShift/DepartmentByShiftView";
 // 科室白班统计（按月份）
-import DepartmentWhiteByMonthView from "./views/departmentWhiteByMonth/DepartmentWhiteByMonthView";
 // 科室夜班统计（按月份）
-import DepartmentNightByMonthView from "./views/departmentNightByMonth/DepartmentNightByMonthView";
 // 科室休假统计（按月份）
-import DepartmentVacationByMonthView from "./views/departmentVacationByMonth/DepartmentVacationByMonthView";
 // 科室白班统计（按季度）
-import DepartmentWhiteByQuarterView from "./views/departmentWhiteByQuarter/DepartmentWhiteByQuarterView";
 // 科室夜班统计（按季度）
-import DepartmentNightByQuarterView from "./views/departmentNightByQuarter/DepartmentNightByQuarterView";
 // 科室休假统计（按季度）
-import DepartmentVacationByQuarterView from "./views/departmentVacationByQuarter/DepartmentVacationByQuarterView";
 // 科室节假日排班统计
-import DepartmentHolidayScheduleView from "./views/departmentHolidaySchedule/DepartmentHolidayScheduleView";
 //护理质量统计
 import 护理质量统计查询 from "src/modules/quality/views/qcFormNys/护理质量统计查询";
 //护士学历分布
@@ -53,27 +67,14 @@ import 护士在职状态分析 from "./views/护士在职状态分析/护士在
 //护士离职原因分析
 import 护士离职原因分析 from "./views/护士离职原因分析/护士离职原因分析";
 // 发热患者统计
-import FeverPatient from "./views/feverPatients/FeverPatient";
 // 病区设备统计
-import WardEquipment from './views/wardEquipment/WardEquipment'
-
 // 全院护理人员一览表
-import NurseList from "./views/nursingStatistics/nurseList/NurseList";
-import NurseList_nys from "./views/nursingStatistics/nurseList_nys/NurseList";
-import NurseList_jmfy from "./views/nursingStatistics/nurseList_jmfy/NurseList";
-import NurseList_lcey from "./views/nursingStatistics/nurseList_lcey/NurseList";
-import professionalTec from "./views/professional-tec";
 // import { RouteComponentProps } from 'src/components/RouterView'
 // import NurseSchedule from './components/NurseSchedule'
 // import NurseScheduleByShift from './components/NurseScheduleByShift'
 // import TableModel from './common/TableModel'
 // export interface Props extends RouteComponentProps<{ type?: string }> {}
 // 护理人员一览表（层级）
-import NurseList_whyx from "./views/nursingStatistics/NurseList_whyx/NurseList_whyx";
-import PdaUsage from "./views/PDAusage/PdaUsage";
-import BloodTransfusion from "./views/bloodTransfusion/BloodTransfusion";
-import TelFollowUp from "./views/telFollowUp/TelFollowUp";
-import WardExecute from "./views/wardExecute/WardExecute";
 // 患者查询统计   大块
 // 住院病人认知情况统计表
 // import 住院病人认知情况统计表 from 'src/modules/statistic/PatientQueryView/住院病人认知情况统计表/住院病人认知情况统计表.tsx'
@@ -328,11 +329,6 @@ export default function StatisticView() {
             component: professionalTec,
           },
         ],
-        other: [],
-      },
-    }),
-    ...appStore.hisMatch({
-      map: {
         'gzhd': [
           {
             name: "执行单统计",
@@ -340,7 +336,11 @@ export default function StatisticView() {
             component: WardExecute,
           },
         ],
-
+        '925': [{
+          name: '病人流转统计',
+          path: '/statistic/patientFlow',
+          component: PatientFlow
+        }],
         default: [],
       },
       vague:true

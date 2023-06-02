@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import React, { useEffect } from 'react'
 import { RouteComponentProps } from 'src/components/RouterView'
 import { KeepAlive } from 'react-keep-alive'
-import { appStore } from 'src/stores'
+import { appStore, authStore } from 'src/stores'
 
 import qcQSummary from './views/qcQSummary'
 import QualityControlRecord from './views/qualityControlRecord/QualityControlRecord'
@@ -48,7 +48,7 @@ export default function QcOneRouterHj(props: Props) {
     path: '/qcOneHj/护理质量巡查情况汇总表?qcLevel=1',
     component: 护理质量巡查情况汇总表,
     keepAlive: true,
-    // hide: !appStore.isDev,
+    hide: !authStore.isRoleManage,
     disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
   }
 

@@ -221,7 +221,7 @@ export default observer(function QcTwoRouter(props: Props) {
           icon: <HZBG />,
           path: "/qcTwo/qcQSummary?level=2.1",
           component: qcQSummary,
-          hide: !authStore.level2Watch,
+          hide: !authStore.level3publishedWatch,
           keepAlive: true,
           disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP",
         },

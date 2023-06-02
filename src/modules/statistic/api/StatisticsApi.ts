@@ -1,8 +1,9 @@
+import qs from 'qs'
+import statisticViewModel from 'src/modules/statistic/StatisticViewModel'
 import BaseApiService from 'src/services/api/BaseApiService'
 import { authStore } from 'src/stores/index'
-import statisticViewModel from 'src/modules/statistic/StatisticViewModel'
-import qs from 'qs'
 import { appStore } from 'src/stores'
+
 class StatisticsApi extends BaseApiService {
   // 护士排班表
   public async postNurseScheduling(exportData: any = true) {
@@ -354,12 +355,15 @@ class StatisticsApi extends BaseApiService {
   // 现任专业技术职务级别
   public countProfessional(query: Record<string,any>) {
     return this.post('/countInformation/countProfessional', query)
-
   }
 
   /** 执行单执行情况 */
   public getWardExecuteHomeStatus(query: any) {
     return this.post('/execute/getWardExecuteHomeStatus', query)
+  }
+  /**患者流转 */
+  public getNurseByDeptAndNum() {
+    return this.get('/whiteboard/getNurseByDeptAndNum')
   }
 }
 
