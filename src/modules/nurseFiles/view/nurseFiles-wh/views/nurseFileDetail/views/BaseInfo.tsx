@@ -1,18 +1,20 @@
-import Zimage from "src/components/Zimage";
-import createModal from "src/libs/createModal";
-import styled from "styled-components";
-import React, { useEffect, useState } from "react";
-import { RouteComponentProps } from "react-router";
-import { nurseFilesService } from "../../../services/NurseFilesService";
-import { appStore, authStore } from "src/stores";
-import { observer } from "mobx-react-lite";
+import Zimage from 'src/components/Zimage'
+import createModal from 'src/libs/createModal'
 import service from 'src/services/api'
-import BaseLayout from "../components/BaseLayout";
-import EditBaseInfoModal from "../modal/EditBaseInfoModal";
-import { nurseFileDetailViewModal } from "../NurseFileDetailViewModal";
-import { ScrollBox } from "src/components/common";
-import { openAuditModal } from "../config/auditModalConfig";
-import { modalService } from "src/global/services/ModalService-wh";
+import styled from 'styled-components'
+import React, { useEffect, useState } from 'react'
+import { RouteComponentProps } from 'react-router'
+import { appStore, authStore } from 'src/stores'
+import { observer } from 'mobx-react-lite'
+import { ScrollBox } from 'src/components/common'
+import { modalService } from 'src/global/services/ModalService-wh'
+
+import BaseLayout from '../components/BaseLayout'
+import EditBaseInfoModal from '../modal/EditBaseInfoModal'
+import { nurseFilesService } from '../../../services/NurseFilesService'
+import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
+import { openAuditModal } from '../config/auditModalConfig'
+
 export interface Props extends RouteComponentProps { }
 /* 判断是否本人 */
 export const isSelf = () => {
@@ -235,14 +237,13 @@ export default observer(function BaseInfo() {
             }
           }
         }),
-        appStore.hisMatch({
+        ...appStore.hisMatch({
           map: {
-            zhzxy: {
+            zhzxy: [{
               毕业学校: maps.school_name,
               所学专业: maps.major
-            },
-            other: {
-            }
+            }],
+            other: []
           }
         }),
         {

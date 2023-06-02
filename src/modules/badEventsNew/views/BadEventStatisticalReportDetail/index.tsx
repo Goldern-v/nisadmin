@@ -1,21 +1,22 @@
-import { observer } from 'mobx-react'
-import React, { useEffect, useMemo, useRef, useState } from 'react'
+import cloneDeep from 'lodash/cloneDeep'
+import AuditHeader from 'src/components/audit-page/AuditHeader'
+import HorizonBar from 'src/modules/quality/views/components/HorizonBar'
+import Pie from 'src/modules/quality/views/components/Pie'
 import styled from 'styled-components'
-import { badEventsNewService } from '../../api/badEventsNewService'
-
-import { Button, Input, Modal, Spin, message } from 'antd'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
+import { observer } from 'mobx-react'
+import { Button, Input, message, Modal, Spin } from 'antd'
 import { appStore } from 'src/stores'
 import { Obj, SelectItem } from 'src/libs/types'
-import AuditHeader from 'src/components/audit-page/AuditHeader'
 import { ReportContainer, ReportCtx } from 'src/components/common'
-import { STATUS_LIST } from '../BadEventStatisticalReport/enums'
 import { quarterAndYear } from 'src/enums/date'
-import cloneDeep from 'lodash/cloneDeep'
 import { chnNumChar1 } from 'src/utils/number/numToChinese'
-import Pie from 'src/modules/quality/views/components/Pie'
+import { preview, print } from 'printing'
+
+import { badEventsNewService } from '../../api/badEventsNewService'
+import { STATUS_LIST } from '../BadEventStatisticalReport/enums'
+
 import FishBone1 from './components/fish-bone'
-import HorizonBar from 'src/modules/quality/views/components/HorizonBar'
-import { print, preview } from 'printing'
 const { TextArea } = Input
 const fishBoneFish = Object.freeze({
   v0: 'b0062084',
@@ -229,8 +230,12 @@ export default observer(function BadEventStatisticalReportDetail(props) {
         />
         <Container>
           <div className='main-ctx'>
-            <Ctx className={'ctx con--a4' + msg?.status === '1' ? 'ctx--view' : '' } ref={ctxRef}>
-              <Input className='ta-center fw-bold f-large' value={data.titleName} onChange={(e) => setData(data => ({ ...data, titleName: e.target.value }))} />
+            <Ctx className={'ctx con--a4 ' + msg?.status === '1' ? 'ctx--view' : '' } ref={ctxRef}>
+              <Input className='ta-center fw-bold f-large' value={data?.titleName} onInput={(e: any) => {
+                e.persist()
+                setData(data => ({ ...data, titleName: e.target.value }))
+              }
+              } />
               <TextArea value={data?.head} autosize={{ minRows: 4 }} onInput={(e: any) => setData(data => ({ ...data, head: e.target.value }))} />
               <div className='fw-bold f-large'>一、{data.year}年护理不良事件汇总</div>
               <TextArea value={data?.eventSummary} autosize={{ minRows: 2 }} onInput={(e: any) => setData(data => ({ ...data, eventSummary: e.target.value }))} />
