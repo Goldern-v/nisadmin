@@ -168,6 +168,21 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
       </div>
     }
   }
+  const formatQcItemDesc = (qcItemDesc?: string) => {
+    if (!qcItemDesc) return <span></span>
+
+    if (qcItemDesc.match(/\n/))
+      return <pre
+        style={{
+          whiteSpace: 'pre-wrap',
+          wordBreak: 'break-all',
+          color: '#999'
+        }}>
+        （{`${qcItemDesc}`}）
+      </pre>
+
+    return <span style={{ color: '#999' }}>{`（${qcItemDesc}）`}</span>
+  }
 
   // 当前医院是否为亚心
   const isWhyx = ['whyx','whhk','925'].includes(appStore.HOSPITAL_ID)
@@ -335,6 +350,19 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
                     <span style={{ color: '#469b30' }}>（{item.problemLevel}）</span>
                   )}
                   {item.qcItemName}
+                  {
+                    appStore.hisMatch({
+                      map: {
+                        zzwy: (<>
+                          {item.fixedScore ? <span style={{ color: '#999' }}>（{item.fixedScore}分）</span> : ''}
+                          <div>{formatQcItemDesc(item.qcItemDeductDesc)}</div>
+                        </>),
+                        other: '',
+                      },
+                      vague:true,
+                    })
+                  }
+          
                 </div>
                 <div className="itemMidCon">
                   <Radio.Group
@@ -422,16 +450,17 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
                         />}
                       </div>
                     </React.Fragment>}
-                    <div style={{ marginTop: 5 }}>
+                    {/* 不显示小结备注 */}
+                    {'925' !== appStore.HOSPITAL_ID && <div style={{ marginTop: 5 }}>
                       <Input.TextArea
                         value={item.remark}
                         readOnly
                         style={{ resize: 'none' }}
                         autosize={{ minRows: 2 }}
                         placeholder="备注" />
-                    </div>
+                    </div>}
                   </div> : ''}
-                  {appStore.hisMatch({
+                  {/* {appStore.hisMatch({
                     map:{
                       '925':!detailData.master.useScore && <div className="sub-item-list">
                       <div style={{ marginTop: 5 }}>
@@ -445,7 +474,7 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
                       other:''
                     },
                     vague:true
-                  })}
+                  })} */}
 
                   <div className="itemAttachmentCon">
                     {item.attachUrls && (

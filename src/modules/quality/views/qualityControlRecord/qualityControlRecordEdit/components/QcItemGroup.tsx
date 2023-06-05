@@ -56,11 +56,11 @@ export default observer(function QcItemGroup(props: Props) {
       item.qcItemValue = val
 
       if (qcModel.baseInfo.useScore) {
-        if(appStore.HOSPITAL_ID == 'fssdy'){
-         if (val === '不符合' && !item.subItemList) {
-              item.remarkDeductScore = item.fixedScore.toString()
-          }else if (val === '部分符合' && !item.subItemList) {
-              item.remarkDeductScore= item.partialMatchScore.toString()
+        if (appStore.HOSPITAL_ID == 'fssdy') {
+          if (val === '不符合' && !item.subItemList) {
+            item.remarkDeductScore = item.fixedScore.toString()
+          } else if (val === '部分符合' && !item.subItemList) {
+            item.remarkDeductScore = item.partialMatchScore.toString()
           } else if (val === '符合') {
             item.remarkDeductScore = ''
             if (item.subItemList)
@@ -70,12 +70,12 @@ export default observer(function QcItemGroup(props: Props) {
             if (item.subItemList)
               item.subItemList = item.subItemList.map((subItem: any) => ({ ...subItem, checked: false }))
           }
-        }else{
+        } else {
           if (val === '否' && !item.subItemList) {
             if (item.remarkDeductScore === null || item.remarkDeductScore === '') {
               item.remarkDeductScore = item.fixedScore.toString()
             }
-          }else if (val === '是') {
+          } else if (val === '是') {
             item.remarkDeductScore = ''
             if (item.subItemList)
               item.subItemList = item.subItemList.map((subItem: any) => ({ ...subItem, checked: false }))
@@ -128,28 +128,28 @@ export default observer(function QcItemGroup(props: Props) {
       <div className='titleLeftCon'>
         {`${numToChinese(index + 1)}、${itemGroup.qcItemTypeName}`}
         <div className="fl-right">
-          {appStore.HOSPITAL_ID == 'fssdy'?
-          <Button type="primary" size="small" style={{ marginRight: '10px' }} onClick={() => setAllQcItemValue('符合')}>全符合</Button>:
-          <Button type="primary" size="small" style={{ marginRight: '10px' }} onClick={() => setAllQcItemValue('是')}>全是</Button>}
-          {appStore.HOSPITAL_ID == 'fssdy'&&<Button
-              type='default'
-              size="small" style={{ marginRight: '10px' }}
-              onClick={() => setAllQcItemValue('部分符合')}>
-              全部分符合
-            </Button>}
-          {appStore.HOSPITAL_ID !== 'nys' && (appStore.HOSPITAL_ID == 'fssdy'?<Button
-              type="danger"
-              size="small"
-              onClick={() => setAllQcItemValue('不符合')}>
-              全不符合
-            </Button>:<Button
-              type="danger"
-              size="small"
-              onClick={() => setAllQcItemValue('否')}>
-              全否
-            </Button>
+          {appStore.HOSPITAL_ID == 'fssdy' ?
+            <Button type="primary" size="small" style={{ marginRight: '10px' }} onClick={() => setAllQcItemValue('符合')}>全符合</Button> :
+            <Button type="primary" size="small" style={{ marginRight: '10px' }} onClick={() => setAllQcItemValue('是')}>全是</Button>}
+          {appStore.HOSPITAL_ID == 'fssdy' && <Button
+            type='default'
+            size="small" style={{ marginRight: '10px' }}
+            onClick={() => setAllQcItemValue('部分符合')}>
+            全部分符合
+          </Button>}
+          {appStore.HOSPITAL_ID !== 'nys' && (appStore.HOSPITAL_ID == 'fssdy' ? <Button
+            type="danger"
+            size="small"
+            onClick={() => setAllQcItemValue('不符合')}>
+            全不符合
+          </Button> : <Button
+            type="danger"
+            size="small"
+            onClick={() => setAllQcItemValue('否')}>
+            全否
+          </Button>
           )}
-          {['lcey', 'whyx','whhk', 'whsl'].includes(appStore.HOSPITAL_ID) && (
+          {['lcey', 'whyx', 'whhk', 'whsl'].includes(appStore.HOSPITAL_ID) && (
             <Button
               style={{ marginLeft: '10px', backgroundColor: '#FFA500', color: '#FFFFFF' }}
               type="default"
@@ -178,7 +178,7 @@ export default observer(function QcItemGroup(props: Props) {
                   <span style={{ color: '#999' }}>（{item.fixedScore}分）</span>
                 )
               },
-              vague:true,
+              vague: true,
             })
           }
           {item.inspectionMethod && (
@@ -193,8 +193,8 @@ export default observer(function QcItemGroup(props: Props) {
                 span={8}
                 key={`fillItem-${index}-${itemIndex}-${fillItemIdx}`}
                 style={{ display: 'flex', margin: '2.5px 0' }}>
-                  {/* fillItemIdx + 1 */}
-                <div style={{ lineHeight: '20px', color: '#666' }}>{fillItem.itemName?fillItem.itemName:'自定义内容'+(fillItemIdx + 1)}：</div>
+                {/* fillItemIdx + 1 */}
+                <div style={{ lineHeight: '20px', color: '#666' }}>{fillItem.itemName ? fillItem.itemName : '自定义内容' + (fillItemIdx + 1)}：</div>
                 <Input
                   size="small"
                   style={{ flex: 1, fontSize: '12px' }}
@@ -211,7 +211,7 @@ export default observer(function QcItemGroup(props: Props) {
           </Row>
         )}
         <div className='itemMidCon'>
-          {['fssdy'].includes(appStore.HOSPITAL_ID)?<Radio.Group
+          {['fssdy'].includes(appStore.HOSPITAL_ID) ? <Radio.Group
             value={item.qcItemValue}
             buttonStyle='solid'
             onChange={(e: any) => {
@@ -222,11 +222,11 @@ export default observer(function QcItemGroup(props: Props) {
               if (qcModel.baseInfo.useScore) {
                 if (e.target.value === '不符合' && !newItem.subItemList) {
                   // if (newItem.remarkDeductScore === null || newItem.remarkDeductScore === '') {
-                    newItem.remarkDeductScore = newItem.fixedScore.toString()
+                  newItem.remarkDeductScore = newItem.fixedScore.toString()
                   // }
                 } else if (e.target.value === '部分符合' && !newItem.subItemList) {
                   // if (newItem.remarkDeductScore === null || newItem.remarkDeductScore === '') {
-                    newItem.remarkDeductScore = newItem.partialMatchScore.toString()
+                  newItem.remarkDeductScore = newItem.partialMatchScore.toString()
                   // }
                 } else if (e.target.value === '符合') {
                   newItem.remarkDeductScore = ''
@@ -239,18 +239,18 @@ export default observer(function QcItemGroup(props: Props) {
               handleItemChange({ ...newItem }, itemIndex)
             }}>
             <Radio value={'符合'} style={{ marginLeft: '20px', marginRight: '30px' }}>
-            符合
+              符合
             </Radio>
             <Radio value={'部分符合'} style={{ marginLeft: '20px', marginRight: '30px' }}>
-            部分符合
+              部分符合
             </Radio>
             <Radio value={'不符合'} style={{ marginLeft: '20px', marginRight: '30px' }}>
-            不符合
+              不符合
             </Radio>
             <Radio value={'不适用'} style={{ marginLeft: '20px', marginRight: '30px' }}>
               不适用
             </Radio>
-          </Radio.Group>:<Radio.Group
+          </Radio.Group> : <Radio.Group
             value={item.qcItemValue}
             buttonStyle='solid'
             onChange={(e: any) => {
@@ -283,7 +283,7 @@ export default observer(function QcItemGroup(props: Props) {
               不适用
             </Radio>}
           </Radio.Group>}
-          
+
           {qcModel.baseInfo.useScore && <div className="sub-item-list">
             {(item.subItemList || []).map((subItem: any, subItemIdx: number) => (
               <div
@@ -371,40 +371,40 @@ export default observer(function QcItemGroup(props: Props) {
                     />}
                   </div>)
                 },
-                vague:true,
+                vague: true,
               })
             }
 
-            <div style={{ marginTop: 5 }}>
+            {'925' !== appStore.HOSPITAL_ID && <div style={{ marginTop: 5 }}>
               <Input.TextArea
                 value={item.remark}
                 autosize={{ minRows: 2 }}
                 placeholder="备注"
-                disabled={['whyx','whhk'].includes(appStore.HOSPITAL_ID) && (item.qcItemValue == '是' || item.qcItemValue == '')}
+                disabled={['whyx', 'whhk'].includes(appStore.HOSPITAL_ID) && (item.qcItemValue == '是' || item.qcItemValue == '')}
                 onChange={(e) => handleItemChange({
                   ...item,
                   remark: e.target.value,
                 }, itemIndex)} />
-            </div>
+            </div>}
           </div>}
-          {appStore.hisMatch({
-            map:{
-              '925':!qcModel.baseInfo.useScore && <div className="sub-item-list">
-              <div style={{ marginTop: 5 }}>
-                <Input.TextArea
-                  value={item.remark}
-                  autosize={{ minRows: 2 }}
-                  placeholder="备注"
-                  onChange={(e) => handleItemChange({
-                  ...item,
-                  remark: e.target.value,
-                  }, itemIndex)} />
-              </div>
-            </div>,
-              other:''
+          {/* {appStore.hisMatch({
+            map: {
+              '925': !qcModel.baseInfo.useScore && <div className="sub-item-list">
+                <div style={{ marginTop: 5 }}>
+                  <Input.TextArea
+                    value={item.remark}
+                    autosize={{ minRows: 2 }}
+                    placeholder="备注"
+                    onChange={(e) => handleItemChange({
+                      ...item,
+                      remark: e.target.value,
+                    }, itemIndex)} />
+                </div>
+              </div>,
+              other: ''
             },
-            vague:true
-          })}
+            vague: true
+          })} */}
           {appStore.hisMatch({
             map: {
               "whyx,whhk": '',
@@ -423,7 +423,7 @@ export default observer(function QcItemGroup(props: Props) {
                   onChange={(urls: any, ids: any) => handleAttachUrlsChange(urls, ids, itemIndex)} />
               </div>
             },
-            vague:true
+            vague: true
           })
           }
 
@@ -439,22 +439,22 @@ export default observer(function QcItemGroup(props: Props) {
                     onChange={(e) => handleItemRemarkChange(e.target.value, itemIndex)} />
                 </div>
               </div>,
-			  gzhd:<>
-			  	{
-				!qcModel.baseInfo.useScore && <div className="sub-item-list">
-					<div style={{ marginTop: 5 }}>
-						<Input.TextArea
-							value={item.remark}
-							autosize={{ minRows: 2 }}
-							placeholder="备注"
-							onChange={(e) => handleItemChange({
-							...item,
-							remark: e.target.value,
-							}, itemIndex)} />
-					</div>
-				</div>
-			  }
-			  </>,
+              gzhd: <>
+                {
+                  !qcModel.baseInfo.useScore && <div className="sub-item-list">
+                    <div style={{ marginTop: 5 }}>
+                      <Input.TextArea
+                        value={item.remark}
+                        autosize={{ minRows: 2 }}
+                        placeholder="备注"
+                        onChange={(e) => handleItemChange({
+                          ...item,
+                          remark: e.target.value,
+                        }, itemIndex)} />
+                    </div>
+                  </div>
+                }
+              </>,
               lcey: !qcModel.baseInfo.useScore &&
                 <div className='notesCon' style={{ borderBottom: 'none' }}>
                   <div className='notesLeftCon'>备注</div>
