@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import React, { useState, useEffect, useLayoutEffect, Fragment, useRef, useMemo } from "react";
-import { Button, Modal } from "antd";
+import { Button, Checkbox, Modal } from "antd";
 import BaseTable, { DoCon } from "src/components/BaseTable";
 import {
   ColumnProps,
@@ -118,6 +118,8 @@ export default observer(function 敏感指标登记本(props: Props) {
   const [blockList, setBlockList] = useState([]);
   const [selectedBlockId, setSelectedBlockId]: any = useState(null);
   const [date, setDate]: any = useState('');
+  /**抢救记录 */
+  const [firstAid, setFirstAid] = useState(false)
   // const [popoverVisible, setPopoverVisible]: any = useState(false);
   const [surplusHeight, setSurplusHeight]: any = useState(220);
   const [pageOptions, setPageOptions]: any = useState({
@@ -939,7 +941,8 @@ export default observer(function 敏感指标登记本(props: Props) {
     paramMap,
     customSign,
     customBatch,
-    itemConfigList
+    itemConfigList,
+    firstAid,
   });
 
   useEffect(() => {
@@ -1023,6 +1026,13 @@ export default observer(function 敏感指标登记本(props: Props) {
             <Button>筛选</Button>
           </Popover>
         )} */}
+        {
+          location.pathname.includes('QCRG_WQZD_04') && <>
+            <Checkbox checked={firstAid} onChange={(e: any) => setFirstAid(e.target.checked)}>
+              抢救记录
+            </Checkbox>
+          </>
+        }
 
         <Place />
         {rangeConfigList.length > 0 && <React.Fragment>

@@ -792,6 +792,14 @@ export default observer(function SelectCon() {
                   </Button>
                 </Upload>
               </div>
+              <ImportModal
+                visible={modalVisible}
+                modalData={modalData}
+                onOk={() => {
+                  setModalVisible(false)
+                  sheetViewModal.getSheetTableData()
+                }}
+                onCancel={() => setModalVisible(false)} />
             </>,
             
             other: <div className="item">

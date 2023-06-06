@@ -65,7 +65,8 @@ export function getFun(context: any) {
     dataMap,
     customSign,
     customBatch,
-    itemConfigList
+    itemConfigList,
+    firstAid
   } = context;
 
   /** 初始化 */
@@ -151,6 +152,8 @@ export function getFun(context: any) {
 
     let _paramsMap = JSON.parse(JSON.stringify(paramMap))
     delete _paramsMap["班次"]
+    if (location.pathname.includes('QCRG_WQZD_04'))
+      _paramsMap['抢救记录'] = firstAid ? '是' : ''
 
     let params = {
       startDate: date[0] ? date[0].format("YYYY-MM-DD") : "",
