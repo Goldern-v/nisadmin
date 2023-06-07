@@ -58,7 +58,7 @@ export default observer(function PreJobList() {
 			align: "center",
 			width: 80,
 			render: (text: any, record: any, index: number)=>{
-				return <span>{text=='1'?'男':'女'}</span>
+				return <span>{text=='1'?'女':'男'}</span>
 				}
 		},
 		{
@@ -214,8 +214,8 @@ export default observer(function PreJobList() {
 			globalModal
 			.confirm( `提示`,`确定移出吗？`)
 			.then((res) => {
-				preJobApi.employeeDel([record.empNo]).then(resp=>{
-					message.success('删除成功！')
+				preJobApi.employeeDel([record.id]).then(resp=>{
+					message.success('移出成功！')
 					preJobListData.tableList.splice(index,1)
 				}).catch(error=>{
 		
