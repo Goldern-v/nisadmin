@@ -1,11 +1,8 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { RouteComponentProps } from 'react-router'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
-import windowHeight from 'src/hooks/windowHeight'
 import { nurseFilesService } from '../../../services/NurseFilesService'
 import store, { appStore } from 'src/stores'
-import AuditText from './auditText/AuditText'
 import emitter from 'src/libs/ev'
 import { Button } from 'antd'
 import { globalModal } from 'src/global/globalModal'
@@ -32,7 +29,7 @@ export default function AuditsTableDHSZ(props: Props) {
   const toDetails = (row: any) => {
     console.log(row.othersMessage.entityName, 9998)
     openAuditModal(getTitle(row.othersMessage.entityName), { ...row.othersMessage, id: row.othersMessage.fileId }, () =>
-      emitter.emit('refreshNurseAuditTable','查看')
+      emitter.emit('refreshNurseAuditTable','查看'), 'dghm' == appStore.HOSPITAL_ID ? '查看' : ''
     )
   }
 
