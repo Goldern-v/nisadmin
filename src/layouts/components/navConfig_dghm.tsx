@@ -1,8 +1,8 @@
 import { navConfigItem } from "src/libs/types";
 
-export const navConfig = (appStore:any,authStore?:any)=>{
+export const navConfig = (appStore: any, authStore?: any) => {
 
-	let navList: navConfigItem[] = [
+  let navList: navConfigItem[] = [
     {
       name: "首页",
       path: "/home",
@@ -38,6 +38,11 @@ export const navConfig = (appStore:any,authStore?:any)=>{
           name: "一级质量",
           path: "/qcOneHj",
           icon: require("../images/menu-icon/一级质控@2x.png")
+        },
+        {
+          name: "护理查房",
+          path: "/checkWard",
+          icon: require("../images/menu-icon/护理查房@2x.png"),
         },
       ]
     },
@@ -76,6 +81,6 @@ export const navConfig = (appStore:any,authStore?:any)=>{
       path: "/setting",
     },
   ];
-	
-	return  navList
+
+  return navList
 }
