@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react'
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { Button, InputNumber,Checkbox, Col, DatePicker, Row,message,Input,Icon,Spin } from 'src/vendors/antd'
+import { Button, InputNumber, Checkbox, Col, DatePicker, Row, message, Input, Icon, Spin } from 'src/vendors/antd'
 import BaseBreadcrumb from 'src/components/BaseBreadcrumb'
 import { appStore, authStore } from 'src/stores'
 import { ScrollBox } from 'src/components/common'
@@ -9,19 +9,20 @@ import BaseTable, { DoCon } from "src/components/BaseTable";
 import moment from 'moment'
 import qs from 'qs'
 import { trainExamData } from './TrainExamData'
-import {preJobManageApi} from "../PreJobManageApi";
+import { preJobManageApi } from "../PreJobManageApi";
+import { fileDownload } from 'src/utils/file/file'
 export interface Props {
-payload: any;
+	payload: any;
 }
 export default observer(function TrainExamDetail(props: Props) {
 	const columns: any = [
-        {
-          title: "序号",
-          dataIndex: "",
-          align: "center",
-          width: 30,
-		  		render: (text: any, record: any, index: number)=>index+1
-        },
+		{
+			title: "序号",
+			dataIndex: "",
+			align: "center",
+			width: 30,
+			render: (text: any, record: any, index: number) => index + 1
+		},
 		{
 			title: "姓名",
 			dataIndex: "name",
@@ -33,33 +34,31 @@ export default observer(function TrainExamDetail(props: Props) {
 			dataIndex: "dept",
 			align: "center",
 			width: 120,
-			
 		},
 		{
 			title: "考核内容",
 			dataIndex: "examContent",
 			align: "center",
 			width: 160,
-			render: (text: any, record: any, index: number)=><span className='pre-wrap'>{text}</span>
-			
+			render: (text: any, record: any, index: number) => <span className='pre-wrap'>{text}</span>
 		},
 		{
 			title: "考核成绩",
 			dataIndex: "examScore",
 			align: "center",
 			width: 80,
-			render: (text: any, record: any, index: number)=>{
-				return(
-					<InputNumber className='cell-ipt' 
-					defaultValue={text}
-					key={record.id}
-					step={1} min={1} max={150} style={{ width: '100%' }}
-					onBlur={(e: any) =>{
-						trainExamData.tableDetailList[index].examScore = e.target.value
-						trainExamData.tableDetailList = [...trainExamData.tableDetailList]
-						// console.log(trainExamData.tableDetailList[index].resitFlag)
-					}}
-					 />
+			render: (text: any, record: any, index: number) => {
+				return (
+					<InputNumber className='cell-ipt'
+						defaultValue={text}
+						key={record.id}
+						step={1} min={1} max={150} style={{ width: '100%' }}
+						onBlur={(e: any) => {
+							trainExamData.tableDetailList[index].examScore = e.target.value
+							trainExamData.tableDetailList = [...trainExamData.tableDetailList]
+							// console.log(trainExamData.tableDetailList[index].resitFlag)
+						}}
+					/>
 				)
 			}
 		},
@@ -68,16 +67,16 @@ export default observer(function TrainExamDetail(props: Props) {
 			dataIndex: "resitFlag",
 			align: "center",
 			width: 50,
-			render: (text: any, record: any, index: number)=>{
-				return(
+			render: (text: any, record: any, index: number) => {
+				return (
 					// 1是，0否
-					<Checkbox 
-					key={record.id}
-					defaultChecked={text=='1'?true:false}
-					onChange={(e)=>{
-						trainExamData.tableDetailList[index].resitFlag = e.target.checked?'1':'0'
-						trainExamData.tableDetailList = [...trainExamData.tableDetailList]
-					}}></Checkbox>
+					<Checkbox
+						key={record.id}
+						defaultChecked={text == '1' ? true : false}
+						onChange={(e) => {
+							trainExamData.tableDetailList[index].resitFlag = e.target.checked ? '1' : '0'
+							trainExamData.tableDetailList = [...trainExamData.tableDetailList]
+						}}></Checkbox>
 				)
 			}
 		},
@@ -86,18 +85,18 @@ export default observer(function TrainExamDetail(props: Props) {
 			dataIndex: "resitScore",
 			align: "center",
 			width: 80,
-			render: (text: any, record: any, index: number)=>{
-				return(
-					<InputNumber className='cell-ipt' 
-					defaultValue={text}
-					key={record.id}
-					step={1} min={1} max={150} style={{ width: '100%' }}
-					onBlur={(e: any) =>{
-						trainExamData.tableDetailList[index].resitScore = e.target.value
-						trainExamData.tableDetailList=[...trainExamData.tableDetailList]
-						// console.log(e.target.value)
-					}}
-					 />
+			render: (text: any, record: any, index: number) => {
+				return (
+					<InputNumber className='cell-ipt'
+						defaultValue={text}
+						key={record.id}
+						step={1} min={1} max={150} style={{ width: '100%' }}
+						onBlur={(e: any) => {
+							trainExamData.tableDetailList[index].resitScore = e.target.value
+							trainExamData.tableDetailList = [...trainExamData.tableDetailList]
+							// console.log(e.target.value)
+						}}
+					/>
 				)
 			}
 		},
@@ -106,84 +105,91 @@ export default observer(function TrainExamDetail(props: Props) {
 			dataIndex: "examResultState",
 			align: "center",
 			width: 80,
-			render: (text: any, record: any, index: number)=>{
+			render: (text: any, record: any, index: number) => {
 				// 0：及格，1=不及格
-				if(trainExamData.tableDetailList[index].resitScore==null && trainExamData.tableDetailList[index].examScore==null){
+				if (trainExamData.tableDetailList[index].resitScore == null && trainExamData.tableDetailList[index].examScore == null) {
 					return <span>--</span>
 				}
-				if(Number(trainExamData.tableDetailList[index].examScore)<Number(trainExamData.passScore)){
-					record.examResult='不及格'
+				if (Number(trainExamData.tableDetailList[index].examScore) < Number(trainExamData.passScore)) {
+					record.examResult = '不及格'
 					return <span className='col-red'>不及格</span>
 				}
-				record.examResult='及格'
+				record.examResult = '及格'
 				return <span className='col-green'>及格</span>
 
-				if(trainExamData.tableDetailList[index].resitFlag=='1'){
-					// 有补考
-					if(Number(trainExamData.tableDetailList[index].resitScore)<Number(trainExamData.passScore)){
-					return <span className='col-red'>不及格</span>
+				// if (trainExamData.tableDetailList[index].resitFlag == '1') {
+				// 	// 有补考
+				// 	if (Number(trainExamData.tableDetailList[index].resitScore) < Number(trainExamData.passScore)) {
+				// 		return <span className='col-red'>不及格</span>
 
-					}
-					return <span className='col-green'>及格</span>
-				}else{
-					if(Number(trainExamData.tableDetailList[index].examScore)<Number(trainExamData.passScore)){
-						return <span className='col-red'>不及格</span>
-					}
-					return <span className='col-green'>及格</span>
-				}
-				return <span>--</span>
+				// 	}
+				// 	return <span className='col-green'>及格</span>
+				// } else {
+				// 	if (Number(trainExamData.tableDetailList[index].examScore) < Number(trainExamData.passScore)) {
+				// 		return <span className='col-red'>不及格</span>
+				// 	}
+				// 	return <span className='col-green'>及格</span>
+				// }
+				// return <span>--</span>
 			}
-			
 		},
-		
 	]
-	const saveDetailList = ()=>{
+	const saveDetailList = () => {
 		// console.log(trainExamData.tableDetailList)
 		trainExamData.tableDetailLoading = true
-		preJobManageApi.updateTrainDetail(trainExamData.tableDetailList).then(res=>{
+		preJobManageApi.updateTrainDetail(trainExamData.tableDetailList).then(res => {
 			message.success('保存成功')
 			trainExamData.tableDetailLoading = false
-		}).catch(err=>{
+		}).catch(err => {
 			trainExamData.tableDetailLoading = false
-
 		})
 	}
+	/**导出 */
+	const onExport = () => {
+		preJobManageApi.exportWithTED({
+			...appStore.queryObj, hospitalName: appStore.HOSPITAL_Name,
+		}).then(fileDownload)
+	}
+	useEffect(() => {
+		trainExamData.getTableListAll(appStore.queryObj.id)
+	}, [])
 	return (
 		<Wrapper>
 			<HeadCon>
-            {/* {name:'学习培训',link:'/continuingEdu'},{name:'人员管理',link:'/continuingEdu/人员管理'}, */}
-                <BaseBreadcrumb data={[{name:trainExamData.componentTitle,link:'/continuingEdu/'+trainExamData.module},{ name: '详情', link: '' }]} />
-                <div className='title'>{trainExamData.componentTitle}{'详情'}</div>
-                <div className='aside'>
-                <span>
-                创建时间:{trainExamData.currentDetail.createDate || moment().format('YYYY-MM-DD HH:mm:ss')}
-                </span>
-                </div>
-                <div className='tool-con'>
-                    <Button onClick={() => appStore.history.goBack()}>返回</Button>
-                    <Button type='primary' onClick={()=>{saveDetailList()}}>保存</Button>
-                </div>
-            </HeadCon>
+				{/* {name:'学习培训',link:'/continuingEdu'},{name:'人员管理',link:'/continuingEdu/人员管理'}, */}
+				<BaseBreadcrumb data={[{ name: trainExamData.componentTitle, link: '/continuingEdu/' + trainExamData.module }, { name: '详情', link: '' }]} />
+				<div className='title'>{trainExamData.componentTitle}{'详情'}</div>
+				<div className='aside'>
+					<span>
+						创建时间:{trainExamData.currentDetail.createDate || moment().format('YYYY-MM-DD HH:mm:ss')}
+					</span>
+				</div>
+				<div className='tool-con'>
+					<Button onClick={() => appStore.history.goBack()}>返回</Button>
+					<Button type='primary' onClick={() => { saveDetailList() }}>保存</Button>
+					<Button className="span" onClick={() => onExport()} >导出</Button>
+				</div>
+			</HeadCon>
 			<ScrollCon>
-                <BaseTable
-                loading={trainExamData.tableDetailLoading}
-                dataSource={trainExamData.tableDetailList}
-                columns={columns}
-                surplusWidth={300}
-                surplusHeight={255}
-                pagination={{
-                    current: trainExamData.pageDetailIndex,
-                    total: trainExamData.totalDetail,
-                    pageSize: trainExamData.pageDetailSize,
-                }}
-                onChange={(pagination:any) => {
-                    trainExamData.pageDetailIndex = pagination.current;
-                    trainExamData.totalDetail = pagination.total;
-                    trainExamData.pageDetailSize = pagination.pageSize;
-                    // trainExamData.getTableList();
-                }}
-                />
-            </ScrollCon>
+				<BaseTable
+					loading={trainExamData.tableDetailLoading}
+					dataSource={trainExamData.tableDetailList}
+					columns={columns}
+					surplusWidth={300}
+					surplusHeight={255}
+					pagination={{
+						current: trainExamData.pageDetailIndex,
+						total: trainExamData.totalDetail,
+						pageSize: trainExamData.pageDetailSize,
+					}}
+					onChange={(pagination: any) => {
+						trainExamData.pageDetailIndex = pagination.current;
+						trainExamData.totalDetail = pagination.total;
+						trainExamData.pageDetailSize = pagination.pageSize;
+						// trainExamData.getTableList();
+					}}
+				/>
+			</ScrollCon>
 		</Wrapper>
 	)
 })

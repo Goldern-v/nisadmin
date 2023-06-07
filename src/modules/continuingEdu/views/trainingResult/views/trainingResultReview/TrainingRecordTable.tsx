@@ -6,7 +6,7 @@ import { appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import { trainingResultModel } from './../../models/TrainingResultModel'
 import MultipleImageUploader from "src/components/ImageUploader/MultipleImageUploader";
-import printing from 'printing'
+import printing, { preview } from 'printing'
 
 
 const Option = Select.Option;
@@ -43,7 +43,6 @@ export default observer(function TrainingRecordTable() {
   const handlePrint = () => {
     setIsPrint(true)
     setTimeout(() => {
-      console.log('test-isPrint', isPrint)
       let printEl = document.getElementById('tableID')
       
       // let documentTitle = window.document.title
@@ -72,8 +71,9 @@ export default observer(function TrainingRecordTable() {
           `
         }).then(() => {
           setIsPrint(false)
+        }).catch(() => {
+          setIsPrint(false)  
         })
-      setIsPrint(false)  
       // return v
     }, 500)
     // setTimeout(() => window.document.title = documentTitle, 1000)
@@ -138,9 +138,11 @@ export default observer(function TrainingRecordTable() {
               <td colSpan={3}>
                 {
                   isPrint ?
-                    trainingResultModel.trainingPhotos.split(',').map(v => (
-                      <img className='img--print' alt={v} src={v} />
-                    ))
+                  <div className='img-box'>
+                    {trainingResultModel.trainingPhotos.split(',').map(v => (
+                      <img className={'img--print' + (!trainingResultModel.trainingPhotos.includes(',') ? ' img-large--print' : '')} key={v} alt={v} src={v} />
+                    ))}
+                  </div>
                   :
                   <MultipleImageUploader
                   accept='image/jpg'
@@ -224,10 +226,19 @@ const Table = styled.div`
       outline: none;
     }
   }
+  .img-box {
+    display: flex;
+    flex-wrap: wrap;
+  }
   .img--print {
     margin: 10px;
-    width: calc(100% - 20px);
-    height: auto;
+    width: 350px;
+    height: 350px;
+    object-fit: scale-down;
+    &.img-large--print {
+      width: 700px;
+      height: 700px;
+    }
   }
 `
 const Header = styled.div`

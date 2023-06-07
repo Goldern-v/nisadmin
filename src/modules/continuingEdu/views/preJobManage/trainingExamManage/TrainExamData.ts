@@ -3,6 +3,7 @@
 import { observable, computed } from "mobx";
 import moment from "moment";
 import {preJobManageApi} from "../PreJobManageApi";
+import service from "src/services/api";
 
 class TrainExamData {
 	@observable public tableLoading = false; //表格loading
@@ -132,8 +133,13 @@ class TrainExamData {
 		if(this.deptList.length>0){
 			return false
 		}
-		preJobManageApi.getnursingAll().then(res=>{
-			this.deptList = res.data.deptList || []
+		// 查询有权限的科室
+		service.commonApiService.getNursingUnitSelf().then(res=>{
+			const { deptList } = res.data
+			if (deptList[0] && deptList[0].name === '全部') {
+				deptList.shift()
+			}
+			this.deptList = deptList || []
 			this.defaultDept = res.data.defaultDept || ''
 		}).catch(err=>{
 

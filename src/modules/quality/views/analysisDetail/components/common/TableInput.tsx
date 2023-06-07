@@ -5,18 +5,18 @@ import React from 'react'
 import styled from 'styled-components'
 import { cloneJson } from 'src/utils/json/clone'
 export interface Props {
-  row: any
-  str: string
-  index: number
+  row: any,
+  str: string,
+  index: number,
   setVal: any,
-  type?: 'TextArea' |'DatePicker'| 'TimePicker' | undefined
+  type?: 'TextArea' |'DatePicker'| 'TimePicker' | undefined,
 }
 export default observer(function TableInput(props: Props) {
   const { str, index, type } = props
   const Con = !type ? Input : Input[type]
   const item = cloneJson(props.row)
   const onChange= (date:any, dateString:any) => {
-    item[str]=dateString.format('YYYY-MM-DD')
+    item[str]=date.format('YYYY-MM-DD')
     props.setVal((prev: any) => {
       const cloneData = cloneJson(prev)
       cloneData.list[index] = item

@@ -56,6 +56,10 @@ export default class PreJobApi extends BaseApiService {
 	public async copyPlan(obj?:any){
 		return this.post('/newNurseMange/trainPlan/copy',obj)
 	}
+	/**培训计划-导出 */
+	public async exportWithTP(obj?:any){
+		return this.post('/newNurseMange/trainPlan/export',obj, { responseType: 'blob'})
+	}
 
 // --------培训计划 end----------
 
@@ -88,6 +92,18 @@ public async delTheoryExam(obj?:any){
 /**查看全部成绩列表 */
 public async getTheoryExamListAllScore(obj?:any){
 	return this.post('/newNurseMange/theoryExamDetail/selectAll',obj)
+}
+/**理论列表导出 */
+public async exportWithTELL(obj?:any){
+	return this.post('/newNurseMange/theoryExamLL/export',obj, { responseType: 'blob'})
+}
+/**实操列表导出 */
+public async exportWithTESC(obj?:any){
+	return this.post('/newNurseMange/theoryExamSC/export',obj, { responseType: 'blob'})
+}
+/**详情导出 */
+public async exportWithTED(obj?:any){
+	return this.post('/newNurseMange/theoryExamDetail/export',obj, { responseType: 'blob'})
 }
 // ----------------岗前理论考核 end----------------
 

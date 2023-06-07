@@ -1,32 +1,32 @@
 import { observer } from 'mobx-react'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
-import { Select, Input, Button, Row, Col,Modal,message,DatePicker,TimePicker  } from "antd";
+import { Select, Button, message, DatePicker, TimePicker } from "antd";
 import BaseTable, { DoCon } from "src/components/BaseTable";
 import { PageTitle } from "src/components/common";
 import YearPicker from "src/components/YearPicker";
-import moment, {Moment} from "moment";
+import moment from "moment";
 import { globalModal } from "src/global/globalModal"
 import { theoryExamData } from './TheoryExamData';
 import AddBatchExamModal from './AddBatchExamModal';
-import { appStore, authStore } from 'src/stores'
+import { appStore } from 'src/stores'
 import { preJobApi } from '../PreJobApi';
-
+import { fileDownload } from 'src/utils/file/file';
+import qs from 'qs'
 const Option = Select.Option;
-const TextArea = Input.TextArea;
 export interface Props {
 	payload: any;
 	getTitle: any;
 }
 
-export default observer(function TheoryExam(props:Props) {
+export default observer(function TheoryExam(props: Props) {
 	const columns: any = [
-        {
-          title: "批次",
-          dataIndex: "batch",
-          align: "center",
-          width: 80,
-        },
+		{
+			title: "批次",
+			dataIndex: "batch",
+			align: "center",
+			width: 80,
+		},
 		{
 			title: "考核日期",
 			dataIndex: "examDate",
@@ -38,54 +38,48 @@ export default observer(function TheoryExam(props:Props) {
 			dataIndex: "examDept",
 			align: "center",
 			width: 160,
-			
 		},
 		{
 			title: "考核内容",
 			dataIndex: "examContent",
 			align: "center",
 			width: 160,
-			
 		},
 		{
 			title: "应考人数",
 			dataIndex: "examNum",
 			align: "center",
 			width: 160,
-			
 		},
 		{
 			title: "实考核人数",
 			dataIndex: "examActNum",
 			align: "center",
 			width: 160,
-			
 		},
 		{
 			title: "平均分",
 			dataIndex: "average",
 			align: "center",
 			width: 160,
-			
 		},
 		{
 			title: "合格率",
 			dataIndex: "passRate",
 			align: "center",
 			width: 160,
-			
 		},
 		{
 			title: "操作 ",
 			dataIndex: "cz",
 			align: "center",
 			width: 100,
-			render:(text: any, record: any, index: number)=>{
+			render: (text: any, record: any, index: number) => {
 				return (
 					<DoCon>
-                        <span onClick={()=>{turnToDetail(record)}}>查看</span>
-						<span onClick={()=>{turnToEdit(record)}}>修改</span>
-						<span onClick={()=>{removeTableItem(record,index)}}>删除</span>
+						<span onClick={() => { turnToDetail(record) }}>查看</span>
+						<span onClick={() => { turnToEdit(record) }}>修改</span>
+						<span onClick={() => { removeTableItem(record, index) }}>删除</span>
 					</DoCon>
 				);
 			}
@@ -96,35 +90,35 @@ export default observer(function TheoryExam(props:Props) {
 		/**岗前理论考核 preJobTheory 
  *  岗前实操考核 preJobPractice */
 		let pathnameArr = appStore.history.location.pathname.split('/')
-		theoryExamData.module = pathnameArr[pathnameArr.length-1]
+		theoryExamData.module = pathnameArr[pathnameArr.length - 1]
 		// //   判断标题
 		theoryExamData.componentTitle = props.getTitle
-		theoryExamData.preType = theoryExamData.module=='preJobTheory'?'1':'2'
+		theoryExamData.preType = theoryExamData.module == 'preJobTheory' ? '1' : '2'
 
 		// // 初始化数据
 		theoryExamData.pageBatch = ''
 		theoryExamData.year = moment()
 		theoryExamData.getTableList()
 
-}, [props.getTitle])
+	}, [props.getTitle])
 
 	/**移除单个item */
-	const removeTableItem = (record:any,index:number)=>{
+	const removeTableItem = (record: any, index: number) => {
 		globalModal
-		.confirm( `提示`,`确定删除吗？`)
-		.then((res) => {
-			preJobApi.delTheoryExam({id:record.id}).then(resp=>{
-				message.success('删除成功！')
-				theoryExamData.tableList.splice(index,1)
-			}).catch(error=>{
-	
-			})
-		}).catch(err=>{
+			.confirm(`提示`, `确定删除吗？`)
+			.then((res) => {
+				preJobApi.delTheoryExam({ id: record.id }).then(resp => {
+					message.success('删除成功！')
+					theoryExamData.tableList.splice(index, 1)
+				}).catch(error => {
 
-		})	
+				})
+			}).catch(err => {
+
+			})
 	}
 
-	const turnToEdit = (record:any)=>{
+	const turnToEdit = (record: any) => {
 		theoryExamData.batchExamModal = true
 		theoryExamData.modalTitle = '修改'
 		// 初始化表单数据。。。
@@ -134,30 +128,37 @@ export default observer(function TheoryExam(props:Props) {
 	useEffect(() => {
 		theoryExamData.getBatchList()
 		theoryExamData.getTableList()
-	
 	}, [])
-	
 
-	const handelInquire = ()=>{
+	const handelInquire = () => {
 		theoryExamData.getTableList()
 	}
-	const handleOk = ()=>{
-		theoryExamData.batchExamModal = false
-	}
-	const handleCancel = ()=>{
-		theoryExamData.batchExamModal = false
-	
+	/**导出 */
+	const onExport = () => {
+		const { year, pageBatch: batch, preType } = theoryExamData
+		let fn = preJobApi.exportWithTELL
+		if (preType === '2') fn = preJobApi.exportWithTESC
+		fn.call(preJobApi, {
+			year: year?.format('YYYY'), batch, hospitalName: appStore.HOSPITAL_Name
+		}).then(fileDownload)
 	}
 
-	const turnToDetail = (record:any)=>{
+	const handleOk = () => {
+		theoryExamData.batchExamModal = false
+	}
+	const handleCancel = () => {
+		theoryExamData.batchExamModal = false
+	}
+
+	const turnToDetail = (record: any) => {
+		const { id, batch } = record
 		theoryExamData.currerntDetail = record
 		theoryExamData.passScore = record.passScore || 60
-		appStore.history.push(`/theoryExamDetail`)
-		theoryExamData.getTableListAll(record.id)
+		appStore.history.push(`/theoryExamDetail?${qs.stringify({ id, batch, year: theoryExamData.year?.format('YYYY') })}`)
 	}
 
-	const turnToScore = ()=>{
-		if(theoryExamData.pageBatch==''){
+	const turnToScore = () => {
+		if (theoryExamData.pageBatch == '') {
 			message.warning('请选择一个批次进行查看')
 			return false
 		}
@@ -166,11 +167,11 @@ export default observer(function TheoryExam(props:Props) {
 	}
 
 	/**点击新增 */
-	const clickAdd = ()=>{
+	const clickAdd = () => {
 		theoryExamData.batchExamModal = true;
 		theoryExamData.addExam = {}
 		theoryExamData.addExam = theoryExamData.addItem
-		theoryExamData.modalTitle='新增';
+		theoryExamData.modalTitle = '新增';
 		theoryExamData.getNursingAll();
 	}
 
@@ -181,7 +182,7 @@ export default observer(function TheoryExam(props:Props) {
 					<PageTitle maxWidth={1200}>{theoryExamData.componentTitle}</PageTitle>
 				</LeftIcon>
 				<RightIcon>
-				<span style={{marginRight:'10px'}}>年份：</span>
+					<span style={{ marginRight: '10px' }}>年份：</span>
 					<YearPicker
 						allowClear={false}
 						style={{ width: 120 }}
@@ -191,49 +192,50 @@ export default observer(function TheoryExam(props:Props) {
 							theoryExamData.pageBatch = ''
 							theoryExamData.getTableList()
 							theoryExamData.getBatchList()
-						// traineeShiftModal.allGroupOnload();
+							// traineeShiftModal.allGroupOnload();
 						}}
 					/>
-					
-					<span style={{marginRight:'10px',marginLeft:'15px'}}>批次：</span>
+
+					<span style={{ marginRight: '10px', marginLeft: '15px' }}>批次：</span>
 					<Select
-					style={{ width: 160 }}
-					value={theoryExamData.pageBatch}
-					onChange={(val: string) => {
-						theoryExamData.pageBatch = val
-						theoryExamData.getTableList()
-					}}
+						style={{ width: 160 }}
+						value={theoryExamData.pageBatch}
+						onChange={(val: string) => {
+							theoryExamData.pageBatch = val
+							theoryExamData.getTableList()
+						}}
 					>
 						<Select.Option value="">全部</Select.Option>
-					{theoryExamData.batchList.map((item:any,index:number)=>{
-						return <Option value={item.batch} key={index}>{item.batch}</Option>
-					})}
+						{theoryExamData.batchList.map((item: any, index: number) => {
+							return <Option value={item.batch} key={index}>{item.batch}</Option>
+						})}
 					</Select>
-					
-					
+
+
 					<Button
 						type="primary"
 						className="span"
 						onClick={handelInquire}
-						>
+					>
 						查询
 					</Button>
 					{/* <Button className="span" onClick={addTableItem}>新增一行</Button> */}
-					<Button className="span" onClick={turnToScore} >全部成绩</Button> 
+					<Button className="span" onClick={turnToScore} >全部成绩</Button>
 					<Button className="span" onClick={clickAdd}>新增</Button>
+					<Button className="span" onClick={() => onExport()} >导出</Button>
 				</RightIcon>
 			</Headerr>
 			<ScrollCon>
-                <BaseTable
-                loading={theoryExamData.tableLoading}
-                dataSource={theoryExamData.tableList}
-                columns={columns}
-                surplusWidth={300}
-                surplusHeight={220}
-								pagination={false}
-               
-                />
-            </ScrollCon>
+				<BaseTable
+					loading={theoryExamData.tableLoading}
+					dataSource={theoryExamData.tableList}
+					columns={columns}
+					surplusWidth={300}
+					surplusHeight={220}
+					pagination={false}
+
+				/>
+			</ScrollCon>
 			<AddBatchExamModal visible={theoryExamData.batchExamModal} handleOk={handleOk} handleCancel={handleCancel} />
 
 		</Wrapper>
@@ -263,12 +265,12 @@ width: calc(100vw-200px);
   font-size: 13px;
   color: #333;
   padding: 12px 15px 0 15px;`;
-  
-  const LeftIcon = styled.div`
+
+const LeftIcon = styled.div`
 	padding: 0;
 	float: left;
   `;
-  const RightIcon = styled.div`
+const RightIcon = styled.div`
 	padding: 0 0 0 15px;
 	float: right;
 	.span {
