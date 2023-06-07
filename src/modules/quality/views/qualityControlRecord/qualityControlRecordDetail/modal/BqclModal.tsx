@@ -1,6 +1,6 @@
 import styled from 'styled-components'
-import React, { useState, useEffect, useLayoutEffect } from 'react'
-import { Modal, Input, Button, Radio, DatePicker, Select, Row, Col, message } from 'antd'
+import React, { useLayoutEffect } from 'react'
+import { Modal, Input, Button, Select, Row, Col, message } from 'antd'
 import { ModalComponentProps } from 'src/libs/createModal'
 import Form from 'src/components/Form'
 import { to } from 'src/libs/fns'
@@ -8,11 +8,11 @@ import { Rules } from 'src/components/Form/interfaces'
 import { qualityControlRecordApi } from '../../api/QualityControlRecordApi'
 import { appStore } from 'src/stores'
 
-const Option = Select.Option
+const QC_STORAGE = 'qcStorage'
 export interface Props extends ModalComponentProps {
   /** 表单提交成功后的回调 */
-  onOkCallBack?: () => {}
-  nodeCode: any
+  onOkCallBack?: () => {},
+  nodeCode: any,
   id: any,
   title?: string
 }
@@ -44,6 +44,7 @@ export default function BqclModal(props: Props) {
       })
       .then((res) => {
         message.success('操作成功')
+        localStorage.removeItem(QC_STORAGE)
         props.onOkCallBack && props.onOkCallBack()
       })
 
@@ -54,9 +55,23 @@ export default function BqclModal(props: Props) {
     //   onCancel()
     // })
   }
+  /**暂存，保存到本地 */
+  const onStorage = () => {
+    const expand = refForm?.current?.getField('expand')
+    const handleContent = refForm?.current?.getField('handleContent')
+    localStorage.setItem(QC_STORAGE, JSON.stringify({ [props.id]: { handleContent, expand } }))
+  }
 
   useLayoutEffect(() => {
-    if (refForm.current && visible) refForm!.current!.clean()
+    if (refForm.current && visible) {
+      refForm.current.clean();
+      const qcStorage = JSON.parse(localStorage.getItem(QC_STORAGE) || "{}")
+      if (qcStorage[props.id]) {
+        const { handleContent = '', expand = '' } = qcStorage[props.id]
+        refForm.current.setField('handleContent', handleContent)
+        refForm.current.setField('expand', expand)
+      }
+    }
     /** 如果是修改 */
   }, [visible])
 
@@ -69,6 +84,10 @@ export default function BqclModal(props: Props) {
       okText='保存'
       forceRender>
       <Form ref={refForm} labelWidth={80} rules={rules}>
+        {
+          'zzwy' === appStore.HOSPITAL_ID &&
+          <Button className='' style={{ position: 'absolute', top: '12px', right: '56px' }} onClick={onStorage}>暂存</Button>
+        }
         <Row>
           <Col span={24}>
             <Form.Field label={`原因分析`} name='expand' required>
@@ -76,7 +95,7 @@ export default function BqclModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={24}>
-            <Form.Field label={['whyx','whhk'].includes(appStore.HOSPITAL_ID) ? '改进措施及整改结果' : `整改措施`} name='handleContent' required>
+            <Form.Field label={['whyx', 'whhk'].includes(appStore.HOSPITAL_ID) ? '改进措施及整改结果' : `整改措施`} name='handleContent' required>
               <Input.TextArea />
             </Form.Field>
           </Col>
