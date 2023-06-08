@@ -393,6 +393,10 @@ export default class AuthStore {
   public get level2Watch() {
     return this.isZJ || this.isHL || this.isEmpNoAdmin || this.isSupervisorNurse
   }
+  /**一级质控操作权限 */
+  public get level1Check() {
+    return this.isZJ || this.isHL || this.isEmpNoAdmin || this.isRoleManage
+  }
   // 一级质控查看权限
   public get level1Watch() {
     return this.isZJ || this.isHL || this.isEmpNoAdmin || this.isSupervisorNurse || this.isRoleManage

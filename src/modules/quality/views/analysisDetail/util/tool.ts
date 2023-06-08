@@ -48,6 +48,7 @@ export const routePath = () => {
 // 审核权限
 export const checkRole = () => {
   let { level } = appStore.queryObj
-  if (level == 1) return authStore.level2Watch
+  if (level == 1) return authStore.level1Check
+  if (level == 2) return authStore.level2Watch
   return authStore.level3Check
 }
