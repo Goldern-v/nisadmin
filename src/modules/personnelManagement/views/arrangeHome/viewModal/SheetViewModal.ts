@@ -803,6 +803,7 @@ class SheetViewModal {
     return data1
   }
   getGroupNameSort(data:any){
+    if ('zhzxy' !== appStore.HOSPITAL_ID) return data
     let propsList = ["groupId"];
     let tableData: any[] = [];
     data.forEach((it:any)=>{

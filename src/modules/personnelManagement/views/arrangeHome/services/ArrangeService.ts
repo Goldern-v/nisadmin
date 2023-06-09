@@ -377,7 +377,7 @@ export default class ArrangeService extends BaseApiService {
     return this.post(`/schedulingJm/getNightNum`, obj);
   }
 
-  // 武汉获取休假类型最近日期得天数编号
+  /**武汉获取休假类型最近日期得天数编号 */
   public listRangeNameCode(list: any) {
     let obj = {
       startTime: selectViewModal.params.startTime,
