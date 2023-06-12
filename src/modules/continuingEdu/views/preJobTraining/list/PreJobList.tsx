@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react'
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { Select, Input, Button, Row, Col,Modal,message } from "antd";
+import { Select, Input, Button, Row, Col, Modal, message } from "antd";
 import BaseTable, { DoCon } from "src/components/BaseTable";
 import { PageTitle } from "src/components/common";
 import YearPicker from "src/components/YearPicker";
@@ -17,35 +17,35 @@ export default observer(function PreJobList() {
 	let history = store.appStore.history
 	//选中的行下标
 	const [selectedRowKeys, setSelectedRowKeys] = useState([] as any[]);
-	
+
 	useEffect(() => {
 		preJobListData.getTableList()
 		preJobListData.getBatchList()
 	}, [])
-	
+
 	const columns: any = [
-        {
-          title: "培训批次",
-          dataIndex: "batch",
-          align: "center",
-          width: 120,
-		  render: (text: any, record: any, index: number) => {
-			return (<>
-				<Select
-          style={{ width: 80 }}
-				defaultValue={text}
-				key={record.id}
-          onChange={(val: string) => {
-						preJobListData.tableList[index].batch = val
-          }}
-        >
-          {preJobListData.batchList.map((item:any,index:number)=>{
-            return <Option value={item.batch} key={index}>{item.batch}</Option>
-          })}
-        </Select>
-			</>)
-		  }
-        },
+		{
+			title: "培训批次",
+			dataIndex: "batch",
+			align: "center",
+			width: 120,
+			render: (text: any, record: any, index: number) => {
+				return (<>
+					<Select
+						style={{ width: 80 }}
+						defaultValue={text}
+						key={record.id}
+						onChange={(val: string) => {
+							preJobListData.tableList[index].batch = val
+						}}
+					>
+						{preJobListData.batchList.map((item: any, index: number) => {
+							return <Option value={item.batch} key={index}>{item.batch}</Option>
+						})}
+					</Select>
+				</>)
+			}
+		},
 		{
 			title: "姓名",
 			dataIndex: "name",
@@ -57,9 +57,9 @@ export default observer(function PreJobList() {
 			dataIndex: "sex",
 			align: "center",
 			width: 80,
-			render: (text: any, record: any, index: number)=>{
-				return <span>{text=='1'?'女':'男'}</span>
-				}
+			render: (text: any, record: any, index: number) => {
+				return <span>{text == '1' ? '女' : '男'}</span>
+			}
 		},
 		{
 			title: "年龄",
@@ -71,13 +71,37 @@ export default observer(function PreJobList() {
 			title: "职称",
 			dataIndex: "title",
 			align: "center",
-			width: 80
+			width: 80,
+			render: (text: any, record: any, index: number) => {
+				return (
+					<TextArea className='cell-ipt'
+						defaultValue={text}
+						key={record.id}
+						autosize={{ minRows: 1 }}
+						onBlur={(e: any) =>
+							preJobListData.tableList[index].title = e.target.value
+						}
+					/>
+				)
+			}
 		},
 		{
 			title: "初始学历",
-			dataIndex: "1initialEducation12",
+			dataIndex: "initialEducation",
 			align: "center",
-			width: 80
+			width: 80,
+			render: (text: any, record: any, index: number) => {
+				return (
+					<TextArea className='cell-ipt'
+						defaultValue={text}
+						key={record.id}
+						autosize={{ minRows: 1 }}
+						onBlur={(e: any) =>
+							preJobListData.tableList[index].initialEducation = e.target.value
+						}
+					/>
+				)
+			}
 		},
 		{
 			title: "最高学历",
@@ -95,7 +119,19 @@ export default observer(function PreJobList() {
 			title: "毕业院校",
 			dataIndex: "school",
 			align: "center",
-			width: 80
+			width: 80,
+			render: (text: any, record: any, index: number) => {
+				return (
+					<TextArea className='cell-ipt'
+						defaultValue={text}
+						key={record.id}
+						autosize={{ minRows: 1 }}
+						onBlur={(e: any) =>
+							preJobListData.tableList[index].school = e.target.value
+						}
+					/>
+				)
+			}
 		},
 		{
 			title: "分配科室",
@@ -108,16 +144,16 @@ export default observer(function PreJobList() {
 			dataIndex: "oriWork",
 			align: "center",
 			width: 160,
-			render: (text: any, record: any, index: number)=>{
-				return(
-					<TextArea className='cell-ipt' 
-					defaultValue={text}
-					key={record.id}
-					autosize={{minRows: 1}} 
-					onBlur={(e: any) =>
+			render: (text: any, record: any, index: number) => {
+				return (
+					<TextArea className='cell-ipt'
+						defaultValue={text}
+						key={record.id}
+						autosize={{ minRows: 1 }}
+						onBlur={(e: any) =>
 							preJobListData.tableList[index].oriWork = e.target.value
-					  }
-					 ></TextArea>
+						}
+					></TextArea>
 				)
 			}
 		},
@@ -125,7 +161,19 @@ export default observer(function PreJobList() {
 			title: "工龄",
 			dataIndex: "workYear",
 			align: "center",
-			width: 80
+			width: 80,
+			render: (text: any, record: any, index: number) => {
+				return (
+					<TextArea className='cell-ipt'
+						defaultValue={text}
+						key={record.id}
+						autosize={{ minRows: 1 }}
+						onBlur={(e: any) =>
+							preJobListData.tableList[index].workYear = e.target.value
+						}
+					/>
+				)
+			}
 		},
 		{
 			title: "现住址",
@@ -144,16 +192,16 @@ export default observer(function PreJobList() {
 			dataIndex: "remark",
 			align: "center",
 			width: 160,
-			render: (text: any, record: any, index: number)=>{
-				return(
-					<TextArea className='cell-ipt' 
+			render: (text: any, record: any, index: number) => {
+				return (
+					<TextArea className='cell-ipt'
 						defaultValue={text}
 						key={record.id}
-						autosize={{minRows: 1}} 
-						onBlur={(e: any) =>{
+						autosize={{ minRows: 1 }}
+						onBlur={(e: any) => {
 							preJobListData.tableList[index].remark = e.target.value;
 						}}
-					 ></TextArea>
+					></TextArea>
 				)
 			}
 		},
@@ -162,20 +210,20 @@ export default observer(function PreJobList() {
 			dataIndex: "cz",
 			align: "center",
 			width: 160,
-			render:(text: any, record: any, index: number)=>{
+			render: (text: any, record: any, index: number) => {
 				return (
 					<DoCon>
 						<span onClick={() => history.push(`/nurseFileDetail/baseInfo?empNo=${record.empNo}`)}>查看</span>
-						<span onClick={()=>{openDeptModal(index)}}>分配科室</span>
-                        <span onClick={()=>{saveTableItem(record)}}>保存</span>
-						<span onClick={()=>{removeTableItem(record,index)}}>移出</span>
+						<span onClick={() => { openDeptModal(index) }}>分配科室</span>
+						<span onClick={() => { saveTableItem(record) }}>保存</span>
+						<span onClick={() => { removeTableItem(record, index) }}>移出</span>
 					</DoCon>
 				);
 			}
 		},
 	]
 	/**打开分配科室框 */
-	const openDeptModal = (index:number)=>{
+	const openDeptModal = (index: number) => {
 		preJobListData.getNursingAll();
 		preJobListData.deptModal = true
 		preJobListData.deptCurrentObj = preJobListData.tableList[index]
@@ -185,91 +233,91 @@ export default observer(function PreJobList() {
 	const rowSelection = {
 		selectedRowKeys: selectedRowKeys,
 		onChange: (selectedRowKeys: any, selectedRows: any) => {
-		  setSelectedRowKeys(selectedRowKeys)
+			setSelectedRowKeys(selectedRowKeys)
 		}
-	  }
-	  const handleCancel = ()=>{
-        preJobListData.addModal = false
-    }
-    const handleOk = ()=>{
-        preJobListData.addModal = false
-    }
+	}
+	const handleCancel = () => {
+		preJobListData.addModal = false
+	}
+	const handleOk = () => {
+		preJobListData.addModal = false
+	}
 
-		/**保存 */
-		const saveTableItem = (record:any)=>{
-			// console.log(record)
-			if(record.dept==""){
-				message.warning('请先分配科室')
-				return false
-			}
-			preJobApi.employeeModify(record).then(res=>{
-				message.success('保存成功！')
-			}).catch(err=>{
+	/**保存 */
+	const saveTableItem = (record: any) => {
+		// console.log(record)
+		if (record.dept == "") {
+			message.warning('请先分配科室')
+			return false
+		}
+		preJobApi.employeeModify(record).then(res => {
+			message.success('保存成功！')
+		}).catch(err => {
+
+		})
+	}
+	/**移除单个item */
+	const removeTableItem = (record: any, index: number) => {
+
+		globalModal
+			.confirm(`提示`, `确定移出吗？`)
+			.then((res) => {
+				preJobApi.employeeDel([record.id]).then(resp => {
+					message.success('移出成功！')
+					preJobListData.tableList.splice(index, 1)
+				}).catch(error => {
+
+				})
+			}).catch(err => {
 
 			})
-		}
-		/**移除单个item */
-		const removeTableItem = (record:any,index:number)=>{
-			
-			globalModal
-			.confirm( `提示`,`确定移出吗？`)
-			.then((res) => {
-				preJobApi.employeeDel([record.id]).then(resp=>{
-					message.success('移出成功！')
-					preJobListData.tableList.splice(index,1)
-				}).catch(error=>{
-		
-				})
-			}).catch(err=>{
-	
-			})	
-		}
+	}
 
 	// 录入批次确认
-	const handleOkBatch = ()=>{
+	const handleOkBatch = () => {
 		preJobListData.batchModal = false
 		handleOk()
 	}
-	const handleCancelBatch = ()=>{
+	const handleCancelBatch = () => {
 		preJobListData.batchModal = false
 	}
 
-	const deptHandleOk = ()=>{
+	const deptHandleOk = () => {
 		preJobListData.deptModal = false
 		preJobListData.tableList[preJobListData.deptCurrentIndex].dept = preJobListData.selectDeptObj.label
 		preJobListData.tableList[preJobListData.deptCurrentIndex].deptCode = preJobListData.selectDeptObj.key
 	}
-	const deptHandleCancel = ()=>{
+	const deptHandleCancel = () => {
 		preJobListData.deptModal = false
-	
+
 	}
 	/**点击新增 */
-	const clickAdd = ()=>{
-		preJobListData.addModal=true;
+	const clickAdd = () => {
+		preJobListData.addModal = true;
 		preJobListData.initParamter();
 		preJobListData.getNurseList();
 		preJobListData.getNursingAll()
 	}
 	/**移除很多 */
-	const removeList = ()=>{
+	const removeList = () => {
 		console.log(selectedRowKeys)
-		if(selectedRowKeys.length<1){
+		if (selectedRowKeys.length < 1) {
 			message.warning('请先选择要移出的人！')
 			return false
 		}
 		globalModal
-		.confirm( `提示`,`确定移出吗？`)
-		.then((res) => {
-			preJobApi.employeeDel(selectedRowKeys).then(resp=>{
-				message.success('移出成功！')
-				preJobListData.getTableList()
-				setSelectedRowKeys([])
-			}).catch(error=>{
-	
-			})
-		}).catch(err=>{
+			.confirm(`提示`, `确定移出吗？`)
+			.then((res) => {
+				preJobApi.employeeDel(selectedRowKeys).then(resp => {
+					message.success('移出成功！')
+					preJobListData.getTableList()
+					setSelectedRowKeys([])
+				}).catch(error => {
 
-		})	
+				})
+			}).catch(err => {
+
+			})
 	}
 	return (
 		<Wrapper>
@@ -278,7 +326,7 @@ export default observer(function PreJobList() {
 					<PageTitle maxWidth={1500}>{'岗前培训人员名单'}</PageTitle>
 				</LeftIcon>
 				<RightIcon>
-				<span style={{marginRight:'10px'}}>年份：</span>
+					<span style={{ marginRight: '10px' }}>年份：</span>
 					<YearPicker
 						allowClear={false}
 						style={{ width: 120 }}
@@ -292,64 +340,64 @@ export default observer(function PreJobList() {
 							preJobListData.getTableList()
 						}}
 					/>
-					
-					<span style={{marginRight:'10px',marginLeft:'15px'}}>批次：</span>
+
+					<span style={{ marginRight: '10px', marginLeft: '15px' }}>批次：</span>
 					<Select
-					style={{ width: 160 }}
-					value={preJobListData.selectBatch}
-					onChange={(val: string) => {
-						preJobListData.selectBatch = val
-						preJobListData.getTableList()
-					}}
+						style={{ width: 160 }}
+						value={preJobListData.selectBatch}
+						onChange={(val: string) => {
+							preJobListData.selectBatch = val
+							preJobListData.getTableList()
+						}}
 					>
 						<Select.Option value="">全部</Select.Option>
-					{preJobListData.batchList.map((item:any,index:number)=>{
-						return <Option value={item.batch} key={index}>{item.batch}</Option>
-					})}
+						{preJobListData.batchList.map((item: any, index: number) => {
+							return <Option value={item.batch} key={index}>{item.batch}</Option>
+						})}
 					</Select>
 					<Input
 						style={{ width: 180, marginLeft: 10, marginRight: 5 }}
 						placeholder="请输入姓名关键字信息"
 						value={preJobListData.keyWord}
-						onChange={(e: any) =>{
+						onChange={(e: any) => {
 							preJobListData.keyWord = e.target.value
 						}}
 					/>
 					<Button
 						type="primary"
 						className="span"
-						onClick={()=>{preJobListData.getTableList();setSelectedRowKeys([])}}
-						>
+						onClick={() => { preJobListData.getTableList(); setSelectedRowKeys([]) }}
+					>
 						查询
 					</Button>
 					<Button className="span" onClick={removeList}>移出</Button>
-					<Button className="span" onClick={()=>preJobListData.exportExcel()}>导出</Button>
-					<Button className="span" onClick={()=>{clickAdd()}}>新增</Button>
+					<Button className="span" onClick={() => preJobListData.exportExcel()}>导出</Button>
+					<Button className="span" onClick={() => { clickAdd() }}>新增</Button>
 				</RightIcon>
 			</Headerr>
 			<ScrollCon>
-                <BaseTable
-                loading={preJobListData.tableLoading}
-                dataSource={preJobListData.tableList}
-				rowSelection={rowSelection}
-                columns={columns}
-				rowKey="id"
-                surplusWidth={300}
-                surplusHeight={220}
-                pagination={{
-                    current: preJobListData.pageIndex,
-                    total: preJobListData.total,
-                    pageSize: preJobListData.pageSize,
-                }}
-                onChange={(pagination:any) => {
-                    preJobListData.pageIndex = pagination.current;
-                    preJobListData.total = pagination.total;
-                    preJobListData.pageSize = pagination.pageSize;
-					setSelectedRowKeys([]);
-                    preJobListData.getTableList();
-                }}
-                />
-            </ScrollCon>
+				<BaseTable
+					loading={preJobListData.tableLoading}
+					dataSource={preJobListData.tableList}
+					rowSelection={rowSelection}
+					columns={columns}
+					rowKey="id"
+					surplusWidth={300}
+					surplusHeight={220}
+					pagination={{
+						current: preJobListData.pageIndex,
+						total: preJobListData.total,
+						pageSize: preJobListData.pageSize,
+					}}
+					onChange={(pagination: any) => {
+						preJobListData.pageIndex = pagination.current;
+						preJobListData.total = pagination.total;
+						preJobListData.pageSize = pagination.pageSize;
+						setSelectedRowKeys([]);
+						preJobListData.getTableList();
+					}}
+				/>
+			</ScrollCon>
 			<AddNewNurseModal visible={preJobListData.addModal} handleOk={handleOk} handleCancel={handleCancel}></AddNewNurseModal>
 			<ConfirmBatch visible={preJobListData.batchModal} handleOk={handleOkBatch} handleCancel={handleCancelBatch} />
 			<MModal>
@@ -360,7 +408,7 @@ export default observer(function PreJobList() {
 					onCancel={deptHandleCancel}
 				>
 					<div className='modal-content'>
-						
+
 						<Row className="item-row" style={{ marginTop: '15px' }}>
 							<Col span={4}>
 								<div className="label">新科室:</div>
@@ -372,16 +420,18 @@ export default observer(function PreJobList() {
 									showSearch
 									key={preJobListData.deptCurrentObj.id}
 									defaultValue={
-										{key: preJobListData.deptCurrentObj.deptCode,
-										label: preJobListData.deptCurrentObj.dept}
-								}
-									filterOption={(input:any, option:any) =>
+										{
+											key: preJobListData.deptCurrentObj.deptCode,
+											label: preJobListData.deptCurrentObj.dept
+										}
+									}
+									filterOption={(input: any, option: any) =>
 										option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
 									}
 									onChange={(val: any) => {
 										preJobListData.selectDeptObj = val
 									}}
-									>
+								>
 									{
 										preJobListData.deptList.map((v: any, i: number) => (
 											<Select.Option key={i} value={v.code}>{v.name}</Select.Option>
@@ -415,12 +465,12 @@ width: calc(100vw-200px);
   font-size: 13px;
   color: #333;
   padding: 12px 15px 0 15px;`;
-  
-  const LeftIcon = styled.div`
+
+const LeftIcon = styled.div`
 	padding: 0;
 	float: left;
   `;
-  const RightIcon = styled.div`
+const RightIcon = styled.div`
 	padding: 0 0 0 15px;
 	float: right;
 	.span {
