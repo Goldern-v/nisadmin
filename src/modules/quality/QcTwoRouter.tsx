@@ -32,6 +32,7 @@ import Gzsrm_护理质量检查小结 from "./views/qcFormGzsrm/护理质量检�
 import 质控表单汇总 from "./views/qcDghl/质控表单汇总";
 import 二级质控问题原因措施汇总 from "./views/qcFormGzsrm/二级质控问题原因措施汇总";
 import 福清二级质控问题原因措施汇总 from "./views/qcFormFqfybjy/二级质控问题原因措施汇总";
+import qcThreeMQSummary from './views/qcThreeMQSummary'
 // import Analysis from "./views/analysis/Analysis";
 export interface Props extends RouteComponentProps<{ name?: string }> {}
 export default observer(function QcTwoRouter(props: Props) {
@@ -216,6 +217,15 @@ export default observer(function QcTwoRouter(props: Props) {
             (appStore.history && appStore.history.action) !== "POP",
         },
         route_福清二级质控问题原因措施汇总,
+        {
+          title: CONFIG_TITLE[2] + "月季度汇总报告",
+          icon: <HZBG />,
+          path: "/qcTwo/qcThreeMQSummary?level=2.2",
+          component: qcThreeMQSummary,
+          // hide: !authStore.level3publishedWatch,
+          keepAlive: true,
+          disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP",
+        },
         {
           title: CONFIG_TITLE[2] + "季度汇总报告",
           icon: <HZBG />,

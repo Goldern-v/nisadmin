@@ -10,6 +10,7 @@ import { Obj } from 'src/libs/types'
 import SelectForm from '../../qcThreeProblem/components/SelectForm'
 import { MonthList, QuarterList } from 'src/modules/quality/utils/toolCon'
 import YearPicker from 'src/components/YearPicker'
+import { appStore } from 'src/stores'
 
 export interface Props {
   visible: boolean
@@ -187,7 +188,7 @@ export default function CreateAnalysisModal(props: Props) {
             </Col>
             <Col span={16}>
               <Form.Field name='summaryFormCode'>
-                <SelectForm maxSize={3} />
+                <SelectForm maxSize={3} level={(parseInt(appStore.queryObj.level) + '')} />
               </Form.Field>
             </Col>
           </Row>

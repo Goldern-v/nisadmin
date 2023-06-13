@@ -72,7 +72,8 @@ export default observer(function (props) {
   /**
    * 撤销、发布、保存权限
    */
-  const btnRules = useMemo(() => authStore.level3Check && queryObj.id, [report])
+  const btnRules = useMemo(() => !!queryObj.id, [report])
+  // const btnRules = useMemo(() => authStore.level3Check && queryObj.id, [report])
 
   const handleDel = () => {
     globalModal.confirm('删除确认', '你确定要删除该报告吗？').then((res) => {
@@ -126,7 +127,8 @@ export default observer(function (props) {
           <div className='tool-con'>
             {btnRules && <Button loading={instance.loading} onClick={onPublishOrCancel}>{PUBLISH_STATUS_ARR[report?.status]?.btn}</Button>}
             {btnRules && report?.status == '0' && <Button loading={instance.loading} onClick={addDept}>添加科室</Button>}
-            {authStore.level3Check && queryObj.id && <Button loading={instance.loading} onClick={handleDel}>删除</Button>}
+            {/* {authStore.level3Check && queryObj.id && <Button loading={instance.loading} onClick={handleDel}>删除</Button>} */}
+            {queryObj.id && <Button loading={instance.loading} onClick={handleDel}>删除</Button>}
             <Button loading={instance.loading} disabled={!queryObj.id} onClick={onPrint}>打印</Button>
             <Button loading={instance.loading} onClick={() => appStore.history.goBack()}>返回</Button>
           </div>

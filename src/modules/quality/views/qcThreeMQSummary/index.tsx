@@ -20,11 +20,9 @@ import { CONFIG_TITLE } from '../../utils/enums'
 const api = new AnalysisService();
 const Option = Select.Option;
 
-// 质控等级
-const level = 3.4;
 export default observer(function QcThreeMQSummary() {
   const [createAnalysisVisible, setCreateAnalysisVisible] = useState(false);
-  const { history } = appStore;
+  const { history, queryObj } = appStore;
   const { instance } = useInstance()
 
   const [createLoading, setCreateLoading] = useState("");
@@ -154,7 +152,7 @@ export default observer(function QcThreeMQSummary() {
     const cur = TYPE_LIST.find(v => v.value === query.templateName)
     const obj = {
       id: record.id,
-      level: cur?.level || level,
+      level: cur?.level[parseInt(queryObj.level)],
     };
     history.push(`/qcThreeMQSummaryDetail?${qs.stringify(obj)}`);
   };
@@ -171,7 +169,7 @@ export default observer(function QcThreeMQSummary() {
 
     const params: Record<string, any> = {
       id: data.id || '',
-      level: cur?.level || level,
+      level: cur?.level[parseInt(queryObj.level)],
     }
     appStore.history.push(
       `/qcThreeMQSummaryDetail?${qs.stringify(params)}`
@@ -189,7 +187,7 @@ export default observer(function QcThreeMQSummary() {
     api
       .createReport({
         ...params,
-        reportLevel: level,
+        reportLevel: queryObj.level,
       })
       .then(async (res) => {
         if (res.code == '200') {
@@ -217,7 +215,7 @@ export default observer(function QcThreeMQSummary() {
 
     let reqQuery: any = {
       ...query,
-      reportLevel: level,
+      reportLevel: queryObj.level,
     };
     if (reqQuery.templateName === TYPE_LIST[1].value) {
       reqQuery.templateName += ',' + EXTRA_QUARTER

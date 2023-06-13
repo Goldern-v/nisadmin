@@ -46,9 +46,11 @@ export const routePath = () => {
   if (level == 3.1) return '/qcThree/committeeWorkReport'
   if (level == 3) return '/qcThree/qcThreeResult'
   // 三级月度汇总 by福清
-  if (level == 3.4) return '/qcThree/qcThreeMQSummary'
+  if (['3.4', '3.5'].includes(level)) return '/qcThree/qcThreeMQSummary?level=3.4'
+  if (['2.2', '2.3'].includes(level)) return '/qcTwo/qcThreeMQSummary?level=2.2'
+  if (['1.2', '1.3'].includes(level)) return '/qcOneHj/qcThreeMQSummary?level=1.2'
   // 三级季度汇总 by福清
-  if (level == 3.5) return '/qcThree/qcThreeMQSummary'
+  // if (level == 3.5) return '/qcThree/qcThreeMQSummary'
   if (level === '3.6') return '/qcThree/qcQSummary?level=3.6'
   if (level === '2.1') return '/qcTwo/qcQSummary?level=2.1'
   if (level === '1.1') return '/qcOneHj/qcQSummary?level=1.1'

@@ -23,6 +23,7 @@ import 护理质量检查小结 from './views/qcFormHj/护理质量检查小结'
 import 质控表单汇总 from './views/qcDghl/质控表单汇总'
 import 一级质控问题原因措施汇总 from './views/qcFormGzsrm/一级质控问题原因措施汇总'
 import 福清一级质控问题原因措施汇总 from './views/qcFormFqfybjy/一级质控问题原因措施汇总'
+import qcThreeMQSummary from './views/qcThreeMQSummary'
 export interface Props extends RouteComponentProps<{ name?: string }> { }
 
 export default function QcOneRouterHj(props: Props) {
@@ -92,6 +93,15 @@ export default function QcOneRouterHj(props: Props) {
         dghl: [route_质控表单汇总],
         gzsrm: [route_一级质控问题原因措施汇总,],
         fqfybjy: [route_福清一级质控问题原因措施汇总,
+          {
+            title: CONFIG_TITLE[2] + "月季度汇总报告",
+            icon: <HZBG />,
+            path: "/qcOneHj/qcThreeMQSummary?level=1.2",
+            component: qcThreeMQSummary,
+            // hide: !authStore.level3publishedWatch,
+            keepAlive: true,
+            disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP",
+          },
           {
             title: CONFIG_TITLE[1] + "季度汇总报告",
             icon: <HZBG />,

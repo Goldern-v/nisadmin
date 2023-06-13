@@ -277,7 +277,7 @@ export default function QcThreeRouter(props: Props) {
         {
           title: CONFIG_TITLE[3] + "月季度汇总报告",
           icon: <HZBG />,
-          path: "/qcThree/qcThreeMQSummary",
+          path: "/qcThree/qcThreeMQSummary?level=3.4",
           component: qcThreeMQSummary,
           hide: !authStore.level3publishedWatch,
           keepAlive: true,

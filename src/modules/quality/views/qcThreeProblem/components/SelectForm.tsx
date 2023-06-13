@@ -7,13 +7,14 @@ import SelectFormModal from './SelectFormModal'
 export interface Props {
   maxSize?: number
   value?: any[],
+  level?: string,
   onChange?: Function
 }
 /**
  * 选择汇总表
  */
 export default observer(function SelectForm(props: Props) {
-  const { value = [], maxSize = Infinity } = props
+  const { value = [], maxSize = Infinity, level = '3' } = props
   const [visible, setVisible] = useState(false)
   const openModal = () => {
     setVisible(true)
@@ -37,7 +38,7 @@ export default observer(function SelectForm(props: Props) {
           <Icon type="close-circle" onClick={() => delItem(v)} />
         </div>
       ))}
-      <SelectFormModal visible={visible} actArr={value} onOk={(e: any[]) => handleOk(e)} onCancel={() => setVisible(false)} level="3" />
+      <SelectFormModal visible={visible} actArr={value} onOk={(e: any[]) => handleOk(e)} onCancel={() => setVisible(false)} level={level} />
     </Wrapper>
   )
 })

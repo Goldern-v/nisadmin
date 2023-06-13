@@ -32,6 +32,10 @@ let dictList = {
   专业技术工作: 'professional_work',
   专利排名: 'patent_level',
   作者: 'article_author',
+  工作服大小: 'work_clothes_size',
+  护士层级: 'user_hierarchy',
+  专科护士: 'nurse_name',
+  专科护士级别: 'level',
 }
 
 type DictList = typeof dictList

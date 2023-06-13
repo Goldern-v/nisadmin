@@ -97,7 +97,7 @@ export default observer(function BaseInfo() {
   const limitsComponent = () => {
     let btnList: Array<object> = [];
     if (['gxjb', 'dghm'].includes(appStore.HOSPITAL_ID)) {
-      editFlag() && 
+      editFlag() &&
         btnList.push({
           label: "修改",
           onClick: () => {
@@ -110,18 +110,18 @@ export default observer(function BaseInfo() {
           },
         })
       btnList.push({
-          label: "查看",
-          onClick: () => {
-            openAuditModal("基本信息", info, getTableData,'查看');
-          },
-        })
-    }else{
+        label: "查看",
+        onClick: () => {
+          openAuditModal("基本信息", info, getTableData, '查看');
+        },
+      })
+    } else {
       // SAVE("noSubmit", "未提交"),
       // HANDLE("handle", "审核中"),
       // SUCCESS("success", "审核通过"),
       // FAIL("fail", "审核不通过");
-      if(isSelf()){
-        if(info.completeStatus=='noSubmit' || info.completeStatus=='success' || info.completeStatus=='fail' || info.completeStatus==''){
+      if (isSelf()) {
+        if (info.completeStatus == 'noSubmit' || info.completeStatus == 'success' || info.completeStatus == 'fail' || info.completeStatus == '') {
           btnList.push({
             label: "修改",
             onClick: () => {
@@ -134,11 +134,11 @@ export default observer(function BaseInfo() {
         }
       }
 
-      if(info.completeStatus=='handle' || info.completeStatus=='fail'){
+      if (info.completeStatus == 'handle' || info.completeStatus == 'fail') {
         btnList.push({
           label: info.statusColor === "1" ? "审核" : "查看",
           onClick: () => {
-            openAuditModal("基本信息", info, getTableData,'查看');
+            openAuditModal("基本信息", info, getTableData, '查看');
           },
         })
       }
@@ -204,6 +204,20 @@ export default observer(function BaseInfo() {
           年龄: data.age,
           手机号: data.phone,
         },
+        ...appStore.hisMatch({
+          map: {
+            whhk: [{
+              工作服大小: data.maps?.work_clothes_size,
+              护士层级: data.maps?.user_hierarchy,
+            },
+            {
+              专科护士: data.maps?.nurse_name,
+              专科护士级别: data.maps?.level,
+            }
+            ],
+            other: []
+          }
+        }),
         // appStore.hisMatch({
         //   map: {
         //     zhzxy: {
@@ -221,10 +235,23 @@ export default observer(function BaseInfo() {
           护士执业证书编号: data.zyzsNumber,
           取得护士执业证书时间: data.zyzsDate,
         },
-        {
-          ...['sdlj', 'nfsd', 'qzde'].includes(appStore.HOSPITAL_ID) ? { 参加护理工作时间: data.zyzsNursingPostDate } : { 取得执业证书并从事护理岗位时间: data.zyzsNursingPostDate },
-          护士执业证书有效截止日期: data.zyzsEffectiveUpDate,
-        },
+        appStore.hisMatch({
+          map: {
+            'sdlj,nfsd,qzde': {
+              参加护理工作时间: data.zyzsNursingPostDate,
+              护士执业证书有效截止日期: data.zyzsEffectiveUpDate,
+            },
+            whhk: {
+              从事护理岗位时间: data.zyzsNursingPostDate,
+              护士执业证书有效截止日期: data.zyzsEffectiveUpDate,
+            },
+            other: {
+              取得执业证书并从事护理岗位时间: data.zyzsNursingPostDate,
+              护士执业证书有效截止日期: data.zyzsEffectiveUpDate,
+            },
+          },
+          vague: true
+        }),
         appStore.hisMatch({
           map: {
             dghm: {
@@ -255,7 +282,7 @@ export default observer(function BaseInfo() {
           现职务任职起始时间: data.jobStartDate,
         },
         {
-          ...['wjgdszd'].includes(appStore.HOSPITAL_ID)?{编制科室: data.workAddress}:{院内工作地点: data.workAddress},
+          ...['wjgdszd'].includes(appStore.HOSPITAL_ID) ? { 编制科室: data.workAddress } : { 院内工作地点: data.workAddress },
           工作护理单元: data.deptName,
         },
         (() => {
@@ -383,10 +410,10 @@ export default observer(function BaseInfo() {
         {
           // 参加工作时间: data.goWorkTime,
           来院工作时间: data.goHospitalWorkDate,
-          工作年限:data.goHospitalWorkYear,
+          工作年限: data.goHospitalWorkYear,
         },
         {
-          身份类别:data?.maps?.identity_category,
+          身份类别: data?.maps?.identity_category,
           护士执业证书编号: data.zyzsNumber
         },
         // 取得护士执业证书时间: data.zyzsDate,
@@ -395,17 +422,17 @@ export default observer(function BaseInfo() {
           最高学历学位: data.highestEducationDegree,
         },
         {
-          
+
           职务: data.job,
-          管理培训班资质:data?.maps?.qualification_manage_training,
+          管理培训班资质: data?.maps?.qualification_manage_training,
         },
         {
           专科护士: data?.maps?.specialist_nurse,
           护理教员: data?.maps?.nursing_instructor,
         },
         // {
-          // 取得执业证书并从事护理岗位时间: data.zyzsNursingPostDate,
-          // 护士执业证书有效截止日期: data.zyzsEffectiveUpDate,
+        // 取得执业证书并从事护理岗位时间: data.zyzsNursingPostDate,
+        // 护士执业证书有效截止日期: data.zyzsEffectiveUpDate,
         // },
         {
           // 最高学历: data.highestEducation,
@@ -419,7 +446,7 @@ export default observer(function BaseInfo() {
           鞋码: data.shoeSize
         },
         {
-          新入职护士带教资质:data?.maps?.teaching_qualification,
+          新入职护士带教资质: data?.maps?.teaching_qualification,
           实习生带教资质: data?.maps?.teaching_trainee_qualification
         },
         {
@@ -435,7 +462,7 @@ export default observer(function BaseInfo() {
           case "925":
             return newTableData925
           default:
-          return newTableDataDefault
+            return newTableDataDefault
         }
       })()
 
@@ -559,6 +586,40 @@ export default observer(function BaseInfo() {
             )}
           </div>
         </ZyzsCon>
+        {'whhk' === appStore.HOSPITAL_ID &&
+          <>
+            <ZyzsCon>
+              <span>最高学历学位照片：</span>
+              <div className='img-con'>
+                {info?.maps?.highesteducation_url ? (
+                  info?.maps?.highesteducation_url.split(',').map((item: any, index: number) => <Zimage src={item} alt='' key={index} />)
+                ) : (
+                  <img src={require('../../../images/证件空态度.png')} alt='' />
+                )}
+              </div>
+            </ZyzsCon>
+            <ZyzsCon>
+              <span>职业证书电子版：</span>
+              <div className='img-con'>
+                {info?.maps?.newtitle_url ? (
+                  info?.maps?.newtitle_url.split(',').map((item: any, index: number) => <Zimage src={item} alt='' key={index} />)
+                ) : (
+                  <img src={require('../../../images/证件空态度.png')} alt='' />
+                )}
+              </div>
+            </ZyzsCon>
+            <ZyzsCon>
+              <span>专科护士证书：</span>
+              <div className='img-con'>
+                {info?.maps?.specialistNurse_url ? (
+                  info?.maps?.specialistNurse_url.split(',').map((item: any, index: number) => <Zimage src={item} alt='' key={index} />)
+                ) : (
+                  <img src={require('../../../images/证件空态度.png')} alt='' />
+                )}
+              </div>
+            </ZyzsCon>
+          </>
+        }
       </ScrollCon>
       <editBaseInfoModal.Component getTableData={getTableData} />
     </BaseLayout>

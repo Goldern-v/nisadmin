@@ -25,8 +25,8 @@ export const useInstance = () => {
   const getInstance = useCallback(() => {
     if (window.location.hash.match('qcThreeResult')) return model1
     if (window.location.hash.match('qcThreeMQSummary')) {
-      if (appStore.queryObj?.level == 3.5)  return model3MQ2
-      return model3MQ1
+      if (['3.4', '2.2', '1.2'].includes(appStore.queryObj?.level))  return model3MQ1
+      return model3MQ2
     }
     if (['3.6', '2.1', '1.1'].includes(appStore.queryObj?.level))  return modelQ
     return model

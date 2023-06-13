@@ -176,6 +176,11 @@ export default function EditWorkHistoryModal(props: Props) {
     momentFormatIntoStr(value, 'maps.contract_due_date')
     value.zyzsUrl && (value.zyzsUrl = value.zyzsUrl.join(","));
     value?.maps?.meritorious_performance && delete value.maps.meritorious_performance
+    if ('whhk' === appStore.HOSPITAL_ID) {
+      value.maps.highesteducation_url = value.maps.highesteducation_url ? value.maps.highesteducation_url.join(',') : ''
+      value.maps.newtitle_url = value.maps.newtitle_url ? value.maps.newtitle_url.join(',') : ''
+      value.maps.specialistNurse_url = value.maps.specialistNurse_url ? value.maps.specialistNurse_url.join(',') : ''
+    }
     // value?.maps?.schoolname && delete value.maps.schoolname
     nurseFilesService
       .saveOrUpdate({ ...value, ...obj, sign })
@@ -247,6 +252,15 @@ export default function EditWorkHistoryModal(props: Props) {
 
       if (newObj?.maps?.meritorious_performance !== undefined) {
         newObj!.maps!.meritorious_performance = newObj!.maps!.meritorious_performance ? newObj!.maps!.meritorious_performance?.toString().split(",") : []
+      }
+      if (newObj?.maps?.highesteducation_url !== undefined) {
+        newObj!.maps!.highesteducation_url = newObj!.maps!.highesteducation_url ? newObj!.maps!.meritorious_performance?.toString().split(",") : []
+      }
+      if (newObj?.maps?.newtitle_url !== undefined) {
+        newObj!.maps!.newtitle_url = newObj!.maps!.newtitle_url ? newObj!.maps!.meritorious_performance?.toString().split(",") : []
+      }
+      if (newObj?.maps?.specialistNurse_url !== undefined) {
+        newObj!.maps!.specialistNurse_url = newObj!.maps!.specialistNurse_url ? newObj!.maps!.meritorious_performance?.toString().split(",") : []
       }
       refForm!.current!.setFields(newObj);
     }
@@ -335,11 +349,61 @@ export default function EditWorkHistoryModal(props: Props) {
               <Input />
             </Form.Field>
           </Col>
-          {!['925'].includes(appStore.HOSPITAL_ID) && <Col span={12}>
-            <Form.Field label={`参加工作时间`} name={['fsxt', '925'].includes(appStore.HOSPITAL_ID) ? 'goWorkTime' : 'takeWorkTime'}>
-              <DatePicker />
-            </Form.Field>
-          </Col>}
+          {
+            'whhk' === appStore.HOSPITAL_ID && <>
+              <Col span={12}>
+                <Form.Field label={`工作服大小`} name="maps.work_clothes_size">
+                  <Select>
+                    {nurseFileDetailViewModal.getDict("工作服大小").map((item) => (
+                      <Select.Option value={item.code} key={item.code}>
+                        {item.name}
+                      </Select.Option>
+                    ))}
+                  </Select>
+                </Form.Field>
+              </Col>
+              <Col span={12}>
+                <Form.Field label={`护士层级`} name="maps.user_hierarchy">
+                  <Select>
+                    {nurseFileDetailViewModal.getDict("护士层级").map((item) => (
+                      <Select.Option value={item.code} key={item.code}>
+                        {item.name}
+                      </Select.Option>
+                    ))}
+                  </Select>
+                </Form.Field>
+              </Col>
+              <Col span={12}>
+                <Form.Field label={`专科护士`} name="maps.nurse_name">
+                  <Select>
+                    {nurseFileDetailViewModal.getDict("专科护士").map((item) => (
+                      <Select.Option value={item.code} key={item.code}>
+                        {item.name}
+                      </Select.Option>
+                    ))}
+                  </Select>
+                </Form.Field>
+              </Col>
+              <Col span={12}>
+                <Form.Field label={`专科护士级别`} name="maps.level">
+                  <Select>
+                    {nurseFileDetailViewModal.getDict("专科护士级别").map((item) => (
+                      <Select.Option value={item.code} key={item.code}>
+                        {item.name}
+                      </Select.Option>
+                    ))}
+                  </Select>
+                </Form.Field>
+              </Col>
+            </>
+          }
+          {
+            !['925'].includes(appStore.HOSPITAL_ID) && <Col span={12}>
+              <Form.Field label={`参加工作时间`} name={['fsxt', '925'].includes(appStore.HOSPITAL_ID) ? 'goWorkTime' : 'takeWorkTime'}>
+                <DatePicker />
+              </Form.Field>
+            </Col>
+          }
           <Col span={12}>
             <Form.Field label={`来院工作时间`} name="goHospitalWorkDate">
               <DatePicker />
@@ -350,19 +414,23 @@ export default function EditWorkHistoryModal(props: Props) {
               <Input />
             </Form.Field>
           </Col>
-          {!['925'].includes(appStore.HOSPITAL_ID) &&<Col span={12}>
-            <Form.Field label={`取得护士执业证书时间`} name="zyzsDate">
-              <DatePicker />
-            </Form.Field>
-          </Col>}
-          {!['925'].includes(appStore.HOSPITAL_ID) && <Col span={12}>
-            <Form.Field
-              label={isSdlj ? '参加护理工作时间' : `取得执业证书并从事护理岗位时间`}
-              name="zyzsNursingPostDate"
-            >
-              <DatePicker />
-            </Form.Field>
-          </Col>}
+          {
+            !['925'].includes(appStore.HOSPITAL_ID) && <Col span={12}>
+              <Form.Field label={`取得护士执业证书时间`} name="zyzsDate">
+                <DatePicker />
+              </Form.Field>
+            </Col>
+          }
+          {
+            !['925'].includes(appStore.HOSPITAL_ID) && <Col span={12}>
+              <Form.Field
+                label={isSdlj ? '参加护理工作时间' : 'whhk' === appStore.HOSPITAL_ID ? '从事护理岗位时间' : `取得执业证书并从事护理岗位时间`}
+                name="zyzsNursingPostDate"
+              >
+                <DatePicker />
+              </Form.Field>
+            </Col>
+          }
           <Col span={12}>
             <Form.Field
               label={`护士执业证书有效截止日期`}
@@ -371,32 +439,40 @@ export default function EditWorkHistoryModal(props: Props) {
               <DatePicker />
             </Form.Field>
           </Col>
-          {!['fsxt', '925', 'dghm'].includes(appStore.HOSPITAL_ID) && <Col span={12}>
-            <Form.Field label={`初始学历`} name="initialEducation">
-              <Select>
-                {nurseFileDetailViewModal.getDict("初始学历").map((item) => (
-                  <Select.Option value={item.code} key={item.code}>
-                    {item.name}
-                  </Select.Option>
-                ))}
-              </Select>
-            </Form.Field>
-          </Col>}
-          {(['dghm'].includes(appStore.HOSPITAL_ID)) && <Col span={12}>
-            <Form.Field label={`家庭住址`} name="address">
-              <Input />
-            </Form.Field>
-          </Col>}
-          {(['zhzxy'].includes(appStore.HOSPITAL_ID)) && <Col span={12}>
-            <Form.Field label={`毕业学校`} name="maps.school_name">
-              <Input />
-            </Form.Field>
-          </Col>}
-          {(['zhzxy'].includes(appStore.HOSPITAL_ID)) && <Col span={12}>
-            <Form.Field label={`所学专业`} name="maps.major">
-              <Input />
-            </Form.Field>
-          </Col>}
+          {
+            !['fsxt', '925', 'dghm'].includes(appStore.HOSPITAL_ID) && <Col span={12}>
+              <Form.Field label={`初始学历`} name="initialEducation">
+                <Select>
+                  {nurseFileDetailViewModal.getDict("初始学历").map((item) => (
+                    <Select.Option value={item.code} key={item.code}>
+                      {item.name}
+                    </Select.Option>
+                  ))}
+                </Select>
+              </Form.Field>
+            </Col>
+          }
+          {
+            (['dghm'].includes(appStore.HOSPITAL_ID)) && <Col span={12}>
+              <Form.Field label={`家庭住址`} name="address">
+                <Input />
+              </Form.Field>
+            </Col>
+          }
+          {
+            (['zhzxy'].includes(appStore.HOSPITAL_ID)) && <Col span={12}>
+              <Form.Field label={`毕业学校`} name="maps.school_name">
+                <Input />
+              </Form.Field>
+            </Col>
+          }
+          {
+            (['zhzxy'].includes(appStore.HOSPITAL_ID)) && <Col span={12}>
+              <Form.Field label={`所学专业`} name="maps.major">
+                <Input />
+              </Form.Field>
+            </Col>
+          }
           <Col span={12}>
             <Form.Field label={`最高学历`} name="highestEducation">
               <Select>
@@ -423,20 +499,24 @@ export default function EditWorkHistoryModal(props: Props) {
         </Col>
           </span>)
           } */}
-          {appStore.HOSPITAL_ID !== 'fsxt' && <Col span={12}>
-            <Form.Field label={`取得最高学历时间`} name="highestEducationDate">
-              <DatePicker />
-            </Form.Field>
-          </Col>}
-          {!['fsxt'].includes(appStore.HOSPITAL_ID) && <Col span={12}>
-            <Form.Field label={`最高学历学位`} name="highestEducationDegree">
-              <AutoComplete
-                dataSource={nurseFileDetailViewModal
-                  .getDict("学位")
-                  .map((item) => item.name)}
-              />
-            </Form.Field>
-          </Col>}
+          {
+            appStore.HOSPITAL_ID !== 'fsxt' && <Col span={12}>
+              <Form.Field label={`取得最高学历时间`} name="highestEducationDate">
+                <DatePicker />
+              </Form.Field>
+            </Col>
+          }
+          {
+            !['fsxt'].includes(appStore.HOSPITAL_ID) && <Col span={12}>
+              <Form.Field label={`最高学历学位`} name="highestEducationDegree">
+                <AutoComplete
+                  dataSource={nurseFileDetailViewModal
+                    .getDict("学位")
+                    .map((item) => item.name)}
+                />
+              </Form.Field>
+            </Col>
+          }
           <Col span={12} style={{ height: '52px' }}>
             <Form.Field label={`职务`} name="job">
               <SelectOrAutoInput dict="职务" />
@@ -447,12 +527,14 @@ export default function EditWorkHistoryModal(props: Props) {
               <DatePicker />
             </Form.Field>
           </Col>
-          {!['fsxt', '925'].includes(appStore.HOSPITAL_ID) && <Col span={12} style={{ height: '52px' }}>
-            <Form.Field label={['wjgdszd'].includes(appStore.HOSPITAL_ID) ? '编制科室' : `院内工作地点`}
-              name="workAddress">
-              <SelectOrAutoInput dict="院内工作地点" />
-            </Form.Field>
-          </Col>}
+          {
+            !['fsxt', '925'].includes(appStore.HOSPITAL_ID) && <Col span={12} style={{ height: '52px' }}>
+              <Form.Field label={['wjgdszd'].includes(appStore.HOSPITAL_ID) ? '编制科室' : `院内工作地点`}
+                name="workAddress">
+                <SelectOrAutoInput dict="院内工作地点" />
+              </Form.Field>
+            </Col>
+          }
           <Col span={12}>
             <Form.Field
               label={`工作护理单元`}
@@ -495,25 +577,31 @@ export default function EditWorkHistoryModal(props: Props) {
               })
             }
           </Col>
-          {isSdlj && <Col span={12} style={{ height: '52px' }}>
-            <Form.Field label={`冬季鞋码大小`} name="maps.winter_shoe_size">
-              <SelectOrAutoInput dict="鞋码大小" />
-            </Form.Field>
-          </Col>}
-          {appStore.HOSPITAL_ID === "gzsrm" ? (
-            <Col span={12}>
-              <Form.Field label={`职称`} name="newTitle">
-                <Input disabled />
+          {
+            isSdlj && <Col span={12} style={{ height: '52px' }}>
+              <Form.Field label={`冬季鞋码大小`} name="maps.winter_shoe_size">
+                <SelectOrAutoInput dict="鞋码大小" />
               </Form.Field>
             </Col>
-          ) : (
-            ""
-          )}
-          {isQhwy && <Col span={12}>
-            <Form.Field label={`护理学会会员证号`} name="membershipCardNumber">
-              <Input />
-            </Form.Field>
-          </Col>}
+          }
+          {
+            appStore.HOSPITAL_ID === "gzsrm" ? (
+              <Col span={12}>
+                <Form.Field label={`职称`} name="newTitle">
+                  <Input disabled />
+                </Form.Field>
+              </Col>
+            ) : (
+              ""
+            )
+          }
+          {
+            isQhwy && <Col span={12}>
+              <Form.Field label={`护理学会会员证号`} name="membershipCardNumber">
+                <Input />
+              </Form.Field>
+            </Col>
+          }
           {
             ['lyrm', 'stmz'].includes(appStore.HOSPITAL_ID) && <Col span={12}>
               <Form.Field label='个人住址' name="address">
@@ -640,7 +728,7 @@ export default function EditWorkHistoryModal(props: Props) {
               </Select>
             </Form.Field>
           </Col> */}
-        </Row>
+        </Row >
         <Row>
           <Col span={12}>
             <Form.Field label={`添加个人头像`} name="nearImageUrl">
@@ -662,7 +750,34 @@ export default function EditWorkHistoryModal(props: Props) {
             </Form.Field>
           </Col>
         </Row>
-      </Form>
-    </Modal>
+        {
+          'whhk' === appStore.HOSPITAL_ID && <>
+            <Row>
+              <Col span={12}>
+                <Form.Field label={`添加最高学历学位照片`} name="maps.highesteducation_url">
+                  <MultipleImageUploader
+                    text="添加图片"
+                  />
+                </Form.Field>
+              </Col>
+              <Col span={12}>
+                <Form.Field label={`添加职业证书电子版`} name="maps.newtitle_url">
+                  <MultipleImageUploader
+                    text="添加图片"
+                  />
+                </Form.Field>
+              </Col>
+              <Col span={12}>
+                <Form.Field label={`添加专科护士证书`} name="maps.specialistNurse_url">
+                  <MultipleImageUploader
+                    text="添加图片"
+                  />
+                </Form.Field>
+              </Col>
+            </Row>
+          </>
+        }
+      </Form >
+    </Modal >
   );
 }
