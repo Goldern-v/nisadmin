@@ -212,7 +212,7 @@ export default observer(function BaseInfo() {
             },
             {
               专科护士: data.maps?.nurse_name,
-              专科护士级别: data.maps?.level,
+              专科护士级别: data.maps?.nurse_level,
             }
             ],
             other: []

@@ -69,8 +69,8 @@ export default observer(function NurseFilesListView() {
     },
     {
       title: "年龄",
-      dataIndex: "age",
-      key: "age",
+      dataIndex: "ageNew",
+      key: "ageNew",
       width: 50,
       align: "center"
     },

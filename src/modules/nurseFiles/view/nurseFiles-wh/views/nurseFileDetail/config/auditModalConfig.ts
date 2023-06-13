@@ -206,7 +206,7 @@ export function openAuditModal(
                       },
                       {
                         专科护士: "nurse_name",
-                        专科护士级别: "level",
+                        专科护士级别: "nurse_level",
                       },
                     ],
                     other: [],

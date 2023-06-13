@@ -385,7 +385,7 @@ export default function EditWorkHistoryModal(props: Props) {
                 </Form.Field>
               </Col>
               <Col span={12}>
-                <Form.Field label={`专科护士级别`} name="maps.level">
+                <Form.Field label={`专科护士级别`} name="maps.nurse_level">
                   <Select>
                     {nurseFileDetailViewModal.getDict("专科护士级别").map((item) => (
                       <Select.Option value={item.code} key={item.code}>

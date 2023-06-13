@@ -135,8 +135,8 @@ const Wrapper = styled.div`
   font-size: 13px;
   position: relative;
   .gzsrmExportBtn{
-    right: 120px;
-    top: 34px;
+    right: 10px;
+    top: 0px;
   }
 `
 const BreadcrumbCon = styled.div`
