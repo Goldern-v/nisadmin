@@ -259,7 +259,7 @@ export default observer(function QcThreeMQSummary() {
   return (
     <Wrapper>
       <PageHeader>
-        <PageTitle>{CONFIG_TITLE[3]}季度汇总报告</PageTitle>
+        <PageTitle>{CONFIG_TITLE[parseInt(queryObj.level)]}季度汇总报告</PageTitle>
         <Place />
 
         <div className="label">报告年度：</div>

@@ -94,7 +94,7 @@ export default function QcOneRouterHj(props: Props) {
         gzsrm: [route_一级质控问题原因措施汇总,],
         fqfybjy: [route_福清一级质控问题原因措施汇总,
           {
-            title: CONFIG_TITLE[2] + "月季度汇总报告",
+            title: CONFIG_TITLE[1] + "月季度汇总报告",
             icon: <HZBG />,
             path: "/qcOneHj/qcThreeMQSummary?level=1.2",
             component: qcThreeMQSummary,

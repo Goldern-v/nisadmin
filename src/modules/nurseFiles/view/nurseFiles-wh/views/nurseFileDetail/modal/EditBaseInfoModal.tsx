@@ -179,7 +179,7 @@ export default function EditWorkHistoryModal(props: Props) {
     if ('whhk' === appStore.HOSPITAL_ID) {
       value.maps.highesteducation_url = value.maps.highesteducation_url ? value.maps.highesteducation_url.join(',') : ''
       value.maps.newtitle_url = value.maps.newtitle_url ? value.maps.newtitle_url.join(',') : ''
-      value.maps.specialistNurse_url = value.maps.specialistNurse_url ? value.maps.specialistNurse_url.join(',') : ''
+      value.maps.specialistnurse_url = value.maps.specialistnurse_url ? value.maps.specialistnurse_url.join(',') : ''
     }
     // value?.maps?.schoolname && delete value.maps.schoolname
     nurseFilesService
@@ -254,13 +254,13 @@ export default function EditWorkHistoryModal(props: Props) {
         newObj!.maps!.meritorious_performance = newObj!.maps!.meritorious_performance ? newObj!.maps!.meritorious_performance?.toString().split(",") : []
       }
       if (newObj?.maps?.highesteducation_url !== undefined) {
-        newObj!.maps!.highesteducation_url = newObj!.maps!.highesteducation_url ? newObj!.maps!.meritorious_performance?.toString().split(",") : []
+        newObj!.maps!.highesteducation_url = newObj!.maps!.highesteducation_url ? newObj!.maps!.highesteducation_url?.toString().split(",") : []
       }
       if (newObj?.maps?.newtitle_url !== undefined) {
-        newObj!.maps!.newtitle_url = newObj!.maps!.newtitle_url ? newObj!.maps!.meritorious_performance?.toString().split(",") : []
+        newObj!.maps!.newtitle_url = newObj!.maps!.newtitle_url ? newObj!.maps!.newtitle_url?.toString().split(",") : []
       }
-      if (newObj?.maps?.specialistNurse_url !== undefined) {
-        newObj!.maps!.specialistNurse_url = newObj!.maps!.specialistNurse_url ? newObj!.maps!.meritorious_performance?.toString().split(",") : []
+      if (newObj?.maps?.specialistnurse_url !== undefined) {
+        newObj!.maps!.specialistnurse_url = newObj!.maps!.specialistnurse_url ? newObj!.maps!.specialistnurse_url?.toString().split(",") : []
       }
       refForm!.current!.setFields(newObj);
     }
@@ -768,7 +768,7 @@ export default function EditWorkHistoryModal(props: Props) {
                 </Form.Field>
               </Col>
               <Col span={12}>
-                <Form.Field label={`添加专科护士证书`} name="maps.specialistNurse_url">
+                <Form.Field label={`添加专科护士证书`} name="maps.specialistnurse_url">
                   <MultipleImageUploader
                     text="添加图片"
                   />

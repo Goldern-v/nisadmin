@@ -611,8 +611,8 @@ export default observer(function BaseInfo() {
             <ZyzsCon>
               <span>专科护士证书：</span>
               <div className='img-con'>
-                {info?.maps?.specialistNurse_url ? (
-                  info?.maps?.specialistNurse_url.split(',').map((item: any, index: number) => <Zimage src={item} alt='' key={index} />)
+                {info?.maps?.specialistnurse_url ? (
+                  info?.maps?.specialistnurse_url.split(',').map((item: any, index: number) => <Zimage src={item} alt='' key={index} />)
                 ) : (
                   <img src={require('../../../images/证件空态度.png')} alt='' />
                 )}

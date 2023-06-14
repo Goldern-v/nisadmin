@@ -387,7 +387,7 @@ export function openAuditModal(
                     ["职业证书电子版" + (index + 1)]: item,
                   };
                 }),
-                ...(row?.maps?.specialistNurse_url || '').split(",").map((item: any, index: number) => {
+                ...(row?.maps?.specialistnurse_url || '').split(",").map((item: any, index: number) => {
                   return {
                     ["专科护士证书" + (index + 1)]: item,
                   };

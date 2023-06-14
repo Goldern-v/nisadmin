@@ -11,7 +11,7 @@ import SelectForm from '../../qcThreeProblem/components/SelectForm'
 import { QuarterList } from 'src/modules/quality/utils/toolCon'
 import YearPicker from 'src/components/YearPicker'
 import { templateName } from '../../qcQSummary'
-import { authStore } from 'src/stores'
+import { appStore, authStore } from 'src/stores'
 
 export interface Props {
   visible: boolean,
@@ -156,14 +156,13 @@ export default function CreateAnalysisModal(props: Props) {
                   </Form.Field>
                 </Col>
               </Row> */}
-
           <Row>
             <Col span={8} className='label'>
               汇总表单：
             </Col>
             <Col span={16}>
               <Form.Field name='summaryFormCode'>
-                <SelectForm maxSize={5} />
+                <SelectForm maxSize={5} level={(parseInt(appStore.queryObj.level) + '')} />
               </Form.Field>
             </Col>
           </Row>
