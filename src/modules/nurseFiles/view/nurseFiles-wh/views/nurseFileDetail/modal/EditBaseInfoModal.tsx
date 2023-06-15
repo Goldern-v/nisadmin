@@ -47,6 +47,25 @@ const rules: Rules = {
       return true;
     }
   },
+  ...appStore.hisMatch({
+    map: {
+      wh: {
+        sex: (val: any) => !!val || '请选择性别',
+        age: (val: any) => !!val || '请选择年龄',
+        // 'maps.user_hierarchy': (val: any) => !!val || '请选择层级',
+        job: (val: any) => !!val || '请选择职务',
+        phone: (val: any) => !!val || '请选择手机号',
+        highestEducation: (val: any) => !!val || '请选择最高学历',
+        nativePlace: (val: any) => !!val || '请选择籍贯',
+        politicsLook: (val: any) => !!val || '请选择政治面貌',
+        nation: (val: any) => !!val || '请选择民族',
+        workAddress: (val: any) => !!val || '请选择院内工作地点',
+        shoeSize: (val: any) => !!val || '请选择鞋码大小',
+        takeWorkTime: (val: any) => !!val || '请选择参加工作时间',
+      },
+      other: {}
+    }
+  })
 };
 const isSdlj = ['sdlj', 'nfsd', 'qzde'].includes(appStore.HOSPITAL_ID)
 const isQhwy = ['qhwy', 'whhk', 'dglb'].includes(appStore.HOSPITAL_ID)
@@ -57,7 +76,7 @@ export default function EditWorkHistoryModal(props: Props) {
   let refForm = React.createRef<Form>();
   const [nativePlaceList, setNativePlaceList] = useState([]);
   const initFooterList = () => {
-    let footerList = [] as any
+    let footerList: any[] = []
     // if (['ytll'].includes(appStore.HOSPITAL_ID)) {
     footerList = [
       <Button key="back" onClick={onCancel}>

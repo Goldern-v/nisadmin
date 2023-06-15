@@ -86,7 +86,7 @@ export default observer(function ArrangeSheet(props: Props) {
       : [];
 
   const nysHandleDel =
-    ['nys', 'sdlj'].includes(appStore.HOSPITAL_ID) && isEdit
+    ['nys', 'sdlj', 'hj'].includes(appStore.HOSPITAL_ID) && isEdit
       ? [
         {
           title: "操作",
@@ -639,7 +639,8 @@ if (appStore.HOSPITAL_ID == "hj") {
     render(text: string, record: any) {
       return <NightHourCell id={record.id} />;
     },
-  });
+  },
+  ...nysHandleDel);
 }
 
 /** 南医三特殊字段 */
@@ -707,7 +708,7 @@ const handleDelete = (record: any) => {
     centered: true,
     maskClosable: true,
     onOk: () => {
-      if ('sdlj' === appStore.HOSPITAL_ID) {
+      if (['sdlj', 'hj'].includes(appStore.HOSPITAL_ID)) {
         let data = {
           startTime: moment(selectViewModal.params.startTime).format("YYYY-MM-DD"),
           endTime: moment(selectViewModal.params.endTime).format("YYYY-MM-DD"),
@@ -1050,13 +1051,13 @@ useLayoutEffect(() => {
           (sheetViewModal.dateList.length +
             appStore.hisMatch({
               map: {
-                'hj,qzde': 3,
+                'qzde': 3,
                 fqfybjy: 5,
                 nys: (isEdit ? 6 : 5),
                 'wjgdszd,wh,gxjb,jmfy,dghl,gzsrm,fsxt,925,whyx,whhk,gdtj,lyyz,qhwy,whsl,ytll,whhk,nfsd,dglb,zzwy,dghm': 6,
                 zhzxy: 9,
                 fssdy: 7,
-                'sdlj': 4,
+                'hj,sdlj': 4,
                 lyrm: 0,
                 'dghm': 5,
                 other: 2

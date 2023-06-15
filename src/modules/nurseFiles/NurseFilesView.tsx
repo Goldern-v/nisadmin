@@ -361,7 +361,6 @@ export default observer(function NurseFilesView(props: Props) {
           path: "/nurseFile/scienceResult",
           component: StatisticsView,
         },
-
         {
           title: "专利",
           path: "/nurseFile/patent",
@@ -431,7 +430,7 @@ export default observer(function NurseFilesView(props: Props) {
     retiredRetireesCon,
     ...appStore.hisMatch({
       map: {
-        'whsl,925': [
+        'whsl,925,zhzxy': [
           {
             title: "查询统计",
             icon: <CXTJ />,

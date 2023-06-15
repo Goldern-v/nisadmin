@@ -388,8 +388,6 @@ const ROUTE_LIST_925 = [
   }
 ]
 
-
-
 export default observer(function NurseFileDetail(props: Props, context: any) {
   let currentRouteType = props.match.params.type
   let ROUTE_LIST = ['925'].includes(appStore.HOSPITAL_ID)?ROUTE_LIST_925:ROUTE_LIST_DEFAULT
