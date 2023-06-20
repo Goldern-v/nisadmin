@@ -13,6 +13,7 @@ import ArrangStatistics from "../views/arrangeHome/page/arrangStatistics/ArrangS
 import ExpectedRecord from "../views/arrangeHome/page/expectedRecord/ExpectedRecord";
 import StandardTime from "../views/arrangeHome/page/StandardTime/StandardTime";
 import ExpectedRecordSelf from "../views/arrangeHome/page/expectedRecordSelf/ExpectedRecordSelf";
+import NightShiftFeeSetting from "../views/arrangeHome/page/nightShiftFeeSetting";
 
 export interface meunConfigItem {
   title?: string;
@@ -95,6 +96,12 @@ export const meunConfig: meunConfigItem[] = [
         title: "夜班费统计",
         path: "/personnelManagement/nightChargingReport",
         component: StarRatingReportList,
+        iSlimit: true,
+      },
+      {
+        title: "夜班费设置",
+        path: "/personnelManagement/nightShiftFeeSetting",
+        component: NightShiftFeeSetting,
         iSlimit: true,
       },
       {

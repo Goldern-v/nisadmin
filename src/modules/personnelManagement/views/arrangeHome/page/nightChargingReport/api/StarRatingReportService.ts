@@ -1,6 +1,7 @@
 import BaseApiService from "src/services/api/BaseApiService";
 import { starRatingReportEditModel } from "./../model/StarRatingReportEditModel";
 import { appStore } from "src/stores";
+import { Obj } from "src/libs/types";
 
 const hospitalPath: string =
   appStore.hisMatch({
@@ -237,6 +238,24 @@ export default class StarRatingReportService extends BaseApiService {
   public getStandardList() {
     return this.get(`/nightTotalContentSgy/getStandardList`);
   }
+  /**--夜班费设置开始-- */
+  /**查看列表 */
+  public getListWithSchNightSetting(params: Obj) {
+    return this.post('/schNightSetting/getList', params)
+  }
+  /**删除 */
+  public deleteSettingWithSchNightSetting(params: Obj) {
+    return this.post('/schNightSetting/deleteSetting', params)
+  }
+  /**新建 */
+  public createSettingWithSchNightSetting(params: Obj) {
+    return this.post('/schNightSetting/createSetting', params)
+  }
+  /**修改 */
+  public updateSettingWithSchNightSetting(params: Obj) {
+    return this.post('/schNightSetting/updateSetting', params)
+  }
+  /**--夜班费设置结束-- */
 }
 
 export const starRatingReportService = new StarRatingReportService();

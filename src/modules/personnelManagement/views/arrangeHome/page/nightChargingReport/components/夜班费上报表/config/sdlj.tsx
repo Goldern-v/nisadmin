@@ -193,8 +193,13 @@ const getTable = (list: any[], otherObj: any, setOtherObj: Function) => {
 // const remark = "备注：P班 50元/个，N班100元/个";
 const remark = appStore.hisMatch({
   map: {
-    925: "备注：P班 100元/个，N班100元/个",
-    default:"备注：P班 50元/个，N班100元/个"
+    925: (data: any) => "备注：P班 100元/个，N班100元/个",
+    zzwy: (data: any = []) => {
+      return data.reduce((prev:any, cur:any) => {
+        return prev += `${cur.timeType}${cur.standard}元/个 `
+      }, '备注：')
+    },
+    default: (data: any) => "备注：P班 50元/个，N班100元/个"
   },
   vague: true,
 })

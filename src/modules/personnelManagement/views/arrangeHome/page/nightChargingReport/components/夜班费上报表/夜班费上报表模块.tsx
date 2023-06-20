@@ -46,7 +46,7 @@ export default observer(function 夜班费上报表模块(props: Props) {
   return (
     <Wrapper>
       <div className="title">
-      {!['gzsrm'].includes(appStore.HOSPITAL_ID) && <div className="remark">{configSdlj.remark}</div>}
+      {!['gzsrm'].includes(appStore.HOSPITAL_ID) && <div className="remark">{configSdlj.remark(starRatingReportEditModel.settingList)}</div>}
         <div className="sup-title">
           {['dghl', 'fqfybjy'].includes(appStore.HOSPITAL_ID) && <Button onClick={handleSave}>保存</Button>}
           <Button icon={"edit"} onClick={handleEdit}>编辑</Button>

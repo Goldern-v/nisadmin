@@ -1,6 +1,9 @@
 import { Input } from "src/vendors/antd";
 import { DoCon } from "src/components/BaseTable";
 import React from "react";
+import { appStore } from "src/stores";
+import { Select } from "antd";
+import { CLASSES } from "../../../../nightShiftFeeSetting/enums";
 
 const getColumns = (cloneData: any, calBack: Function) => {
   return [
@@ -73,6 +76,29 @@ const getColumns = (cloneData: any, calBack: Function) => {
       },
       width: 90
     },
+    ...appStore.hisMatch({
+      map: {
+        zzwy: [{
+          title: "班次",
+          width: 100,
+          render(text: any, record: any) {
+            return <Select
+            style={{width: '100%'}}
+              value={record.nightShift}
+              onChange={(e: any) => {
+                record.nightShift = e
+                calBack('setData', cloneData)
+              }}>
+              {
+                CLASSES.map(v =>
+                  <Select.Option value={v.value} key={v.value}>{v.label}</Select.Option>)
+              }
+            </Select>
+          }
+        }],
+        other: []
+      }
+    }),
     {
       title: "标准",
       render(text: any, record: any, index: number) {
@@ -96,14 +122,14 @@ const getColumns = (cloneData: any, calBack: Function) => {
       render(text: any, record: any, index: number) {
         return (
           <DoCon>
-          <span
-            onClick={e => {
-              cloneData.list.splice(index, 1);
-              calBack('setData', cloneData)
-            }}
-          >
-      删除
-      </span>
+            <span
+              onClick={e => {
+                cloneData.list.splice(index, 1);
+                calBack('setData', cloneData)
+              }}
+            >
+              删除
+            </span>
           </DoCon>
         );
       }
@@ -127,22 +153,24 @@ const getTable = (list: any[]) => {
         <col width="120" />
       </colgroup>
       <tbody>
-      <tr className="header">
-        <td>工号</td>
-        <td>姓名</td>
-        <td>金额</td>
-        <td>数量</td>
-        <td>标准</td>
-      </tr>
-      {list.map((item, index) => (
-        <tr key={index}>
-          <td style={{ textAlign: "center" }}>{item.empNo}</td>
-          <td style={{ textAlign: "center" }}>{item.empName}</td>
-          <td style={{ textAlign: "center" }}>{item.total}</td>
-          <td style={{ textAlign: "center" }}>{item.num}</td>
-          <td style={{ textAlign: "center" }}>{item.standard}</td>
+        <tr className="header">
+          <td>工号</td>
+          <td>姓名</td>
+          <td>金额</td>
+          <td>数量</td>
+          {'zzwy' === appStore.HOSPITAL_ID && <td>班次</td>}
+          <td>标准</td>
         </tr>
-      ))}
+        {list.map((item, index) => (
+          <tr key={index}>
+            <td style={{ textAlign: "center" }}>{item.empNo}</td>
+            <td style={{ textAlign: "center" }}>{item.empName}</td>
+            <td style={{ textAlign: "center" }}>{item.total}</td>
+            <td style={{ textAlign: "center" }}>{item.num}</td>
+            {'zzwy' === appStore.HOSPITAL_ID && <td style={{ textAlign: "center" }}>{item.nightShift}</td>}
+            <td style={{ textAlign: "center" }}>{item.standard}</td>
+          </tr>
+        ))}
       </tbody>
     </table>
   )

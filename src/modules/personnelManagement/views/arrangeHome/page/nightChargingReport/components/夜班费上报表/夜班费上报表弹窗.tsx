@@ -12,6 +12,7 @@ import configDghl from './config/dghl'
 import configFqfybjy from './config/fqfybjy'
 import configGzsrm from './config/gzsrm'
 import configSdlj from './config/sdlj'
+import { starRatingReportEditModel } from "../../model/StarRatingReportEditModel";
 
 const { TextArea } = Input
 export interface Props {
@@ -91,7 +92,7 @@ export default observer(function 夜班费上报表弹窗(props: Props) {
 
   return (
     <Wrapper>
-      {!['gzsrm'].includes(appStore.HOSPITAL_ID) && <div className="remark">{configSdlj.remark}</div>}
+      {!['gzsrm'].includes(appStore.HOSPITAL_ID) && <div className="remark">{configSdlj.remark(starRatingReportEditModel.settingList)}</div>}
       <div className="button-con">
         <Button icon="plus" size="small" onClick={addItem}>
           添加

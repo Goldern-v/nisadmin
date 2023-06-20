@@ -70,6 +70,8 @@ class StarRatingReportEditModel {
   @observable public allData: Partial<AllData> = {
     report: {}
   };
+  /**夜班费班次标准 */
+  @observable public settingList: any[] = []
   //贵州省夜班统计报告
   @observable public gzsrmReport: IGzsrmReport = {
     id: 0,
@@ -176,7 +178,7 @@ class StarRatingReportEditModel {
     let sumTotalWanbaNum;
     let sumTotalZaobaNum;
     let sumTotalZbNum;
-
+    this.settingList = []
     //暂时隐藏20210926
     if (['gzsrm'].includes(appStore.HOSPITAL_ID)) {
       let res = await starRatingReportService.getSgyReport(query.id)
@@ -194,6 +196,10 @@ class StarRatingReportEditModel {
     } else if (['sdlj', 'nfsd', 'qzde'].includes(appStore.HOSPITAL_ID)) {
       let res = await starRatingReportService.getReportLJ(query)
       data = res.data
+    } else if (['zzwy'].includes(appStore.HOSPITAL_ID)) {
+      let res = await starRatingReportService.getReport(query)
+      data = res.data?.totalList || []
+      this.settingList = res.data?.settingList || []
     } else {
       let res = await starRatingReportService.getReport(query)
       data = res.data
@@ -218,10 +224,10 @@ class StarRatingReportEditModel {
       }
       this.getSectionData("夜班费上报表")!.schNightTotalModel = data.schNightTotalModel
     } else {
-      //debugger
+      // debugger
       this.allData = data
-      //console.log(this.getSectionData("夜班费上报表"))
-      // console.log('this.getSectionData("夜班费上报表")')
+      // console.log(this.getSectionData("夜班费上报表"))
+
       this.getSectionData("夜班费上报表")!.list = data
       if(['gzsrm'].includes(appStore.HOSPITAL_ID)){
         this.getSectionData("夜班费上报表")!.remark = remark
