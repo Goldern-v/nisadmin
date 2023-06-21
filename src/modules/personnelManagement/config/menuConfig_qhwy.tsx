@@ -16,6 +16,7 @@ import ExpectedRecord from "../views/arrangeHome/page/expectedRecord/ExpectedRec
 import ExpectedRecordSelf from "../views/arrangeHome/page/expectedRecordSelf/ExpectedRecordSelf";
 import StandardTime from "../views/arrangeHome/page/StandardTime/StandardTime";
 import TubeBed from "../views/arrangeHome/page/tubeBed/tubeBed";
+import NightShiftFeeSetting from "../views/arrangeHome/page/nightShiftFeeSetting";
 export interface meunConfigItem {
   title?: string;
   component?: any;
@@ -134,6 +135,14 @@ export const meunConfig: meunConfigItem[] = [
         // hide: !authStore.isRoleManage
         iSlimit: true,
       },
+      ...(appStore.HOSPITAL_ID === 'dghm' ? [
+        {
+          title: "夜班费设置",
+          path: "/personnelManagement/nightShiftFeeSetting",
+          component: NightShiftFeeSetting,
+          iSlimit: true,
+        },
+      ]: []),
       {
         title: "排班统计",
         path: "/personnelManagement/arrangStatistics",

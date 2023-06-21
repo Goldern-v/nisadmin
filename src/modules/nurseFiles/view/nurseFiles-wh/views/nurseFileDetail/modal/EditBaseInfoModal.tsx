@@ -47,21 +47,51 @@ const rules: Rules = {
       return true;
     }
   },
+  // 基本数据
+  ...appStore.hisMatch({
+    map: {
+      'wh,dghm': {
+        sex: (val: any) => !!val || '性别不能为空',
+        nation: (val: any) => !!val || '民族不能为空',
+        nativePlace: (val: any) => !!val || '籍贯不能为空',
+        age: (val: any) => !!val || '年龄不能为空',
+        phone: (val: any) => !!val || '手机号不能为空',
+      },
+      other: {}
+    },
+    vague: true,
+  }),
   ...appStore.hisMatch({
     map: {
       wh: {
-        sex: (val: any) => !!val || '请选择性别',
-        age: (val: any) => !!val || '请选择年龄',
-        // 'maps.user_hierarchy': (val: any) => !!val || '请选择层级',
-        job: (val: any) => !!val || '请选择职务',
-        phone: (val: any) => !!val || '请选择手机号',
-        highestEducation: (val: any) => !!val || '请选择最高学历',
-        nativePlace: (val: any) => !!val || '请选择籍贯',
-        politicsLook: (val: any) => !!val || '请选择政治面貌',
-        nation: (val: any) => !!val || '请选择民族',
-        workAddress: (val: any) => !!val || '请选择院内工作地点',
-        shoeSize: (val: any) => !!val || '请选择鞋码大小',
-        takeWorkTime: (val: any) => !!val || '请选择参加工作时间',
+        // 'maps.user_hierarchy': (val: any) => !!val || '层级不能为空',
+        job: (val: any) => !!val || '职务不能为空',
+        highestEducation: (val: any) => !!val || '最高学历不能为空',
+        politicsLook: (val: any) => !!val || '政治面貌不能为空',
+        workAddress: (val: any) => !!val || '院内工作地点不能为空',
+        shoeSize: (val: any) => !!val || '鞋码大小不能为空',
+        takeWorkTime: (val: any) => !!val || '参加工作时间不能为空',
+      },
+      dghm: {
+        politicsLook: (val: any) => !!val || '政治面貌不能为空',
+        birthday: (val: any) => !!val || '出生年月不能为空',
+        takeWorkTime: (val: any) => !!val || '参加工作时间不能为空',
+        goHospitalWorkDate: (val: any) => !!val || '来院工作时间不能为空',
+        zyzsNumber: (val: any) => !!val || '护士执业证书编号不能为空',
+        zyzsDate: (val: any) => !!val || '取得护士执业证书时间不能为空',
+        zyzsNursingPostDate: (val: any) => !!val || '取得执业证书并从事护理岗位时间不能为空',
+        zyzsEffectiveUpDate: (val: any) => !!val || '护士执业证书有效截止日期不能为空',
+        address: (val: any) => !!val || '家庭住址不能为空',
+        highestEducation: (val: any) => !!val || '最高学历不能为空',
+        highestEducationDate: (val: any) => !!val || '取得最高学历时间不能为空',
+        highestEducationDegree: (val: any) => !!val || '最高学历学位不能为空',
+        workAddress: (val: any) => !!val || '院内工作地点不能为空',
+        deptName: (val: any) => !!val || '工作护理单元不能为空',
+        newTitle: (val: any) => !!val || '现职称不能为空',
+        newTitleDate: (val: any) => !!val || '取得现有职称时间不能为空',
+        nearImageUrl: (val: any) => !!val || '个人头像不能为空',
+        zyzsUrl: (val: any) => !!val || '护士执业证书不能为空',
+
       },
       other: {}
     }
@@ -70,7 +100,6 @@ const rules: Rules = {
 const isSdlj = ['sdlj', 'nfsd', 'qzde'].includes(appStore.HOSPITAL_ID)
 const isQhwy = ['qhwy', 'whhk', 'dglb'].includes(appStore.HOSPITAL_ID)
 const Indef = '无限期'
-
 export default function EditWorkHistoryModal(props: Props) {
   let { visible, onCancel, onOk, data, id } = props;
   let refForm = React.createRef<Form>();
@@ -434,21 +463,22 @@ export default function EditWorkHistoryModal(props: Props) {
             </Form.Field>
           </Col>
           {
-            !['925'].includes(appStore.HOSPITAL_ID) && <Col span={12}>
-              <Form.Field label={`取得护士执业证书时间`} name="zyzsDate">
-                <DatePicker />
-              </Form.Field>
-            </Col>
-          }
-          {
-            !['925'].includes(appStore.HOSPITAL_ID) && <Col span={12}>
-              <Form.Field
-                label={isSdlj ? '参加护理工作时间' : 'whhk' === appStore.HOSPITAL_ID ? '从事护理岗位时间' : `取得执业证书并从事护理岗位时间`}
-                name="zyzsNursingPostDate"
-              >
-                <DatePicker />
-              </Form.Field>
-            </Col>
+            !['925'].includes(appStore.HOSPITAL_ID) &&
+            <>
+              <Col span={12}>
+                <Form.Field label={`取得护士执业证书时间`} name="zyzsDate">
+                  <DatePicker />
+                </Form.Field>
+              </Col>
+              <Col span={12}>
+                <Form.Field
+                  label={isSdlj ? '参加护理工作时间' : 'whhk' === appStore.HOSPITAL_ID ? '从事护理岗位时间' : `取得执业证书并从事护理岗位时间`}
+                  name="zyzsNursingPostDate"
+                >
+                  <DatePicker />
+                </Form.Field>
+              </Col>
+            </>
           }
           <Col span={12}>
             <Form.Field
@@ -479,18 +509,19 @@ export default function EditWorkHistoryModal(props: Props) {
             </Col>
           }
           {
-            (['zhzxy'].includes(appStore.HOSPITAL_ID)) && <Col span={12}>
-              <Form.Field label={`毕业学校`} name="maps.school_name">
-                <Input />
-              </Form.Field>
-            </Col>
-          }
-          {
-            (['zhzxy'].includes(appStore.HOSPITAL_ID)) && <Col span={12}>
-              <Form.Field label={`所学专业`} name="maps.major">
-                <Input />
-              </Form.Field>
-            </Col>
+            (['zhzxy'].includes(appStore.HOSPITAL_ID)) &&
+            <>
+              <Col span={12}>
+                <Form.Field label={`毕业学校`} name="maps.school_name">
+                  <Input />
+                </Form.Field>
+              </Col>
+              <Col span={12}>
+                <Form.Field label={`所学专业`} name="maps.major">
+                  <Input />
+                </Form.Field>
+              </Col>
+            </>
           }
           <Col span={12}>
             <Form.Field label={`最高学历`} name="highestEducation">
@@ -505,36 +536,25 @@ export default function EditWorkHistoryModal(props: Props) {
               </Select>
             </Form.Field>
           </Col>
-          {/* {appStore.HOSPITAL_ID  == 'zhzxy' &&(<span>
-            <Col span={12}>
-            <Form.Field label={`毕业学校`} name="schoolName">
-              <Input />
-            </Form.Field>
-          </Col>
-          <Col span={12}>
-          <Form.Field label={`所学专业`} name="major">
-            <Input />
-          </Form.Field>
-        </Col>
-          </span>)
-          } */}
+
           {
-            appStore.HOSPITAL_ID !== 'fsxt' && <Col span={12}>
-              <Form.Field label={`取得最高学历时间`} name="highestEducationDate">
-                <DatePicker />
-              </Form.Field>
-            </Col>
-          }
-          {
-            !['fsxt'].includes(appStore.HOSPITAL_ID) && <Col span={12}>
-              <Form.Field label={`最高学历学位`} name="highestEducationDegree">
-                <AutoComplete
-                  dataSource={nurseFileDetailViewModal
-                    .getDict("学位")
-                    .map((item) => item.name)}
-                />
-              </Form.Field>
-            </Col>
+            appStore.HOSPITAL_ID !== 'fsxt' &&
+            <>
+              <Col span={12}>
+                <Form.Field label={`取得最高学历时间`} name="highestEducationDate">
+                  <DatePicker />
+                </Form.Field>
+              </Col>
+              <Col span={12}>
+                <Form.Field label={`最高学历学位`} name="highestEducationDegree">
+                  <AutoComplete
+                    dataSource={nurseFileDetailViewModal
+                      .getDict("学位")
+                      .map((item) => item.name)}
+                  />
+                </Form.Field>
+              </Col>
+            </>
           }
           <Col span={12} style={{ height: '52px' }}>
             <Form.Field label={`职务`} name="job">
@@ -604,14 +624,12 @@ export default function EditWorkHistoryModal(props: Props) {
             </Col>
           }
           {
-            appStore.HOSPITAL_ID === "gzsrm" ? (
+            appStore.HOSPITAL_ID === "gzsrm" && (
               <Col span={12}>
                 <Form.Field label={`职称`} name="newTitle">
                   <Input disabled />
                 </Form.Field>
               </Col>
-            ) : (
-              ""
             )
           }
           {
@@ -733,8 +751,6 @@ export default function EditWorkHistoryModal(props: Props) {
               </Col>
             </>
           }
-
-
 
           {/* <Col span={12}>
             <Form.Field label='立功表现' name="maps.meritorious_performance">

@@ -196,7 +196,7 @@ class StarRatingReportEditModel {
     } else if (['sdlj', 'nfsd', 'qzde'].includes(appStore.HOSPITAL_ID)) {
       let res = await starRatingReportService.getReportLJ(query)
       data = res.data
-    } else if (['zzwy'].includes(appStore.HOSPITAL_ID)) {
+    } else if (['zzwy', 'dghm'].includes(appStore.HOSPITAL_ID)) {
       let res = await starRatingReportService.getReport(query)
       data = res.data?.totalList || []
       this.settingList = res.data?.settingList || []

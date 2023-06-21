@@ -78,7 +78,7 @@ const getColumns = (cloneData: any, calBack: Function) => {
     },
     ...appStore.hisMatch({
       map: {
-        zzwy: [{
+        'zzwy,dghm': [{
           title: "班次",
           width: 100,
           render(text: any, record: any) {
@@ -97,7 +97,8 @@ const getColumns = (cloneData: any, calBack: Function) => {
           }
         }],
         other: []
-      }
+      },
+      vague: true
     }),
     {
       title: "标准",
@@ -158,7 +159,7 @@ const getTable = (list: any[]) => {
           <td>姓名</td>
           <td>金额</td>
           <td>数量</td>
-          {'zzwy' === appStore.HOSPITAL_ID && <td>班次</td>}
+          {['zzwy', 'dghm'].includes(appStore.HOSPITAL_ID) && <td>班次</td>}
           <td>标准</td>
         </tr>
         {list.map((item, index) => (
@@ -167,7 +168,7 @@ const getTable = (list: any[]) => {
             <td style={{ textAlign: "center" }}>{item.empName}</td>
             <td style={{ textAlign: "center" }}>{item.total}</td>
             <td style={{ textAlign: "center" }}>{item.num}</td>
-            {'zzwy' === appStore.HOSPITAL_ID && <td style={{ textAlign: "center" }}>{item.nightShift}</td>}
+            {['zzwy', 'dghm'].includes(appStore.HOSPITAL_ID) && <td style={{ textAlign: "center" }}>{item.nightShift}</td>}
             <td style={{ textAlign: "center" }}>{item.standard}</td>
           </tr>
         ))}

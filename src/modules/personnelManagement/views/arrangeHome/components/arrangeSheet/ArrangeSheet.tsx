@@ -755,7 +755,7 @@ if (["wh", "gzsrm", "gxjb", "fsxt", '925', "whyx", 'whhk', 'sdlj', 'fssdy', "gdt
     }),
     ...appStore.hisMatch({
       map: {
-        'fsxt,925,sdlj,zzwy,qzde': [],//佛山杏坛去除累计结余添加本周结余
+        'fsxt,925,sdlj,zzwy,qzde,qhwy': [],//佛山杏坛去除累计结余添加本周结余
         other: [
           {
             title: (
@@ -776,7 +776,7 @@ if (["wh", "gzsrm", "gxjb", "fsxt", '925', "whyx", 'whhk', 'sdlj', 'fssdy', "gdt
     }),
     ...appStore.hisMatch({
       map: {
-        'whyx,whhk': [
+        'whyx,whhk,qhwy': [
         ],
         other: [
           {
@@ -798,6 +798,7 @@ if (["wh", "gzsrm", "gxjb", "fsxt", '925', "whyx", 'whhk', 'sdlj', 'fssdy', "gdt
     }),
     ...appStore.hisMatch({
       map: {
+        'qhwy': [],
         'nfsd,qzde': [
           {
             title: (
@@ -1029,21 +1030,36 @@ useLayoutEffect(() => {
         (document as any).querySelector("#arrangeSheet .ant-table-body")
           .clientWidth && appStore.HOSPITAL_ID !== 'dgxg'
       ) {
-        let widthNys =
-          appStore.HOSPITAL_ID == "nys"
-            ? 210 : 250;
-        if (['whyx', 'whhk'].includes(appStore.HOSPITAL_ID)) {
-          widthNys += 170
-        }
-        else if (appStore.HOSPITAL_ID == 'wjgdszd') {
-          widthNys = Number(widthNys - 50)
-        }
-        else if (appStore.HOSPITAL_ID == 'fssdy') {
-          widthNys += 200
-        }
-        else if (['qhwy', 'nfzxy', 'whhk', 'dglb', 'dghm'].includes(appStore.HOSPITAL_ID)) {
-          widthNys += 100
-        }
+        /**一般是左边固定宽度 + 备注宽度 */
+        let baseWidth: number = appStore.hisMatch({
+          map: {
+            nys: 210,
+            other: 250,
+            whyx: 590,
+            whhk: 520,
+            wjgdszd: 200,
+            fssdy: 450,
+            'nfzxy,dglb,dghm': 350,
+            'qhwy': 430,
+            lyyz: 270,
+          },
+          vague: true
+        });
+        // let widthNys =
+        //   appStore.HOSPITAL_ID == "nys"
+        //     ? 210 : 250;
+        // if (['whyx', 'whhk'].includes(appStore.HOSPITAL_ID)) {
+        //   widthNys += 170
+        // }
+        // else if (appStore.HOSPITAL_ID == 'wjgdszd') {
+        //   widthNys = Number(widthNys - 50)
+        // }
+        // else if (appStore.HOSPITAL_ID == 'fssdy') {
+        //   widthNys += 200
+        // }
+        // else if (['qhwy', 'nfzxy', 'whhk', 'dglb', 'dghm'].includes(appStore.HOSPITAL_ID)) {
+        //   widthNys += 100
+        // }
         /** noscorll */
         (document as any).querySelector(
           "#arrangeSheet #baseTable"
@@ -1054,20 +1070,23 @@ useLayoutEffect(() => {
                 'qzde': 3,
                 fqfybjy: 5,
                 nys: (isEdit ? 6 : 5),
-                'wjgdszd,wh,gxjb,jmfy,dghl,gzsrm,fsxt,925,whyx,whhk,gdtj,lyyz,qhwy,whsl,ytll,whhk,nfsd,dglb,zzwy,dghm': 6,
+                'wjgdszd,wh,gxjb,jmfy,dghl,gzsrm,fsxt,925,whyx,whhk,gdtj,lyyz,whsl,ytll,whhk,nfsd,dglb,zzwy,dghm': 6,
                 zhzxy: 9,
                 fssdy: 7,
                 'hj,sdlj': 4,
-                lyrm: 0,
+                'lyrm': 0,
                 'dghm': 5,
+                qhwy: 2,
                 other: 2
               },
               vague: true
             })) *
           70 +
-          widthNys +
-          10 + (appStore.HOSPITAL_ID === 'whyx' ? 170 : 0) + (appStore.HOSPITAL_ID === 'lyyz' ? 20 : 0) +
+          baseWidth + 10 +
+          // widthNys +
+          // 10 + (appStore.HOSPITAL_ID === 'whyx' ? 170 : 0) + (appStore.HOSPITAL_ID === 'lyyz' ? 20 : 0) +
           "px";
+
         setSurplusWidth(false);
       } else {
         (document as any).querySelector("#arrangeSheet #baseTable") &&
