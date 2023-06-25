@@ -509,11 +509,22 @@ export default observer(function SelectCon() {
   /* 判断是否具有排班权限*/
   const getPushAuth =()=>{
     //     SYS0001  管理员 QCR0001  护理部
-    let user:any =  JSON.parse(sessionStorage.getItem("user") || "{}");
+    let user:any = JSON.parse(sessionStorage.getItem("user") || "{}");
     let auth:[string,string] =['SYS0001','QCR0001']
     let days:number=new Date().getDay() === 0 ? 7:new Date().getDay() + 7  //当前日期+ 上周
     let startTime:number = new Date(selectViewModal.params.startTime).getTime()
-    let newTime:number =new Date().getTime()
+    let newTime:number = new Date().getTime()
+    // 下周三之后的数据不许编辑
+    if ('whsl' === appStore.HOSPITAL_ID) {
+      const dow = moment().day()
+      const thur1 = moment().subtract(dow-4, 'days').format('YYYY-MM-DD')//本周3
+      const thur2 = moment(thur1).subtract(-7, 'days')
+      // const start = moment(selectViewModal.params.startTime)
+      const end = moment(selectViewModal.params.endTime)
+      if (end.isBefore(thur2)) return true
+      message.warning('编辑排班的时间范围最多到下周三')
+      return false
+    }
     if(appStore.HOSPITAL_ID !=='wjgdszd') return  true
     if(appStore.HOSPITAL_ID==='wjgdszd' && auth.includes(user.roleManageCode)) return  true
     if(appStore.HOSPITAL_ID==='wjgdszd' && !auth.includes(user.roleManageCode) && ((newTime - startTime) > (days * 60 *60 *24 * 1000))){

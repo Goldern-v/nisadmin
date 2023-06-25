@@ -97,7 +97,6 @@ export default observer(function PersonWinning() {
     },
     Do('nurseWHTransferPost', editToNewPostModal, getTableData)
   ]
-  console.log('test-1', 1)
 
   useEffect(() => {
     getTableData()

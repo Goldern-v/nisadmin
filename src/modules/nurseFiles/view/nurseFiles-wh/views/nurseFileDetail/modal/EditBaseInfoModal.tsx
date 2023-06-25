@@ -222,6 +222,8 @@ export default function EditWorkHistoryModal(props: Props) {
     momentFormatIntoStr(value, 'zyzsEffectiveUpDate')
     momentFormatIntoStr(value, 'newTitleDate')
     momentFormatIntoStr(value, 'maps.contract_due_date')
+    momentFormatIntoStr(value, 'title_obtain_date')
+    momentFormatIntoStr(value, 'title_appoint_date')
     value.zyzsUrl && (value.zyzsUrl = value.zyzsUrl.join(","));
     value?.maps?.meritorious_performance && delete value.maps.meritorious_performance
     if ('whhk' === appStore.HOSPITAL_ID) {
@@ -291,6 +293,8 @@ export default function EditWorkHistoryModal(props: Props) {
           zyzsUrl: data.zyzsUrl ? data.zyzsUrl.split(",") : [],
           goWorkTime: strFormatIntoMoment(data.goWorkTime),
           newTitleDate: strFormatIntoMoment(data.newTitleDate),
+          title_obtain_date: strFormatIntoMoment(data.title_obtain_date),
+          title_appoint_date: strFormatIntoMoment(data.title_appoint_date),
         },
       }
       // maps中的数据格式化
@@ -751,6 +755,20 @@ export default function EditWorkHistoryModal(props: Props) {
               </Col>
             </>
           }
+          {
+            'whhk' === appStore.HOSPITAL_ID && <>
+              <Col span={12}>
+                <Form.Field label="现职称获得时间" name="title_obtain_date">
+                  <DatePicker />
+                </Form.Field>
+              </Col>
+              <Col span={12}>
+                <Form.Field label="现职称聘任时间" name="title_appoint_date">
+                  <DatePicker />
+                </Form.Field>
+              </Col>
+            </>
+          }
 
           {/* <Col span={12}>
             <Form.Field label='立功表现' name="maps.meritorious_performance">
@@ -775,7 +793,7 @@ export default function EditWorkHistoryModal(props: Props) {
             </Form.Field>
           </Col>
           <Col span={12}>
-            <Form.Field label={`添加护士执业证书`} name="zyzsUrl">
+            <Form.Field label={'whhk' === appStore.HOSPITAL_ID ? '添加护士执业证书电子版' : '添加职业证书电子版'} name="zyzsUrl">
               <MultipleImageUploader
                 text="添加图片"
                 tip={

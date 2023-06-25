@@ -25,6 +25,7 @@ const SHOW_POINT_IMG = ['whyx','qhwy', 'whhk', 'dglb', 'dghm'].includes(appStore
 export interface Props {
 }
 
+const isWhsl = 'whsl' === appStore.HOSPITAL_ID
 export default observer(function TopPart() {
   const [date, setDate] = useState([] as any[]);
   const [isInit, setIsInit] = useState(true);
@@ -127,7 +128,6 @@ export default observer(function TopPart() {
     });
   };
 
-
   let handleStatusChange = () => {
     setDate([
       moment(appStore.queryObj.startTime),
@@ -151,6 +151,18 @@ export default observer(function TopPart() {
       copyRowClick([sheetViewModal.copyCellList[1]], _cell, false);
     }
   };
+  /**
+   * 威海禁止选择下周3之后的数据
+   * @param date moment
+   * @returns boolean
+   */
+  const disabledDate = (date: any) => {
+    if (!isWhsl) return false
+    const dow = moment().day()
+    const thur1 = moment().subtract(dow-4, 'days').format('YYYY-MM-DD')//本周3
+    const thur2 = moment(thur1).subtract(-7, 'days')
+    return !date.isBefore(thur2)
+  }
   useEffect(() => {
     if (isInit) {
       handleStatusChange();
@@ -233,7 +245,6 @@ export default observer(function TopPart() {
                     moment(selectViewModal.params.endTime)
                   ];
                   /** 判断是否是一周 */
-                  let weeks = date[0].week();
                   let _date = date[0].format("YYYY-MM-DD");
                   if (
                     date[0].format("YYYY-MM-DD") ==
@@ -252,48 +263,51 @@ export default observer(function TopPart() {
                       .endOf("week")
                   ];
                 },
-                下周: () => {
-                  /** 判断是否是一周 */
-                  let date: any = [
-                    moment(selectViewModal.params.startTime),
-                    moment(selectViewModal.params.endTime)
-                  ];
-                  let weeks = date[0].week();
-                  if (
-                    date[0].format("YYYY-MM-DD") ==
-                    date[0].startOf("week").format("YYYY-MM-DD") ||
-                    date[1].format("YYYY-MM-DD") ==
-                    date[0].endOf("week").format("YYYY-MM-DD")
-                  ) {
-                    return [date[0].add(7, "d"), date[1].add(7, "d")];
-                  }
-                  return [
+                ...(isWhsl ? {} : {
+                  下周: () => {
+                    /** 判断是否是一周 */
+                    let date: any = [
+                      moment(selectViewModal.params.startTime),
+                      moment(selectViewModal.params.endTime)
+                    ];
+                    let weeks = date[0].week();
+                    if (
+                      date[0].format("YYYY-MM-DD") ==
+                      date[0].startOf("week").format("YYYY-MM-DD") ||
+                      date[1].format("YYYY-MM-DD") ==
+                      date[0].endOf("week").format("YYYY-MM-DD")
+                    ) {
+                      return [date[0].add(7, "d"), date[1].add(7, "d")];
+                    }
+                    return [
+                      moment()
+                        .week(moment().week() + 1)
+                        .startOf("week"),
+                      moment()
+                        .week(moment().week() + 1)
+                        .endOf("week")
+                    ];
+                  },
+                  本月: [moment().startOf("month"), moment().endOf("month")],
+                  上月: [
                     moment()
-                      .week(moment().week() + 1)
-                      .startOf("week"),
+                      .month(moment().month() - 1)
+                      .startOf("month"),
                     moment()
-                      .week(moment().week() + 1)
-                      .endOf("week")
-                  ];
-                },
-                本月: [moment().startOf("month"), moment().endOf("month")],
-                上月: [
-                  moment()
-                    .month(moment().month() - 1)
-                    .startOf("month"),
-                  moment()
-                    .month(moment().month() - 1)
-                    .endOf("month")
-                ],
-                下月: [
-                  moment()
-                    .month(moment().month() + 1)
-                    .startOf("month"),
-                  moment()
-                    .month(moment().month() + 1)
-                    .endOf("month")
-                ]
+                      .month(moment().month() - 1)
+                      .endOf("month")
+                  ],
+                  下月: [
+                    moment()
+                      .month(moment().month() + 1)
+                      .startOf("month"),
+                    moment()
+                      .month(moment().month() + 1)
+                      .endOf("month")
+                  ]
+                })
               }}
+              disabledDate={disabledDate}
             />
           </div>
         </div>

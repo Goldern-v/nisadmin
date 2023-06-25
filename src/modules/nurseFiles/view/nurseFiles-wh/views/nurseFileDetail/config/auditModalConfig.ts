@@ -303,42 +303,20 @@ export function openAuditModal(
                 })(),
                 ...appStore.hisMatch({
                   map: {
-                    "qhwy,whhk,dglb": [
+                    "qhwy,dglb": [
                       {
                         护理学会会员证号: "membershipCardNumber",
                       },
                     ],
-
-                    other: [],
-                  },
-                  vague: true,
-                }),
-                // 无效
-                // ...appStore.hisMatch({
-                //   map: {
-                //     'fsxt,925': [
-                //       {
-                //         "夏装-裤子": "summer_trousers_size",
-                //         "冬装-上衣": "winter_jacket_size",
-                //       },
-                //       {
-                //         "冬装-裤子": "winter_trousers_size",
-                //         "夏装-医生款": "summer_isolation_suit_size",
-                //       },
-                //       {
-                //         "冬装-医生款": "winter_isolation_suit_size",
-                //         "鞋款式": "nurse_shoes_style",
-                //       },
-                //       {
-                //         "鞋码": "shoeSize",
-                //       }
-                //     ],
-                //     other: []
-                //   },
-                //   vague:true,
-                // }),
-                ...appStore.hisMatch({
-                  map: {
+                    whhk: [
+                      {
+                        现职称获得时间: 'title_obtain_date',
+                        现职称聘任时间: 'title_appoint_date',
+                      },
+                      {
+                        护理学会会员证号: "membershipCardNumber",
+                      },
+                    ],
                     gzsrm: [
                       {
                         职称: "newTitle",
@@ -384,7 +362,7 @@ export function openAuditModal(
                 }),
                 ...(row?.maps?.newtitle_url || '').split(",").map((item: any, index: number) => {
                   return {
-                    ["职业证书电子版" + (index + 1)]: item,
+                    [('whhk' === appStore.HOSPITAL_ID ? '护士执业证书电子版' : '职业证书电子版') + (index + 1)]: item,
                   };
                 }),
                 ...(row?.maps?.specialistnurse_url || '').split(",").map((item: any, index: number) => {

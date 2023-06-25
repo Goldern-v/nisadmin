@@ -327,6 +327,15 @@ export default observer(function BaseInfo() {
               };
           }
         })(),
+        ...appStore.hisMatch({
+          map: {
+            whhk: [{
+              现职称获得时间: data.title_obtain_date,
+              现职称聘任时间: data.title_appoint_date,
+            }],
+            other: [],
+          },
+        })
       ]
       let newTableDataFsxt = [
         {
@@ -599,7 +608,7 @@ export default observer(function BaseInfo() {
               </div>
             </ZyzsCon>
             <ZyzsCon>
-              <span>职业证书电子版：</span>
+              <span>{'whhk' === appStore.HOSPITAL_ID ? '护士执业证书电子版' : '职业证书电子版'}：</span>
               <div className='img-con'>
                 {info?.maps?.newtitle_url ? (
                   info?.maps?.newtitle_url.split(',').map((item: any, index: number) => <Zimage src={item} alt='' key={index} />)
