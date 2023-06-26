@@ -188,6 +188,7 @@ const LEFT_MENU_CONFIG: any = appStore.hisMatch({
     ]
   }
 })
+console.log('test-appStore.history.action', appStore.history.action)
 
 //CheckWardReportList
 
