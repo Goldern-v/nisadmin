@@ -29,7 +29,7 @@ export default function AuditsTableDHSZ(props: Props) {
   const toDetails = (row: any) => {
     console.log(row.othersMessage.entityName, 9998)
     openAuditModal(getTitle(row.othersMessage.entityName), { ...row.othersMessage, id: row.othersMessage.fileId }, () =>
-      emitter.emit('refreshNurseAuditTable','查看'), 'dghm' == appStore.HOSPITAL_ID ? '查看' : ''
+      emitter.emit('refreshNurseAuditTable'), '查看'
     )
   }
 
