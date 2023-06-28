@@ -333,6 +333,11 @@ export function openAuditModal(
                         取得现有职称时间: "newTitleDate",
                       },
                     ],
+                    ytll: [
+                      {
+                        来院工作时间: "goHospitalWorkDate",
+                      }
+                    ],
                     other: [],
                   },
                   vague: true,

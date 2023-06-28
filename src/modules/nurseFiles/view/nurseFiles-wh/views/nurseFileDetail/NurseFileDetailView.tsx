@@ -255,19 +255,11 @@ const ROUTE_LIST_DEFAULT = ['zhzxy'].includes(appStore.HOSPITAL_ID) ? [
     component: WorkRegistrationForm,
     name: '在院工作情况'
   },
-  ...isSdlj ? [
-    {
-      type: 'toNewPost',
-      component: ToNewPost_sdlj,
-      name: '岗位变动'
-    }
-  ] : [
-    {
-      type: 'toNewPost',
-      component: ToNewPost,
-      name: '岗位变动'
-    }
-  ],
+  {
+    type: 'toNewPost',
+    component: isSdlj ? ToNewPost_sdlj : ToNewPost,
+    name: '岗位变动'
+  },
   {
     type: 'PositionChange',
     component: PositionChange,
@@ -288,20 +280,10 @@ const ROUTE_LIST_DEFAULT = ['zhzxy'].includes(appStore.HOSPITAL_ID) ? [
     component: OrganizationChange,
     name: '编制变动'
   }] : [],
-  // {
-  //   type: 'Leave',
-  //   component: Leave,
-  //   name: '离职'
-  // }
-  ...appStore.HOSPITAL_ID === 'wh' || appStore.HOSPITAL_ID === 'fsxt' || appStore.HOSPITAL_ID === '925' || appStore.HOSPITAL_ID === 'ytll' ? [{
+  ...appStore.HOSPITAL_ID === 'wh' || appStore.HOSPITAL_ID === 'fsxt' || appStore.HOSPITAL_ID === 'ytll' ? [{
     type: 'WardInnovate',
     component: WardInnovate,
     name: '科室创新'
-  }] : [],
-  ...appStore.HOSPITAL_ID === '925' ? [{
-    type: 'MakeAwards',
-    component: MakeAwards,
-    name: '立功嘉奖'
   }] : [],
 ]
 
@@ -315,9 +297,7 @@ const ROUTE_LIST_925 = [
     type: 'article',
     component: Article,
     name: '文章'
-  },
-  
- 
+  }, 
   {
     /** 方明处理 */
     type: 'hostingScientific',

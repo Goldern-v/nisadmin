@@ -134,7 +134,9 @@ export default class ArrangeService extends BaseApiService {
         lcey: '/schedulingLc/export',
         jmfy: '/schedulingJm/export',
         'whyx,whhk': '/schedulingYaXin/export',
+        zhzxy: '/scheduling/exportExcelForZhzxy',
         default: '/scheduling/export',
+        
       },
       vague:true,
     })
