@@ -107,6 +107,10 @@ export default class PreJobManageApi extends BaseApiService {
       responseType: "blob",
     });
   }
+  /**检查权限 */
+  public async checkEmpRole() {
+    return this.post(`/newNurseMange/trainExam/checkEmpRole`)
+  }
   // ----------------临床培训考核 end----------------
 }
 

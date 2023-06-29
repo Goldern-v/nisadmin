@@ -184,11 +184,13 @@ export default observer(function TrainingExamManage(props: Props) {
 
 	// 点击新增
 	const clickAdd = () => {
-		trainExamData.batchExamModal = true;
-		trainExamData.modalTitle = '新增';
-		trainExamData.getNursingAll();
-		trainExamData.addExam = {}
-		trainExamData.addExam = trainExamData.addItem
+		preJobManageApi.checkEmpRole().then(res => {
+			trainExamData.batchExamModal = true;
+			trainExamData.modalTitle = '新增';
+			trainExamData.getNursingAll();
+			trainExamData.addExam = {}
+			trainExamData.addExam = trainExamData.addItem
+		})
 	}
 
 	return (

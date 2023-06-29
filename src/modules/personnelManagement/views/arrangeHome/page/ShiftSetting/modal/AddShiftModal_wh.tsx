@@ -31,8 +31,15 @@ export interface Props extends ModalComponentProps {
 const rules: Rules = {
   name: val => !!val || "请填写班次名称",
   shiftType: val => !!val || "请填写班次类别",
-  workTime1: (val) => !!val || "请填写上班开始时间",
-  workTime2: (val) => !!val || "请填写上班结束时间",
+  ...appStore.hisMatch({
+    map: {
+      qhwy: {},
+      other: {
+        workTime1: (val: any) => !!val || "请填写上班开始时间",
+        workTime2: (val: any) => !!val || "请填写上班结束时间",
+      }
+    }
+  })
   // workTime: (val) => !!val || '请填写上班时间',
   // effectiveTime: (val) => !!val || '请填写标准工时',
   // nameColor: (val) => !!val || '请填写颜色标记'
@@ -219,7 +226,7 @@ export default function AddShiftModal(props: Props) {
               }
 
                   <Col span={13}>
-                    <Form.Field label={['lcey', 'lyyz'].includes(appStore.HOSPITAL_ID) ? `夏令上班时间` : '上班时间'} name="workTime1" required={true}>
+                    <Form.Field label={['lcey', 'lyyz'].includes(appStore.HOSPITAL_ID) ? `夏令上班时间` : '上班时间'} name="workTime1" required={'qhwy' !== appStore.HOSPITAL_ID }>
                       <TimePicker format={"HH:mm"} />
                     </Form.Field>
                   </Col>
