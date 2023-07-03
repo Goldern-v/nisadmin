@@ -412,7 +412,18 @@ export default class AuthStore {
       return false
     }
   }
-  
+  /**
+   * 质控组长 by虎门
+   */
+  public get isQcLeader() {
+    try {
+      if (!this.user) return false
+      if (this.user.roleManageCode === 'QCR0100') return true
+      if (this.user.roleManageCodeList?.find((code: string) => code === "QCR0100")) return true
+    } catch (e) {
+      return false
+    }
+  }
 
   /** 用户初始化 */
   @action

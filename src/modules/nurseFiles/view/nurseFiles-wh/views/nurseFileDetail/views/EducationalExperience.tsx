@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 import BaseLayout from '../components/BaseLayout'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
-import {  appStore } from 'src/stores'
+import { appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import { ColumnProps } from 'antd/lib/table'
 import createModal from 'src/libs/createModal'
@@ -150,6 +150,17 @@ export default observer(function EducationalExperience() {
       width: 100,
       align: 'center'
     },
+    ...(
+      'dghm' === appStore.HOSPITAL_ID
+      ? [{
+        title: '工作单位',
+        dataIndex: 'workCompany',
+        key: 'workCompany',
+        width: 90,
+        align: 'center'
+      }]
+      : []
+    ),
     {
       title: '附件',
       dataIndex: 'fj',

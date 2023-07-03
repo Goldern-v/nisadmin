@@ -12,10 +12,10 @@ import createModal from 'src/libs/createModal'
 // import { authStore } from 'src/stores'
 // import limitUtils from '../utils/limit'
 import Zimage from 'src/components/Zimage'
-import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
+// import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
 import EditHostingScientificModal from '../modal/EditHostingScientificModal'
 import { nurseFilesService } from '../../../services/NurseFilesService'
-import { openAuditModal } from '../config/auditModalConfig'
+// import { openAuditModal } from '../config/auditModalConfig'
 import { isSelf,editFlag } from './BaseInfo'
 import Do from '../components/Do'
 export interface Props extends RouteComponentProps {}
@@ -64,6 +64,17 @@ export default observer(function PersonWinning() {
       width: 90,
       align: 'center'
     },
+    ...(
+      'dghm' === appStore.HOSPITAL_ID
+      ? [{
+        title: '课题类别',
+        dataIndex: 'subjectType',
+        key: 'subjectType',
+        width: 90,
+        align: 'center'
+      }]
+      : []
+    ),
     {
       title: '承担单位',
       dataIndex: 'unit',
@@ -100,6 +111,17 @@ export default observer(function PersonWinning() {
       width: 110,
       align: 'center'
     },
+    ...(
+      'dghm' === appStore.HOSPITAL_ID
+      ? [{
+        title: '授予单位',
+        dataIndex: 'grantUnit',
+        key: 'grantUnit',
+        width: 90,
+        align: 'center'
+      }]
+      : []
+    ),
     {
       title: '完成情况',
       dataIndex: 'courseCompletion',

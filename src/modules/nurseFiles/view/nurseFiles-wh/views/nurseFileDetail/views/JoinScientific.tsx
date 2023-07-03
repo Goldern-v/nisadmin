@@ -127,6 +127,17 @@ export default observer(function PersonWinning() {
       width: 90,
       align: 'center'
     },
+    ...(
+      'dghm' === appStore.HOSPITAL_ID
+      ? [{
+        title: '授予单位',
+        dataIndex: 'grantUnit',
+        key: 'grantUnit',
+        width: 90,
+        align: 'center'
+      }]
+      : []
+    ),
     !['sdlj', 'nfsd', 'qzde'].includes(appStore.HOSPITAL_ID) && {
       title: '时间',
       dataIndex: 'completionDate',

@@ -1,12 +1,12 @@
 import styled from 'styled-components'
 import React, { useState, useEffect, useLayoutEffect } from 'react'
-import { RouteComponentProps } from 'react-router'
+// import { RouteComponentProps } from 'react-router'
 import { Modal, Input, Button, Radio, DatePicker, Select, Row, Col, message } from 'antd'
 import { ModalComponentProps } from 'src/libs/createModal'
 import Form from 'src/components/Form'
 import { nurseFilesService } from '../../../services/NurseFilesService'
 import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
-import { TITLE_LIST, POST_LIST } from '../../nurseFilesList/modal/AddNursingModal'
+// import { TITLE_LIST, POST_LIST } from '../../nurseFilesList/modal/AddNursingModal'
 import { to } from 'src/libs/fns'
 import { Rules } from 'src/components/Form/interfaces'
 import moment from 'moment'
@@ -19,6 +19,7 @@ import emitter from 'src/libs/ev'
 import MultipleImageUploader from 'src/components/ImageUploader/MultipleImageUploader'
 import YearPicker from 'src/components/YearPicker'
 import { AutoComplete } from 'src/vendors/antd'
+import { SUB_TYPES } from '../utils/enums'
 const Option = Select.Option
 export interface Props extends ModalComponentProps {
   data?: any
@@ -146,6 +147,13 @@ export default function EditPersonWinningModal(props: Props) {
               <AutoComplete dataSource={nurseFileDetailViewModal.getDict('级别').map((item) => item.name)} />
             </Form.Field>
           </Col>
+          {'dghm' === appStore.HOSPITAL_ID && <Col span={24}>
+            <Form.Field label={`课题类别`} name='subjectType'>
+              <Select>
+                {SUB_TYPES.map((v: any) => <Option value={v.code} key={v.code}>{v.name}</Option>)}
+              </Select>
+            </Form.Field>
+          </Col>}
           <Col span={24}>
             <Form.Field label={`承担单位`} name='unit'>
               <Input />
@@ -172,6 +180,11 @@ export default function EditPersonWinningModal(props: Props) {
               <DatePicker />
             </Form.Field>
           </Col>
+          {'dghm' === appStore.HOSPITAL_ID && <Col span={24}>
+            <Form.Field label={`授予单位`} name='grantUnit'>
+              <Input />
+            </Form.Field>
+          </Col>}
           <Col span={24}>
             <Form.Field label={`完成情况`} name='courseCompletion'>
               <AutoComplete dataSource={nurseFileDetailViewModal.getDict('完成情况').map((item) => item.name)} />

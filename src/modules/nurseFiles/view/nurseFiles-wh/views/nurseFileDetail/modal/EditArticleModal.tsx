@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import React, { useState,  useLayoutEffect } from 'react'
+import React, { useState, useLayoutEffect } from 'react'
 import { Modal, Input, Button, DatePicker, Select, Row, Col, message } from 'antd'
 import { ModalComponentProps } from 'src/libs/createModal'
 import Form from 'src/components/Form'
@@ -9,16 +9,18 @@ import { to } from 'src/libs/fns'
 import { Rules } from 'src/components/Form/interfaces'
 import moment from 'moment'
 // 加附件
-import {  appStore } from 'src/stores'
+import { appStore } from 'src/stores'
 import emitter from 'src/libs/ev'
 import MultipleImageUploader from 'src/components/ImageUploader/MultipleImageUploader'
 import YearPicker from 'src/components/YearPicker'
 import { AutoComplete } from 'src/vendors/antd'
+import { dateFormat5 } from 'src/modules/nurseHandBookNew/views/detail-lyrm/config'
 const Option = Select.Option
+const isDghm = 'dghm' === appStore.HOSPITAL_ID
 export interface Props extends ModalComponentProps {
-  data?: any
-  signShow?: string
-  getTableData?: () => {}
+  data?: any,
+  signShow?: string,
+  getTableData?: () => {},
 }
 const rules: Rules = {
   periodicalNumber: (val) => {
@@ -83,8 +85,12 @@ export default function EditArticleModal(props: Props) {
         ...data,
         ...{
           publicYear: data.publicYear ? moment(data.publicYear) : null,
+          journal: data.journal ? moment(data.journal) : null,
           urlImageOne: data.urlImageOne ? data.urlImageOne.split(',') : [],
-          urlImageTwo: data.urlImageTwo ? data.urlImageTwo.split(',') : []
+          urlImageTwo: data.urlImageTwo ? data.urlImageTwo.split(',') : [],
+          urlImageThree: data.urlImageThree ? data.urlImageThree.split(',') : [],
+          urlImageFour: data.urlImageFour ? data.urlImageFour.split(',') : [],
+          urlImageFive: data.urlImageFive ? data.urlImageFive.split(',') : [],
         }
       })
     }
@@ -118,9 +124,9 @@ export default function EditArticleModal(props: Props) {
         <Form ref={refForm} rules={rules} labelWidth={120} onChange={onFieldChange}>
           <Row>
             <Col span={24}>
-              {appStore.HOSPITAL_ID ==='zhzxy'?<Form.Field label={`出版时间`} name='publicYear'>
+              {appStore.HOSPITAL_ID === 'zhzxy' ? <Form.Field label={`出版时间`} name='publicYear'>
                 <DatePicker format='YYYY-MM-DD' />
-              </Form.Field>:  <Form.Field label={`发表年份`} name='publicYear'>
+              </Form.Field> : <Form.Field label={`发表年份`} name='publicYear'>
                 <YearPicker />
               </Form.Field>}
             </Col>
@@ -146,6 +152,15 @@ export default function EditArticleModal(props: Props) {
                 </Form.Field>
               </Col>
             }
+            {
+              isDghm &&
+              <Col span={24}>
+                <Form.Field label='期刊年月' name='journal'>
+                  <DatePicker format={dateFormat5} />
+                </Form.Field>
+              </Col>
+            }
+            
             <Col span={24}>
               <Form.Field label={`期刊号`} name='periodicalNumber'>
                 <Input />
@@ -179,6 +194,21 @@ export default function EditArticleModal(props: Props) {
             <Col span={24}>
               <Form.Field label={`网络下载件`} name='urlImageTwo'>
                 <MultipleImageUploader text='添加图片' tip={'上传从收录网站下载的完整版文章内容'} />
+              </Form.Field>
+            </Col>
+            <Col span={24}>
+              <Form.Field label={`目录扫描件`} name='urlImageThree'>
+                <MultipleImageUploader text='添加图片' />
+              </Form.Field>
+            </Col>
+            <Col span={24}>
+              <Form.Field label={`正文扫描件`} name='urlImageFour'>
+                <MultipleImageUploader text='添加图片' />
+              </Form.Field>
+            </Col>
+            <Col span={24}>
+              <Form.Field label={`封底描件`} name='urlImageFive'>
+                <MultipleImageUploader text='添加图片' />
               </Form.Field>
             </Col>
           </Row>

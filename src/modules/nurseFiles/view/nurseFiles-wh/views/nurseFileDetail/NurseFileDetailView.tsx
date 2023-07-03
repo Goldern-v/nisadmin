@@ -48,7 +48,7 @@ export interface Props extends RouteComponentProps<{ type?: string }> {
   payload: HorizontalMenuItem[]
 }
 const isSdlj = ['sdlj', 'nfsd', 'qzde'].includes(appStore.HOSPITAL_ID)
-const ROUTE_LIST_DEFAULT = ['zhzxy'].includes(appStore.HOSPITAL_ID) ? [
+const ROUTE_LIST_ZHZXY = [
   {
     type: 'baseInfo',
     component: BaseInfo,
@@ -149,7 +149,8 @@ const ROUTE_LIST_DEFAULT = ['zhzxy'].includes(appStore.HOSPITAL_ID) ? [
     component: WorkRegistrationForm,
     name: '在院工作情况'
   },
-] : [
+] 
+const ROUTE_LIST_DEFAULT = [
   {
     type: 'baseInfo',
     component: BaseInfo,
@@ -239,7 +240,6 @@ const ROUTE_LIST_DEFAULT = ['zhzxy'].includes(appStore.HOSPITAL_ID) ? [
     component: ContinuingEducation,
     name: '举办继续教育培训班'
   },
-
   {
     type: 'workHistory',
     component: WorkHistory,
@@ -325,7 +325,6 @@ const ROUTE_LIST_925 = [
     component: LearnJob,
     name: '学会任职'
   },
-  
   {
     type: 'monograph',
     component: Monograph,
@@ -336,20 +335,16 @@ const ROUTE_LIST_925 = [
     component: ContinuingEducation,
     name: '举办继续教育培训班'
   },
-
-
   {
     type: 'workRegistrationForm',
     component: WorkRegistrationForm,
     name: '在院工作情况'
   },
-    {
-      type: 'toNewPost',
-      component: ToNewPost,
-      name: '岗位变动'
-    },
- 
-  
+  {
+    type: 'toNewPost',
+    component: ToNewPost,
+    name: '岗位变动'
+  },
   {
     type: 'RankChange',
     component: RankChange,
@@ -370,8 +365,14 @@ const ROUTE_LIST_925 = [
 
 export default observer(function NurseFileDetail(props: Props, context: any) {
   let currentRouteType = props.match.params.type
-  let ROUTE_LIST = ['925'].includes(appStore.HOSPITAL_ID)?ROUTE_LIST_925:ROUTE_LIST_DEFAULT
-  let CurrentRoute = ROUTE_LIST.find((item) => item.type === currentRouteType)
+  let ROUTE_LIST = appStore.hisMatch({
+    map: {
+      925: ROUTE_LIST_925,
+      zhzxy: ROUTE_LIST_ZHZXY,
+      other: ROUTE_LIST_DEFAULT
+    },
+  })
+  let CurrentRoute = ROUTE_LIST.find((item: any) => item.type === currentRouteType)
   useEffect(() => {
     if (appStore.match.url.indexOf('selfNurseFile') > -1 && !appStore.queryObj.empNo) {
       service.commonApiService.findByEmpNo(authStore!.user!.empNo).then((res) => {

@@ -10,7 +10,7 @@ export const navConfig = (appStore: any, authStore?: any) => {
     {
       name: "审核管理",
       path: "/auditsManagement",
-      hidden: !authStore.isRoleManage
+      // hidden: !authStore.isRoleManage
     },
     {
       name: "病区日志",

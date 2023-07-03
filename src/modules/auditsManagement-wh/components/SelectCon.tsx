@@ -1,10 +1,10 @@
 import styled from "styled-components";
-import React, { useContext, useState } from "react";
+import React, { useContext, useMemo, useState } from "react";
 import { Place } from "src/components/common";
 import { Select, Input, Button } from "antd";
 // import DeptSelect from "src/components/DeptSelect";
 import emitter from "src/libs/ev";
-import store, { authStore, appStore } from "src/stores";
+import { authStore, appStore } from "src/stores";
 // import service from "src/services/api";
 import MultipleDeptSelect from "src/components/MultipleDeptSelect";
 import { DatePicker } from "src/vendors/antd";
@@ -40,6 +40,18 @@ export default function SelectCon(props: Props) {
   // const onChangeSearchText = (e: any) => {
   //   setSearchText(e.target.value)
   // }
+  /**
+   * 允许出现全院选项
+   */
+  const deptKey = appStore.hisMatch({
+    map: {
+      gxjb: '全部科室',
+      dghm: authStore.isDepartment || authStore.isQcLeader ? '完整科室' : '全部科室',
+      'whyx,whhk': !authStore.isDepartment ? '全部科室' : '完整科室',
+      other: '完整科室'
+    },
+    vague: true
+  })
 
   const onSearch = () => {
     emitter.emit("refreshNurseAuditTable");
@@ -63,8 +75,6 @@ export default function SelectCon(props: Props) {
                 setTimeout(() => {
                   onSearch();
                 }, 100);
-                // qualityControlRecordVM.filterDate = value
-                // props.refreshData()
               }}
             />
           </React.Fragment>
@@ -84,7 +94,7 @@ export default function SelectCon(props: Props) {
         </Select>
 
         <span style={{ marginLeft: 20 }}>科室：</span>
-        <MultipleDeptSelect deptKey={appStore.HOSPITAL_ID === 'gxjb' ? '全部科室' : (appStore.HOSPITAL_ID === 'whyx' || appStore.HOSPITAL_ID === 'whhk') && !authStore.isDepartment ? '全部科室' : '完整科室'} />
+        <MultipleDeptSelect deptKey={deptKey} />
 
         <Input
           style={{ marginLeft: 20, width: 360 }}

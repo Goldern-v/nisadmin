@@ -10,10 +10,11 @@ import createModal from 'src/libs/createModal'
 import Zimage from 'src/components/Zimage'
 import EditArticleModal from '../modal/EditArticleModal'
 import { nurseFilesService } from '../../../services/NurseFilesService'
-import { isSelf,editFlag } from './BaseInfo'
+import { isSelf, editFlag } from './BaseInfo'
 import Do from '../components/Do'
 
 export interface Props extends RouteComponentProps { }
+const isDghm = 'dghm' === appStore.HOSPITAL_ID
 
 export default observer(function Awards() {
   const editArticleModal = createModal(EditArticleModal)
@@ -30,7 +31,7 @@ export default observer(function Awards() {
     }
   ]
 
-  const columns: ColumnProps<any>[] = ['zhzxy'].includes(appStore.HOSPITAL_ID)?[
+  const columns: ColumnProps<any>[] = ['zhzxy'].includes(appStore.HOSPITAL_ID) ? [
     {
       title: '序号',
       dataIndex: '',
@@ -130,7 +131,7 @@ export default observer(function Awards() {
       align: 'center'
     },
     Do('nurseWHArticle', editArticleModal, getTableData)
-  ]:[
+  ] : [
     {
       title: '序号',
       dataIndex: '',
@@ -138,8 +139,8 @@ export default observer(function Awards() {
       render: (text: any, record: any, index: number) => index + 1,
       align: 'center',
       width: 55
-    },{
-      title: '出版时间',
+    }, {
+      title: isDghm ? 'publicYear' : '出版时间',
       dataIndex: 'publicYear',
       key: 'publicYear',
       width: 120,
@@ -162,6 +163,22 @@ export default observer(function Awards() {
     ...appStore.hisMatch({
       map: {
         zzwy: [],
+        dghm: [
+          {
+            title: '期刊年月',
+            dataIndex: 'journal',
+            key: 'journal',
+            width: 80,
+            align: 'center',
+          },
+          {
+            title: '作者',
+            dataIndex: 'articleAuthor',
+            key: 'articleAuthor',
+            width: 80,
+            align: 'center',
+          },
+        ],
         other: [
           {
             title: '作者',
@@ -172,7 +189,7 @@ export default observer(function Awards() {
           },
         ]
       }
-    }),    
+    }),
     {
       title: '期刊号',
       dataIndex: 'periodicalNumber',
@@ -228,6 +245,38 @@ export default observer(function Awards() {
         return <DoCon>{row.urlImageTwo ? <Zimage text='查看' list={row.urlImageTwo.split(',')} /> : ''}</DoCon>
       }
     },
+    ...(isDghm
+      ? [
+        {
+          title: '目录扫描件',
+          dataIndex: '目录扫描件',
+          key: '目录扫描件',
+          width: 80,
+          align: 'center',
+          render: (text: any, row: any, index: any) => {
+            return <DoCon>{row.urlImageThree ? <Zimage text='查看' list={row.urlImageThree.split(',')} /> : ''}</DoCon>
+          }
+        },
+        {
+          title: '正文扫描件',
+          dataIndex: '正文扫描件',
+          key: '正文扫描件',
+          width: 80,
+          align: 'center',
+          render: (text: any, row: any, index: any) => {
+            return <DoCon>{row.urlImageFour ? <Zimage text='查看' list={row.urlImageFour.split(',')} /> : ''}</DoCon>
+          }
+        },
+        {
+          title: '封底描件',
+          dataIndex: '封底描件',
+          key: '封底描件',
+          width: 80,
+          align: 'center',
+          render: (text: any, row: any, index: any) => {
+            return <DoCon>{row.urlImageFive ? <Zimage text='查看' list={row.urlImageFive.split(',')} /> : ''}</DoCon>
+          }
+        },] : []),
     {
       title: '状态',
       dataIndex: 'auditedStatusName',
@@ -244,7 +293,7 @@ export default observer(function Awards() {
   }, [])
 
   return (
-    <BaseLayout title='文章' btnList={isSelf()||editFlag() ? btnList : []}>
+    <BaseLayout title='文章' btnList={isSelf() || editFlag() ? btnList : []}>
       <BaseTable dataSource={tableData} columns={columns} surplusHeight={260} surplusWidth={250} type={['spaceRow']} />
       <editArticleModal.Component getTableData={getTableData} />
     </BaseLayout>

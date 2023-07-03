@@ -3,6 +3,7 @@ import { Obj } from "src/libs/types";
 import { appStore } from "src/stores";
 const isSdljText = "sdlj,nfsd,qzde";
 const isSdlj = ["sdlj", "nfsd", "qzde"].includes(appStore.HOSPITAL_ID);
+const isDghm = 'dghm' === appStore.HOSPITAL_ID
 export function openAuditModal(
   title: string,
   row: any,
@@ -411,6 +412,16 @@ export function openAuditModal(
                   论文收录网站: `influencingFactors`,
                 },
               ],
+              dghm: [
+                {
+                  文章类别: `articleType`,
+                  作者: `articleAuthor`,
+                },
+                {
+                  论文收录网站: `influencingFactors`,
+                  期刊年月: 'journal'
+                },
+              ],
               other: [
                 {
                   文章类别: `articleType`,
@@ -426,6 +437,13 @@ export function openAuditModal(
         fileFormat: {
           文章扫描件: `urlImageOne`,
           网络下载件: `urlImageTwo`,
+          ...(isDghm
+            ? {
+              目录扫描件: 'urlImageThree',
+              正文扫描件: 'urlImageFour',
+              封底描件: 'urlImageFive',
+            }
+           : {})
         },
         fileData: row.urlImageOne
           ? row.urlImageOne.split(",").map((item: any, index: number) => {
@@ -474,7 +492,6 @@ export function openAuditModal(
         empNo: row.empNo || row.commiterNo,
         type: "nurseWHContinueStudy",
         title: "审核举办继续教育培训班",
-
         tableFormat: (() => {
           switch (appStore.HOSPITAL_ID) {
             case "zhzxy":
@@ -526,6 +543,17 @@ export function openAuditModal(
                   },
                   vague: true,
                 }),
+                ...appStore.hisMatch({
+                  map: {
+                    dghm: [
+                      {
+                        举办开始时间: `hostStartDate`,
+                        举办结束时间: `hostEndDate`,
+                      },
+                    ],
+                    other: [],
+                  }
+                }),
               ];
           }
         })(),
@@ -561,7 +589,7 @@ export function openAuditModal(
           },
           ...appStore.hisMatch({
             map: {
-              ["zhzxy"]: [
+              'zhzxy,dghm': [
                 {
                   工作单位: `workCompany`,
                 },
@@ -607,13 +635,31 @@ export function openAuditModal(
             开始时间: `startDate`,
             截止时间: `endDate`,
           },
-          {
-            ...("zhzxy" == appStore.HOSPITAL_ID
-              ? {}
-              : { 授予单位: `grantUnit` }),
-            完成情况: `courseCompletion`,
-            时间: `completionDate`,
-          },
+          ...appStore.hisMatch({
+            map: {
+              zhzxy: [{
+                完成情况: `courseCompletion`,
+                时间: `completionDate`,
+              }],
+              dghm: [{
+                授予单位: `grantUnit`,
+                完成情况: `courseCompletion`,
+              },
+              {
+                时间: `completionDate`,
+                课题类别: 'subjectType'
+              }
+            ],
+              other: [{
+                授予单位: `grantUnit`,
+                完成情况: `courseCompletion`,
+              },
+              {
+                时间: `completionDate`,
+              }
+            ],
+            }
+          }),
         ],
         fileData: row.urlImageOne
           ? row.urlImageOne.split(",").map((item: any, index: number) => {
@@ -907,11 +953,14 @@ export function openAuditModal(
           },
           ...appStore.hisMatch({
             map: {
-              ["zhzxy"]: [
+              zhzxy: [
                 {
                   专利排名: `patentLevel`,
                 },
               ],
+              dghm: [{
+                授权公告日: 'grantNoticeDate'
+              }],
               other: [],
             },
             vague: true,
@@ -977,7 +1026,7 @@ export function openAuditModal(
           },
           ...appStore.hisMatch({
             map: {
-              ["zhzxy"]: [
+              zhzxy: [
                 {
                   证书编号: `titleNumber`,
                 },
@@ -1054,7 +1103,7 @@ export function openAuditModal(
               },
           ...appStore.hisMatch({
             map: {
-              ["zhzxy"]: [
+              zhzxy: [
                 {
                   职务: `post`,
                 },
@@ -1175,32 +1224,6 @@ export function openAuditModal(
         allData: row,
       });
       break;
-    case "岗位变动":
-      globalModal.auditModal.show({
-        getTableData: callBack,
-        id: row.id,
-        empNo: row.empNo || row.commiterNo,
-        type: "nurseWHTransferPost",
-        title: "审核岗位变动信息",
-        tableFormat: [
-          {
-            原工作室: `oldDeptName`,
-            现工作室: `newDeptName`,
-          },
-          {
-            转岗时间: `transferDate`,
-          },
-        ],
-        fileData: row.urlImageOne
-          ? row.urlImageOne.split(",").map((item: any, index: number) => {
-              return {
-                ["附件" + (index + 1)]: item,
-              };
-            })
-          : [],
-        allData: row,
-      });
-      break;
     case "工作经历":
       globalModal.auditModal.show({
         getTableData: callBack,
@@ -1222,7 +1245,6 @@ export function openAuditModal(
           //   职务: 'post'
           // }
         ],
-
         allData: row,
       });
       break;
@@ -1239,7 +1261,6 @@ export function openAuditModal(
             嘉奖名称: `rewardName`,
           },
         ],
-
         allData: row,
       });
       break;

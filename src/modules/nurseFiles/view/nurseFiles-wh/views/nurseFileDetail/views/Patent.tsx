@@ -8,14 +8,9 @@ import { observer } from 'mobx-react-lite'
 import { ColumnProps } from 'antd/lib/table'
 import createModal from 'src/libs/createModal'
 
-import { globalModal } from 'src/global/globalModal'
-import { authStore } from 'src/stores'
-import limitUtils from '../utils/limit'
 import Zimage from 'src/components/Zimage'
-import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
 import EditPatentModal from '../modal/EditPatentModal'
 import { nurseFilesService } from '../../../services/NurseFilesService'
-import { openAuditModal } from '../config/auditModalConfig'
 import { isSelf,editFlag } from './BaseInfo'
 import Do from '../components/Do'
 export interface Props extends RouteComponentProps {}
@@ -92,6 +87,17 @@ export default observer(function Patent() {
       width: 110,
       align: 'center'
     },
+    ...(
+      'dghm' === appStore.HOSPITAL_ID
+      ? [{
+        title: '授权公告日',
+        dataIndex: 'grantNoticeDate',
+        key: 'grantNoticeDate',
+        width: 90,
+        align: 'center'
+      }]
+      : []
+    ),
     {
       title: '附件',
       dataIndex: 'fj',
