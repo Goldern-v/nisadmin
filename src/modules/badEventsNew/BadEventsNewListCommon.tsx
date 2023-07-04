@@ -1,17 +1,13 @@
 import BaseTable, { DoCon } from "src/components/BaseTable";
-// import Form from "src/components/Form";
 import styled from "styled-components";
 import React, { useEffect, useState } from "react";
 import { Button, DatePicker, Select } from "antd";
 import service from 'src/services/api'
-// import { Link } from "react-router-dom";
 import { ColumnProps } from "antd/lib/table";
 import { authStore, appStore } from "src/stores";
 import { observer } from "mobx-react-lite";
 import { getCurrentMonth } from 'src/utils/date/currentMonth'
 import BadEventsNewService from "./api/badEventsNewService";
-// import CustomPagination from './components/CustomPagination'
-import moment from "moment";
 import { useKeepAliveEffect } from "react-keep-alive";
 import BaseTabs from "src/components/BaseTabs";
 
@@ -105,6 +101,22 @@ export default observer(function BadEventNewList() {
                 </DoCon>
               );
             }
+          }
+        ],
+        yczyy: [
+          {
+            title: "发生日期",
+            dataIndex: "happenDate",
+            key: "happenDate",
+            align: "center",
+            width: 140,
+          },
+          {
+            title: "事件状态",
+            dataIndex: "currentNodePendingName",
+            key: "currentNodePendingName",
+            align: "center",
+            width: 140,
           }
         ],
         other: [
@@ -307,7 +319,7 @@ export default observer(function BadEventNewList() {
           </div>
           <div className="float-right">
             <div className="float-item">
-              <div className="item-title">日期:</div>
+              <div className="item-title">{'yczyy' === appStore.HOSPITAL_ID ? '创建' : ''}日期:</div>
               <DatePicker.RangePicker
                 value={date}
                 onChange={(value: any) => {
