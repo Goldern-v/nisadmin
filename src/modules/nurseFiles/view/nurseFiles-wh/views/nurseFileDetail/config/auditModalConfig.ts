@@ -337,6 +337,7 @@ export function openAuditModal(
                     ytll: [
                       {
                         来院工作时间: "goHospitalWorkDate",
+                        带教老师: 'tutor',
                       }
                     ],
                     other: [],

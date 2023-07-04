@@ -366,6 +366,23 @@ export default observer(function NavBar(props: any) {
             </React.Fragment>
           );
           break;
+        case "ytll":
+          view = (
+            <React.Fragment>
+              <img
+                src={require("../../assets/images/ytll_logo.png")}
+                alt=""
+                className="logo"
+                style={{ height: 38 }}
+              />
+              <img
+                src={require("../images/护理管理系统.png")}
+                alt=""
+                className="name"
+              />
+            </React.Fragment>
+          );
+          break;
       }
 
     if (appStore.onlyBadEvent)

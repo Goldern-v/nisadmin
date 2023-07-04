@@ -4,8 +4,6 @@ import React, { useEffect } from "react";
 import { RouteComponentProps } from "src/components/RouterView";
 import { KeepAlive } from "react-keep-alive";
 
-export interface Props extends RouteComponentProps<{ name?: string }> {
-}
 
 import { ReactComponent as CFJL } from "./images/icon/CFJL.svg";
 import { ReactComponent as CFJHB } from "./images/icon/CFJHB.svg";
@@ -28,6 +26,8 @@ import dailyNightRoundsSummary from "src/modules/quality/views/dailyNightRoundsS
 import NightRoundsNurse from "./views/nightRoundsNurse";
 import nightRoundsMonthSummary from "./views/nightRoundsMonthSummary";
 
+export interface Props extends RouteComponentProps<{ name?: string }> {
+}
 const LEFT_MENU_CONFIG: any = appStore.hisMatch({
   map: {
     jmfy: [

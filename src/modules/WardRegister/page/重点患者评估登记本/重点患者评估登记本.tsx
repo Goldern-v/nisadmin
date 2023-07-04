@@ -38,13 +38,29 @@ import reactZmage from 'react-zmage'
 import FileUploadColumnRender from '../../components/Render.v1/FileUploadColumnRender'
 import DatePickerColumnRender from '../../components/Render.v1/DatePickerColumnRender'
 import InputColumnRender from '../../components/Render.v1/InputColumnRender'
+import PatientDialog from "src/modules/indicator/selfDeclaration/components/patientDialog";
+import { Obj } from "src/libs/types";
 export interface Props {
   payload: any;
 }
 
 const throttler = throttle();
 const throttler2 = throttle();
-
+/** 可以显示选择患者的表单，以及需要获取的字段信息 */
+const configListByPatientSelect = {
+  QCRG_08: (item: Obj) => ({
+    住院号: item?.medicareNo,
+    姓名: item?.patName,
+    床号: item?.bedCode,
+    入院时间: item?.inHospDateTime,
+    住院天数: item?.inHospDays,
+    转归: item?.dischCondit,
+    出院诊断: item?.disDiag,
+    医师签名: item?.mainDoctor,
+    联系方式: item?.telphone,
+    责任护士: item?.mainNurse,
+  }),
+}
 export default observer(function 重点患者评估登记本(props: Props) {
 
   const registerCode = props.payload && props.payload.registerCode;
@@ -71,6 +87,47 @@ export default observer(function 重点患者评估登记本(props: Props) {
   const selectedBlockObj = blockList.find(
     (item: any) => item.id == selectedBlockId
   );
+  const { location } = appStore
+
+  const [patientVisible, setPatientVisible] = useState(false)
+  /** 保存添加患者时所在的表code值 */
+  const [curCode, setCurCode] = useState('')
+  /** 当前表单选择患者对应的获取信息方法 */
+  const curConfigByPatientSelect = useMemo(() => configListByPatientSelect[curCode] || null, [curCode])
+  // 选择患者
+  const handlePatientSelect = (arr: any[]) => {
+    let name = Object.keys(curConfigByPatientSelect())[0] || ''
+    /**存在重复患者则不导入 */
+    const repeatNames = arr.reduce((prev: Obj[], cur: Obj) => {
+      if (dataSource.some((v: Obj) => v[name] == cur.name)) {
+        prev.push(cur.name)
+      }
+      return prev
+    }, [])
+    if (repeatNames.length) {
+      return message.warning(`${repeatNames.join('、')}患者已添加`)
+    }
+    setPatientVisible(false)
+    // QCRG_GSY_12==电话登记本用出院日期排序
+    setDataSource([...dataSource, ...arr.map((item: Obj, i: number) => ({
+      blockId: selectedBlockId,
+      description: "",
+      editType: "new",
+      modified: true,
+      range: "",
+      rangeIndexNo: 0,
+      recordDate: location.pathname.includes('QCRG_GSY_12') ? item.dischargeDate : item.admissionDate,
+      key: 'key' + i,
+      registerCode: curCode,
+      ...curConfigByPatientSelect(item)
+    }))])
+  }
+  // 添加患者
+  const onAddPatient = () => {
+    setPatientVisible(true)
+    const list: string[] = location.pathname.split('/')
+    setCurCode(list.pop() || '')
+  }
 
   const settingModal = createModal(SettingModal);
   const previewModal = createModal(PreviewModal)
@@ -818,33 +875,33 @@ export default observer(function 重点患者评估登记本(props: Props) {
           }
 
           //特殊处理
-          if (registerCode == 'QCRG_16_1' && record['并发症类型'] !== '导管相关感染'&&appStore.HOSPITAL_ID !=='wh') {
+          if (registerCode == 'QCRG_16_1' && record['并发症类型'] !== '导管相关感染' && appStore.HOSPITAL_ID !== 'wh') {
             if (item.itemCode == '培养结果' || item.itemCode == '检验结果粘贴处') {
               children = <DisableSpan />
             }
           }
-          if (item.itemCode == '药品名称'||item.itemCode == '名称') {
+          if (item.itemCode == '药品名称' || item.itemCode == '名称') {
             children = <InputColumnRender
-            {...{
-              cellDisabled,
-              options: pharmacyList.map((itemCfg: any) => itemCfg || " "),
-              record,
-              className: childrenClassName,
-              itemCode: item.itemCode,
-              updateDataSource,
-              handleNextIptFocus,
-              onBlur: ['QCRG_12_2'].includes(registerCode) && ['dgxg'].includes(appStore.HOSPITAL_ID)
-              ? (newVal: string, oldVal: any) => {
-                if (newVal && !pharmacyList.includes(newVal)) {
-                  // message.warn('请选择下拉选项')
-                  // record.modified = false
-                  record[item.itemCode] = oldVal && pharmacyList.includes(oldVal) ? oldVal : '';
-                  updateDataSource(true)
-                }
-              }
-              : (newVal: string, oldVal: any) => {},
-            }}
-          />
+              {...{
+                cellDisabled,
+                options: pharmacyList.map((itemCfg: any) => itemCfg || " "),
+                record,
+                className: childrenClassName,
+                itemCode: item.itemCode,
+                updateDataSource,
+                handleNextIptFocus,
+                onBlur: ['QCRG_12_2'].includes(registerCode) && ['dgxg'].includes(appStore.HOSPITAL_ID)
+                  ? (newVal: string, oldVal: any) => {
+                    if (newVal && !pharmacyList.includes(newVal)) {
+                      // message.warn('请选择下拉选项')
+                      // record.modified = false
+                      record[item.itemCode] = oldVal && pharmacyList.includes(oldVal) ? oldVal : '';
+                      updateDataSource(true)
+                    }
+                  }
+                  : (newVal: string, oldVal: any) => { },
+              }}
+            />
           }
 
           let obj = {
@@ -1360,34 +1417,34 @@ export default observer(function 重点患者评估登记本(props: Props) {
     // selectedBlockId && getPage();
     selectedBlockId && throttler(getPage);
   }, [pageOptions, date, selectedBlockId]);
-useEffect(()=>{
-  if(registerCode==='QCRG_10'){
-    let param={
-      name:"",
-      type:"备用药"
-    }
-    wardRegisterService.getPharmacy(param).then((res)=>{
-      let arr:Array<string>=[]
-      res.data.map((item:any)=>{
-       arr.push(item.name)
+  useEffect(() => {
+    if (registerCode === 'QCRG_10') {
+      let param = {
+        name: "",
+        type: "备用药"
+      }
+      wardRegisterService.getPharmacy(param).then((res) => {
+        let arr: Array<string> = []
+        res.data.map((item: any) => {
+          arr.push(item.name)
+        })
+        setPharmacyList(arr)
       })
-      setPharmacyList(arr)
-    })
-  }else if(registerCode==='QCRG_12_2'){
-    let param={
-      name:"",
-      type:"急救车药品"
-    }
-    wardRegisterService.getPharmacy(param).then((res)=>{
-      let arr:Array<string>=[]
-      res.data.map((item:any)=>{
-       arr.push(item.name)
+    } else if (registerCode === 'QCRG_12_2') {
+      let param = {
+        name: "",
+        type: "急救车药品"
+      }
+      wardRegisterService.getPharmacy(param).then((res) => {
+        let arr: Array<string> = []
+        res.data.map((item: any) => {
+          arr.push(item.name)
+        })
+        setPharmacyList(arr)
       })
-      setPharmacyList(arr)
-    })
-  }
+    }
 
-},[])
+  }, [])
 
 
   useLayoutEffect(() => {
@@ -1447,10 +1504,14 @@ useEffect(()=>{
         )}
 
         <Place />
-
         {selectedBlockId && (
           <React.Fragment>
             <Button onClick={getPage}>查询</Button>
+            {
+              location.pathname.includes('QCRG_08') && (
+                <Button onClick={() => onAddPatient()}>添加患者</Button>
+              )
+            }
             <Button type="primary" onClick={createRow} disabled={pageLoading}>
               新建行
             </Button>
@@ -1660,6 +1721,14 @@ useEffect(()=>{
       </TableCon>
       <settingModal.Component />
       <previewModal.Component />
+      {/* 患者弹窗 */}
+      <PatientDialog
+        isMulti={true}
+        searchCodes={['wardCode', 'time']}
+        visible={patientVisible}
+        onOk={handlePatientSelect}
+        onCancel={() => setPatientVisible(false)}
+      />
     </Container>
   );
 });

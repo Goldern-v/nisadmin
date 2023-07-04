@@ -107,12 +107,17 @@ export default function EditWorkHistoryModal(props: Props) {
   const initFooterList = () => {
     let footerList: any[] = []
     // if (['ytll'].includes(appStore.HOSPITAL_ID)) {
-    footerList = [
-      <Button key="back" onClick={onCancel}>
+      footerList = [
+        <Button key="back" onClick={onCancel}>
         关闭
       </Button>
     ]
     if (data?.needAudit) {
+      if (['ytll'].includes(appStore.HOSPITAL_ID)) {
+        footerList.push(<Button key="save" type="primary" onClick={() => onSave(false)}>
+        暂存
+      </Button>)
+      }
       footerList.push(<Button key="submit" type="primary" onClick={() => onSave(true)}>
         提交审核
       </Button>)
@@ -768,6 +773,22 @@ export default function EditWorkHistoryModal(props: Props) {
                 </Form.Field>
               </Col>
             </>
+          }
+          {
+            'ytll' === appStore.HOSPITAL_ID &&
+              <Col span={12}>
+                <Form.Field label="带教老师" name="maps.tutor">
+                  <Select>
+                  {nurseFileDetailViewModal
+                  .getDict("带教老师")
+                  .map((item) => (
+                    <Select.Option value={item.code} key={item.code}>
+                      {item.name}
+                    </Select.Option>
+                  ))}
+                  </Select>
+                </Form.Field>
+              </Col>
           }
 
           {/* <Col span={12}>

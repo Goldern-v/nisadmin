@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import React, { useEffect, useLayoutEffect, useState } from "react"
+import React, { useEffect, useLayoutEffect, useMemo, useState } from "react"
 import { observer } from "mobx-react-lite"
 import { Button, Input, Modal, Select } from "antd"
 import DeptSelect from "src/components/DeptSelect"
@@ -11,12 +11,11 @@ import BaseTable from "src/components/BaseTable";
 import { appStore, authStore } from "src/stores";
 import { Obj } from "src/libs/types"
 
-
 interface Props {
-  visible: boolean
-  onOk: Function
-  onCancel: Function
-  isMulti?: boolean
+  visible: boolean,
+  onOk: Function,
+  onCancel: Function,
+  isMulti?: boolean,
   // 可显示的搜索参数
   searchCodes?: string[]
 }
@@ -26,6 +25,9 @@ const getLastSixMonths = () => {
   return [preSixMonthDate, currentDate]
 }
 export default observer((props: Props) => {
+  const { location } = appStore
+  /**是否病区登记本及武汉 by wh */
+  const isWR = useMemo(() => location.pathname.includes('/wardRegister') && 'wh' === appStore.HOSPITAL_ID, [location.pathname])
   const { visible, onOk, onCancel, isMulti = false, searchCodes = ['wardCode', 'status', 'time', 'name', 'patientId', 'inpNo', 'bedLabel'] } = props
   const [loading, setLoading] = useState(false)
   const [form, setForm]: any = useState({
@@ -94,7 +96,7 @@ export default observer((props: Props) => {
   const getData = async () => {
     const dateBegin = moment(form.time[0]).format('YYYY-MM-DD')
     const dateEnd = moment(form.time[1]).format('YYYY-MM-DD')
-    const params = {
+    let params: Obj = {
       wardCode: form.wardCode,
       name: form.name,
       status: form.status,
@@ -109,11 +111,24 @@ export default observer((props: Props) => {
       pageNum: pagination.pageSize
     }
     params.wardCode === '全院' && delete params.wardCode
+    if (isWR) {
+      params = {
+        wardCode: form.wardCode === '全院' ? '' : form.wardCode,
+        tradeCode: "getdischargedpatient",
+        startDate: dateBegin,     //开始日期
+        endDate: dateEnd,
+      }
+    }
     setLoading(true)
-    const { data } = await api.getPatientList(params)
+    const fn = isWR ? api.getDischargedPatient : api.getPatientList
+    const { data } = await fn.call(api, params)
     setLoading(false)
-    setTableData(data.list)
-    setPages(data.page)
+    if (isWR) {
+      setTableData(data)
+    } else {
+      setTableData(data.list)
+      setPages(data.page)
+    }
     setSelected([])
   }
 
@@ -189,7 +204,7 @@ export default observer((props: Props) => {
               selectedRowKeys: selected,
               onChange: handleChange
             }}
-            pagination={{
+            pagination={isWR ? false : {
               current: pagination.current,
               pageSize: pagination.pageSize,
               total: (pages * pagination.pageSize),

@@ -96,7 +96,7 @@ export default observer(function BaseInfo() {
   }
   const limitsComponent = () => {
     let btnList: Array<object> = [];
-    if (['gxjb', 'dghm'].includes(appStore.HOSPITAL_ID)) {
+    if (['gxjb', 'dghm', 'ytll'].includes(appStore.HOSPITAL_ID)) {
       editFlag() &&
         btnList.push({
           label: "修改",
@@ -321,6 +321,13 @@ export default observer(function BaseInfo() {
                 现职称: data.newTitle,
                 取得现有职称时间: data.newTitleDate
               }
+            
+            case 'ytll':
+              return {
+                鞋码大小: data.shoeSize,
+                带教老师: data.maps?.tutor,
+              }
+              
             default:
               return {
                 鞋码大小: data.shoeSize,
@@ -337,6 +344,7 @@ export default observer(function BaseInfo() {
           },
         })
       ]
+
       let newTableDataFsxt = [
         {
           民族: data.nation,

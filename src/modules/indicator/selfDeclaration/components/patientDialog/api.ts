@@ -5,6 +5,10 @@ class Api extends BaseApiService {
   getPatientList(params: {}) {
     return this.post(`/patient/patEmrList`, params)
   }
+  // 获取患者列表 by wh
+  getDischargedPatient(params: {}) {
+    return this.post(`/indexInfo/getDischargedPatient`, params)
+  }
 
   // 获取患者详情
   getPatientItem(id: string, visitId: string) {
