@@ -24,7 +24,7 @@ const formItemLayout = {
 
 /** 职务列表 */
 export const EDUCATION_LIST = ['中专', '大专', '本科', '研究生', '博士']
-export const TITLE_LIST = ['护士', '护师', '主管护师', '副主任护师', '主任护师']
+export const TITLE_LIST = ['护士', '护师', '主管护师', '副主任护师', '主任护师', '助理护士']
 export const CURRENTLEVEL_LIST = ['N0', 'N1', 'N2', 'N3', 'N4', 'N5', 'N6']
 export const POST_LIST = [
   // '全部',
