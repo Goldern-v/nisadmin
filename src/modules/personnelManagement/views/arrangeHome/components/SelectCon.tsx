@@ -117,7 +117,7 @@ export default observer(function SelectCon() {
   };
 
   // 导出科室Excel
-  const exportExcel = () => {
+  const exportExcel = (key = '') => {
     let data: any = {
       deptCode: selectViewModal.params.deptCode,
       startTime: selectViewModal.params.startTime,
@@ -126,6 +126,7 @@ export default observer(function SelectCon() {
     };
     if ('zhzxy' === appStore.HOSPITAL_ID) {
       data.schedulingExportVersion = 'zhuhai'
+      key === '全院' && (data.bigDeptCode = key)
     }
     arrangeService.export(data).then(res => {
       fileDownload(res);
@@ -538,6 +539,21 @@ export default observer(function SelectCon() {
       return  true
     }
   }
+  /**导出下拉框的overlay */
+  const exportMenu = (
+    <Menu>
+      <Menu.Item>
+        <div onClick={() => exportExcel()}>
+          导出科室
+        </div>
+      </Menu.Item>
+      <Menu.Item>
+        <div onClick={() => exportExcel('全院')}>
+          导出全院科室
+        </div>
+      </Menu.Item>
+    </Menu>
+  )
   return (
     <Wrapper>
       <LeftIcon>
@@ -717,7 +733,7 @@ export default observer(function SelectCon() {
             </React.Fragment>,
             'whyx,whhk': <React.Fragment>
               <div className="item">
-                <Button className="statistics getExcel" onClick={exportExcel}>
+                <Button className="statistics getExcel" onClick={() => exportExcel()}>
                   导出排班
                 </Button>
               </div>
@@ -734,14 +750,14 @@ export default observer(function SelectCon() {
                 </Button>
               </div>
               <div className="item">
-                <Button className="statistics getExcel" onClick={exportExcel}>
+                <Button className="statistics getExcel" onClick={() => exportExcel()}>
                   导出科室
                 </Button>
               </div>
             </React.Fragment>,
             wjgdszd: <React.Fragment>
               <div className="item">
-                <Button className="statistics getExcel" onClick={exportExcel}>
+                <Button className="statistics getExcel" onClick={() => exportExcel()}>
                   导出科室
                 </Button>
               </div>
@@ -776,9 +792,16 @@ export default observer(function SelectCon() {
                 </Button>
               </div>
               <div className="item">
-                <Button className="statistics getExcel" onClick={exportExcel}>
-                  导出科室
-                </Button>
+                {authStore.isDepartment ?
+                  <Dropdown overlay={exportMenu}>
+                    <Button className="statistics getExcel">
+                      导出科室
+                    </Button>
+                  </Dropdown>
+                  :
+                  <Button className="statistics getExcel" onClick={() => exportExcel()}>
+                    导出科室
+                  </Button>}
               </div>
               <ImportModal
                 visible={modalVisible}
@@ -792,7 +815,7 @@ export default observer(function SelectCon() {
 
             hj: <>
               <div className="item">
-                <Button className="statistics getExcel" onClick={exportExcel}>
+                <Button className="statistics getExcel" onClick={() => exportExcel()}>
                   导出科室
                 </Button>
               </div>
@@ -814,7 +837,7 @@ export default observer(function SelectCon() {
             </>,
             
             other: <div className="item">
-              <Button className="statistics getExcel" onClick={exportExcel}>
+              <Button className="statistics getExcel" onClick={() => exportExcel()}>
                 导出科室
               </Button>
             </div>

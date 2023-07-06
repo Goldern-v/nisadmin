@@ -113,11 +113,6 @@ export default function EditWorkHistoryModal(props: Props) {
       </Button>
     ]
     if (data?.needAudit) {
-      if (['ytll'].includes(appStore.HOSPITAL_ID)) {
-        footerList.push(<Button key="save" type="primary" onClick={() => onSave(false)}>
-        暂存
-      </Button>)
-      }
       footerList.push(<Button key="submit" type="primary" onClick={() => onSave(true)}>
         提交审核
       </Button>)
