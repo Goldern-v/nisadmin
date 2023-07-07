@@ -1,6 +1,5 @@
-import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button, Radio, Select, Spin } from 'antd'
+import {Button, DatePicker, Radio, Select, Spin} from 'antd'
 import CommonLayout, { ChartCon } from './../../common/CommonLayout'
 import { observer } from 'mobx-react'
 import { appStore, authStore } from 'src/stores'
@@ -10,15 +9,22 @@ import { statisticsApi } from './../../api/StatisticsApi'
 import { ColumnProps } from 'antd/lib/table'
 import { chartHeightCol } from '../../utils/chartHeightCol'
 import { delWithResData } from '../../utils/dealWithData'
-
+import {currentMonth, currentQuater, currentYear} from "src/utils/date/rangeMethod";
+import moment from "src/vendors/moment";
+const RangePicker = DatePicker.RangePicker
 const Option = Select.Option
 
 export interface Props { }
 
 export default observer(function 护士男女分布() {
+  let _currentMonth = currentMonth()
+  let _currentQuater = currentQuater()
+  let _currentYear = currentYear()
   const { deptList } = authStore
   const [query, setQuery] = useState({
-    deptCode:['whyx','whhk'].includes(appStore.HOSPITAL_ID) ? authStore.defaultDeptCode:""
+    deptCode:['whyx','whhk'].includes(appStore.HOSPITAL_ID) ? authStore.defaultDeptCode:"",
+    startDate: moment('1999-01-01').format('YYYY-MM-DD'),
+    endDate: _currentMonth[1].format('YYYY-MM-DD'),
   })
   const [data, setData] = useState([] as any[])
   const [chartData, setChartData] = useState([] as { type: string, value: number }[])
@@ -55,8 +61,8 @@ export default observer(function 护士男女分布() {
 
   const getData = () => {
     setLoading(true)
-
-    statisticsApi.countSex(query)
+    let jmfyQuery ={...query}
+    statisticsApi.countSex(appStore.HOSPITAL_ID !== 'jmfy'? {deptCode:query.deptCode}:jmfyQuery)
       .then((res: any) => {
         setLoading(false)
 
@@ -115,6 +121,23 @@ export default observer(function 护士男女分布() {
           <Option key={idx} value={dept.code}>{dept.name}</Option>
         )}
       </Select>
+      {appStore.HOSPITAL_ID == 'jmfy'&& <RangePicker
+          className="content-item"
+          style={{ width: 220 }}
+          value={[moment(query.startDate), moment(query.endDate)]}
+          ranges={{
+            '本月': _currentMonth,
+            '本季度': _currentQuater,
+            '本年度': _currentYear,
+          }}
+          onChange={(payload: any) => {
+            setQuery({
+              ...query,
+              startDate: payload[0].format('YYYY-MM-DD'),
+              endDate: payload[1].format('YYYY-MM-DD'),
+            })
+          }}
+          allowClear={false} />}
       <Button type="primary" onClick={handleSearch}>查询</Button>
     </div>}
     body={<Spin spinning={loading}>
