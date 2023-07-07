@@ -1,3 +1,4 @@
+import { Obj } from "src/libs/types"
 import BaseApiService from "src/services/api/BaseApiService"
 
 class Api extends BaseApiService {
@@ -6,7 +7,7 @@ class Api extends BaseApiService {
     return this.post(`/patient/patEmrList`, params)
   }
   // 获取患者列表 by wh
-  getDischargedPatient(params: {}) {
+  getDischargedPatient(params: Obj) {
     return this.post(`/indexInfo/getDischargedPatient`, params)
   }
 

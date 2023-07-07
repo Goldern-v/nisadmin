@@ -56,37 +56,58 @@ export default class CommonApiService extends BaseApiService {
   }
   // 聊城二院-有分院-获取护理单元用户列表
   public groupByDeptInDeptListLcey(postData: any = {}) {
-    return this.post('/studyAndTrain/userPersonManage/groupByDeptInDeptList', postData)
+    return this.post(
+      "/studyAndTrain/userPersonManage/groupByDeptInDeptList",
+      postData
+    );
   }
 
   // 聊城二院-有分院-获取科室层级用户列表
   public groupByLevelInDeptListLcey(postData: any = {}) {
-    return this.post('/studyAndTrain/userPersonManage/groupByLevelInDeptList', postData)
+    return this.post(
+      "/studyAndTrain/userPersonManage/groupByLevelInDeptList",
+      postData
+    );
   }
 
   // 聊城二院-有分院-获取科室职务用户列表
   public groupByJobInDeptListLcey(postData: any = {}) {
-    return this.post('/studyAndTrain/userPersonManage/groupByJobInDeptList', postData)
+    return this.post(
+      "/studyAndTrain/userPersonManage/groupByJobInDeptList",
+      postData
+    );
   }
 
   // 聊城二院-有分院-获取护理实习生用户列表
   public QGIILGroupByYearLcey(postData: any = {}) {
-    return this.post('/studyAndTrain/userPersonManage/queryGraduateInternInfoListGroupByYear', postData)
+    return this.post(
+      "/studyAndTrain/userPersonManage/queryGraduateInternInfoListGroupByYear",
+      postData
+    );
   }
 
   // 聊城二院-有分院-获取护理进修生用户列表
   public qRStudentInfoListGroupByYearLcey(postData: any = {}) {
-    return this.post('/studyAndTrain/userPersonManage/queryRefresherStudentInfoListGroupByYear', postData)
+    return this.post(
+      "/studyAndTrain/userPersonManage/queryRefresherStudentInfoListGroupByYear",
+      postData
+    );
   }
 
   // 聊城二院-有分院-根据角色编号获取用户列表
   public queryUserListByRoleCodeLcey(postData: any = {}) {
-    return this.post('/studyAndTrain/userPersonManage/queryUserListByRoleCode', postData)
+    return this.post(
+      "/studyAndTrain/userPersonManage/queryUserListByRoleCode",
+      postData
+    );
   }
 
   // 聊城二院-有分院-获取职称用户列表
   public groupByTitleInDeptListLcey(postData: any = {}) {
-    return this.post('/studyAndTrain/userPersonManage/groupByTitleInDeptList', postData)
+    return this.post(
+      "/studyAndTrain/userPersonManage/groupByTitleInDeptList",
+      postData
+    );
   }
 
   // // 聊城二院-有分院-获取全院用户列表
@@ -105,7 +126,7 @@ export default class CommonApiService extends BaseApiService {
       deptCode,
       keyword,
       bigDeptCode,
-      ...postData
+      ...postData,
     });
   }
   /** 根据职称获取人员列表 */
@@ -119,7 +140,7 @@ export default class CommonApiService extends BaseApiService {
       title,
       keyword,
       bigDeptCode,
-      ...postData
+      ...postData,
     });
   }
   /** 根据职务获取人员列表 */
@@ -133,7 +154,7 @@ export default class CommonApiService extends BaseApiService {
       job,
       keyword,
       bigDeptCode,
-      ...postData
+      ...postData,
     });
   }
   /** 根据职务获取人员列表 */
@@ -147,7 +168,7 @@ export default class CommonApiService extends BaseApiService {
       currentLevel,
       keyword,
       bigDeptCode,
-      ...postData
+      ...postData,
     });
   }
   /** 根据角色获取人员列表 ---学习培训 菜单设置*/
@@ -158,7 +179,7 @@ export default class CommonApiService extends BaseApiService {
   public groupByInternsInDeptList() {
     let obj: any = {
       years: [],
-      keyWord: ""
+      keyWord: "",
     };
     return this.post(
       `/studyAndTrain/basicInformation/user/queryGraduateInternInfoListGroupByYear`,
@@ -169,7 +190,7 @@ export default class CommonApiService extends BaseApiService {
   public queryRefresherStudentInfoListGroupByYear() {
     let obj: any = {
       years: [],
-      keyWord: ""
+      keyWord: "",
     };
     return this.post(
       `/studyAndTrain/basicInformation/user/queryRefresherStudentInfoListGroupByYear`,
@@ -179,7 +200,7 @@ export default class CommonApiService extends BaseApiService {
   /** 根据 科室总带教 获取人员列表 ---厚街学习培训 新建类型*/
   public queryUserListByRoleCode(roleCode: string) {
     let obj: any = {
-      roleCode
+      roleCode,
     };
     return this.post(
       `/studyAndTrain/userPersonManage/queryUserListByRoleCode`,
@@ -191,8 +212,8 @@ export default class CommonApiService extends BaseApiService {
   public searchUser(empName: string, postData: any = {}) {
     //是否只查看权限科室 默认否
     let showAuthDept = false;
-    if (postData && Object.keys(postData).indexOf('showAuthDept') >= 0)
-      showAuthDept = postData.showAuthDept
+    if (postData && Object.keys(postData).indexOf("showAuthDept") >= 0)
+      showAuthDept = postData.showAuthDept;
     // if (appStore.HOSPITAL_ID == 'wh') showAuthDept = true
     return this.post(`/user/search`, { empName, ...postData, showAuthDept });
   }
@@ -208,25 +229,25 @@ export default class CommonApiService extends BaseApiService {
   ) {
     return this.post(`/file/uploadAttachment/${entityType}`, file, {
       timeout: 0,
-      onUploadProgress: onUploadProgress || (() => { })
+      onUploadProgress: onUploadProgress || (() => {}),
     });
   }
   /** 下载文件并导出 */
   public getFileAndDown(path: string, name?: string, needAxios?: boolean) {
     //针对需要下载原始路径的文件
     if (needAxios)
-      return axios.get(path, { responseType: "blob" }).then(res => {
+      return axios.get(path, { responseType: "blob" }).then((res) => {
         fileDownload(res, name);
       });
 
-    return this.get(path, { responseType: "blob" }).then(res => {
+    return this.get(path, { responseType: "blob" }).then((res) => {
       fileDownload(res, name);
     });
   }
 
   /** 根据工号获取完整信息 */
   public getNurseInformation(empNo: any) {
-    let HOSPITAL_ID = appStore.HOSPITAL_ID
+    let HOSPITAL_ID = appStore.HOSPITAL_ID;
     if (HOSPITAL_ID == "hj") {
       return this.get(`/nurseInformation/getByEmpNoAudite/${empNo}`);
     } else if (["wh", "gzsrm", "whyx", "whhk", "dghm"].includes(HOSPITAL_ID)) {
@@ -267,21 +288,26 @@ export default class CommonApiService extends BaseApiService {
     return this.get(`/user/userDictInfo/${wardCode}${queryStr}`);
   }
   // 武汉亚心获取实操评分表下拉内容
-  public getPraticalGradeManage(){
-    if(['whyx','whhk'].includes(appStore.HOSPITAL_ID)){
-      return this.post(`/studyAndTrain/praticalGradeManage/getPage`,{})
-    }else{
-      return this.post(`/studyAndTrain/praticalGradeManageForFSXT/getPage`,{})
+  public getPraticalGradeManage() {
+    if (["whyx", "whhk"].includes(appStore.HOSPITAL_ID)) {
+      return this.post(`/studyAndTrain/praticalGradeManage/getPage`, {});
+    } else {
+      return this.post(`/studyAndTrain/praticalGradeManageForFSXT/getPage`, {});
     }
   }
   // 武汉亚心获取实操评分表下拉内容
-  public getDetailByPaperId(paperId:any){
-    if(['whyx','whhk'].includes(appStore.HOSPITAL_ID)){
-      return this.post(`/studyAndTrain/praticalGradeManage/getDetailByPaperId`,qs.stringify({paperId}))
-    }else{
-      return this.post(`/studyAndTrain/praticalGradeManageForFSXT/getDetailByPaperId`,qs.stringify({paperId}))
+  public getDetailByPaperId(paperId: any) {
+    if (["whyx", "whhk"].includes(appStore.HOSPITAL_ID)) {
+      return this.post(
+        `/studyAndTrain/praticalGradeManage/getDetailByPaperId`,
+        qs.stringify({ paperId })
+      );
+    } else {
+      return this.post(
+        `/studyAndTrain/praticalGradeManageForFSXT/getDetailByPaperId`,
+        qs.stringify({ paperId })
+      );
     }
-
   }
 
   /**
@@ -293,7 +319,7 @@ export default class CommonApiService extends BaseApiService {
   public getUser(empNo: string, password: string) {
     return this.post(`/user/getUser`, {
       empNo,
-      password
+      password,
     });
   }
 
@@ -319,24 +345,32 @@ export default class CommonApiService extends BaseApiService {
    * @param moduleCode 模块Code
    */
   public listNurseExpand(moduleCode: string) {
-    return this.post('/nurseExpand/listNurseExpand', { "moduleCode": moduleCode })
+    return this.post("/nurseExpand/listNurseExpand", {
+      moduleCode: moduleCode,
+    });
   }
   /**
    * 获取片区列表
    * @returns
    */
   public getBigDeptList() {
-    return  this.get('/dept/bigDeptList')
+    return this.get("/dept/bigDeptList");
   }
   // 武汉亚心 获取授权类别
   public getCodeList() {
-    return  this.get('/nurseWHQualificationIn/getCodeList', {
-      params: { moduleCode: 'grant_type'}
-    })
+    return this.get("/nurseWHQualificationIn/getCodeList", {
+      params: { moduleCode: "grant_type" },
+    });
   }
 
-   // 武汉亚心 获取授权名称
-   public getChildCodeList(code: any) {
-    return  this.get('/nurseWHQualificationIn/getChildCodeList', {params: { itemCode: code }})
+  // 武汉亚心 获取授权名称
+  public getChildCodeList(code: any) {
+    return this.get("/nurseWHQualificationIn/getChildCodeList", {
+      params: { itemCode: code },
+    });
+  }
+  /**获取可显示退休按钮的工号列表 */
+  public getRetirees() {
+    return this.get("/procedure/nursing/getRetirees");
   }
 }

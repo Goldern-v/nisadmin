@@ -100,8 +100,13 @@ export default observer(function TopCon() {
       <div style={{width: '100%', display: 'flex', justifyContent: 'flex-end', marginTop: '-10px'}}>
         {authStore.isRoleManage && !isSelf() && <ExportBtn className={["gzsrm"].includes(appStore.HOSPITAL_ID) ? "gzsrmExportBtn" : ""} onClick={() => setExportVisible(true)}>导出档案</ExportBtn>}
         {
-          authStore.isRoleManage && !isSelf() && !["gzsrm"].includes(appStore.HOSPITAL_ID)
-            && <DeptChangeBtn1 onClick={() => openLeaveModalModal()}>离职/退休</DeptChangeBtn1>
+          appStore.hisMatch({
+            map: {
+              gzsrm: '',
+              ytll: nurseFileDetailViewModal.retireList.includes(authStore?.user?.empNo || '') && <DeptChangeBtn1 onClick={() => openLeaveModalModal()}>离职/退休</DeptChangeBtn1>,
+              other: authStore.isRoleManage && !isSelf() && <DeptChangeBtn1 onClick={() => openLeaveModalModal()}>离职/退休</DeptChangeBtn1>
+            }
+          })
         }
         {
           !isSelf() && appStore.hisMatch({

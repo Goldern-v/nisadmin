@@ -92,6 +92,69 @@ export default observer((props: Props) => {
       align: 'center'
     },
   ]
+  const columns1: any = [
+
+    {
+      title: '住院号',
+      dataIndex: 'medicareNo',
+      align: 'center',
+      width: 80,
+    },
+    {
+      title: '姓名',
+      dataIndex: 'patName',
+      align: 'center',
+      width: 80,
+    },
+    {
+      title: '床号',
+      dataIndex: 'bedCode',
+      align: 'center',
+      width: 80,
+    },
+    {
+      title: '入院时间',
+      dataIndex: 'inHospDateTime',
+      align: 'center',
+      width: 100,
+    },
+    {
+      title: '住院天数',
+      dataIndex: 'inHospDays',
+      align: 'center',
+      width: 80,
+    },
+    {
+      title: '转归',
+      dataIndex: 'dischCondit',
+      align: 'center',
+      width: 80,
+    },
+    {
+      title: '出院诊断',
+      dataIndex: 'disDiag',
+      align: 'center',
+      width: 120,
+    },
+    {
+      title: '医师签名',
+      dataIndex: 'mainDoctor',
+      align: 'center',
+      width: 80,
+    },
+    {
+      title: '联系方式',
+      dataIndex: 'telphone',
+      align: 'center',
+      width: 100,
+    },
+    {
+      title: '责任护士',
+      dataIndex: 'mainNurse',
+      align: 'center',
+      width: 60,
+    },
+  ]
 
   const getData = async () => {
     const dateBegin = moment(form.time[0]).format('YYYY-MM-DD')
@@ -114,7 +177,7 @@ export default observer((props: Props) => {
     if (isWR) {
       params = {
         wardCode: form.wardCode === '全院' ? '' : form.wardCode,
-        tradeCode: "getdischargedpatient",
+        // tradeCode: "getdischargedpatient",
         startDate: dateBegin,     //开始日期
         endDate: dateEnd,
       }
@@ -124,7 +187,7 @@ export default observer((props: Props) => {
     const { data } = await fn.call(api, params)
     setLoading(false)
     if (isWR) {
-      setTableData(data)
+      setTableData(data.data || [])
     } else {
       setTableData(data.list)
       setPages(data.page)
@@ -193,8 +256,9 @@ export default observer((props: Props) => {
       <Wrapper>
         <TableWrapper>
           <BaseTable
+            surplusWidth={20}
             loading={loading}
-            columns={columns}
+            columns={isWR ? columns1 : columns}
             dataSource={tableData}
             surplusHeight={200}
             wrapperStyle={{ padding: 0 }}

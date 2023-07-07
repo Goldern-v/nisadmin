@@ -2,6 +2,7 @@ import service from 'src/services/api'
 import { observable, computed, action } from 'mobx'
 import { reverseKeyValue } from 'src/utils/object/object'
 import { DictItem } from 'src/services/api/CommonApiService'
+import { appStore } from 'src/stores'
 
 let dictList = {
   民族: 'nation',
@@ -65,8 +66,18 @@ class NurseFileDetailViewModal {
       return this.dict[dictList[dictName]] || []
     }
   }
+  @observable retireList: string[] = []
+  /**获取需显示退休按钮的工号 */
+  getRetirees() {
+    service.commonApiService.getRetirees().then(res => {
+      this.retireList = res.data
+    })
+  }
   init() {
     this.initDict()
+    if ('ytll' === appStore.HOSPITAL_ID) {
+      this.getRetirees()
+    }
   }
 }
 
