@@ -178,7 +178,8 @@ class QualityControlRecordEditModel {
         this.master[x] = false
       } else if (x == 'evalDate') {
         this.master[x] = moment().format('YYYY-MM-DD HH:mm')
-      } else if (x == 'wardCode' && ['whyx', 'whsl'].includes(appStore.HOSPITAL_ID)) {
+        // 设置默认科室，科室存在，获取检查人列表
+      } else if (x == 'wardCode' && ['whyx', 'whsl', 'whhk'].includes(appStore.HOSPITAL_ID)) {
         this.master[x] = authStore.defaultDeptCode
       } else {
         this.master[x] = ''
