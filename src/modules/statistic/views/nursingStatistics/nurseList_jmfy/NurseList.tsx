@@ -1,19 +1,31 @@
 import styled from 'styled-components'
-import StatisticHeader from './StatisticHeader'
 import CardItem from './CardItem'
 import { statisticsApi } from 'src/modules/statistic/api/StatisticsApi'
 import React, { useState, useEffect } from 'react'
-import { Spin } from 'antd'
+import {Button, DatePicker, Select, Spin} from 'antd'
 import MidHeader from './MidHeader'
+import {appStore} from "src/stores";
+import moment from "src/vendors/moment";
+import {currentMonth, currentQuater, currentYear} from "src/utils/date/rangeMethod";
+const RangePicker = DatePicker.RangePicker
+const Option = Select.Option
+
 export default function BedSituation() {
+  let _currentMonth = currentMonth()
+  let _currentQuater = currentQuater()
+  let _currentYear = currentYear()
   const [leftList, setLeftList] = useState([])
   const [infoList, setInfoList] = useState([])
   const [midList, setMidList] = useState([])
   const [rightList, setRightList] = useState([])
   const [spinning, setSpinning] = useState(false)
-  useEffect(() => {
+  const [query, setQuery] = useState({
+    startDate: moment('1999-01-01').format('YYYY-MM-DD'),
+    endDate: _currentMonth[1].format('YYYY-MM-DD'),
+  })
+  const getData =()=>{
     setSpinning(true)
-    statisticsApi.getTotalUser().then((res: any) => {
+    statisticsApi.getTotalUser(query.startDate,query.endDate).then((res: any) => {
       let users = res.data[0]!.users
       // let res = data
       let l: any = []
@@ -68,9 +80,32 @@ export default function BedSituation() {
       ]
       setInfoList(list)
     })
+  }
+  useEffect(() => {
+    getData()
   }, [])
   return (
     <Wrapper>
+      <HeaderCon>
+         <RangePicker
+            className="content-item"
+            style={{ width: 220 }}
+            value={[moment(query.startDate), moment(query.endDate)]}
+            ranges={{
+              '本月': _currentMonth,
+              '本季度': _currentQuater,
+              '本年度': _currentYear,
+            }}
+            onChange={(payload: any) => {
+              setQuery({
+                ...query,
+                startDate: payload[0].format('YYYY-MM-DD'),
+                endDate: payload[1].format('YYYY-MM-DD'),
+              })
+            }}
+            allowClear={false} />
+        <Button type="primary" onClick={getData}>查询</Button>
+      </HeaderCon>
       <ScrollCon>
         <Container>
           {/* <HisName>东莞市厚街医院</HisName>
@@ -142,7 +177,20 @@ const Container = styled.div`
 const Wrapper = styled.div`
   /* width: auto; */
 `
-
+const HeaderCon = styled.div`
+  align-items: center;
+  height: 45px;
+  line-height: 45px;
+  padding-left: 14px;
+  background: rgba(248,248,248,1);
+  box-shadow: 3px 3px 6px 0px rgba(0,0,0,0.15);
+  .content-item{
+    margin-right: 15px;
+  }
+  .lable-item{
+    margin-right: 10px;
+  }
+`
 const ScrollCon = styled.div`
   /* width: auto; */
   height: calc(100vh - 73px);

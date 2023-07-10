@@ -1,4 +1,4 @@
-import qs from 'qs'
+
 import statisticViewModel from 'src/modules/statistic/StatisticViewModel'
 import BaseApiService from 'src/services/api/BaseApiService'
 import { authStore } from 'src/stores/index'
@@ -246,8 +246,13 @@ class StatisticsApi extends BaseApiService {
     }
   }
   // 护士节假日排班表
-  public async getTotalUser() {
-    return this.get(`/total/totalUser`)
+  public async getTotalUser(startDate?:any,endDate?:any) {
+    if(appStore.HOSPITAL_ID == 'jmfy'){
+      return this.get(`/total/totalUser?startDate=${startDate}&endDate=${endDate}`)
+    }else{
+      return this.get(`/total/totalUser`)
+    }
+
   }
   // 护士节假日排班表
   public async getTotalHierarchy() {
