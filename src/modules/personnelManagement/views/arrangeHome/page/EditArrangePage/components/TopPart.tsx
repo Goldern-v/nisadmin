@@ -158,10 +158,21 @@ export default observer(function TopPart() {
    */
   const disabledDate = (date: any) => {
     if (!isWhsl) return false
-    const dow = moment().day()
-    const thur1 = moment().subtract(dow-4, 'days').format('YYYY-MM-DD')//本周3
-    const thur2 = moment(thur1).subtract(-7, 'days')
-    return !date.isBefore(thur2)
+    // const dow = moment().day()
+    // const thur1 = moment().subtract(dow-4, 'days').format('YYYY-MM-DD')//本周3
+    // const thur2 = moment(thur1).subtract(-7, 'days')
+    // return !date.isBefore(thur2)
+     // 星期数
+     const day = moment().day()
+     if (day > 0 && day < 5) {
+       // 上周日
+       const lastSun = moment().subtract(day, 'days').format('YYYY-MM-DD')
+       return !date.isAfter(lastSun)
+     } else {
+       // 下周一
+       const curSun = moment().subtract( day ? day - 7 : 0, 'days').format('YYYY-MM-DD')
+       return !date.isAfter(curSun)
+     }
   }
   useEffect(() => {
     if (isInit) {

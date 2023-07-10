@@ -515,15 +515,26 @@ export default observer(function SelectCon() {
     let days: number = new Date().getDay() === 0 ? 7 : new Date().getDay() + 7  //当前日期+ 上周
     let startTime: number = new Date(selectViewModal.params.startTime).getTime()
     let newTime: number = new Date().getTime()
-    // 下周三之后的数据不许编辑
+    /**
+     * 周一到周四，本周一到之后可以编辑
+     * 周五到周日，下周一到之后可以编辑
+     * by 威海
+     */
     if ('whsl' === appStore.HOSPITAL_ID) {
-      const dow = moment().day()
-      const thur1 = moment().subtract(dow - 4, 'days').format('YYYY-MM-DD')//本周3
-      const thur2 = moment(thur1).subtract(-7, 'days')
-      // const start = moment(selectViewModal.params.startTime)
-      const end = moment(selectViewModal.params.endTime)
-      if (end.isBefore(thur2)) return true
-      message.warning('编辑排班的时间范围最多到下周三')
+      const start = moment(selectViewModal.params.startTime)
+      // 星期数
+      const day = moment().day()
+      if (day > 0 && day < 5) {
+        // 上周日
+        const lastSun = moment().subtract(day, 'days').format('YYYY-MM-DD')
+        if (start.isAfter(lastSun)) return true
+        message.warning('排班的可编辑范围从本周一开始')
+      } else {
+        // 下周一
+        const curSun = moment().subtract( day ? day - 7 : 0, 'days').format('YYYY-MM-DD')
+        if (start.isAfter(curSun)) return true
+        message.warning('排班的可编辑范围从下周一开始')
+      }
       return false
     }
     if (appStore.HOSPITAL_ID !== 'wjgdszd') return true

@@ -75,6 +75,7 @@ export default observer(function NurseFilesView(props: Props) {
       case "stmz":
       case 'qzde':
       case 'dghm':
+      case "lcey":
         return NurseFilesListView_wh;
       case "nys":
         return NurseFilesListView_nys;
@@ -430,7 +431,7 @@ export default observer(function NurseFilesView(props: Props) {
     retiredRetireesCon,
     ...appStore.hisMatch({
       map: {
-        'whsl,925,zhzxy': [
+        'whsl,925,zhzxy,lcey': [
           {
             title: "查询统计",
             icon: <CXTJ />,
