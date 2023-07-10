@@ -128,7 +128,7 @@ export default observer(function SelectCon() {
       data.schedulingExportVersion = 'zhuhai'
       key === '全院' && (data.bigDeptCode = key)
     }
-    arrangeService.export(data).then(res => {
+    arrangeService.export(data, key).then(res => {
       fileDownload(res);
     });
   };
@@ -151,7 +151,7 @@ export default observer(function SelectCon() {
       visibleArr.push('empRemark')
     }
     if (['wjgdszd'].includes(appStore.HOSPITAL_ID)) {
-      visibleArr = ['empNo', 'nurseHierarchy', 'newTitle', 'year', 'total1','total2','balanceHour','publicHour','holidayHour']
+      visibleArr = ['empNo', 'nurseHierarchy', 'newTitle', 'year', 'total1', 'total2', 'balanceHour', 'publicHour', 'holidayHour']
     }
     let newArr: any[] = []
     let noEmpNoArr: any[] = []
@@ -177,17 +177,17 @@ export default observer(function SelectCon() {
           {
             appStore.hisMatch({
               map: {
-                'nfzxy':<React.Fragment>
-                          <Checkbox value="empRemark">备注</Checkbox>
-                        </React.Fragment>,
-              'wjgdszd': <React.Fragment>
-                 <Checkbox value="total2">夜小时数</Checkbox>
-                 <Checkbox value="balanceHour">累计结余</Checkbox>
-                 <Checkbox value="publicHour">公休结余</Checkbox>
-                 <Checkbox value="holidayHour">节休结余</Checkbox>
-              </React.Fragment>
+                'nfzxy': <React.Fragment>
+                  <Checkbox value="empRemark">备注</Checkbox>
+                </React.Fragment>,
+                'wjgdszd': <React.Fragment>
+                  <Checkbox value="total2">夜小时数</Checkbox>
+                  <Checkbox value="balanceHour">累计结余</Checkbox>
+                  <Checkbox value="publicHour">公休结余</Checkbox>
+                  <Checkbox value="holidayHour">节休结余</Checkbox>
+                </React.Fragment>
               },
-              vague:true
+              vague: true
             })
           }
         </Checkbox.Group>
@@ -196,48 +196,48 @@ export default observer(function SelectCon() {
         settingLength += visibleArr.length + 1
         if (['wjgdszd'].includes(appStore.HOSPITAL_ID)) {
           selectViewModal.params.groupList.map((group: any) => {
-            let arr = sheetViewModal.sheetTableData.filter((item:any) => {
+            let arr = sheetViewModal.sheetTableData.filter((item: any) => {
               return group.groupName == item.groupName
             })
-            newArr = newArr.concat([{id:group.groupName,groupNameTitle:group.groupName,colSpan:settingLength}],arr)
+            newArr = newArr.concat([{ id: group.groupName, groupNameTitle: group.groupName, colSpan: settingLength }], arr)
           })
-          sheetViewModal.sheetTableData.forEach((item:any) => {
-            if(!item.empNo|| ['试工工人','规培护士','助理护士','实习护士'].includes(item.empNo)) noEmpNoArr.push(item)
-            if(item.empNo && !item.groupName && !['试工工人','规培护士','助理护士','实习护士'].includes(item.empNo)) noGroupArr.push(item)
+          sheetViewModal.sheetTableData.forEach((item: any) => {
+            if (!item.empNo || ['试工工人', '规培护士', '助理护士', '实习护士'].includes(item.empNo)) noEmpNoArr.push(item)
+            if (item.empNo && !item.groupName && !['试工工人', '规培护士', '助理护士', '实习护士'].includes(item.empNo)) noGroupArr.push(item)
           })
-          newArr = newArr.concat([{id:"未分组人员",groupNameTitle:"未分组人员",colSpan:settingLength}],noGroupArr,[{id:"实习生",groupNameTitle:"实习生",colSpan:settingLength}],noEmpNoArr)
-          printModal.printArrangeNew(visibleArr,newArr)
-        } else if(['nfzxy'].includes(appStore.HOSPITAL_ID)){
+          newArr = newArr.concat([{ id: "未分组人员", groupNameTitle: "未分组人员", colSpan: settingLength }], noGroupArr, [{ id: "实习生", groupNameTitle: "实习生", colSpan: settingLength }], noEmpNoArr)
+          printModal.printArrangeNew(visibleArr, newArr)
+        } else if (['nfzxy'].includes(appStore.HOSPITAL_ID)) {
           selectViewModal.params.groupList.map((group: any) => {
-            let arr = sheetViewModal.sheetTableData.filter((item:any) => {
+            let arr = sheetViewModal.sheetTableData.filter((item: any) => {
               return group.groupName == item.groupName
             })
-            if(arr.length > 0){
-              newArr = newArr.concat([{id:group.groupName,groupNameTitle:group.groupName,colSpan:settingLength}],arr)
+            if (arr.length > 0) {
+              newArr = newArr.concat([{ id: group.groupName, groupNameTitle: group.groupName, colSpan: settingLength }], arr)
             }
           })
-          sheetViewModal.sheetTableData.forEach((item:any) => {
-            if( item.empNo.includes('试工工人')) noEmpNoArr1.push(item)
-            if( item.empNo.includes('规培护士')) noEmpNoArr2.push(item)
-            if( item.empNo.includes('助理护士')) noEmpNoArr3.push(item)
-            if( !item.empNo || item.empNo.includes('实习护士')) noEmpNoArr4.push(item)
-            if(item.empNo && !item.groupName && !['试工工人','规培护士','助理护士','实习护士'].includes(item.empNo)) {noGroupArr.push(item)}
+          sheetViewModal.sheetTableData.forEach((item: any) => {
+            if (item.empNo.includes('试工工人')) noEmpNoArr1.push(item)
+            if (item.empNo.includes('规培护士')) noEmpNoArr2.push(item)
+            if (item.empNo.includes('助理护士')) noEmpNoArr3.push(item)
+            if (!item.empNo || item.empNo.includes('实习护士')) noEmpNoArr4.push(item)
+            if (item.empNo && !item.groupName && !['试工工人', '规培护士', '助理护士', '实习护士'].includes(item.empNo)) { noGroupArr.push(item) }
           })
           /*需要判断是否有数据*/
-          if(noGroupArr.length>0){
-            newArr=newArr.concat( [{id:"未分组人员",groupNameTitle:"未分组人员",colSpan:settingLength}],noGroupArr)
+          if (noGroupArr.length > 0) {
+            newArr = newArr.concat([{ id: "未分组人员", groupNameTitle: "未分组人员", colSpan: settingLength }], noGroupArr)
           }
-          if(noEmpNoArr1.length>0){
-            newArr=newArr.concat([{id:"试工工人",groupNameTitle:"试工工人",colSpan:settingLength}],noEmpNoArr1)
+          if (noEmpNoArr1.length > 0) {
+            newArr = newArr.concat([{ id: "试工工人", groupNameTitle: "试工工人", colSpan: settingLength }], noEmpNoArr1)
           }
-          if(noEmpNoArr2.length>0){
-            newArr=newArr.concat([{id:"规培护士",groupNameTitle:"规培护士",colSpan:settingLength}],noEmpNoArr2,)
+          if (noEmpNoArr2.length > 0) {
+            newArr = newArr.concat([{ id: "规培护士", groupNameTitle: "规培护士", colSpan: settingLength }], noEmpNoArr2,)
           }
-          if(noEmpNoArr3.length>0){
-            newArr=newArr.concat([{id:"助理护士",groupNameTitle:"助理护士",colSpan:settingLength}],noEmpNoArr3,)
+          if (noEmpNoArr3.length > 0) {
+            newArr = newArr.concat([{ id: "助理护士", groupNameTitle: "助理护士", colSpan: settingLength }], noEmpNoArr3,)
           }
-          if(noEmpNoArr4.length>0){
-            newArr=newArr.concat([{id:"实习护士",groupNameTitle:"实习护士",colSpan:settingLength}],noEmpNoArr4,)
+          if (noEmpNoArr4.length > 0) {
+            newArr = newArr.concat([{ id: "实习护士", groupNameTitle: "实习护士", colSpan: settingLength }], noEmpNoArr4,)
           }
           // newArr = newArr.concat(
           //   [{id:"未分组人员",groupNameTitle:"未分组人员",colSpan:settingLength}],noGroupArr,
@@ -246,8 +246,8 @@ export default observer(function SelectCon() {
           //   [{id:"助理护士",groupNameTitle:"助理护士",colSpan:settingLength}],noEmpNoArr3,
           //   [{id:"实习护士",groupNameTitle:"实习护士",colSpan:settingLength}],noEmpNoArr4,
           //   )
-          printModal.printArrangeNew(visibleArr,newArr)
-        }else {
+          printModal.printArrangeNew(visibleArr, newArr)
+        } else {
           printModal.printArrangeDghl(visibleArr)
         }
       }
@@ -286,7 +286,7 @@ export default observer(function SelectCon() {
       fn = () => arrangeService.importExcel1(params)
     }
     const { data } = await fn()
-    data.errorMag && message.error(data.errorMag,4)
+    data.errorMag && message.error(data.errorMag, 4)
     setModalData(data.schedulingDtos)
     setModalVisible(true)
   }
@@ -413,15 +413,15 @@ export default observer(function SelectCon() {
   };
   const handlePrint = () => {
     // let visibleArr = ['empNo','empName','flag','nurseHierarchy', 'newTitle', 'year', 'WeekBalanceHour','BalanceHour','WorkNightCount','PostScoreCell','TotalHoliday']
-    let visibleArr = ['empName', 'groupName', 'flag','nurseHierarchy', 'newTitle', 'year', 'chargeBed']
+    let visibleArr = ['empName', 'groupName', 'flag', 'nurseHierarchy', 'newTitle', 'year', 'chargeBed']
     Modal.confirm({
       title: '选择要打印的列',
       centered: true,
       width: 660,
       content: <div style={{ marginTop: 30 }}>
         <Checkbox.Group
-            defaultValue={visibleArr}
-            onChange={(newArr: any[]) => visibleArr = newArr}>
+          defaultValue={visibleArr}
+          onChange={(newArr: any[]) => visibleArr = newArr}>
           <Checkbox value="groupName">分组名称</Checkbox>
           {/* <Checkbox value="empNo">工号</Checkbox> */}
           <Checkbox value="empName">姓名</Checkbox>
@@ -458,18 +458,18 @@ export default observer(function SelectCon() {
           deptCode: selectViewModal.params.deptCode,
           nurseGroup: selectViewModal.params.group,
           startTimeWeek: moment(selectViewModal.params.startTime)
-              .weekday(0)
-              .format("YYYY-MM-DD"),
+            .weekday(0)
+            .format("YYYY-MM-DD"),
           endTimeWeek: moment(selectViewModal.params.endTime)
-              .weekday(6)
-              .format("YYYY-MM-DD"),
-          sync:true
+            .weekday(6)
+            .format("YYYY-MM-DD"),
+          sync: true
         }
         sheetViewModal.tableLoading = true
         try {
           service.scheduleUserApiService.findSyncNurse(data).then((res) => {
             message.success("同步成功");
-            sheetViewModal.sheetTableData = sheetViewModal.handleSheetTableData(res.data.setting,sheetViewModal.countObj)
+            sheetViewModal.sheetTableData = sheetViewModal.handleSheetTableData(res.data.setting, sheetViewModal.countObj)
             sheetViewModal.tableLoading = false
           });
         } catch (error) {
@@ -508,17 +508,17 @@ export default observer(function SelectCon() {
     sheetViewModal.setNurseList()
   }, [selectViewModal.params.group, selectViewModal.params.deptCode])
   /* 判断是否具有排班权限*/
-  const getPushAuth =()=>{
+  const getPushAuth = () => {
     //     SYS0001  管理员 QCR0001  护理部
-    let user:any = JSON.parse(sessionStorage.getItem("user") || "{}");
-    let auth:[string,string] =['SYS0001','QCR0001']
-    let days:number=new Date().getDay() === 0 ? 7:new Date().getDay() + 7  //当前日期+ 上周
-    let startTime:number = new Date(selectViewModal.params.startTime).getTime()
-    let newTime:number = new Date().getTime()
+    let user: any = JSON.parse(sessionStorage.getItem("user") || "{}");
+    let auth: [string, string] = ['SYS0001', 'QCR0001']
+    let days: number = new Date().getDay() === 0 ? 7 : new Date().getDay() + 7  //当前日期+ 上周
+    let startTime: number = new Date(selectViewModal.params.startTime).getTime()
+    let newTime: number = new Date().getTime()
     // 下周三之后的数据不许编辑
     if ('whsl' === appStore.HOSPITAL_ID) {
       const dow = moment().day()
-      const thur1 = moment().subtract(dow-4, 'days').format('YYYY-MM-DD')//本周3
+      const thur1 = moment().subtract(dow - 4, 'days').format('YYYY-MM-DD')//本周3
       const thur2 = moment(thur1).subtract(-7, 'days')
       // const start = moment(selectViewModal.params.startTime)
       const end = moment(selectViewModal.params.endTime)
@@ -526,17 +526,17 @@ export default observer(function SelectCon() {
       message.warning('编辑排班的时间范围最多到下周三')
       return false
     }
-    if(appStore.HOSPITAL_ID !=='wjgdszd') return  true
-    if(appStore.HOSPITAL_ID==='wjgdszd' && auth.includes(user.roleManageCode)) return  true
-    if(appStore.HOSPITAL_ID==='wjgdszd' && !auth.includes(user.roleManageCode) && ((newTime - startTime) > (days * 60 *60 *24 * 1000))){
+    if (appStore.HOSPITAL_ID !== 'wjgdszd') return true
+    if (appStore.HOSPITAL_ID === 'wjgdszd' && auth.includes(user.roleManageCode)) return true
+    if (appStore.HOSPITAL_ID === 'wjgdszd' && !auth.includes(user.roleManageCode) && ((newTime - startTime) > (days * 60 * 60 * 24 * 1000))) {
       //  非管理员 护理部 超出日期限制
       Modal.warn({
         title: '不能编辑上周以前的数据!',
         mask: false,
       })
       return false
-    }else{
-      return  true
+    } else {
+      return true
     }
   }
   /**导出下拉框的overlay */
@@ -656,15 +656,15 @@ export default observer(function SelectCon() {
           </div>
         </div>
         {
-          ['whyx','whhk'].includes(appStore.HOSPITAL_ID)
+          ['whyx', 'whhk'].includes(appStore.HOSPITAL_ID)
           && <div className="item item-nurse">
             <Select value={sheetViewModal.nurseId} placeholder="输入护士姓名或工号"
-            showSearch
-            optionFilterProp="title"
-            onChange={(e:any) => sheetViewModal.changeNurseId(e)}
-            style={{ width: 100 }}>
+              showSearch
+              optionFilterProp="title"
+              onChange={(e: any) => sheetViewModal.changeNurseId(e)}
+              style={{ width: 100 }}>
               {
-                sheetViewModal.nurseList.map((v:any) => (
+                sheetViewModal.nurseList.map((v: any) => (
                   <Select.Option value={v.id} title={v.empName} key={v.id}>
                     {v.empName}
                   </Select.Option>
@@ -687,7 +687,7 @@ export default observer(function SelectCon() {
             <Button
               className="statistics"
               onClick={() => {
-                if(getPushAuth()){
+                if (getPushAuth()) {
                   appStore.history.push(`/personnelManagement/EditArrangePage`);
                 }
               }}
@@ -767,7 +767,7 @@ export default observer(function SelectCon() {
                 </Button>
               </div>
             </React.Fragment>,
-            'zhzxy':<>
+            'zhzxy': <>
               <div className="item">
                 <Upload showUploadList={false} customRequest={handleUpload}>
                   <Button className="statistics getExcel">
@@ -777,17 +777,17 @@ export default observer(function SelectCon() {
               </div>
               <div className="item">
                 <Button
-                    className="statistics getExcel"
-                    disabled={sheetViewModal.tableLoading}
-                    onClick={handlePrint}>
+                  className="statistics getExcel"
+                  disabled={sheetViewModal.tableLoading}
+                  onClick={handlePrint}>
                   打印
                 </Button>
               </div>
               <div className="item">
                 <Button
-                    className="statistics getExcel"
-                    disabled={!authStore.isRoleManage}
-                    onClick={findSyncNurse}>
+                  className="statistics getExcel"
+                  disabled={!authStore.isRoleManage}
+                  onClick={findSyncNurse}>
                   同步排班人员
                 </Button>
               </div>
@@ -802,6 +802,11 @@ export default observer(function SelectCon() {
                   <Button className="statistics getExcel" onClick={() => exportExcel()}>
                     导出科室
                   </Button>}
+              </div>
+              <div className="item">
+                <Button className="statistics getExcel" onClick={() => exportExcel('default')}>
+                  导出排班
+                </Button>
               </div>
               <ImportModal
                 visible={modalVisible}
@@ -835,14 +840,13 @@ export default observer(function SelectCon() {
                 }}
                 onCancel={() => setModalVisible(false)} />
             </>,
-            
             other: <div className="item">
               <Button className="statistics getExcel" onClick={() => exportExcel()}>
                 导出科室
               </Button>
             </div>
           },
-          vague:true
+          vague: true
         })}
         {appStore.HOSPITAL_ID == "nys" &&
           (authStore.isDepartment || authStore.isSupervisorNurse) && (
@@ -873,7 +877,7 @@ export default observer(function SelectCon() {
               <span onClick={() => handleExport()}>批量导出</span>
             </div>
           )}
-        {(["wh", "gxjb", "fsxt",'925', "whyx", "fssdy","lyyz","qhwy","whsl", 'ytll', 'whhk', 'dglb', 'zzwy', 'dghm'].includes(appStore.HOSPITAL_ID)) &&
+        {(["wh", "gxjb", "fsxt", '925', "whyx", "fssdy", "lyyz", "qhwy", "whsl", 'ytll', 'whhk', 'dglb', 'zzwy', 'dghm'].includes(appStore.HOSPITAL_ID)) &&
           (authStore.isDepartment || authStore.isSupervisorNurse) && (
             <div className="item">
               <Dropdown.Button
@@ -884,7 +888,7 @@ export default observer(function SelectCon() {
               </Dropdown.Button>
             </div>
           )}
-        {(["wh", "gxjb", "fsxt", '925',"whyx","lyyz","qhwy","whsl", 'ytll','nfzxy', 'whhk', 'dglb', 'zzwy', 'dghm'].includes(appStore.HOSPITAL_ID)) && (
+        {(["wh", "gxjb", "fsxt", '925', "whyx", "lyyz", "qhwy", "whsl", 'ytll', 'nfzxy', 'whhk', 'dglb', 'zzwy', 'dghm'].includes(appStore.HOSPITAL_ID)) && (
           <div className="item">
             <Button
               className="item"

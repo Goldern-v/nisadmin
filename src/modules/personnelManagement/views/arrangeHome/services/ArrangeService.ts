@@ -122,7 +122,7 @@ export default class ArrangeService extends BaseApiService {
   }
 
   // 导出护士排班
-  public async export(data: any) {
+  public async export(data: any, key = '') {
     const postData = {
       ...data,
       deptCode: selectViewModal.params.deptCode, // deptCode  科室编码
@@ -134,7 +134,7 @@ export default class ArrangeService extends BaseApiService {
         lcey: '/schedulingLc/export',
         jmfy: '/schedulingJm/export',
         'whyx,whhk': '/schedulingYaXin/export',
-        zhzxy: '/scheduling/exportExcelForZhzxy',
+        zhzxy: key !== 'default' ? '/scheduling/exportExcelForZhzxy' : '/scheduling/export',
         default: '/scheduling/export',
         
       },
