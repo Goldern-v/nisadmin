@@ -162,13 +162,13 @@ const ROUTE_LIST_DEFAULT = [
     name: '文章'
   },
   
-  ...(['wh','zzwy', 'dghm', 'ytll'].includes(appStore.HOSPITAL_ID) ? [{
+  ...(['wh','zzwy', 'dghm', 'ytll', 'dglb'].includes(appStore.HOSPITAL_ID) ? [{
     /** 方明处理 */
     type: 'personWinning',
     component: PersonWinning,
     name: '个人获奖'
   }]: []),
-  ...(['wh','zzwy', 'qhwy', 'dghm', 'ytll'].includes(appStore.HOSPITAL_ID) ? [
+  ...(['wh','zzwy', 'qhwy', 'dghm', 'ytll', 'dglb'].includes(appStore.HOSPITAL_ID) ? [
   {
     /** 吴敏处理 */
     type: 'specializNurse',

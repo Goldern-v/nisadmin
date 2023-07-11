@@ -96,7 +96,7 @@ export default observer(function BaseInfo() {
   }
   const limitsComponent = () => {
     let btnList: Array<object> = [];
-    if (['gxjb', 'dghm', 'ytll'].includes(appStore.HOSPITAL_ID)) {
+    if (['gxjb', 'dghm', 'ytll', 'qhwy'].includes(appStore.HOSPITAL_ID)) {
       editFlag() &&
         btnList.push({
           label: "修改",

@@ -248,76 +248,76 @@ export default observer(function TopPart() {
                 sheetViewModal.getSheetTableData();
               }}
               style={{ width: 230 }}
-              ranges={{
-                本周: [moment().startOf("week"), moment().endOf("week")],
-                上周: () => {
-                  let date: any = [
-                    moment(selectViewModal.params.startTime),
-                    moment(selectViewModal.params.endTime)
-                  ];
-                  /** 判断是否是一周 */
-                  let _date = date[0].format("YYYY-MM-DD");
-                  if (
-                    date[0].format("YYYY-MM-DD") ==
-                    date[0].startOf("week").format("YYYY-MM-DD") ||
-                    date[1].format("YYYY-MM-DD") ==
-                    date[0].endOf("week").format("YYYY-MM-DD")
-                  ) {
-                    return [date[0].subtract(7, "d"), date[1].subtract(7, "d")];
-                  }
-                  return [
-                    moment(_date)
-                      .week(moment(_date).week() - 1)
-                      .startOf("week"),
-                    moment(_date)
-                      .week(moment(_date).week() - 1)
-                      .endOf("week")
-                  ];
-                },
-                ...(isWhsl ? {} : {
-                  下周: () => {
-                    /** 判断是否是一周 */
+              ranges={
+                isWhsl ? {} : {
+                  本周: [moment().startOf("week"), moment().endOf("week")],
+                  上周: () => {
                     let date: any = [
                       moment(selectViewModal.params.startTime),
                       moment(selectViewModal.params.endTime)
                     ];
-                    let weeks = date[0].week();
+                    /** 判断是否是一周 */
+                    let _date = date[0].format("YYYY-MM-DD");
                     if (
                       date[0].format("YYYY-MM-DD") ==
                       date[0].startOf("week").format("YYYY-MM-DD") ||
                       date[1].format("YYYY-MM-DD") ==
                       date[0].endOf("week").format("YYYY-MM-DD")
                     ) {
-                      return [date[0].add(7, "d"), date[1].add(7, "d")];
+                      return [date[0].subtract(7, "d"), date[1].subtract(7, "d")];
                     }
                     return [
-                      moment()
-                        .week(moment().week() + 1)
+                      moment(_date)
+                        .week(moment(_date).week() - 1)
                         .startOf("week"),
-                      moment()
-                        .week(moment().week() + 1)
+                      moment(_date)
+                        .week(moment(_date).week() - 1)
                         .endOf("week")
                     ];
-                  },
-                  本月: [moment().startOf("month"), moment().endOf("month")],
-                  上月: [
-                    moment()
-                      .month(moment().month() - 1)
-                      .startOf("month"),
-                    moment()
-                      .month(moment().month() - 1)
-                      .endOf("month")
-                  ],
-                  下月: [
-                    moment()
-                      .month(moment().month() + 1)
-                      .startOf("month"),
-                    moment()
-                      .month(moment().month() + 1)
-                      .endOf("month")
-                  ]
-                })
-              }}
+                    },
+                    下周: () => {
+                      /** 判断是否是一周 */
+                      let date: any = [
+                        moment(selectViewModal.params.startTime),
+                        moment(selectViewModal.params.endTime)
+                      ];
+                      let weeks = date[0].week();
+                      if (
+                        date[0].format("YYYY-MM-DD") ==
+                        date[0].startOf("week").format("YYYY-MM-DD") ||
+                        date[1].format("YYYY-MM-DD") ==
+                        date[0].endOf("week").format("YYYY-MM-DD")
+                      ) {
+                        return [date[0].add(7, "d"), date[1].add(7, "d")];
+                      }
+                      return [
+                        moment()
+                          .week(moment().week() + 1)
+                          .startOf("week"),
+                        moment()
+                          .week(moment().week() + 1)
+                          .endOf("week")
+                      ];
+                    },
+                    本月: [moment().startOf("month"), moment().endOf("month")],
+                    上月: [
+                      moment()
+                        .month(moment().month() - 1)
+                        .startOf("month"),
+                      moment()
+                        .month(moment().month() - 1)
+                        .endOf("month")
+                    ],
+                    下月: [
+                      moment()
+                        .month(moment().month() + 1)
+                        .startOf("month"),
+                      moment()
+                        .month(moment().month() + 1)
+                        .endOf("month")
+                    ]
+                }
+              }
               disabledDate={disabledDate}
             />
           </div>

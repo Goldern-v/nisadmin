@@ -199,6 +199,14 @@ export default function MainBox() {
             width: 70
           }
         ],
+        ytll: [
+          {
+            title: "班次系数",
+            dataIndex: "coefficient",
+            key: "coefficient",
+            width: 70
+          }
+        ],
         other: []
       }
     }),

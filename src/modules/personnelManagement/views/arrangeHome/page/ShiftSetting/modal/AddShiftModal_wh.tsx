@@ -7,7 +7,7 @@ import {
   Select,
   Row,
   Col,
-  message, TimePicker
+  message, TimePicker, InputNumber
 } from "antd";
 import { ModalComponentProps } from "src/libs/createModal";
 import Form from "src/components/Form";
@@ -47,18 +47,21 @@ const rules: Rules = {
 
 /**隐藏责护 */
 const HIDE_ZH = ['dghm'].includes(appStore.HOSPITAL_ID)
+/** 是否显示班次系数 */
+const isYtll = 'ytll' === appStore.HOSPITAL_ID
+const isYtllText = 'ytll'
 export default function AddShiftModal(props: Props) {
   const [title, setTitle] = useState("添加班次");
   const [shiftList, setShiftList] = useState([]);
   const [colorList, setColorList] = useState([]);
   const [modalLoading, setModalLoading] = useState(false);
-  const [radioChange, setRadioChange] = useState("");
+  // const [radioChange, setRadioChange] = useState("");
   let { visible, onCancel } = props;
   let refForm = React.createRef<Form>();
-  useEffect(()=>{
-    console.log(radioChange);
+  // useEffect(()=>{
+  //   console.log(radioChange);
 
-  },[radioChange])
+  // },[radioChange])
   const parsingTime = (time: string) => {
     const [timeRange, timeRange2] = time.split(";");
     const [workTime1, workTime2] = (timeRange || "").split("-");
@@ -146,7 +149,8 @@ export default function AddShiftModal(props: Props) {
               settingNightHour: props.editData.settingNightHour,
               settingMorningHour: props.editData.settingMorningHour,
               nameColor: props.editData.nameColor,
-              status: props.editData.status
+              status: props.editData.status,
+              coefficient: props.editData?.coefficient || 0
             });
           } else {
             /** 表单数据初始化 */
@@ -163,7 +167,8 @@ export default function AddShiftModal(props: Props) {
               settingNightHour: "0",
               settingMorningHour: "0",
               nameColor: "",
-              status: true
+              status: true,
+              coefficient: 0
             });
           }
         });
@@ -284,6 +289,11 @@ export default function AddShiftModal(props: Props) {
                   </Select>
                 </Form.Field>
               </Col>
+              {isYtll && <Col span={24}>
+                <Form.Field label={`班次系数`} name="coefficient">
+                  <InputNumber min={0} />
+                </Form.Field>
+              </Col>}
               <Col span={24}>
                 <Form.Field label={`启用状态`} name="status">
                   <SwitchField />

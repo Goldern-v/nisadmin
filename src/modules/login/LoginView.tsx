@@ -324,7 +324,7 @@ export default withRouter(function LoginView(props: Props) {
             </div>
             {appStore.hisMatch({
               map: {
-                "whyx,sdlj,dghl,gzsrm,whhk,dghm": <div className="resetpassword CheckItem" onClick={() => {
+                "whyx,sdlj,dghl,gzsrm,whhk,dghm,ytll": <div className="resetpassword CheckItem" onClick={() => {
                   history.push('/resetpassword')
                 }}>
                   <span>重置密码</span>

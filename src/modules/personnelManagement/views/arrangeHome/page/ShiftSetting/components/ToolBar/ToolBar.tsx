@@ -6,7 +6,7 @@ import service from 'src/services/api'
 import styled from 'styled-components'
 import React, { useEffect, useState } from 'react'
 import { RouteComponentProps } from 'react-router'
-import { AutoComplete, Button, Form, Input, message, Modal, Select, Switch } from 'antd'
+import { AutoComplete, Button, Form, Input, InputNumber, message, Modal, Select, Switch } from 'antd'
 import { appStore, authStore, scheduleStore } from 'src/stores'
 
 import AddShiftModal from '../../modal/AddShiftModal'
@@ -15,7 +15,9 @@ import UpdateAllModal from "../../modal/UpdateAllModal"; // 一级菜单弹窗
 
 export interface Props extends RouteComponentProps {
 }
-
+// 是否显示班次系数
+const isYtll = 'ytll' === appStore.HOSPITAL_ID
+const isYtllText = 'ytll'
 export default function ToolBar() {
   const addShiftModal = createModal(
     appStore.hisMatch({
@@ -83,7 +85,17 @@ export default function ToolBar() {
       },
       status: {
         value: record.status != null ? record.status : true
-      }
+      },
+      ...appStore.hisMatch({
+        map: {
+          [isYtllText]: {
+            coefficient: {
+              value: record.coefficient || 0
+            }
+          },
+          other: {}
+        }
+      })
     };
     addShift("编辑排班");
   });
@@ -140,6 +152,17 @@ export default function ToolBar() {
         status: Form.createFormField({
           ...props.status,
           value: props.status.value
+        }),
+        ...appStore.hisMatch({
+          map: {
+            [isYtllText]: {
+              coefficient: Form.createFormField({
+                ...props.status,
+                value: props.status.value
+              })
+            },
+            other: {}
+          }
         })
       };
     },
@@ -210,6 +233,11 @@ export default function ToolBar() {
             />
           )}
         </Form.Item>
+        {isYtll && <Form.Item label="班次系数">
+          {getFieldDecorator("coefficient", {
+            rules: [{ required: false, message: "" }]
+          })(<InputNumber min={0} style={{ width: inputWidth }} />)}
+        </Form.Item>}
         <Form.Item label="启用状态">
           {getFieldDecorator("status", { valuePropName: "checked" })(
             <Switch />
@@ -263,11 +291,21 @@ export default function ToolBar() {
     },
     status: {
       value: true
-    }
+    },
+    ...appStore.hisMatch({
+      map: {
+        [isYtllText]: {
+          coefficient: {
+            value: 0
+          }
+        },
+        other: {}
+      }
+    })
   };
 
   const onOk = (title: any = "排班设置") => {
-    const postData = {
+    const postData: any = {
       id: fields.id.value, // 	Long 必须参数 班次名称
       name: fields.shiftName.value, // 	Long 必须参数 班次名称
       deptCode: scheduleStore.getDeptCode(), // string 必须参数 科室编码
@@ -279,6 +317,7 @@ export default function ToolBar() {
       nameColor: colorMap[fields.color.value], // string 必须参数 班次颜色
       status: fields.status.value // Boolean 必须参数 启用状态 true或者false
     };
+    fields?.coefficient?.value !== null && (postData.coefficient = fields.coefficient.value)
     service.scheduleShiftApiService.save(postData).then(res => {
       message.success(title + "成功");
       emitter.emit("更新班次列表");
@@ -317,7 +356,18 @@ export default function ToolBar() {
         },
         status: {
           value: true
-        }
+        },
+        // 班次系数
+        ...appStore.hisMatch({
+          map: {
+            [isYtllText]: {
+              coefficient: {
+                value: 0
+              }
+            },
+            other: {}
+          }
+        })
       };
     }
 
