@@ -226,7 +226,7 @@ export default observer(function Awards() {
       align: 'center'
     },
     {
-      title: '文章扫描件',
+      title: isDghm ?'封面扫描件' : '文章扫描件',
       dataIndex: '文章扫描件',
       key: '文章扫描件',
       width: 80,

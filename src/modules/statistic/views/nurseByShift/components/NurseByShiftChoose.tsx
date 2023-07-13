@@ -5,7 +5,7 @@ import emitter from "src/libs/ev";
 import { RouteComponentProps } from "react-router";
 import StatisticsApi from "src/modules/statistic/api/StatisticsApi";
 import { emit } from "process";
-import { authStore } from "src/stores";
+import { appStore, authStore } from "src/stores";
 
 const RadioGroup = Radio.Group;
 let checkboxItemState: any = [];
@@ -162,7 +162,7 @@ export default function BedSituation(props: any) {
         <div className="RightChooseByShiftRadio">
           <RadioGroup name="radioGroup" defaultValue={1}>
             <Radio value={1} onClick={radioClickLeft}>
-              按班次大类
+              {'qhwy' === appStore.HOSPITAL_ID ? '按班次小类' : '按班次大类'}
             </Radio>
             <Radio value={2} onClick={radioClickRight}>
               自定义班次

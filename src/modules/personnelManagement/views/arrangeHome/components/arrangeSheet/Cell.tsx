@@ -1,14 +1,14 @@
 import classNames from 'classnames'
 import styled from 'styled-components'
-import React, {useState} from 'react'
-import {observer} from 'src/vendors/mobx-react-lite'
-import {message, Popover} from 'src/vendors/antd'
-import {appStore, authStore} from 'src/stores'
-import {ContextMenu} from '../../types/contextMenu'
-import {sheetViewModal} from '../../viewModal/SheetViewModal'
-import {ArrangeItem} from '../../types/Sheet'
-import {cleanCell, cleanCellList, copyCellClick, copyRowClick, getAddArrangeMenuList} from './cellClickEvent'
-import {resetArrangeCount} from '../../page/EditArrangePage/components/FlightMenu'
+import React, { useState } from 'react'
+import { observer } from 'src/vendors/mobx-react-lite'
+import { message, Popover } from 'src/vendors/antd'
+import { appStore, authStore } from 'src/stores'
+import { ContextMenu } from '../../types/contextMenu'
+import { sheetViewModal } from '../../viewModal/SheetViewModal'
+import { ArrangeItem } from '../../types/Sheet'
+import { cleanCell, cleanCellList, copyCellClick, copyRowClick, getAddArrangeMenuList } from './cellClickEvent'
+import { resetArrangeCount } from '../../page/EditArrangePage/components/FlightMenu'
 
 export interface Props {
     contextMenu: ContextMenu;
@@ -20,7 +20,12 @@ export interface Props {
     index: number;
     isEdit: boolean;
 }
-
+/**排班符号 */
+const SymbolIcon = ({ symbol }: { symbol: any }) => {
+    return <span style={{ color: symbol.symbolColor || "#333" }}>
+        {symbol.symbol || ""}
+    </span>
+}
 export default observer(function Cell(props: Props) {
     let {
         contextMenu,
@@ -56,7 +61,7 @@ export default observer(function Cell(props: Props) {
             sheetViewModal.selectedCell && sheetViewModal.selectedCell.rangeName
         );
 
-        let {left: x, top: y, width, height} = target.getBoundingClientRect();
+        let { left: x, top: y, width, height } = target.getBoundingClientRect();
         /** 公休节休不可编辑 */
 
         let disableByName =
@@ -166,7 +171,7 @@ export default observer(function Cell(props: Props) {
                                     addRemakeModal.show({
                                         data: sheetViewModal.selectedCell,
                                         onOkCallBack(value: any) {
-                                            sheetViewModal.selectedCell.schRemarks = [{remark: value.detail}]
+                                            sheetViewModal.selectedCell.schRemarks = [{ remark: value.detail }]
                                         }
                                     });
                                 }
@@ -181,7 +186,7 @@ export default observer(function Cell(props: Props) {
                                     addRemakeModal.show({
                                         data: sheetViewModal.selectedCell,
                                         onOkCallBack(value: any) {
-                                            sheetViewModal.selectedCell.schRemarks = [{remark: value.detail}]
+                                            sheetViewModal.selectedCell.schRemarks = [{ remark: value.detail }]
                                         }
                                     });
                                 }
@@ -196,7 +201,7 @@ export default observer(function Cell(props: Props) {
                                     addRemakeModal.show({
                                         data: sheetViewModal.selectedCell,
                                         onOkCallBack(value: any) {
-                                            sheetViewModal.selectedCell.schRemarks = [{remark: value.detail}]
+                                            sheetViewModal.selectedCell.schRemarks = [{ remark: value.detail }]
                                         }
                                     });
                                 }
@@ -206,7 +211,7 @@ export default observer(function Cell(props: Props) {
                                 label: "二值",
                                 type: "text",
                                 onClick: () => {
-                                    sheetViewModal.selectedCell.schSpecial = [{type: 1, typeName: "二值"}]
+                                    sheetViewModal.selectedCell.schSpecial = [{ type: 1, typeName: "二值" }]
                                 }
                             },
                             {
@@ -214,7 +219,7 @@ export default observer(function Cell(props: Props) {
                                 label: "送病人",
                                 type: "text",
                                 onClick: () => {
-                                    sheetViewModal.selectedCell.schSpecial = [{type: 2, typeName: "送病人"}]
+                                    sheetViewModal.selectedCell.schSpecial = [{ type: 2, typeName: "送病人" }]
                                 }
                             },
                             {
@@ -222,7 +227,7 @@ export default observer(function Cell(props: Props) {
                                 label: "总值",
                                 type: "text",
                                 onClick: () => {
-                                    sheetViewModal.selectedCell.schSpecial = [{type: 3, typeName: "总值"}]
+                                    sheetViewModal.selectedCell.schSpecial = [{ type: 3, typeName: "总值" }]
                                 }
                             }
                         ],
@@ -235,7 +240,7 @@ export default observer(function Cell(props: Props) {
                                     addRemakeModal.show({
                                         data: sheetViewModal.selectedCell,
                                         onOkCallBack(value: any) {
-                                            sheetViewModal.selectedCell.schRemarks = [{remark: value.detail}]
+                                            sheetViewModal.selectedCell.schRemarks = [{ remark: value.detail }]
                                         }
                                     });
                                 }
@@ -245,7 +250,7 @@ export default observer(function Cell(props: Props) {
                                 label: "二值",
                                 type: "text",
                                 onClick: () => {
-                                    sheetViewModal.selectedCell.schSpecial = [{type: 1, typeName: "二值"}]
+                                    sheetViewModal.selectedCell.schSpecial = [{ type: 1, typeName: "二值" }]
                                 }
                             },
                             {
@@ -253,7 +258,7 @@ export default observer(function Cell(props: Props) {
                                 label: "三值",
                                 type: "text",
                                 onClick: () => {
-                                    sheetViewModal.selectedCell.schSpecial = [{type: 4, typeName: "三值"}]
+                                    sheetViewModal.selectedCell.schSpecial = [{ type: 4, typeName: "三值" }]
                                 }
                             },
                             {
@@ -261,7 +266,7 @@ export default observer(function Cell(props: Props) {
                                 label: "送病人",
                                 type: "text",
                                 onClick: () => {
-                                    sheetViewModal.selectedCell.schSpecial = [{type: 2, typeName: "送病人"}]
+                                    sheetViewModal.selectedCell.schSpecial = [{ type: 2, typeName: "送病人" }]
                                 }
                             },
                             {
@@ -269,7 +274,7 @@ export default observer(function Cell(props: Props) {
                                 label: "总值",
                                 type: "text",
                                 onClick: () => {
-                                    sheetViewModal.selectedCell.schSpecial = [{type: 3, typeName: "总值"}]
+                                    sheetViewModal.selectedCell.schSpecial = [{ type: 3, typeName: "总值" }]
                                 }
                             }
                         ],
@@ -279,7 +284,7 @@ export default observer(function Cell(props: Props) {
                 }),
                 ...appStore.hisMatch({
                     map: {
-                        'zhzxy':[{
+                        'zhzxy': [{
                             icon: require("../../images/修改工时.png"),
                             label: "添加备注",
                             type: "text",
@@ -287,7 +292,7 @@ export default observer(function Cell(props: Props) {
                                 addRemakeModal.show({
                                     data: sheetViewModal.selectedCell,
                                     onOkCallBack(value: any) {
-                                        sheetViewModal.selectedCell.schRemarks = [{remark: value.detail}]
+                                        sheetViewModal.selectedCell.schRemarks = [{ remark: value.detail }]
                                     }
                                 });
                             }
@@ -343,11 +348,30 @@ export default observer(function Cell(props: Props) {
                             label: (
                                 <div className="symbol-con">
                                     <div className="symbol-icon"
-                                         style={{color: item.symbolColor || ''}}>{item.symbol}</div>
+                                        style={{ color: item.symbolColor || '' }}>{item.symbol}</div>
                                     <div className="symbol-aside">{item.detail}</div>
                                 </div>
                             ),
                             onClick: (item: any) => {
+                                // 可选择2个符号，队列式
+                                if ('qhwy' === appStore.HOSPITAL_ID) {
+                                    const addSymbols = sheetViewModal.selectedCell.addSymbols || []
+                                    const curItem = {
+                                        symbol: item.dataSource.symbol,
+                                        detail: item.dataSource.detail,
+                                        symbolColor: item.dataSource.symbolColor
+                                    }
+                                    const index = addSymbols!.findIndex(v => v.symbol === curItem.symbol)
+                                    console.log('test-index', index)
+                                    if (index > -1) {
+                                        sheetViewModal.selectedCell.addSymbols?.splice(index, 1)
+                                    } else {
+                                        addSymbols!.push(curItem)
+                                        addSymbols!.length > 3 && addSymbols?.shift()
+                                        sheetViewModal.selectedCell.addSymbols = addSymbols
+                                    }
+                                    return
+                                }
                                 sheetViewModal.selectedCell.addSymbols = [
                                     {
                                         symbol: item.dataSource.symbol,
@@ -585,7 +609,7 @@ export default observer(function Cell(props: Props) {
             <div>
                 备注:
                 {cellObj.detail && <span>{cellObj.detail || ""}</span>}
-                {!cellObj.detail && <span style={{color: "#999"}}>无</span>}
+                {!cellObj.detail && <span style={{ color: "#999" }}>无</span>}
             </div>
         </div>
     );
@@ -612,8 +636,8 @@ export default observer(function Cell(props: Props) {
             'wh,wjgdszd,gxjb,lcey,dghl,fqfybjy,fssdy,fsxt,925,whyx,whhk,lyyz,ytll,zzwy': () => {
                 return (
                     (cellObj.schAddOrSubs &&
-                    cellObj.schAddOrSubs.length &&
-                    cellObj.schAddOrSubs[0].statusType == "1"
+                        cellObj.schAddOrSubs.length &&
+                        cellObj.schAddOrSubs[0].statusType == "1"
                         ? "加班"
                         : "减班") +
                     ":" +
@@ -637,8 +661,8 @@ export default observer(function Cell(props: Props) {
             'qhwy,whsl,dglb,dghm': () => {
                 return (
                     (cellObj.schAddOrSubs &&
-                    cellObj.schAddOrSubs.length &&
-                    cellObj.schAddOrSubs[0].statusType == "1"
+                        cellObj.schAddOrSubs.length &&
+                        cellObj.schAddOrSubs[0].statusType == "1"
                         ? "加班"
                         : "减班") +
                     ":" +
@@ -684,11 +708,11 @@ export default observer(function Cell(props: Props) {
             >
                 {/* backgroundColor={['whyx', 'fssdy'].includes(appStore.HOSPITAL_ID) ? cellObj.backgroundColor : ""} */}
                 {appStore.isDev && (
-                    <span style={{display: "none"}}>{JSON.stringify(cellConfig)}</span>
+                    <span style={{ display: "none" }}>{JSON.stringify(cellConfig)}</span>
                 )}
-                {cellConfig.isAddWordTime ? <div className="sj add"/> : ""}
-                {cellConfig.isJiJiaTime ? <div className="sj jijia"/> : ""}
-                {cellConfig.isReduceWordTime ? <div className="sj reduce"/> : ""}
+                {cellConfig.isAddWordTime ? <div className="sj add" /> : ""}
+                {cellConfig.isJiJiaTime ? <div className="sj jijia" /> : ""}
+                {cellConfig.isReduceWordTime ? <div className="sj reduce" /> : ""}
                 {cellConfig.isExpectedScheduling ? (
                     <img
                         className="expect"
@@ -700,7 +724,7 @@ export default observer(function Cell(props: Props) {
                 )}
                 {formatCell(cellObj, isEdit)}
                 {appStore.isDev && (
-                    <span style={{display: "none"}}>{JSON.stringify(cellObj)}</span>
+                    <span style={{ display: "none" }}>{JSON.stringify(cellObj)}</span>
                 )}
             </Wrapper>
         </Popover>
@@ -728,37 +752,40 @@ function formatCell(cellObj: ArrangeItem, isEdit = false) {
     })
     if (isHidden && !isEdit) {
         return (
-            <Con color={cellObj.nameColor}/>
+            <Con color={cellObj.nameColor} />
         )
     }
-    const symbol: any = (cellObj.addSymbols && cellObj.addSymbols[0]) || {}
+
+    const symbols: any[] = (cellObj.addSymbols && cellObj.addSymbols) || []
     if (cellObj) {
         return (
             <React.Fragment>
                 <Con color={cellObj.nameColor}>
                     {!['whyx', 'whhk'].includes(appStore.HOSPITAL_ID) &&
-                        <span style={{color: symbol.symbolColor || "#333"}}>
-            {symbol.symbol || ""}
-          </span>}
+                        symbols.map(symbol => <SymbolIcon symbol={symbol} />
+                        )}
                     {sheetViewModal.countArrangeNameList.includes(cellObj.rangeName)
                         ? (cellObj.rangeName || "") + (cellObj.rangeNameCode || "")
                         : cellObj.rangeName}
-                    {['whyx', 'whhk'].includes(appStore.HOSPITAL_ID) &&
-                        <span style={{color: symbol.symbolColor || "#333"}}>
-            {symbol.symbol || ""}
-          </span>
-                    }
+                        {['whyx', 'whhk'].includes(appStore.HOSPITAL_ID) &&
+                            symbols.map(symbol => <SymbolIcon symbol={symbol} />
+                            )}
+                    {/* {['whyx', 'whhk'].includes(appStore.HOSPITAL_ID) &&
+                        <span style={{ color: symbol.symbolColor || "#333" }}>
+                            {symbol.symbol || ""}
+                        </span>
+                    } */}
                 </Con>
                 {(cellObj.settings && cellObj.settings.length && (
-                        <React.Fragment>
-                            <span>/</span>
-                            <Con
-                                color={cellObj.settings.length && cellObj.settings[0].nameColor}
-                            >
-                                {cellObj.settings.length && cellObj.settings[0].rangeName}
-                            </Con>
-                        </React.Fragment>
-                    )) ||
+                    <React.Fragment>
+                        <span>/</span>
+                        <Con
+                            color={cellObj.settings.length && cellObj.settings[0].nameColor}
+                        >
+                            {cellObj.settings.length && cellObj.settings[0].rangeName}
+                        </Con>
+                    </React.Fragment>
+                )) ||
                     ""}
                 {/* 聊城二院 备注功能 */}
                 {(cellObj.schRemarks && cellObj.schRemarks.length) ? (

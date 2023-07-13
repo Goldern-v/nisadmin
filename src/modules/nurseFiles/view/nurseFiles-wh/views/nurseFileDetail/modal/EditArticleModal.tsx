@@ -69,6 +69,9 @@ export default function EditArticleModal(props: Props) {
     value.publicYear && (value.publicYear = ['zhzxy'].includes(appStore.HOSPITAL_ID) ? value.publicYear.format('YYYY-MM-DD') : value.publicYear.format('YYYY'))
     value.urlImageOne && (value.urlImageOne = value.urlImageOne.join(','))
     value.urlImageTwo && (value.urlImageTwo = value.urlImageTwo.join(','))
+    value.urlImageThree && (value.urlImageThree = value.urlImageThree.join(','))
+    value.urlImageFour && (value.urlImageFour = value.urlImageFour.join(','))
+    value.urlImageFive && (value.urlImageFive = value.urlImageFive.join(','))
     nurseFilesService.commonSaveOrUpdate('nurseWHArticle', { ...obj, ...value, sign }).then((res: any) => {
       message.success('保存成功')
       props.getTableData && props.getTableData()
@@ -160,7 +163,7 @@ export default function EditArticleModal(props: Props) {
                 </Form.Field>
               </Col>
             }
-            
+
             <Col span={24}>
               <Form.Field label={`期刊号`} name='periodicalNumber'>
                 <Input />
@@ -187,7 +190,7 @@ export default function EditArticleModal(props: Props) {
               </Form.Field>
             </Col>
             <Col span={24}>
-              <Form.Field label={`文章扫描件`} name='urlImageOne'>
+              <Form.Field label={isDghm ? `封面扫描件` : '文章扫描件'} name='urlImageOne'>
                 <MultipleImageUploader text='添加图片' tip={'上传杂志封面页、目录页、发表文章内容页、封底扫描件'} />
               </Form.Field>
             </Col>
@@ -196,21 +199,26 @@ export default function EditArticleModal(props: Props) {
                 <MultipleImageUploader text='添加图片' tip={'上传从收录网站下载的完整版文章内容'} />
               </Form.Field>
             </Col>
-            <Col span={24}>
-              <Form.Field label={`目录扫描件`} name='urlImageThree'>
-                <MultipleImageUploader text='添加图片' />
-              </Form.Field>
-            </Col>
-            <Col span={24}>
-              <Form.Field label={`正文扫描件`} name='urlImageFour'>
-                <MultipleImageUploader text='添加图片' />
-              </Form.Field>
-            </Col>
-            <Col span={24}>
-              <Form.Field label={`封底描件`} name='urlImageFive'>
-                <MultipleImageUploader text='添加图片' />
-              </Form.Field>
-            </Col>
+            {
+              isDghm &&
+              <>
+                <Col span={24}>
+                  <Form.Field label={`目录扫描件`} name='urlImageThree'>
+                    <MultipleImageUploader text='添加图片' />
+                  </Form.Field>
+                </Col>
+                <Col span={24}>
+                  <Form.Field label={`正文扫描件`} name='urlImageFour'>
+                    <MultipleImageUploader text='添加图片' />
+                  </Form.Field>
+                </Col>
+                <Col span={24}>
+                  <Form.Field label={`封底描件`} name='urlImageFive'>
+                    <MultipleImageUploader text='添加图片' />
+                  </Form.Field>
+                </Col>
+              </>
+            }
           </Row>
         </Form>
       </Wrapper>

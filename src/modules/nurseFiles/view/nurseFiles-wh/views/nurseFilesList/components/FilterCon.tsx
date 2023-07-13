@@ -134,6 +134,7 @@ export default observer(function FilterCon() {
     }
     statisticsViewModal.selectedDeptCode = value.deptCode;
     nurseFilesListViewModel.postObj = postObj;
+    'qhwy' === appStore.HOSPITAL_ID && (nurseFilesListViewModel.pageIndex = 1)
     nurseFilesListViewModel.loadNursingList();
   };
 
