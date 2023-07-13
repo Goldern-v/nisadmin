@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Button,Input } from "antd";
 
 import BaseTable, { DoCon } from "src/components/BaseTable";
@@ -12,7 +12,9 @@ import configDghl from './config/dghl'
 import configFqfybjy from './config/fqfybjy'
 import configGzsrm from './config/gzsrm'
 import configSdlj from './config/sdlj'
+import configDghm from './config/dghm'
 import { starRatingReportEditModel } from "../../model/StarRatingReportEditModel";
+import cloneDeep from 'lodash/cloneDeep'
 
 const { TextArea } = Input
 export interface Props {
@@ -21,11 +23,11 @@ export interface Props {
   setData: any;
 }
 const isSdljText = 'sdlj,nfsd,qzde'
-
+const isDghmText = 'dghm,zzwy'
 export default observer(function 夜班费上报表弹窗(props: Props) {
   let { sectionId, setData, data } = props;
 
-  let cloneData: any = cloneJson(data || { list: [] });
+  let cloneData: any = cloneDeep(data || { list: [] });
 
   const calBack = (type: string, data: any) => {
     switch (type) {
@@ -34,6 +36,8 @@ export default observer(function 夜班费上报表弹窗(props: Props) {
         break
       case 'addAllMoney':
         addAllMoney(data)
+        break
+      default:
         break
     }
   }
@@ -45,6 +49,7 @@ export default observer(function 夜班费上报表弹窗(props: Props) {
       //暂时隐藏20210926
       'gzsrm': configGzsrm.getColumns(cloneData, calBack),
       [isSdljText]: configSdlj.getColumns(cloneData, calBack),
+      [isDghmText]: configDghm.getColumns(cloneData, calBack),
       default: configDefault.getColumns(cloneData, calBack)
     },
     vague: true,
@@ -73,6 +78,7 @@ export default observer(function 夜班费上报表弹窗(props: Props) {
         fqfybjy: configFqfybjy.item,
         'gzsrm': configGzsrm.item(),
         [isSdljText]: configSdlj.item,
+        [isDghmText]: configDghm.item(),
         default: configDefault.item
       },
       vague:true,
@@ -169,7 +175,7 @@ const Wrapper = styled.div`
       box-shadow: none;
     }
   }
-  .ant-input{
+  .ant-input, .ant-input-number{
     resize: none;
     ${defaultInputStyle}
     /* :hover{
