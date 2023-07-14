@@ -2,6 +2,8 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
 import Zimage from 'src/components/Zimage'
+import {getFileType} from "src/utils/file/file";
+import {appStore} from "src/stores";
 export interface Props {
   pageData: any
 }
@@ -30,11 +32,14 @@ export default function FileCon(props: Props) {
         {props.pageData.detail.attachmentList &&
           props.pageData.detail.attachmentList.map((item: any, index: number) => (
             <div className='file-Item' key={index}>
-              <Zimage
-                style={{ width: '100%', height: '100%' }}
-                src={
-                  item.path || ''}
-              />
+              {getFileType(item.path) == 'img' && <Zimage
+                      style={{ width: '100%', height: '100%' }}
+                      src={item.path || ''}
+                  />}
+              {['word','excel'].includes(getFileType(item.path)) &&
+                <div className='norwap'>{ item.path.split('/').pop()}
+                  <div><a  href={item.path} download>下载</a></div>
+              </div>}
             </div>
           ))}
       </div>
@@ -58,5 +63,10 @@ const Wrapper = styled.div`
     height: 80px;
     margin-bottom: 10px;
     margin-left: 10px;
+  }
+  .norwap {
+   white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 `

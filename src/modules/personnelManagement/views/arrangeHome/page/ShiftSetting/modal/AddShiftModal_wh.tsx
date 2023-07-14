@@ -244,8 +244,6 @@ export default function AddShiftModal(props: Props) {
                     </Form.Field>
                   </Col>
                   {/* 时间段2 */}
-              {
-               appStore.HOSPITAL_ID !=='dglb' && <>
                     <Col span={13} style={{ paddingLeft: "100px" }}>
                       <Form.Field name="workTime3" required>
                         <TimePicker format={"HH:mm"} />
@@ -259,9 +257,6 @@ export default function AddShiftModal(props: Props) {
                         <TimePicker format={"HH:mm"} />
                       </Form.Field>
                     </Col>
-                  </>
-              }
-
 
               {/*<Col span={24}>*/}
               {/*  <Form.Field label={`上班时间`} name="workTime">*/}
