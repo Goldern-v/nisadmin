@@ -4,7 +4,6 @@ import React, { useEffect, useState } from 'react'
 import { RouteComponentProps } from 'src/components/RouterView'
 import QualityControlRecord from './views/qualityControlRecord/QualityControlRecord'
 import { Provider, KeepAlive } from 'react-keep-alive'
-export interface Props extends RouteComponentProps<{ name?: string }> { }
 
 import { ReactComponent as EJZK } from './images/icon/EJZK.svg'
 import { ReactComponent as YDBG } from './images/icon/YDBG2.svg'
@@ -16,6 +15,7 @@ import 质控表单汇总 from './views/qcDghl/质控表单汇总'
 import 一级质控问题原因措施汇总 from './views/qcFormGzsrm/一级质控问题原因措施汇总'
 import 福清一级质控问题原因措施汇总 from './views/qcFormFqfybjy/一级质控问题原因措施汇总'
 import { ReactComponent as JCTJ } from "./images/icon/JCTJ.svg";
+export interface Props extends RouteComponentProps<{ name?: string }> { }
 
 export default function QcOneRouterHj(props: Props) {
 

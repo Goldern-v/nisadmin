@@ -75,10 +75,10 @@ export default observer(function MultipleDeptSelect(props: Props) {
       >
         {/* 处理权限问题 */}
         {props.deptKey == "完整科室" && (
-          <Select.Option value="全院">全院</Select.Option>
+          <Select.Option value="全院" title="全院">全院</Select.Option>
         )}
         {deptList.map((item: DeptType) => (
-          <Select.Option key={item.name} value={item.code}>
+          <Select.Option key={item.name} value={item.code} title={item.name}>
             {item.name}
           </Select.Option>
         ))}

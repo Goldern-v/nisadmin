@@ -27,7 +27,7 @@ export default observer(function 健康宣教字典(props: Props) {
   const initTypeList: any = [];
   const [typeList, setTypeList] = useState(initTypeList);
   //科室列表
-  const [deptList, setDeptList] = useState([] as any)
+  const [deptList, setDeptList] = useState<any>([])
   //宣教接口请求参数
   const [queryInited, setQueryInited] = useState(false);
   const [cacheDeptCode, setCacheDeptCode] = useState('');
@@ -72,20 +72,6 @@ export default observer(function 健康宣教字典(props: Props) {
       className: 'dept-name',
       width: 150
     },
-    // {
-    //   title: '修改人',
-    //   dataIndex: 'creatorName',
-    //   key: 'creatorName',
-    //   align: 'center',
-    //   width: 100
-    // },
-    // {
-    //   title: '最后修改时间',
-    //   dataIndex: 'creatDate',
-    //   key: 'creatDate',
-    //   align: 'center',
-    //   width: 180
-    // }, 
     {
       title: '操作',
       dataIndex: '',
@@ -142,7 +128,6 @@ export default observer(function 健康宣教字典(props: Props) {
           let contentTop = contentEl.offsetTop;
           let itemTop = targetEl.offsetTop;
           let scrollTop = (itemTop - contentTop) - contentHeight / 2
-          // console.log('010', itemTop, contentHeight / 2)
 
           contentEl.scrollTop = scrollTop
           finish = true;
@@ -336,6 +321,7 @@ export default observer(function 健康宣教字典(props: Props) {
               key={item.code}
               className={classes.join(' ')}
               id={`dept${item.code}`}
+              title={item.name}
               onClick={() => handleDeptSelect(item)}>
               <span className="before" />{item.name}<span className="after" />
             </div>

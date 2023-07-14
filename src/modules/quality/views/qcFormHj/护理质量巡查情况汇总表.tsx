@@ -19,8 +19,8 @@ export default observer(function 护理质量巡查情况汇总表(props: Props)
   //科室列表
   const { deptList } = authStore
   //表单列表
-  const [formList, setFormList] = useState([] as any)
-  const [formListLoading, setFormListLoaindg] = useState(false)
+  const [formList, setFormList] = useState<any>([])
+  const [formListLoading, setFormListLoading] = useState(false)
   const [query, setQuery] = useState({
     wardCode: (authStore.isDepartment || authStore.isSupervisorNurse) ? '' : authStore.defaultDeptCode,
     qcCode: '',
@@ -29,8 +29,8 @@ export default observer(function 护理质量巡查情况汇总表(props: Props)
   })
 
   const [loading, setLoading] = useState(false)
-  const [tableData, setTableData] = useState([] as any[])
-  const [qcNameList, setQcNameList] = useState([] as any[])
+  const [tableData, setTableData] = useState<any[]>([])
+  const [qcNameList, setQcNameList] = useState<any[]>([])
 
   const columns: any[] = [
     {
@@ -116,15 +116,15 @@ export default observer(function 护理质量巡查情况汇总表(props: Props)
   }
 
   const getFormList = () => {
-    setFormListLoaindg(true)
+    setFormListLoading(true)
     qualityControlRecordApi.formTemplateList({
       level: Number(queryObj.qcLevel || '1'),
       templateName: ''
     })
       .then(res => {
-        setFormListLoaindg(false)
+        setFormListLoading(false)
         if (res.data) setFormList(res.data)
-      }, () => setFormListLoaindg(false))
+      }, () => setFormListLoading(false))
   }
 
   useEffect(() => {
@@ -172,9 +172,9 @@ export default observer(function 护理质量巡查情况汇总表(props: Props)
               filterOption={(input: any, option: any) =>
                 option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
               }>
-              {(authStore.isDepartment || authStore.isSupervisorNurse) && <Option value="">全部</Option>}
+              {(authStore.isDepartment || authStore.isSupervisorNurse) && <Option value="" title="全部">全部</Option>}
               {deptList.map((item: any, index: number) =>
-                <Option value={item.code} key={index}>{item.name}</Option>)}
+                <Option value={item.code} key={index} title={item.name}>{item.name}</Option>)}
             </Select>
           </div>
         </div>
@@ -321,7 +321,7 @@ const TextCon = styled.div`
   left: 0;
   top: 0;
 `;
-const Text = styled.div<{ x: string; y: string; deg: string }>`
+const Text = styled.div<{ x: string, y: string, deg: string }>`
   position: absolute;
   left: ${p => p.x};
   top: ${p => p.y};

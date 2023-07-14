@@ -1,17 +1,15 @@
 /** 科室选择器  */
 import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
-import { RouteComponentProps } from 'react-router'
+import React, { useEffect } from 'react'
 import { Select } from 'antd'
 import { observer } from 'mobx-react-lite'
 import { authStore } from 'src/stores'
-import StatisticsApi from 'src/modules/statistic/api/StatisticsApi.ts'
 export interface Props {
   onChange: (value: string) => void
 }
 
 export interface DeptType {
-  code: string
+  code: string,
   name: string
 }
 
@@ -37,7 +35,7 @@ export default observer(function DeptSelect(props: Props) {
         onChange={onChange}
       >
         {deptList.map((item: DeptType) => (
-          <Select.Option key={item.code} value={item.code}>
+          <Select.Option key={item.code} value={item.code} title={item.name}>
             {item.name}
           </Select.Option>
         ))}

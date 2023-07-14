@@ -1,9 +1,8 @@
 import { observer } from 'mobx-react'
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { Select, Input, Button, Row, Col,Modal,message,DatePicker,TimePicker  } from "antd";
+import { Select, Button, DatePicker } from "antd";
 import { PageTitle } from "src/components/common";
-import { NullBox } from 'src/modules/WardRegister/components/NullBox';
 import { badEventsNewService } from '../api/badEventsNewService';
 import { fileDownload } from "src/utils/file/file";
 import { appStore, authStore } from 'src/stores'
@@ -13,7 +12,7 @@ payload: any;
 }
 const { RangePicker } = DatePicker
 export default observer(function BadEventReportExport_gzsrm(props: Props) {
-    const [typeList, setTypeList] = useState([]) as any;
+    const [typeList, setTypeList] = useState<any>([]);
     const [btnLoading, setBtnLoading] = useState(false);
     const [query, setQuery] = useState({
         formCode:'',
@@ -71,11 +70,12 @@ export default observer(function BadEventReportExport_gzsrm(props: Props) {
                             setQuery({...query,deptCode:val})
                         }}
                         >
-                        <Select.Option key={'全部'} value={''}> 全院 </Select.Option>
+                        <Select.Option key={'全部'} value={''} title="全院"> 全院 </Select.Option>
                         {authStore.deptList.map((item: any, idx: any) =>
                             <Select.Option
                             key={idx}
-                            value={item.code}>
+                            value={item.code}
+                            title={item.name}>
                             {item.name}
                         </Select.Option>)}
                     </Select>

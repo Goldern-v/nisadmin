@@ -362,7 +362,6 @@ export default observer(function Cell(props: Props) {
                                         symbolColor: item.dataSource.symbolColor
                                     }
                                     const index = addSymbols!.findIndex(v => v.symbol === curItem.symbol)
-                                    console.log('test-index', index)
                                     if (index > -1) {
                                         sheetViewModal.selectedCell.addSymbols?.splice(index, 1)
                                     } else {

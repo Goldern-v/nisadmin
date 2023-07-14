@@ -35,7 +35,6 @@ export interface Props {
 export default observer(function AduitModal(props: Props) {
   const { visible, onOk, onCancel, dataOrigin, nodeInfo } = props
   const nodeCode = nodeInfo?.nodeCode || ''
-  console.log('test-nodeCode', nodeCode)
 
   const [auditInfo, setAuditInfo] = useState(initAuditInfo())
 

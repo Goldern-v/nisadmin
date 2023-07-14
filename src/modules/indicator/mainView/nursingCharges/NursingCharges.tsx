@@ -64,10 +64,10 @@ export default observer(function NursingCharges(props: Props) {
               nursingChargesModal.onload();
             }}
           >
-            <Select.Option value={""}>全部</Select.Option>
+            <Select.Option value={""} title="全部">全部</Select.Option>
             {nursingChargesModal.deptList.map((item: any) => {
               return (
-                <Select.Option value={item.code} key={item}>
+                <Select.Option value={item.code} key={item} title={item.name}>
                   {item.name}
                 </Select.Option>
               );

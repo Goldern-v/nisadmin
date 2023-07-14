@@ -305,7 +305,7 @@ export default observer(function TopCon(props: any) {
             }}
           >
             {filterDeptList.map((item: any) => (
-              <Option value={item.code} key={item.code}>
+              <Option value={item.code} key={item.code} title={item.name}>
                 {item.name}
               </Option>
             ))}

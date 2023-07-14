@@ -316,11 +316,11 @@ export default observer(function BadEventNewList() {
                     option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                 >
                   {/* {authStore.isDepartment && <Select.Option value="">全部</Select.Option>} */}
-                  <Select.Option value="">全部</Select.Option>
+                  <Select.Option value="" title="全部">全部</Select.Option>
                   {/* {(authStore.isDepartment ? deptList : authStore.deptList).map((item: any, idx: number) => { */}
                   {deptList.map((item: any, idx: number) => {
                     return (
-                      <Select.Option value={item.code} key={idx}>
+                      <Select.Option value={item.code} key={idx} title={item.name}>
                         {item.name}
                       </Select.Option>
                     );

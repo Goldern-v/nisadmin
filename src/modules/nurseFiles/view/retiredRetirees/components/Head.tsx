@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { Button } from 'antd'
 import { TableHeadCon } from 'src/components/BaseTable'
 import { Select } from 'src/vendors/antd'
@@ -57,11 +57,11 @@ export default observer(function Head() {
         }}
       >
         {!retiredRetireesViewModal.deptList.find((item: any) => item.code == '') && (
-          <Select.Option value='全部'>全部</Select.Option>
+          <Select.Option value='全部' title="全部">全部</Select.Option>
         )}
 
         {retiredRetireesViewModal.deptList.map((item: any, index: number) => (
-          <Select.Option value={item.code || '全部'} key={index}>
+          <Select.Option value={item.code || '全部'} key={index} title={item.name || '全部'}>
             {item.name}
           </Select.Option>
         ))}

@@ -33,11 +33,11 @@ export default observer(function 三级问题原因措施汇总() {
         : authStore.defaultDeptCode,
     qcCode: "",
   });
-  const [formList, setFormList] = useState([] as any);
+  const [formList, setFormList] = useState<any[]>([]);
 
   const [loading, setLoading] = useState(false);
-  const [tableData, setTableData] = useState([] as any[]);
-  const [formListLoading, setFormListLoaindg] = useState(false);
+  const [tableData, setTableData] = useState<any[]>([]);
+  const [formListLoading, setFormListLoading] = useState(false);
 
   const columns: ColumnProps<any>[] = [
     {
@@ -145,11 +145,11 @@ export default observer(function 三级问题原因措施汇总() {
   ];
 
   const formatGroupTableData = (orginData: any[]) => {
-    let formatList = [...orginData] as any[];
+    let formatList: any[] = [...orginData];
     let currentWardCode = "";
     let currentYearAndMonth = "";
-    let currentWardItem = null as any;
-    let currentYearAndMonthItem = null as any;
+    let currentWardItem: any = null;
+    let currentYearAndMonthItem: any = null;
 
     formatList.forEach((item: any) => {
       let wardCode = item.wardCode;
@@ -198,7 +198,7 @@ export default observer(function 三级问题原因措施汇总() {
     getTableData();
   }, [query]);
   const getFormList = () => {
-    setFormListLoaindg(true);
+    setFormListLoading(true);
     qualityControlRecordApi
       .formTemplateList({
         level: Number(queryObj.qcLevel || "1"),
@@ -206,10 +206,10 @@ export default observer(function 三级问题原因措施汇总() {
       })
       .then(
         (res) => {
-          setFormListLoaindg(false);
+          setFormListLoading(false);
           if (res.data) setFormList(res.data);
         },
-        () => setFormListLoaindg(false)
+        () => setFormListLoading(false)
       );
   };
 
@@ -255,10 +255,10 @@ export default observer(function 三级问题原因措施汇总() {
           }
         >
           {(authStore.isDepartment || authStore.isSupervisorNurse) && (
-            <Option value="">全部</Option>
+            <Option value="" title="全部">全部</Option>
           )}
           {deptList.map((item: any, index: number) => (
-            <Option value={item.code} key={index}>
+            <Option value={item.code} key={index} title={item.name}>
               {item.name}
             </Option>
           ))}

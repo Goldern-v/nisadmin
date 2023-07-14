@@ -72,9 +72,9 @@ export default observer(function Header(props: Props) {
             nursingDataModal.onload();
           }}
         >
-          <Select.Option value="">全部</Select.Option>
+          <Select.Option value="" title="全部">全部</Select.Option>
           {nursingDataModal.deptList.map((item: any, index: number) => (
-            <Select.Option value={item.code} key={item.code}>
+            <Select.Option value={item.code} key={item.code} title={item.name}>
               {item.name}
             </Select.Option>
           ))}
