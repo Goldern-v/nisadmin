@@ -108,7 +108,7 @@ export default observer(function FollowUpRecord() {
 
     ...appStore.hisMatch({
       map: {
-        'sdlj,qzde,dghm': [],
+        'sdlj,qzde,dghm,dglb': [],
         other: [{
           title: "积假结余",
           dataIndex: "totalHoliday",

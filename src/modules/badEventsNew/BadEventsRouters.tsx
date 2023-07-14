@@ -34,7 +34,6 @@ export default function BadEventsRouters(props: Props) {
         'nys,gzhd': [
           {
             title: " 不良事件查询",
-            // icon: <SJZK />,
             path: baseRouter,
             component: BadEventsNewList_nys,
             keepAlive: true,
@@ -87,21 +86,11 @@ export default function BadEventsRouters(props: Props) {
       },
       vague: true,
     }),
-    // {
-    //   title: '不良事件统计',
-    //   path: `${baseRouter}/不良事件统计`,
-    //   component: 不良事件统计,
-    // },
-    // {
-    //   title: '不良事件发生率',
-    //   path: `${baseRouter}/不良事件发生率`,
-    //   component: 不良事件发生率,
-    // },
+
     ...appStore.hisMatch({
       map: {
         'gzsrm,lcey,925': [],
         yczyy: [
-
           {
             title: '不良事件报告登记总表',
             path: `${baseRouter}/summaryTotal`,

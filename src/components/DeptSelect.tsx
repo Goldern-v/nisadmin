@@ -101,20 +101,20 @@ export default observer(function DeptSelect(props: Props) {
         }
       >
         {hasAllDept && (
-          <Select.Option key={"全院"} value={"全院"}>
+          <Select.Option key={"全院"} value={"全院"} title='全院'>
             全院
           </Select.Option>
         )}
 
         {props.extraDept &&
           props.extraDept.map((item: DeptType) => (
-            <Select.Option key={item.name} value={item.code}>
+            <Select.Option key={item.name} value={item.code} title={item.name}>
               {item.name}
             </Select.Option>
           ))}
 
         {deptList.map((item: DeptType) => (
-          <Select.Option key={item.name} value={item.code}>
+          <Select.Option key={item.name} value={item.code} title={item.name}>
             {item.name}
           </Select.Option>
         ))}

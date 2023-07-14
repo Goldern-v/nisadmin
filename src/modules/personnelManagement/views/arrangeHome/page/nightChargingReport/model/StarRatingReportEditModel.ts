@@ -197,9 +197,41 @@ class StarRatingReportEditModel {
       let res = await starRatingReportService.getReportLJ(query)
       data = res.data
     } else if (['zzwy', 'dghm'].includes(appStore.HOSPITAL_ID)) {
+      /**
+       * 该功能需显示对应settingList个数的条数
+       * 如果 settingList 有n，p2个班，那schNightTotalContentList就需要2条
+       * 外层total需要统计schNightTotalContentList的total之和
+       */
       let res = await starRatingReportService.getReport(query)
       data = res.data?.totalList || []
       this.settingList = res.data?.settingList || []
+      // if (this.sectionList.length > 1) {
+      data = data.map((v: any) => {
+        const {empName, empNo} = v
+        if (v.schNightTotalContentList.length === this.settingList.length) return {...v, total: v.schNightTotalContentList.reduce((prev: any, cur: any) => prev += cur.total, 0)}
+        let total = 0
+        const schNightTotalContentList = this.settingList.map((v1: any) => {
+            const idx = v.schNightTotalContentList.findIndex((v2: any) => v1.timeType === v2.nightShift)
+            if (idx > 0) {
+              total += v.schNightTotalContentList[idx].total
+              return v.schNightTotalContentList[idx]
+            }
+            return {
+              empName,
+              empNo,
+              nightShift: v1.timeType,
+              num: 0,
+              standard: 0,
+              total: 0,
+            }
+        })
+        return {
+          ...v,
+          schNightTotalContentList,
+          total
+        }
+      })
+      // }
     } else {
       let res = await starRatingReportService.getReport(query)
       data = res.data

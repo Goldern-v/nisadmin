@@ -40,7 +40,7 @@ export default observer(function Header(props: { modal: IModal }) {
             filterOption={(input: string, option: any) => option.props.children.includes(input)}
           >
             {props.modal.deptList.map((item: any, index: number) => (
-              <Select.Option value={item.code} key={index}>
+              <Select.Option value={item.code} key={index} title={item.name}>
                 {item.name}
               </Select.Option>
             ))}

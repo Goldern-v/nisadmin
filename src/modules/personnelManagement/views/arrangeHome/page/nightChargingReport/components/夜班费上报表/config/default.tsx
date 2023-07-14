@@ -76,30 +76,6 @@ const getColumns = (cloneData: any, calBack: Function) => {
       },
       width: 90
     },
-    ...appStore.hisMatch({
-      map: {
-        'zzwy,dghm': [{
-          title: "班次",
-          width: 100,
-          render(text: any, record: any) {
-            return <Select
-            style={{width: '100%'}}
-              value={record.nightShift}
-              onChange={(e: any) => {
-                record.nightShift = e
-                calBack('setData', cloneData)
-              }}>
-              {
-                CLASSES.map(v =>
-                  <Select.Option value={v.value} key={v.value}>{v.label}</Select.Option>)
-              }
-            </Select>
-          }
-        }],
-        other: []
-      },
-      vague: true
-    }),
     {
       title: "标准",
       render(text: any, record: any, index: number) {
@@ -159,7 +135,6 @@ const getTable = (list: any[]) => {
           <td>姓名</td>
           <td>金额</td>
           <td>数量</td>
-          {['zzwy', 'dghm'].includes(appStore.HOSPITAL_ID) && <td>班次</td>}
           <td>标准</td>
         </tr>
         {list.map((item, index) => (
@@ -168,7 +143,6 @@ const getTable = (list: any[]) => {
             <td style={{ textAlign: "center" }}>{item.empName}</td>
             <td style={{ textAlign: "center" }}>{item.total}</td>
             <td style={{ textAlign: "center" }}>{item.num}</td>
-            {['zzwy', 'dghm'].includes(appStore.HOSPITAL_ID) && <td style={{ textAlign: "center" }}>{item.nightShift}</td>}
             <td style={{ textAlign: "center" }}>{item.standard}</td>
           </tr>
         ))}

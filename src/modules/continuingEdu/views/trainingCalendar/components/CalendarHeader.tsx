@@ -1,21 +1,21 @@
 import styled from "styled-components";
 import React, { useState, useEffect } from "react";
 import { observer } from "mobx-react";
-import {CalendarUtilsData} from '../CalendarUtlis'
+import { CalendarUtilsData } from '../CalendarUtlis'
 import { Place } from "src/components/common";
-import { Select , Button, DatePicker } from 'antd';
-import {TrainingCalendarApi} from '../api/TrainingCalendar'
+import { Select, Button, DatePicker } from 'antd';
+import { TrainingCalendarApi } from '../api/TrainingCalendar'
 
 export default observer(function CalendarHeader() {
   const [yearPickerIsOpen, setyearPickerIsOpen] = useState(false); // 控制年份下拉打开
   const [AllDeptList, setAllDeptList] = useState([]);
-  useEffect(()=>{
-    TrainingCalendarApi.getAllDeptList().then((res)=>{
+  useEffect(() => {
+    TrainingCalendarApi.getAllDeptList().then((res) => {
       setAllDeptList(res.data?.deptList)
     })
-  },[])
+  }, [])
 
-  const handleYearClear = (value:any)=>{
+  const handleYearClear = (value: any) => {
 
   }
   const handlePanelChange = (value: any) => {
@@ -24,61 +24,57 @@ export default observer(function CalendarHeader() {
     CalendarUtilsData.onload()
   }
 
-  const handleChangeMonth = (value:any) => {
+  const handleChangeMonth = (value: any) => {
     CalendarUtilsData.month = value;
     CalendarUtilsData.onload()
   }
-  const handleChangeDept = (value:any) => {
-    console.log('dddddddddddddddddddddd');
-    
+  const handleChangeDept = (value: any) => {
+
     CalendarUtilsData.deptName = value;
     CalendarUtilsData.deptCode = [];
-    let currdept:any = AllDeptList.find((item:any) => item.name == value)
-    CalendarUtilsData.deptCode.push(currdept.code);
+    let curDept: any = AllDeptList.find((item: any) => item.name === value)
+    CalendarUtilsData.deptCode.push(curDept.code);
     CalendarUtilsData.onload()
   }
 
-  const exportCalend = ()=>{
+  const exportCalendar = () => {
     CalendarUtilsData.export()
   }
 
   return (
-      <Header>
-        <Title>培训日历</Title>
-        <Place/>
-        <span style={{ marginLeft: 15 }}>科室：</span>
-        <Select value={CalendarUtilsData.deptName} style={{ width: 130 }} onChange={handleChangeDept}>
-          {AllDeptList.map((item:any)=>{
-            return  <Select.Option value={item.name} key={item.code}>{item.name}</Select.Option>
-          })}
-          
-        </Select>
-        <span style={{ marginLeft: 15 }}>年度：</span>
-        <DatePicker
-          style={{ width: 100 }}
-          value={CalendarUtilsData.year}
-          open={yearPickerIsOpen}
-          mode='year'
-          className='year-picker'
-          placeholder='全部'
-          format='YYYY'
-          onChange={handleYearClear}
-          onOpenChange={ (status: boolean) => {
-            setyearPickerIsOpen(status)
-          }}
-          onPanelChange={handlePanelChange}
-        />
-        <span style={{ marginLeft: 15 }}>月份：</span>
-        <Select defaultValue={CalendarUtilsData.month} style={{ width: 100 }} onChange={handleChangeMonth}>
-          {['01','02','03','04','05','06','07','08','09','10','11','12'].map((item:any) => {
-            return <Select.Option value={item} key={item} >{item}</Select.Option>
-          })}
-        </Select>
-        <Button style={{ marginLeft: 15 }}  onClick={exportCalend}>导出</Button>
-        {/* <Button style={{ marginLeft: 15 }}>打印</Button> */}
-
-      </Header>
-
+    <Header>
+      <Title>培训日历</Title>
+      <Place />
+      <span style={{ marginLeft: 15 }}>科室：</span>
+      <Select value={CalendarUtilsData.deptName} style={{ width: 130 }} onChange={handleChangeDept}>
+        {AllDeptList.map((item: any) => {
+          return <Select.Option value={item.name} key={item.code} title={item.name}>{item.name}</Select.Option>
+        })}
+      </Select>
+      <span style={{ marginLeft: 15 }}>年度：</span>
+      <DatePicker
+        style={{ width: 100 }}
+        value={CalendarUtilsData.year}
+        open={yearPickerIsOpen}
+        mode='year'
+        className='year-picker'
+        placeholder='全部'
+        format='YYYY'
+        onChange={handleYearClear}
+        onOpenChange={(status: boolean) => {
+          setyearPickerIsOpen(status)
+        }}
+        onPanelChange={handlePanelChange}
+      />
+      <span style={{ marginLeft: 15 }}>月份：</span>
+      <Select defaultValue={CalendarUtilsData.month} style={{ width: 100 }} onChange={handleChangeMonth}>
+        {['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'].map((item: any) => {
+          return <Select.Option value={item} key={item} >{item}</Select.Option>
+        })}
+      </Select>
+      <Button style={{ marginLeft: 15 }} onClick={exportCalendar}>导出</Button>
+      {/* <Button style={{ marginLeft: 15 }}>打印</Button> */}
+    </Header>
   )
 })
 
@@ -97,7 +93,7 @@ const Header = styled.div`
   font-size: 15px;
   display: flex;
   align-items:center;
-  justify-center: center;
+  justify-content: center;
   color: #333;
   background-color: #fff;
 `;

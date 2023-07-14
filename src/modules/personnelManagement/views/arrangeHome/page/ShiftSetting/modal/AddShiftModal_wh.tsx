@@ -46,7 +46,7 @@ const rules: Rules = {
 };
 
 /**隐藏责护 */
-const HIDE_ZH = ['dghm'].includes(appStore.HOSPITAL_ID)
+const HIDE_ZH = ['dghm','dglb'].includes(appStore.HOSPITAL_ID)
 /** 是否显示班次系数 */
 const isYtll = 'ytll' === appStore.HOSPITAL_ID
 const isYtllText = 'ytll'
@@ -244,19 +244,19 @@ export default function AddShiftModal(props: Props) {
                     </Form.Field>
                   </Col>
                   {/* 时间段2 */}
-                  <Col span={13} style={{ paddingLeft: "100px" }}>
-                    <Form.Field name="workTime3" required>
-                      <TimePicker format={"HH:mm"} />
-                    </Form.Field>
-                  </Col>
-                  <Col span={1}>
-                    <div style={{ marginLeft: '-5px', lineHeight: "32px", textAlign: "center" }}>-</div>
-                  </Col>
-                  <Col span={8}>
-                    <Form.Field name="workTime4" required>
-                      <TimePicker format={"HH:mm"} />
-                    </Form.Field>
-                  </Col>
+                    <Col span={13} style={{ paddingLeft: "100px" }}>
+                      <Form.Field name="workTime3" required>
+                        <TimePicker format={"HH:mm"} />
+                      </Form.Field>
+                    </Col>
+                    <Col span={1}>
+                      <div style={{ marginLeft: '-5px', lineHeight: "32px", textAlign: "center" }}>-</div>
+                    </Col>
+                    <Col span={8}>
+                      <Form.Field name="workTime4" required>
+                        <TimePicker format={"HH:mm"} />
+                      </Form.Field>
+                    </Col>
 
               {/*<Col span={24}>*/}
               {/*  <Form.Field label={`上班时间`} name="workTime">*/}

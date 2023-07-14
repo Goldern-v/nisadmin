@@ -27,7 +27,7 @@ export default observer(function 护理质量检查小结() {
   )
 
   const [loading, setLoading] = useState(false)
-  const [tableData, setTableData] = useState([] as any[])
+  const [tableData, setTableData] = useState<any[]>([])
   const [viewType, setViewType] = useState('table')
 
   //图表高度自适应相关
@@ -39,9 +39,9 @@ export default observer(function 护理质量检查小结() {
   const [chartHeight, setChartHeight] = useState(chartHeightCol())
 
   //图表相关数据
-  const [chartData, setChartData] = useState([] as any[])
+  const [chartData, setChartData] = useState<any[]>([])
   //查看图表类型
-  const [chartType, setChartType] = useState('column' as 'bar' | 'circle' | 'ring' | 'column')
+  const [chartType, setChartType] = useState<'bar' | 'circle' | 'ring' | 'column'>('column')
   const chartTypeArr = [
     {
       name: '柱状',
@@ -133,18 +133,7 @@ export default observer(function 护理质量检查小结() {
     },
   ]
 
-  // console.log(chartData.map((item: any) => {
-  //   return {
-  //     type: item.itemName,
-  //     value: item.size
-  //   }
-  // }))
-  
-  // const onRowHandler = (a:any,)=>{
-  //   console.log();
-  // } 
   const getTableData = () => {
-    // console.log(queryObj.qcLevel)
     setLoading(true)
     qcFormGzsrmService.countTemplateDetail({
       qcLevel: queryObj.qcLevel || '1',
@@ -231,9 +220,9 @@ export default observer(function 护理质量检查小结() {
               filterOption={(input: any, option: any) =>
                 option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
               }>
-              {(authStore.isDepartment || authStore.isSupervisorNurse) && <Option value="">全部</Option>}
+              {(authStore.isDepartment || authStore.isSupervisorNurse) && <Option value="" title="全部">全部</Option>}
               {deptList.map((item: any, index: number) =>
-                <Option value={item.code} key={index}>{item.name}</Option>)}
+                <Option value={item.code} key={index} title={item.name}>{item.name}</Option>)}
             </Select>
           </div>
         </div>
@@ -295,16 +284,16 @@ export default observer(function 护理质量检查小结() {
               onMouseEnter: (event:any) => {
                 let list=document.getElementsByClassName(`${record.wardCode}`) 
                 for(let i=0;i<list.length;i++){
-                 let elemnt=list[i] as HTMLElement
-                 elemnt.style.backgroundColor='rgb(211, 229, 220)';
+                 let ele: any = list[i]
+                 ele.style.backgroundColor='rgb(211, 229, 220)';
                 }
                 return
               }, // 鼠标移入行
               onMouseLeave:()=>{
                let list=document.getElementsByClassName(`${record.wardCode}`)
                 for(let i=0;i<list.length;i++){
-                  let elemnt=list[i] as HTMLElement
-                  elemnt.style.backgroundColor='';
+                  let ele: any = list[i]
+                  ele.style.backgroundColor='';
                  }
                 return
               }

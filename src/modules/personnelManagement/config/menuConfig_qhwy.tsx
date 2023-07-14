@@ -42,7 +42,7 @@ export const meunConfig: meunConfigItem[] = [
       },
       ...appStore.hisMatch({
         map: {
-        'dghm': [],
+        'dghm,dglb': [],
         other: [
           {
             title: "管床设置",
@@ -50,8 +50,8 @@ export const meunConfig: meunConfigItem[] = [
             component: TubeBed,
             iSlimit: false,
           },
-        ]
-      }}),
+        ],
+      }, vague: true}),
       {
         title: "我的期望排班",
         path: "/personnelManagement/expectedRecordSelf",

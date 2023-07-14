@@ -98,7 +98,6 @@ export default observer(function BadEventStatisticalReportDetail(props) {
   }
   // 护理不良事件分类表
   const typeAnalysisTable = (arr: Obj[]) => {
-    console.log('test-arr', arr)
     if (!arr.length) return arr
     return Array.from(Array(Math.ceil(arr.length / 2)), (j, k) => k)
   }
@@ -106,7 +105,6 @@ export default observer(function BadEventStatisticalReportDetail(props) {
   const onSave = async () => {
     try {
       setLoading(true)
-      console.log('test-', saveVal.current)
       // setData(val => {
         const res = await badEventsNewService.saveCommonWithBeReport({ id: match.params.id, detail: JSON.stringify(saveVal.current) })
         setLoading(false)
@@ -138,7 +136,6 @@ export default observer(function BadEventStatisticalReportDetail(props) {
         try {
           setLoading(true)
           const res = await badEventsNewService.deleteCommonWithBeReport(match.params.id)
-          console.log('test-res', res)
           setLoading(false)
           message.success('删除成功！')
           history.replace(reportRoute)
@@ -185,7 +182,6 @@ export default observer(function BadEventStatisticalReportDetail(props) {
   }
   const handleDetailList = (idx: number, data: Obj) => {
     setDetailList(val => {
-      console.log('test-val', val)
       return val.map((v, i) => idx === i ? { ...v, ...data } : v)
     })
   }

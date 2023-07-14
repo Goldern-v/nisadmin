@@ -1072,10 +1072,6 @@ const routes: RouteItem[] = [
     path: "/selfNurseFile",
     redirect: "/selfNurseFile/baseInfo"
   },
-  // {
-  //   path: "/indicator",
-  //   redirect: "/indicator/床护比统计"
-  // },
   {
     path: "/indicator",
     redirect: "/indicator/护理质量相关数据"

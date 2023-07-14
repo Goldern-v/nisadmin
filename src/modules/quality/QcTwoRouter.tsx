@@ -154,7 +154,6 @@ export default observer(function QcTwoRouter(props: Props) {
           path: "/qcTwo/护理质量巡查情况汇总表?qcLevel=2",
           component: 护理质量巡查情况汇总表,
           keepAlive: true,
-          // hide: !appStore.isDev,
           disabledKeepAlive:
             (appStore.history && appStore.history.action) !== "POP",
         },

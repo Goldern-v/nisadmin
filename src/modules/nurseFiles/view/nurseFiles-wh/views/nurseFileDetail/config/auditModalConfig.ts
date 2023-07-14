@@ -436,7 +436,7 @@ export function openAuditModal(
           }),
         ],
         fileFormat: {
-          文章扫描件: `urlImageOne`,
+          [isDghm ? '封面扫描件' : '文章扫描件']: `urlImageOne`,
           网络下载件: `urlImageTwo`,
           ...(isDghm
             ? {
