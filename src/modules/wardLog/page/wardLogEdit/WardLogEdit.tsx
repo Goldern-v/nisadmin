@@ -35,7 +35,6 @@ export default observer(function WardLogEdit(props: any) {
   const search = qs.parse(location.search.replace('?', ''))
   const [loading, setLoading] = useState(false)
   const [title, setTitle] = useState('')
-
   const [recievers, setRecievers] = useState([] as any)
   const [info, setInfo] = useState({} as any)
   const [editList, setEditList] = useState([] as any[])
@@ -43,7 +42,9 @@ export default observer(function WardLogEdit(props: any) {
   const [attachmentList, setAttachmentList] = useState([] as FileItem[])
   const [showAllReciever, SetShowAllReciever] = useState(false)
   const [deptListAll, setDeptListAll] = useState([] as any[])
-
+  const [accept,setAccept] =useState('image/jpg, image/jpeg, image/png')
+  const [addPerson, setAddPerson] = useState([] as any)  //列表展示
+  const [person, setPerson] = useState('')
   const selectPeopleModal = createModal(SelectPeopleModal)
 
   const initAuth = () => {
@@ -137,7 +138,7 @@ export default observer(function WardLogEdit(props: any) {
                 })
               setRecievers(newRecievers)
             }
-
+            /*重新获取参与的人员*/
             if (templateDto.templateProgress)
               setEditList(templateDto.templateProgress)
           }
@@ -189,6 +190,7 @@ export default observer(function WardLogEdit(props: any) {
               })
 
             setRecievers(newRecievers)
+            /*要重新获取对应的参与人员数据*/
             delete res.data.detail.receiverList
 
             //渲染附件列表
@@ -306,14 +308,26 @@ export default observer(function WardLogEdit(props: any) {
     selectPeopleModal.show({
       checkedUserList: recievers,
       onOkCallBack: (payload) => {
-
         let newRecieversArr = [] as any[]
         formatRecievers(payload, newRecieversArr)
         setRecievers(newRecieversArr)
       }
     })
   }
-
+  /*添加参与人员*/
+  const handleAddPersonEdit = () => {
+    selectPeopleModal.show({
+      checkedUserList: addPerson,
+      onOkCallBack: (payload) => {
+        let arr = [] as any[]
+        formatRecievers(payload, arr)
+        console.log("arr.join(',')",arr.join(','));
+        let findName =arr.map((item:any)=>item.empName)
+        setPerson(findName.join(','))
+        setAddPerson(arr)
+      }
+    })
+  }
   const getAllDept = () => {
     service.commonApiService.getNursingUnitAll()
       .then((res) => {
@@ -330,10 +344,14 @@ export default observer(function WardLogEdit(props: any) {
 
     getAllDept()
 
-    if (search.templateId)
+    if (search.templateId){
       initEdit()
-    else
+    }else{
       getRecordData()
+    }
+   if(appStore.HOSPITAL_ID == 'qhwy'){
+     setAccept('image/jpg, image/jpeg, image/png,.doc, .docx,.xls, .xlsx')
+   }
   }, [])
 
   return <Wrapper>
@@ -361,9 +379,24 @@ export default observer(function WardLogEdit(props: any) {
               </div>
             }
           })}
+          {/* 添加人员功能  可能要后端加上字段 目前先前端写死*/}
+          {/*<div className="edit-row">*/}
+          {/*  <div className="title">参与人员</div>*/}
+          {/*  <div className="content">*/}
+          {/*    <Input.TextArea autosize={{ minRows: 3 }} value={person} onChange={(e) => setPerson(e.target.value)} />*/}
+          {/*  </div>*/}
+          {/*  <div className='buttonBox'>*/}
+          {/*    <Button*/}
+          {/*        type="primary"*/}
+          {/*        size="small"*/}
+          {/*        onClick={handleAddPersonEdit}>*/}
+          {/*      添加参与人员*/}
+          {/*    </Button>*/}
+          {/*  </div>*/}
+          {/*</div>*/}
           <div className="edit-row">
             <div className="title">备注</div>
-            <div className="content">
+            <div className="content" >
               <Input.TextArea autosize={{ minRows: 3 }} value={remark} onChange={(e) => setRemark(e.target.value)} />
             </div>
           </div>
@@ -371,7 +404,7 @@ export default observer(function WardLogEdit(props: any) {
             <div className="title">附件</div>
             <div className="content">
               <MultiFileUploader
-                accept='image/jpg, image/jpeg, image/png, image/bmp'
+                accept={accept}
                 type="wardlog"
                 data={attachmentList}
                 onChange={(newList: FileItem[]) => setAttachmentList(newList)} />
@@ -590,6 +623,12 @@ const Wrapper = styled.div`
       .content{
         margin-bottom: 10px;
       }
+    }
+    .buttonBox{
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      width: 100%;
     }
   }
   .nurse-item{
