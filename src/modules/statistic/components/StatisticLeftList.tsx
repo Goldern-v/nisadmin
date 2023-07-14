@@ -221,11 +221,18 @@ const LEFT_MENU_CONFIG = [
           path: "/statistic/wardExecute",
         },
       ],
-      '925': [{
-        title: '病人流转统计',
-        icon: <HZCXTJ />,
-        path: '/statistic/patientFlow',
-      }],
+      '925': [
+        {
+          title: '病人流转统计',
+          icon: <HZCXTJ />,
+          path: '/statistic/patientFlow',
+        },
+        {
+          title: '设备使用统计',
+          icon: <HZCXTJ />,
+          path: '/statistic/equipment',
+        }
+      ],
       other: []
     },
   }),

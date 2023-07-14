@@ -370,6 +370,40 @@ class StatisticsApi extends BaseApiService {
   public getNurseByDeptAndNum() {
     return this.get('/whiteboard/getNurseByDeptAndNum')
   }
+
+  //设备使用统计模块
+  // 查询所有设备类别
+  public getAllDeviceType() {
+    return this.get('/deviceType/getAll')
+  }
+  
+  // 统计查询 /api/deviceUsage/count
+  public getDeviceUsageCount(query: any) {
+    return this.post('/deviceUsage/count', query)
+  }
+
+  // 获取选中需要统计的设备类别做标题
+  public getAllNeedCount_deviceType() {
+    return this.get('/deviceType/getAllNeedCount')
+  }
+  // 获取设备标题
+  public getAllNeedCount(query: any) {
+    return this.post('/device/getAllNeedCount', query)
+  }
+  // 修改要进行统计的设备类别
+  public changeIsCountType(query: any) {
+    return this.post('/deviceType/changeIsCount', query)
+  }
+
+  // 获取根据科室名和设备类别获取设备
+  public getByDevice(query: any) {
+    return this.post('/device/getDeviceByType', query)
+  }
+ 
+  // 修改要进行统计的设备
+  public changeIsCountDevice(query: any) {
+    return this.post('/device/changeIsCount', query)
+  }
 }
 
 let statisticsApi = new StatisticsApi()

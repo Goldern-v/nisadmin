@@ -30,6 +30,7 @@ import professionalTec from './views/professional-tec'
 import TelFollowUp from './views/telFollowUp/TelFollowUp'
 import WardEquipment from './views/wardEquipment/WardEquipment'
 import WardExecute from './views/wardExecute/WardExecute'
+import Equipment from './views/equipment/index'
 
 // import StatisticHeader from './components/StatisticHeader'
 // 护士排班表
@@ -336,11 +337,19 @@ export default function StatisticView() {
             component: WardExecute,
           },
         ],
-        '925': [{
-          name: '病人流转统计',
-          path: '/statistic/patientFlow',
-          component: PatientFlow
-        }],
+        '925': 
+        [
+          {
+            name: '病人流转统计',
+            path: '/statistic/patientFlow',
+            component: PatientFlow
+          },
+          {
+            name: '设备使用统计',
+            path: '/statistic/equipment',
+            component: Equipment
+          },
+        ],
         default: [],
       },
       vague:true
@@ -349,7 +358,7 @@ export default function StatisticView() {
   // const leftNursingStatistics = [{ name: '护理人员一览表', path: '/statistic/护理人员一览表', component: NurseList }]
 
   let currentRoutePath = store.appStore.history.location.pathname;
-  console.log(currentRoutePath);
+  // console.log(currentRoutePath);
 
   let CurrentRoute = leftListPath.find(
     (item) => item.path === currentRoutePath
