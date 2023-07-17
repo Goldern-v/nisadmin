@@ -52,6 +52,7 @@ class planData {
 
     // 月份计划
     @observable public pathname = "";//路径pathname
+    @observable public createDeptCode = ''; //科室
     @observable public createYear = moment() as undefined | moment.Moment; //年份
     @observable public createQuarter = moment().quarter() as unknown; //季度
     @observable public createMonth = moment().month() + 1; //yue份
@@ -95,6 +96,7 @@ class planData {
         return {
             type:this.typeObject[this.pathname],
             year: this.createYear?.year(),
+            deptCode:this.createDeptCode,
         }
     }
 
@@ -113,11 +115,13 @@ class planData {
     /**获取两级 科室 */
     getDept(){
         nursingHandlerApi.getDeptList().then(res=>{
-            res.data.unshift({
-              name:'全部',
-              code:''
-            })
-            this.deptList = res.data
+            // res.data.unshift({
+            //   name:'全部',
+            //   code:''
+            // })
+            this.deptList = res.data.treeDept || []
+            this.createDeptCode = res.data.userDeptCode || ''
+
             // setDeptListAll(res.data)
           }).catch(err=>{
   

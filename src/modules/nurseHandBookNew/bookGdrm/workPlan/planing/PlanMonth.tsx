@@ -89,8 +89,7 @@ export default observer(function PlanMonth(props: Props) {
         } else if (planDatas.pathname.indexOf('month') > -1) {
             paramter.month = planDatas.createMonth
         }
-        // console.log(paramter)
-        // return
+
         planDatas.mainLoading = true
         nursingHandlerApi.recordCreate(paramter).then(res => {
             planDatas.mainLoading = false
@@ -340,23 +339,40 @@ export default observer(function PlanMonth(props: Props) {
                     onCancel={handleCancel}
                 >
                     <div className='modal-content'>
-                        <div className="item-row">
-                            {/* <Col span={4}> */}
+                    <div className="item-row" >
+                    <div
+              className="label"
+              style={{ fontWeight: "bold", marginBottom: ".3em" }}
+            >
+              科室</div>
+              <Select
+                style={{ width: "100%" }}
+                value={planDatas.createDeptCode}
+                onChange={(val: any) => {
+                  planDatas.createDeptCode = val;
+                }}
+              >
+                {planDatas.deptList.map((v: any, i: number) => (
+                  <Option key={v.code} value={v.code}>
+                    {v.name}
+                  </Option>
+                ))}
+              </Select>
+            
+                            </div>
+                        <div className="item-row" style={{ marginTop: '15px' }}>
                                 <div className="label" style={{fontWeight: 'bold',marginBottom: '.3em'}}>年份</div>
-                            {/* </Col> */}
-                            {/* <Col span={16}> */}
+                           
                                 <DatePicker
                                     open={yearPickShow1}
                                     onOpenChange={status => {
                                         setYearPickShow1(status)
                                     }}
                                     onPanelChange={(value, mode) => {
-                                        // planDatas.yearYear = value
-                                        // setCreateYear(value)
-                                        // console.log(value?.year())
+                                        
                                         planDatas.createYear = value
                                         setYearPickShow1(false)
-                                        // onload()
+                                        
                                     }}
                                     mode="year"
                                     style={{ width: '100%' }}
@@ -365,21 +381,17 @@ export default observer(function PlanMonth(props: Props) {
                                     placeholder='选择年份'
                                     format="YYYY"
                                 />
-                            {/* </Col> */}
                         </div>
                         {planDatas.pathname.indexOf('quarter') > -1 &&
                             <div className="item-row" style={{ marginTop: '15px' }}>
-                                {/* <Col span={4}> */}
                                     <div className="label" style={{fontWeight: 'bold',marginBottom: '.3em'}}>季度</div>
-                                {/* </Col>
-                                <Col span={16}> */}
+                                
                                     <Select
                                         style={{ width: '100%' }}
                                         value={planDatas.createQuarter}
                                         onChange={(val: any) => {
                                             planDatas.createQuarter = val
-                                            // console.log('quarter', val)
-                                            // clinicalData.onload()
+                                           
                                         }}
                                     >
                                         {
@@ -388,7 +400,6 @@ export default observer(function PlanMonth(props: Props) {
                                             ))
                                         }
                                     </Select>
-                                {/* </Col> */}
                             </div>}
                         {planDatas.pathname.indexOf('month') > -1 &&
                             <div className="item-row" style={{ marginTop: '15px' }}>
