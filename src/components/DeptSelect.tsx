@@ -55,7 +55,7 @@ export default observer(function DeptSelect(props: Props) {
       "/auditsManagement",
       "/quality/:name",
     ];
-    if(['925'].includes(appStore.HOSPITAL_ID)){
+    if(['925', 'zjhj'].includes(appStore.HOSPITAL_ID)){
         hasAllDeptRouteList.push("/statistic/:name")
     }
     if (

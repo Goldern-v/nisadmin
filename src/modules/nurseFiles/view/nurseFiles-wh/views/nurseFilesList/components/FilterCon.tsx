@@ -4,7 +4,7 @@ import { nurseFilesListViewModel } from "../NurseFilesListViewModel";
 import { observer } from "mobx-react-lite";
 import { to } from "src/libs/fns";
 import Form from "src/components/Form";
-import { Row, Col, Input, Select,InputNumber } from "src/vendors/antd";
+import { Row, Col, Input, Select } from "src/vendors/antd";
 import { statisticsViewModal } from "src/modules/nurseFiles/view/statistics/StatisticsViewModal";
 import AgeRangePicker from "src/components/AgeRangePicker";
 import YearTimeRangePicker from "src/components/YearTimeRangePicker";
@@ -13,10 +13,11 @@ import { appStore } from "src/stores";
 import emitter from "src/libs/ev";
 import { cleanObj } from "src/utils/object/cleanObj";
 import { Obj } from "src/libs/types";
-import { IDENTITY_TYPES,MERITORIOUS_PERFORMANCE } from "src/modules/nurseFiles/enums";
+import { IDENTITY_TYPES } from "src/modules/nurseFiles/enums";
 import { DatePicker } from "antd";
-import { dateFormat3, dateFormat5} from "src/modules/nurseHandBookNew/views/detail-lyrm/config";
+import { dateFormat3 } from "src/modules/nurseHandBookNew/views/detail-lyrm/config";
 import HeightRangePicker from "src/components/HeightRangePicker";
+const is925 = ['925', 'zjhj'].includes(appStore.HOSPITAL_ID)
 
 export default observer(function FilterCon() {
   let refForm = React.createRef<Form>();
@@ -56,30 +57,30 @@ export default observer(function FilterCon() {
     let [err, value] = await to(form.validateFields());
     if (err) return;
     if (value.deptCode && value.deptCode.length > 1) {
-      if (value.deptCode[value.deptCode.length - 1] == "全院") {
+      if (value.deptCode[value.deptCode.length - 1] === "全院") {
         value.deptCode = ["全院"];
         form.setField("deptCode", value.deptCode);
         return;
       } else if (value.deptCode.includes("全院")) {
-        value.deptCode = value.deptCode.filter((item: any) => item != "全院");
+        value.deptCode = value.deptCode.filter((item: any) => item !== "全院");
         form.setField("deptCode", value.deptCode);
         return;
-      } else if (value.deptCode[value.deptCode.length - 1] == "全部") {
+      } else if (value.deptCode[value.deptCode.length - 1] === "全部") {
         value.deptCode = ["全部"];
         form.setField("deptCode", value.deptCode);
         return;
       } else if (value.deptCode.includes("全部")) {
-        value.deptCode = value.deptCode.filter((item: any) => item != "全部");
+        value.deptCode = value.deptCode.filter((item: any) => item !== "全部");
         form.setField("deptCode", value.deptCode);
         return;
       }
     }
     let deptCodes;
-    if (value.deptCode.length == 1 && value.deptCode[0] == "全部") {
+    if (value.deptCode.length === 1 && value.deptCode[0] === "全部") {
       deptCodes = statisticsViewModal
         .getDict("全部科室")
         .map((item: any) => item.code)
-        .filter((item: any) => item != "全部");
+        .filter((item: any) => item !== "全部");
     } else {
       deptCodes = value.deptCode;
     }
@@ -114,18 +115,18 @@ export default observer(function FilterCon() {
     if (['lyrm', 'stmz'].includes(appStore.HOSPITAL_ID)) {
       postObj.sex = value.sex
     }
-    if (['925'].includes(appStore.HOSPITAL_ID)) {
+    if (is925) {
       postObj.identityType = value.identityType
       // postObj.rewardName = value.rewardName
       const [d1, d2] = value.goHospitalWorkDate || []
       postObj.goHospitalWorkDateStart = d1 ? d1.format(dateFormat3) : ''
       postObj.goHospitalWorkDateEnd = d2 ? d2.format(dateFormat3) : ''
       if(value.heightRange){
-        if(Number(value.heightRange[0])>0 && Number(value.heightRange[1])==0){
+        if(Number(value.heightRange[0]) > 0 && Number(value.heightRange[1]) === 0){
           // 只有开始身高或者只有结束身高
           return false
         }
-        if(Number(value.heightRange[0])==0 && Number(value.heightRange[1])>0){
+        if(Number(value.heightRange[0]) === 0 && Number(value.heightRange[1]) > 0){
           return false
         }
       }
@@ -166,7 +167,7 @@ export default observer(function FilterCon() {
               </Form.Field>
             </Col>
             <Col span={7} className="long">
-              <Form.Field label={['925'].includes(appStore.HOSPITAL_ID)?"来院工作年限":"来院工作时间"} name={"goHospitalWork"}>
+              <Form.Field label={is925 ? "来院工作年限" : "来院工作时间"} name={"goHospitalWork"}>
                 <YearTimeRangePicker />
               </Form.Field>
             </Col>
@@ -242,7 +243,7 @@ export default observer(function FilterCon() {
               </Form.Field>
             </Col>
 
-            {appStore.HOSPITAL_ID !== '925'&&<Col span={4} className="long">
+            {!is925&&<Col span={4} className="long">
               <Form.Field label={"院内工作地点"} name={"workAddress"}>
                 <Select allowClear={true}>
                   {statisticsViewModal
@@ -280,7 +281,7 @@ export default observer(function FilterCon() {
                 <MonthTimeRangePicker />
               </Form.Field>
             </Col>
-            {appStore.HOSPITAL_ID === '925' ?<Col span={4} className="short">
+            {is925 ? <Col span={4} className="short">
                 <Form.Field label={"身高"} name={"heightRange"}>
                   <HeightRangePicker />
                 </Form.Field>
@@ -321,7 +322,7 @@ export default observer(function FilterCon() {
                   </Select>
                 </Form.Field>
               </Col>}
-            {['925'].includes(appStore.HOSPITAL_ID) &&<>
+            {is925 && <>
               <Col span={4} className="short">
                 <Form.Field label={"身份类别"} name={"identityType"}>
                   <Select>

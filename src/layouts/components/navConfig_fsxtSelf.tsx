@@ -11,6 +11,7 @@ export interface navConfigItem {
   icon?: any;
   menuStyle?: React.CSSProperties;
 }
+const is925 = ["925", 'zjhj'].includes(appStore.HOSPITAL_ID)
 
 const baseConfig: navConfigItem[] = [
   {
@@ -35,7 +36,7 @@ const baseConfig: navConfigItem[] = [
   {
     name: "我的档案",
     path: "/selfNurseFile",
-    hidden: appStore.HOSPITAL_ID !== '925'
+    hidden: !is925
   },
   // {
   //   name: '不良事件',

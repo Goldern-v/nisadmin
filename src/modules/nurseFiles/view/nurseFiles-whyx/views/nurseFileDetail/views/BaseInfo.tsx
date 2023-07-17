@@ -5,10 +5,7 @@ import React, { useEffect, useState } from "react";
 import { RouteComponentProps } from "react-router";
 import { nurseFilesService } from "../../../services/NurseFilesService";
 import { appStore, authStore } from "src/stores";
-import { sexEnum } from "src/libs/enum/common";
 import { observer } from "mobx-react-lite";
-import { globalModal } from "src/global/globalModal";
-import service from 'src/services/api'
 import BaseLayout from "../components/BaseLayout";
 import EditBaseInfoModal from "../modal/EditBaseInfoModal";
 import { nurseFileDetailViewModal } from "../NurseFileDetailViewModal";
@@ -226,7 +223,7 @@ export default observer(function BaseInfo() {
             lastItem[name] = val
           }
         }
-        if (['fsxt','925'].includes(appStore.HOSPITAL_ID)) {
+        if (['fsxt', '925', 'zjhj'].includes(appStore.HOSPITAL_ID)) {
           setTableData(newTableData)
         }
       }

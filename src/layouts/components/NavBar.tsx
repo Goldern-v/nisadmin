@@ -53,12 +53,12 @@ const toNavLink = (path: string | undefined) => {
   if (path) appStore.history.push(path);
   // return path ? () => appStore.history.push(path) : () => { };
 };
+const isFsxt = ["fsxt", "925", 'zjhj'].includes(appStore.HOSPITAL_ID)
 
 export interface Props extends RouteComponentProps {}
 
 const itemHidden = (hidden?: any,item?:any) => {
-  // console.log(item)
-  if((appStore.HOSPITAL_ID == "fsxt"||appStore.HOSPITAL_ID == "925") && item?.path.indexOf('specialNurseRouter')>-1){
+  if((isFsxt) && item?.path.indexOf('specialNurseRouter')>-1){
     // 是否有专科护理质量--佛山杏坛
     return !authStore.isSpecialMenu
   }
@@ -179,7 +179,7 @@ export default observer(function NavBar(props: any) {
       // return navConfig_gxjb
       if (authStore.isRoleManage) return navConfig_gxjb;
       else return navConfig_gxjbSelf;
-    } else if (appStore.HOSPITAL_ID == "fsxt"||appStore.HOSPITAL_ID == "925") {
+    } else if (isFsxt) {
       // return navConfig_fssdy
       if (authStore.isRoleManage) return navConfig_fsxt;
       else return navConfig_fsxtSelf;
@@ -284,12 +284,6 @@ export default observer(function NavBar(props: any) {
                 className="logo"
                 style={{ height: 30 }}
               />
-              {/* <img
-                src={require("../images/护理管理系统.png")}
-                alt=""
-                className="name"
-                style={{ paddingRight: 30 }}
-              /> */}
               <div className="nameTitle">
                 {appStore.hospitalOtherName}护理管理系统
               </div>
@@ -318,18 +312,11 @@ export default observer(function NavBar(props: any) {
           view = (
             <React.Fragment>
               <img
-                // src={require("../images/lcey_logo.jpg")}
                 src={require("../images/liaocheng_logo.png")}
                 alt=""
                 className="logo"
                 style={{ height: 30 }}
               />
-              {/*<img*/}
-              {/*  src={require("../images/护理管理系统.png")}*/}
-              {/*  alt=""*/}
-              {/*  className="name"*/}
-              {/*  style={{ paddingRight: 30 }}*/}
-              {/*/>*/}
             </React.Fragment>
           );
           break;

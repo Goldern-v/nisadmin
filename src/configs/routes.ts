@@ -89,9 +89,7 @@ const LmsDetails = lazy(() => import("src/modules/lms/views/LmsDetails"));
 // const NursingRulesNewEdit = lazy(() => import('src/modules/nursingRulesNew/views/NursingRulesNewEdit'))
 //健康宣教
 //const HealthPropagandaView = lazy(() => import('src/modules/healthPropaganda/HealthPropagandaView'))
-const HealthPropagandaEdit = lazy(() =>
-  import("src/modules/healthPropaganda/HealthPropagandaEdit")
-);
+
 //不良事件列表和审核流程
 const BadEventsRouters = lazy(() =>
   import("src/modules/badEventsNew/BadEventsRouters")
@@ -680,8 +678,6 @@ const routes: RouteItem[] = [
   // setLayout('/nursingRulesNewEdit', NursingRulesNewEdit, layouts.MainLayout),
   setLayout("/healthPropagandaEditNew/:id", HealthPropagandaEditNew),
   setLayout("/healthPropagandaEditNew", HealthPropagandaEditNew),
-  // setLayout('/healthPropagandaEdit/:id', HealthPropagandaEdit),
-  // setLayout('/healthPropagandaEdit', HealthPropagandaEdit),
   setLayout("/badEventsNew", BadEventsRouters, layouts.MainLayout),
   setLayout(
     "/badEventsNewDetail/:id/:orderNo",
@@ -690,7 +686,7 @@ const routes: RouteItem[] = [
         nys: BadEventsNewDetailNys,
         gzsrm: BadEventsNewDetailGzsrm,
         hj: BadEventsNewDetail,
-        'fsxt,925': BadEventsNewDetailFsxt,
+        'fsxt,925,zjhj': BadEventsNewDetailFsxt,
         other: BadEventsNewDetailCommon
         // fqfybjy: BadEventsNewDetailCommon,
         // yczyy: BadEventsNewDetailCommon,
@@ -707,7 +703,7 @@ const routes: RouteItem[] = [
         // fqfybjy: BadEventsNewDetailCommon,
         // yczyy: BadEventsNewDetailCommon,
         // other: BadEventsNewDetail
-        'fsxt,925': BadEventsNewDetailFsxt,
+        'fsxt,925,zjhj': BadEventsNewDetailFsxt,
         nys: BadEventsNewDetail,
         hj: BadEventsNewDetail,
         other: BadEventsNewDetailCommon
@@ -1078,7 +1074,7 @@ const routes: RouteItem[] = [
   },
   ...appStore.hisMatch({
     map: {
-      "gzsrm,lyrm,gdtj,whfk,stmz,925": [
+      "gzsrm,lyrm,gdtj,whfk,stmz,925,zjhj": [
         {
           path: "/setting",
           redirect: "/setting/健康宣教字典"

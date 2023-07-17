@@ -23,6 +23,7 @@ import BadEventSummaryTotal from "./views/BadEventSummary_yczyy/index";
 import BadEventReportExport_gzsrm from "./views/BadEventReportExport_gzsrm";
 import BadEventStatisticalReport from "./views/BadEventStatisticalReport";
 export interface Props extends RouteComponentProps<{ name?: string }> { };
+const isGzsrmText = 'gzsrm,925,zjhj'
 
 export default function BadEventsRouters(props: Props) {
   useEffect(() => { }, [props.history.location.pathname]);
@@ -40,7 +41,7 @@ export default function BadEventsRouters(props: Props) {
             disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
           },
         ],
-        'gzsrm,925': [
+        [isGzsrmText]: [
           {
             title: " 不良事件查询",
             // icon: <SJZK />,
@@ -89,7 +90,7 @@ export default function BadEventsRouters(props: Props) {
 
     ...appStore.hisMatch({
       map: {
-        'gzsrm,lcey,925': [],
+        [isGzsrmText + ',lcey']: [],
         yczyy: [
           {
             title: '不良事件报告登记总表',
@@ -165,7 +166,7 @@ export default function BadEventsRouters(props: Props) {
             disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
           }
         ],
-        'gzsrm,925':[
+        isGzsrmText:[
           {
             title: '不良事件分析报告',
             path: `${baseRouter}/不良事件分析报告`,

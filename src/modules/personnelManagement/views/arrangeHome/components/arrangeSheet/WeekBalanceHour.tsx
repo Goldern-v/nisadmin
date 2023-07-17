@@ -54,6 +54,7 @@ export const weekBalanceHour = (id: any) => {
     case "fsxt":
     case "925":
     case 'zzwy':
+    case 'zjhj':
       weekDate = 40;
       break;
     case "fssdy":

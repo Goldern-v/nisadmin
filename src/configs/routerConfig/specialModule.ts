@@ -89,7 +89,7 @@ const homeRouter = (view: any): any[] => {
   }
 }
 
-if (process.env.REACT_APP_HOSPITAL_ID == "hj") {
+if (process.env.REACT_APP_HOSPITAL_ID === "hj") {
   specialModule = [
     setLayout("/indicator/:name", IndicatorNew, layouts.MainLayout),
     setLayout("/indicator", IndicatorNew, layouts.MainLayout),
@@ -116,8 +116,8 @@ if (process.env.REACT_APP_HOSPITAL_ID == "hj") {
     setLayout("/nursingRulesNewEdit", NursingRulesNewEdit, layouts.MainLayout)
   ];
 } else if (
-  process.env.REACT_APP_HOSPITAL_ID == "ys" ||
-  process.env.REACT_APP_HOSPITAL_ID == "gyd"
+  process.env.REACT_APP_HOSPITAL_ID === "ys" ||
+  process.env.REACT_APP_HOSPITAL_ID === "gyd"
 ) {
   specialModule = [
     setLayout("/nurseAudit", NurseAudit, layouts.MainLayout),
@@ -142,7 +142,7 @@ if (process.env.REACT_APP_HOSPITAL_ID == "hj") {
     ),
     setLayout("/nursingRulesNewEdit", NursingRulesNewEdit, layouts.MainLayout)
   ];
-} else if (process.env.REACT_APP_HOSPITAL_ID == "nys") {
+} else if (process.env.REACT_APP_HOSPITAL_ID === "nys") {
   specialModule = [
     setLayout("/indicator/:name", IndicatorNew, layouts.MainLayout),
     setLayout("/indicator", IndicatorNew, layouts.MainLayout),
@@ -168,7 +168,7 @@ if (process.env.REACT_APP_HOSPITAL_ID == "hj") {
     ),
     setLayout("/nursingRulesNewEdit", NursingRulesNewEdit, layouts.MainLayout)
   ];
-} else if (["wh","gxjb","fssdy","fsxt","sdlj","gdtj","zzwy","wjgdszd", 'ytll','zhzxy', 'nfsd','925', 'qzde'].includes(appStore.HOSPITAL_ID)) {
+} else if (["wh","gxjb","fssdy","fsxt","sdlj","gdtj","zzwy","wjgdszd", 'ytll','zhzxy', 'nfsd','925', 'qzde', 'zjhj'].includes(appStore.HOSPITAL_ID)) {
   specialModule = [
     setLayout("/nurseAudit", NurseAudit_wh, layouts.MainLayout),
     setLayout(
@@ -184,7 +184,7 @@ if (process.env.REACT_APP_HOSPITAL_ID == "hj") {
     setLayout("/auditsManagement", AuditsManagementView_wh, layouts.MainLayout),
     setLayout("/wh_single_point_login", SingleSignOnWh),
     // ...homeRouter(HomeView_wh),
-    ...homeRouter(['fssdy','fsxt','zzwy','925'].includes(appStore.HOSPITAL_ID)?HomeView:HomeView_wh),
+    ...homeRouter(['fssdy','fsxt','zzwy','925', 'zjhj'].includes(appStore.HOSPITAL_ID)?HomeView:HomeView_wh),
   ];
 
   //武汉护理制度
@@ -206,9 +206,9 @@ if (process.env.REACT_APP_HOSPITAL_ID == "hj") {
       layouts.MainLayout
     )
   ]);
-} else if (appStore.HOSPITAL_ID == 'dzlc') {
+} else if (appStore.HOSPITAL_ID === 'dzlc') {
   specialModule = [...homeRouter(SettingView)]
-} else if (appStore.HOSPITAL_ID == 'gzhd') {
+} else if (appStore.HOSPITAL_ID === 'gzhd') {
   specialModule = [
     setLayout("/nurseAudit", NurseAudit_gzhd, layouts.MainLayout),
     setLayout(
@@ -237,7 +237,7 @@ if (process.env.REACT_APP_HOSPITAL_ID == "hj") {
     ),
     setLayout("/nursingRulesNewEdit", NursingRulesNewEdit, layouts.MainLayout)
   ];
-} else if (appStore.HOSPITAL_ID == 'lcey') {
+} else if (appStore.HOSPITAL_ID === 'lcey') {
   specialModule = [
     // setLayout('/nurseFilesList', NurseFilesListView, layouts.MainLayout),
     setLayout("/indicator/:name", IndicatorNew, layouts.MainLayout),//敏感指标
@@ -265,7 +265,7 @@ if (process.env.REACT_APP_HOSPITAL_ID == "hj") {
     ),
     setLayout("/nursingRulesNewEdit", NursingRulesNewEdit, layouts.MainLayout)
   ];
-} else if (appStore.HOSPITAL_ID == 'gzsrm') {
+} else if (appStore.HOSPITAL_ID === 'gzsrm') {
   specialModule = [
     setLayout("/indicator/:name", IndicatorNew, layouts.MainLayout),//南医三版本敏感指标
     setLayout("/indicator", IndicatorNew, layouts.MainLayout),
@@ -303,7 +303,7 @@ if (process.env.REACT_APP_HOSPITAL_ID == "hj") {
       layouts.MainLayout
     )
   ]);
-} else if (appStore.HOSPITAL_ID == 'jmfy') {
+} else if (appStore.HOSPITAL_ID === 'jmfy') {
   specialModule = [
     setLayout("/indicator/:name", IndicatorNew, layouts.MainLayout),
     setLayout("/indicator", IndicatorNew, layouts.MainLayout),
@@ -331,7 +331,7 @@ if (process.env.REACT_APP_HOSPITAL_ID == "hj") {
     ),
     setLayout("/nursingRulesNewEdit", NursingRulesNewEdit, layouts.MainLayout)
   ];
-} else if (appStore.HOSPITAL_ID == 'dghl') {
+} else if (appStore.HOSPITAL_ID === 'dghl') {
   specialModule = [
     // 新版审核界面
     setLayout("/nurseAudit", NurseAuditNew, layouts.MainLayout),
@@ -357,7 +357,7 @@ if (process.env.REACT_APP_HOSPITAL_ID == "hj") {
     ),
     setLayout("/nursingRulesNewEdit", NursingRulesNewEdit, layouts.MainLayout)
   ];
-} else if (appStore.HOSPITAL_ID == 'dgxg') {
+} else if (appStore.HOSPITAL_ID === 'dgxg') {
   specialModule = [
     // 新版审核界面
     setLayout("/nurseAudit", NurseAuditNew, layouts.MainLayout),
@@ -383,7 +383,7 @@ if (process.env.REACT_APP_HOSPITAL_ID == "hj") {
     ),
     setLayout("/nursingRulesNewEdit", NursingRulesNewEdit, layouts.MainLayout)
   ];
-} else if (appStore.HOSPITAL_ID == 'yczyy') {
+} else if (appStore.HOSPITAL_ID === 'yczyy') {
   specialModule = [
     // 新版审核界面
     setLayout("/nurseAudit", NurseAuditNew, layouts.MainLayout),
@@ -414,7 +414,7 @@ if (process.env.REACT_APP_HOSPITAL_ID == "hj") {
     ),
     setLayout("/nursingRulesNewEdit", NursingRulesNewEdit, layouts.MainLayout)
   ];
-} else if (appStore.HOSPITAL_ID == 'nfzxy') {
+} else if (appStore.HOSPITAL_ID === 'nfzxy') {
   specialModule = [
     // 新版审核界面
     setLayout("/nurseAudit", NurseAuditNew, layouts.MainLayout),
@@ -440,7 +440,7 @@ if (process.env.REACT_APP_HOSPITAL_ID == "hj") {
     ),
     setLayout("/nursingRulesNewEdit", NursingRulesNewEdit, layouts.MainLayout)
   ]
-} else if (appStore.HOSPITAL_ID == 'xzsn') {
+} else if (appStore.HOSPITAL_ID === 'xzsn') {
   specialModule = [
     ...homeRouter(HomeView),
     setLayout(
@@ -465,7 +465,7 @@ if (process.env.REACT_APP_HOSPITAL_ID == "hj") {
     ),
     setLayout("/nursingRulesNewEdit", NursingRulesNewEdit, layouts.MainLayout)
   ]
-} else if (appStore.HOSPITAL_ID == 'fqfybjy') {
+} else if (appStore.HOSPITAL_ID === 'fqfybjy') {
   specialModule = [
     // 新版敏感指标
     setLayout("/indicator/:name", IndicatorNew, layouts.MainLayout),
@@ -494,7 +494,7 @@ if (process.env.REACT_APP_HOSPITAL_ID == "hj") {
     ),
     setLayout("/nursingRulesNewEdit", NursingRulesNewEdit, layouts.MainLayout)
   ];
-} else if (appStore.HOSPITAL_ID == 'wjgdszd') {
+} else if (appStore.HOSPITAL_ID === 'wjgdszd') {
   // specialModule = [
   //   // 新版敏感指标
   //   setLayout("/indicator/:name", IndicatorNew, layouts.MainLayout),
@@ -523,9 +523,9 @@ if (process.env.REACT_APP_HOSPITAL_ID == "hj") {
   //   ),
   //   setLayout("/nursingRulesNewEdit", NursingRulesNewEdit, layouts.MainLayout)
   // ];
-} else if (appStore.HOSPITAL_ID == 'bhsrm') {
+} else if (appStore.HOSPITAL_ID === 'bhsrm') {
   specialModule = [...homeRouter(SettingView)]
-} else if (appStore.HOSPITAL_ID == 'qzxyy') {
+} else if (appStore.HOSPITAL_ID === 'qzxyy') {
   specialModule = [...homeRouter(SettingView)]
 } else if (['whyx'].includes(appStore.HOSPITAL_ID)) {//武汉亚心、武汉汉口
   specialModule = [

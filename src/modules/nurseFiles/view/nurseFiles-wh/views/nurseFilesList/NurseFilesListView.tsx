@@ -14,8 +14,9 @@ import SelectCon from './components/SelectCon'
 
 import { nurseFilesListViewModel } from './NurseFilesListViewModel'
 
+const is925 = ['925', 'zjhj'].includes(appStore.HOSPITAL_ID)
+const is925Text = '925,zjhj'
 export interface Props extends RouteComponentProps { }
-
 const columns1: ColumnProps<any>[] = [
   {
     title: '科室',
@@ -249,9 +250,9 @@ const columns: ColumnProps<any>[] = [
     title: '科室',
     dataIndex: 'deptName',
     key: 'deptName',
-    width: ['lyrm', 'stmz', '925'].includes(appStore.HOSPITAL_ID) ? 120 : 200,
+    width: ['lyrm', 'stmz', '925', 'zjhj'].includes(appStore.HOSPITAL_ID) ? 120 : 200,
     align: 'left',
-    fixed:['925'].includes(appStore.HOSPITAL_ID) ? 'left': false
+    fixed: is925 ? 'left': false
   },
   {
     title: '员工号',
@@ -259,7 +260,7 @@ const columns: ColumnProps<any>[] = [
     key: 'empNo',
     width: 70,
     align: 'center',
-    fixed:['925'].includes(appStore.HOSPITAL_ID) ? 'left': false
+    fixed: is925 ? 'left': false
   },
   {
     title: '姓名',
@@ -267,7 +268,7 @@ const columns: ColumnProps<any>[] = [
     key: 'empName',
     width: 70,
     align: 'center',
-    fixed:['925'].includes(appStore.HOSPITAL_ID) ? 'left': false
+    fixed: is925 ? 'left': false
   },
 
   {
@@ -332,7 +333,7 @@ const columns: ColumnProps<any>[] = [
   },
   ...appStore.hisMatch({
     map: {
-      '925': [
+      [is925Text]: [
         {
           title: '来院工作时间',
           dataIndex: 'goHospitalWorkDate',
@@ -342,7 +343,8 @@ const columns: ColumnProps<any>[] = [
         },
       ],
       other: []
-    }
+    },
+    vague: true
   }),
   {
     title: '护士执业证书编号',
@@ -391,7 +393,7 @@ const columns: ColumnProps<any>[] = [
       width: 80,
       align: 'center'
     },
-    ['925'].includes(appStore.HOSPITAL_ID) ?
+    is925 ?
   {
     title: '身高(cm)',
     dataIndex: 'height',
@@ -444,7 +446,7 @@ const columns: ColumnProps<any>[] = [
   
   ...appStore.hisMatch({
     map: {
-      925: [],
+      [is925Text]: [],
       other: [
         {
           title: '院内工作地点',
@@ -454,7 +456,8 @@ const columns: ColumnProps<any>[] = [
           align: 'center'
         },
       ]
-    }
+    },
+    vague: true
   }),
   ...appStore.hisMatch({
     map: {
@@ -549,7 +552,7 @@ export default observer(function NurseFilesListView() {
         dataSource={nurseFilesListViewModel.nurseList}
         columns={appStore.HOSPITAL_ID === 'nfzxy' ? columns1 : columns}
         surplusWidth={80}
-        surplusHeight={'925' === appStore.HOSPITAL_ID ? 478 : 430}
+        surplusHeight={is925 ? 478 : 430}
         type={['index', 'fixedIndex']}
         pagination={{
           total: nurseFilesListViewModel.totalCount,

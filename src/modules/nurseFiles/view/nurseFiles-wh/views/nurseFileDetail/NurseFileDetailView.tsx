@@ -367,10 +367,11 @@ export default observer(function NurseFileDetail(props: Props, context: any) {
   let currentRouteType = props.match.params.type
   let ROUTE_LIST = appStore.hisMatch({
     map: {
-      925: ROUTE_LIST_925,
+      '925,zjhj': ROUTE_LIST_925,
       zhzxy: ROUTE_LIST_ZHZXY,
       other: ROUTE_LIST_DEFAULT
     },
+    vague: true
   })
   let CurrentRoute = ROUTE_LIST.find((item: any) => item.type === currentRouteType)
   useEffect(() => {

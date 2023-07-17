@@ -58,11 +58,10 @@ export default observer(function ArrangeSheet(props: Props) {
   const [surplusWidth, setSurplusWidth]: any = useState(false);
   let contextMenu = createContextMenu();
   /** 修改工时 or 加减班 */
-
   let editEffectiveTimeModal = createModal(
     appStore.hisMatch({
       map: {
-        'wjgdszd,wh,gxjb,lcey,dghl,fqfybjy,jmfy,nys,gzsrm,fssdy,fsxt,925,sdlj,whyx,gdtj,lyyz,qhwy,whsl,ytll,zhzxy,whhk,nfsd,whhk,dglb,zzwy,qzde,dghm': EditVacationCountModal_wh,
+        'wjgdszd,wh,gxjb,lcey,dghl,fqfybjy,jmfy,nys,gzsrm,fssdy,fsxt,925,sdlj,whyx,gdtj,lyyz,qhwy,whsl,ytll,zhzxy,whhk,nfsd,whhk,dglb,zzwy,qzde,dghm,zjhj': EditVacationCountModal_wh,
         other: EditEffectiveTimeModal,
       },
       vague: true
@@ -609,7 +608,7 @@ export default observer(function ArrangeSheet(props: Props) {
   ];
 
 /** 东莞横沥特殊字段 */
-if (["dghl", "fsxt", '925', 'fssdy'].includes(appStore.HOSPITAL_ID)) {
+if (["dghl", "fsxt", '925', 'fssdy', 'zjhj'].includes(appStore.HOSPITAL_ID)) {
   columns.push({
     title: (
       <div>
@@ -730,7 +729,7 @@ const handleDelete = (record: any) => {
 };
 
 /** 武汉特殊字段*/
-if (["wh", "gzsrm", "gxjb", "fsxt", '925', "whyx", 'whhk', 'sdlj', 'fssdy', "gdtj", "lyyz", "qhwy", "whsl", "wjgdszd", 'ytll', 'zhzxy', 'nfsd', 'dglb', 'zzwy', 'qzde', 'dghm'].includes(appStore.HOSPITAL_ID)) {
+if (["wh", "gzsrm", "gxjb", "fsxt", '925', "whyx", 'whhk', 'sdlj', 'fssdy', "gdtj", "lyyz", "qhwy", "whsl", "wjgdszd", 'ytll', 'zhzxy', 'nfsd', 'dglb', 'zzwy', 'qzde', 'dghm', 'zjhj'].includes(appStore.HOSPITAL_ID)) {
   columns.push(
     ...appStore.hisMatch({
       map: {
@@ -755,7 +754,7 @@ if (["wh", "gzsrm", "gxjb", "fsxt", '925', "whyx", 'whhk', 'sdlj', 'fssdy', "gdt
     }),
     ...appStore.hisMatch({
       map: {
-        'fsxt,925,sdlj,zzwy,qzde,qhwy': [],//佛山杏坛去除累计结余添加本周结余
+        'fsxt,925,sdlj,zzwy,qzde,qhwy,zjhj': [],//佛山杏坛去除累计结余添加本周结余
         other: [
           {
             title: (
@@ -1070,7 +1069,7 @@ useLayoutEffect(() => {
                 'qzde': 3,
                 fqfybjy: 5,
                 nys: (isEdit ? 6 : 5),
-                'wjgdszd,wh,gxjb,jmfy,dghl,gzsrm,fsxt,925,whyx,whhk,gdtj,lyyz,whsl,ytll,whhk,nfsd,dglb,zzwy,dghm': 6,
+                'wjgdszd,wh,gxjb,jmfy,dghl,gzsrm,fsxt,925,whyx,whhk,gdtj,lyyz,whsl,ytll,whhk,nfsd,dglb,zzwy,dghm,zjhj': 6,
                 zhzxy: 9,
                 fssdy: 7,
                 'hj,sdlj': 4,
@@ -1122,6 +1121,7 @@ const moveRow = (dragIndex: number, hoverIndex: number) => {
     case 'whhk':
     case 'dglb':
     case '925':
+    case 'zjhj':
       // case 'dghm':
       const dragRowWhyx = sheetViewModal.sheetTableData[dragIndex];
       if (!dragRowWhyx) return;

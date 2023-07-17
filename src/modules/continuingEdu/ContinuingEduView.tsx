@@ -16,8 +16,6 @@ import { ReactComponent as JJSZ } from "./assets/icon_svg/JJGL.svg";
 import { ReactComponent as JSGL } from "./assets/icon_svg/JSGL.svg";
 import { ReactComponent as TZGL } from "./assets/icon_svg/TZGL.svg";
 
-export interface Props extends RouteComponentProps {}
-
 import 人员管理 from "./人员管理";
 import 其他人员 from "./views/其他人员/其他人员";
 import 人员分组设置 from "./views/人员分组设置/人员分组设置";
@@ -91,6 +89,16 @@ import gaugePearson_BacisManagement from "./views/gaugePearson/bacisInformation/
 import gaugePearson_TraineeShift from "./views/gaugePearson/traineeShift/TraineeShift"
 import gaugePearson_evaluate from "./views/gaugePearson/evaluate/evaluateTable"
 
+import { appStore, authStore } from "src/stores";
+import NavBar from "src/layouts/components/NavBar";
+import { Icon } from "antd";
+import DynamicRouting from "./DynamicRouting";
+import PreJobList from "./views/preJobTraining/list/PreJobList";
+import PreJobTrainingPlan from "./views/preJobTraining/trainingPlan/PreJobTrainingPlan";
+import TheoryExam from "./views/preJobTraining/theoryExam/TheoryExam";
+import ImplementRecord from "./views/preJobTraining/implementRecord/ImplementRecord";
+import TrainingExamManage from "./views/preJobManage/trainingExamManage/TrainingExamManage";
+import TrainingPlanManage from "./views/preJobManage/trainingPlanManage/TrainingPlanManage";
 /**厚街学习资源 */
 //学习的网站链接
 const 学习的网站链接 = lazy(() =>
@@ -183,22 +191,11 @@ const TrainingChartAnalysis = lazy(() =>
 // 课件库
 const CourseLibrary = lazy(() => import("./views/courseLibrary/CourseLibrary"));
 
-import { appStore, authStore } from "src/stores";
-import NavBar from "src/layouts/components/NavBar";
-import { Icon } from "antd";
-// import { use } from "echarts";
-import DynamicRouting from "./DynamicRouting";
-import PreJobList from "./views/preJobTraining/list/PreJobList";
-import PreJobTrainingPlan from "./views/preJobTraining/trainingPlan/PreJobTrainingPlan";
-import TheoryExam from "./views/preJobTraining/theoryExam/TheoryExam";
-import ImplementRecord from "./views/preJobTraining/implementRecord/ImplementRecord";
-import TrainingExamManage from "./views/preJobManage/trainingExamManage/TrainingExamManage";
-import TrainingPlanManage from "./views/preJobManage/trainingPlanManage/TrainingPlanManage";
-
+export interface Props extends RouteComponentProps {}
 
 export default function ContinuingEdu(props: Props) {
   // const [dataList, setDataList] = useState([] as any); // 动态菜单树
-  const [authList, setAuthList] = useState([] as any); // 固定菜单权限
+  const [authList, setAuthList] = useState<any>([]); // 固定菜单权限
   const { getList, dataList, listLen } = DynamicRouting()
   // 通知管理
   const noticeCon = {
@@ -751,7 +748,7 @@ export default function ContinuingEdu(props: Props) {
       icon: <TKGL />,
       path: "/continuingEdu/PracticalOperationScorFSXT",
       component: PracticalOperationScoreFSXT,
-      hide: !['fsxt','925','fssdy'].includes(appStore.HOSPITAL_ID)
+      hide: !['fsxt','925','fssdy', 'zjhj'].includes(appStore.HOSPITAL_ID)
     },
   ]
 // 获取icon
@@ -786,12 +783,12 @@ const getIcon = (icon: any) => {
     }else if(dataList.length>0){
       newRouter = dataList
     }
-    newRouter.map((it:any)=>{
+    newRouter.forEach((it:any)=>{
       it.icon = getIcon(it.sort)
       it.hide=authStore.isOnlyInternsManage
       it.component = 无权限
       if(it.children && it.children.length>0){
-        it.children.map((ij:any)=>{
+        it.children.forEach((ij:any) => {
           ij.component = 主列表页
         })
       }

@@ -61,7 +61,7 @@ export function openAuditModal(
                 },
                 ...appStore.hisMatch({
                   map: {
-                    925: [
+                    '925,zjhj': [
                       {
                         身高: "height",
                         护士服尺码: "nurse_dress_size",
@@ -102,6 +102,7 @@ export function openAuditModal(
                 },
               ];
             case "925":
+            case 'zjhj':
               return [
                 {
                   民族: "nation",

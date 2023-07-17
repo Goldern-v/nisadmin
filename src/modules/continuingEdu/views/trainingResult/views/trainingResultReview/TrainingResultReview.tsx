@@ -28,6 +28,7 @@ import TrainingRecordTable from './TrainingRecordTable'
 import { Obj } from 'src/libs/types'
 
 const TabPane = Tabs.TabPane
+const isFsxtText = 'fsxt,925,zjhj'
 
 export interface Props {
 }
@@ -40,16 +41,16 @@ export default observer(function TrainingResultReview() {
 
   const answerSheetModal = createModal(AnswerSheetModal)
 
-  const [selectedRowKeys, setSelectedRowKeys] = useState([] as number[] | string[])
+  const [selectedRowKeys, setSelectedRowKeys] = useState<number[] | string[]>([])
 
   const [activeTab, setActiveTab] = useState('1')
   //现场图片相关数据
-  const [imgList, setImgList] = useState([] as any[])
+  const [imgList, setImgList] = useState<any[]>([])
   const [imgListLoading, setImgListLoading] = useState(false)
   const [imgTotal, setImgTotal] = useState(0)
   const [imgListQuery, setImgListQuery] = useState({ pageIndex: 1, pageSize: 20 })
 
-  const statusColumns = (() => {
+  const statusColumns: any[] = (() => {
     //根据线上还是线下判断展示学习情况还是签到情况
     if (isSignType)
       return [{
@@ -61,7 +62,7 @@ export default observer(function TrainingResultReview() {
           if (signInTime) return signInTime
           return <span style={{ color: 'red' }}>未签到</span>
         }
-      }] as ColumnProps<any>[]
+      }]
     else return [
       {
         dataIndex: 'taskStatus',
@@ -85,7 +86,7 @@ export default observer(function TrainingResultReview() {
         align: 'center',
         width: 100
       },
-    ] as ColumnProps<any>[]
+    ]
   })()
 
   /**是否显示线下培训的现场图片 */
@@ -96,7 +97,7 @@ export default observer(function TrainingResultReview() {
     return false
   })()
 
-  let columns: ColumnProps<any>[] = [
+  let columns: any[] = [
     {
       dataIndex: 'empName',
       title: '姓名',
@@ -229,7 +230,7 @@ export default observer(function TrainingResultReview() {
   columns = [
     ...appStore.hisMatch({
       map: {
-        'fsxt,925': fsxtColumns,
+        [isFsxtText]: fsxtColumns,
         other: columns,
       },
       vague: true,
@@ -428,7 +429,7 @@ export default observer(function TrainingResultReview() {
         {appStore.hisMatch({
           map: {
             wh: <span></span>,
-            'fsxt,925':
+            [isFsxtText]:
               <React.Fragment>
                 {isSignType &&
                   <Button onClick={() => trainingResultModel.handleSignExportXingtan()}>导出签到信息</Button>}
@@ -560,7 +561,7 @@ export default observer(function TrainingResultReview() {
   </Wrapper>
 })
 
-const TableWrapper = styled(TabledCon as any)`
+const TableWrapper = styled(TabledCon)`
   position: relative;
   height: 100%;
   td{

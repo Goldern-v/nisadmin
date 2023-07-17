@@ -315,7 +315,7 @@ export default observer(function QcItemGroup(props: Props) {
             {
               appStore.hisMatch({
                 map: {
-                  "whyx,whhk,925": '',
+                  "whyx,whhk,925,zjhj": '',
                   other: (<div>
                     <span
                       style={{
@@ -375,7 +375,7 @@ export default observer(function QcItemGroup(props: Props) {
               })
             }
 
-            {'925' !== appStore.HOSPITAL_ID && <div style={{ marginTop: 5 }}>
+            {['925', 'zjhj'].includes(appStore.HOSPITAL_ID) && <div style={{ marginTop: 5 }}>
               <Input.TextArea
                 value={item.remark}
                 autosize={{ minRows: 2 }}

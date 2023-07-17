@@ -111,7 +111,7 @@ class StepViewModal {
         ? this.getCurrentStepViewModal.stepData2
         : {};    
             
-        if(!stepData2.prcaticalData.code && ["whyx", "fsxt",'925','whhk'].includes(appStore.HOSPITAL_ID)){// 实操评分表
+        if(!stepData2.prcaticalData.code && ["whyx", "fsxt",'925','whhk', 'zjhj'].includes(appStore.HOSPITAL_ID)){// 实操评分表
           return false
         }else{
           return true

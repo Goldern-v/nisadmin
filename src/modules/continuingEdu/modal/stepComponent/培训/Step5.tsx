@@ -149,7 +149,7 @@ export default observer(function Step5() {
                     )}
                 </td>
               </tr>
-              {(appStore.HOSPITAL_ID == 'fsxt'||appStore.HOSPITAL_ID === "925") && 
+              {(['fsxt', '925', 'zjhj'].includes(appStore.HOSPITAL_ID)) && 
               <tr>
                 <td className="key">标准出勤率：</td>
                 <td className="value">{pxStepViewModal.stepData2.standardCheckInRate}</td>
@@ -163,7 +163,7 @@ export default observer(function Step5() {
               </tr>
             </React.Fragment>
           )}
-          {appStore.HOSPITAL_ID == 'hj' || appStore.HOSPITAL_ID == 'nys' &&
+          {(appStore.HOSPITAL_ID === 'hj' || appStore.HOSPITAL_ID === 'nys') &&
             <tr>
               <td className="key">院外讲师：</td>
               <td className="value">
@@ -319,7 +319,7 @@ export default observer(function Step5() {
                       {stepViewModal.stepData4.attachmentIds.map(
                         (item: any, index: number) => (
                           <div className="file-box" key={index}>
-                            {getFileType(item.path) == "img" ? (
+                            {getFileType(item.path) === "img" ? (
                               <Zimage
                                 src={item.path}
                                 className="type-img"
@@ -349,11 +349,11 @@ export default observer(function Step5() {
               <div>一份试卷</div>
               {stepViewModal.stepData4PX.questionStatList &&
                 stepViewModal.stepData4PX.questionStatList.map((item: any) => {
-                  <div>
+                  return (<div>
                     <span style={{ marginRight: 10 }}>
                       《{item.questionnaireTitle}》 共{item.questionCount}题
                     </span>
-                  </div>;
+                  </div>)
                 })}
               <div>
                 <Button

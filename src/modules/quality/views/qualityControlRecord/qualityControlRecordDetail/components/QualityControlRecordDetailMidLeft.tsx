@@ -185,7 +185,7 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
   }
 
   // 当前医院是否为亚心
-  const isWhyx = ['whyx','whhk','925'].includes(appStore.HOSPITAL_ID)
+  const isWhyx = ['whyx','whhk','925', 'zjhj'].includes(appStore.HOSPITAL_ID)
 
   return (
     <Con ref={pageRef} className="print-page">
@@ -451,7 +451,7 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
                       </div>
                     </React.Fragment>}
                     {/* 不显示小结备注 */}
-                    {'925' !== appStore.HOSPITAL_ID && <div style={{ marginTop: 5 }}>
+                    {!['925', 'zjhj'].includes(appStore.HOSPITAL_ID) && <div style={{ marginTop: 5 }}>
                       <Input.TextArea
                         value={item.remark}
                         readOnly

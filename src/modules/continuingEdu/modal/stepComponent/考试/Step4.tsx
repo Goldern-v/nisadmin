@@ -12,7 +12,6 @@ import {
   message
 } from "antd";
 import Form from "src/components/Form";
-import { to } from "src/libs/fns";
 import { ksStepViewModal as stepViewModal } from "./KSStepViewModal";
 import { stepViewModal as allStepViewModal } from "../StepViewModal";
 import createModal from "src/libs/createModal";
@@ -24,9 +23,7 @@ import TestPageModal from "src/modules/continuingEdu/views/trainingInfoReview/co
 import { appStore } from "src/stores";
 import { stepServices } from "../services/stepServices";
 import { fileDownload } from "src/utils/file/file";
-import UpdateTableHj from "./UpdateTableHj";
 import UpdateTableNys from "./UpdateTableNys";
-
 
 export interface Props {
 }
@@ -230,6 +227,7 @@ export default observer(function Step4() {
       case 'nys':
       case 'fsxt':
       case '925':
+      case 'zjhj':
         return (
           <Col span={24}>
             <Form.Field label='上传题库' name="questionStatList">
@@ -482,56 +480,23 @@ const Wrapper = styled.div`
   }
 `;
 
-const DateSelectCon = styled.div`
-      .date-row {
-      display: flex;
-      align-items: center;
-      height: 32px;
-      margin-bottom: 20px;
-      padding - left: 120px;
-      font - size: 14px;
-    .select - item {
-        width: 120px;
-        margin - left: 20px;
-      }
-    .aside {
-        font - size: 12px;
-        color: #666;
-      }
-    .date - label {
-        margin - right: 20px;
-      }
-    }
-  .label {
-      width: 0;
-      margin: 0;
-    }
-  .formField - wrapper {
-      margin: 0;
-    }
-  .formField - container {
-      width: 100px;
-      margin - right: 20px;
-    }
-    `;
-
 function MoreBox(props: any) {
   const { onClick } = props;
   const Wrapper = styled.div`
     width: 32px;
     height: 32px;
     border: 1px solid #d9d9d9;
-    border - radius: 4px;
-    text - align: center;
+    border-radius: 4px;
+    text-align: center;
     display: flex;
-    flex - direction: column;
-    align - items: center;
-    justify - content: flex - end;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
     cursor: pointer;
-    &: hover {
-      border - color: #1db38b;
+    &:hover {
+      border-color: #1db38b;
       outline: 0;
-      box - shadow: 0 0 0 2px rgba(0, 166, 128, 0.2);
+      box-shadow: 0 0 0 2px rgba(0, 166, 128, 0.2);
     }
     `;
   return <Wrapper onClick={onClick}>...</Wrapper>;

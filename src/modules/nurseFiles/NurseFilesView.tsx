@@ -76,6 +76,7 @@ export default observer(function NurseFilesView(props: Props) {
       case 'qzde':
       case 'dghm':
       case "lcey":
+      case 'zjhj':
         return NurseFilesListView_wh;
       case "nys":
         return NurseFilesListView_nys;
@@ -131,7 +132,7 @@ export default observer(function NurseFilesView(props: Props) {
     icon: <TXHSCX />,
     hide: appStore.hisMatch({
       map: {
-        "hj,lyrm,qhwy,fsxt,ytll,whhk,925,dglb,stmz": false,
+        "hj,lyrm,qhwy,fsxt,ytll,whhk,925,dglb,stmz,zjhj": false,
         'dghm': true,
         other: !appStore.isDev,
       },
@@ -431,7 +432,7 @@ export default observer(function NurseFilesView(props: Props) {
     retiredRetireesCon,
     ...appStore.hisMatch({
       map: {
-        'whsl,925,zhzxy,lcey': [
+        'whsl,925,zhzxy,lcey,zjhj': [
           {
             title: "查询统计",
             icon: <CXTJ />,
@@ -870,7 +871,7 @@ export default observer(function NurseFilesView(props: Props) {
         'zzwy',
         'dglb',
         'lyrm',
-        'zhzxy', 'dghm',
+        'zhzxy', 'dghm', 'zjhj',
         appStore.isDev ? "wh" : "wh_production",
       ].indexOf(appStore.HOSPITAL_ID) >= 0
     )

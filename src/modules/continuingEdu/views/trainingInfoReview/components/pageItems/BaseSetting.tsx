@@ -161,7 +161,7 @@ export default function BaseSetting(props: Props) {
   };
 
   const signerInfo = () => {
-    if ((info.organizationWayName || info.organizationWay) == "线下")
+    if ((info.organizationWayName || info.organizationWay) === "线下")
       return (
         <React.Fragment>
           <div className="row">
@@ -186,7 +186,7 @@ export default function BaseSetting(props: Props) {
             </div>
             <div className="content">{info.signInEndTime}</div>
           </div>
-          {(appStore.HOSPITAL_ID == 'fsxt'||appStore.HOSPITAL_ID == '925') && <div className="row">
+          {(['fsxt', '925', 'zjhj'].includes(appStore.HOSPITAL_ID)) && <div className="row">
             <div className="label" style={{ width: _labelWidth }}>
               标准出勤率：
             </div>

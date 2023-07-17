@@ -21,7 +21,7 @@ import { printModal } from '../viewModal/PrintModal'
 
 export interface Props {
 }
-
+const isWhArr = ['wh', 'gxjb', 'fsxt', '925', 'whyx', 'lyyz', 'qhwy', 'whsl', 'ytll', 'whhk', 'dglb', 'zzwy', 'dghm', 'zjhj']
 export default observer(function SelectCon() {
   const [isInit, setIsInit] = useState(true);
   const [bigDeptList, setBigDeptList] = useState([]);
@@ -197,7 +197,7 @@ export default observer(function SelectCon() {
         if (['wjgdszd'].includes(appStore.HOSPITAL_ID)) {
           selectViewModal.params.groupList.map((group: any) => {
             let arr = sheetViewModal.sheetTableData.filter((item: any) => {
-              return group.groupName == item.groupName
+              return group.groupName === item.groupName
             })
             newArr = newArr.concat([{ id: group.groupName, groupNameTitle: group.groupName, colSpan: settingLength }], arr)
           })
@@ -210,7 +210,7 @@ export default observer(function SelectCon() {
         } else if (['nfzxy'].includes(appStore.HOSPITAL_ID)) {
           selectViewModal.params.groupList.map((group: any) => {
             let arr = sheetViewModal.sheetTableData.filter((item: any) => {
-              return group.groupName == item.groupName
+              return group.groupName === item.groupName
             })
             if (arr.length > 0) {
               newArr = newArr.concat([{ id: group.groupName, groupNameTitle: group.groupName, colSpan: settingLength }], arr)
@@ -888,7 +888,7 @@ export default observer(function SelectCon() {
               <span onClick={() => handleExport()}>批量导出</span>
             </div>
           )}
-        {(["wh", "gxjb", "fsxt", '925', "whyx", "fssdy", "lyyz", "qhwy", "whsl", 'ytll', 'whhk', 'dglb', 'zzwy', 'dghm'].includes(appStore.HOSPITAL_ID)) &&
+        {([...isWhArr, "fssdy"].includes(appStore.HOSPITAL_ID)) &&
           (authStore.isDepartment || authStore.isSupervisorNurse) && (
             <div className="item">
               <Dropdown.Button
@@ -899,7 +899,7 @@ export default observer(function SelectCon() {
               </Dropdown.Button>
             </div>
           )}
-        {(["wh", "gxjb", "fsxt", '925', "whyx", "lyyz", "qhwy", "whsl", 'ytll', 'nfzxy', 'whhk', 'dglb', 'zzwy', 'dghm'].includes(appStore.HOSPITAL_ID)) && (
+        {([...isWhArr, 'nfzxy'].includes(appStore.HOSPITAL_ID)) && (
           <div className="item">
             <Button
               className="item"
@@ -927,17 +927,6 @@ export default observer(function SelectCon() {
           vague: true
         })}
       </LeftIcon>
-      {/* <RightIcon>
-        <span onClick={() => toPath('/personnelManagement/DeptBorrow')}>科室借用</span>
-        <span> | </span>
-        <span onClick={() => toPath('/personnelManagement/personnelSetting')}>人员分组</span>
-        <span> | </span>
-        <span onClick={() => toPath('/personnelManagement/nurseSetting')}>排班人员设置</span>
-        <span> | </span>
-        <span onClick={() => toPath('/personnelManagement/ShiftSettingView')}>班次设置</span>
-        <span> | </span>
-        <span onClick={() => toPath('/personnelManagement/mealSetting')}>排班套餐设置</span>
-      </RightIcon> */}
       <showStandardTimeModal.Component />
     </Wrapper>
   );

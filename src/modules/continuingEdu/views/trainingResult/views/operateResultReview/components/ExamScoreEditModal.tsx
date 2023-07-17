@@ -5,7 +5,8 @@ import { observer } from 'mobx-react-lite'
 import { ModalComponentProps } from "src/libs/createModal";
 import { trainingResultService } from './../../../api/TrainingResultService'
 import { appStore } from "src/stores";
-const {TextArea} = Input; 
+const {TextArea} = Input;
+const isWhyx = ['whyx','fsxt','925','whhk','fssdy', 'zjhj'].includes(appStore.HOSPITAL_ID)
 export interface Props extends ModalComponentProps {
   onOkCallBack?: Function,
   type: 'view' | 'edit',
@@ -66,7 +67,7 @@ export default observer(function ExamScoreEditModal(props: Props) {
 
   const getOperateScoreList = () => {
     setLoading(true)
-    if(['whyx','fsxt','925','whhk','fssdy'].includes(appStore.HOSPITAL_ID)){
+    if(isWhyx){
       trainingResultService.reviewPaperScoreItemsByCetpId({
         cetpId,
         empNo
@@ -96,7 +97,7 @@ export default observer(function ExamScoreEditModal(props: Props) {
     if (visible) getOperateScoreList()
   }, [visible])
 
-  return (!['whyx','fsxt','925','whhk','fssdy'].includes(appStore.HOSPITAL_ID) ? <Modal
+  return (!isWhyx ? <Modal
     width={500}
     confirmLoading={loading}
     visible={visible}

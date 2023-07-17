@@ -32,7 +32,8 @@ import { strFormatIntoMoment } from "src/utils/moment/crrentMonth";
 import { Obj } from "src/libs/types";
 import DatePickerCheckbox from "../components/DatePickerCheckbox";
 import cloneDeep from 'lodash/cloneDeep'
-
+const is925 = ['925', 'zjhj'].includes(appStore.HOSPITAL_ID)
+const isFsxt = ['fsxt', '925', 'zjhj'].includes(appStore.HOSPITAL_ID)
 export interface Props extends ModalComponentProps {
   id?: number;
   data?: any;
@@ -450,8 +451,8 @@ export default function EditWorkHistoryModal(props: Props) {
             </>
           }
           {
-            !['925'].includes(appStore.HOSPITAL_ID) && <Col span={12}>
-              <Form.Field label={`参加工作时间`} name={['fsxt', '925'].includes(appStore.HOSPITAL_ID) ? 'goWorkTime' : 'takeWorkTime'}>
+            !is925 && <Col span={12}>
+              <Form.Field label={`参加工作时间`} name={isFsxt ? 'goWorkTime' : 'takeWorkTime'}>
                 <DatePicker />
               </Form.Field>
             </Col>
@@ -467,7 +468,7 @@ export default function EditWorkHistoryModal(props: Props) {
             </Form.Field>
           </Col>
           {
-            !['925'].includes(appStore.HOSPITAL_ID) &&
+            !is925 &&
             <>
               <Col span={12}>
                 <Form.Field label={`取得护士执业证书时间`} name="zyzsDate">
@@ -493,7 +494,7 @@ export default function EditWorkHistoryModal(props: Props) {
             </Form.Field>
           </Col>
           {
-            !['fsxt', '925', 'dghm'].includes(appStore.HOSPITAL_ID) && <Col span={12}>
+            !['fsxt', '925', 'dghm', 'zjhj'].includes(appStore.HOSPITAL_ID) && <Col span={12}>
               <Form.Field label={`初始学历`} name="initialEducation">
                 <Select>
                   {nurseFileDetailViewModal.getDict("初始学历").map((item) => (
@@ -571,7 +572,7 @@ export default function EditWorkHistoryModal(props: Props) {
             </Form.Field>
           </Col>
           {
-            !['fsxt', '925'].includes(appStore.HOSPITAL_ID) && <Col span={12} style={{ height: '52px' }}>
+            !isFsxt && <Col span={12} style={{ height: '52px' }}>
               <Form.Field label={['wjgdszd'].includes(appStore.HOSPITAL_ID) ? '编制科室' : `院内工作地点`}
                 name="workAddress">
                 <SelectOrAutoInput dict="院内工作地点" />
@@ -601,7 +602,7 @@ export default function EditWorkHistoryModal(props: Props) {
                     <Form.Field label={`家庭住址`} name="address">
                       <Input />
                     </Form.Field>),
-                  "dghm,925": (
+                  "dghm,925,zjhj": (
                     <Form.Field label={`现职称`} name="newTitle">
                       <Select>
                         {TITLE_TYPES.map((item: any) => (
@@ -659,7 +660,7 @@ export default function EditWorkHistoryModal(props: Props) {
             </Col>
           }
           {
-            '925' === appStore.HOSPITAL_ID && <>
+            is925 && <>
               <Col span={12}>
                 <Form.Field label='身高' name="maps.height">
                   <Input />

@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import React, { useState, useEffect } from "react";
-import { Button } from "antd";
 import { appStore } from "src/stores";
 
 export interface Props {
@@ -107,7 +106,7 @@ export default function OperateSetting(props: Props) {
             )}
         </Wrapper>,
       ],
-      'fsxt,925': [
+      'fsxt,925,zjhj': [
         <Wrapper>
           <div className="content-item-title">实操设置</div>
           <div className="row">

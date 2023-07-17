@@ -44,7 +44,7 @@ export default observer(function Step1() {
   //学时自由输入
   const [studyTime, setStudyTime] = useState(0);
   const [studentCreditTypeList, setStudentCreditTypeList]: any = useState([]);
-  const [selectedCheck, setSelectedCheck] = useState([] as any); //必修全选
+  const [selectedCheck, setSelectedCheck] = useState<any>([]); //必修全选
   const bxNursing = appStore.hisMatch({
     map: {
       lcey: [
@@ -269,7 +269,7 @@ export default observer(function Step1() {
               </Form.Field>
             </Col>
           )}
-          {stepViewModal.stepData2.organizationWay == "2" && (appStore.HOSPITAL_ID === "fsxt"||appStore.HOSPITAL_ID === "925") && (
+          {stepViewModal.stepData2.organizationWay == "2" && (['fsxt', '925', 'zjhj'].includes(appStore.HOSPITAL_ID)) && (
             <Col span={24}>
               <Form.Field
                 label={`标准出勤率`}

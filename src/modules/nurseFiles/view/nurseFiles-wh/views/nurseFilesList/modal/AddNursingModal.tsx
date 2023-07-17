@@ -9,8 +9,8 @@ import { statisticsViewModal } from 'src/modules/nurseFiles/view/statistics/Stat
 import TreeSelectCom from 'src/components/TreeSelectCom'
 import  moment from  'moment'
 export interface Props extends FormComponentProps {
-  visible: boolean
-  handleOk: () => void
+  visible: boolean,
+  handleOk: () => void,
   handleCancel: () => void
 }
 const formItemLayout = {
@@ -229,7 +229,7 @@ const blurSetForm =(e:ChangeEvent<HTMLInputElement>)=>{
             </Select>
           )}
         </Form.Item>
-        { '925' === appStore.HOSPITAL_ID && <Form.Item {...formItemLayout} label='身份类别'>
+        { ['925', 'zjhj'].includes(appStore.HOSPITAL_ID) && <Form.Item {...formItemLayout} label='身份类别'>
           {getFieldDecorator('identityType')(
             <Select
               showSearch

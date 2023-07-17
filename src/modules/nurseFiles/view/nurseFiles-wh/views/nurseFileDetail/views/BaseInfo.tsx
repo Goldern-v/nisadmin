@@ -14,6 +14,8 @@ import EditBaseInfoModal from '../modal/EditBaseInfoModal'
 import { nurseFilesService } from '../../../services/NurseFilesService'
 import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
 import { openAuditModal } from '../config/auditModalConfig'
+const isFsxt = ['fsxt', '925', 'zjhj'].includes(appStore.HOSPITAL_ID)
+const is925Text = '925,zjhj'
 
 export interface Props extends RouteComponentProps { }
 /* 判断是否本人 */
@@ -66,7 +68,7 @@ export default observer(function BaseInfo() {
     },
     ...appStore.hisMatch({
       map: {
-        '925': [
+        [is925Text]: [
           {
             type: 'height',
             name: '身高',
@@ -81,7 +83,8 @@ export default observer(function BaseInfo() {
           }
         ],
         other: []
-      }
+      },
+      vague: true
     })
     // {
     //   type: "nurse_shoes_size",
@@ -228,7 +231,7 @@ export default observer(function BaseInfo() {
         //   }
         // }),
         {
-          参加工作时间: (appStore.HOSPITAL_ID === 'fsxt' || appStore.HOSPITAL_ID === '925') ? data.goWorkTime : data.takeWorkTime,
+          参加工作时间: (isFsxt) ? data.goWorkTime : data.takeWorkTime,
           来院工作时间: data.goHospitalWorkDate,
         },
         {
@@ -387,7 +390,7 @@ export default observer(function BaseInfo() {
         },
         ...appStore.hisMatch({
           map: {
-            '925': [
+            [is925Text]: [
               {
                 家庭住址: data.address,
               }
@@ -403,7 +406,8 @@ export default observer(function BaseInfo() {
               },
             ],
             other: []
-          }
+          },
+          vague: true
         })
       ]
 
@@ -477,6 +481,7 @@ export default observer(function BaseInfo() {
           case "fsxt":
             return newTableDataFsxt
           case "925":
+          case "zjhj":
             return newTableData925
           default:
             return newTableDataDefault
@@ -527,9 +532,7 @@ export default observer(function BaseInfo() {
             if (name) lastItem[name] = val
           }
         }
-        console.log(newTableData, 11111)
-        if (['fsxt', '925'].includes(appStore.HOSPITAL_ID)) {
-          console.log(newTableData, 9998)
+        if (isFsxt) {
           setTableData(newTableData)
         }
       }

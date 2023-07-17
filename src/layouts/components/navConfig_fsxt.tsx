@@ -12,7 +12,7 @@ export interface navConfigItem {
   icon?: any;
   menuStyle?: React.CSSProperties;
 }
-
+const is925 = ["925", 'zjhj'].includes(appStore.HOSPITAL_ID)
 const baseConfig: navConfigItem[] = [
   {
     name: "首页",
@@ -36,24 +36,15 @@ const baseConfig: navConfigItem[] = [
   {
     name: "我的档案",
     path: "/selfNurseFile",
-    hidden: appStore.HOSPITAL_ID !== '925'
+    hidden: !is925
   },
   // 不良事件功能暂时屏蔽
   {
     name: "不良事件",
     path: "/badEventsNew",
-    hidden: appStore.HOSPITAL_ID !== '925'
+    hidden: !is925
     // hidden: !appStore.isDev,
   },
-  // {
-  //   name: '不良事件',
-  //   path: '/badEventsNewList',
-  //   hidden: !appStore.isDev,
-  // },
-  // {
-  //   name: '不良事件分析报告',
-  //   path: '/badEvents/alanysis/1/1'
-  // },
   {
     name: "质量管理",
     // hidden:authStore.isOnlyInternsManage,
@@ -107,19 +98,10 @@ const baseConfig: navConfigItem[] = [
     path: "/continuingEdu",
     // hidden: !appStore.isDev
   },
-  // {
-  //   name: "敏感指标",
-  //   path: "/indicator",
-  // },
   {
     name: "病区登记本",
     path: "/wardRegister",
   },
-  // {
-  //   name: "敏感指标登记本",
-  //   path: "/sensitiveRegister",
-  //   // hidden: !appStore.isDev
-  // },
   {
     name: "统计查询",
     path: "/statistic",

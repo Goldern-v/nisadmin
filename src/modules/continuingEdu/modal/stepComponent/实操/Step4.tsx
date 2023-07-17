@@ -12,7 +12,7 @@ import { appStore } from "src/stores";
 import service from "src/services/api";
 
 export interface Props {}
-
+const isWhyx = ['whyx', 'fsxt', '925', 'whhk', 'fssdy', 'zjhj'].includes(appStore.HOSPITAL_ID)
 export default observer(function Step4() {
   const [isOk, setIsOk] = useState(false); // app评分开关默认值
   const testPage = createModal(TestPageModal); // 习题预览弹窗
@@ -36,7 +36,7 @@ export default observer(function Step4() {
     Object.assign(stepViewModal.stepData2, data);
   };
   const handleonvaluechange = () => {
-    if (["whyx","fsxt",'925','whhk','fssdy'].includes(appStore.HOSPITAL_ID)) {
+    if (isWhyx) {
       let list = pratical.find((item: any) => {
         return stepViewModal.stepData2.adminTable == item.code;
       });
@@ -131,7 +131,7 @@ export default observer(function Step4() {
             </Col>
           ) : (
             <Col span={24} >
-              {["whyx","whhk","fsxt",'fssdy','925'].includes(appStore.HOSPITAL_ID)?
+              {isWhyx ?
               <Form.Field
                 label={`选择实操评分管理表`}
                 name="adminTable"

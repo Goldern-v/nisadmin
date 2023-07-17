@@ -18,7 +18,7 @@ interface FullLoadingBarObj {
   isFullpage?: boolean;
 }
 
-type hisIds = "hj" | "wh" | "ys" | "nys" | "dzlc" | "gzhd" | "lcey" | "germ" | "jmfy" | "dghl" | "dgxg" | "yczyy" | "nfzxy" | "xzsn" | "fqfybjy" | "wjgdszd" | "bhsrm" | "qzxyy" | "fssdy" | "gxjb" | "fsxt" | "whyx" | "gzsrm" | "sdlj" | "lyrm" | "gdtj" | "whfk" | "lyyz" | "qhwy" | "whsl" | "zzwy" | "ytll" | "zhzxy" | 'whhk' | 'nfsd'| '925' | 'dglb' | 'stmz' | 'qzde' | 'dghm';
+type hisIds = "hj" | "wh" | "ys" | "nys" | "dzlc" | "gzhd" | "lcey" | "germ" | "jmfy" | "dghl" | "dgxg" | "yczyy" | "nfzxy" | "xzsn" | "fqfybjy" | "wjgdszd" | "bhsrm" | "qzxyy" | "fssdy" | "gxjb" | "fsxt" | "whyx" | "gzsrm" | "sdlj" | "lyrm" | "gdtj" | "whfk" | "lyyz" | "qhwy" | "whsl" | "zzwy" | "ytll" | "zhzxy" | 'whhk' | 'nfsd'| '925' | 'dglb' | 'stmz' | 'qzde' | 'dghm' | 'zjhj';
 // type HisAdapterMap = { [p in hisIds]?: any };
 type HisAdapterMap = Record<string, any>;
 

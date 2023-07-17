@@ -87,7 +87,7 @@ export default observer(function Cell(props: Props) {
                 {
                     type: "line"
                 },
-                ['wh', 'gxjb', 'whyx', 'gzsrm', 'fssdy', 'fsxt', '925', 'nys', 'jmfy', 'lcey', 'dghl', 'fqfybjy', 'lyyz', 'qhwy', "whsl", "wjgdszd", 'ytll', 'whhk', 'dglb', 'zzwy', 'dghm'].includes(appStore.HOSPITAL_ID)
+                ['wh', 'gxjb', 'whyx', 'gzsrm', 'fssdy', 'fsxt', '925', 'nys', 'jmfy', 'lcey', 'dghl', 'fqfybjy', 'lyyz', 'qhwy', "whsl", "wjgdszd", 'ytll', 'whhk', 'dglb', 'zzwy', 'dghm', 'zjhj'].includes(appStore.HOSPITAL_ID)
                     ? {
                         icon: require("../../images/修改工时.png"),
                         label: "加/减班",
@@ -632,7 +632,7 @@ export default observer(function Cell(props: Props) {
                     "天积假"
                 );
             },
-            'wh,wjgdszd,gxjb,lcey,dghl,fqfybjy,fssdy,fsxt,925,whyx,whhk,lyyz,ytll,zzwy': () => {
+            'wh,wjgdszd,gxjb,lcey,dghl,fqfybjy,fssdy,fsxt,925,whyx,whhk,lyyz,ytll,zzwy,zjhj': () => {
                 return (
                     (cellObj.schAddOrSubs &&
                         cellObj.schAddOrSubs.length &&

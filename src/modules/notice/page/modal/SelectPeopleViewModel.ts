@@ -13,7 +13,7 @@ class SelectPeopleViewModel {
     },
     ...appStore.hisMatch({
       map: {
-        925: [],
+        '925,zjhj': [],
         other: [
           {
             step: '默认科室',
@@ -21,7 +21,8 @@ class SelectPeopleViewModel {
             data: []
           },
         ]
-      }
+      },
+      vague: true
     }),
     {
       step: '按护理单元选择',
@@ -119,11 +120,12 @@ class SelectPeopleViewModel {
       ser.groupByBigDeptInDeptList(),
       ...appStore.hisMatch({
         map: {
-          925: [],
+          '925,zjhj': [],
           other: [
             ser.defaultDeptUser(),
           ]
-        }
+        },
+        vague: true
       }),
       ser.groupByDeptInDeptList(),
       ser.groupByJobInDeptList(),

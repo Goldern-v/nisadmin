@@ -130,7 +130,7 @@ export default function EditToNewPostModal(props: Props) {
           {!isSdlj ? <Col span={24}>
             <Form.Field label={`原工作科室`} name="oldDeptCode" required>
               <Select placeholder="选择原工作科室">
-                {["925", 'dghm', 'zzwy'].includes(appStore.HOSPITAL_ID) ?
+                {["925", 'dghm', 'zzwy', 'zjhj'].includes(appStore.HOSPITAL_ID) ?
                 nurseFileDetailViewModal.getDict("全部科室").map((item: any) => (
                   <Option value={item.code} key={item.code}>
                     {item.name}

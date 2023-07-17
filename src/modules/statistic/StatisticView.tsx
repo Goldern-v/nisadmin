@@ -337,7 +337,7 @@ export default function StatisticView() {
             component: WardExecute,
           },
         ],
-        '925': 
+        '925,zjhj': 
         [
           {
             name: '病人流转统计',

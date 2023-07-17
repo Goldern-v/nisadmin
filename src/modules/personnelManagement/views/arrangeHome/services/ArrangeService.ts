@@ -49,7 +49,7 @@ export default class ArrangeService extends BaseApiService {
       endTime: selectViewModal.params.endTime,
       setting: appStore.hisMatch({
         map: {
-          '925,wh,qhwy': sheetViewModal.sheetTableData.map(
+          '925,wh,qhwy,zjhj': sheetViewModal.sheetTableData.map(
             (item: any, index: number) => ({
               ...item,
               status,

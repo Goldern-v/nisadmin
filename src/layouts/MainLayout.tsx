@@ -16,7 +16,7 @@ import FullPageLoading from "src/components/loading/FullPageLoading";
 import SignModal from "src/global/modal/SignModal";
 export interface Props extends RouteComponentProps {}
 /**是否武汉版本 */
-const isWhText = 'wh,gzsrm,gxjb,fsxt,fssdy,whyx,sdlj,lyrm,gdtj,qhwy,lyyz,wjgdszd,zzwy,zhzxy,whhk,925,ytll,dglb,whsl,stmz,qzde,dghm'
+const isWhText = 'wh,gzsrm,gxjb,fsxt,fssdy,whyx,sdlj,lyrm,gdtj,qhwy,lyyz,wjgdszd,zzwy,zhzxy,whhk,925,ytll,dglb,whsl,stmz,qzde,dghm,zjhj'
 export default observer(function MainLayout(props: Props) {
   const { payload } = props;
   /** 数据初始化 */

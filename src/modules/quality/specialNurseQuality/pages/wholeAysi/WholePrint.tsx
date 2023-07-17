@@ -34,7 +34,7 @@ export default observer(function EventReportDetailView(props: Props) {
 	const [spinning, setSpinning] = useState(false)
 	const [quarterRate, setQuarterRate] = useState("")
 	const [text, setText] = useState('')
-	const showText = ['fsxt','925', 'zzwy'].includes(appStore.HOSPITAL_ID)
+	const showText = ['fsxt','925', 'zzwy', 'zjhj'].includes(appStore.HOSPITAL_ID)
 
 	const [propsData, setPropsData] = useState({} as any);
 	useEffect(() => {
