@@ -152,8 +152,10 @@ export function getFun(context: any) {
 
     let _paramsMap = JSON.parse(JSON.stringify(paramMap))
     delete _paramsMap["班次"]
-    if (location.pathname.includes('QCRG_WQZD_04'))
+    if (location.pathname.includes('QCRG_WQZD_04')){
       _paramsMap['抢救记录'] = firstAid ? '是' : ''
+    }
+      
 
     let params = {
       startDate: date[0] ? date[0].format("YYYY-MM-DD") : "",
@@ -163,7 +165,6 @@ export function getFun(context: any) {
       paramMap: _paramsMap,
       ...pageOptions
     } as any
-
     let url: Promise<any>
     // 贵州 全院的情况下需要调后端另外一个接口
     if (appStore.HOSPITAL_ID === 'gzsrm' && authStore.selectedDeptCode === '全院')
