@@ -159,7 +159,7 @@ export default observer((props: Props) => {
   const getData = async () => {
     const dateBegin = moment(form.time[0]).format('YYYY-MM-DD')
     const dateEnd = moment(form.time[1]).format('YYYY-MM-DD')
-    let params: Obj = {
+    let params: any = {
       wardCode: form.wardCode,
       name: form.name,
       status: form.status,
@@ -175,12 +175,10 @@ export default observer((props: Props) => {
     }
     params.wardCode === '全院' && delete params.wardCode
     if (isWR) {
-      params = {
-        wardCode: form.wardCode === '全院' ? '' : form.wardCode,
-        // tradeCode: "getdischargedpatient",
-        startDate: dateBegin,     //开始日期
-        endDate: dateEnd,
-      }
+      params = new FormData()
+      params.append('wardCode', form.wardCode === '全院' ? '' : form.wardCode,)
+      params.append('startDate', dateBegin)
+      params.append('endDate', dateEnd)
     }
     setLoading(true)
     const fn = isWR ? api.getDischargedPatient : api.getPatientList
