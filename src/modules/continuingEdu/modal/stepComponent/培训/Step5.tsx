@@ -343,7 +343,12 @@ export default observer(function Step5() {
               </FileList>
             </td>
           </tr>
-          <tr>
+          {appStore.hisMatch({
+            map: {
+              zzwy: Number(stepViewModal.stepData4PX.isNeedQuestionnaire) !== 0,
+              other: true
+            }
+          }) && <tr>
             <td className="key">题目设置：</td>
             <td className="value">
               <div>一份试卷</div>
@@ -367,7 +372,7 @@ export default observer(function Step5() {
                 </Button>
               </div>
             </td>
-          </tr>
+          </tr>}
 
           <tr>
             <td className="key">通知设置：</td>

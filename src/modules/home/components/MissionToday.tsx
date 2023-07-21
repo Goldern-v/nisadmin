@@ -1,24 +1,16 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-
-import service from 'src/services/api'
-import HomeApi from 'src/modules/home/api/HomeApi.ts'
-import { authStore } from 'src/stores/index'
+import HomeApi from 'src/modules/home/api/HomeApi'
+import { appStore, authStore } from 'src/stores/index'
 import moment from 'moment'
-import BaseTable from 'src/components/BaseTable.tsx'
+import BaseTable from 'src/components/BaseTable'
 import { observer } from 'mobx-react-lite'
-import Item from 'antd/lib/list/Item'
-import { Button } from 'antd'
-import { DrawerLayoutAndroidBase } from 'react-native'
 
 moment.locale('zh-cn')
 const dateFormat = 'YYYY-MM-DD 00:00:00'
-let signData22: any = [{}]
 export default observer(function MissionToday() {
   const [dataSource, setDataSource] = useState([])
-  // let MidConRef: any = React.createRef()
   useEffect(() => {
-    //
     const postData = {
       wardCode: authStore.selectedDeptCode, // string 必须参数 科室编码
       startTime: moment().format(dateFormat), // string 必须参数 开始时间 2019-01-01 00:00:00
@@ -26,39 +18,6 @@ export default observer(function MissionToday() {
         .add(1, 'd')
         .format(dateFormat) // string 必须参数 结束时间 2019-01-02 00:00:00
     }
-    // console.log('===MissionToday', postData)
-    // service
-    // service.homeApiServices.todayTask(postData).then((res) => {
-    let cacheData: any = [
-      {
-        wardCode: '030502',
-        wardName: '神经内科护理单元',
-        taskType: '三测单',
-        finishCount: '14806',
-        totalCount: '16290'
-      },
-      {
-        wardCode: '030502',
-        wardName: '神经内科护理单元',
-        taskType: '执行单',
-        finishCount: '36',
-        totalCount: '23640'
-      },
-      {
-        wardCode: '030502',
-        wardName: '神经内科护理单元',
-        taskType: '三测单',
-        finishCount: '14806',
-        totalCount: '16290'
-      },
-      {
-        wardCode: '030502',
-        wardName: null,
-        taskType: '护理评估',
-        finishCount: '446',
-        totalCount: '608'
-      }
-    ]
     if (authStore.selectedDeptCode) {
       HomeApi.todayTask(postData)
         .then((res) => {
@@ -69,45 +28,23 @@ export default observer(function MissionToday() {
             }
             // cacheData
             setDataSource(cacheData)
-            // setDataSource(res.data)
-            // cacheData
           }
         })
         .catch(() => {
-          // for (let i = 0; i < cacheData.length; i++) {
-          //   cacheData[i].unFinishCount = parseInt(cacheData[i].totalCount) - parseInt(cacheData[i].finishCount)
-          // }
-          // // cacheData
-          // setDataSource(cacheData)
         })
     }
   }, [authStore.selectedDeptCode])
-  // let dataLen = 4
-  // const tbodyData = []
-  // for (let i = 0; i < dataLen; i++) {
-  //   tbodyData.push({})
-  // }
-  // const tbodyDom = tbodyData.map((item, index) => (
-  //   <tr>
-  //     <td key={index}>{item}</td>
-  //   </tr>
-  // ))
-  // const dataSource: any = []
+
   const columns: any = [
-    // {
-    //   title: '序号',
-    //   dataIndex: '序号',
-    //   key: '序号',
-    //   render: (text: any, record: any, index: number) => index + 1,
-    //   align: 'center',
-    //   width: 50
-    // },
     {
       title: '任务类型',
       dataIndex: 'taskType',
       key: '',
       align: 'center',
-      width: 100
+      width: 100,
+      render(text: any) {
+        return 'zzwy' === appStore.HOSPITAL_ID && text === '三测单' ? '体温单' : text
+      }
     },
     {
       title: '任务数',
@@ -131,70 +68,15 @@ export default observer(function MissionToday() {
       // width: 100
     }
   ]
-  // signData22 = [{}, {}]
-  // const testClick = () => {
-  //   console.log(signData22.length)
-  //   console.log('dataSource', dataSource)
-  //   console.log('signData22', signData22)
-  // }
+
   return (
     <div>
       <Head>
         <div className='headLeft'>今日任务</div>
-        <div className='headRight'>更多></div>
+        <div className='headRight'>更多{'>'}</div>
       </Head>
-      {/* <Button onClick={testClick}>testClick</Button> */}
-      {/* <Mid ref={MidConRef}> */}
       <Mid>
         <BaseTable dataSource={dataSource} columns={columns} scroll={{ y: 240 }} />
-        {/* <table>
-          <thead>
-            <tr>
-              <th>任务类型</th>
-              <th>任务数</th>
-              <th>已完成</th>
-              <th>未完成</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td />
-              <td />
-              <td />
-              <td />
-            </tr>
-            <tr>
-              <td />
-              <td />
-              <td />
-              <td />
-            </tr>
-            <tr>
-              <td />
-              <td />
-              <td />
-              <td />
-            </tr>
-            <tr>
-              <td />
-              <td />
-              <td />
-              <td />
-            </tr>
-            <tr>
-              <td />
-              <td />
-              <td />
-              <td />
-            </tr>
-            <tr>
-              <td />
-              <td />
-              <td />
-              <td />
-            </tr>
-          </tbody>
-        </table> */}
       </Mid>
     </div>
   )

@@ -240,7 +240,7 @@ class StepViewModal {
         teacherCreditType: this.stepData2.teacherCreditType,
         teacherCredit: this.stepData2.teacherCredit,
         teacherClassHours: this.stepData2.teacherClassHours,
-        questionStatList: stepViewModal.stepData4PX.questionStatList,
+        questionStatList: 'zzwy' ===appStore.HOSPITAL_ID && Number(stepViewModal.stepData4PX.isNeedQuestionnaire) === 0 ? [] : stepViewModal.stepData4PX.questionStatList,
         secondaryType: this.stepData2.secondaryType,
         sicPersonList: this.stepData2.sicPersonList.reduce(
           (total: any[], item: any) => {

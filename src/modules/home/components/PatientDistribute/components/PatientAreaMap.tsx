@@ -1,8 +1,6 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Chart, Tooltip, Axis, Legend, Pie, Coord } from 'viser-react'
-import HomeApi from 'src/modules/home/api/HomeApi'
-import { authStore } from 'src/stores/index'
 import moment from 'moment'
 import { observer } from 'mobx-react-lite'
 import HomeViewModel from 'src/modules/home/HomeViewModel'
@@ -10,7 +8,6 @@ moment.locale('zh-cn')
 export interface Props {
   patientNumSumProp: number
 }
-const dateFormat = 'YYYY-MM-DD 00:00:00'
 export default observer(function PatientAreaMap (props: Props) {
   const [byBistrict, setByBistrict] = useState([
     { patientType: '', patientNum: '' },
@@ -61,7 +58,6 @@ export default observer(function PatientAreaMap (props: Props) {
     as: 'percent'
   })
   const data = dv.rows
-  console.log("data===",data);
   return (
     <div>
       <ChartCon>

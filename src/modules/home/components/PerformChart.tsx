@@ -2,11 +2,11 @@ import styled from "styled-components";
 import React, { useState, useEffect } from "react";
 import { authStore, appStore } from "src/stores/index";
 import moment from "moment";
+import { observer } from "mobx-react-lite";
+import HomeApi from "src/modules/home/api/HomeApi";
+import BaseTable from "src/components/BaseTable";
 moment.locale("zh-cn");
 const dateFormat = "YYYY-MM-DD";
-import { observer } from "mobx-react-lite";
-import HomeApi from "src/modules/home/api/HomeApi.ts";
-import BaseTable from "src/components/BaseTable.tsx";
 export default observer(function PerformChart() {
   const [dataSource, setDataSource] = useState([]);
   const [tableLoading, setTableLoading] = useState(false);
@@ -39,6 +39,7 @@ export default observer(function PerformChart() {
   }, [authStore.selectedDeptCode,authStore.selectDateTime]);
 
   const turnToMore = ()=>{
+    if ('zzwy' !== appStore.HOSPITAL_ID) return
     history.push(`/statistic/wardExecute`)
   }
 
@@ -51,7 +52,7 @@ export default observer(function PerformChart() {
     },
     {
       title: "已完成",
-      dataIndex: "unExecute", //
+      dataIndex: "unExecute",
       align: "center",
       width: 80,
       render(text: any, record: any) {
@@ -67,7 +68,6 @@ export default observer(function PerformChart() {
         return Number(text);
       }
     },
-
     {
       title: "完成率",
       dataIndex: "ok",
@@ -86,7 +86,7 @@ export default observer(function PerformChart() {
     <div>
       <Head>
         <div className="headLeft">执行单情况</div>
-        <div className="headRight" onClick={()=>turnToMore()}>更多></div>
+        <div className="headRight" onClick={()=>turnToMore()}>更多{">"}</div>
       </Head>
       <Mid>
         <BaseTable

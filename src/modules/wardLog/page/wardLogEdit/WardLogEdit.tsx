@@ -28,22 +28,22 @@ export interface Props { }
 /** 使用病区作为标题 */
 const USE_WARD_AS_TITLE = 'fsxt' === appStore.HOSPITAL_ID
 /**不加形容词的医院 */
-const NO_ADJ_TITLE = 'yczyy' === appStore.HOSPITAL_ID
+const NO_ADJ_TITLE = ['yczyy', 'zzwy'].includes(appStore.HOSPITAL_ID)
 
 export default observer(function WardLogEdit(props: any) {
   const { location, history } = props
   const search = qs.parse(location.search.replace('?', ''))
   const [loading, setLoading] = useState(false)
   const [title, setTitle] = useState('')
-  const [recievers, setRecievers] = useState([] as any)
-  const [info, setInfo] = useState({} as any)
-  const [editList, setEditList] = useState([] as any[])
+  const [recievers, setRecievers] = useState<any>([])
+  const [info, setInfo] = useState<any>({})
+  const [editList, setEditList] = useState<any[]>([])
   const [remark, setRemark] = useState('')
-  const [attachmentList, setAttachmentList] = useState([] as FileItem[])
+  const [attachmentList, setAttachmentList] = useState<FileItem[]>([])
   const [showAllReciever, SetShowAllReciever] = useState(false)
-  const [deptListAll, setDeptListAll] = useState([] as any[])
+  const [deptListAll, setDeptListAll] = useState<any[]>([])
   const [accept,setAccept] =useState('image/jpg, image/jpeg, image/png')
-  const [addPerson, setAddPerson] = useState([] as any)  //列表展示
+  const [addPerson, setAddPerson] = useState<any>([])  //列表展示
   const [person, setPerson] = useState('')
   const selectPeopleModal = createModal(SelectPeopleModal)
 
@@ -71,9 +71,9 @@ export default observer(function WardLogEdit(props: any) {
     }
 
     let wardCode = search.deptCode || info.wardCode || ''
-    if (wardCode == '全院') wardCode = authStore.defaultDeptCode
+    if (wardCode === '全院') wardCode = authStore.defaultDeptCode
 
-    let params = {
+    let params: any = {
       inpatientAreaLog: {
         remark,
         templateId: search.templateId,
@@ -87,7 +87,7 @@ export default observer(function WardLogEdit(props: any) {
       wardCode,
       fileIds: attachmentList.map((item: any) => item.id.toString()),
       // tempSave
-    } as any
+    }
 
     if (search.id) params.inpatientAreaLog.id = search.id
     // return console.log(params)
@@ -163,12 +163,12 @@ export default observer(function WardLogEdit(props: any) {
             let editItem = { ...item }
 
             //如果是选择类型 则匹配下拉列表
-            if (item.type == '5') {
+            if (item.type === '5') {
               item.dropDowns = []
               if (res.data.progressDrop) {
                 for (let i = 0; i < res.data.progressDrop.length; i++) {
                   let dropDowns = res.data.progressDrop[i]
-                  if (dropDowns[0] && dropDowns[0].progressId == item.id) item.dropDowns = dropDowns.concat()
+                  if (dropDowns[0] && dropDowns[0].progressId === item.id) item.dropDowns = dropDowns.concat()
                 }
               }
             }
@@ -248,7 +248,7 @@ export default observer(function WardLogEdit(props: any) {
           onChange={(num) => handleChange(num)} />
       case "2":
       case "3":
-        if (item.type == '3') format = 'YYYY-MM-DD'
+        if (item.type === '3') format = 'YYYY-MM-DD'
         return <DatePicker
           format={format}
           value={item.content ? moment(item.content) : undefined}
@@ -308,7 +308,7 @@ export default observer(function WardLogEdit(props: any) {
     selectPeopleModal.show({
       checkedUserList: recievers,
       onOkCallBack: (payload) => {
-        let newRecieversArr = [] as any[]
+        let newRecieversArr: any[] = []
         formatRecievers(payload, newRecieversArr)
         setRecievers(newRecieversArr)
       }
@@ -319,7 +319,7 @@ export default observer(function WardLogEdit(props: any) {
     selectPeopleModal.show({
       checkedUserList: addPerson,
       onOkCallBack: (payload) => {
-        let arr = [] as any[]
+        let arr: any[] = []
         formatRecievers(payload, arr)
         console.log("arr.join(',')",arr.join(','));
         let findName =arr.map((item:any)=>item.empName)
@@ -349,8 +349,8 @@ export default observer(function WardLogEdit(props: any) {
     }else{
       getRecordData()
     }
-   if(appStore.HOSPITAL_ID == 'qhwy'){
-     setAccept('image/jpg, image/jpeg, image/png,.doc, .docx,.xls, .xlsx')
+   if(appStore.HOSPITAL_ID === 'qhwy'){
+    setAccept('image/jpg, image/jpeg, image/png,.doc, .docx,.xls, .xlsx')
    }
   }, [])
 
