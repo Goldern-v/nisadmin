@@ -16,6 +16,7 @@ import ExpectedRecord from "../views/arrangeHome/page/expectedRecord/ExpectedRec
 import ExpectedRecordSelf from "../views/arrangeHome/page/expectedRecordSelf/ExpectedRecordSelf";
 import StandardTime from "../views/arrangeHome/page/StandardTime/StandardTime";
 import TubeBed from "../views/arrangeHome/page/tubeBed/tubeBed";
+import GroupIngSetting from "../views/arrangeHome/page/grouping/GroupIngSetting";
 
 export interface meunConfigItem {
   title?: string;
@@ -40,6 +41,13 @@ export const meunConfig: meunConfigItem[] = [
         style: { background: "#fff" },
         iSlimit: false,
       },
+      /*威海市里--管床---未完成 */
+      // {
+      //   title: "管床分组",
+      //   path: "/personnelManagement/grouping",
+      //   component: GroupIngSetting,
+      //   iSlimit: true,
+      // },
       {
         title: "管床设置",
         path: "/personnelManagement/tubeBed",
