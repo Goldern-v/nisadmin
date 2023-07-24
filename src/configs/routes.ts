@@ -25,6 +25,7 @@ import TheoryExamScore from 'src/modules/continuingEdu/views/preJobTraining/theo
 import TrainExamDetail from 'src/modules/continuingEdu/views/preJobManage/trainingExamManage/TrainExamDetail'
 import TrainExamScore from 'src/modules/continuingEdu/views/preJobManage/trainingExamManage/TrainExamScore'
 import BadEventStatisticalReportDetail from 'src/modules/badEventsNew/views/BadEventStatisticalReportDetail'
+import ForgetPasswordView from 'src/modules/login/ForgetPasswordView '
 
 const ScheduleHomeView = lazy(() =>
   import("src/modules/schedule/views/ScheduleHome/ScheduleHomeView")
@@ -553,6 +554,7 @@ const routes: RouteItem[] = [
 
   setLayout("/login", LoginView),
   setLayout("/resetpassword", ResetPasswordView),
+  setLayout("/forgetpassword", ForgetPasswordView),
   setLayout("/traineeInfoSubmit", TraineeInfoSubmit),
   setLayout("/refresherInfoSubmit", RefresherInfoSubmit),
   setLayout("/satisfiedPatSubmit", SatisfiedPatSubmit),

@@ -324,6 +324,17 @@ export default withRouter(function LoginView(props: Props) {
             </div>
             {appStore.hisMatch({
               map: {
+                "dghm": <div className="resetpassword CheckItem" onClick={() => {
+                  history.push('/forgetpassword')
+                }}>
+                  <span>忘记密码</span>
+                </div>,
+                default: null
+              },
+              vague: true,
+            })}
+            {appStore.hisMatch({
+              map: {
                 "whyx,sdlj,dghl,gzsrm,whhk,dghm,ytll": <div className="resetpassword CheckItem" onClick={() => {
                   history.push('/resetpassword')
                 }}>
@@ -492,7 +503,7 @@ const BoxInput = styled.div`
   .CheckItem {
     position: relative;
     margin-top: 12px;
-    margin-right: 20px;
+    /* margin-right: 20px; */
     padding-left: 22px;
     text-align: left;
     /* cursor: pointer; */

@@ -34,8 +34,8 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
     /** 花都 */
     case "gzhd":
       // return "https://info.cr-health.com:20206"; // 公司-花都测试-外网 // 外网 http://120.238.239.27:9094/
-      return "http://192.168.1.54:9868"; // 公司-花都测试-内网
-    // return "http://192.168.2.123:8080"
+      // return "http://192.168.1.54:9868"; // 公司-花都测试-内网
+    return "http://192.168.1.143:22550"
     /** 江门妇幼 */
     case "jmfy":
       return "http://218.14.180.38:9094"; // 江门妇幼正式
@@ -164,8 +164,11 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
       return "http://192.168.1.54:9901";
     case "lyyz":
       return "http://192.168.1.54:9866";
+      // 东莞虎门
     case "dghm":
+      return "http://192.168.3.131:9091";//信铭测试
       return "http://59.36.17.191:9094"; //正式
+      // 珠海中西医
     case "zhzxy":
       return "http://192.168.1.54:9898"; //测试
     default:

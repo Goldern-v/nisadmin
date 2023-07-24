@@ -127,7 +127,18 @@ export default class AuthApiService extends BaseApiService {
   public updatePassword(data:any) {
     return httpLoginToken.post('/updatePassword',data)
   }
-
+ /**
+   * 忘记密码
+   * @param empNo 工号
+   * @param phone 手机号码
+   * @param newPswd 新密码
+   * @param rePswd 确认密码
+   * @returns
+   */
+  //  empNo: string, oldPswd: string, newPswd: string, rePswd: string
+  public updatePasswordByPhoneNumber(data:any) {
+    return httpLoginToken.post('/updatePasswordByPhoneNumber',data)
+  }
   /**
    * 重置密码（密码入参已做md5加密）
    * @param empNo 工号
