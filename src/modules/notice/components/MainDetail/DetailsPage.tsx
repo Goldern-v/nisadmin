@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { RouteComponentProps } from "react-router";
 import { Tooltip, message } from "antd";
 import { DetailObj } from "../../type";
@@ -61,15 +61,15 @@ export default function DetailsPage(props: Props) {
     if (!data.id) return;
     collected
       ? noticeService.revokeCollect(data.id).then(res => {
-          message.success("取消收藏消息成功");
-          setCollected(!collected);
-          noticeViewModel.refreshCurrentListObj();
-        })
+        message.success("取消收藏消息成功");
+        setCollected(!collected);
+        noticeViewModel.refreshCurrentListObj();
+      })
       : noticeService.collectMail(data.id).then(res => {
-          message.success("收藏消息成功");
-          setCollected(!collected);
-          noticeViewModel.refreshCurrentListObj();
-        });
+        message.success("收藏消息成功");
+        setCollected(!collected);
+        noticeViewModel.refreshCurrentListObj();
+      });
   };
 
   const editMail = (templateType: string) => {
@@ -88,6 +88,22 @@ export default function DetailsPage(props: Props) {
     });
     e.stopPropagation();
   };
+  /**已读未读具体人员 */
+  const readText = useMemo(() => {
+    let read = ''
+    let unread = ''
+    if (!(data?.receiverList)) return '暂无人员'
+    data.receiverList?.forEach((v: any) => {
+      if (v.read) return read += '、' + v.empName
+      unread += '、' + v.empName
+    })
+    let text = ''
+    read && (text += read.substring(1) + '已读')
+    text && unread && (text += ',')
+    unread && (text += unread.substring(1) + '未读')
+    return text
+
+  }, [data])
   return (
     <Wrapper>
       <ToolCon>
@@ -163,8 +179,8 @@ export default function DetailsPage(props: Props) {
                   ? data.nearImageUrl
                   : require("src/assets/images/护士默认头像.png")
                 : authStore.user && authStore.user.nearImageUrl
-                ? authStore.user.nearImageUrl
-                : require("src/assets/images/护士默认头像.png")
+                  ? authStore.user.nearImageUrl
+                  : require("src/assets/images/护士默认头像.png")
             }
             className="head-img"
             alt=""
@@ -202,7 +218,9 @@ export default function DetailsPage(props: Props) {
         )}
         {data.showType == "发" && (
           <Aside>
-            {data.readReceiverSize}人已读，{data.unreadReceiverSize}人未读
+            <Tooltip title={readText}>
+              {data.readReceiverSize}人已读，{data.unreadReceiverSize}人未读
+            </Tooltip>
           </Aside>
         )}
 
