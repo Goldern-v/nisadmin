@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
+import qs from 'qs';
 import BaseBreadcrumb from 'src/components/BaseBreadcrumb'
 import { Button, message } from 'src/vendors/antd'
 import { qualityAnalysisReportViewModal } from './QualityAnalysisReportViewModal'
@@ -16,8 +17,15 @@ export interface Props extends RouteComponentProps {}
 
 export default observer(function QualityAnalysisReportView() {
   const pageRef: any = useRef<HTMLElement>()
+  // const searchParams = new URLSearchParams(location.search);
+ 
+  // const url = window.location.href
+  // const parameters = url.split('?')[1];
+
   useEffect(() => {
     qualityAnalysisReportViewModal.init()
+    // console.log('hhhh',parameters)
+    // console.log(qs.parse(parameters))
   }, [])
   let report: Report = qualityAnalysisReportViewModal.getDataInAllData('report')
   const onPrint = (isPrint: boolean) => {

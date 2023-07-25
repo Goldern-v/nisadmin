@@ -4,10 +4,13 @@ import React from 'react'
 import createModal from 'src/libs/createModal'
 import BaseModal from './components/base/BaseModal'
 
-import { sectionList } from './config/sectionList'
+import { sectionList,sectionListOne } from './config/sectionList'
 
 import { qualityAnalysisReportService } from './services/QualityAnalysisReportService'
 import { AllData, DeptItem, DetailItem } from './types'
+import { appStore } from './../../../../stores/index'
+
+
 
 export interface SectionListItem {
   sectionId?: string
@@ -38,7 +41,7 @@ interface SectionCase {
 
 class QualityAnalysisReportViewModal {
   @observable baseModal: ModalCase | null = null
-  @observable public sectionList: SectionListItem[] = sectionList
+  @observable public sectionList: SectionListItem[] = appStore.queryObj.qcOne=='monthReport'?sectionListOne:sectionList
   @observable public allData: Partial<AllData> = {
     report: {}
   }
@@ -99,8 +102,13 @@ class QualityAnalysisReportViewModal {
 
   /** 数据初始化 */
   async initData() {
-    let { data } = await qualityAnalysisReportService.getReport()
-    this.allData = data
+    let data = {} as any
+    if(appStore.queryObj.qcOne=='monthReport'){
+      data = await qualityAnalysisReportService.getReport_dgxg_one()
+    }else{
+      data = await qualityAnalysisReportService.getReport()
+    }
+    this.allData = data.data
     this.getSectionData(`报告名称`).text = this.allData.report!.reportName || {}
     this.getSectionData(`上月质量问题`).list = this.allData!.lastImproveItemList || []
     this.getSectionData(`2-1`).report = this.allData!.report || {}
@@ -113,12 +121,22 @@ class QualityAnalysisReportViewModal {
         compareScorePercent: Number(item.compareScorePercent.toFixed(2))
       })
     })
-    this.getSectionData(`本月质量扣分科室排序`).list = (this.allData!.deptItemList || []).map((item: DeptItem) => {
-      return Object.assign(item, {
-        deductScore: Number(Number(item.deductScore).toFixed(2)),
-        convertDeductScore: Number(Number(item.convertDeductScore).toFixed(2)),
+    if(appStore.queryObj.qcOne=='monthReport'){
+      this.getSectionData(`本月质量扣分质控表排序`).list = (this.allData!.deptItemList || []).map((item: DeptItem) => {
+        return Object.assign(item, {
+          deductScore: Number(Number(item.deductScore).toFixed(2)),
+          convertDeductScore: Number(Number(item.convertDeductScore).toFixed(2)),
+        })
       })
-    })
+    }else{
+      this.getSectionData(`本月质量扣分科室排序`).list = (this.allData!.deptItemList || []).map((item: DeptItem) => {
+        return Object.assign(item, {
+          deductScore: Number(Number(item.deductScore).toFixed(2)),
+          convertDeductScore: Number(Number(item.convertDeductScore).toFixed(2)),
+        })
+      })
+    }
+    
     this.getSectionData(`本月主要质量问题`).list = (this.allData!.detailItemList || []).map((item: any) => {
       return Object.assign(item, {
         totalDeductScore: Number(Number(item.totalDeductScore).toFixed(2))
@@ -132,6 +150,7 @@ class QualityAnalysisReportViewModal {
     this.getSectionData(`问题及建议`).report = data!.report || {}
   }
   async init() {
+    this.sectionList = appStore.queryObj.qcOne=='monthReport'?sectionListOne:sectionList
     await this.initData()
     this.baseModal = createModal(BaseModal)
   }
