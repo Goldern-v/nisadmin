@@ -133,7 +133,7 @@ export default class ArrangeService extends BaseApiService {
       map: {
         lcey: '/schedulingLc/export',
         jmfy: '/schedulingJm/export',
-        'whyx,whhk': '/schedulingYaXin/export',
+        'whyx,whhk,zzwy': '/schedulingYaXin/export',
         zhzxy: key !== 'default' ? '/scheduling/exportExcelForZhzxy' : '/scheduling/export',
         default: '/scheduling/export',
         
