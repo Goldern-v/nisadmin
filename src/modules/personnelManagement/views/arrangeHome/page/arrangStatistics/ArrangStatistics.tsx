@@ -201,7 +201,7 @@ export default observer(function ArrangStatistics() {
           onChange={(value: any) => setDate(value)}
         />
         <span className="label">科室:</span>
-        <DeptSelect onChange={() => {
+        <DeptSelect hasAllDept={authStore.isDepartment&&['zzwy'].includes(appStore.HOSPITAL_ID)?true:false} onChange={() => {
         }} />
         <span className="label">类型:</span>
         <Select value={showType} onChange={(value: any) => setShowType(value)}>

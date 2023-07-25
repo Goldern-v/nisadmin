@@ -6,6 +6,7 @@ import SelectData from "src/modules/statistic/common/SelectData";
 import StatisticsApi from "src/modules/statistic/api/StatisticsApi";
 import { Button, message } from "antd";
 import emitter from "src/libs/ev";
+import { appStore, authStore } from "src/stores";
 // import { observer } from 'mobx-react-lite'
 export default function BedSituation() {
   // const [getMethods, setGetMethods] = useState(() => null)
@@ -58,7 +59,7 @@ export default function BedSituation() {
 
   return (
     <Con>
-      <DeptSelect showSearch={false} onChange={onChange} />
+      <DeptSelect hasAllDept={['zzwy'].includes(appStore.HOSPITAL_ID)&&appStore.location.pathname.split('/').pop()==='护士排班表'?true:false} showSearch={false} onChange={onChange} />
       {/* <SelectDepartment /> */}
       <Spacing />
       <SelectData />
