@@ -440,6 +440,9 @@ const StudyResultReview = lazy(() =>
     "src/modules/continuingEdu/views/trainingResult/views/studyResultReview/StudyResultReview"
   )
 );
+ //学习培训查看结果
+ const FormMaintenanceDetail = lazy(() => import("src/modules/continuingEdu/views/gaugePearson/formMaintenance/component/Detail")
+ );
 const TrainingResultReview = lazy(() =>
   import(
     "src/modules/continuingEdu/views/trainingResult/views/trainingResultReview/TrainingResultReview"
@@ -618,6 +621,7 @@ const routes: RouteItem[] = [
     layouts.MainLayout
   ),
   setLayout("/studyResultReview", StudyResultReview, layouts.MainLayout),
+  setLayout("/formMaintenanceDetail", FormMaintenanceDetail, layouts.MainLayout),
   setLayout("/trainingResultReview", TrainingResultReview, layouts.MainLayout),
   setLayout("/testingResultReview", TestingResultReview, layouts.MainLayout),
   setLayout("/operateResultReview", OperateResultReview, layouts.MainLayout),
