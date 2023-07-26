@@ -27,6 +27,15 @@ export default observer(function QualityAnalysisReportView() {
     // console.log('hhhh',parameters)
     // console.log(qs.parse(parameters))
   }, [])
+
+  const toBack = ()=>{
+    if(appStore.queryObj.qcOne=='monthReport'){
+      appStore.history.goBack()
+    }else{
+      appStore.history.push('/qcThree/analysis')
+    }
+    
+  }
   let report: Report = qualityAnalysisReportViewModal.getDataInAllData('report')
   const onPrint = (isPrint: boolean) => {
     let printFun = isPrint ? printing : printing.preview
@@ -78,17 +87,22 @@ export default observer(function QualityAnalysisReportView() {
       qualityAnalysisReportService.deleteReport().then((res) => {
         message.success('删除成功')
         setTimeout(() => {
-          appStore.history.push('/qcThree/analysis')
+          toBack()
+          // appStore.history.push('/qcThree/analysis')
         }, 500)
       })
     })
   }
+  
   const onPublish = () => {
     globalModal.confirm('发布确认', '你确定要发布该报告吗？').then((res) => {
       qualityAnalysisReportService.publishReport().then((res) => {
         message.success('发布成功')
         setTimeout(() => {
-          appStore.history.push('/qcThree/analysis')
+          toBack()
+            // appStore.history.push('/qcThree/analysis')
+          
+          
         }, 500)
       })
     })
@@ -98,7 +112,8 @@ export default observer(function QualityAnalysisReportView() {
       qualityAnalysisReportService.cancelPublishReport().then((res) => {
         message.success('撤销成功')
         setTimeout(() => {
-          appStore.history.push('/qcThree/analysis')
+          toBack()
+          // appStore.history.push('/qcThree/analysis')
         }, 500)
       })
     })
@@ -106,7 +121,7 @@ export default observer(function QualityAnalysisReportView() {
   return (
     <Wrapper>
       <HeadCon>
-        <BaseBreadcrumb data={[{ name: '分析报告', link: '/qcThree/analysis' }, { name: '报告详情', link: '' }]} />
+        <BaseBreadcrumb data={[{ name: '分析报告', link: appStore.queryObj.qcOne=='monthReport'?'/qcOneHj/qcFirstMQSummary?qcLevel=1':'/qcThree/analysis' }, { name: '报告详情', link: '' }]} />
         <div className='title'>{report.reportName}</div>
         <div className='aside'>
           <span>

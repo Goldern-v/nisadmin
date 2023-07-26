@@ -1,11 +1,11 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
-import { TypeCompare, Report, DeptItem } from '../../types'
+import { qcItem, Report, DeptItem } from '../../types'
 import { appStore } from 'src/stores'
 import { qualityAnalysisReportViewModal } from '../../QualityAnalysisReportViewModal'
 export interface Props {
-  list: DeptItem[]
+  list: qcItem[]
 }
 
 export default function Table(props: Props) {
@@ -16,24 +16,24 @@ export default function Table(props: Props) {
     <Wrapper>
       <table>
         <colgroup>
-          <col width='30%' />
-          <col width='50%' />
-          <col width='10%' />
+          <col width='35%' />
+          <col width='55%' />
+          {/* <col width='10%' /> */}
           <col width='10%' />
         </colgroup>
         <tbody>
           <tr className='header'>
-            <td>科室</td>
+            <td>质控表</td>
             <td>问题</td>
-            <td>扣分</td>
+            {/* <td>扣分</td> */}
             <td>排序</td>
           </tr>
 
           {list.map((item, index) => (
             <tr key={index}>
-              <td style={{ textAlign: 'left' }}>{item.wardName}</td>
+              <td style={{ textAlign: 'left' }}>{item.qcName}</td>
               <td style={{ textAlign: 'left' }}>{item.itemBadDesc}</td>
-              <td>{item.deductScore}</td>
+              {/* <td>{item.deductScore}</td> */}
               <td>{index + 1}</td>
             </tr>
           ))}

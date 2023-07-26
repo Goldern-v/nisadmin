@@ -56,6 +56,16 @@ export interface DeptItem {
   itemBadDesc: string
   deductScore?: number | string
 }
+/** 扣分质控表 */
+export interface qcItem {
+  convertDeductScore?: string | number;
+  id: number
+  qcCode: string
+  qcName: string
+  itemCode: string
+  itemBadDesc: string
+  deductScore?: number | string
+}
 /** 主要质量问题 */
 export interface DetailItem {
   id: number

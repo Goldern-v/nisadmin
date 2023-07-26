@@ -122,9 +122,9 @@ class QualityAnalysisReportViewModal {
       })
     })
     if(appStore.queryObj.qcOne=='monthReport'){
-      this.getSectionData(`本月质量扣分质控表排序`).list = (this.allData!.deptItemList || []).map((item: DeptItem) => {
+      this.getSectionData(`本月质量扣分质控表排序`).list = (this.allData!.codeItemList || []).map((item: DeptItem) => {
         return Object.assign(item, {
-          deductScore: Number(Number(item.deductScore).toFixed(2)),
+          // deductScore: Number(Number(item.deductScore).toFixed(2)),
           convertDeductScore: Number(Number(item.convertDeductScore).toFixed(2)),
         })
       })
