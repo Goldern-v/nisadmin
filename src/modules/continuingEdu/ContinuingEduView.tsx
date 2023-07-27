@@ -26,6 +26,7 @@ import 主列表页 from "./views/mainTablePage/MainPage";
 import 无权限 from "./views/noAuthority/NoAuthority";
 import 通知管理 from "./views/notificationManagement/Notification";
 import FormMaintenance from "./views/gaugePearson/formMaintenance/Index";
+import TemplateMaintenance from "./views/gaugePearson/templateMaintenance/Index";
 import 晋升管理 from "./views/promotionSetting/PromotionSetting";
 import 晋升管理_hj from "./views/promotionSetting_hj/PromotionSetting_hj";
 import 类型管理 from "./views/typeManagement/TypeManagement";
@@ -1356,6 +1357,11 @@ const getIcon = (icon: any) => {
         //   title: "手册表单维护",
         //   path: "/continuingEdu/formMaintenance",
         //   component: FormMaintenance,
+        // },
+        // {
+        //   title: "手册模板维护",
+        //   path: "/continuingEdu/templateMaintenance",
+        //   component: TemplateMaintenance,
         // },
       ],
     },

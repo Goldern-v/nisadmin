@@ -5,7 +5,7 @@ import {Place} from "src/components/common";
 import {observer} from "mobx-react-lite";
 import BaseTable, {DoCon} from "src/components/BaseTable";
 import {authStore} from "src/stores";
-import MaintenanceModal from "./component/MaintenanceModal";
+import TemplateModal from "./components/TemplateModal";
 const Option = Select.Option;
 export const LEVEL_LIST = ['全部', 'N0', 'N1', 'N2', 'N3', 'N4', 'N5', 'N6']
 
@@ -23,7 +23,7 @@ interface AddModal {
     visible?: boolean
 }
 
-export default observer(function FormMaintenance() {
+export default observer(function TemplateMaintenance() {
     const [loading, setLoading] = useState<boolean>(false)
     const [addModal, setAddModal] = useState<AddModal>({
         title: '添加',
@@ -58,19 +58,31 @@ export default observer(function FormMaintenance() {
             }
         },
         {
+            title: "手册",
+            dataIndex: "secondLevelMenuName",
+            align: "center",
+            width: 100
+        },
+        {
             title: "表名",
             dataIndex: "secondLevelMenuName",
             align: "center",
             width: 100
         },
         {
-            title: "科室",
+            title: "附件名称",
+            dataIndex: "secondLevelMenuName",
+            align: "center",
+            width: 100
+        },
+        {
+            title: "适用科室",
             dataIndex: "thirdLevelMenuName",
             align: "center",
             width: 100
         },
         {
-            title: "层级",
+            title: "适用层级",
             dataIndex: "teachingMethodName",
             align: "center",
             className: "teaching-method-name",
@@ -121,11 +133,27 @@ export default observer(function FormMaintenance() {
     return (
         <Wrapper>
             <HeaderCon>
-                <Title>手册表单维护</Title>
+                <Title>手册模板维护</Title>
                 <Place/>
+                {/* 获取数据选择 */}
+                <span style={{marginLeft: 15}}>表名：</span>
+                <Select
+                    showSearch
+                    value={query.level}
+                    style={{width: 100}}
+                    onChange={handleLevelChange}
+                    filterOption={(input: any, option: any) =>
+                        option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                    placeholder='选择层级'>
+                    {LEVEL_LIST.map((item: string) => (
+                        <Select.Option value={item} key={item}>
+                            {item}
+                        </Select.Option>
+                    ))}
+                </Select>
                 <span style={{marginLeft: 15}}>科室：</span>
                 <Select
-                    style={{width: 180}}
+                    style={{width: 100}}
                     value={query.deptCode}
                     showSearch
                     filterOption={(input: any, option: any) =>
@@ -141,7 +169,7 @@ export default observer(function FormMaintenance() {
                 <Select
                     showSearch
                     value={query.level}
-                    style={{width: 180}}
+                    style={{width: 100}}
                     onChange={handleLevelChange}
                     filterOption={(input: any, option: any) =>
                         option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
@@ -152,25 +180,27 @@ export default observer(function FormMaintenance() {
                         </Select.Option>
                     ))}
                 </Select>
-                <span style={{marginLeft: 15}}>表名：</span>
-                <Input
-                    value={query.name}
-                    onBlur={(e) => {
-                        setQuery({...query, name: e.target.value})
-                    }}
-                    placeholder="请输入表名"
-                    style={{width: 240, marginLeft: 15}}
-                    allowClear
-                />
+
                 <Button
                     type="primary"
                     style={{marginLeft: 15}}>
                     搜索
                 </Button>
                 <Button
-                    onClick={handleAdd}
+                    type="primary"
                     style={{marginLeft: 15}}>
-                    新增
+                    导出
+                </Button>
+                <Button
+                    type="primary"
+                    style={{marginLeft: 15}}>
+                    下载所有模板
+                </Button>
+                <Button
+                    onClick={handleAdd}
+                    type="primary"
+                    style={{marginLeft: 15}}>
+                    导入
                 </Button>
             </HeaderCon>
             <ScrollCon>
@@ -196,15 +226,14 @@ export default observer(function FormMaintenance() {
                     </MainCon>
                 </BodyWarpper>
             </ScrollCon>
-            <MaintenanceModal title={addModal.title} visible={addModal.visible} handleCancel={handleCancel}/>
+            <TemplateModal title={addModal.title} visible={addModal.visible} handleCancel={handleCancel}/>
             {/*<SingModal title={title} visible={modalVisible} handleCancel={handleCancel} />*/}
         </Wrapper>
     );
 });
 
-const Wrapper = styled.div<{ height?: string | number }>`
+const Wrapper = styled.div`
   padding: ${p => p.theme.$mcp};
-  padding-bottom: 0;
   height: calc(100% - 49px);
   display: flex;
   flex-direction: column;

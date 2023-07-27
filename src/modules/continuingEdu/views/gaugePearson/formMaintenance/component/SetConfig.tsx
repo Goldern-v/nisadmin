@@ -41,7 +41,6 @@ export default observer(function SetConfig(props: Props) {
   const calLabel = ['date', 'date_time', 'time']// 自动计算项
   const calLabel2 = ['', 'timeCalculation']// 累加
 
-  let value = [] as any
   let cascaderOptions: any = [{
     value: '',
     label: '文本框',
@@ -117,23 +116,6 @@ export default observer(function SetConfig(props: Props) {
   }
 
 
-  const baseNumCol: ColumnProps<any> = {
-    title: "基数",
-    width: 100,
-    dataIndex: "checkSize",
-    className: "input-cell",
-    render(text: any, record: any, index: any) {
-      return (
-        <Input
-          defaultValue={text}
-          onChange={e => {
-            record.checkSize = e.target.value;
-          }}
-          onBlur={() => updateDataSource()}
-        />
-      );
-    }
-  }
 
   const defaultOptions = codeAdapter({
     other: []
@@ -459,6 +441,7 @@ export default observer(function SetConfig(props: Props) {
       render(text: string, record: any, index: number) {
         return (
           <DoCon>
+            <span onClick={()=>handleCopy(index,record)}>复制</span>
             {selectedBlockObj &&
               selectedBlockObj.itemSizeEditable &&
               (
@@ -479,7 +462,14 @@ export default observer(function SetConfig(props: Props) {
       }
     }
   ];
-
+const handleCopy =(index:number,record:any)=>{
+    let obj = dataSource.filter((item:any,key:number)=>key == index)
+    let newItem = JSON.parse(JSON.stringify(obj))
+    if(newItem.id)delete  newItem.id
+  /* 如果已经有id 需要删除   let newItem = JSON.parse(JSON.stringify(item)) */
+  // obj.
+    setDataSource([...newItem,...dataSource])
+}
   const updateDataSource = () => {
     setDataSource([...dataSource]);
   };
@@ -560,20 +550,15 @@ export default observer(function SetConfig(props: Props) {
     <Wrapper>
       <ToolCon>
         <Place />
-        <span>排序：</span>
-        <Switch
-          style={{ marginRight: 10 }}
-          checked={moveAble}
-          onChange={(value: any) => setMoveAble(value)}
-        />
-        {selectedBlockObj &&
-          selectedBlockObj.itemSizeEditable &&
-          (
-            <Button onClick={addRow}>添加</Button>
-          )}
-        <Button onClick={onSave} type="primary">
-          保存
-        </Button>
+        {/*{selectedBlockObj &&*/}
+        {/*  selectedBlockObj.itemSizeEditable &&*/}
+        {/*  (*/}
+        {/*    <Button onClick={addRow}>添加</Button>*/}
+        {/*  )}*/}
+        <Button onClick={addRow}>添加</Button>
+        {/*<Button onClick={onSave} type="primary">*/}
+        {/*  保存*/}
+        {/*</Button>*/}
       </ToolCon>
       <EditTableCon>
         <BaseTable
@@ -583,14 +568,6 @@ export default observer(function SetConfig(props: Props) {
           columns={columns}
           type={["index", moveAble ? "diagRow" : ""]}
           surplusHeight={appStore.wih - (appStore.wih * 0.8 - 200)}
-          moveRow={(dragIndex: number, hoverIndex: number) => {
-            const dragRow = dataSource[dragIndex];
-            setDataSource(
-              update(dataSource, {
-                $splice: [[dragIndex, 1], [hoverIndex, 0, dragRow]]
-              })
-            );
-          }}
         />
       </EditTableCon>
     </Wrapper>

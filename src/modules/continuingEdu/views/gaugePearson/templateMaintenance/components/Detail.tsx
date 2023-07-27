@@ -1,29 +1,62 @@
 import styled from 'styled-components'
 import React, {useEffect, useState} from 'react'
-import { Button } from 'antd'
+import {Button, Checkbox} from 'antd'
 import { Link } from 'react-router-dom'
 import BaseTable, { TabledCon, DoCon } from 'src/components/BaseTable'
 import { ColumnProps } from 'src/vendors/antd'
 import {appStore, authStore} from 'src/stores'
 import { observer } from 'mobx-react-lite'
-import SetTittle from "./SetConfig";
 import BaseTabs from "src/components/BaseTabs";
 export interface Props { }
 // menuInfo  路径上获取
 //查看学习结果
-export default observer(function FormMaintenanceDetail() {
+export default observer(function TemplateMaintenanceDetail() {
   const [tableData,setTableData]=useState([]) as any
+  const [loading, setLoading] = useState<boolean>(false)
+
   const { history } = appStore
   // const { query, tableData, tableDataTotal, loading, baseInfo, menuInfo, isSignType } = trainingResultModel
   useEffect(() => {
   }, [])
+  const columns: any = [
+    {
+      title: "序号",
+      dataIndex: "",
+      key: "",
+      align: "center",
+      width: 40
+    },
+    {
+      title: "分类",
+      dataIndex: "firstLevelMenuName",
+      align: "center",
+      width: 100,
+      render: () => {
+        return (
+            <Checkbox/>
+        )
+      }
+    },
+    {
+      title: "内容",
+      dataIndex: "secondLevelMenuName",
+      align: "center",
+      width: 100
+    },
+    {
+      title: "学时",
+      dataIndex: "secondLevelMenuName",
+      align: "center",
+      width: 100
+    },
+  ];
 
   return <Wrapper>
     <TopPannel>
       <NavCon>
         <Link to="/home">主页</Link>
         <span> {'>'} </span>
-        <Link to="/continuingEdu/formMaintenance">{ '手册表单维护'}</Link>
+        <Link to="/continuingEdu/templateMaintenance">手册模板维护</Link>
         <span> {'>'} 表单详情</span>
       </NavCon>
       <MainTitle>{'baseInfo.title'}</MainTitle>
@@ -35,18 +68,23 @@ export default observer(function FormMaintenanceDetail() {
       </SubContent>
       <ButtonGroups>
         <Button onClick={() => history.goBack()}>返回</Button>
-        <Button >保存</Button>
       </ButtonGroups>
     </TopPannel>
     <MainPannel>
       <TableWrapper>
-        <SetTittle/>
+        <BaseTable
+            loading={loading}
+            dataSource={tableData}
+            columns={columns}
+            surplusHeight={400}
+        />
       </TableWrapper>
     </MainPannel>
   </Wrapper>
 })
 
 const TableWrapper = styled(TabledCon)`
+  width: 50%;
   td{
     word-break: break-all;
   }
@@ -102,7 +140,6 @@ const NavCon = styled.div`
     &.content{
       margin-right: 15px;
       display: inline-block;
-      /* min-width: 60px; */
     }
   }
 `
@@ -118,15 +155,11 @@ const ButtonGroups = styled.div`
   }
 `
 const MainPannel = styled.div`
+  display: flex;
+  justify-content: center;
+  //align-items: center;
   flex: 1;
   padding-top: 15px;
   padding-bottom: 15px;
 `
 
- const ActiveText = styled.span`
-  cursor: pointer;
-  color: #1db38b;
-  &:hover{
-    font-weight: bold;
-  }
-`

@@ -21,7 +21,7 @@ const formItemLayout = {
 }
 
 /** 职务列表 */
-function MaintenanceModal(props: Props) {
+function TemplateModal(props: Props) {
     let {
         visible,
         handleOk,
@@ -37,12 +37,7 @@ function MaintenanceModal(props: Props) {
         })
     }
     const onSave = (e: any) => {
-        // 手册表单维护 / 表单详情
-        //
-        // 规培护士轮转汇总
-        //
-        // 创建人： 肖佳薇
-        appStore.history.push(`/FormMaintenanceDetail?id=20`);
+        appStore.history.push(`/TemplateMaintenanceDetail?id=20`);
         // validateFields((err, value) => {
         //     if (err) {
         //         return
@@ -59,6 +54,7 @@ function MaintenanceModal(props: Props) {
     }
 
     useEffect(() => {
+        console.log("appStore.isDev===",appStore.isDev);
         if (visible) {
             resetFields()
         }
@@ -68,6 +64,28 @@ function MaintenanceModal(props: Props) {
         <Modal title={title} visible={visible} onOk={onSave} onCancel={handleCancel} okText='确定' centered>
             <Wrapper>
                 <Form>
+                    <Form.Item {...formItemLayout} label='表名'>
+                        {getFieldDecorator('deptCode', {
+                            initialValue:'',
+                            rules: [{ required: true, message: '表名不能为空' }]
+                        })(
+                            <Select
+                                showSearch
+                                filterOption={(input: any, option: any) =>
+                                    option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                }
+                                style={{ width: '100%' }}
+                                placeholder='选择所属科室'>
+                                {[{name:'全院',code:''},...authStore.deptList].map((item: any) => {
+                                    return (
+                                        <Select.Option value={item.code} key={item}>
+                                            {item.name}
+                                        </Select.Option>
+                                    )
+                                })}
+                            </Select>
+                        )}
+                    </Form.Item>
                     <Form.Item {...formItemLayout} label='科室'>
                         {getFieldDecorator('deptCode', {
                             initialValue:'',
@@ -111,14 +129,8 @@ function MaintenanceModal(props: Props) {
                             </Select>
                         )}
                     </Form.Item>
-                    <Form.Item {...formItemLayout} label='表名'>
-                        {getFieldDecorator('empName', {
-                            initialValue:'',
-                            rules: [{ required: true, message: '表名不能为空' }]
-                        })(<Input />)}
-                    </Form.Item>
                     <Form.Item {...formItemLayout} label='' >
-                        {getFieldDecorator('type', )(<Radio.Group>
+                        {getFieldDecorator('type')(<Radio.Group>
                             <Radio value={1}>仅护长或带教编辑</Radio>
                             <Radio value={2}>护长和护士共同编辑</Radio>
                             <Radio value={3}>仅护士编辑</Radio>
@@ -134,4 +146,4 @@ const Wrapper = styled.div`
     text-align: left !important;
   }
 `
-export default Form.create()(observer(MaintenanceModal)) as any
+export default Form.create()(observer(TemplateModal)) as any
