@@ -7,9 +7,10 @@ import {groupingService} from "src/modules/personnelManagement/views/arrangeHome
 import {SelectValue} from "antd/es/select";
 import {tubeBedService} from "src/modules/personnelManagement/views/arrangeHome/page/tubeBed/services/TubeBedService";
 import {authStore} from "src/stores";
+import {ColumnProps} from "antd/es/table";
 
 interface TableItem {
-    id?:number|string;
+    id?:number|string|undefined;
     index?: number | string;
     bedGroupName?: string;
     bedLabels?: SelectValue
@@ -36,8 +37,10 @@ export default function GroupIngSetting() {
         })
     }
     const getData = () => {
+        setTableLoading(true)
         groupingService.getList().then((res: any) => {
-            console.log("res===", res);
+            setTableLoading(false)
+            setTableData(res.data||[])
         })
     }
     const handleInputChange = (value: string,index:number) => {
@@ -58,20 +61,23 @@ export default function GroupIngSetting() {
         })
         setTableData([...list])
     }
-    const columns = [
+    const columns:ColumnProps<any>[] = [
         {
             title: '序号',
             dataIndex: 'index',
             key: 'index',
             width: 60,
+            render: (text: any, record: any, index: number) => index + 1,
         },
         {
             title: '管床名称',
             dataIndex: 'bedGroupName',
             key: 'bedGroupName',
-            width: 100,
+            width: 200,
             render: (text: string, record: any, index: number) => {
-                return <Input style={{width:'100%'}} placeholder='请输入管床名称' key={`${index}+a`}
+                return <Input style={{width:'100%'}}
+                              defaultValue={text}
+                              placeholder='请输入管床名称' key={`${index}+a`}
                               onChange={(e: any) => handleInputChange(e.target.value,index)}/>
             }
 
@@ -99,10 +105,10 @@ export default function GroupIngSetting() {
             title: '操作',
             dataIndex: 'cz',
             key: 'cz',
-            width:60,
-            render: (text: string, record: TableItem, index: number) => {
+            width:80,
+            render: (text: string, record: TableItem) => {
                 return (
-                    <span onClick={() => handleDelete(index)}>删除</span>
+                   <div style={{cursor:'pointer',textAlign:"center"}} onClick={() => handleDelete(record.id)}>删除</div>
                 )
             }
         }
@@ -115,7 +121,8 @@ export default function GroupIngSetting() {
         }
         setTableData([...tableData, params])
     }
-    const handleDelete = (index: number) => {
+    const handleDelete = (id:any) => {
+        if(!id)return
         Modal.confirm({
             title: "删除确认",
             content: "确定要删除此数据？",
@@ -124,14 +131,28 @@ export default function GroupIngSetting() {
             centered: true,
             maskClosable: true,
             onOk: () => {
-                // if()
-                let newList: TableItem[] = tableData.filter((item: TableItem, key: number) => index !== key)
-                setTableData(newList)
+                groupingService.delete({id}).then((res)=>{
+                    message.success('删除成功')
+                    getData()
+                })
             },
         });
     }
     const handleSave = () => {
-        groupingService.save(tableData).then((res:any)=>{
+        // tableData
+        // "bedGroupName": "string",
+        //         "bedLabels": "string",
+        //         "empNo": "string",
+        //         "empName": "string",
+        //         "createDate": "string",
+        //         "updateDate": "string",
+        //         "deleteFlag": "string"
+        let list =tableData.map((item:any)=>{
+            item.empNo =authStore.user?.empNo
+            item.empName =authStore.user?.empName
+            return item
+        })
+        groupingService.save(list).then((res:any)=>{
             message.success('保存成功')
             getData()
         })

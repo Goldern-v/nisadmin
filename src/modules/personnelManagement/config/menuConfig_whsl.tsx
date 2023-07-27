@@ -42,12 +42,12 @@ export const meunConfig: meunConfigItem[] = [
         iSlimit: false,
       },
       /*威海市里--管床---未完成 */
-      // {
-      //   title: "管床分组",
-      //   path: "/personnelManagement/grouping",
-      //   component: GroupIngSetting,
-      //   iSlimit: true,
-      // },
+      {
+        title: "管床分组",
+        path: "/personnelManagement/grouping",
+        component: GroupIngSetting,
+        iSlimit: true,
+      },
       {
         title: "管床设置",
         path: "/personnelManagement/tubeBed",

@@ -56,7 +56,17 @@ class TobeBed {
       }
     }
   }
-
+  setAllTreeSelectCellData(row: any, col: any, selectedCell: any,) {
+    for (let i = 0; i < this.AllCell.length; i++) {
+      for (let j = 0; j < this.AllCell[i]!.bedList.length; j++) {
+        if (row == i && col == j) {
+          console.log(1111111);
+          this.AllCell[i].bedList[j] = { ...selectedCell }
+          this.tobeBedTableData[i].bedList[j] = { ...selectedCell }
+        }
+      }
+    }
+  }
   getTobeBedTableData() {
     this.pageLoading = true;
     let data = {
