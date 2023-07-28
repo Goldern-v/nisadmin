@@ -139,18 +139,13 @@ export default function GroupIngSetting() {
         });
     }
     const handleSave = () => {
-        // tableData
-        // "bedGroupName": "string",
-        //         "bedLabels": "string",
-        //         "empNo": "string",
-        //         "empName": "string",
-        //         "createDate": "string",
-        //         "updateDate": "string",
-        //         "deleteFlag": "string"
         let list =tableData.map((item:any)=>{
             item.empNo =authStore.user?.empNo
             item.empName =authStore.user?.empName
-            return item
+            return {
+                ...item,
+                id:''
+            }
         })
         groupingService.save(list).then((res:any)=>{
             message.success('保存成功')

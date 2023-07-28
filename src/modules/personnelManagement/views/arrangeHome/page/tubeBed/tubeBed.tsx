@@ -74,7 +74,7 @@ export default React.memo(observer(function TubeBed() {
         cell.bedLabels = value.join(',').length ? value.join(',') : ''
         cell.workDate = row.bedList[col].workDate
         tobeBedModal.setAllTreeSelectCellData(index, col, cell)
-    }, 1500)
+    }, 1000)
     const onLoad = () => {
         tobeBedModal.getTobeBedTableData()
     };
