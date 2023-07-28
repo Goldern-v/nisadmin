@@ -111,7 +111,7 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
     case "whyx":
       // return "http://192.168.20.40:8081"
       // return "http://192.168.20.139:8080" // 本地
-      // return "http://192.168.20.58:8080" // 森华本地
+      return "http://192.168.3.174:8080" // 森华本地
       // return "http://192.168.1.106:8080" // 信铭本地
       return "http://192.168.1.54:9885"; // 测试环境/
     // return "http://192.168.20.35:9091" // 宏群本地

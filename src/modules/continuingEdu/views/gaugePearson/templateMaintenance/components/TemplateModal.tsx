@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import React, {  useEffect } from 'react'
 import styled from "styled-components";
-import {Modal, Form, Input, Radio, Select, message} from 'antd'
+import {Modal, Form,  Radio, Select, message} from 'antd'
 import { FormComponentProps } from 'antd/lib/form/Form'
-import {appStore, authStore} from 'src/stores'
+import { authStore} from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import { LEVEL_LIST } from '../Index'
 import {trainingSettingApi} from "src/modules/continuingEdu/views/gaugePearson/api/TrainingSettingApi";
@@ -13,6 +13,7 @@ export interface Props extends FormComponentProps {
     handleCancel?: () => void;
     title:string;
     record?:any
+    temList?:any
 }
 const formItemLayout = {
     labelCol: {
@@ -31,6 +32,7 @@ function TemplateModal(props: Props) {
         handleCancel,
         title,
         record,
+        temList,
         form: { getFieldDecorator, validateFields, setFieldsValue, resetFields }
     } = props
 
@@ -45,7 +47,7 @@ function TemplateModal(props: Props) {
                 value.deptName ='全院'
             }
             trainingSettingApi.saveOrUpdate({
-                ...title =='编辑'?record:null,
+                ...title =='编辑' ? record:null,
                 ...value,
                 templateType:3,
             }).then((res) => {
@@ -64,6 +66,11 @@ function TemplateModal(props: Props) {
             deptCode:record.deptCode,
             hierarchy:record.hierarchy,
             tableName:record.tableName,
+            list: [{
+                id: record.attachmentId,
+                fileName: record.attachmentName,
+                name: record.attachmentName,
+            }]
         })
     },[record])
     return (
@@ -76,19 +83,17 @@ function TemplateModal(props: Props) {
                             rules: [{ required: true, message: '表名不能为空' }]
                         })(
                             <Select
+                                allowClear
                                 showSearch
-                                filterOption={(input: any, option: any) =>
-                                    option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                                }
                                 style={{ width: '100%' }}
-                                placeholder='选择所属科室'>
-                                {[{name:'全院',code:''},...authStore.deptList].map((item: any) => {
-                                    return (
-                                        <Select.Option value={item.code} key={item}>
-                                            {item.name}
-                                        </Select.Option>
-                                    )
-                                })}
+                                filterOption={(input: any, option: any) =>
+                                    option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                                placeholder='选择表名'>
+                                {temList.map((item: any) => (
+                                    <Select.Option value={item.tableName} key={item.id}>
+                                        {item.tableName}
+                                    </Select.Option>
+                                ))}
                             </Select>
                         )}
                     </Form.Item>
@@ -144,20 +149,16 @@ function TemplateModal(props: Props) {
                             <Radio value={2}>仅护士编辑</Radio>
                         </Radio.Group>)}
                     </Form.Item>
-                    {/*<Form.Item label="附件">*/}
-                    {/*    {*/}
-                    {/*        getFieldDecorator('list', {*/}
-                    {/*            initialValue: [],*/}
-                    {/*            rules: [*/}
-                    {/*                { required: true, message: '附件不能为空' }*/}
-                    {/*            ],*/}
-                    {/*            valuePropName: 'data'*/}
-                    {/*        })(*/}
-                    {/*            <MultiFileUploader isFormModel typeList={['pdf']} size={1} maxSize={5 * 1024 * 1024} />*/}
-                    {/*        )*/}
-                    {/*    }*/}
-                    {/*</Form.Item>*/}
-
+                    <Form.Item label="附件">
+                        {getFieldDecorator('list', {
+                                initialValue: [],
+                                rules: [
+                                    { required: true, message: '附件不能为空' }
+                                ],
+                                valuePropName: 'data'
+                            })(
+                                <MultiFileUploader isFormModel typeList={['pdf']} size={1} maxSize={5 * 1024 * 1024} />)}
+                    </Form.Item>
                 </Form>
             </Wrapper>
         </Modal>

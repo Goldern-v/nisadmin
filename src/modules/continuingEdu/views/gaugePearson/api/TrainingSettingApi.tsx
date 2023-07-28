@@ -94,5 +94,9 @@ export default class TrainingSettingApi extends BaseApiService {
   public async deleteTemplate(obj: any) {
     return this.post(`/formHandBook/deleteTemplate`,obj);
   }
+  public async getTemplateMaintenance() {
+    return this.get('/formHandBook/getTemplateMaintenance');
+  }
+//   getTemplateMaintenance
 }
 export const trainingSettingApi = new TrainingSettingApi();

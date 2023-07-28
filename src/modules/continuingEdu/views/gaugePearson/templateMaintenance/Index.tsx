@@ -1,25 +1,15 @@
 import styled from "styled-components";
 import React, {useState, useEffect} from "react";
-import {Button, Select, Input, Checkbox, Switch, message, Modal} from "antd";
+import {Button, Select,  Switch, message, Modal} from "antd";
 import {Place} from "src/components/common";
 import {observer} from "mobx-react-lite";
-import BaseTable, {DoCon} from "src/components/BaseTable";
+import BaseTable from "src/components/BaseTable";
 import {authStore} from "src/stores";
 import TemplateModal from "./components/TemplateModal";
-import {CheckboxChangeEvent} from "antd/lib/checkbox";
 import {trainingSettingApi} from "src/modules/continuingEdu/views/gaugePearson/api/TrainingSettingApi";
 import { Query } from "../formMaintenance/Index";
 const Option = Select.Option;
 export const LEVEL_LIST = ['全部', 'N0', 'N1', 'N2', 'N3', 'N4', 'N5', 'N6']
-
-// interface Query {
-//     pageSize: number;
-//     pageIndex: number;
-//     level: string;
-//     deptCode: string;
-//     name: string;
-//     dataTotal: number;
-// }
 
 interface AddModal {
     title?: string;
@@ -43,6 +33,7 @@ export default observer(function TemplateMaintenance() {
         tableName: "",
         dataTotal: 0
     } as any); // 页码 ，每页条数
+    const [temList,setTemList]=useState([]) as any
     const columns: any = [
         {
             title: "序号",
@@ -54,9 +45,9 @@ export default observer(function TemplateMaintenance() {
         },
         {
             title: "状态",
-            dataIndex: "firstLevelMenuName",
+            dataIndex: "status",
             align: "center",
-            width: 100,
+            width: 80,
             render: (text:any,record:any) => {
                 // 0关闭  1 开启
                 return (
@@ -68,7 +59,7 @@ export default observer(function TemplateMaintenance() {
         },
         {
             title: "手册",
-            dataIndex: "secondLevelMenuName",
+            dataIndex: "attachmentName",
             align: "center",
             width: 100
         },
@@ -80,7 +71,7 @@ export default observer(function TemplateMaintenance() {
         },
         {
             title: "附件名称",
-            dataIndex: "secondLevelMenuName",
+            dataIndex: "attachmentName",
             align: "center",
             width: 100
         },
@@ -94,7 +85,7 @@ export default observer(function TemplateMaintenance() {
             title: "适用层级",
             dataIndex: "hierarchy",
             align: "center",
-            width: 60,
+            width: 80,
         },
         {
             title: "创建人",
@@ -111,17 +102,16 @@ export default observer(function TemplateMaintenance() {
 
         {
             title: "操作",
-            key: "8",
-            width: 60,
-            align: "center",
+            key: "cz",
+            width:100,
             render: (text:any,record:any) => {
                 let isDisable = record.isUse
                 return (
-                    <DoCon>
+                    <div style={{display:'flex'}}>
                         <Button >查看</Button>
-                        <Button disabled={isDisable ==1} onClick={()=>handleAdd('编辑',record)}>编辑</Button>
-                        <Button disabled={isDisable ==1}  onClick={()=>handleDelete(record.id)}>删除</Button>
-                    </DoCon>
+                        <Button  disabled={isDisable ==1} onClick={()=>handleAdd('编辑',record)}>编辑</Button>
+                        <Button  disabled={isDisable ==1}  onClick={()=>handleDelete(record.id)}>删除</Button>
+                    </div>
                 )
             }
         }
@@ -156,10 +146,15 @@ export default observer(function TemplateMaintenance() {
         let newQuery = {...query, deptCode, pageIndex: 1};
         setQuery(newQuery);
     };
+    const handleTemList = (tem: any) => {
+        let newQuery = {...query, tableName:tem, pageIndex: 1};
+        setQuery(newQuery);
+    };
     const handleLevelChange = (level: string) => {
         let newQuery = {...query, level, pageIndex: 1};
         setQuery(newQuery);
     }
+
     const handleAdd = (title:string,record:any) => {
         setAddModal({visible:true,title,record})
     }
@@ -177,9 +172,26 @@ export default observer(function TemplateMaintenance() {
             setLoading(false)
         })
     }
+    const getTemplateMaintenance =()=>{
+         trainingSettingApi.getTemplateMaintenance().then((res)=>{
+             setTemList(res.data.map((item:any)=>{
+                 return {
+                     tableName:item.tableName,
+                     id:item.id
+                 }
+             }))
+         })
+    }
+    const handleOk =async ()=>{
+        await handleCancel()
+        await getData()
+    }
     useEffect(()=>{
         getData()
     },[query.hierarchy,query.tableName,query.deptCode])
+    useEffect(()=>{
+        getTemplateMaintenance()
+    },[])
     return (
         <Wrapper>
             <HeaderCon>
@@ -188,16 +200,17 @@ export default observer(function TemplateMaintenance() {
                 {/* 获取数据选择 */}
                 <span style={{marginLeft: 15}}>表名：</span>
                 <Select
+                    allowClear
                     showSearch
                     value={query.tableName}
-                    style={{width: 100}}
-                    onChange={handleLevelChange}
+                    style={{width: 150}}
+                    onChange={handleTemList}
                     filterOption={(input: any, option: any) =>
                         option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-                    placeholder='选择层级'>
-                    {LEVEL_LIST.map((item: string) => (
-                        <Select.Option value={item} key={item}>
-                            {item}
+                    placeholder='选择表名'>
+                    {temList.map((item: any) => (
+                        <Select.Option value={item.tableName} key={item.id}>
+                            {item.tableName}
                         </Select.Option>
                     ))}
                 </Select>
@@ -209,7 +222,7 @@ export default observer(function TemplateMaintenance() {
                     filterOption={(input: any, option: any) =>
                         option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                     onChange={handleDeptChange}>
-                    <Option value="">全院</Option>
+                    <Option value="全院">全院</Option>
                     {
                         authStore.deptList.map((item: any, idx: number) =>
                             <Option value={item.code} key={idx} title={item.name}>{item.name}</Option>)
@@ -277,7 +290,7 @@ export default observer(function TemplateMaintenance() {
                     </MainCon>
                 </BodyWarpper>
             </ScrollCon>
-            <TemplateModal {...addModal}  handleCancel={handleCancel}/>
+            <TemplateModal {...addModal} temList={temList} handleOk={handleOk} handleCancel={handleCancel}/>
             {/*<SingModal title={title} visible={modalVisible} handleCancel={handleCancel} />*/}
         </Wrapper>
     );

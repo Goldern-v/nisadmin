@@ -3,7 +3,7 @@ import React, {useState, useEffect} from "react";
 import {Button, Select, Input,  Switch, message, Modal} from "antd";
 import {Place} from "src/components/common";
 import {observer} from "mobx-react-lite";
-import BaseTable, {DoCon} from "src/components/BaseTable";
+import BaseTable  from "src/components/BaseTable";
 import {authStore} from "src/stores";
 import MaintenanceModal from "./component/MaintenanceModal";
 import {trainingSettingApi} from "src/modules/continuingEdu/views/gaugePearson/api/TrainingSettingApi";
@@ -55,7 +55,7 @@ export default observer(function FormMaintenance() {
             title: "状态",
             dataIndex: "status",
             align: "center",
-            width: 100,
+            width: 60,
             render: (text:any,record:any) => {
                 // 0关闭  1 开启
                 // isUse 0 未引用 1引用
@@ -105,11 +105,11 @@ export default observer(function FormMaintenance() {
             render: (text:any,record:any) => {
                 let isDisable = record.isUse
                 return (
-                    <DoCon >
+                    <div style={{display:'flex'}}>
                         <Button >查看</Button>
                         <Button disabled={isDisable ==1} onClick={()=>handleAdd('编辑',record)}>编辑</Button>
                         <Button disabled={isDisable ==1}  onClick={()=>handleDelete(record.id)}>删除</Button>
-                    </DoCon>
+                    </div>
                 )
             }
         }
