@@ -288,6 +288,9 @@ export default observer(function SelectCon() {
     const { data } = await fn()
     data.errorMag && message.error(data.errorMag, 4)
     setModalData(data.schedulingDtos)
+    if(['lcey'].includes(appStore.HOSPITAL_ID)){
+      setModalData(data)//20230728聊城二院，接口返回的数据是在data里面的，至于data.schedulingDtos，不知道是什么时候的数据结构
+    }
     setModalVisible(true)
   }
 
