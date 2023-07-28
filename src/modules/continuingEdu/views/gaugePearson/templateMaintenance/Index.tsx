@@ -1,59 +1,68 @@
 import styled from "styled-components";
 import React, {useState, useEffect} from "react";
-import {Button, Select, Input, Checkbox} from "antd";
+import {Button, Select, Input, Checkbox, Switch, message, Modal} from "antd";
 import {Place} from "src/components/common";
 import {observer} from "mobx-react-lite";
 import BaseTable, {DoCon} from "src/components/BaseTable";
 import {authStore} from "src/stores";
 import TemplateModal from "./components/TemplateModal";
+import {CheckboxChangeEvent} from "antd/lib/checkbox";
+import {trainingSettingApi} from "src/modules/continuingEdu/views/gaugePearson/api/TrainingSettingApi";
+import { Query } from "../formMaintenance/Index";
 const Option = Select.Option;
 export const LEVEL_LIST = ['全部', 'N0', 'N1', 'N2', 'N3', 'N4', 'N5', 'N6']
 
-interface Query {
-    pageSize: number;
-    pageIndex: number;
-    level: string;
-    deptCode: string;
-    name: string;
-    dataTotal: number;
-}
+// interface Query {
+//     pageSize: number;
+//     pageIndex: number;
+//     level: string;
+//     deptCode: string;
+//     name: string;
+//     dataTotal: number;
+// }
 
 interface AddModal {
     title?: string;
-    visible?: boolean
+    visible?: boolean;
+    record?:any
 }
 
 export default observer(function TemplateMaintenance() {
     const [loading, setLoading] = useState<boolean>(false)
     const [addModal, setAddModal] = useState<AddModal>({
         title: '添加',
-        visible: false
+        visible: false,
+        record:{}
     })
     const [tableList, setTableList] = useState([]) as any
     const [query, setQuery] = useState<Query>({
         pageSize: 20,
         pageIndex: 1,
-        level: "全部",
+        hierarchy: "全部",
         deptCode: "",
-        name: "",
+        tableName: "",
         dataTotal: 0
     } as any); // 页码 ，每页条数
     const columns: any = [
         {
             title: "序号",
-            dataIndex: "",
-            key: "",
+            dataIndex: "index",
+            key: "index",
             align: "center",
-            width: 40
+            width: 50,
+            render:(text:string,record:any,index:number)=><span>{index + 1}</span>
         },
         {
             title: "状态",
             dataIndex: "firstLevelMenuName",
             align: "center",
             width: 100,
-            render: () => {
+            render: (text:any,record:any) => {
+                // 0关闭  1 开启
                 return (
-                    <Checkbox/>
+                    <Switch checked={ text == 1  } onChange={(e:boolean)=>{
+                        handleCheckBox(e,record)
+                    }}/>
                 )
             }
         },
@@ -65,7 +74,7 @@ export default observer(function TemplateMaintenance() {
         },
         {
             title: "表名",
-            dataIndex: "secondLevelMenuName",
+            dataIndex: "tableName",
             align: "center",
             width: 100
         },
@@ -77,45 +86,72 @@ export default observer(function TemplateMaintenance() {
         },
         {
             title: "适用科室",
-            dataIndex: "thirdLevelMenuName",
+            dataIndex: "deptName",
             align: "center",
             width: 100
         },
         {
             title: "适用层级",
-            dataIndex: "teachingMethodName",
+            dataIndex: "hierarchy",
             align: "center",
-            className: "teaching-method-name",
             width: 60,
         },
         {
             title: "创建人",
-            dataIndex: "title",
-            align: "left",
+            dataIndex: "createNo",
+            align: "center",
             width: 100
         },
         {
             title: "创建时间",
-            dataIndex: "statusDesc",
+            dataIndex: "createTime",
             width: 100,
             align: "center",
         },
+
         {
             title: "操作",
             key: "8",
             width: 60,
             align: "center",
-            render: () => {
+            render: (text:any,record:any) => {
+                let isDisable = record.isUse
                 return (
                     <DoCon>
-                        <span>查看</span>
-                        <span>编辑</span>
-                        <span>删除</span>
+                        <Button >查看</Button>
+                        <Button disabled={isDisable ==1} onClick={()=>handleAdd('编辑',record)}>编辑</Button>
+                        <Button disabled={isDisable ==1}  onClick={()=>handleDelete(record.id)}>删除</Button>
                     </DoCon>
                 )
             }
         }
     ];
+    const handleCheckBox=(e:any,record:any)=>{
+        trainingSettingApi.saveOrUpdate({
+            ...record,
+            status:e?1:0
+        }).then((res) => {
+            message.success('操作成功')
+            getData()
+        })
+    }
+    const handleDelete =(id:number)=>{
+        if(!id)return
+        Modal.confirm({
+            title: '提示',
+            content: '是否删除该数据',
+            okText: '确定',
+            okType: 'danger',
+            cancelText: '取消',
+            onOk: () => {
+                trainingSettingApi.deleteTemplate({id}).then(()=>{
+                    message.success('删除成功')
+                    getData()
+                })
+            }
+        })
+
+    }
     const handleDeptChange = (deptCode: any) => {
         let newQuery = {...query, deptCode, pageIndex: 1};
         setQuery(newQuery);
@@ -124,12 +160,26 @@ export default observer(function TemplateMaintenance() {
         let newQuery = {...query, level, pageIndex: 1};
         setQuery(newQuery);
     }
-    const handleAdd = () => {
-        setAddModal({visible:true,title:'添加'})
+    const handleAdd = (title:string,record:any) => {
+        setAddModal({visible:true,title,record})
     }
     const handleCancel = () => {
-        setAddModal({...addModal,visible:false})
+        setAddModal({...addModal,visible:false,record:{}})
     }
+    const getData =()=>{
+        setLoading(true)
+        trainingSettingApi.getTemplateList({
+            ...query,
+            templateType:3
+        }).then((res:any)=>{
+            setQuery({...query,dataTotal:res.data.dataTotal})
+            setTableList(res.data)
+            setLoading(false)
+        })
+    }
+    useEffect(()=>{
+        getData()
+    },[query.hierarchy,query.tableName,query.deptCode])
     return (
         <Wrapper>
             <HeaderCon>
@@ -139,7 +189,7 @@ export default observer(function TemplateMaintenance() {
                 <span style={{marginLeft: 15}}>表名：</span>
                 <Select
                     showSearch
-                    value={query.level}
+                    value={query.tableName}
                     style={{width: 100}}
                     onChange={handleLevelChange}
                     filterOption={(input: any, option: any) =>
@@ -168,7 +218,7 @@ export default observer(function TemplateMaintenance() {
                 <span style={{marginLeft: 15}}>层级：</span>
                 <Select
                     showSearch
-                    value={query.level}
+                    value={query.hierarchy}
                     style={{width: 100}}
                     onChange={handleLevelChange}
                     filterOption={(input: any, option: any) =>
@@ -183,6 +233,7 @@ export default observer(function TemplateMaintenance() {
 
                 <Button
                     type="primary"
+                    onClick={getData}
                     style={{marginLeft: 15}}>
                     搜索
                 </Button>
@@ -197,7 +248,7 @@ export default observer(function TemplateMaintenance() {
                     下载所有模板
                 </Button>
                 <Button
-                    onClick={handleAdd}
+                    onClick={()=>handleAdd('添加',{})}
                     type="primary"
                     style={{marginLeft: 15}}>
                     导入
@@ -226,7 +277,7 @@ export default observer(function TemplateMaintenance() {
                     </MainCon>
                 </BodyWarpper>
             </ScrollCon>
-            <TemplateModal title={addModal.title} visible={addModal.visible} handleCancel={handleCancel}/>
+            <TemplateModal {...addModal}  handleCancel={handleCancel}/>
             {/*<SingModal title={title} visible={modalVisible} handleCancel={handleCancel} />*/}
         </Wrapper>
     );
@@ -293,10 +344,10 @@ const MainCon = styled.div`
   align-items: stretch;
   display: flex;
   margin: 20px;
+  .ant-btn{
+    border: none;
+    background: none;
+  }
 `;
 
-const GroupPostBtn = styled(Button) <{ btntop?: string | number }>`
-  position: fixed !important;
-  top: ${p => p.btntop || '121px'};
-  right: 33px;
-`;
+

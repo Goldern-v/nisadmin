@@ -32,43 +32,47 @@ function MaintenanceModal(props: Props) {
         record,
         form: { getFieldDecorator, validateFields, setFieldsValue, resetFields }
     } = props
-    const handleSubmit = (e: any) => {
-        validateFields((err, value) => {
-            if (err) {
-                return
-            }
-        })
-    }
+
     const onSave = (e: any) => {
         // appStore.history.push(`/FormMaintenanceDetail?id=20`);
         validateFields((err, value) => {
             if (err) {
                 return
             }
-            if (value.deptCode) value.deptName = authStore.deptList.find((item) => item.code == value.deptCode)!.name
+            if (value.deptCode !=='全院'){
+                value.deptName = authStore.deptList.find((item) => item.code == value.deptCode)!.name
+            }else{
+                value.deptName ='全院'
+            }
             trainingSettingApi.saveOrUpdate({
+                ...title =='编辑'?record:null,
                 ...value,
                 templateType:2,
             }).then((res) => {
                 message.success('操作成功')
-                // handleOk()
+                handleOk&&handleOk()
             })
         })
     }
-
     useEffect(() => {
-        if (visible) {
-            resetFields()
-        }
+        if (visible)resetFields()
     }, [visible])
-
+    useEffect(()=>{
+        if(Object.keys(record).length > 0 )setFieldsValue({
+            authType:record.authType,
+            deptCode:record.deptCode,
+            hierarchy:record.hierarchy,
+            tableName:record.tableName,
+        })
+    },[record])
     return (
-        <Modal title={title} visible={visible} onOk={onSave} onCancel={handleCancel} okText='确定' centered>
+        <Modal
+            title={title} visible={visible} onOk={onSave} onCancel={handleCancel} okText='确定' centered>
             <Wrapper>
                 <Form>
                     <Form.Item label='科室' {...formItemLayout} >
                         {getFieldDecorator('deptCode', {
-                            initialValue:record.deptCode||'',
+                            initialValue:'全院',
                             rules: [{ required: true, message: '科室不能为空' }]
                         })(
                             <Select
@@ -78,7 +82,7 @@ function MaintenanceModal(props: Props) {
                                 }
                                 style={{ width: '100%' }}
                                 placeholder='选择所属科室'>
-                                {[{name:'全院',code:''},...authStore.deptList].map((item: any) => {
+                                {[{name:'全院',code:'全院'},...authStore.deptList].map((item: any) => {
                                     return (
                                             <Select.Option value={item.code} key={item}>
                                                 {item.name}
@@ -90,7 +94,7 @@ function MaintenanceModal(props: Props) {
                     </Form.Item>
                     <Form.Item {...formItemLayout} label='层级'>
                         {getFieldDecorator('hierarchy',{
-                            initialValue:record.hierarchy||'全部',
+                            initialValue:'全部',
                             rules: [{ required: true, message: '层级不能为空' }]
                         })(
                             <Select
@@ -111,14 +115,14 @@ function MaintenanceModal(props: Props) {
                     </Form.Item>
                     <Form.Item {...formItemLayout} label='表名'>
                         {getFieldDecorator('tableName', {
-                            initialValue:record.tableName||'',
+                            initialValue:'',
                             rules: [{ required: true, message: '表名不能为空' }]
                         })(<Input />)}
                     </Form.Item>
                     {/*仅护长或带教编辑 1：护长和护士共同编辑 2：仅护士编辑*!/*/}
                     <Form.Item {...formItemLayout} label='' >
                         {getFieldDecorator('authType',{
-                            initialValue:record.authType|| 0,
+                            initialValue: 0,
                         } )(<Radio.Group>
                             <Radio value={0}>仅护长或带教编辑</Radio>
                             <Radio value={1}>护长和护士共同编辑</Radio>

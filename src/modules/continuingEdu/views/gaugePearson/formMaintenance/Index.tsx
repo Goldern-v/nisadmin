@@ -1,17 +1,16 @@
 import styled from "styled-components";
 import React, {useState, useEffect} from "react";
-import {Button, Select, Input, Checkbox} from "antd";
+import {Button, Select, Input,  Switch, message, Modal} from "antd";
 import {Place} from "src/components/common";
 import {observer} from "mobx-react-lite";
 import BaseTable, {DoCon} from "src/components/BaseTable";
 import {authStore} from "src/stores";
 import MaintenanceModal from "./component/MaintenanceModal";
 import {trainingSettingApi} from "src/modules/continuingEdu/views/gaugePearson/api/TrainingSettingApi";
-import {CheckboxChangeEvent} from "antd/lib/checkbox/index";
 const Option = Select.Option;
 export const LEVEL_LIST = ['全部', 'N0', 'N1', 'N2', 'N3', 'N4', 'N5', 'N6']
 
-interface Query {
+export interface Query {
     pageSize: number;
     pageIndex: number;
     hierarchy: string;
@@ -38,7 +37,7 @@ export default observer(function FormMaintenance() {
         pageSize: 20,
         pageIndex: 1,
         hierarchy: "全部",
-        deptCode: "",
+        deptCode: "全院",
         tableName: "",
         dataTotal: 0
     } as any); // 页码 ，每页条数
@@ -58,10 +57,10 @@ export default observer(function FormMaintenance() {
             align: "center",
             width: 100,
             render: (text:any,record:any) => {
-                // 0开启 1 关闭
+                // 0关闭  1 开启
                 // isUse 0 未引用 1引用
                 return (
-                    <Checkbox checked={ text == 0  } onChange={(e:CheckboxChangeEvent)=>{
+                    <Switch checked={ text == 1  } onChange={(e:boolean)=>{
                         handleCheckBox(e,record)
                     }}/>
                 )
@@ -101,21 +100,46 @@ export default observer(function FormMaintenance() {
         {
             title: "操作",
             key: "cz",
-            width: 60,
+            width: 100,
             align: "center",
-            render: () => {
+            render: (text:any,record:any) => {
+                let isDisable = record.isUse
                 return (
-                    <DoCon>
-                        <span>查看</span>
-                        <span>编辑</span>
-                        <span>删除</span>
+                    <DoCon >
+                        <Button >查看</Button>
+                        <Button disabled={isDisable ==1} onClick={()=>handleAdd('编辑',record)}>编辑</Button>
+                        <Button disabled={isDisable ==1}  onClick={()=>handleDelete(record.id)}>删除</Button>
                     </DoCon>
                 )
             }
         }
     ];
+    const handleDelete =(id:number)=>{
+        if(!id)return
+        Modal.confirm({
+            title: '提示',
+            content: '是否删除该数据',
+            okText: '确定',
+            okType: 'danger',
+            cancelText: '取消',
+            onOk: () => {
+                trainingSettingApi.deleteTemplate({id}).then(()=>{
+                    message.success('删除成功')
+                    getData()
+                })
+            }
+        })
+
+    }
     const handleCheckBox=(e:any,record:any)=>{
         console.log(e);
+        trainingSettingApi.saveOrUpdate({
+            ...record,
+            status:e?1:0
+        }).then((res) => {
+            message.success('操作成功')
+            getData()
+        })
     }
     const handleDeptChange = (deptCode: any) => {
         let newQuery = {...query, deptCode, pageIndex: 1};
@@ -125,13 +149,17 @@ export default observer(function FormMaintenance() {
         let newQuery = {...query, hierarchy, pageIndex: 1};
         setQuery(newQuery);
     }
-    const handleAdd = () => {
-        setAddModal({visible:true,title:'添加',record:{}})
+    const handleAdd = (title:string,record:any) => {
+        setAddModal({visible:true,title,record})
     }
     const handleCancel = () => {
         setAddModal({...addModal,visible:false,record:{}})
     }
-    useEffect(()=>{
+    const handleOk =async ()=>{
+       await handleCancel()
+       await getData()
+    }
+    const getData =()=>{
         setLoading(true)
         trainingSettingApi.getTemplateList({
             ...query,
@@ -141,7 +169,10 @@ export default observer(function FormMaintenance() {
             setTableList(res.data)
             setLoading(false)
         })
-    },[])
+    }
+    useEffect(()=>{
+        getData()
+    },[query.hierarchy,query.tableName,query.deptCode])
     return (
         <Wrapper>
             <HeaderCon>
@@ -155,7 +186,7 @@ export default observer(function FormMaintenance() {
                     filterOption={(input: any, option: any) =>
                         option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                     onChange={handleDeptChange}>
-                    <Option value="">全院</Option>
+                    <Option value="全院">全院</Option>
                     {
                         authStore.deptList.map((item: any, idx: number) =>
                             <Option value={item.code} key={idx} title={item.name}>{item.name}</Option>)
@@ -178,8 +209,9 @@ export default observer(function FormMaintenance() {
                 </Select>
                 <span style={{marginLeft: 15}}>表名：</span>
                 <Input
-                    value={query.tableName}
+                    defaultValue={query.tableName}
                     onBlur={(e) => {
+                        console.log(e.target.value);
                         setQuery({...query, tableName: e.target.value})
                     }}
                     placeholder="请输入表名"
@@ -187,12 +219,13 @@ export default observer(function FormMaintenance() {
                     allowClear
                 />
                 <Button
+                    onClick={getData}
                     type="primary"
                     style={{marginLeft: 15}}>
                     搜索
                 </Button>
                 <Button
-                    onClick={handleAdd}
+                    onClick={()=>handleAdd('添加',{})}
                     style={{marginLeft: 15}}>
                     新增
                 </Button>
@@ -220,7 +253,7 @@ export default observer(function FormMaintenance() {
                     </MainCon>
                 </BodyWarpper>
             </ScrollCon>
-            <MaintenanceModal record={addModal.record} title={addModal.title} visible={addModal.visible} handleCancel={handleCancel}/>
+            <MaintenanceModal {...addModal} handleCancel={handleCancel} handleOk={handleOk}/>
             {/*<SingModal title={title} visible={modalVisible} handleCancel={handleCancel} />*/}
         </Wrapper>
     );
@@ -228,7 +261,6 @@ export default observer(function FormMaintenance() {
 
 const Wrapper = styled.div<{ height?: string | number }>`
   padding: ${p => p.theme.$mcp};
-  padding-bottom: 0;
   height: calc(100% - 49px);
   display: flex;
   flex-direction: column;
@@ -256,6 +288,7 @@ const Wrapper = styled.div<{ height?: string | number }>`
       }
     }
   }
+
 `;
 
 const HeaderCon = styled.div`
@@ -288,10 +321,9 @@ const MainCon = styled.div`
   align-items: stretch;
   display: flex;
   margin: 20px;
+  .ant-btn{
+    border: none;
+    background: none;
+  }
 `;
 
-const GroupPostBtn = styled(Button) <{ btntop?: string | number }>`
-  position: fixed !important;
-  top: ${p => p.btntop || '121px'};
-  right: 33px;
-`;
