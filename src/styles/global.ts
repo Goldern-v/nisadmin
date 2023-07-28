@@ -176,6 +176,9 @@ input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
       color: #f5222d;
     }
   }
+  .ant-btn +.ant-btn {
+    margin-left: 10px;
+  }
 `;
 
 export default GlobalStyle;

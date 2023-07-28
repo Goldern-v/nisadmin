@@ -87,6 +87,9 @@ export const PageHeader: any = styled.div`
   > .select-year {
     width: 100px;
   }
+  > .ant-input {
+    max-width: 120px;
+  }
 `
 
 export const Pre = styled.pre`

@@ -101,6 +101,8 @@ import TheoryExam from "./views/preJobTraining/theoryExam/TheoryExam";
 import ImplementRecord from "./views/preJobTraining/implementRecord/ImplementRecord";
 import TrainingExamManage from "./views/preJobManage/trainingExamManage/TrainingExamManage";
 import TrainingPlanManage from "./views/preJobManage/trainingPlanManage/TrainingPlanManage";
+import fixedTable from "./views/gaugePearson/fixed-table";
+import attachment from "./views/gaugePearson/attachment";
 /**厚街学习资源 */
 //学习的网站链接
 const 学习的网站链接 = lazy(() =>
@@ -781,7 +783,7 @@ const getIcon = (icon: any) => {
   const initDynamicRouting = useMemo(()=>{
     let newRouter = []
     if(localStorage.getItem("continuDynamicRouter")){
-      newRouter = JSON.parse(localStorage.getItem("continuDynamicRouter") as string)
+      newRouter = JSON.parse(localStorage.getItem("continuDynamicRouter") || 'null') || []
     }else if(dataList.length>0){
       newRouter = dataList
     }
@@ -1362,6 +1364,16 @@ const getIcon = (icon: any) => {
           title: "手册模板维护",
           path: "/continuingEdu/templateMaintenance",
           component: TemplateMaintenance,
+        },
+        {
+          title: "手册附件维护",
+          path: "/continuingEdu/手册附件维护",
+          component: attachment,
+        },
+        {
+          title: "手册固定表维护",
+          path: "/continuingEdu/手册固定表维护",
+          component: fixedTable,
         },
       ],
     },

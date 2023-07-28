@@ -6,7 +6,7 @@ import { Breadcrumb } from 'antd'
 import { Link } from 'react-router-dom'
 
 interface BreadcrumbItem {
-  name: string
+  name: string,
   link?: string
 }
 

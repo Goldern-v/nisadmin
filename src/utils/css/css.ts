@@ -25,3 +25,17 @@ export const addCSS = (wid: any, cssText: string, id?: string) => {
   }
   head.appendChild(style) //把创建的style元素插入到head中
 }
+
+/**获取每毫米的像素值 */
+export function getOneMmsPx() {
+  // 创建一个1mm宽的元素插入到页面，然后坐等出结果
+  let div = document.createElement("div");
+  div.id = "mm";
+  div.style.width = "1mm";
+  // eslint-disable-next-line no-unused-expressions
+  document.querySelector("body")?.appendChild(div);
+  // 原生方法获取浏览器对元素的计算值
+  let mm1 = document.getElementById("mm")?.getBoundingClientRect();
+  // console.log(mm1);
+  return mm1?.width;
+}

@@ -85,7 +85,11 @@ export default class TrainingSettingApi extends BaseApiService {
     return this.post(`/formHandBook/getTemplateList`,obj);
   }
   public async saveOrUpdate(obj: any) {
-    return this.post(`/formHandBook/saveOrUpdate`,obj);
+    let formData = new FormData()
+    Object.keys(obj).forEach(v => {
+      formData.append(v, obj[v])
+    })
+    return this.post(`/formHandBook/saveOrUpdate`,formData);
   }
   public async deleteTemplate(obj: any) {
     return this.post(`/formHandBook/deleteTemplate`,obj);

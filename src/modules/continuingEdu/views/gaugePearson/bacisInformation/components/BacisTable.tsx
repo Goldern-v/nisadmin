@@ -8,12 +8,13 @@ import { trainingSettingApi } from "../../api/TrainingSettingApi";
 import AddInternModal from "../model/AddInternModal"; // 修改弹窗
 import { appStore,authStore } from "src/stores";
 import qs from "qs";
+import { Obj } from "src/libs/types";
 
 interface Props {}
 
 export default observer(function ApplyTable(props: Props) {
   const [editVisible, setEditVisible] = useState(false); // 控制一弹窗状态
-  const [editParams, setEditParams] = useState({} as any); //修改弹窗回显数据
+  const [editParams, setEditParams] = useState<Obj>({}); //修改弹窗回显数据
   const [createClear, setCreateClear] = useState(true)
   const [isAdd,setIsAdd] = useState(false) //权限仅护理部主任和肖瑞芬护士长拥有
 
@@ -22,7 +23,6 @@ export default observer(function ApplyTable(props: Props) {
       setIsAdd(true)
     }
   },[isAdd])
-
 
   const columns: any = [
     {
@@ -121,6 +121,12 @@ export default observer(function ApplyTable(props: Props) {
             color:'#f33'
           }
         ];
+        if ('whyx' === appStore.HOSPITAL_ID) {
+          data.unshift({
+            text: "查看",
+            function: onOpen,
+          })
+        }
         return (
           <DoCon>
             {data.map((item: any, index: any) => (
@@ -186,7 +192,9 @@ export default observer(function ApplyTable(props: Props) {
     Message.success('修改成功！')
     bacisManagData.onload();
   };
-
+  const onOpen = (record: Obj) => {
+    appStore.history.push(`/pearsonHandbook?${qs.stringify(record)}`)
+  }
   return (
     <Wrapper>
       <BaseTable

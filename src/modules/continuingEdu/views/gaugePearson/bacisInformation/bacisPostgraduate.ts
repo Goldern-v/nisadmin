@@ -130,8 +130,8 @@ class BacisManagModel {
   }
   
   getTeachingData() {
-    let reloSting:string = 'WHYX_QCR5001'
-    trainingSettingApi.getUserByRoleCode(reloSting).then((res)=>{
+    let roleSting:string = 'WHYX_QCR5001'
+    trainingSettingApi.getUserByRoleCode(roleSting).then((res)=>{
       // let teachingList: Teaching[] = []
       this.teachingList = []
       if(res.data.length){
