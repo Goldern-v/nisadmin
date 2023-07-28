@@ -1353,16 +1353,16 @@ const getIcon = (icon: any) => {
           hide: () =>
             queyMenuAuthInfo("nm_lat_noticemanage") || authStore.isOnlyInternsManage,
         },
-        // {
-        //   title: "手册表单维护",
-        //   path: "/continuingEdu/formMaintenance",
-        //   component: FormMaintenance,
-        // },
-        // {
-        //   title: "手册模板维护",
-        //   path: "/continuingEdu/templateMaintenance",
-        //   component: TemplateMaintenance,
-        // },
+        {
+          title: "手册表单维护",
+          path: "/continuingEdu/formMaintenance",
+          component: FormMaintenance,
+        },
+        {
+          title: "手册模板维护",
+          path: "/continuingEdu/templateMaintenance",
+          component: TemplateMaintenance,
+        },
       ],
     },
     ...initDynamicRouting,

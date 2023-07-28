@@ -80,7 +80,15 @@ export default class TrainingSettingApi extends BaseApiService {
     return this.post(`/studyAndTrain/GraduateEvaluateOfPlanTrainStu/saveOrUpdateGraduateEvaluateOfPlanTrainStuList`,obj);
   }
 
-
- 
+/*亚心--规培手册api*/
+  public async getTemplateList(obj: any) {
+    return this.post(`/formHandBook/getTemplateList`,obj);
+  }
+  public async saveOrUpdate(obj: any) {
+    return this.post(`/formHandBook/saveOrUpdate`,obj);
+  }
+  public async deleteTemplate(obj: any) {
+    return this.post(`/formHandBook/deleteTemplate`,obj);
+  }
 }
 export const trainingSettingApi = new TrainingSettingApi();

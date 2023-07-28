@@ -6,91 +6,101 @@ import {observer} from "mobx-react-lite";
 import BaseTable, {DoCon} from "src/components/BaseTable";
 import {authStore} from "src/stores";
 import MaintenanceModal from "./component/MaintenanceModal";
+import {trainingSettingApi} from "src/modules/continuingEdu/views/gaugePearson/api/TrainingSettingApi";
+import {CheckboxChangeEvent} from "antd/lib/checkbox/index";
 const Option = Select.Option;
 export const LEVEL_LIST = ['全部', 'N0', 'N1', 'N2', 'N3', 'N4', 'N5', 'N6']
 
 interface Query {
     pageSize: number;
     pageIndex: number;
-    level: string;
+    hierarchy: string;
     deptCode: string;
-    name: string;
+    tableName: string;
     dataTotal: number;
 }
 
 interface AddModal {
     title?: string;
     visible?: boolean
+    record?:any
 }
 
 export default observer(function FormMaintenance() {
     const [loading, setLoading] = useState<boolean>(false)
     const [addModal, setAddModal] = useState<AddModal>({
         title: '添加',
-        visible: false
+        visible: false,
+        record:{}
     })
     const [tableList, setTableList] = useState([]) as any
     const [query, setQuery] = useState<Query>({
         pageSize: 20,
         pageIndex: 1,
-        level: "全部",
+        hierarchy: "全部",
         deptCode: "",
-        name: "",
+        tableName: "",
         dataTotal: 0
     } as any); // 页码 ，每页条数
     const columns: any = [
+        //
         {
             title: "序号",
-            dataIndex: "",
-            key: "",
+            dataIndex: "index",
+            key: "index",
             align: "center",
-            width: 40
+            width: 50,
+            render:(text:string,record:any,index:number)=><span>{index + 1}</span>
         },
         {
             title: "状态",
-            dataIndex: "firstLevelMenuName",
+            dataIndex: "status",
             align: "center",
             width: 100,
-            render: () => {
+            render: (text:any,record:any) => {
+                // 0开启 1 关闭
+                // isUse 0 未引用 1引用
                 return (
-                    <Checkbox/>
+                    <Checkbox checked={ text == 0  } onChange={(e:CheckboxChangeEvent)=>{
+                        handleCheckBox(e,record)
+                    }}/>
                 )
             }
         },
         {
             title: "表名",
-            dataIndex: "secondLevelMenuName",
+            dataIndex: "tableName",
             align: "center",
             width: 100
         },
         {
             title: "科室",
-            dataIndex: "thirdLevelMenuName",
+            dataIndex: "deptName",
             align: "center",
             width: 100
         },
         {
             title: "层级",
-            dataIndex: "teachingMethodName",
+            dataIndex: "hierarchy",
             align: "center",
-            className: "teaching-method-name",
+            className: "hierarchy",
             width: 60,
         },
         {
             title: "创建人",
-            dataIndex: "title",
-            align: "left",
+            dataIndex: "createNo",
+            align: "center",
             width: 100
         },
         {
             title: "创建时间",
-            dataIndex: "statusDesc",
+            dataIndex: "createTime",
             width: 100,
             align: "center",
         },
         {
             title: "操作",
-            key: "8",
+            key: "cz",
             width: 60,
             align: "center",
             render: () => {
@@ -104,20 +114,34 @@ export default observer(function FormMaintenance() {
             }
         }
     ];
+    const handleCheckBox=(e:any,record:any)=>{
+        console.log(e);
+    }
     const handleDeptChange = (deptCode: any) => {
         let newQuery = {...query, deptCode, pageIndex: 1};
         setQuery(newQuery);
     };
-    const handleLevelChange = (level: string) => {
-        let newQuery = {...query, level, pageIndex: 1};
+    const handleLevelChange = (hierarchy: string) => {
+        let newQuery = {...query, hierarchy, pageIndex: 1};
         setQuery(newQuery);
     }
     const handleAdd = () => {
-        setAddModal({visible:true,title:'添加'})
+        setAddModal({visible:true,title:'添加',record:{}})
     }
     const handleCancel = () => {
-        setAddModal({...addModal,visible:false})
+        setAddModal({...addModal,visible:false,record:{}})
     }
+    useEffect(()=>{
+        setLoading(true)
+        trainingSettingApi.getTemplateList({
+            ...query,
+            templateType:2
+        }).then((res:any)=>{
+            setQuery({...query,dataTotal:res.data.dataTotal})
+            setTableList(res.data)
+            setLoading(false)
+        })
+    },[])
     return (
         <Wrapper>
             <HeaderCon>
@@ -140,7 +164,7 @@ export default observer(function FormMaintenance() {
                 <span style={{marginLeft: 15}}>层级：</span>
                 <Select
                     showSearch
-                    value={query.level}
+                    value={query.hierarchy}
                     style={{width: 180}}
                     onChange={handleLevelChange}
                     filterOption={(input: any, option: any) =>
@@ -154,9 +178,9 @@ export default observer(function FormMaintenance() {
                 </Select>
                 <span style={{marginLeft: 15}}>表名：</span>
                 <Input
-                    value={query.name}
+                    value={query.tableName}
                     onBlur={(e) => {
-                        setQuery({...query, name: e.target.value})
+                        setQuery({...query, tableName: e.target.value})
                     }}
                     placeholder="请输入表名"
                     style={{width: 240, marginLeft: 15}}
@@ -196,7 +220,7 @@ export default observer(function FormMaintenance() {
                     </MainCon>
                 </BodyWarpper>
             </ScrollCon>
-            <MaintenanceModal title={addModal.title} visible={addModal.visible} handleCancel={handleCancel}/>
+            <MaintenanceModal record={addModal.record} title={addModal.title} visible={addModal.visible} handleCancel={handleCancel}/>
             {/*<SingModal title={title} visible={modalVisible} handleCancel={handleCancel} />*/}
         </Wrapper>
     );
