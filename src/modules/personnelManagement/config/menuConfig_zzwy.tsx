@@ -14,6 +14,7 @@ import ExpectedRecord from "../views/arrangeHome/page/expectedRecord/ExpectedRec
 import StandardTime from "../views/arrangeHome/page/StandardTime/StandardTime";
 import ExpectedRecordSelf from "../views/arrangeHome/page/expectedRecordSelf/ExpectedRecordSelf";
 import NightShiftFeeSetting from "../views/arrangeHome/page/nightShiftFeeSetting";
+import BalanceInit from "../views/arrangeHome/page/BalanceInit/BalanceInit";
 
 export interface meunConfigItem {
   title?: string;
@@ -72,6 +73,12 @@ export const meunConfig: meunConfigItem[] = [
         path: "/personnelManagement/MealSettingViewNew",
         component: MealSettingViewNew,
         iSlimit: true,
+      },
+      {
+        title: "结余设置",
+        path: "/personnelManagement/balanceInit",
+        component: BalanceInit,
+        iSlimit: false,
       },
       {
         title: "标准工时设置",
