@@ -1,4 +1,4 @@
-import React, {  useEffect } from 'react'
+import React, {useEffect, useState} from 'react'
 import styled from "styled-components";
 import {Modal, Form,  Radio, Select, message} from 'antd'
 import { FormComponentProps } from 'antd/lib/form/Form'
@@ -35,7 +35,8 @@ function TemplateModal(props: Props) {
         temList,
         form: { getFieldDecorator, validateFields, setFieldsValue, resetFields }
     } = props
-
+    const isDisable:boolean = title =='编辑'
+    const [fileObj,setFileObj]=useState(null)
     const onSave = (e: any) => {
         validateFields((err, value) => {
             if (err) {
@@ -47,9 +48,12 @@ function TemplateModal(props: Props) {
                 value.deptName ='全院'
             }
             trainingSettingApi.saveOrUpdate({
-                ...title =='编辑' ? record:null,
+                ...isDisable ? record:null,
                 ...value,
-                templateType:3,
+                templateType:1,
+                attachmentName:value.list[0]?.name,
+                attachmentId:value.list[0]?.id,
+                ...title =='添加' ? { file:fileObj }:null
             }).then((res) => {
                 message.success('操作成功')
                 handleOk&&handleOk()
@@ -73,6 +77,9 @@ function TemplateModal(props: Props) {
             }]
         })
     },[record])
+    const onChange=(e?:any,b?:any,c?:any)=>{
+       setFileObj(c)
+    }
     return (
         <Modal title={title} visible={visible} onOk={onSave} onCancel={handleCancel} okText='确定' centered>
             <Wrapper>
@@ -83,6 +90,7 @@ function TemplateModal(props: Props) {
                             rules: [{ required: true, message: '表名不能为空' }]
                         })(
                             <Select
+                                disabled={isDisable}
                                 allowClear
                                 showSearch
                                 style={{ width: '100%' }}
@@ -103,6 +111,7 @@ function TemplateModal(props: Props) {
                             rules: [{ required: true, message: '科室不能为空' }]
                         })(
                             <Select
+                                disabled={isDisable}
                                 showSearch
                                 filterOption={(input: any, option: any) =>
                                     option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
@@ -125,6 +134,7 @@ function TemplateModal(props: Props) {
                             rules: [{ required: true, message: '层级不能为空' }]
                         })(
                             <Select
+                                disabled={isDisable}
                                 showSearch
                                 filterOption={(input: any, option: any) =>
                                     option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
@@ -140,15 +150,17 @@ function TemplateModal(props: Props) {
                             </Select>
                         )}
                     </Form.Item>
-                    <Form.Item {...formItemLayout} label='' >
-                        {getFieldDecorator('authType',{
-                            initialValue:record.authType|| 0,
-                        } )(<Radio.Group>
-                            <Radio value={0}>仅护长或带教编辑</Radio>
-                            <Radio value={1}>护长和护士共同编辑</Radio>
-                            <Radio value={2}>仅护士编辑</Radio>
-                        </Radio.Group>)}
-                    </Form.Item>
+                    {
+                        !isDisable &&   <Form.Item {...formItemLayout} label='' >
+                            {getFieldDecorator('authType',{
+                                initialValue:record.authType|| 0,
+                            } )(<Radio.Group  >
+                                <Radio value={0}>仅护长或带教编辑</Radio>
+                                <Radio value={1}>护长和护士共同编辑</Radio>
+                                <Radio value={2}>仅护士编辑</Radio>
+                            </Radio.Group>)}
+                        </Form.Item>
+                    }
                     <Form.Item label="附件">
                         {getFieldDecorator('list', {
                                 initialValue: [],
@@ -157,7 +169,7 @@ function TemplateModal(props: Props) {
                                 ],
                                 valuePropName: 'data'
                             })(
-                                <MultiFileUploader isFormModel typeList={['pdf']} size={1} maxSize={5 * 1024 * 1024} />)}
+                                <MultiFileUploader onChange={onChange} type={'handbookTemplate'} isFormModel accept={'.xlsx,.xls'} size={1} maxSize={5 * 1024 * 1024} />)}
                     </Form.Item>
                 </Form>
             </Wrapper>

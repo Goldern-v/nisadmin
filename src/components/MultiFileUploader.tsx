@@ -62,7 +62,6 @@ export default forwardRef(function MultiFileUploader(props: Props) {
 
   const handleChange = (e: any) => {
     let files = e.target.files
-
     let callback = () => {
       setIptVisible(false)
       setTimeout(() => setIptVisible(true), 100)
@@ -107,9 +106,8 @@ export default forwardRef(function MultiFileUploader(props: Props) {
         let newData: FileItem[] = []
         let resList: FileItem[] = res.map((item: any) => item.data)
         if (data) newData = [...data]
-
         newData = [...newData, ...resList]
-        onChange && onChange(newData, resList)
+        onChange && onChange(newData, resList,files[0])
       }, () => {
         callback()
         setLoading(false)

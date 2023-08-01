@@ -3,11 +3,12 @@ import React, {useState, useEffect} from "react";
 import {Button, Select,  Switch, message, Modal} from "antd";
 import {Place} from "src/components/common";
 import {observer} from "mobx-react-lite";
-import BaseTable from "src/components/BaseTable";
-import {authStore} from "src/stores";
+import BaseTable, { DoCon } from "src/components/BaseTable";
+import {appStore, authStore} from "src/stores";
 import TemplateModal from "./components/TemplateModal";
 import {trainingSettingApi} from "src/modules/continuingEdu/views/gaugePearson/api/TrainingSettingApi";
 import { Query } from "../formMaintenance/Index";
+import {fileDownload} from "src/utils/file/file";
 const Option = Select.Option;
 export const LEVEL_LIST = ['全部', 'N0', 'N1', 'N2', 'N3', 'N4', 'N5', 'N6']
 
@@ -31,7 +32,7 @@ export default observer(function TemplateMaintenance() {
         hierarchy: "全部",
         deptCode: "",
         tableName: "",
-        dataTotal: 0
+        totalCount: 0
     } as any); // 页码 ，每页条数
     const [temList,setTemList]=useState([]) as any
     const columns: any = [
@@ -48,10 +49,10 @@ export default observer(function TemplateMaintenance() {
             dataIndex: "status",
             align: "center",
             width: 80,
-            render: (text:any,record:any) => {
+            render: (text:any,record:any,index:number) => {
                 // 0关闭  1 开启
                 return (
-                    <Switch checked={ text == 1  } onChange={(e:boolean)=>{
+                    <Switch key={index + 'a'} checked={ text == 1  } onChange={(e:boolean)=>{
                         handleCheckBox(e,record)
                     }}/>
                 )
@@ -59,9 +60,12 @@ export default observer(function TemplateMaintenance() {
         },
         {
             title: "手册",
-            dataIndex: "attachmentName",
+            dataIndex: "handbookType",
             align: "center",
-            width: 100
+            width: 100,
+            render:(text:any)=>{
+                return  <span>{{0: "规培手册"}[text]}</span>
+            }
         },
         {
             title: "表名",
@@ -105,13 +109,13 @@ export default observer(function TemplateMaintenance() {
             key: "cz",
             width:100,
             render: (text:any,record:any) => {
-                let isDisable = record.isUse
                 return (
-                    <div style={{display:'flex'}}>
-                        <Button >查看</Button>
-                        <Button  disabled={isDisable ==1} onClick={()=>handleAdd('编辑',record)}>编辑</Button>
-                        <Button  disabled={isDisable ==1}  onClick={()=>handleDelete(record.id)}>删除</Button>
-                    </div>
+                    <DoCon>
+                        <span onClick={()=>handleImport(record.attachmentId)}>导出</span>
+                        <span onClick={()=>handleReview(record,1)}>查看</span>
+                        <span className={record.isUse !==1?'':'disable-sty'}  onClick={()=>handleAdd('编辑',record)}>编辑</span>
+                        <span className={record.isUse !==1?'':'disable-sty'} onClick={()=>handleDelete(record.id)}>删除</span>
+                    </DoCon>
                 )
             }
         }
@@ -123,6 +127,28 @@ export default observer(function TemplateMaintenance() {
         }).then((res) => {
             message.success('操作成功')
             getData()
+        })
+    }
+    const handleReview =(record:any,templateType:number)=>{
+        const {id,createNo,tableName}=record
+        if(!id)return
+        appStore.history.push(
+            `/templateMaintenanceDetail?createNo=${createNo}&tableName=${tableName}&id=${id}&templateType=${templateType}`
+        );
+    }
+    const handleImport =(attachmentId:number)=>{
+        trainingSettingApi.getAttachment({attachmentId}).then((res:any)=>{
+            let blob = new Blob([res.data], {
+                type: res.data.type // 'application/vnd.ms-excel;charset=utf-8'
+            })
+                let a = document.createElement('a')
+                let href = window.URL.createObjectURL(blob) // 创建链接对象
+                a.href = href
+                a.download = res.data.name // 自定义文件名
+                document.body.appendChild(a)
+                a.click()
+                window.URL.revokeObjectURL(href)
+                document.body.removeChild(a) // 移除a元素
         })
     }
     const handleDelete =(id:number)=>{
@@ -150,8 +176,8 @@ export default observer(function TemplateMaintenance() {
         let newQuery = {...query, tableName:tem, pageIndex: 1};
         setQuery(newQuery);
     };
-    const handleLevelChange = (level: string) => {
-        let newQuery = {...query, level, pageIndex: 1};
+    const handleLevelChange = (hierarchy: string) => {
+        let newQuery = {...query, hierarchy, pageIndex: 1};
         setQuery(newQuery);
     }
 
@@ -165,13 +191,14 @@ export default observer(function TemplateMaintenance() {
         setLoading(true)
         trainingSettingApi.getTemplateList({
             ...query,
-            templateType:3
+            templateType:1
         }).then((res:any)=>{
-            setQuery({...query,dataTotal:res.data.dataTotal})
-            setTableList(res.data)
+            setQuery({...query,totalCount:res.data.totalCount})
+            setTableList(res.data.list||[])
             setLoading(false)
         })
     }
+    /*获取表名数据*/
     const getTemplateMaintenance =()=>{
          trainingSettingApi.getTemplateMaintenance().then((res)=>{
              setTemList(res.data.map((item:any)=>{
@@ -280,7 +307,7 @@ export default observer(function TemplateMaintenance() {
                                 onChange: (pageIndex) =>
                                     setQuery({...query, pageIndex}),
                                 onShowSizeChange: (pageIndex, pageSize) => setQuery({...query, pageSize}),
-                                total: query.dataTotal,
+                                total: query.totalCount,
                                 showSizeChanger: true,
                                 showQuickJumper: true,
                                 pageSize: query.pageSize,
@@ -344,6 +371,13 @@ const ScrollCon = styled.div`
   overflow: auto;
   margin: 0 -15px;
     /* padding: ${p => p.theme.$mcp}; */
+  .disable-sty{
+    color:#999;
+    cursor: auto;
+    &:hover{
+      font-weight: normal;
+    }
+  }
 `;
 
 const BodyWarpper = styled.div`

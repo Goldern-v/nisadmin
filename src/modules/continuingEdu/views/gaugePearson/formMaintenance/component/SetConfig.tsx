@@ -12,14 +12,13 @@ import {
   Cascader
 } from "src/vendors/antd";
 import BaseTable, { DoCon } from "src/components/BaseTable";
-import { wardRegisterDefaultService } from "src/modules/WardRegisterDefault/services/WardRegisterDefaultService";
-import { authStore, appStore } from "src/stores";
+import { appStore } from "src/stores";
 import { globalModal } from "src/global/globalModal";
-import update from "immutability-helper";
 import { Place } from "src/components/common";
 import { observer } from "mobx-react-lite";
 import { codeAdapter } from "src/modules/WardRegisterDefault/utils/codeAdapter";
-import service from "src/services/api";
+import {trainingSettingApi} from "src/modules/continuingEdu/views/gaugePearson/api/TrainingSettingApi";
+import moment from "moment";
 
 const Option = Select.Option
 
@@ -31,79 +30,46 @@ export interface Props {
 }
 
 export default observer(function SetConfig(props: Props) {
+  const {queryObj}=appStore
   const [dataSource, setDataSource]: any[] = useState([]);
   const [pageLoading, setPageLoading] = useState(false);
   const [moveAble, setMoveAble] = useState(false);
-  const [empNameList, setEmpNameList] = useState([]);
-  const { blockId, registerCode, onOkCallBack, selectedBlockObj } = props;
-  const [iderateList, setIderateList]: any[] = useState([]);
-  const [calculationList, setCalculationList]: any[] = useState([]);
-  const calLabel = ['date', 'date_time', 'time']// 自动计算项
-  const calLabel2 = ['', 'timeCalculation']// 累加
+  const { registerCode,selectedBlockObj} = props;
 
   let cascaderOptions: any = [{
     value: '',
-    label: '文本框',
+    label: '文本',
   },
   {
     value: 'radio',
-    label: '下拉选项',
+    label: '单项',
   },
   {
     value: 'multiple_select',
-    label: '多项选择',
+    label: '多选',
   },
   {
     value: 'attachment',
-    label: '附件上传',
+    label: '文件(文件支持pdf/word/图片上传)',
   },
   {
     value: 'date',
-    label: '日期选择',
+    label: '日期(年月日)',
   },
   {
     value: 'date_time',
-    label: '日期时间选择',
+    label: '日期(年月)',
   },
   {
     value: 'time',
-    label: '时间选择',
+    label: '时间(年月日时分秒)',
   },
-  // {
-  //   value: 'timeCalculation',
-  //   label: '自动计算项',
-  //   multiple: true,
-  //   children: [...calculationList],
-  //   //这里的内容要动态计算
-  // },
-  // {
-  //   value: 'cumulative',
-  //   label: '自动累加项',
-  //   children: [...iderateList],
-  // },
+    {
+      value: 'sign',
+      label: '签名',
+    },
   ];
 
-  /**计算定时器和叠加器 */
-  const updateCascaderOptions = () => {
-    let calculationList2 = [] as any
-    let iderateList2 = [] as any
-    dataSource.map((it: any) => {
-      if (calLabel.includes(it.itemType)) {
-        calculationList2.push({
-          value: it.itemCode,
-          label: it.itemCode,
-        })
-      }
-      if (calLabel2.includes(it.itemType)) {
-        iderateList2.push({
-          value: it.itemCode,
-          label: it.itemCode,
-        })
-      }
-    })
-    setCalculationList(calculationList2)
-    setIderateList(iderateList2)
-  }
 
   //不允许删除的选项
   const staticOptions: { [p: string]: string[] } =
@@ -129,12 +95,13 @@ export default observer(function SetConfig(props: Props) {
 
   const columns: ColumnProps<any>[] = [
     {
-      title: "项目名称",
-      dataIndex: "itemCode",
+      title: "名称",
+      dataIndex: "title",
       align: "center",
       className: [
         "input-cell",
-        (selectedBlockObj && !selectedBlockObj.itemSizeEditable) ? 'disabled' : ''
+        (selectedBlockObj && !selectedBlockObj.itemSizeEditable) ? 'disabled' : '',
+       'required-cell'
       ].join(' '),
       width: 150,
       render(text: any, record: any, index: any) {
@@ -143,7 +110,7 @@ export default observer(function SetConfig(props: Props) {
             autosize={{ minRows: 1 }}
             disabled={selectedBlockObj && !selectedBlockObj.itemSizeEditable}
             onChange={e => {
-              record.itemCode = e.target.value;
+              record.title = e.target.value;
             }}
             onBlur={() => updateDataSource()}
             defaultValue={text}
@@ -155,143 +122,104 @@ export default observer(function SetConfig(props: Props) {
       {
         other: [
           {
-            title: "类型",
-            dataIndex: "itemType",
-            className: "input-cell",
+            title: "字段控件",
+            dataIndex: "type",
+            className: ['input-cell','required-cell'],
             width: 300,
             render: (text: any, record: any, index: any) => {
-              return <>
-                {["qhwy", 'dglb','whyx'].includes(appStore.HOSPITAL_ID) ? <Cascader changeOnSelect={true}
-                  options={cascaderOptions}
-                  style={{ width: '100%', textAlign: 'center' }}
-                  expandTrigger="hover"
-                  defaultValue={record.cascaderCode || ['']}
-                  displayRender={(label: any, selectedOptions: any) => {
-                    // 多选
-                    if(selectedOptions.length<1){
-                      // 没有的类型，比如护士长签名，护士签名
-                      return <span>文本框</span>
-                    }
-                    if (selectedOptions[0].multiple) {
-                      if (record.itemType == '') {
-                        return <span>文本框</span>
-                      }
-                      // 是给多选
-                      return <div className="tag-list">
-                        {record.timeBeginCode && <Tag color="lime" closable onClose={() => {
-                          record.timeBeginCode = ''
-                          if (record.timeBeginCode == "" && record.timeEndCode == "") {
-                            // 默认
-                            record.cascaderCode = ['']
-                            record.itemType = ''
-                          }
-                        }}
-                        >
-                          开始:{record.timeBeginCode}
-                        </Tag>}
-                        {record.timeEndCode && <Tag color="lime" closable onClose={() => {
-                          record.timeEndCode = ""
-                          if (record.timeBeginCode == "" && record.timeEndCode == "") {
-                            record.cascaderCode = ['']
-                            record.itemType = ''
-                          }
-                        }}
-                        >
-                          结束:{record.timeEndCode}
-                        </Tag>
-                        }
-                      </div>
-                      // }
-
-                    } else if (selectedOptions[0].value == 'cumulative') {
-                      // 累计
-                      if (record.cumulativeTarget && record.cumulativeTarget != '') {
-                        return <span style={{ color: '#10c8ff' }}>{record.cumulativeTarget}</span>
-                      }
-                    }
-                    return label[label.length - 1]
-                  }}
-
-                  onChange={(value: any, l: any) => {
-                    if (record.itemCode == l[l.length - 1].label) {
-                      message.warning('不可选择自己')
-                      return
-                    }
-                    record.itemType = value[0] //提交给后端的主要看第一级value
-                    record.cascaderCode = value//记录级联选择的code
-                    if (value[0] == 'cumulative' || value[0] == 'timeCalculation') {
-                    }
-
-                    if (value[0] == 'cumulative' && value.length > 1) {//累加
-                      // 累加目标列
-                      record.cumulativeTarget = value[1]
-                    } else {
-                      record.cumulativeTarget = ''
-                    }
-                    if (l[0].multiple && value.length > 1) {
-                      // 自动计算项 记录2个计算项
-                      if ([record.timeBeginCode, record.timeEndCode].includes(l[l.length - 1].label)) {
-                        // 选择的值已经被选择过，就反选
-                        if ([record.timeBeginCode].includes(l[l.length - 1].label)) {
-                          record.timeBeginCode = ''
-                          record.itemType = ''
-                          record.cascaderCode = ['']
-                        } else {
-                          record.timeEndCode = ''
-                          record.itemType = ''
-                          record.cascaderCode = ['']
-                        }
-                      } else {
-                        if (record.timeBeginCode == '') {
-                          // 开始时间为空，设置开始时间
-                          // 为什么用l[1].label,不用l[l.length-1].label,因为l[l.length-1].label会把第一层级填充
-                          record.timeBeginCode = l[l.length - 1].label
-                        } else {
-                          if (record.timeEndCode == '') {
-                            // 已有开始时间，结束时间为空 设置结束时间
-                            record.timeEndCode = l[l.length - 1].label
-                          } else {
-                            message.warning('只能选择2个项目')
-                            // 开始时间，结束时间都有值，提示
-                          }
-                        }
-                      }
-                    } else {
-                      record.timeBeginCode = ''
-                      record.timeEndCode = ''
-                    }
-                    setDataSource([...dataSource])
-
-                  }}
-                /> : <Select
-                  value={text}
-                  onChange={(val: string) => {
-                    let oldType = record.itemType
-                    record.itemType = val
-
-                    let ignoreTypes = ['multiple_select']
-
-                    if (
-                      (ignoreTypes.indexOf(oldType) >= 0 || !oldType) &&
-                      (ignoreTypes.indexOf(val) >= 0 || !val)
-                    ) {
-
-                    } else {
-                      record.options = ''
-                    }
-
-                    updateDataSource()
-                  }}>
-                  <Option value="">下拉选项</Option>
-                  <Option value="multiple_select">多项选择</Option>
-                  <Option value="attachment">附件上传</Option>
-                  <Option value="date">日期选择</Option>
-                  <Option value="date_time">日期时间选择</Option>
-                  <Option value="time">时间选择</Option>
-                </Select>}
-              </>
-
-            }
+              return(
+                  <Cascader changeOnSelect={true}
+                            options={cascaderOptions}
+                            style={{ width: '100%', textAlign: 'center' }}
+                            expandTrigger="hover"
+                            defaultValue={record.cascaderCode || ['']}
+                            displayRender={(label: any, selectedOptions: any) => {
+                              // 多选
+                              if(selectedOptions.length<1){
+                                // 没有的类型，比如护士长签名，护士签名
+                                return <span>文本框</span>
+                              }
+                              if (selectedOptions[0].multiple) {
+                                if (record.type == '') {
+                                  return <span>文本框</span>
+                                }
+                                // 是给多选
+                                return <div className="tag-list">
+                                  {record.timeBeginCode && <Tag color="lime" closable onClose={() => {
+                                    record.timeBeginCode = ''
+                                    if (record.timeBeginCode == "" && record.timeEndCode == "") {
+                                      // 默认
+                                      record.cascaderCode = ['']
+                                      record.type = ''
+                                    }
+                                  }}
+                                  >
+                                    开始:{record.timeBeginCode}
+                                  </Tag>}
+                                  {record.timeEndCode && <Tag color="lime" closable onClose={() => {
+                                    record.timeEndCode = ""
+                                    if (record.timeBeginCode == "" && record.timeEndCode == "") {
+                                      record.cascaderCode = ['']
+                                      record.type = ''
+                                    }
+                                  }}
+                                  >
+                                    结束:{record.timeEndCode}
+                                  </Tag>
+                                  }
+                                </div>
+                                // }
+                              }
+                              return label[label.length - 1]
+                            }}
+                            onChange={(value: any, l: any) => {
+                              if (record.itemCode == l[l.length - 1].label) {
+                                message.warning('不可选择自己')
+                                return
+                              }
+                              record.type = value[0] //提交给后端的主要看第一级value
+                              record.cascaderCode = value//记录级联选择的code
+                              if (l[0].multiple && value.length > 1) {
+                                // 自动计算项 记录2个计算项
+                                if ([record.timeBeginCode, record.timeEndCode].includes(l[l.length - 1].label)) {
+                                  // 选择的值已经被选择过，就反选
+                                  if ([record.timeBeginCode].includes(l[l.length - 1].label)) {
+                                    record.timeBeginCode = ''
+                                    record.type = ''
+                                    record.cascaderCode = ['']
+                                  } else {
+                                    record.timeEndCode = ''
+                                    record.type = ''
+                                    record.cascaderCode = ['']
+                                  }
+                                } else {
+                                  if (record.timeBeginCode == '') {
+                                    // 开始时间为空，设置开始时间
+                                    // 为什么用l[1].label,不用l[l.length-1].label,因为l[l.length-1].label会把第一层级填充
+                                    record.timeBeginCode = l[l.length - 1].label
+                                  } else {
+                                    if (record.timeEndCode == '') {
+                                      // 已有开始时间，结束时间为空 设置结束时间
+                                      record.timeEndCode = l[l.length - 1].label
+                                    } else {
+                                      message.warning('只能选择2个项目')
+                                      // 开始时间，结束时间都有值，提示
+                                    }
+                                  }
+                                }
+                              } else {
+                                record.timeBeginCode = ''
+                                record.timeEndCode = ''
+                              }
+                              /*设置对应默认值*/
+                              if(value[0] == 'date'){ record.defaultValue = moment().format('YYYY-MM-DD') }
+                              if(value[0] == 'date_time'){ record.defaultValue = moment().format('YYYY-MM') }
+                              if(value[0] == 'time'){ record.defaultValue = moment().format('YYYY-MM-DD HH:mm:ss') }
+                              setDataSource([...dataSource])
+                            }}
+                  />
+              )
+          }
           },
         ]
       },
@@ -300,7 +228,7 @@ export default observer(function SetConfig(props: Props) {
     {
       title: "列宽度(字数)",
       dataIndex: "width",
-      className: "input-cell",
+      className:'input-cell',
       width: 100,
       render(text: any, record: any, index: any) {
         return (
@@ -326,7 +254,7 @@ export default observer(function SetConfig(props: Props) {
       width: 300,
       className: "input-cell",
       render(text: any, record: any, index: any) {
-        if (record.itemType == 'attachment') {
+        if (record.type == 'attachment') {
           return <Select
             mode="tags"
             style={{ width: "100%" }}
@@ -353,8 +281,8 @@ export default observer(function SetConfig(props: Props) {
               </Option>
             ))}
           </Select>
-        }else if ((!["qhwy", 'dglb','whyx'].includes(appStore.HOSPITAL_ID) && (record.itemType == '' || record.itemType == 'multiple_select'))
-        || (["qhwy", 'dglb','whyx'].includes(appStore.HOSPITAL_ID) && (record.itemType == 'radio' || record.itemType == 'multiple_select'))) {
+        }else if ((!["qhwy", 'dglb','whyx'].includes(appStore.HOSPITAL_ID) && (record.type == '' || record.type == 'multiple_select'))
+        || (["qhwy", 'dglb','whyx'].includes(appStore.HOSPITAL_ID) && (record.type == 'radio' || record.type == 'multiple_select'))) {
           return defaultOptions.length > 0 ?
             <Select
               mode="tags"
@@ -425,14 +353,54 @@ export default observer(function SetConfig(props: Props) {
       }
     },
     {
-      title: "必填项 ",
+      title: "默认值 ",
+      width: 100,
+      align: "center",
+      dataIndex: 'defaultValue',
+      className: "input-cell",
+      render(text: any, record: any) {
+        /*文件，签名，不可编辑*/
+        return (
+            <Input
+                disabled={['attachment','sign'].includes(record.type) }
+                value={text}
+                onChange={e => {
+                  record.defaultValue = e.target.value;
+                  updateDataSource()
+                }}
+            />
+        );
+      }
+    },
+    /*默认关闭*/
+    {
+      title: "是否开启默认值 ",
       width: 80,
       align: "center",
-      dataIndex: 'notNull',
-      render(text: boolean, record: any, index: number) {
+      dataIndex: 'defaultUse',
+      render(text: boolean, record: any) {
+        return <Switch defaultChecked={text} checked={text} onChange={(checked: boolean) => {
+          if(!record.defaultValue){
+             message.info('未填写默认值')
+            record.defaultUse = text
+            return  updateDataSource()
+          }
+          record.defaultUse = checked
+          updateDataSource()
+        }}/>
+      }
+    },
+    /*默认开启*/
+    {
+      title: "是否必填项 ",
+      width: 80,
+      align: "center",
+      dataIndex: 'nullUse',
+      render(text: boolean, record: any) {
         return <Switch defaultChecked={text} onChange={(checked: boolean) => {
-          record.notNull = checked
-        }} />
+          record.nullUse = checked
+          updateDataSource()
+        }}/>
       }
     },
     {
@@ -441,34 +409,34 @@ export default observer(function SetConfig(props: Props) {
       render(text: string, record: any, index: number) {
         return (
           <DoCon>
-            <span onClick={()=>handleCopy(index,record)}>复制</span>
-            {selectedBlockObj &&
-              selectedBlockObj.itemSizeEditable &&
-              (
-                <span
-                  onClick={() => {
-                    globalModal
+            <span onClick={()=>handleCopy(index)}>复制</span>
+            <span
+                onClick={() => {
+                  globalModal
                       .confirm("删除确认", "你确定删除该配置项吗？")
                       .then(res => {
                         delRow(index);
                       });
-                  }}
-                >
+                }}>
                   删除
                 </span>
-              )}
           </DoCon>
         );
       }
     }
   ];
-const handleCopy =(index:number,record:any)=>{
+const handleCopy =(index:number)=>{
     let obj = dataSource.filter((item:any,key:number)=>key == index)
     let newItem = JSON.parse(JSON.stringify(obj))
-    if(newItem.id)delete  newItem.id
+  console.log("newItem===",newItem);
+  // if(newItem.id)delete  newItem.id
   /* 如果已经有id 需要删除   let newItem = JSON.parse(JSON.stringify(item)) */
   // obj.
-    setDataSource([...newItem,...dataSource])
+  let newDataSource = [...newItem, ...dataSource]
+  setDataSource([])
+  setTimeout(() => {
+    setDataSource(newDataSource)
+  })
 }
   const updateDataSource = () => {
     setDataSource([...dataSource]);
@@ -476,7 +444,9 @@ const handleCopy =(index:number,record:any)=>{
 
   const delRow = (index: number) => {
     let params = JSON.parse(JSON.stringify(dataSource))
-
+     params.splice(index, 1)
+     setDataSource([])
+     setTimeout(() => setDataSource(params))
     // if (params[index].oldItemCode) {
     //   params.splice(index, 1)
     //
@@ -496,14 +466,51 @@ const handleCopy =(index:number,record:any)=>{
     // }
   };
   const addRow = () => {
-    dataSource.push({ itemType: '', itemCode: '' });
+    dataSource.push({ type: '', itemCode: '',nullUse:true,defaultUse:false});
     updateDataSource();
   };
 
   const onSave = () => {
     // console.log(registerCode, blockId, dataSource)
     // return
+    let isRequired:boolean =false
+    let contentText:string =''
+    let indexList = dataSource
+        .map((item: any, index: number) => {
+          if (!item.title || !item.type) {
+            return index;
+          }
+          return null;
+        })
+        .filter((index:number) => index !== null);
+    if (indexList.length > 0) {
+      for (let i = 0; i < indexList.length; i++) {
+         contentText = indexList.map((index:number) => `第${index + 1}条数据没有设置完整内容，请设置完成后保存!`).join('<br>');
+      }
+      message.info(contentText);
+      return; // Stop further execution since there are incomplete items
+    }
+    let params={
+      id:queryObj.id,
+      isUse:queryObj.isUse,
+      latHandbookFormItemList:dataSource
+    }
     setPageLoading(true);
+    trainingSettingApi.updateFormItem(params).then((res:any)=>{
+          message.success('保存成功')
+          setPageLoading(false);
+
+          getData();
+    })
+    //     "latHandbookFormItemList": [
+    //         {
+    //             "title": "string",
+    //             "type": "string",
+    //             "options": "string",
+    //             "width": "string",
+    //             "defaultValue": "string"
+    //         }
+    //     ]
     // wardRegisterDefaultService
     //   .saveOrUpdateItemConfig(registerCode, blockId, dataSource)
     //   .then(res => {
@@ -514,38 +521,23 @@ const handleCopy =(index:number,record:any)=>{
   };
   const getData = () => {
     setPageLoading(true);
-    wardRegisterDefaultService
-      .getItemConfigByBlockId('QCRG_GDSRMYY_22', '1961')
-      .then(res => {
-        res.data.itemList.map((it: any) => {
-          if (it.itemType != '') {
-            it.cascaderCode = [it.itemType]
-          }
-
-        })
-
-        setDataSource(res.data.itemList);
-        setPageLoading(false);
-        // updateCascaderOptions()
-      });
-    service.commonApiService
-      .userDictInfo(authStore.selectedDeptCode)
-      .then(res => setEmpNameList(res.data.map((item: any) => item.name)));
+    trainingSettingApi.getTemplateItems({
+      id:queryObj.id,
+      templateType:2
+    }).then((res:any)=>{
+      res.data.map((it: any) => {
+        if (it.type != '') {
+          it.cascaderCode = [it.type]
+        }
+      })
+      setDataSource(res.data);
+      setPageLoading(false);
+    })
   };
-
   useEffect(() => {
     getData();
-  }, []);
+  }, [queryObj.id]);
 
-  useEffect(() => {
-    updateCascaderOptions()
-  }, [dataSource])
-
-
-  const empNameOptions = () =>
-    empNameList.map((item: any) => (
-      <Option key={item}>{item}</Option>
-    ));
   return (
     <Wrapper>
       <ToolCon>
@@ -556,9 +548,9 @@ const handleCopy =(index:number,record:any)=>{
         {/*    <Button onClick={addRow}>添加</Button>*/}
         {/*  )}*/}
         <Button onClick={addRow}>添加</Button>
-        {/*<Button onClick={onSave} type="primary">*/}
-        {/*  保存*/}
-        {/*</Button>*/}
+        <Button onClick={onSave} type="primary">
+          保存
+        </Button>
       </ToolCon>
       <EditTableCon>
         <BaseTable
@@ -590,13 +582,18 @@ const EditTableCon = styled.div`
       }
     }
   }
-
+.required-cell{
+  .ant-table-column-title :before{
+    content: '*';
+    color: red;
+  }
+}
   .input-cell {
     padding: 0 !important;
     &.disabled{
       background-color: #f5f5f5;
     }
-
+    
     .ant-input, .ant-select, .ant-select-selection, .ant-input-number {
       position: relative;
       z-index: 1000;

@@ -1,23 +1,16 @@
 import styled from 'styled-components'
-import React, {useEffect, useState} from 'react'
+import React from 'react'
 import { Button } from 'antd'
 import { Link } from 'react-router-dom'
-import BaseTable, { TabledCon, DoCon } from 'src/components/BaseTable'
-import { ColumnProps } from 'src/vendors/antd'
-import {appStore, authStore} from 'src/stores'
+import  { TabledCon } from 'src/components/BaseTable'
+import {appStore} from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import SetTittle from "./SetConfig";
-import BaseTabs from "src/components/BaseTabs";
 export interface Props { }
 // menuInfo  路径上获取
 //查看学习结果
 export default observer(function FormMaintenanceDetail() {
-  const [tableData,setTableData]=useState([]) as any
-  const { history } = appStore
-  // const { query, tableData, tableDataTotal, loading, baseInfo, menuInfo, isSignType } = trainingResultModel
-  useEffect(() => {
-  }, [])
-
+  const { history,queryObj } = appStore
   return <Wrapper>
     <TopPannel>
       <NavCon>
@@ -26,21 +19,21 @@ export default observer(function FormMaintenanceDetail() {
         <Link to="/continuingEdu/formMaintenance">{ '手册表单维护'}</Link>
         <span> {'>'} 表单详情</span>
       </NavCon>
-      <MainTitle>{'baseInfo.title'}</MainTitle>
+      <MainTitle>{queryObj['tableName']}</MainTitle>
       <SubContent>
         <span className="label">创建人:</span>
         <span className="content">
-          {authStore?.user?.empName}
+          {queryObj['createNo']}
         </span>
       </SubContent>
       <ButtonGroups>
         <Button onClick={() => history.goBack()}>返回</Button>
-        <Button >保存</Button>
+        {/*<Button>保存</Button>*/}
       </ButtonGroups>
     </TopPannel>
     <MainPannel>
       <TableWrapper>
-        <SetTittle/>
+        <SetTittle />
       </TableWrapper>
     </MainPannel>
   </Wrapper>

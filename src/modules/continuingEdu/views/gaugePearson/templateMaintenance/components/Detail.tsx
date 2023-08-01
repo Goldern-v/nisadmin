@@ -6,46 +6,44 @@ import BaseTable, { TabledCon, DoCon } from 'src/components/BaseTable'
 import { ColumnProps } from 'src/vendors/antd'
 import {appStore, authStore} from 'src/stores'
 import { observer } from 'mobx-react-lite'
-import BaseTabs from "src/components/BaseTabs";
-export interface Props { }
+import {trainingSettingApi} from "src/modules/continuingEdu/views/gaugePearson/api/TrainingSettingApi";
 // menuInfo  路径上获取
 //查看学习结果
 export default observer(function TemplateMaintenanceDetail() {
+  const { history,queryObj } = appStore
   const [tableData,setTableData]=useState([]) as any
   const [loading, setLoading] = useState<boolean>(false)
-
-  const { history } = appStore
-  // const { query, tableData, tableDataTotal, loading, baseInfo, menuInfo, isSignType } = trainingResultModel
   useEffect(() => {
-  }, [])
+    setLoading(true)
+    trainingSettingApi.updateFormItem(queryObj).then((res:any)=>{
+      setTableData(res.data)
+      setLoading(false)
+    })
+  }, [queryObj])
   const columns: any = [
     {
       title: "序号",
-      dataIndex: "",
-      key: "",
+      dataIndex: "index",
+      key: "index",
       align: "center",
-      width: 40
+      width: 40,
+      render:(text:any,record:any,index:number)=>index + 1
     },
     {
       title: "分类",
-      dataIndex: "firstLevelMenuName",
+      dataIndex: "catagory",
       align: "center",
       width: 100,
-      render: () => {
-        return (
-            <Checkbox/>
-        )
-      }
     },
     {
       title: "内容",
-      dataIndex: "secondLevelMenuName",
+      dataIndex: "content",
       align: "center",
       width: 100
     },
     {
       title: "学时",
-      dataIndex: "secondLevelMenuName",
+      dataIndex: "standartrd",
       align: "center",
       width: 100
     },
@@ -59,11 +57,11 @@ export default observer(function TemplateMaintenanceDetail() {
         <Link to="/continuingEdu/templateMaintenance">手册模板维护</Link>
         <span> {'>'} 表单详情</span>
       </NavCon>
-      <MainTitle>{'baseInfo.title'}</MainTitle>
+      <MainTitle> {queryObj['tableName']}</MainTitle>
       <SubContent>
         <span className="label">创建人:</span>
         <span className="content">
-          {authStore?.user?.empName}
+          {queryObj['createNo']}
         </span>
       </SubContent>
       <ButtonGroups>

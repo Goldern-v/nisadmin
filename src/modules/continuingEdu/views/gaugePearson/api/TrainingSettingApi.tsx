@@ -98,7 +98,6 @@ export default class TrainingSettingApi extends BaseApiService {
   public async getTemplateMaintenance() {
     return this.get('/formHandBook/getTemplateMaintenance');
   }
-  //   getTemplateMaintenance
   /**
    * 创建手册  
    * @param obj.ptStudentId {string}  
@@ -147,5 +146,14 @@ export default class TrainingSettingApi extends BaseApiService {
     return this.get(`/studyAndTrain/planTrainStudentInfo/queryTemplateItemAndData?${qs.stringify(obj)}`);
   }
 
+  public async getTemplateItems(params:any) {
+    return this.post('/formHandBook/getTemplateItems',params);
+  }
+  public async updateFormItem(params:any) {
+    return this.post('/formHandBook/updateFormItem',params);
+  }
+  public async getAttachment(params:any) {
+    return this.post('/formHandBook/getAttachment',params);
+  }
 }
 export const trainingSettingApi = new TrainingSettingApi();

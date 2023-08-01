@@ -3,8 +3,8 @@ import React, {useState, useEffect} from "react";
 import {Button, Select, Input,  Switch, message, Modal} from "antd";
 import {Place} from "src/components/common";
 import {observer} from "mobx-react-lite";
-import BaseTable  from "src/components/BaseTable";
-import {authStore} from "src/stores";
+import BaseTable, {DoCon} from "src/components/BaseTable";
+import {appStore, authStore} from "src/stores";
 import MaintenanceModal from "./component/MaintenanceModal";
 import {trainingSettingApi} from "src/modules/continuingEdu/views/gaugePearson/api/TrainingSettingApi";
 const Option = Select.Option;
@@ -16,7 +16,7 @@ export interface Query {
     hierarchy: string;
     deptCode: string;
     tableName: string;
-    dataTotal: number;
+    totalCount: number;
 }
 
 interface AddModal {
@@ -39,7 +39,7 @@ export default observer(function FormMaintenance() {
         hierarchy: "全部",
         deptCode: "全院",
         tableName: "",
-        dataTotal: 0
+        totalCount: 0
     } as any); // 页码 ，每页条数
     const columns: any = [
         //
@@ -56,11 +56,11 @@ export default observer(function FormMaintenance() {
             dataIndex: "status",
             align: "center",
             width: 60,
-            render: (text:any,record:any) => {
+            render: (text:any,record:any,index:number) => {
                 // 0关闭  1 开启
                 // isUse 0 未引用 1引用
                 return (
-                    <Switch checked={ text == 1  } onChange={(e:boolean)=>{
+                    <Switch key={index + 'a'} checked={ text == 1  } onChange={(e:boolean)=>{
                         handleCheckBox(e,record)
                     }}/>
                 )
@@ -103,17 +103,24 @@ export default observer(function FormMaintenance() {
             width: 100,
             align: "center",
             render: (text:any,record:any) => {
-                let isDisable = record.isUse
                 return (
-                    <div style={{display:'flex'}}>
-                        <Button >查看</Button>
-                        <Button disabled={isDisable ==1} onClick={()=>handleAdd('编辑',record)}>编辑</Button>
-                        <Button disabled={isDisable ==1}  onClick={()=>handleDelete(record.id)}>删除</Button>
-                    </div>
+                    <DoCon >
+                        <span onClick={()=>handleReview(record)}>查看</span>
+                        <span className={record.isUse !==1?'':'disable-sty'}  onClick={()=>handleAdd('编辑',record)}>编辑</span>
+                        <span className={record.isUse !==1?'':'disable-sty'} onClick={()=>handleDelete(record.id)}>删除</span>
+                    </DoCon>
                 )
             }
         }
     ];
+    const handleReview =(record:any)=>{
+        if(!record.id)return
+        const {id,createNo,tableName,isUse}=record
+        appStore.history.push(
+            `/formMaintenanceDetail?isUse=${isUse}&createNo=${createNo}&tableName=${tableName}&id=${id}`
+        );
+    }
+
     const handleDelete =(id:number)=>{
         if(!id)return
         Modal.confirm({
@@ -165,8 +172,8 @@ export default observer(function FormMaintenance() {
             ...query,
             templateType:2
         }).then((res:any)=>{
-            setQuery({...query,dataTotal:res.data.dataTotal})
-            setTableList(res.data)
+            setQuery({...query,totalCount:res.data.totalCount})
+            setTableList(res.data.list||[])
             setLoading(false)
         })
     }
@@ -243,7 +250,7 @@ export default observer(function FormMaintenance() {
                                 onChange: (pageIndex) =>
                                     setQuery({...query, pageIndex}),
                                 onShowSizeChange: (pageIndex, pageSize) => setQuery({...query, pageSize}),
-                                total: query.dataTotal,
+                                total: query.totalCount,
                                 showSizeChanger: true,
                                 showQuickJumper: true,
                                 pageSize: query.pageSize,
@@ -308,6 +315,13 @@ const ScrollCon = styled.div`
   overflow: auto;
   margin: 0 -15px;
     /* padding: ${p => p.theme.$mcp}; */
+  .disable-sty{
+    color:#999;
+    cursor: auto;
+    &:hover{
+      font-weight: normal;
+    }
+  }
 `;
 
 const BodyWarpper = styled.div`
