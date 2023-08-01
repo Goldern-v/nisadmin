@@ -1,6 +1,7 @@
 import BaseApiService from "src/services/api/BaseApiService";
 // import { formApplyModal } from "../formApply/FormApplyModal";
 import qs from "qs";
+import { Obj } from "src/libs/types";
 
 export default class TrainingSettingApi extends BaseApiService {
 
@@ -44,14 +45,14 @@ export default class TrainingSettingApi extends BaseApiService {
       }
     );
   }
- 
+
   // 规培生基本信息汇总表-表单导入
-  public async importSheetTemplate(filename:any) {
+  public async importSheetTemplate(filename: any) {
     let newFormData = new FormData()
     newFormData.set('file', filename)
     return this.post(
       `/studyAndTrain/planTrainStudentInfo/importPlanTrainStudentInfo`
-      ,newFormData
+      , newFormData
     );
   }
 
@@ -69,34 +70,82 @@ export default class TrainingSettingApi extends BaseApiService {
   }
   // 规培生出科评价-导出列表
   public async countExcel(obj: any) {
-    return this.post(`/studyAndTrain/GraduateEvaluateOfPlanTrainStu/countExcel`, obj,{responseType: "blob"});
+    return this.post(`/studyAndTrain/GraduateEvaluateOfPlanTrainStu/countExcel`, obj, { responseType: "blob" });
   }
   // 规培生出科评价-删除单个
   public async deleteQueryPageList(obj: any) {
-    return this.post(`/studyAndTrain/GraduateEvaluateOfPlanTrainStu/deleteGraduateEvaluateOfPlanTrainStu`,obj);
+    return this.post(`/studyAndTrain/GraduateEvaluateOfPlanTrainStu/deleteGraduateEvaluateOfPlanTrainStu`, obj);
   }
   // 规培生出科评价-保存列表数据
   public async saveQueryPageList(obj: any) {
-    return this.post(`/studyAndTrain/GraduateEvaluateOfPlanTrainStu/saveOrUpdateGraduateEvaluateOfPlanTrainStuList`,obj);
+    return this.post(`/studyAndTrain/GraduateEvaluateOfPlanTrainStu/saveOrUpdateGraduateEvaluateOfPlanTrainStuList`, obj);
   }
 
-/*亚心--规培手册api*/
+  /*亚心--规培手册api*/
   public async getTemplateList(obj: any) {
-    return this.post(`/formHandBook/getTemplateList`,obj);
+    return this.post(`/formHandBook/getTemplateList`, obj);
   }
   public async saveOrUpdate(obj: any) {
     let formData = new FormData()
     Object.keys(obj).forEach(v => {
       formData.append(v, obj[v])
     })
-    return this.post(`/formHandBook/saveOrUpdate`,formData);
+    return this.post(`/formHandBook/saveOrUpdate`, formData);
   }
   public async deleteTemplate(obj: any) {
-    return this.post(`/formHandBook/deleteTemplate`,obj);
+    return this.post(`/formHandBook/deleteTemplate`, obj);
   }
   public async getTemplateMaintenance() {
     return this.get('/formHandBook/getTemplateMaintenance');
   }
-//   getTemplateMaintenance
+  //   getTemplateMaintenance
+  /**
+   * 创建手册  
+   * @param obj.ptStudentId {string}  
+   * @param obj.deptCode {string}  
+   * @param obj.deptName {string}  
+   * @param obj.handbookName {string}  
+   * @param obj.templateIds {string}  
+   * @returns 
+   */
+  public async createHandbook(obj: any) {
+    return this.post(`/studyAndTrain/planTrainStudentInfo/createHandbook`, obj);
+  }
+  /**
+   * 删除
+   * @param obj.id {string}  
+   * @returns 
+   */
+  public async deleteHandbook(obj: any) {
+    return this.post(`/studyAndTrain/planTrainStudentInfo/deleteHandbook`, obj);
+  }
+  /**
+   * 根据规培生ID查询手册主表列表  
+   * @param ptStudentId {string} 规培生id
+   * @returns 
+   */
+  public async getHandbookMaster(ptStudentId: string) {
+    return this.get(`/studyAndTrain/planTrainStudentInfo/getHandbookMaster/${ptStudentId}`);
+  }
+  /**
+   * 根据主表ID查询手册目录列表  
+   * @param masterId {number}
+   * @returns 
+   */
+  public async getHandbookCatalog(masterId: number) {
+    return this.get(`/studyAndTrain/planTrainStudentInfo/getHandbookCatalog/${masterId}`);
+  }
+  /**
+   * 查询出对应模板的项和数据  
+   * @param obj.catalogId {string}  
+   * @param obj.masterId {string}  
+   * @param obj.templateId {string}  
+   * @param obj.templateType {string}  
+   * @returns 
+   */
+  public async queryTemplateItemAndData(obj: Obj) {
+    return this.get(`/studyAndTrain/planTrainStudentInfo/queryTemplateItemAndData?${qs.stringify(obj)}`);
+  }
+
 }
 export const trainingSettingApi = new TrainingSettingApi();

@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react'
 import { Obj } from 'src/libs/types'
 import { getOneMmsPx } from 'src/utils/css/css'
 import styled from 'styled-components'
+import { handbookModel } from '../../../handbook/model'
 interface IProps {
-  info?: Obj
+  isPreview?: boolean
 }
 
 const titleList = [
@@ -13,7 +14,7 @@ const titleList = [
   },
   {
     name: '工号',
-    code: '',
+    code: 'sapCode',
   },
   {
     name: '性别',
@@ -32,16 +33,16 @@ const titleList = [
     code: 'degree',
   },
   {
-    name: '籍贯',
-    code: '',
+    name: '区域',
+    code: 'region',
   },
   {
-    name: '入职时间',
-    code: '',
+    name: '科室',
+    code: 'studyDeptName',
   },
   {
     name: '在职情况',
-    code: '',
+    code: 'incumbency',
   },
   {
     name: '分配日期',
@@ -54,8 +55,9 @@ const titleList = [
 ]
 /**固定表-基本信息 */
 export default function FixedBaseInfo(props: IProps) {
-  const { info } = props
-  const [px, setPx] = useState(1)
+  const { isPreview = false } = props
+  const { info } = handbookModel
+  // const [px, setPx] = useState(1)
   // useEffect(() => {
   //   const val = getOneMmsPx()
   //   setPx(val || 1)
@@ -73,9 +75,9 @@ export default function FixedBaseInfo(props: IProps) {
         {Array.from(Array(Math.ceil(titleList.length / 2))).map((v: any, i: number) =>
           <tr key={i}>
             <td>{titleList[2 * i]?.name}</td>
-            <td>{titleList[2 * i]?.code && info ? info[titleList[2 * i]?.code] : ''}</td>
+            <td>{titleList[2 * i]?.code && !isPreview ? info[titleList[2 * i]?.code] : ''}</td>
             <td>{titleList[2 * i + 1]?.name}</td>
-            <td>{titleList[2 * i + 1]?.code && info ? info[titleList[2 * i + 1]?.code] : ''}</td>
+            <td>{titleList[2 * i + 1]?.code && !isPreview ? info[titleList[2 * i + 1]?.code] : ''}</td>
           </tr>)}
       </tbody>
     </table>

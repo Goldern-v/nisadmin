@@ -326,8 +326,6 @@ const checkWardRecordViewGzsrm = lazy(() =>
   import("src/modules/quality/views/scoringRecord/RecordView/index-gzsrm")
 )
 
-
-
 // 贵州护长季度查房分析报告表
 const checkWardQuarterViewGzsrm = lazy(() =>
   import("src/modules/quality/views/wardQuarter_gzsrm/wardQuarter_gzsrm")
@@ -551,6 +549,9 @@ const NurseSatisfactionSurveyDetailView = lazy(() => import("src/modules/nurseSa
 //单点登录
 const SingleSignOnDefault = lazy(() => import("src/modules/SingleSignOn/default/SingleSignOnDefault"))
 const SingleSignOnGzsrm = lazy(() => import("src/modules/SingleSignOn/gzsrm/SingleSignOnGzsrm"))
+/**规培生手册详情 */
+const PearsonHandbook = lazy(() => import("src/modules/continuingEdu/views/gaugePearson/handbook/index"))
+
 // 移动端界面-患者随访问卷首页
 const routes: RouteItem[] = [
   setLayout("/demo", demo),
@@ -1053,6 +1054,7 @@ const routes: RouteItem[] = [
   ),
   setLayout("/nursingFollowUp", NursingFollowUp, layouts.MainLayout),
   setLayout("/nursingFollowUpDetail", FollowUpDetailView, layouts.MainLayout),
+  setLayout("/pearsonHandbook", PearsonHandbook, layouts.MainLayout),
   {
     path: "/continuingEdu",
     redirect: "/continuingEdu/人员管理"

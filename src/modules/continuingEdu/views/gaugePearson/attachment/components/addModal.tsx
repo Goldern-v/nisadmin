@@ -41,10 +41,9 @@ export default Form.create()(observer(function (props: IProps) {
       })
     }
   }
+
   useEffect(() => {
-    if (visible) resetFields()
-  }, [visible])
-  useEffect(() => {
+    resetFields()
     if (data) {
       const { deptCode, deptName: dName, tableName, attachmentId, hierarchy } = data
       deptName = dName
@@ -58,7 +57,7 @@ export default Form.create()(observer(function (props: IProps) {
         }]
       })
     }
-  }, [data])
+  }, [data, visible])
 
   return (
     <Wrapper>
@@ -111,7 +110,7 @@ export default Form.create()(observer(function (props: IProps) {
                 ],
                 valuePropName: 'data'
               })(
-                <MultiFileUploader isFormModel typeList={['pdf']} size={1} maxSize={5 * 1024 * 1024} />
+                <MultiFileUploader isFormModel type='handbookAttachment' typeList={['pdf']} size={1} maxSize={5 * 1024 * 1024} />
               )
             }
           </Form.Item>

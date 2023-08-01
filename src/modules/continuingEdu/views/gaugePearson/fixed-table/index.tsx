@@ -1,7 +1,7 @@
 import { Button, Input, Modal, Switch, message } from 'antd'
 import { ColumnProps } from 'antd/es/table'
 import { observer } from 'mobx-react'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
 import { PageContainer, PageHeader, PageTitle, Place } from 'src/components/common'
 import { Obj } from 'src/libs/types'
@@ -15,31 +15,26 @@ export interface IProps {
 const STATIC_TABLE_DATA = [
   {
     tableName: '规培生基本信息',
-    key: 'info',
     content: FixedBaseInfo,
   },
   {
     tableName: '个人总结',
-    key: 'summary',
     content: FixedSummary,
   },
   {
     tableName: '岗前培训考核成绩',
-    key: 'grade',
     content: FixedGrade,
   },
 ]
 const templateType = 4
-// type TKey = (typeof STATIC_TABLE_DATA)[number]['key']
 /**固定表列表 */
 export default observer(function FixedTable(props: IProps) {
   const [kw, setKw] = useState('')
 
-  const [tableData, setTableData] = useState(STATIC_TABLE_DATA)
+  const [tableData, setTableData] = useState([])
 
   const onSwitch = (e: boolean, record: any) => {
-    const { id, deptCode, hierarchy, tableName } = record
-    trainingSettingApi.saveOrUpdate({ id, deptCode, hierarchy, tableName, status: Number(e) }).then(res => {
+    trainingSettingApi.saveOrUpdate({ ...record, status: Number(e) }).then(res => {
       message.success(res.desc)
       onSearch()
     })
@@ -79,9 +74,6 @@ export default observer(function FixedTable(props: IProps) {
       title: '科室',
       width: 70,
       align: 'center',
-      render(text: any, record: any, idx: number) {
-        return '全院'
-      }
     },
     {
       key: 'hierarchy',
@@ -89,19 +81,13 @@ export default observer(function FixedTable(props: IProps) {
       title: '层级',
       width: 70,
       align: 'center',
-      render(text: any, record: any, idx: number) {
-        return '全部'
-      }
     },
     {
-      key: 'person',
-      dataIndex: 'person',
+      key: 'createName',
+      dataIndex: 'createName',
       title: '创建人',
       width: 70,
       align: 'center',
-      render(text: any, record: any, idx: number) {
-        return '系统'
-      }
     },
     {
       key: 'createTime',
@@ -109,9 +95,6 @@ export default observer(function FixedTable(props: IProps) {
       title: '创建时间',
       width: 70,
       align: 'center',
-      render(text: any, record: any, idx: number) {
-        return '2023-08-01 00:00:00'
-      }
     },
     {
       key: 'switch',
@@ -128,20 +111,22 @@ export default observer(function FixedTable(props: IProps) {
   ]
 
   const onPreview = (item: Obj) => {
+    const cur = STATIC_TABLE_DATA.find(v => v.tableName === item.tableName)
+    if (!cur) return message.warning('找不到预览页')
     Modal.info({
-      title: `${item.name}预览`,
-      content: <item.content />,
+      title: `预览`,
+      content: <cur.content isPreview />,
       width: '240mm'
     })
   }
   const onSearch = () => {
-    trainingSettingApi.getTemplateList({ templateType }).then(res => {
-      setTableData(res.data || [])
+    trainingSettingApi.getTemplateList({ templateType, tableName: kw }).then(res => {
+      setTableData(res?.data?.list || [])
     })
   }
   useEffect(() => {
     onSearch()
-  }, [])
+  }, [kw])
   return (
     <Wrapper>
       <PageHeader>
@@ -154,7 +139,7 @@ export default observer(function FixedTable(props: IProps) {
       <PageContainer>
         <BaseTable
           columns={columns}
-          surplusHeight={400}
+          surplusHeight={210}
           dataSource={tableData} />
       </PageContainer>
     </Wrapper>

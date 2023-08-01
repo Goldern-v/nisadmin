@@ -4,7 +4,7 @@ import { Obj } from 'src/libs/types'
 import BaseTable from 'src/modules/setting/common/TableModel'
 import styled from 'styled-components'
 interface IProps {
-  info?: Obj[]
+  isPreview?: boolean
 }
 const columns: ColumnProps<any>[] = [
   {
@@ -58,12 +58,12 @@ const columns: ColumnProps<any>[] = [
 ]
 /**固定表-岗前培训考核成绩 */
 export default function FixedGrade(props: IProps) {
-  const { info = [] } = props
-
+  const { isPreview = false } = props
+  const info: any[] | undefined = []
   return <Wrapper>
     <div className='title'>岗前培训考核成绩</div>
     <BaseTable
-      dataSource={info}
+      dataSource={isPreview ? [] : info}
       columns={columns}
     />
   </Wrapper>

@@ -19,7 +19,7 @@ const templateType = 3
 export default observer(function Attachment(props: IProps) {
   const [visible, setVisible] = useState(false)
   const [params, setParams] = useState({
-    attachmentName: '',
+    tableName: '',
     deptCode: '全院',
     hierarchy: '全部',
     templateType
@@ -28,8 +28,7 @@ export default observer(function Attachment(props: IProps) {
   const [curData, setCurData] = useState<Obj | undefined>(undefined)
 
   const onSwitch = (e: boolean, record: any) => {
-    const { id, deptCode, hierarchy, tableName } = record
-    trainingSettingApi.saveOrUpdate({ id, deptCode, hierarchy, tableName, status: Number(e) }).then(res => {
+    trainingSettingApi.saveOrUpdate({ ...record, status: Number(e) }).then(res => {
       message.success(res.desc)
       onSearch()
     })
@@ -124,11 +123,11 @@ export default observer(function Attachment(props: IProps) {
   }
   const onSearch = () => {
     trainingSettingApi.getTemplateList(params).then(res => {
-      setTableData(res.data || [])
+      setTableData(res?.data?.list || [])
     })
   }
   const onCreate = (data: Obj) => {
-    trainingSettingApi.saveOrUpdate({ ...data, templateType }).then(res => {
+    trainingSettingApi.saveOrUpdate({...(curData || {}), ...data, templateType }).then(res => {
       message.success('添加成功')
       setVisible(false)
       onSearch()
@@ -150,13 +149,13 @@ export default observer(function Attachment(props: IProps) {
           {HIERARCHY.map((v) => <Select.Option value={v} key={v}>{v}</Select.Option>)}
         </Select>
         <span className='label'>附件名称</span>
-        <Input placeholder='请输入文件名称' value={params.attachmentName} onChange={(e: any) => setParams({ ...params, attachmentName: e.target.value })} />
+        <Input placeholder='请输入文件名称' value={params.tableName} onChange={(e: any) => setParams({ ...params, tableName: e.target.value })} />
         <Button type='primary' onClick={onSearch}>查询</Button>
         <Button type='primary' onClick={() => onUpdate()}>新增</Button>
       </PageHeader>
       <PageContainer>
         <BaseTable
-          surplusHeight={400}
+          surplusHeight={210}
           columns={columns}
           dataSource={tableData} />
       </PageContainer>

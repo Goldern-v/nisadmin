@@ -25,7 +25,7 @@ const GlobalStyle = createGlobalStyle`
         /* box-sizing: border-box; */
         /* padding: 0 8px; */
         /* font-size: 13px !important; */
-        /* height: ${p => p.theme.$tableRowHeight} !important; */
+        /* height: ${(p) => p.theme.$tableRowHeight} !important; */
       }
   body {
     margin: 0px;
@@ -178,6 +178,11 @@ input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
   }
   .ant-btn +.ant-btn {
     margin-left: 10px;
+  }
+  .single-line {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 `;
 

@@ -3,9 +3,12 @@ import React from 'react'
 import styled from 'styled-components'
 
 export interface IProps {
+  isPreview?: boolean
 }
 /**固定表-个人总结 */
 export default observer(function FixedSummary(props: IProps) {
+  const { isPreview = false } = props
+  
   return (
     <Wrapper>
       <div className='title'>个人总结</div>
