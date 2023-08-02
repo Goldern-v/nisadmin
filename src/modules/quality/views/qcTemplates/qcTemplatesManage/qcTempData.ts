@@ -50,6 +50,15 @@ class qcTempData {
     pageSize:20
   }
 }
+@computed get downLoadAllObj(){
+  return {
+    beginDate:this.startDate,
+    endDate:this.endDate,
+    qcLevel:this.selectLevel,
+    empName:this.keyWord,
+  
+  }
+}
   
 
   
@@ -64,18 +73,18 @@ class qcTempData {
 
      /** 下载所有模板 */
      downloadAllTemplate() {
-      qcTempApi.downloadTemplate()
+      qcTempApi.downloadAllTemplate(this.downLoadAllObj)
         .then(res => fileDownload(res))
     }
 
-  
-
     /**获取表格数据 */
-    getList(id?:any){
+    getList(){
+      this.tableLoading = true
         qcTempApi.getDataList(this.postObj).then(res=>{
+          this.tableLoading = false
           this.tableList = res.data?.list || []
         }).catch(err=>{
-
+          this.tableLoading = false
         })
     }
 

@@ -28,7 +28,7 @@ export default class QcTempApi extends BaseApiService {
     return this.post(`/qcTemplateManage/updateStatus`, obj);
   }
 
-  /**删除（0：未删除，1：已删除） */
+  /**删除（ */
   public deleItem(obj: any) {
     return this.post(`/qcTemplateManage/delete`, obj);
   }
@@ -39,6 +39,13 @@ export default class QcTempApi extends BaseApiService {
       responseType: "blob"
     });
   }
+
+    //导出所有表单
+    public downloadAllTemplate(obj: any) {
+      return this.post(`/qcTemplateManage/exportAll`, obj, {
+        responseType: "blob"
+      });
+    }
 
   // /api/qcTemplateManage/export
 

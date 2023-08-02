@@ -193,7 +193,8 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
       <div className="page-title" style={{ display: "none" }}>
         {detailData.master && detailData.master.qcName}
       </div>
-      <MessageBox>
+      {/* zzwy 质控模板用到manageDetail */}
+      {appStore.queryObj?.qcDetail!='manageDetail' && <><MessageBox>
         <div className="boxLeft">
           <div>质控日期：{messageBoxData.evalDate}</div>
           <div>质控病区：{messageBoxData.wardName}</div>
@@ -323,7 +324,7 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
       </MessageBox>
       <OnlyReadError>
         <Checkbox onChange={titleBoxChange}>只看错题</Checkbox>
-      </OnlyReadError>
+      </OnlyReadError></>}
       <QuestionCon>
         {/* 表单介绍 */}
         {['gzsrm'].includes(appStore.HOSPITAL_ID) && detailData?.master?.intro && <span className='question-intro'>{detailData.master.intro}</span>}

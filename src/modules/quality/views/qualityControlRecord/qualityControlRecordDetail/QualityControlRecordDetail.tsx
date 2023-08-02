@@ -9,6 +9,7 @@ import { ScrollBox } from 'src/components/common'
 import { appStore } from 'src/stores'
 // import QcrDetailNoRadio from '../qualityControlRecordDetailNoRadio/QualityControlRecordDetail'
 import qs from "qs";
+import QualityControlTempleteDetailHeader from './components/QualityControlTempleteDetailHeader'
 
 function QualityControlRecordDetail() {
   let [detailData, setDetailData]: any = useState([])
@@ -56,6 +57,7 @@ function QualityControlRecordDetail() {
       },
       vague: true
     })
+    {/* zzwy 质控模板用到manageDetail */}
     if(appStore.queryObj.qcDetail=='manageDetail'){
       fn=qualityControlRecordApi.formTemplateDetail
     }
@@ -79,7 +81,11 @@ function QualityControlRecordDetail() {
   return (
     <Con>
       <HeaderCon>
-        <QualityControlRecordDetailHeader detailData={detailData} onload={onload} />
+        {/* zzwy 质控模板用到manageDetail */}
+      {appStore.queryObj?.qcDetail=='manageDetail'?
+        <QualityControlTempleteDetailHeader detailData={detailData} onload={onload} />
+        :<QualityControlRecordDetailHeader detailData={detailData} onload={onload} />
+      }
       </HeaderCon>
       <MidCon>
         <MidConScrollCon>
@@ -96,9 +102,10 @@ function QualityControlRecordDetail() {
             {/* <button onClick={testClick}>testClick</button> */}
             <QualityControlRecordDetailMidLeft detailData={detailData} />
           </MidLeftCon>
-          <MidRightCon>
+          {/* zzwy 质控模板用到manageDetail */}
+          {appStore.queryObj?.qcDetail!='manageDetail' && <MidRightCon>
             <MidRightQualityControlRecordDetail detailData={detailData} />
-          </MidRightCon>
+          </MidRightCon>}
         </MidConScrollCon>
       </MidCon>
     </Con>

@@ -24,28 +24,23 @@ export default observer(function QcTempManage(props: Props) {
       `/qualityControlRecordDetail/${record.qcCode}?qcCode=${record.qcCode}&qcDetail=manageDetail`
     );
   }
-  const onDoubleClick = (record: any) => {
-    // appStore.history.push('/continuingEduEmpDetail')
-    appStore.history.push(
-      `/qualityControlRecordDetail/${record.id}?qcCode=${record.qcCode}`
-    );
-  };
   const columns:any = [
     {
       title: '序号',
       render: (text: any, record: any, index: number) => index + 1,
       align: 'center',
-      width: 60
+      width: 40
     },
     {
 			title: "状态",
 			dataIndex: "status",
 			align: "center",
-			width: 80,
+			width: 60,
       render: (text: any, record: any, index: any) =>
          
           <span>
-            <Switch key={record.qcCode}
+            {/* deleteToF：true：可删除；false：不可删除 */}
+            <Switch key={record.qcCode} disabled={!record.deleteToF}
               size='small'
               onChange={(check: any) => {
                 qcTempDatas.changeItemStatus({
@@ -64,13 +59,13 @@ export default observer(function QcTempManage(props: Props) {
       title: '表名',
       align: 'center',
       dataIndex: "qcName",
-      width: 120
+      width: 200
     },
     {
       title: '质控级别',
       align: 'center',
       dataIndex: "qcLevel",
-      width: 160,
+      width: 120,
       render: (text: any, record: any, index: any)=>{
         let textArr = text?.split(',')
       let textStr = ''
@@ -88,7 +83,7 @@ export default observer(function QcTempManage(props: Props) {
       title: '创建人',
       align: 'center',
       dataIndex: "creatorName",
-      width: 160
+      width: 80
     },
     {
       title: '创建时间',
@@ -110,7 +105,8 @@ export default observer(function QcTempManage(props: Props) {
 						<span onClick={() => { turnToView(record) }}>查看</span>
 						{/* <span onClick={() => { qcTempDatas.importEditor() }}>重新导入</span> */}
             <span onClick={() => { qcTempDatas.exportItem(record) }}>导出</span>
-						<span onClick={() => {handleDelete(record,index)}}>删除</span>
+            {/* deleteToF：true：可删除；false：不可删除 */}
+						<span style={record.deleteToF?{}:{color:'#999'}} onClick={() => {handleDelete(record,index)}}>删除</span>
 					</DoCon>
 				);
 			}
@@ -118,7 +114,10 @@ export default observer(function QcTempManage(props: Props) {
   ]
 
   const handleDelete =(record:any,index:number)=>{
-    // if(!id)return
+    if(!record.deleteToF){
+      // deleteToF：true：可删除；false：不可删除
+      return false
+    }
     Modal.confirm({
         title: '提示',
         content: '是否删除该数据',
@@ -129,7 +128,7 @@ export default observer(function QcTempManage(props: Props) {
             qcTempApi.deleItem({qcCode:record.qcCode,}).then(()=>{
                 message.success('删除成功')
                 qcTempDatas.tableList.splice(index,1)
-                // getData()
+                
             })
         }
     })
@@ -149,6 +148,7 @@ export default observer(function QcTempManage(props: Props) {
       // console.log(file)
       qcTempApi.upLoadTempt({file:file}).then(res=>{
         message.success('导入成功')
+        qcTempDatas.getList()
         // qcTempDatas.modalVisible = false
       }).catch(err=>{
       })
@@ -193,7 +193,7 @@ export default observer(function QcTempManage(props: Props) {
               <Icon type="cloud-upload" />
             </p>
             <p className="ant-upload-text">点击或者拖拽上传文件</p>
-            <p className="ant-upload-hint">请上传模板</p>
+            <p className="ant-upload-hint">说明：请根据导出的模板，导入表单。</p>
           </Dragger>
         
       </div>

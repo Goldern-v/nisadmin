@@ -68,6 +68,12 @@ export default observer(function QcTempManageHeader(props: Props) {
 				/>
 				<Button
 					className="span"
+					onClick={()=>{qcTempDatas.getList()}}
+				>
+					查询
+				</Button>
+				<Button
+					className="span"
           type='primary'
 					onClick={() => { qcTempDatas.getDownloadTemplate() }}
 				>
