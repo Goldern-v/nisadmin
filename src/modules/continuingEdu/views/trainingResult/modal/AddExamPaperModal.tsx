@@ -16,6 +16,7 @@ export interface Props {
 
 export default function AddExamPaperModal(props: Props) {
   const { visible, onCancel, onOk } = props;
+  const { history, queryObj } = appStore
   const [editLoading, setEditLoading] = useState(false);
   const [allFormData, setAllFormData] = useState(
     {
@@ -39,6 +40,8 @@ export default function AddExamPaperModal(props: Props) {
   const [getCheckedbox, setGetCheckedbox]: any = useState([]); //选中的多选框
   const [checkedUserList, setCheckedUserList]: any = useState([]);// 选中人员
   const [people, setPeople]: any = useState([]);// 选中人员
+
+  const [noPassCheck, setNoPassCheck] = useState(false);//不及格选择
 
   // 弹窗必填项
   const rules: Rules = {
@@ -105,6 +108,9 @@ export default function AddExamPaperModal(props: Props) {
               onOk();
               setGetCheckedbox([])
               initClean()
+              if(['zzwy'].includes(appStore.HOSPITAL_ID)){
+                history.goBack()
+              }
             }).catch(e => {
               setEditLoading(false);
               console.log(e);
@@ -227,6 +233,7 @@ export default function AddExamPaperModal(props: Props) {
   const onClean = () => {
     setCheckedUserList([]);
     setGetCheckedbox([])
+    setNoPassCheck(false)
   };
 
   // 清空数据
@@ -308,7 +315,18 @@ export default function AddExamPaperModal(props: Props) {
           </DateSelectCon>
         </Form>
         <PeopleSelectCon>
-          <div>补考人员设置</div>
+          <div>补考人员设置 
+          {['zzwy'].includes(appStore.HOSPITAL_ID) &&<Checkbox style={{marginLeft:'20px',fontSize:'13px'}} checked={noPassCheck} onChange={(e)=>{
+              setNoPassCheck(e.target.checked)
+              if(e.target.checked){
+                setCheckedUserList(allUserList.filter((o: any) => !o.hasPassed))
+              setGetCheckedbox(allUserList.filter((o: any) => !o.hasPassed))
+              }else{
+                onClean()
+              }
+            
+            }}>不及格</Checkbox>}
+          </div>
           <div className='peopleSelection'>
             <AllPeople>
               <AutoComplete
@@ -354,7 +372,7 @@ export default function AddExamPaperModal(props: Props) {
               {checkedUserList &&
                 checkedUserList.map((item: any, index: any) => (
                   <Tag
-                    key={index}
+                    key={item.empNo}
                     className="empNames"
                     closable
                     onClose={(e: any) => {
