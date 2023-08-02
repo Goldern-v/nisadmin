@@ -133,7 +133,7 @@ export default observer(function TestPageModal(props: Props) {
     width={hideAnwserInfo ? 900 : 1200}
     visible={visible}
     onCancel={onCancel}
-    footer={appStore.HOSPITAL_ID == 'fsxt' ? [<Button type='primary' onClick={handleExportWord}>导出</Button>]:[]}
+    footer={(appStore.HOSPITAL_ID == 'fsxt' || appStore.HOSPITAL_ID == 'zzwy') ? [<Button type='primary' onClick={handleExportWord}>导出</Button>]:[]}
     bodyStyle={{ padding: 0 }}
     title={`${teachingMethodName} ${title}`}
     confirmLoading={loading}>
