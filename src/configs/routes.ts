@@ -26,6 +26,7 @@ import TrainExamDetail from 'src/modules/continuingEdu/views/preJobManage/traini
 import TrainExamScore from 'src/modules/continuingEdu/views/preJobManage/trainingExamManage/TrainExamScore'
 import BadEventStatisticalReportDetail from 'src/modules/badEventsNew/views/BadEventStatisticalReportDetail'
 import ForgetPasswordView from 'src/modules/login/ForgetPasswordView '
+import QcTempManage from 'src/modules/quality/views/qcTemplates/qcTemplatesManage/QcTempManage'
 
 const ScheduleHomeView = lazy(() =>
   import("src/modules/schedule/views/ScheduleHome/ScheduleHomeView")
@@ -927,6 +928,7 @@ const routes: RouteItem[] = [
   ),
   setLayout("/qcThree", QcThreeRouter, layouts.MainLayout),
   setLayout("/qcFun", QcFunRouter, layouts.MainLayout),
+  setLayout("/qcTemplates", QcTempManage, layouts.MainLayout),
   setLayout("/checkWard/recordView", appStore.hisMatch({
     map: {
       jmfy: lazy(() => import('src/modules/quality/views/nightRoundsRecordView/detail')),

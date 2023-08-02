@@ -8,7 +8,7 @@ import { Spin } from 'antd'
 import { ScrollBox } from 'src/components/common'
 import { appStore } from 'src/stores'
 // import QcrDetailNoRadio from '../qualityControlRecordDetailNoRadio/QualityControlRecordDetail'
-// import qs from "qs";
+import qs from "qs";
 
 function QualityControlRecordDetail() {
   let [detailData, setDetailData]: any = useState([])
@@ -56,7 +56,9 @@ function QualityControlRecordDetail() {
       },
       vague: true
     })
-
+    if(appStore.queryObj.qcDetail=='manageDetail'){
+      fn=qualityControlRecordApi.formTemplateDetail
+    }
     fn.call(qualityControlRecordApi, id).then((res: any) => {
 
       let newData = {

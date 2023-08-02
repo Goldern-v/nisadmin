@@ -67,6 +67,11 @@ export const navConfig = (appStore:any,authStore?:any)=>{
           path: "/qcOneHj",
           icon: require("../images/menu-icon/一级质控@2x.png")
         },
+        {
+          name: "质控模板",
+          path: "/qcTemplates",
+          icon: require("../images/menu-icon/三级质控@2x.png")
+        },
         // {
         //   name: '病区登记本',
         //   path: '',

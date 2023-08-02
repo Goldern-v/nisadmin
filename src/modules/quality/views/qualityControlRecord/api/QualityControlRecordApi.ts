@@ -191,6 +191,12 @@ export default class QualityControlRecordApi extends BaseApiService {
   public revokeHandleForNodeForSat(params: any) {
     return this.post(`/qcItem/instance/revokeHandleForNodeForSat`, params)
   }
+  /**
+   * 质控管理详情 漳州五院
+   */
+  public async qcItemInstanceGetZZWY(qcCode:string | number) {
+    return this.post(`/qcTemplateManage/getPage`,{qcCode:qcCode})
+  }
 
   /**
    * 获取质控表单模板详情 by亚心

@@ -389,7 +389,7 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
                       不适用
                     </Radio>}
                   </Radio.Group> 
-                  {detailData.master.useScore ? <div className="sub-item-list">
+                  {detailData.master?.useScore ? <div className="sub-item-list">
                     {!isWhyx && item.qcItemValue === "否" && <React.Fragment>
                       {(item.subItemList || []).map((subItem: any, subItemIdx: number) => (
                         <div key={subItem.subItemCode}>
