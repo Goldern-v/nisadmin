@@ -223,8 +223,8 @@ export default function EditWorkHistoryModal(props: Props) {
     momentFormatIntoStr(value, 'zyzsEffectiveUpDate')
     momentFormatIntoStr(value, 'newTitleDate')
     momentFormatIntoStr(value, 'maps.contract_due_date')
-    momentFormatIntoStr(value, 'title_obtain_date')
-    momentFormatIntoStr(value, 'title_appoint_date')
+    momentFormatIntoStr(value, 'maps.title_obtain_date')
+    momentFormatIntoStr(value, 'maps.title_appoint_date')
     value.zyzsUrl && (value.zyzsUrl = value.zyzsUrl.join(","));
     value?.maps?.meritorious_performance && delete value.maps.meritorious_performance
     if ('whhk' === appStore.HOSPITAL_ID) {
@@ -301,6 +301,14 @@ export default function EditWorkHistoryModal(props: Props) {
       // maps中的数据格式化
       if (newObj?.maps?.contract_due_date !== undefined && newObj?.maps?.contract_due_date != Indef) {
         newObj!.maps!.contract_due_date = strFormatIntoMoment(newObj?.maps?.contract_due_date)
+      }
+      // maps中的数据格式化
+      if (newObj?.maps?.title_obtain_date !== undefined && newObj?.maps?.title_obtain_date != Indef) {
+        newObj!.maps!.title_obtain_date = strFormatIntoMoment(newObj?.maps?.title_obtain_date)
+      }
+      // maps中的数据格式化
+      if (newObj?.maps?.title_appoint_date !== undefined && newObj?.maps?.title_appoint_date != Indef) {
+        newObj!.maps!.title_appoint_date = strFormatIntoMoment(newObj?.maps?.title_appoint_date)
       }
 
       if (newObj?.maps?.meritorious_performance !== undefined) {
@@ -612,6 +620,16 @@ export default function EditWorkHistoryModal(props: Props) {
                         ))}
                       </Select>
                     </Form.Field>),
+                     "whhk": (
+                      <Form.Field label={`职称`} name="newTitle">
+                        <Select>
+                          {TITLE_TYPES.map((item: any) => (
+                            <Select.Option value={item.code} key={item.code}>
+                              {item.name}
+                            </Select.Option>
+                          ))}
+                        </Select>
+                      </Form.Field>),
                   other: (
                     <Form.Field label={isSdlj ? `夏季鞋码大小` : `鞋码大小`} name="shoeSize">
                       {['lyrm', 'stmz'].includes(appStore.HOSPITAL_ID) ? <Input /> : <SelectOrAutoInput dict="鞋码大小" />}
@@ -759,12 +777,12 @@ export default function EditWorkHistoryModal(props: Props) {
           {
             'whhk' === appStore.HOSPITAL_ID && <>
               <Col span={12}>
-                <Form.Field label="现职称获得时间" name="title_obtain_date">
+                <Form.Field label="现职称获得时间" name="maps.title_obtain_date">
                   <DatePicker />
                 </Form.Field>
               </Col>
               <Col span={12}>
-                <Form.Field label="现职称聘任时间" name="title_appoint_date">
+                <Form.Field label="现职称聘任时间" name="maps.title_appoint_date">
                   <DatePicker />
                 </Form.Field>
               </Col>

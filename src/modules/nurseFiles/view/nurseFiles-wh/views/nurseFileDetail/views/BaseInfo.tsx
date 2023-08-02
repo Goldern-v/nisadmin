@@ -340,8 +340,10 @@ export default observer(function BaseInfo() {
         ...appStore.hisMatch({
           map: {
             whhk: [{
-              现职称获得时间: data.title_obtain_date,
-              现职称聘任时间: data.title_appoint_date,
+              职称: data.newTitle
+            },{
+              职称获得时间: data.maps?.title_obtain_date,
+              现职称聘任时间: data.maps?.title_appoint_date,
             }],
             other: [],
           },

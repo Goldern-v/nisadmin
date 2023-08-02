@@ -316,6 +316,7 @@ export function openAuditModal(
                         现职称聘任时间: 'title_appoint_date',
                       },
                       {
+                        职称: 'newTitle',
                         护理学会会员证号: "membershipCardNumber",
                       },
                     ],
