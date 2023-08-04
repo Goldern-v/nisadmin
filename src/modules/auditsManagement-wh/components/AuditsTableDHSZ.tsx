@@ -229,10 +229,10 @@ export default observer(function AuditsTableDHSZ(props: Props) {
         );
     getDataFun.then((res) => {
       setLoading(false);
-      setTableData(res.data.list);
-      setTotal(res.data.totalCount);
-      setCurrent(res.data.pageIndex);
-      setPageSize(res.data.pageSize);
+      setTableData(res.data?.list || []);
+      setTotal(res.data?.totalCount || 0);
+      setCurrent(res.data?.pageIndex || 1);
+      setPageSize(res.data?.pageSize || 20);
     });
   };
 
