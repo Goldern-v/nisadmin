@@ -2,6 +2,8 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 import { numberToArray } from 'src/utils/array/array'
+import store, { appStore, authStore } from 'src/stores'
+
 export interface Props {
   data: any
 }
@@ -15,11 +17,22 @@ const TITLE_COLOR: any = {
   主任护师: '#EF8B46'
 }
 export default function CardItem(props: Props) {
+  // 漳州五院，每行排20个护士，其它的排10个
+  const defaultData = [[
+    ...(['zzwy'].includes(appStore.HOSPITAL_ID) ? 
+    [{}, {}, {}, {}, {}, {}, {}, {}, {}, {},{}, {}, {}, {}, {}, {}, {}, {}, {}, {}]
+    : [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}]),
+  ]]
   useEffect(() => {})
 
   const adapter = (list: any[] = []) => {
-    if (!list) return [[{}, {}, {}, {}, {}, {}, {}, {}, {}, {}]]
+    // if (!list) return [[{}, {}, {}, {}, {}, {}, {}, {}, {}, {}]]
+    if (!list) return defaultData
     let length = 10
+    if(appStore.HOSPITAL_ID=='zzwy'){
+      // 漳州五院，每行排20个护士，其它的排10个
+      length = 20
+    }
     let result: any[] = []
     for (let i = 0; i < list.length; i += length) {
       let index = i / length
@@ -30,7 +43,7 @@ export default function CardItem(props: Props) {
       }
     }
     if (result.length == 0) {
-      return [[{}, {}, {}, {}, {}, {}, {}, {}, {}, {}]]
+      return defaultData
     }
     return result
   }

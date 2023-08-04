@@ -4,6 +4,7 @@ import CardItem from './CardItem'
 import { statisticsApi } from 'src/modules/statistic/api/StatisticsApi'
 import React, { useState, useEffect } from 'react'
 import { Spin } from 'antd'
+import store, { appStore, authStore } from 'src/stores'
 import MidHeader from './MidHeader'
 export default function BedSituation() {
   const [leftList, setLeftList] = useState([])
@@ -21,10 +22,18 @@ export default function BedSituation() {
       let l: any = []
       let m: any = []
       let r: any = []
-      for (let i = 0; i < users.length; i += 3) {
-        l.push(users[i])
-        m.push(users[i + 1])
-        r.push(users[i + 2])
+      
+      if(appStore.HOSPITAL_ID =='zzwy'){
+        let groupSize = 20//每列多少个科室
+        l = users.slice(0,groupSize*1)
+        m=users.slice(groupSize*1,groupSize*2)
+        r=users.slice(groupSize*2,groupSize*3)
+      }else{
+        for (let i = 0; i < users.length; i += 3) {
+          l.push(users[i])
+          m.push(users[i + 1])
+          r.push(users[i + 2])
+        }
       }
       setLeftList(l)
       setMidList(m)
@@ -81,7 +90,7 @@ export default function BedSituation() {
           <Info>
             {infoList.map((item: any,index:number) => (
               <InfoItem>
-                {item.key}:{item.value}人{index === 0 ? null :`(${(item.value/total).toFixed(3)}%)`}
+                {item.key}:{item.value}人{index === 0 ? null :`(${((item.value/total)*100).toFixed(1)}%)`}
               </InfoItem>
             ))}
           </Info>
@@ -170,7 +179,7 @@ const MainPart = styled.div`
   min-height: 400px;
 `
 const CardCon = styled.div`
-  min-width: 360px;
+  /* min-width: 360px; */
   /* flex: 1; */
 `
 const Footer = styled.div`
