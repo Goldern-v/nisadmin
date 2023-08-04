@@ -35,6 +35,9 @@ export default observer(function MessageBoards() {
   
   return (
   <Wrapper>
+    <div>
+
+    
     <Head>
         <div className='headLeft'>留言板</div>
         <Button disabled={!authStore.isDepartment} onClick={() => onSave()} className='headRight' size='small'>保存</Button>
@@ -51,6 +54,7 @@ export default observer(function MessageBoards() {
             autosize={{ minRows: 3, maxRows: 5 }}
           />
         </div>
+        </div>
   </Wrapper>
   )
 })
@@ -58,7 +62,7 @@ const Wrapper = styled.div`
  box-sizing: border-box;
   margin: 0.8416%;
   padding: 0;
-  width: 100%;
+  /* width: 100%; */
   /* width: 31.65%; */
   /* height: 320px; */
   background: rgba(255, 255, 255, 1);
