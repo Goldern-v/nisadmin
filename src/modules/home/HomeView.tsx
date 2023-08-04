@@ -15,6 +15,7 @@ import emitter from 'src/libs/ev'
 import { appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import BedSituationJmfy from './components/BedSituationJmfy'
+import MessageBoards from './components/MessageBoards'
 
 interface PannelItem {
   name: string,
@@ -108,6 +109,7 @@ export default observer(function HomeView() {
       <SelectCon>
         <SelectCommon />
       </SelectCon>
+      {appStore.HOSPITAL_ID=='zzwy' && <MessageBoards />}
       {visibleCon(appStore.hisMatch({
         map: {
           jmfy: visibleListJmfy,

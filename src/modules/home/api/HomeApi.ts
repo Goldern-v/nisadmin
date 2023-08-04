@@ -104,6 +104,15 @@ class StatisticsApi extends BaseApiService {
     return this.post(`/indexInfo/todayTask`, trancePostData);
   }
 
+  /** 0、获取留言板 */
+  public async getMessage() {
+    return this.get("/messageManage/getMessage");
+  }
+    /** 0、保存留言板 */
+    public async saveMessage(data:any) {
+      return this.post("/messageManage/saveMessage",data);
+    }
+
   // 9.患者分布
   public async patientdistribute(data: any) {
     // let typeGet

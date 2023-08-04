@@ -166,7 +166,7 @@ export default observer(function BedSituation () {
     <div>
       <Head>
         <div className='headLeft'>床位情况</div>
-        <div className='headRight'>更多></div>
+        <div className='headRight'>更多{'>'}</div>
       </Head>
       <ChartCon>
         <div className='ChartConLeft'>
