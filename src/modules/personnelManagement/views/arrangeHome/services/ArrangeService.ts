@@ -143,6 +143,18 @@ export default class ArrangeService extends BaseApiService {
     return this.post(url, postData, { responseType: "blob" });
   }
 
+  // 导出护士排班
+  public async export_gdxg(data: any, key = '') {
+    const postData = {
+      ...data,
+      deptCode: selectViewModal.params.deptCode, // deptCode  科室编码
+      startTime: selectViewModal.params.startTime, // stratTime 开始时间（刚开始由后台传给前台）
+      endTime: selectViewModal.params.endTime // endTime   结束时间（刚开始由后台传给前台）
+    };
+    const url = '/scheduling/exportTemplateForDgxg'
+    return this.post(url, postData, { responseType: "blob" });
+  }
+
   // 聊城打印排班
   public async printRosterExcel() {
     const postData = {
@@ -454,6 +466,16 @@ export default class ArrangeService extends BaseApiService {
     formData.append('upfile', file)
     return this.post(`/schedulingLc/importExcel`, formData, { headers: { 'Content-Type': 'multipart/form-data' } });
   }
+
+  /**东莞谢岗，导入排班 */
+  public importExcel_dgxg(params: Obj) {
+    let formData = new FormData()
+    for (const key in params) { 
+      formData.append(key, params[key])
+    }
+    return this.post(`/scheduling/importExcelForDgxg`, formData, { headers: { 'Content-Type': 'multipart/form-data' } });
+  }
+    
 
   //导出管床信息
   public async excelTubeBed(data: any) {

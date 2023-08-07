@@ -133,6 +133,39 @@ export default observer(function SelectCon() {
     });
   };
 
+  /**东莞谢岗，导出排班模板 */
+  const exportExcel_DGXG = (key = '') => {
+    let data: any = {
+      deptCode: selectViewModal.params.deptCode,
+      startTime: selectViewModal.params.startTime,
+      endTime: selectViewModal.params.endTime,
+      nurseGroup: selectViewModal.params.group,
+    };
+    arrangeService.export_gdxg(data, key).then(res => {
+      fileDownload(res);
+    });
+  };
+  /**东莞谢岗，导入排班 */
+  const handleUpload_dgxg = async (info: any) => {
+      const list = authStore.deptList;
+      const current = list.find(
+        (item: any) => item.code === selectViewModal.params.deptCode
+      ) || { name: "" };
+      let params: Obj = {
+        upfile: info.file,
+        deptCode: selectViewModal.params.deptCode,
+        deptName: current.name,
+        startTime: moment(selectViewModal.params.startTime).format("YYYY-MM-DD"),
+        endTime: moment(selectViewModal.params.endTime).format("YYYY-MM-DD"),
+      }
+      let fn = () => arrangeService.importExcel_dgxg(params)
+    const { data } = await fn()
+    data.errorMag && message.error(data.errorMag, 4)
+    setModalData(data)
+    
+    setModalVisible(true)
+  }
+
   //导出管床信息
   const excelTubeBed = () => {
     let data = {
@@ -831,7 +864,36 @@ export default observer(function SelectCon() {
                 }}
                 onCancel={() => setModalVisible(false)} />
             </>,
-
+            'dgxg': <>
+            <div className="item">
+              <Upload showUploadList={false} customRequest={handleUpload_dgxg}>
+                <Button className="statistics getExcel">
+                  导入排班
+                </Button>
+              </Upload>
+            </div>
+            <div className="item">
+              {/* <Upload showUploadList={false} customRequest={handleUpload}> */}
+                <Button className="statistics getExcel" onClick={()=>exportExcel_DGXG()}>
+                  导出排班模板
+                </Button>
+              {/* </Upload> */}
+            </div>
+            
+            <div className="item">
+                <Button className="statistics getExcel" onClick={() => exportExcel()}>
+                  导出科室
+                </Button>
+            </div>
+            <ImportModal
+                visible={modalVisible}
+                modalData={modalData}
+                onOk={() => {
+                  setModalVisible(false)
+                  sheetViewModal.getSheetTableData()
+                }}
+                onCancel={() => setModalVisible(false)} />
+          </>,
             hj: <>
               <div className="item">
                 <Button className="statistics getExcel" onClick={() => exportExcel()}>
