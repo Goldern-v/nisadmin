@@ -27,7 +27,7 @@ export default observer(function QcTempManage(props: Props) {
   const columns:any = [
     {
       title: '序号',
-      render: (text: any, record: any, index: number) => index + 1,
+      render: (text: any, record: any, index: number) => index + 1+(qcTempDatas.pageIndex-1)*qcTempDatas.pageSize,
       align: 'center',
       width: 40
     },
@@ -91,7 +91,7 @@ export default observer(function QcTempManage(props: Props) {
       dataIndex: "createTime",
       width: 160,
       render: (text: any, record: any, index: any)=>{
-        return <>{moment(text).format('YYYY-MM-DD HH:mm:ss')}</>
+        return <>{text?moment(text).format('YYYY-MM-DD HH:mm:ss'):''}</>
       }
     },
     {
@@ -171,8 +171,17 @@ export default observer(function QcTempManage(props: Props) {
 					columns={columns}
 					surplusWidth={300}
 					surplusHeight={220}
-					pagination={false}
-
+          pagination={{
+            current: qcTempDatas.pageIndex,
+            total: qcTempDatas.total,
+            pageSize: qcTempDatas.pageSize
+          }}
+          onChange={pagination => {
+            qcTempDatas.pageIndex = pagination.current;
+            qcTempDatas.total = pagination.total;
+            qcTempDatas.pageSize = pagination.pageSize;
+            qcTempDatas.getList()
+          }}
 				/>
 			</ScrollCon>
       <Modal
