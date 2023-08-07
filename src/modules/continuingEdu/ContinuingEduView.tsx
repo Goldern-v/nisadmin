@@ -1359,25 +1359,25 @@ const getIcon = (icon: any) => {
           title: "手册表单维护",
           path: "/continuingEdu/formMaintenance",
           component: FormMaintenance,
-           hide: !appStore.isDev,
+           hide: appStore.HOSPITAL_ID !=='whyx',
         },
         {
           title: "手册模板维护",
           path: "/continuingEdu/templateMaintenance",
           component: TemplateMaintenance,
-          hide: !appStore.isDev,
+          hide: appStore.HOSPITAL_ID !=='whyx'
         },
         {
           title: "手册附件维护",
           path: "/continuingEdu/手册附件维护",
           component: attachment,
-          hide: !appStore.isDev,
+          hide: appStore.HOSPITAL_ID !=='whyx'
         },
         {
           title: "手册固定表维护",
           path: "/continuingEdu/手册固定表维护",
           component: fixedTable,
-          hide: !appStore.isDev,
+          hide: appStore.HOSPITAL_ID !=='whyx'
         },
       ],
     },

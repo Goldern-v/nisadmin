@@ -314,9 +314,13 @@ class StatisticsApi extends BaseApiService {
 
   // 统计工作年限
   public countEntryDate(query: any) {
-    return this.post('/countInformation/countEntryDate', query)
+    let url =appStore.HOSPITAL_ID =='jmfy' ? '/countInformation/countGoWorkTime':'/countInformation/countEntryDate'
+    return this.post(url, query)
   }
-
+  //江门妇幼 统计工作年限
+  public countGoWorkTime(query: any) {
+    return this.post('/countInformation/countGoWorkTime', query)
+  }
    // 统计人员层级
    public countHierarchy(query: any) {
     return this.post('/countInformation/countHierarchy', query)
