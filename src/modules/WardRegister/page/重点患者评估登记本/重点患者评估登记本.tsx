@@ -40,6 +40,7 @@ import DatePickerColumnRender from '../../components/Render.v1/DatePickerColumnR
 import InputColumnRender from '../../components/Render.v1/InputColumnRender'
 import PatientDialog from "src/modules/indicator/selfDeclaration/components/patientDialog";
 import { Obj } from "src/libs/types";
+import { dateFormat3 } from "src/modules/nurseHandBookNew/views/detail-lyrm/config";
 export interface Props {
   payload: any;
 }
@@ -49,16 +50,16 @@ const throttler2 = throttle();
 /** 可以显示选择患者的表单，以及需要获取的字段信息 */
 const configListByPatientSelect = {
   QCRG_08: (item: Obj) => ({
-    住院号: item?.medicareNo,
-    姓名: item?.patName,
-    床号: item?.bedCode,
-    入院时间: item?.inHospDateTime,
-    住院天数: item?.inHospDays,
-    转归: item?.dischCondit,
-    出院诊断: item?.disDiag,
-    医师签名: item?.mainDoctor,
-    联系方式: item?.telphone,
-    责任护士: item?.mainNurse,
+    住院号: item?.MedicareNo,
+    姓名: item?.PatName,
+    床号: item?.BedCode,
+    入院时间: item?.InHospDateTime,
+    住院天数: item?.InHospDays,
+    转归: item?.DischCondit,
+    出院诊断: item?.DisDiag,
+    医师签名: item?.MainDoctor,
+    联系方式: item?.Telphone,
+    责任护士: item?.MainNurse,
   }),
 }
 export default observer(function 重点患者评估登记本(props: Props) {
@@ -99,8 +100,8 @@ export default observer(function 重点患者评估登记本(props: Props) {
     let name = Object.keys(curConfigByPatientSelect())[0] || ''
     /**存在重复患者则不导入 */
     const repeatNames = arr.reduce((prev: Obj[], cur: Obj) => {
-      if (dataSource.some((v: Obj) => v[name] == cur.name)) {
-        prev.push(cur.name)
+      if (dataSource.some((v: Obj) => v[name] == cur?.PatName)) {
+        prev.push(cur.PatName)
       }
       return prev
     }, [])
@@ -116,7 +117,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
       modified: true,
       range: "",
       rangeIndexNo: 0,
-      recordDate: location.pathname.includes('QCRG_GSY_12') ? item.dischargeDate : item.admissionDate,
+      recordDate: location.pathname.includes('QCRG_GSY_12') ? item.dischargeDate : (item.admissionDate || moment().format(dateFormat3)),
       key: 'key' + i,
       registerCode: curCode,
       ...curConfigByPatientSelect(item)

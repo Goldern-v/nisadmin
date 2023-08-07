@@ -32,6 +32,7 @@ export default observer((props: Props) => {
   const [loading, setLoading] = useState(false)
   const [form, setForm]: any = useState({
     status: '1',
+    wardCode: authStore.defaultDeptCode,
     time: appStore.HOSPITAL_ID === 'whsl' ? getLastSixMonths() : getCurrentMonth()
   })
   const setFormItem = (item: {}) => {
@@ -44,6 +45,7 @@ export default observer((props: Props) => {
     pageSize: 20
   })
   const [pages, setPages] = useState(1)
+  const rowKey = useMemo(() => isWR ? 'MedicareNo' : 'patientId',[isWR])
   const columns: any = [
     {
       title: '护理单元',
@@ -93,64 +95,63 @@ export default observer((props: Props) => {
     },
   ]
   const columns1: any = [
-
     {
       title: '住院号',
-      dataIndex: 'medicareNo',
+      dataIndex: rowKey,
       align: 'center',
       width: 80,
     },
     {
       title: '姓名',
-      dataIndex: 'patName',
+      dataIndex: 'PatName',
       align: 'center',
       width: 80,
     },
     {
       title: '床号',
-      dataIndex: 'bedCode',
+      dataIndex: 'BedCode',
       align: 'center',
       width: 80,
     },
     {
       title: '入院时间',
-      dataIndex: 'inHospDateTime',
+      dataIndex: 'InHospDateTime',
       align: 'center',
       width: 100,
     },
     {
       title: '住院天数',
-      dataIndex: 'inHospDays',
+      dataIndex: 'InHospDays',
       align: 'center',
       width: 80,
     },
     {
       title: '转归',
-      dataIndex: 'dischCondit',
+      dataIndex: 'DischCondit',
       align: 'center',
       width: 80,
     },
     {
       title: '出院诊断',
-      dataIndex: 'disDiag',
+      dataIndex: 'DisDiag',
       align: 'center',
       width: 120,
     },
     {
       title: '医师签名',
-      dataIndex: 'mainDoctor',
+      dataIndex: 'MainDoctor',
       align: 'center',
       width: 80,
     },
     {
       title: '联系方式',
-      dataIndex: 'telphone',
+      dataIndex: 'Telphone',
       align: 'center',
       width: 100,
     },
     {
       title: '责任护士',
-      dataIndex: 'mainNurse',
+      dataIndex: 'MainNurse',
       align: 'center',
       width: 60,
     },
@@ -204,7 +205,7 @@ export default observer((props: Props) => {
   }
 
   const handleOk = async () => {
-    const arr = selected.map(v => tableData.find((v1: Obj) => v1.patientId === v))
+    const arr = selected.map(v => tableData.find((v1: Obj) => v1[rowKey] === v))
     // const { data } = await api.getPatientItem(selected.patientId, selected.visitId)
     // const obj = {
     //   patientId: data.patientId,
@@ -229,8 +230,13 @@ export default observer((props: Props) => {
     getData()
   }, [form, pagination])
   useLayoutEffect(() => {
-    if (visible)
+    if (visible) {
       setSelected([])
+      setForm({
+        ...form,
+        wardCode: authStore.defaultDeptCode
+      })
+    }
   }, [visible])
 
   return (
@@ -260,7 +266,7 @@ export default observer((props: Props) => {
             dataSource={tableData}
             surplusHeight={200}
             wrapperStyle={{ padding: 0 }}
-            rowKey="patientId"
+            rowKey={rowKey}
             rowSelection={{
               type: 'checkbox',
               selectedRowKeys: selected,
@@ -284,7 +290,7 @@ export default observer((props: Props) => {
           {isSearchCondition('wardCode') && <>
             <div className='label'>护理单元:</div>
             <div className='item'>
-              <DeptSelect hasAllDept deptCode={authStore.defaultDeptCode} style={{ width: '100%' }}
+              <DeptSelect hasAllDept deptCode={form.wardCode} style={{ width: '100%' }}
                 onChange={deptCode => setFormItem({ 'wardCode': deptCode })} />
             </div>
           </>
