@@ -1,24 +1,26 @@
 import { observer } from 'mobx-react'
-import React from 'react'
+import React, { useMemo } from 'react'
 import styled from 'styled-components'
+import { handbookModel as model } from '../model'
 
 export interface IProps {
   
 }
 /**附件 */
 export default observer(function Template3(props: IProps) {
+  const path = useMemo(() => model.detail?.attachment?.path, [model.detail])
   return (
     <Wrapper>
-      <iframe src='http://192.168.1.54:9885/crNursing/asset/nurseAttachment/20230801/20230801155831WMggONA5.pdf' />
+      <embed className='container' src={path} />
     </Wrapper>
   )
 })
 
 const Wrapper = styled.div`
 height: 100%;
-iframe {
+.container {
   width: 100%;
-  height: 100%;
+  min-height: 100%;
   border: none;
 }
 `

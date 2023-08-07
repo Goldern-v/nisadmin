@@ -114,6 +114,7 @@ export default observer(function AddModal(props: IProps) {
   };
   const onSearch = () => {
     trainingSettingApi.getTemplateList(params).then((res) => {
+      setCheckedKeys([])
       let formatData = (res?.data?.list || []).reduce((prev: any, cur: any) => {
         const { templateType, id, status } = cur
         if (status)

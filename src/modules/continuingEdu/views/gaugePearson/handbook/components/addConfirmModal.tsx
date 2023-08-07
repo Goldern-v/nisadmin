@@ -13,9 +13,9 @@ export interface IProps extends FormComponentProps {
   data?: Obj,
   onOk: (e: any) => void
 }
-let deptName = '全院'
 /**创建确认 */
 export default Form.create()(observer(function (props: IProps) {
+  let deptName = '全院'
   const { data, onOk, form: { getFieldDecorator, validateFields, setFieldsValue, resetFields } } = props
   const onSave = () => {
     validateFields((err, value) => {
@@ -32,15 +32,16 @@ export default Form.create()(observer(function (props: IProps) {
   }
 
   useEffect(() => {
-    resetFields()
-    if (data) {
-      deptName = authStore.deptList.find(v => data.deptCode === v.name)?.name || '全院'
+    if (model.addConfirmVisible) {
+      resetFields()
+      if (!data) return
+      deptName = authStore.deptList.find(v => data.deptCode === v.code)?.name || '全院'
       setFieldsValue({
         deptCode: data.deptCode,
         handbookName: deptName + '规培手册',
       })
     }
-  }, [data, model.addConfirmVisible])
+  }, [model.addConfirmVisible])
 
   return (
     <Wrapper>

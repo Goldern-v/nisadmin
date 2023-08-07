@@ -3,6 +3,7 @@ import * as types from "src/libs/types";
 import { trainingSettingApi } from "../api/TrainingSettingApi";
 import { Modal, message } from "antd";
 import moment from 'moment'
+import { getConfig } from "./detailConfig";
 
 export interface ICurCatalogue extends types.Obj {
   templateType: 1 | 2 | 3 | 4,
@@ -29,8 +30,12 @@ class HandbookModel {
   /**选中目录的详情 */
   @observable
   public catalogueData: types.Obj = {}
-
-
+  /**目录详情配置 */
+  @observable
+  public detailConfig: types.Obj | null = null
+  @observable
+  public detail: types.Obj = {}
+  
   get age() {
     if (!this.info?.birthday) return 0
     return moment().diff(moment(this.info.birthday), 'years')
@@ -108,6 +113,8 @@ class HandbookModel {
   @action
   getCatalogueData() {
     if (!this.curCatalogue) return
+    this.detailConfig = getConfig(this.curCatalogue)
+    if (!this.detailConfig?.isSearch) return
     const {
       id: catalogId,
       masterId,
@@ -118,6 +125,8 @@ class HandbookModel {
       masterId,
       templateId,
       templateType,
+    }).then(res => {
+      this.detail = res.data || {}
     })
   }
 }

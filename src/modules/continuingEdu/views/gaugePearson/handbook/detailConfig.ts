@@ -5,16 +5,37 @@ import Grade from 'src/modules/continuingEdu/views/gaugePearson/fixed-table/deta
 import Summary from 'src/modules/continuingEdu/views/gaugePearson/fixed-table/detail/summary'
 import { ICurCatalogue } from "./model";
 
-const config = {
-  1: template2,
-  2: template2,
-  3: template3,
-  '4规培生基本信息': BaseInfo,
-  '4岗前培训考核成绩': Grade,
-  '4个人总结': Summary,
+/***
+ * isSearch:是否需要查询
+ */
+export const config = {
+  1: {
+    isSearch: true,
+    component: template2,
+  },
+  2: {
+    isSearch: true,
+    component: template2,
+  },
+  3: {
+    isSearch: true,
+    component: template3,
+  },
+  '4规培生基本信息': {
+    isSearch: false,
+    component: BaseInfo,
+  },
+  '4岗前培训考核成绩': {
+    isSearch: true,
+    component: Grade,
+  },
+  '4个人总结': {
+    isSearch: true,
+    component: Summary,
+  },
 }
 
-const getCon = (item: ICurCatalogue) => {
+export const getConfig = (item: ICurCatalogue) => {
   const { templateType, tableName } = item
   let flag: string = templateType + ''
   if (templateType === 4) {
@@ -23,6 +44,3 @@ const getCon = (item: ICurCatalogue) => {
   return config[flag]
 }
 
-export default {
-  getCon
-}
