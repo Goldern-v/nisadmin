@@ -37,7 +37,7 @@ export default observer(function SetConfig(props: Props) {
   const { registerCode,selectedBlockObj} = props;
 
   let cascaderOptions: any = [{
-    value: '',
+    value: 'text',
     label: '文本',
   },
   {
@@ -132,7 +132,7 @@ export default observer(function SetConfig(props: Props) {
                             options={cascaderOptions}
                             style={{ width: '100%', textAlign: 'center' }}
                             expandTrigger="hover"
-                            defaultValue={record.cascaderCode || ['']}
+                            defaultValue={record.cascaderCode || ['text']}
                             displayRender={(label: any, selectedOptions: any) => {
                               // 多选
                               if(selectedOptions.length<1){
@@ -466,14 +466,11 @@ const handleCopy =(index:number)=>{
     // }
   };
   const addRow = () => {
-    dataSource.push({ type: '', itemCode: '',nullUse:true,defaultUse:false});
+    dataSource.push({ type: 'text', itemCode: '',nullUse:true,defaultUse:false});
     updateDataSource();
   };
 
   const onSave = () => {
-    // console.log(registerCode, blockId, dataSource)
-    // return
-    let isRequired:boolean =false
     let contentText:string =''
     let indexList = dataSource
         .map((item: any, index: number) => {

@@ -15,7 +15,7 @@ export default observer(function TemplateMaintenanceDetail() {
   const [loading, setLoading] = useState<boolean>(false)
   useEffect(() => {
     setLoading(true)
-    trainingSettingApi.updateFormItem(queryObj).then((res:any)=>{
+    trainingSettingApi.getTemplateItems(queryObj).then((res:any)=>{
       setTableData(res.data)
       setLoading(false)
     })
