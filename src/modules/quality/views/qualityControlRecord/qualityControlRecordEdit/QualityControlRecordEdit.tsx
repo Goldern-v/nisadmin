@@ -62,7 +62,10 @@ const QualityControlRecordEdit = observer(function QualityControlRecordEdit() {
             vague:true
           });
           // 非贵州
-          if (
+          if (["jmfy"].includes(appStore.HOSPITAL_ID)){
+            // 江门妇幼-住院号什么都不做不限制字数，不是必填
+          }
+          else if (
             !["gzsrm", "gzhd", "whyx", "fsxt",'925',"lyrm","whhk",'zzwy', 'qhwy','stmz','whsl', 'yczyy','dghm', 'zjhj'].includes(appStore.HOSPITAL_ID) &&
             (isNaN(inpNo) || inpNoLengthArr.indexOf(master[x].length) < 0)
           ) {
@@ -92,7 +95,7 @@ const QualityControlRecordEdit = observer(function QualityControlRecordEdit() {
         }
       } else if (x == "bedLabel") {
         if (['whyx','whhk'].includes(appStore.HOSPITAL_ID) && baseInfo.isBedNumber == "否") {
-        } else if (["gzsrm", "nys","whsl", 'zzwy', 'yczyy','qhwy','dghm','lyrm'].includes(appStore.HOSPITAL_ID)) {
+        } else if (["gzsrm", "nys","whsl", 'zzwy', 'yczyy','qhwy','dghm','lyrm','jmfy'].includes(appStore.HOSPITAL_ID)) {
           //床号无限制
         } else if (
           master[x].length <= 0 &&
