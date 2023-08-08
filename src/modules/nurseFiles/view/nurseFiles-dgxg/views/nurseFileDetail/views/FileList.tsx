@@ -216,43 +216,43 @@ export default observer(function FileList() {
             res.data.filter((item: any) => item.type === '7')[0].empName,
           type: '7'
         },
-        {
-          content: '厚街医院护理人员执业准入资格备案表',
-          number: res.data.filter((item: any) => item.type === '8').length,
-          status:
-            res.data.filter((item: any) => item.type === '8')[0] &&
-            res.data.filter((item: any) => item.type === '8')[0].auditedStatusName,
-          filterData: res.data
-            .filter((item: any) => item.type === '8')
-            .map((item: any) => item.path)
-            .reduce((prev: any, curr: any) => {
-              let arr = curr ? curr.split(',') : []
-              return [...prev, ...arr]
-            }, []),
-          fileName: '厚街医院护理人员执业准入资格备案表',
-          statusColor:
-            res.data.filter((item: any) => item.type === '8')[0] &&
-            res.data.filter((item: any) => item.type === '8')[0].statusColor,
-          isShow:
-            res.data.filter((item: any) => item.type === '8')[0] &&
-            res.data.filter((item: any) => item.type === '8')[0].isShow,
-          path:
-            res.data.filter((item: any) => item.type === '8')[0] &&
-            res.data.filter((item: any) => item.type === '8')[0].path,
-          id:
-            res.data.filter((item: any) => item.type === '8')[0] &&
-            res.data.filter((item: any) => item.type === '8')[0].id,
-          empNo:
-            res.data.filter((item: any) => item.type === '8')[0] &&
-            res.data.filter((item: any) => item.type === '8')[0].empNo,
-          saveStatus:
-            res.data.filter((item: any) => item.type === '8')[0] &&
-            res.data.filter((item: any) => item.type === '8')[0].saveStatus,
-          empName:
-            res.data.filter((item: any) => item.type === '8')[0] &&
-            res.data.filter((item: any) => item.type === '8')[0].empName,
-          type: '8'
-        },
+        // {
+        //   content: '厚街医院护理人员执业准入资格备案表',
+        //   number: res.data.filter((item: any) => item.type === '8').length,
+        //   status:
+        //     res.data.filter((item: any) => item.type === '8')[0] &&
+        //     res.data.filter((item: any) => item.type === '8')[0].auditedStatusName,
+        //   filterData: res.data
+        //     .filter((item: any) => item.type === '8')
+        //     .map((item: any) => item.path)
+        //     .reduce((prev: any, curr: any) => {
+        //       let arr = curr ? curr.split(',') : []
+        //       return [...prev, ...arr]
+        //     }, []),
+        //   fileName: '厚街医院护理人员执业准入资格备案表',
+        //   statusColor:
+        //     res.data.filter((item: any) => item.type === '8')[0] &&
+        //     res.data.filter((item: any) => item.type === '8')[0].statusColor,
+        //   isShow:
+        //     res.data.filter((item: any) => item.type === '8')[0] &&
+        //     res.data.filter((item: any) => item.type === '8')[0].isShow,
+        //   path:
+        //     res.data.filter((item: any) => item.type === '8')[0] &&
+        //     res.data.filter((item: any) => item.type === '8')[0].path,
+        //   id:
+        //     res.data.filter((item: any) => item.type === '8')[0] &&
+        //     res.data.filter((item: any) => item.type === '8')[0].id,
+        //   empNo:
+        //     res.data.filter((item: any) => item.type === '8')[0] &&
+        //     res.data.filter((item: any) => item.type === '8')[0].empNo,
+        //   saveStatus:
+        //     res.data.filter((item: any) => item.type === '8')[0] &&
+        //     res.data.filter((item: any) => item.type === '8')[0].saveStatus,
+        //   empName:
+        //     res.data.filter((item: any) => item.type === '8')[0] &&
+        //     res.data.filter((item: any) => item.type === '8')[0].empName,
+        //   type: '8'
+        // },
         {
           content: '高风险诊疗技术操作人员资质申请表',
           number: res.data.filter((item: any) => item.type === '9').length,
