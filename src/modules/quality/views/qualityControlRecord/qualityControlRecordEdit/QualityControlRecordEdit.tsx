@@ -92,7 +92,8 @@ const QualityControlRecordEdit = observer(function QualityControlRecordEdit() {
         }
       } else if (x == "bedLabel") {
         if (['whyx','whhk'].includes(appStore.HOSPITAL_ID) && baseInfo.isBedNumber == "否") {
-        } else if (["gzsrm", "nys","whsl", 'zzwy', 'yczyy','qhwy','dghm'].includes(appStore.HOSPITAL_ID)) {
+        } else if (["gzsrm", "nys","whsl", 'zzwy', 'yczyy','qhwy','dghm','lyrm'].includes(appStore.HOSPITAL_ID)) {
+          //床号无限制
         } else if (
           master[x].length <= 0 &&
           Object.keys(masterErrObj).indexOf(x) >= 0
