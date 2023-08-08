@@ -1122,7 +1122,7 @@ const moveRow = (dragIndex: number, hoverIndex: number) => {
     case 'dglb':
     case '925':
     case 'zjhj':
-      // case 'dghm':
+    case 'dgxg':
       const dragRowWhyx = sheetViewModal.sheetTableData[dragIndex];
       if (!dragRowWhyx) return;
       sheetViewModal.sheetTableData = update(sheetViewModal.sheetTableData, {
