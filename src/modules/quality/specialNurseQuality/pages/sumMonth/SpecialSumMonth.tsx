@@ -554,6 +554,15 @@ export default observer(function SpecialSumMonth(props: Props) {
 				 text-align: center;
 				 margin-right: 0;
 			   }
+				 .ant-table-bordered .ant-table-thead > tr > th, .ant-table-bordered .ant-table-tbody > tr > td{
+					border-color: #000;
+			}
+			.ant-table-bordered .ant-table-thead > tr:not(:last-child) > th{
+				border-color: #000;
+			}
+			.ant-table-bordered .ant-table-header > table, .ant-table-bordered .ant-table-body > table, .ant-table-bordered .ant-table-fixed-left table, .ant-table-bordered .ant-table-fixed-right table{
+				border-color: #000;
+			}
 			   table, img {
 				 page-break-inside: avoid;
 			   }
