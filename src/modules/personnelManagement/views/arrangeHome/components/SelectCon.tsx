@@ -679,7 +679,14 @@ export default observer(function SelectCon() {
         <div className="item">
           <div className="label">科室：</div>
           <div className="content">
-            <DeptSelect onChange={handleChange} style={{ width: 160 }} />
+            {
+              appStore.HOSPITAL_ID =='dgxg'?
+                  <DeptSelect
+                      deptCode={authStore.selectedDeptCode}
+                      onChange={handleChange} style={{ width: 160 }} />:
+                  <DeptSelect
+                      onChange={handleChange} style={{ width: 160 }} />
+            }
           </div>
         </div>
         <div className="item">

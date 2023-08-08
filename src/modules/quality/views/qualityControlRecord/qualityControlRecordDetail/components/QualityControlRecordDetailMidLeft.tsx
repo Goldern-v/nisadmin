@@ -383,7 +383,7 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
                     >
                       否
                     </Radio>
-                    {!['gzsrm'].includes(appStore.HOSPITAL_ID) && <Radio
+                    {!['gzsrm','925'].includes(appStore.HOSPITAL_ID) && <Radio
                       value={"不适用"}
                       style={{ marginLeft: "20px", marginRight: "30px" }}
                     >
@@ -452,7 +452,7 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
                       </div>
                     </React.Fragment>}
                     {/* 不显示小结备注 */}
-                    {!['925', 'zjhj'].includes(appStore.HOSPITAL_ID) && <div style={{ marginTop: 5 }}>
+                    {!['925' , 'zjhj'].includes(appStore.HOSPITAL_ID) && <div style={{ marginTop: 5 }}>
                       <Input.TextArea
                         value={item.remark}
                         readOnly
@@ -461,7 +461,7 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
                         placeholder="备注" />
                     </div>}
                   </div> : ''}
-                  {/* {appStore.hisMatch({
+               {appStore.hisMatch({
                     map:{
                       '925':!detailData.master.useScore && <div className="sub-item-list">
                       <div style={{ marginTop: 5 }}>
@@ -475,8 +475,7 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
                       other:''
                     },
                     vague:true
-                  })} */}
-
+                  })}
                   <div className="itemAttachmentCon">
                     {item.attachUrls && (
                       <Zimage
