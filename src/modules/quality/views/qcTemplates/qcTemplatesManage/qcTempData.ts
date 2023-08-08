@@ -2,7 +2,6 @@ import { observable, computed } from "mobx";
 import moment from 'moment'
 import { nursingChargesApi } from "src/modules/indicator/mainView/nursingCharges/api/NursingChargesApi";
 import { authStore } from 'src/stores'
-// import { nursingHandlerApi } from "../../api/NursingHandlerApi";
 import { fileDownload } from "src/utils/file/file";
 import {
     Badge, ColumnProps,
@@ -22,6 +21,9 @@ import { qcTempApi } from "./QcTempApi";
 class qcTempData {
   @observable public tableLoading = false;
   @observable public tableList = [];
+  @observable public pageIndex: any = 1; //页码
+  @observable public pageSize: any = 20; //每页大小
+  @observable public total: any = 0; //总条数
   @observable public modalVisible = false;//创建弹框
   @observable public startDate:string = '';
   @observable public endDate:string = '';
@@ -46,8 +48,8 @@ class qcTempData {
     endDate:this.endDate,
     qcLevel:this.selectLevel,
     empName:this.keyWord,
-    pageIndex:1,
-    pageSize:20
+    pageIndex:this.pageIndex,
+    pageSize:this.pageSize
   }
 }
 @computed get downLoadAllObj(){
@@ -83,6 +85,9 @@ class qcTempData {
         qcTempApi.getDataList(this.postObj).then(res=>{
           this.tableLoading = false
           this.tableList = res.data?.list || []
+          this.total = res.data?.totalCount || 0;
+    this.pageIndex = res.data?.pageIndex || 1;
+    this.pageSize = res.data.pageSize || 20;
         }).catch(err=>{
           this.tableLoading = false
         })
@@ -92,7 +97,7 @@ class qcTempData {
     /**改变状态 */
     changeItemStatus(obj:any){
       qcTempApi.changeStatus(obj).then(res=>{
-
+        message.success('修改成功')
       }).catch(err=>{
 
       })
@@ -107,14 +112,6 @@ class qcTempData {
       })
     }
   
-    /**撤销 */
-    cancelSubmit(){
-       
-    }
-    /**删除 */
-  delItem(){
-    
-  }
   /**编辑页面导入 */
   importEditor(){
     let importElId = 'handler_import_file_el'
@@ -135,10 +132,7 @@ class qcTempData {
     importEl.click()
   
   }
-  /**编辑页面导出 */
-  exportEditor(){
-    
-  }
+ 
 
   /**导入附件 */
   importAttch(){

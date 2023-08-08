@@ -34,8 +34,9 @@ export default observer(function QcTempManageHeader(props: Props) {
               style={{ width: 220 }}
 							onChange={([m0, m1]: any[]) => {
 								
-								qcTempDatas.startDate= m0.format("YYYY-MM-DD")
-								qcTempDatas.endDate= m1.format("YYYY-MM-DD")
+								qcTempDatas.startDate= m0?m0.format("YYYY-MM-DD"):''
+								qcTempDatas.endDate= m1?m1.format("YYYY-MM-DD"):''
+								qcTempDatas.pageIndex = 1
 								qcTempDatas.getList()
 								
 							}}
@@ -48,6 +49,7 @@ export default observer(function QcTempManageHeader(props: Props) {
 						value={qcTempDatas.selectLevel}
 						onChange={(val: any) => {
 							qcTempDatas.selectLevel = val
+							qcTempDatas.pageIndex = 1
 							qcTempDatas.getList()
 						}}
 					>
@@ -63,6 +65,7 @@ export default observer(function QcTempManageHeader(props: Props) {
 					placeholder="请输入创建人"
 					value={qcTempDatas.keyWord}
 					onChange={e => {
+						qcTempDatas.pageIndex = 1
 						qcTempDatas.keyWord = e.target.value;
 					}}
 				/>

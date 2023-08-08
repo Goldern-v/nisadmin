@@ -145,7 +145,10 @@ export default class TrainingSettingApi extends BaseApiService {
   public async queryTemplateItemAndData(obj: Obj) {
     return this.get(`/studyAndTrain/planTrainStudentInfo/queryTemplateItemAndData?${qs.stringify(obj)}`);
   }
-
+  //保存或更新模板项数据
+  public async saveOrUpdateItemData(params:any) {
+    return this.post('/studyAndTrain/planTrainStudentInfo/saveOrUpdateItemData',params);
+  }
   public async getTemplateItems(params:any) {
     return this.post('/formHandBook/getTemplateItems',params);
   }

@@ -140,7 +140,7 @@ export default function InputColumnRender(props: Props) {
           }
 
           setTimeout(() => setEditValue(newPayload))
-
+          console.log("newPayload===",newPayload);
           onSelect && onSelect(newPayload)
         } else {
           setOpen(false)

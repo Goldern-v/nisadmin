@@ -1,26 +1,25 @@
 import { observer } from 'mobx-react'
-import React, { useMemo } from 'react'
+import React from 'react'
 import styled from 'styled-components'
-import { handbookModel as model } from '../model'
+import {handbookModel} from "src/modules/continuingEdu/views/gaugePearson/handbook/model";
 
 export interface IProps {
   
 }
 /**附件 */
 export default observer(function Template3(props: IProps) {
-  const path = useMemo(() => model.detail?.attachment?.path, [model.detail])
   return (
     <Wrapper>
-      <embed className='container' src={path} />
+      <iframe src={handbookModel?.catalogueData?.attachment?.path} />
     </Wrapper>
   )
 })
 
 const Wrapper = styled.div`
 height: 100%;
-.container {
+iframe {
   width: 100%;
-  min-height: 100%;
+  height: 100%;
   border: none;
 }
 `

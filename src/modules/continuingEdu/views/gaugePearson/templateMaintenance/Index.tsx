@@ -111,7 +111,7 @@ export default observer(function TemplateMaintenance() {
             render: (text:any,record:any) => {
                 return (
                     <DoCon>
-                        <span onClick={()=>handleImport(record.attachmentId)}>导出</span>
+                        <span onClick={()=>handleImport(record.id)}>导出</span>
                         <span onClick={()=>handleReview(record,1)}>查看</span>
                         <span className={record.isUse !==1?'':'disable-sty'}  onClick={()=>handleAdd('编辑',record)}>编辑</span>
                         <span className={record.isUse !==1?'':'disable-sty'} onClick={()=>handleDelete(record.id)}>删除</span>
@@ -136,19 +136,15 @@ export default observer(function TemplateMaintenance() {
             `/templateMaintenanceDetail?createNo=${createNo}&tableName=${tableName}&id=${id}&templateType=${templateType}`
         );
     }
-    const handleImport =(attachmentId:number)=>{
-        trainingSettingApi.getAttachment({attachmentId}).then((res:any)=>{
-            let blob = new Blob([res.data], {
-                type: res.data.type // 'application/vnd.ms-excel;charset=utf-8'
-            })
-                let a = document.createElement('a')
-                let href = window.URL.createObjectURL(blob) // 创建链接对象
-                a.href = href
-                a.download = res.data.name // 自定义文件名
-                document.body.appendChild(a)
-                a.click()
-                window.URL.revokeObjectURL(href)
-                document.body.removeChild(a) // 移除a元素
+    const handleImport =(id:number)=>{
+        trainingSettingApi.getAttachment({id}).then((res:any)=>{
+            fileDownload(res)
+                // let a = document.createElement('a')
+                // a.href = res.data.path
+                // a.download = res.data.name // 自定义文件名
+                // document.body.appendChild(a)
+                // a.click()
+                // document.body.removeChild(a) // 移除a元素
         })
     }
     const handleDelete =(id:number)=>{
