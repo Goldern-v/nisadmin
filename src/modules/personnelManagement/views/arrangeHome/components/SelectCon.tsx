@@ -680,8 +680,9 @@ export default observer(function SelectCon() {
           <div className="label">科室：</div>
           <div className="content">
             {
-              appStore.HOSPITAL_ID =='dgxg'?
+              ['zzwy','dgxg'].includes(appStore.HOSPITAL_ID)?
                   <DeptSelect
+                      hasAllDept={true}
                       deptCode={authStore.selectedDeptCode}
                       onChange={handleChange} style={{ width: 160 }} />:
                   <DeptSelect
