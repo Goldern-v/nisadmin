@@ -232,6 +232,7 @@ export default function ArrangAnalysisModal(props: Props) {
         dataSource={dataSource}
         columns={columns}
         type={["index"]}
+        surplusWidth={10}
         surplusHeight={appStore.wih - (appStore.wih * 0.8 - 150)}
         wrapperStyle={{ padding: 0 }}
       />

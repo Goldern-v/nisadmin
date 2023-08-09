@@ -12,7 +12,7 @@ function WardRegisterDefaultRouter() {
 
   const [registerList, setRegisterList] = useState<any>([])
   const [loading, setLoading] = useState(false)
-  const HOSPITAL_FLAG = ['whyx', 'fsxt', '925', 'lyyz', 'qhwy', 'wjgdszd', 'whhk', 'dglb', 'dgxg', 'zjhj'].includes(appStore.HOSPITAL_ID)
+  const HOSPITAL_FLAG = ['whyx', 'fsxt', '925', 'lyyz', 'qhwy', 'wjgdszd', 'whhk', 'dglb', 'dgxg', 'zjhj','ytll'].includes(appStore.HOSPITAL_ID)
 
   const leftMenuConfig = [
     {

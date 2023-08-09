@@ -13,11 +13,11 @@ export const navConfig = (appStore: any, authStore?: any): navConfigItem[] => {
       path: "/auditsManagement",
       hidden: !authStore.isRoleManage
     },
-    // {
-    //   name: "病区日志",
-    //   path: "/wardLog"
-    //   // hidden: !appStore.isDev
-    // },
+    {
+      name: "病区日志",
+      path: "/wardLog"
+      // hidden: !appStore.isDev
+    },
     {
       name: "档案管理",
       path: "/nurseFile",
@@ -77,6 +77,10 @@ export const navConfig = (appStore: any, authStore?: any): navConfigItem[] => {
       ],
     },
     {
+      name: "护士长满意度调查表",
+      path: "/nurseSatisfactionSurvey",
+    },
+    {
       name: "学习培训",
       path: "/continuingEdu",
       // hidden: !appStore.isDev
@@ -85,11 +89,10 @@ export const navConfig = (appStore: any, authStore?: any): navConfigItem[] => {
       name: "敏感指标",
       path: "/indicator",
     },
-    // {
-    //   name: "敏感指标登记本",
-    //   path: "/sensitiveRegister",
-    //   // hidden: !appStore.isDev
-    // },
+    {
+      name: "病区登记本",
+      path: "/wardRegister",
+    },
     {
       name: "统计查询",
       path: "/statistic",
