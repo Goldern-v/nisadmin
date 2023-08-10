@@ -45,7 +45,7 @@ export default function SelectCon(props: Props) {
    */
   const deptKey = appStore.hisMatch({
     map: {
-      gxjb: '全部科室',
+      'gxjb,ytll': '全部科室',
       dghm: authStore.isDepartment || authStore.isQcLeader ? '完整科室' : '全部科室',
       'whyx,whhk': !authStore.isDepartment ? '全部科室' : '完整科室',
       other: '完整科室'
