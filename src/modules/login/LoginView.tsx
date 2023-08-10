@@ -323,8 +323,9 @@ export default withRouter(function LoginView(props: Props) {
               <label>记住账号密码</label>
             </div>
             {appStore.hisMatch({
+              // 忘记密码，用账号、手机找回密码
               map: {
-                "dghm": <div className="resetpassword CheckItem" onClick={() => {
+                "dghm,gxjb": <div className="resetpassword CheckItem" onClick={() => {
                   history.push('/forgetpassword')
                 }}>
                   <span>忘记密码</span>
