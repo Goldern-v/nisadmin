@@ -81,9 +81,9 @@ export default observer(function DeptSelect(props: Props) {
     }
     if (!props.extraDept && authStore.selectedDeptCode == "*")
       authStore.selectedDeptCode = authStore.defaultDeptCode;
-    if (props.deptCode != undefined) {
+    // if (props.deptCode != undefined) {
       onChange(authStore.selectedDeptCode);
-    }
+    // }
     return () => {
       setTimeout(() => {
         // authStore.selectedDeptCode = authStore.defaultDeptCode
