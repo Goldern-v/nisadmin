@@ -19,7 +19,7 @@ import { DictItem } from "src/services/api/CommonApiService";
 import { InputNumber } from "src/vendors/antd";
 import { arrangeService } from "../../../services/ArrangeService";
 import moment from "moment";
-import { authStore } from "src/stores";
+import { authStore,appStore } from "src/stores";
 const Option = Select.Option;
 export interface Props extends ModalComponentProps {
   /** 表单提交成功后的回调 */
@@ -32,6 +32,17 @@ const rules: Rules = {
   startDate: val => !!val || "请填写生效日期",
   initialHour: val => !!val || "请填写标准工时"
 };
+
+/**
+   * 标准工时初始值
+   */
+const initialHourVal:Number = appStore.hisMatch({
+  map: {
+    wh: 40,
+    other: 37.5
+  },
+  vague: true
+})
 
 export default function EditStandardTimeModal(props: Props) {
   const [title, setTitle] = useState("新建标准工时");
@@ -79,7 +90,7 @@ export default function EditStandardTimeModal(props: Props) {
         /** 表单数据初始化 */
         refForm!.current!.setFields({
           startDate: moment().startOf("week"),
-          initialHour: 37.5
+          initialHour: initialHourVal
         });
       }
     }

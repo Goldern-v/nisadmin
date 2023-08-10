@@ -697,7 +697,16 @@ class SheetViewModal {
 
   /** 根据日期获取当前的时间的标准工时 */
   getStandTime(date: string) {
-    let initialHour = 37.5;
+    
+    /** 标准工时初始值 */
+      const initialHourVal = appStore.hisMatch({
+        map: {
+          wh: 40,
+          other: 37.5
+        },
+        vague: true
+      })
+    let initialHour = initialHourVal;
     for (let i = 0; i < this.standardTimeList.length; i++) {
       let dateNum = new Date(date).getTime();
       let standardTime = new Date(this.standardTimeList[i].startDate).getTime();
