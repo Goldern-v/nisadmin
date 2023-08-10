@@ -15,7 +15,9 @@ let sshUpload = (localSrc = './build', folderSrc = '/crdata/webProject/manage') 
   if (process.env.npm_lifecycle_event.indexOf('9868') >= 0) {
     folderSrc = '/crdata/webProject/manage-huadu'
   }
-
+  if (process.env.npm_lifecycle_event.indexOf('9904') >= 0) {
+    folderSrc = '/crdata/webProject/manage-925'
+  }
   //南医三护理管理测试环境
   if (process.env.npm_lifecycle_event.indexOf('8062') >= 0) {
     folderSrc = '/crdata/webProject/nanyisanmanage'

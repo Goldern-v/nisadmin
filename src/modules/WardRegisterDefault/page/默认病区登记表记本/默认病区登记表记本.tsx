@@ -125,8 +125,10 @@ export default observer(function 敏感指标登记本(props: Props) {
   const [pageOptions, setPageOptions]: any = useState({
     pageIndex: 1,
     pageSize: 20,
-    total: 0
+    total: 0,
   });
+  /*阳春中医需要增加科室选项*/
+  const [deptCode,setDeptCode]=useState('')
   const [total, setTotal] = useState(0);
   const [selectedRowKeys, setSelectedRowKeys] = useState([] as any[])
 
@@ -923,6 +925,7 @@ export default observer(function 敏感指标登记本(props: Props) {
     setSelectedBlockId,
     setPageOptions,
     pageOptions,
+    deptCode,
     setTotal,
     setDataSource,
     setData2,
@@ -957,7 +960,7 @@ export default observer(function 敏感指标登记本(props: Props) {
     // selectedBlockId && getPage();
     selectedBlockId && throttler(getPage);
     // selectedBlockId && throttler(getStatistics)
-  }, [pageOptions, date, selectedBlockId, selectedRange]);
+  }, [pageOptions, date, selectedBlockId, selectedRange,deptCode]);
 
   const pageHeaderRef = useRef<HTMLDivElement>(null)
   useLayoutEffect(() => {
@@ -976,7 +979,10 @@ export default observer(function 敏感指标登记本(props: Props) {
     }
     
   });
- 
+ const handleDeptChange =(value:any)=>{
+   console.log(value);
+   setDeptCode(value)
+ }
 
   return (
     <Container>
@@ -1013,7 +1019,7 @@ export default observer(function 敏感指标登记本(props: Props) {
           style={{ width: 220 }}
         />
         <span className="label">科室</span>
-        <DeptSelect hasAllDept={appStore.HOSPITAL_ID === 'gzsrm' ? isAllDepartments : false} onChange={() => { }} style={{ width: 150 }} />
+        <DeptSelect hasAllDept={ appStore.HOSPITAL_ID === 'gzsrm' ? isAllDepartments : appStore.HOSPITAL_ID === 'yczyy'} onChange={ handleDeptChange } style={{ width: 150 }} />
         {/* {popoverContent && (
           <Popover
             placement="bottom"

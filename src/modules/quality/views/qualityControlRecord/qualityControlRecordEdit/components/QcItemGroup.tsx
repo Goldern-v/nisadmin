@@ -279,7 +279,7 @@ export default observer(function QcItemGroup(props: Props) {
             <Radio value={'否'} style={{ marginLeft: '20px', marginRight: '30px' }}>
               否
             </Radio>
-            {!['gzsrm'].includes(appStore.HOSPITAL_ID) && <Radio value={'不适用'} style={{ marginLeft: '20px', marginRight: '30px' }}>
+            {!['gzsrm','925'].includes(appStore.HOSPITAL_ID) && <Radio value={'不适用'} style={{ marginLeft: '20px', marginRight: '30px' }}>
               不适用
             </Radio>}
           </Radio.Group>}
@@ -387,7 +387,7 @@ export default observer(function QcItemGroup(props: Props) {
                 }, itemIndex)} />
             </div>}
           </div>}
-          {/* {appStore.hisMatch({
+          {appStore.hisMatch({
             map: {
               '925': !qcModel.baseInfo.useScore && <div className="sub-item-list">
                 <div style={{ marginTop: 5 }}>
@@ -404,7 +404,7 @@ export default observer(function QcItemGroup(props: Props) {
               other: ''
             },
             vague: true
-          })} */}
+          })}
           {appStore.hisMatch({
             map: {
               "whyx,whhk": '',

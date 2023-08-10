@@ -42,6 +42,7 @@ export function getFun(context: any) {
     setSelectedBlockId,
     setPageOptions,
     pageOptions,
+    deptCode,
     setTotal,
     setDataSource,
     setData2,
@@ -161,6 +162,7 @@ export function getFun(context: any) {
       range: paramMap["班次"] || '',
       blockId: selectedBlockId || blockId,
       paramMap: _paramsMap,
+      ...appStore.HOSPITAL_ID =='yczyy'? {deptCode}:null,
       ...pageOptions
     } as any
     let url: Promise<any>
@@ -418,6 +420,7 @@ export function getFun(context: any) {
         blockId: selectedBlockId,
         range: paramMap['班次'] || '',
         paramMap: _paramsMap,
+        ...appStore.HOSPITAL_ID =='yczyy'? {deptCode}:null,
         ...pageOptions
       })
       .then(res => {
