@@ -18,14 +18,14 @@ export interface DictItemIn {
 export default class AuthApiService extends BaseApiService {
   private checkStatus (res: any) {
     return new Promise((resolve, reject) => {
-      if (res.code === '402') {
+      if (res.data.code === '402') {
         globalModal.confirm('提示', res.data.data.expireDesc).then(() => {
           return resolve(true);
         })
         .catch(()=>{
           return resolve(true);
         })
-      } else if (res.code === '403') {
+      } else if (res.data.code === '403') {
         globalModal.confirm('提示', res.data.data.expireDesc);
       } else {
         return resolve(true);
