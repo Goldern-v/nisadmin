@@ -16,10 +16,30 @@ export interface DictItemIn {
 }
 
 export default class AuthApiService extends BaseApiService {
+  private checkStatus (res: any) {
+    return new Promise((resolve, reject) => {
+      if (res.code === '402') {
+        globalModal.confirm('提示', res.data.data.expireDesc).then(() => {
+          return resolve(true);
+        })
+        .catch(()=>{
+          return resolve(true);
+        })
+      } else if (res.code === '403') {
+        globalModal.confirm('提示', res.data.data.expireDesc);
+      } else {
+        return resolve(true);
+      }
+    })
+  }
   public login(username: string, password: string, code: string, repaint: any,orgPsd?:string) {
-    return httpLoginToken.post('/login', this.stringify({ empNo: username, password: password, code: code, repaint: repaint })).then((res:any) => {
-      if(res.errorCode){
+    return httpLoginToken.post('/login', this.stringify({ empNo: username, password: password, code: code, repaint: repaint })).then(async (res:any) => {
+      if (res.errorCode) {
         return res
+      }
+      const isPassCheck = await this.checkStatus(res);
+      if (!isPassCheck) {
+        return false;
       }
       // let regexp = new RegExp("^(?![A-Za-z0-9]+$)(?![a-z0-9\\W]+$)(?![A-Za-z\\W]+$)(?![A-Z0-9\\W]+$)[a-zA-Z0-9\\W]{8,}$")
       let regexp = new RegExp("^(?![A-Z]*$)(?![a-z]*$)(?![0-9]*$)(?![^a-zA-Z0-9]*$)\\S{8,}$")

@@ -1,15 +1,37 @@
-import { authStore, scheduleStore } from 'src/stores'
+import { appStore, authStore, scheduleStore } from 'src/stores'
 import { httpLoginToken } from 'src/libs/http/http'
 import { message } from 'src/vendors/antd'
+import { globalModal } from 'src/global/globalModal'
 
 class SingleSignOnDefaultServices {
-
+  private checkStatus (res: any) {
+    return new Promise((resolve, reject) => {
+      if (res.code === '402') {
+        globalModal.confirm('提示', res.data.data.expireDesc).then(() => {
+          return resolve(true);
+        })
+        .catch(()=>{
+          return resolve(true);
+        })
+      } else if (res.code === '403') {
+        globalModal.confirm('提示', res.data.data.expireDesc).then(() => {
+          appStore.history.goBack();
+        }).catch(() => {
+          appStore.history.goBack();
+        });
+      } else {
+        return resolve(true);
+      }
+    })
+  }
   /**
    * 根据工号登录系统
    */
   public autoLogin(token: string) {
     return httpLoginToken.post(`/ssoLogin`, { token })
-      .then(res => {
+      .then(async res => {
+        const isPassCheck = await this.checkStatus(res);
+        if (!isPassCheck) return;
         if (res.data) {
           let { adminNurse, authToken, user } = res.data
           user = { ...user }

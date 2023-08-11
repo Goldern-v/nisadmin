@@ -102,11 +102,14 @@ export default withRouter(function LoginView(props: Props) {
     }
     service.authApiService
       .login(_username, _password, verificationCode, "",options?.password || password)
-      .then(() => {
-		if(["fsxt",'925', 'zjhj'].includes(appStore.HOSPITAL_ID)){
-			// 如果是佛山杏坛 要获取调另外一个接口，查询专科护理质量的菜单
-			getSpecialMenu()
-		}
+      .then((res) => {
+        if (typeof res === 'boolean' && !res) {
+          return;
+        }
+        if(["fsxt",'925', 'zjhj'].includes(appStore.HOSPITAL_ID)){
+          // 如果是佛山杏坛 要获取调另外一个接口，查询专科护理质量的菜单
+          getSpecialMenu()
+        }
         if (isSavePassword) {
           const userLoginInfoMap = JSON.parse(
             localStorage.userLoginInfoMap || "{}"
