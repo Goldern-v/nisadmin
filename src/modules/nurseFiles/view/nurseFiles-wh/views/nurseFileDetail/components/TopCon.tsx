@@ -57,6 +57,9 @@ export default observer(function TopCon() {
         return "片区内调动"
     }
   }
+  const titleValue=()=>{
+    return appStore.HOSPITAL_ID =='qhwy' ? '离职/退休/转岗' : '离职/退休'
+  }
   useEffect(() => {
     nurseFileDetailViewModal.init()
   }, [])
@@ -104,6 +107,7 @@ export default observer(function TopCon() {
             map: {
               gzsrm: '',
               ytll: nurseFileDetailViewModal.retireList.includes(authStore?.user?.empNo || '') && <DeptChangeBtn1 onClick={() => openLeaveModalModal()}>离职/退休</DeptChangeBtn1>,
+              'qhwy': authStore.isRoleManage && !isSelf() && <DeptChangeBtn1 onClick={() => openLeaveModalModal()}>离职/退休/调岗</DeptChangeBtn1>,
               other: authStore.isRoleManage && !isSelf() && <DeptChangeBtn1 onClick={() => openLeaveModalModal()}>离职/退休</DeptChangeBtn1>
             }
           })
@@ -121,7 +125,7 @@ export default observer(function TopCon() {
       </div>
 
       <deptChangeModal.Component title={btnTitle()} />
-      <leaveModal.Component title='离职/退休' />
+      <leaveModal.Component title={titleValue()} />
       {/* 档案导出 */}
       {exportVisible && (
         <ExportNurseFileWh

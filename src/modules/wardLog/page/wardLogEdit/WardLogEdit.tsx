@@ -43,8 +43,7 @@ export default observer(function WardLogEdit(props: any) {
   const [showAllReciever, SetShowAllReciever] = useState(false)
   const [deptListAll, setDeptListAll] = useState<any[]>([])
   const [accept,setAccept] =useState('image/jpg, image/jpeg, image/png')
-  const [addPerson, setAddPerson] = useState<any>([])  //列表展示
-  const [person, setPerson] = useState('')
+  const [person, setPerson] = useState('')//列表展示
   const selectPeopleModal = createModal(SelectPeopleModal)
 
   const initAuth = () => {
@@ -299,12 +298,30 @@ export default observer(function WardLogEdit(props: any) {
               {deptItem.name}
             </Option>)}
         </Select>
+      // case '8':
+      // {/* 添加人员功能  可能要后端加上字段 目前先前端写死*/}
+      //  return (
+      //      <div className="edit-row">
+      //        <div className="content">
+      //          <Input.TextArea autosize={{ minRows: 3 }} value={item.content} onChange={(e) =>handleChange(e.target.value)} />
+      //        </div>
+      //        <div className='buttonBox'>
+      //          <Button
+      //              type="primary"
+      //              size="small"
+      //              onClick={()=>handleAddPersonEdit(item.content,idx)}>
+      //            添加参与人员
+      //          </Button>
+      //        </div>
+      //      </div>
+      //  )
       default:
         return <span>{item.content}</span>
     }
   }
 
   const handleRecieverEdit = () => {
+    console.log("recievers===",recievers);
     selectPeopleModal.show({
       checkedUserList: recievers,
       onOkCallBack: (payload) => {
@@ -315,16 +332,22 @@ export default observer(function WardLogEdit(props: any) {
     })
   }
   /*添加参与人员*/
-  const handleAddPersonEdit = () => {
+  const handleAddPersonEdit = (value:any,index:number) => {
+    console.log("value.split(',')",value.split(','));
     selectPeopleModal.show({
-      checkedUserList: addPerson,
+      checkedUserList:value? value.split(','):[],
       onOkCallBack: (payload) => {
         let arr: any[] = []
         formatRecievers(payload, arr)
-        console.log("arr.join(',')",arr.join(','));
         let findName =arr.map((item:any)=>item.empName)
-        setPerson(findName.join(','))
-        setAddPerson(arr)
+       let list = editList.map((item:any,i:number)=>{
+         if(i == index){
+           item.content =findName.join(',')
+         }
+         return item
+       })
+        setEditList(list)
+        setRecievers(arr)
       }
     })
   }
@@ -379,21 +402,6 @@ export default observer(function WardLogEdit(props: any) {
               </div>
             }
           })}
-          {/* 添加人员功能  可能要后端加上字段 目前先前端写死*/}
-          {/*<div className="edit-row">*/}
-          {/*  <div className="title">参与人员</div>*/}
-          {/*  <div className="content">*/}
-          {/*    <Input.TextArea autosize={{ minRows: 3 }} value={person} onChange={(e) => setPerson(e.target.value)} />*/}
-          {/*  </div>*/}
-          {/*  <div className='buttonBox'>*/}
-          {/*    <Button*/}
-          {/*        type="primary"*/}
-          {/*        size="small"*/}
-          {/*        onClick={handleAddPersonEdit}>*/}
-          {/*      添加参与人员*/}
-          {/*    </Button>*/}
-          {/*  </div>*/}
-          {/*</div>*/}
           <div className="edit-row">
             <div className="title">备注</div>
             <div className="content" >

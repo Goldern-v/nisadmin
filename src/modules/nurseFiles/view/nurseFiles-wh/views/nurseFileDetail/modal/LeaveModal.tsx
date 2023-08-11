@@ -80,6 +80,7 @@ export default function LeaveModal(props: Props) {
               <Radio.Group>
                 <Radio value={'离职'}>离职</Radio>
                 <Radio value={'退休'}>退休</Radio>
+                {appStore.HOSPITAL_ID =='qhwy' && <Radio value={'调岗'}>调岗</Radio>}
               </Radio.Group>
             </Form.Field>
           </Col>

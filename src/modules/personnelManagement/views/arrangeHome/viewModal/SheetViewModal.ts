@@ -701,7 +701,7 @@ class SheetViewModal {
     /** 标准工时初始值 */
       const initialHourVal = appStore.hisMatch({
         map: {
-          wh: 40,
+          whhk: 40,
           other: 37.5
         },
         vague: true

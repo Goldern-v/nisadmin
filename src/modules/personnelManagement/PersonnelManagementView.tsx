@@ -13,6 +13,7 @@ import { meunConfig as menuConfig_gzsrm } from "./config/menuConfig_gzsrm";
 import { meunConfig as menuConfig_gxjb } from "./config/menuConfig_gxjb";
 import { meunConfig as menuConfig_dgxg } from "./config/menuConfig_dgxg";
 import { meunConfig as menuConfig_whyx } from "./config/menuConfig_whyx";
+import { meunConfig as menuConfig_whhk } from "./config/menuConfig_whhk";
 import { meunConfig as menuConfig_qhwy } from "./config/menuConfig_qhwy";
 import { meunConfig as menuConfig_lyrm } from "./config/menuConfig_lyrm";
 import { meunConfig as menuConfig_whsl } from "./config/menuConfig_whsl";
@@ -65,8 +66,9 @@ export default function PersonnelManagementView() {
       case 'dgxg':
         return menuConfig_dgxg;
       case 'whyx'://武汉亚心
-      case 'whhk':
         return menuConfig_whyx;
+      case 'whhk':
+        return menuConfig_whhk;
       case 'lyrm'://临邑人民
       case "stmz":
         return menuConfig_lyrm;
