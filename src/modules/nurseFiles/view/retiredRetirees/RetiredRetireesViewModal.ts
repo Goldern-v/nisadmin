@@ -9,7 +9,7 @@ import * as types from 'src/libs/types'
 class RetiredRetireesViewModal {
   @observable public bigDeptList = []
   @observable public deptList = []
-  @observable public stateList = ['离职', '退休', '离职+退休']
+  @observable public stateList =appStore.HOSPITAL_ID =='qhwy'? ['离职', '退休','调岗', '离职+退休', '离职+退休+调岗'] : ['离职', '退休', '离职+退休']
 
   @observable public selectedBigDept = ''
   @observable public selectedDept = ['全部']

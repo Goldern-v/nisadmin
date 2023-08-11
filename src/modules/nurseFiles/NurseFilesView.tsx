@@ -110,7 +110,7 @@ export default observer(function NurseFilesView(props: Props) {
     icon: <ZZHSDA />,
   };
   const retiredRetireesCon = {
-    title: "离职/退休人员查询",
+    title:appStore.HOSPITAL_ID =='qhwy'?"离职/退休/调岗人员查询": "离职/退休人员查询",
     path: "/nurseFile/retiredRetirees",
     component: RetiredRetirees,
     icon: <TXHSCX />,
