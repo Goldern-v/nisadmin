@@ -236,37 +236,61 @@ const QualityControlRecordEdit = observer(function QualityControlRecordEdit() {
             <div className="topHeaderButton">
               {step === 1 && !loading && (
                 <React.Fragment>
-                  {appStore.HOSPITAL_ID == "fssdy"?<Button
-                    onClick={() => qcModel.setAllQcItemValue("符合")}
-                    type="primary"
-                  >
-                    全符合
-                  </Button>:<Button
-                    onClick={() => qcModel.setAllQcItemValue("是")}
-                    type="primary"
-                  >
-                    全是
-                  </Button>}
+                  {
+                    appStore.hisMatch({
+                      map:{
+                        'fssdy':(<Button onClick={() => qcModel.setAllQcItemValue("符合")} type="primary">全符合</Button>),
+                        'ytll':(<Button onClick={() => qcModel.setAllQcItemValue("完全达标")} type="primary">全完全达标</Button>),
+                        other:(<Button onClick={() => qcModel.setAllQcItemValue("是")} type="primary">全是</Button>)
+                      }
+                    })
+                  }
+                  {/*{*/}
+                  {/*  appStore.hisMatch({*/}
+                  {/*    map:{*/}
+                  {/*      'fssdy':(<Button onClick={() => qcModel.setAllQcItemValue("部分符合")} type="primary">全部分符合</Button>),*/}
+                  {/*      'ytll':(<Button onClick={() => qcModel.setAllQcItemValue("完全达标")} type="primary">全完全达标</Button>),*/}
+                  {/*      other:(<Button onClick={() => qcModel.setAllQcItemValue("否")} type="primary">全是</Button>)*/}
+                  {/*    }*/}
+                  {/*  })*/}
+                  {/*}*/}
+                  {/*{appStore.HOSPITAL_ID == "fssdy"?<Button*/}
+                  {/*  onClick={() => qcModel.setAllQcItemValue("符合")} type="primary">全符合</Button>:<Button*/}
+                  {/*  onClick={() => qcModel.setAllQcItemValue("是")}*/}
+                  {/*  type="primary"*/}
+                  {/*>*/}
+                  {/*  全是*/}
+                  {/*</Button>}*/}
                   {appStore.HOSPITAL_ID == "fssdy"&&<Button
-                    onClick={() => qcModel.setAllQcItemValue("部分符合")}
-
-                  >
+                    onClick={() => qcModel.setAllQcItemValue("部分符合")}>
                     全部分符合
                   </Button>}
-                  {appStore.HOSPITAL_ID !== "nys" && (
-                    appStore.HOSPITAL_ID == "fssdy"?<Button
-                    onClick={() => qcModel.setAllQcItemValue("不符合")}
-                    type="danger"
-                  >
-                    全不符合
-                  </Button>:<Button
-                      onClick={() => qcModel.setAllQcItemValue("否")}
-                      type="danger"
-                    >
-                      全否
-                    </Button>
+                  {appStore.HOSPITAL_ID == "ytll"&&<Button onClick={() => qcModel.setAllQcItemValue("部分达标")}>全部分达标</Button>}
+                  {
+                    appStore.hisMatch({
+                      map:{
+                        'nys':<></>,
+                        'fssdy':(<Button type="danger" size="small" onClick={() => qcModel.setAllQcItemValue('不符合')}>全不符合</Button>),
+                        'ytll':(<Button type="danger" size="small" onClick={() => qcModel.setAllQcItemValue('不达标')}>全不达标</Button>),
+                        other:(<Button type="danger" size="small" onClick={() => qcModel.setAllQcItemValue('否')}>全否</Button>)
+                      }
+                    })
+                  }
 
-                  )}
+                  {/*{appStore.HOSPITAL_ID !== "nys" && (*/}
+                  {/*  appStore.HOSPITAL_ID == "fssdy"?<Button*/}
+                  {/*  onClick={() => qcModel.setAllQcItemValue("不符合")}*/}
+                  {/*  type="danger"*/}
+                  {/*>*/}
+                  {/*  全不符合*/}
+                  {/*</Button>:<Button*/}
+                  {/*    onClick={() => qcModel.setAllQcItemValue("否")}*/}
+                  {/*    type="danger"*/}
+                  {/*  >*/}
+                  {/*    全否*/}
+                  {/*  </Button>*/}
+
+                  {/*)}*/}
                   <Button onClick={handleCache}>暂存</Button>
                   <Button onClick={handleNext}>下一步</Button>
                 </React.Fragment>

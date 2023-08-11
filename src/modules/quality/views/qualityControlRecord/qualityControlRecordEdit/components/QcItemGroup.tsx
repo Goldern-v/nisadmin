@@ -8,6 +8,9 @@ const { TextArea } = Input
 import { observer } from 'mobx-react-lite'
 import { numToChinese } from 'src/utils/number/numToChinese'
 import { appStore } from 'src/stores'
+import {qualityControlRecordVM} from "src/modules/quality/views/qualityControlRecord/QualityControlRecordVM";
+import {qcFunTitle, qcOneTitle, qcThreeTitle} from "src/modules/quality/data/qcTitle";
+import {CONFIG_TITLE} from "src/modules/quality/utils/enums";
 
 export interface Props {
   itemGroup: any
@@ -50,6 +53,7 @@ export default observer(function QcItemGroup(props: Props) {
   }
 
   const setAllQcItemValue = (val: string) => {
+    //
     let newItemGroup = { ...itemGroup }
     for (let i = 0; i < newItemGroup.itemList.length; i++) {
       let item = newItemGroup.itemList[i]
@@ -62,6 +66,22 @@ export default observer(function QcItemGroup(props: Props) {
           } else if (val === '部分符合' && !item.subItemList) {
             item.remarkDeductScore = item.partialMatchScore.toString()
           } else if (val === '符合') {
+            item.remarkDeductScore = ''
+            if (item.subItemList)
+              item.subItemList = item.subItemList.map((subItem: any) => ({ ...subItem, checked: false }))
+          } else if (val === '不适用') {
+            item.remarkDeductScore = ''
+            if (item.subItemList)
+              item.subItemList = item.subItemList.map((subItem: any) => ({ ...subItem, checked: false }))
+          }
+        }else if(appStore.HOSPITAL_ID == 'ytll'){
+          if (val === '不达标' && !item.subItemList) {
+            item.remarkDeductScore = item.fixedScore.toString()
+          } else if (val === '部分达标' && !item.subItemList) {
+            console.log("val===",val);
+            item.remarkDeductScore = item.partialMatchScore.toString()
+          } else if (val === '完全达标') {
+            console.log("val===",val);
             item.remarkDeductScore = ''
             if (item.subItemList)
               item.subItemList = item.subItemList.map((subItem: any) => ({ ...subItem, checked: false }))
@@ -128,27 +148,47 @@ export default observer(function QcItemGroup(props: Props) {
       <div className='titleLeftCon'>
         {`${numToChinese(index + 1)}、${itemGroup.qcItemTypeName}`}
         <div className="fl-right">
-          {appStore.HOSPITAL_ID == 'fssdy' ?
-            <Button type="primary" size="small" style={{ marginRight: '10px' }} onClick={() => setAllQcItemValue('符合')}>全符合</Button> :
-            <Button type="primary" size="small" style={{ marginRight: '10px' }} onClick={() => setAllQcItemValue('是')}>全是</Button>}
+          {appStore.hisMatch({
+            map:{
+              'fssdy':(<Button type="primary" size="small" style={{ marginRight: '10px' }} onClick={() => setAllQcItemValue('符合')}>全符合</Button>),
+               'ytll':(<Button type="primary" size="small" style={{ marginRight: '10px' }} onClick={() => setAllQcItemValue('完全达标')}>全完全达标</Button>),
+              other:(<Button type="primary" size="small" style={{ marginRight: '10px' }} onClick={() => setAllQcItemValue('是')}>全是</Button>)
+            }
+          })}
           {appStore.HOSPITAL_ID == 'fssdy' && <Button
             type='default'
             size="small" style={{ marginRight: '10px' }}
             onClick={() => setAllQcItemValue('部分符合')}>
             全部分符合
           </Button>}
-          {appStore.HOSPITAL_ID !== 'nys' && (appStore.HOSPITAL_ID == 'fssdy' ? <Button
-            type="danger"
-            size="small"
-            onClick={() => setAllQcItemValue('不符合')}>
-            全不符合
-          </Button> : <Button
-            type="danger"
-            size="small"
-            onClick={() => setAllQcItemValue('否')}>
-            全否
-          </Button>
-          )}
+          {appStore.HOSPITAL_ID == 'ytll' && <Button
+              type='default'
+              size="small" style={{ marginRight: '10px' }}
+              onClick={() => setAllQcItemValue('部分达标')}>
+            全部分达标
+          </Button>}
+          {
+            appStore.hisMatch({
+              map:{
+                'nys':<></>,
+                'fssdy':(<Button type="danger" size="small" onClick={() => setAllQcItemValue('不符合')}>全不符合</Button>),
+                'ytll':(<Button type="danger" size="small" onClick={() => setAllQcItemValue('不达标')}>全不达标</Button>),
+                other:(<Button type="danger" size="small" onClick={() => setAllQcItemValue('否')}>全否</Button>)
+              }
+            })
+          }
+          {/*{appStore.HOSPITAL_ID !== 'nys' && (appStore.HOSPITAL_ID == 'fssdy' ? <Button*/}
+          {/*  type="danger"*/}
+          {/*  size="small"*/}
+          {/*  onClick={() => setAllQcItemValue('不符合')}>*/}
+          {/*  全不符合*/}
+          {/*</Button> : <Button*/}
+          {/*  type="danger"*/}
+          {/*  size="small"*/}
+          {/*  onClick={() => setAllQcItemValue('否')}>*/}
+          {/*  全否*/}
+          {/*</Button>*/}
+          {/*)}*/}
           {['lcey', 'whyx', 'whhk', 'whsl'].includes(appStore.HOSPITAL_ID) && (
             <Button
               style={{ marginLeft: '10px', backgroundColor: '#FFA500', color: '#FFFFFF' }}
@@ -211,79 +251,112 @@ export default observer(function QcItemGroup(props: Props) {
           </Row>
         )}
         <div className='itemMidCon'>
-          {['fssdy'].includes(appStore.HOSPITAL_ID) ? <Radio.Group
-            value={item.qcItemValue}
-            buttonStyle='solid'
-            onChange={(e: any) => {
-              qcModel.setItemListErrObj(item.qcItemCode, false)
+          {
+            appStore.hisMatch({
+              map: {
+                'fssdy':(<Radio.Group
+                    value={item.qcItemValue}
+                    buttonStyle='solid'
+                    onChange={(e: any) => {
+                      qcModel.setItemListErrObj(item.qcItemCode, false)
 
-              let newItem = { ...item, qcItemValue: e.target.value }
+                      let newItem = { ...item, qcItemValue: e.target.value }
 
-              if (qcModel.baseInfo.useScore) {
-                if (e.target.value === '不符合' && !newItem.subItemList) {
-                  // if (newItem.remarkDeductScore === null || newItem.remarkDeductScore === '') {
-                  newItem.remarkDeductScore = newItem.fixedScore.toString()
-                  // }
-                } else if (e.target.value === '部分符合' && !newItem.subItemList) {
-                  // if (newItem.remarkDeductScore === null || newItem.remarkDeductScore === '') {
-                  newItem.remarkDeductScore = newItem.partialMatchScore.toString()
-                  // }
-                } else if (e.target.value === '符合') {
-                  newItem.remarkDeductScore = ''
-                  if (newItem.subItemList)
-                    newItem.subItemList = newItem.subItemList.map((subItem: any) => ({ ...subItem, checked: false }))
-                }
-              }
-              console.log('newItem', newItem)
-              console.log('itemIndex', itemIndex)
-              handleItemChange({ ...newItem }, itemIndex)
-            }}>
-            <Radio value={'符合'} style={{ marginLeft: '20px', marginRight: '30px' }}>
-              符合
-            </Radio>
-            <Radio value={'部分符合'} style={{ marginLeft: '20px', marginRight: '30px' }}>
-              部分符合
-            </Radio>
-            <Radio value={'不符合'} style={{ marginLeft: '20px', marginRight: '30px' }}>
-              不符合
-            </Radio>
-            <Radio value={'不适用'} style={{ marginLeft: '20px', marginRight: '30px' }}>
-              不适用
-            </Radio>
-          </Radio.Group> : <Radio.Group
-            value={item.qcItemValue}
-            buttonStyle='solid'
-            onChange={(e: any) => {
-              qcModel.setItemListErrObj(item.qcItemCode, false)
-
-              let newItem = { ...item, qcItemValue: e.target.value }
-
-              if (qcModel.baseInfo.useScore) {
-                if (e.target.value === '否' && !newItem.subItemList) {
-                  if (newItem.remarkDeductScore === null || newItem.remarkDeductScore === '') {
-                    newItem.remarkDeductScore = newItem.fixedScore.toString()
-                  }
-                } else if (e.target.value === '是') {
-                  newItem.remarkDeductScore = ''
-                  if (newItem.subItemList)
-                    newItem.subItemList = newItem.subItemList.map((subItem: any) => ({ ...subItem, checked: false }))
-                }
-              }
-              // console.log('newItem', newItem)
-              // console.log('itemIndex', itemIndex)
-              handleItemChange({ ...newItem }, itemIndex)
-            }}>
-            <Radio value={'是'} style={{ marginLeft: '20px', marginRight: '30px' }}>
-              是
-            </Radio>
-            <Radio value={'否'} style={{ marginLeft: '20px', marginRight: '30px' }}>
-              否
-            </Radio>
-            {!['gzsrm','925'].includes(appStore.HOSPITAL_ID) && <Radio value={'不适用'} style={{ marginLeft: '20px', marginRight: '30px' }}>
-              不适用
-            </Radio>}
-          </Radio.Group>}
-
+                      if (qcModel.baseInfo.useScore) {
+                        if (e.target.value === '不符合' && !newItem.subItemList) {
+                          newItem.remarkDeductScore = newItem.fixedScore.toString()
+                        } else if (e.target.value === '部分符合' && !newItem.subItemList) {
+                          newItem.remarkDeductScore = newItem.partialMatchScore.toString()
+                        } else if (e.target.value === '符合') {
+                          newItem.remarkDeductScore = ''
+                          if (newItem.subItemList)
+                            newItem.subItemList = newItem.subItemList.map((subItem: any) => ({ ...subItem, checked: false }))
+                        }
+                      }
+                      handleItemChange({ ...newItem }, itemIndex)
+                    }}>
+                  <Radio value={'符合'} className='buttonStyle'>
+                    符合
+                  </Radio>
+                  <Radio value={'部分符合'} className='buttonStyle'>
+                    部分符合
+                  </Radio>
+                  <Radio value={'不符合'} className='buttonStyle'>
+                    不符合
+                  </Radio>
+                  <Radio value={'不适用'} className='buttonStyle'>
+                    不适用
+                  </Radio>
+                </Radio.Group>),
+                'ytll':(
+                    <Radio.Group
+                        value={item.qcItemValue}
+                        buttonStyle='solid'
+                        onChange={(e: any) => {
+                          qcModel.setItemListErrObj(item.qcItemCode, false)
+                          let newItem = { ...item, qcItemValue: e.target.value }
+                          if (qcModel.baseInfo.useScore) {
+                            if (e.target.value === '不达标' && !newItem.subItemList) {
+                              newItem.remarkDeductScore = newItem.fixedScore.toString()
+                            } else if (e.target.value === '部分达标' && !newItem.subItemList) {
+                              newItem.remarkDeductScore = newItem.partialMatchScore.toString()
+                            } else if (e.target.value === '完全达标') {
+                              newItem.remarkDeductScore = ''
+                              if (newItem.subItemList)
+                                newItem.subItemList = newItem.subItemList.map((subItem: any) => ({ ...subItem, checked: false }))
+                            }
+                          }
+                          handleItemChange({ ...newItem }, itemIndex)
+                        }}>
+                      <Radio value={'完全达标'} className='buttonStyle'>
+                        完全达标
+                      </Radio>
+                      <Radio value={'部分达标'} className='buttonStyle'>
+                        部分达标
+                      </Radio>
+                      <Radio value={'不达标'} className='buttonStyle'>
+                        不达标
+                      </Radio>
+                      <Radio value={'不适用'} className='buttonStyle'>
+                        不适用
+                      </Radio>
+                    </Radio.Group>
+                ),
+                other:(
+                    <Radio.Group
+                        value={item.qcItemValue}
+                        buttonStyle='solid'
+                        onChange={(e: any) => {
+                          qcModel.setItemListErrObj(item.qcItemCode, false)
+                          let newItem = { ...item, qcItemValue: e.target.value }
+                          if (qcModel.baseInfo.useScore) {
+                            if (e.target.value === '否' && !newItem.subItemList) {
+                              if (newItem.remarkDeductScore === null || newItem.remarkDeductScore === '') {
+                                newItem.remarkDeductScore = newItem.fixedScore.toString()
+                              }
+                            } else if (e.target.value === '是') {
+                              newItem.remarkDeductScore = ''
+                              if (newItem.subItemList)
+                                newItem.subItemList = newItem.subItemList.map((subItem: any) => ({ ...subItem, checked: false }))
+                            }
+                          }
+                          handleItemChange({ ...newItem }, itemIndex)
+                        }}>
+                      <Radio value={'是'} className='buttonStyle'>
+                        是
+                      </Radio>
+                      <Radio value={'否'}className='buttonStyle'>
+                        否
+                      </Radio>
+                      {!['gzsrm','925'].includes(appStore.HOSPITAL_ID) && <Radio value={'不适用'} className='buttonStyle'>
+                        不适用
+                      </Radio>}
+                    </Radio.Group>
+                )
+              },
+              vague:true
+            })
+          }
           {qcModel.baseInfo.useScore && <div className="sub-item-list">
             {(item.subItemList || []).map((subItem: any, subItemIdx: number) => (
               <div
@@ -541,6 +614,10 @@ const QuestionItem = styled.div`
     .itemMidCon {
       margin-top: 5px;
       font-size: 12px;
+      .buttonStyle{
+        margin-left: 20px;
+        margin-right: 30px
+      }
       .itemAttachmentCon {
         display: inline-block;
         cursor: pointer;

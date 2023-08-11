@@ -30,6 +30,7 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
       other: '管床护士'
     }
   })
+
   let zhuyuanhao = appStore.HOSPITAL_ID == 'wh' ? '诊疗号' : '住院号'
 
   const { detailData } = props;
@@ -369,20 +370,34 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
                   <Radio.Group
                     value={item.qcItemValue}
                     disabled
-                    buttonStyle="solid"
-                  >
-                    <Radio
-                      value={"是"}
-                      style={{ marginLeft: "20px", marginRight: "30px" }}
-                    >
-                      是
-                    </Radio>
-                    <Radio
-                      value={"否"}
-                      style={{ marginLeft: "20px", marginRight: "30px" }}
-                    >
-                      否
-                    </Radio>
+                    buttonStyle="solid">
+                    {
+                      appStore.hisMatch({
+                        map:{
+                          // 'fssdy':(<Radio value={"符合"} className='buttonStyle'>符合</Radio>),
+                          'ytll':(<Radio value={"完全达标"} className='buttonStyle'>完全达标</Radio>),
+                          other:(<Radio value={"是"} className='buttonStyle'>是</Radio>)
+                        }
+                      })
+                    }
+                    {
+                      appStore.hisMatch({
+                        map:{
+                          // 'fssdy':(<Radio value={"部分符合"} className='buttonStyle'>部分符合</Radio>),
+                          'ytll':(<Radio value={"部分达标"} className='buttonStyle'>部分达标</Radio>),
+                          other:(<></>)
+                        }
+                      })
+                    }
+                    {
+                      appStore.hisMatch({
+                        map:{
+                          // 'fssdy':(<Radio value={"不符合"} className='buttonStyle'>不符合</Radio>),
+                          'ytll':(<Radio value={"不达标"} className='buttonStyle'>不达标</Radio>),
+                          other:(<Radio value={"否"} className='buttonStyle'>否</Radio>)
+                        }
+                      })
+                    }
                     {!['gzsrm','925'].includes(appStore.HOSPITAL_ID) && <Radio
                       value={"不适用"}
                       style={{ marginLeft: "20px", marginRight: "30px" }}
@@ -619,6 +634,10 @@ const QuestionItem = styled.div`
     .itemMidCon {
       margin-top: 5px;
       font-size: 12px;
+      .buttonStyle{
+        margin-left: 20px;
+        margin-right: 30px
+      }
       .itemAttachmentCon {
         display: inline-block;
         cursor: pointer;
