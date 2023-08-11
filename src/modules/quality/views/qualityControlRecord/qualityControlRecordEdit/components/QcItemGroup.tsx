@@ -78,8 +78,9 @@ export default observer(function QcItemGroup(props: Props) {
           if (val === '不达标' && !item.subItemList) {
             item.remarkDeductScore = item.fixedScore.toString()
           } else if (val === '部分达标' && !item.subItemList) {
-            console.log("val===",val);
-            item.remarkDeductScore = item.partialMatchScore.toString()
+            // console.log("val===",val);
+            item.remarkDeductScore =item.partialMatchScore ? (Number(item.partialMatchScore)/2).toString():item.partialMatchScore.toString()
+            // item.remarkDeductScore = item.partialMatchScore.toString()
           } else if (val === '完全达标') {
             console.log("val===",val);
             item.remarkDeductScore = ''
