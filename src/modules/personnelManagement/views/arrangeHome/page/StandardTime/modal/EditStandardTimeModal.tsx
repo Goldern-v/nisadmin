@@ -38,7 +38,7 @@ const rules: Rules = {
    */
 const initialHourVal:Number = appStore.hisMatch({
   map: {
-    wh: 40,
+    whhk: 40,
     other: 37.5
   },
   vague: true
