@@ -6,15 +6,15 @@ import { globalModal } from 'src/global/globalModal'
 class SingleSignOnDefaultServices {
   private checkStatus (res: any) {
     return new Promise((resolve, reject) => {
-      if (res.data.code === '402') {
-        globalModal.confirm('提示', res.data.data.expireDesc).then(() => {
+      if (res.code === '402') {
+        globalModal.confirm('提示', res.data.expireDesc).then(() => {
           return resolve(true);
         })
         .catch(()=>{
           return resolve(true);
         })
-      } else if (res.data.code === '403') {
-        globalModal.confirm('提示', res.data.data.expireDesc).then(() => {
+      } else if (res.code === '403') {
+        globalModal.confirm('提示', res.data.expireDesc).then(() => {
           appStore.history.goBack();
         }).catch(() => {
           appStore.history.goBack();

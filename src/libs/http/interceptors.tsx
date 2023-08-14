@@ -186,7 +186,7 @@ export function onResponseFulfilled(response: AxiosResponse) {
       return Promise.reject();
     }
     default:
-      if (status === 200) {
+      if (status === 200 || status == '402') {
         return response.data;
       }
       if (response.data) {
