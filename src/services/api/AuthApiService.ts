@@ -25,8 +25,8 @@ export default class AuthApiService extends BaseApiService {
         .catch(()=>{
           return resolve(true);
         })
-      } else if (res.code === '403') {
-        globalModal.confirm('提示', res.data.expireDesc);
+      } else if (res.data.code === '403') {
+        globalModal.confirm('提示', res.data.desc);
       } else {
         return resolve(true);
       }

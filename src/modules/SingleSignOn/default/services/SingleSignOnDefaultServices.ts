@@ -13,8 +13,8 @@ class SingleSignOnDefaultServices {
         .catch(()=>{
           return resolve(true);
         })
-      } else if (res.code === '403') {
-        globalModal.confirm('提示', res.data.expireDesc).then(() => {
+      } else if (res.data.code === '403') {
+        globalModal.confirm('提示', res.data.desc).then(() => {
           appStore.history.goBack();
         }).catch(() => {
           appStore.history.goBack();
