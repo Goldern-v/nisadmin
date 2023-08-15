@@ -4,7 +4,7 @@ import { action, observable, computed } from "mobx";
 import User from "src/models/User";
 import { DeptType } from "src/components/DeptSelect";
 import { appStore } from "src/stores";
-import queryString from 'query-string';
+import qs from 'qs';
 import moment from 'moment'
 
 export default class AuthStore {
@@ -430,7 +430,7 @@ export default class AuthStore {
   @action
   public initUser() {
     let urlParmas = window.location.href.split("?")[1]
-    let params = queryString.parse(urlParmas)
+    let params = qs.parse(urlParmas)
     this.user = JSON.parse(sessionStorage.getItem("user") || "{}");
     this.authToken = sessionStorage.getItem("authToken") || String(params.token) || "";
     this.adminNurse = sessionStorage.getItem("adminNurse") || "";

@@ -3,7 +3,7 @@ import React,{ useState, useEffect, useLayoutEffect,useRef }  from 'react';
 import { Radio } from "antd";
 import styled from "styled-components";
 import { trainingResultService } from './../../api/TrainingResultService'
-import queryString from 'query-string';
+import qs from 'qs';
 
 export interface Props {
   cetpId?: string | number;
@@ -28,7 +28,9 @@ export default observer(function AnswerSheetTemplate(props: Props) {
 
   useLayoutEffect(() => {
     let urlParmas = window.location.href.split("?")[1]
-    let params = queryString.parse(urlParmas)
+    let params = qs.parse(urlParmas)
+    console.log(params,'params');
+    
     if(params.cetpId && params.empNo){
       let {cetpId,empNo} = params
       getAnswerInfo(cetpId,empNo);
@@ -70,7 +72,7 @@ export default observer(function AnswerSheetTemplate(props: Props) {
               <span>分值{ques.scores}</span>
             </div>
             {answerList(ques.answersList)}
-            <div style={{color:ques.answerRight==1?'green':'red'}}>{ques.answerRight==1?`回答正确（+）${ques.scores}分`:'回答错误（+0分）'}</div>
+            <div style={{color:ques.answerRight==1?'green':'red'}}>{ques.answerRight==1?`回答正确（+${ques.scores}）分`:'回答错误（+0分）'}</div>
           </div>
         ))}
       </QuestionLi>
@@ -153,11 +155,27 @@ const InfoDetailContainer = styled.div`
       margin: 10px 0;
     }
     .item-info-li{
-      background: rgb(247,247,247);
       display: flex;
       flex-direction: column;
       padding: 10px 0 10px 5px;
       margin-bottom: 20px;
+      position: relative;
+      overflow: hidden;
+      span{
+        position: relative;
+        z-index: 2;
+      }
+      &::after{
+        content: "";
+        background: rgb(247,247,247);
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 1px;
+        z-index: 1;
+        border-bottom: 100px solid rgb(247,247,247);
+      }
     }
     span{
       font-size: 20px;
@@ -166,12 +184,25 @@ const InfoDetailContainer = styled.div`
       display: flex;
       justify-content: flex-start;
       align-items: center;
-      background: rgb(250,250,250);
       height: 40px;
       line-height: 40px;
+      position:relative;
       border: 1px solid rgb(215,215,215);
+      overflow: hidden;
+      &::after{
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 1px;
+        z-index: 1;
+        border-bottom: 100px solid rgb(250,250,250);
+      }
       span{
         flex:1;
+        position:relative;
+        z-index:2;
         padding-left:10px;
         &:first-of-type{
           border-right: 1px solid rgb(215,215,215);
@@ -185,6 +216,20 @@ const InfoDetai = styled.div`
 `;
 const QuestionLi = styled.div`
   padding:0;
+  .ant-radio-checked .ant-radio-inner{
+    overflow: hidden;
+    border-color:transparent;
+    &::after{
+      width: 100%;
+      background: transparent;
+      height: 1px;
+      transform: scale(1);
+      left: 0;
+      top: 0;
+      position: absolute;
+      border-bottom: 50px solid grey;
+    }
+  }
   .quesCon{
     margin-bottom: 20px;
     .questltCon{
