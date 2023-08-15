@@ -15,6 +15,7 @@ import {
 import createModal from "src/libs/createModal"
 import BaseTabs from "src/components/BaseTabs";
 import AnswerSheetModal from './../../components/AnswerSheetModal/AnswerSheetModal'
+import AnswerSheetPdfModal from './../../components/AnswerSheetModal/AnsweiSheetPdfModal'
 import ScoreConfirmModal from './../../components/ScoreConfirmModal'
 import QueryPannel from './../../components/QueryPannel'
 import BaseTable, { TabledCon, DoCon } from 'src/components/BaseTable'
@@ -35,6 +36,7 @@ export default observer(function TestingResultReview() {
   const editable = !!queryObj.editable || false
   const scoreConfirm = createModal(ScoreConfirmModal)
   const answerSheet = createModal(AnswerSheetModal)
+  const answerSheetPdfModal = createModal(AnswerSheetPdfModal)
   const { query, tableData, tableDataTotal, loading, baseInfo, menuInfo } = trainingResultModel
 
   const editScoreAuth = baseInfo.scorePersonList?.find((item: any) => {
@@ -198,6 +200,7 @@ export default observer(function TestingResultReview() {
         const btnText = editable ? '立即评分' : '查看成绩'
         return <DoCon>
           <span onClick={() => handleAnwserSheetReview(record)}>{btnText}</span>
+          {appStore.HOSPITAL_ID == 'dgxg' && <span onClick={() => exportPdf(record)}>导出个人试题情况</span>}
           {(appStore.HOSPITAL_ID == 'hj' || appStore.HOSPITAL_ID == 'gxjb' || appStore.HOSPITAL_ID == 'nys' || appStore.HOSPITAL_ID == 'zzwy') && !appStore.queryObj.editable && record.participateResitExam == 1 && <span onClick={() => handleAnwserSheetReview(record, text)}>查看补考答卷</span>}
         </DoCon>
       }
@@ -243,6 +246,29 @@ export default observer(function TestingResultReview() {
         title: `${baseInfo.title}考卷`,
         empNo: record.empNo,
         type: appStore.queryObj.editable ? 'edit' : 'view',
+        cetpId: resitCetpId ? resitCetpId : appStore.queryObj.id,
+        onOkCallBack: () => {
+          trainingResultModel.getTableData()
+        }
+      })
+
+    } else {
+      Modal.warning({
+        title: <span style={{ fontWeight: 'bold' }}>{`《${baseInfo.title}》`}</span>,
+        okText: '我知道了',
+        content: '该考生未答题，得分为0。'
+      })
+    }
+  }
+  const exportPdf = (record: any, resitCetpId?: any) => {
+    if (record.resitFinishTime || record.finishTime) {
+      let isScoreEdit = false
+
+      if (editScoreAuth) isScoreEdit = true
+
+      answerSheetPdfModal.show({
+        title: `导出个人成绩情况`,
+        empNo: record.empNo,
         cetpId: resitCetpId ? resitCetpId : appStore.queryObj.id,
         onOkCallBack: () => {
           trainingResultModel.getTableData()
@@ -512,6 +538,7 @@ export default observer(function TestingResultReview() {
     <div style={{ padding: "10px", boxSizing: "border-box" }}>{getPage()}</div>
     <scoreConfirm.Component />
     <answerSheet.Component />
+    <answerSheetPdfModal.Component />
     <AddExamPaperModal
       visible={editVisible}
       onCancel={() => setEditVisible(false)}

@@ -27,6 +27,12 @@ export default class TrainingResultService extends BaseApiService {
   public queryToScoreDetailList(query: any) {
     return this.post(`/studyAndTrain/scoreManage/queryScoreDetailList `, query);
   }
+  
+  public reviewExamPaperExportPdf(pageUrl: string) {
+    return this.post(`/studyAndTrain/teachingPlanManage/reviewExamPaperExportPdf`, qs.stringify({pageUrl}),{
+      responseType: 'blob'
+    });
+  }
 
   /** 修改成绩有效状态 */
   public updateGradesValid(query: any) {

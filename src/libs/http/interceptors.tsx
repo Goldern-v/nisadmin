@@ -73,7 +73,7 @@ function changeFormToJson(fromStr: string) {
  */
 export function onRequestFulfilled(config: AxiosRequestConfig) {
   config.headers.common["App-Token-Nursing"] = appStore.getAppToken();
-  config.headers.common["Auth-Token-Nursing"] = authStore.getAuthToken();
+  config.headers.common["Auth-Token-Nursing"] = authStore.getAuthToken()!="undefined"? authStore.getAuthToken() :  String(appStore.queryObj.token);
 // 加密start -----
   // if(appStore.HOSPITAL_ID == "fssdy"){
   //   if (config.method == 'post'){
