@@ -33,6 +33,9 @@ class HandbookModel {
   /**目录详情配置 */
   @observable
   public detailConfig: types.Obj | null = null
+/**loadinf */
+  @observable
+  public tableLoading: boolean = false;
   @observable
   public detail: types.Obj = {}
   
@@ -120,13 +123,17 @@ class HandbookModel {
       masterId,
       templateId,
       templateType } = this.curCatalogue
+      this.tableLoading = true
     trainingSettingApi.queryTemplateItemAndData({
       catalogId,
       masterId,
       templateId,
       templateType,
     }).then(res => {
+      this.tableLoading = false
       this.detail = res.data || {}
+    }).catch(err=>{
+      this.tableLoading = false
     })
   }
 }

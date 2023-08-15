@@ -4,9 +4,11 @@ import BaseInfo from 'src/modules/continuingEdu/views/gaugePearson/fixed-table/d
 import Grade from 'src/modules/continuingEdu/views/gaugePearson/fixed-table/detail/grade'
 import Summary from 'src/modules/continuingEdu/views/gaugePearson/fixed-table/detail/summary'
 import { ICurCatalogue } from "./model";
+import standardTraining from "./components/standardTraining";
 
 /***
  * isSearch:是否需要查询
+ * 
  */
 export const config = {
   1: {
@@ -35,11 +37,36 @@ export const config = {
   },
 }
 
+export const configTemplate = {
+  '护士规范化培训课表及实施记录': {
+    isSearch: true,
+    component: standardTraining,
+  },
+  '基础操作技能单项考核汇总表': {
+    isSearch: true,
+    component: template2,
+  },
+  '临床评定表': {
+    isSearch: true,
+    component: template2,
+  },
+  '专项技能考核表': {
+    isSearch: true,
+    component: template2,
+  },
+  '职业素质评定表': {
+    isSearch: true,
+    component: template2,
+  },
+}
+
 export const getConfig = (item: ICurCatalogue) => {
   const { templateType, tableName } = item
   let flag: string = templateType + ''
   if (templateType === 4) {
     flag += tableName
+  }else if(templateType === 1){
+    return configTemplate[tableName]
   }
   return config[flag]
 }
