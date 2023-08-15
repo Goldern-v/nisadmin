@@ -111,7 +111,7 @@ export default observer(function TemplateMaintenance() {
             render: (text:any,record:any) => {
                 return (
                     <DoCon>
-                        <span onClick={()=>handleImport(record.id)}>导出</span>
+                        <span onClick={()=>handleImport(record.attachmentId)}>导出</span>
                         <span onClick={()=>handleReview(record,1)}>查看</span>
                         <span className={record.isUse !==1?'':'disable-sty'}  onClick={()=>handleAdd('编辑',record)}>编辑</span>
                         <span className={record.isUse !==1?'':'disable-sty'} onClick={()=>handleDelete(record.id)}>删除</span>
@@ -136,15 +136,11 @@ export default observer(function TemplateMaintenance() {
             `/templateMaintenanceDetail?createNo=${createNo}&tableName=${tableName}&id=${id}&templateType=${templateType}`
         );
     }
-    const handleImport =(id:number)=>{
-        trainingSettingApi.getAttachment({id}).then((res:any)=>{
-            fileDownload(res)
-                // let a = document.createElement('a')
-                // a.href = res.data.path
-                // a.download = res.data.name // 自定义文件名
-                // document.body.appendChild(a)
-                // a.click()
-                // document.body.removeChild(a) // 移除a元素
+    const handleImport =(attachmentId:number)=>{
+        trainingSettingApi.getDownload({id:attachmentId}).then((res:any)=>{
+            if(res.code == 200){
+                fileDownload(res)
+            }
         })
     }
     const handleDelete =(id:number)=>{
@@ -193,6 +189,12 @@ export default observer(function TemplateMaintenance() {
             setTableList(res.data.list||[])
             setLoading(false)
         })
+    }
+    const handleAllDown =()=>{
+        let idList =tableList.map((item:any)=>item.attachmentId)
+     trainingSettingApi.getAllDownloadZip({ids:idList}).then((res:any)=>{
+         fileDownload(res)
+     })
     }
     /*获取表名数据*/
     const getTemplateMaintenance =()=>{
@@ -274,11 +276,7 @@ export default observer(function TemplateMaintenance() {
                     搜索
                 </Button>
                 <Button
-                    type="primary"
-                    style={{marginLeft: 15}}>
-                    导出
-                </Button>
-                <Button
+                    onClick={handleAllDown}
                     type="primary"
                     style={{marginLeft: 15}}>
                     下载所有模板

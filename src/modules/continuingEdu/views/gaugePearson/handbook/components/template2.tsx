@@ -14,7 +14,6 @@ import {throttle} from "src/utils/throttle/throttle";
 import {codeAdapter} from "src/modules/WardRegisterDefault/utils/codeAdapter";
 import {TableCon, Wrapper} from "src/modules/WardRegisterDefault/utils/style/style";
 import {getFun, ItemConfigItem} from "src/modules/WardRegisterDefault/utils/fun/fun";
-import {numberFormat} from "src/utils/number/numberFormat";
 import classNames from "classnames";
 import {getFileType} from 'src/utils/file/file'
 import PreviewModal from 'src/utils/file/modal/PreviewModal'
@@ -23,56 +22,25 @@ import FileUploadColumnRender from 'src/modules/WardRegisterDefault/components/R
 import DatePickerColumnRender from 'src/modules/WardRegisterDefault/components/Render.v1/DatePickerColumnRender'
 import InputColumnRender from 'src/modules/WardRegisterDefault/components/Render.v1/InputColumnRender'
 import InputRender from 'src/modules/WardRegisterDefault/components/Render.v1/InputRender'
-import SignColumnRender from "src/modules/WardRegisterDefault/components/Render.v1/SignColumnRender";
-import {Obj} from "src/libs/types";
 import {handbookModel} from "src/modules/continuingEdu/views/gaugePearson/handbook/model";
+import {Button} from "antd";
+import {trainingSettingApi} from "src/modules/continuingEdu/views/gaugePearson/api/TrainingSettingApi";
+import TemplateSingModal from 'src/modules/continuingEdu/components/SingModal'
 
 export interface Props {
     payload: any;
 }
 
-const throttler = throttle(500);
 const throttler2 = throttle();
-/** 可以显示选择患者的表单，以及需要获取的字段信息 */
-const configListByPatientSelect = {
-    QCRG_GSY_07: (item: Obj = {}) => ({
-        '患者姓名': item?.name,
-        '床号': item?.bedLabel,
-    }),
-    QCRG_GSY_12: (item: Obj) => ({
-        '姓名': item?.name,
-        '床号': item?.bedLabel,
-        '疾病诊断': item?.diagnosis,
-        '电话号码': item?.phone,
-        '入院日期': item?.admissionDate,
-        '出院日期': item?.dischargeDate,
-    }),
-}
 export default observer(function Template2(props: Props) {
-    const [data2, setData2]: any = useState([]);
-    const [data3, setData3]: any = useState([]);
     const registerCode = props.payload && props.payload.registerCode;
-    const registerName = props.payload && props.payload.registerName;
-    const [dataSource, setDataSource]: any = useState([]);
-    const [itemConfigList, setItemConfigList] = useState([]);
-    const [rangeConfigList, setRangeConfigList] = useState([]);
-    const [selectedRange, setSelectedRange] = useState("")
-    const [config, setConfig] = useState({} as any)
+    const [dataSource, setDataSource]: any = useState([{}]);
     const [pageLoading, setPageLoading] = useState(false);
-    const [blockList, setBlockList] = useState([]);
-    const [selectedBlockId, setSelectedBlockId]: any = useState(null);
-    const [date, setDate]: any = useState('');
-    /**抢救记录 */
-    const [firstAid, setFirstAid] = useState(false)
     const [surplusHeight, setSurplusHeight]: any = useState(220);
-    const [pageOptions, setPageOptions]: any = useState({
-        pageIndex: 1,
-        pageSize: 20,
-        total: 0
-    });
-    const [total, setTotal] = useState(0);
     const [selectedRowKeys, setSelectedRowKeys] = useState([] as any[])
+    const [signValue, setSignValue] = useState('')
     const previewModal = createModal(PreviewModal)
+    const templateSingModal = createModal(TemplateSingModal)
     const updateDataSource = (isAll?: boolean) => {
         if (isAll) {
             setDataSource([]);
@@ -114,88 +82,16 @@ export default observer(function Template2(props: Props) {
     };
 
 
-    // 计算器
-    const getTrueVal = (item: any, record: any) => {
-        console.log(record[item.timeEndCode].length)
-        let deval = null
-        let incremental = false //记录是否要递增
-        if (item.calculationType == 'hour') {
-            deval = moment(record[item.timeEndCode], "hh:mm").diff(moment(record[item.timeBeginCode], "hh:mm"), 'hours', true)
-        } else if (item.calculationType == 'dayTime') {
-            // 日期时间，天数+1，保留小数
-            incremental = true
-            deval = moment(record[item.timeEndCode]).diff(moment(record[item.timeBeginCode]), 'days', true)
-        } else {
-            incremental = true
-            // 是否保留小数，天数+1
-            deval = moment(record[item.timeEndCode]).diff(moment(record[item.timeBeginCode]), 'days')
-        }
-        if (isNaN(deval)) {
-            return ''
-        } else {
-            // 如果是天数，就要+1
-            if (incremental) {
-                return numberFormat(deval + 1, 1)
-            }
-            return numberFormat(deval, 1)
-        }
-    }
-    // 叠加器
-    const getTrueIderate = (item: any, record: any, index: number) => {
-        // console.log('计算叠加器啦')
-        if (index == dataSource.length - 1) {
-            // 改的是组后一条数据
-            return isNaN(Number(record[item.cumulativeTarget])) ? '' : record[item.cumulativeTarget] || ''
-        } else {
-            if (isNaN(Number(record[item.cumulativeTarget]))) {
-                // 当输入非数字
-                return dataSource[index + 1][item.itemCode] || ''
-            }
-            if (isNaN(Number(dataSource[index + 1][item.itemCode]))) {
-                // 下一条数据是空的
-                return record[item.cumulativeTarget] || ''
-            }
-            return numberFormat(Number(dataSource[index + 1][item.itemCode]) + Number(record[item.cumulativeTarget]), 1)
-        }
-    }
-
-
-    const gotoContiun = (itemConfig: any, record: any, index: number) => {
-        if (itemConfig.linkList.length > 0) {
-            // 计算使用时间
-            // console.log('计算器')
-            itemConfig.linkList.forEach((element: any) => {
-                // if(element.itemType == 'timeCalculation'){
-                // 自动计算
-                record[element.itemCode] = String(getTrueVal(element, record))
-                // 这个计算器实体可能有叠加器和计算器,就是会联动第三级计算
-                if (element.linkList.length > 0 || element.iderateList.length > 0) {
-                    gotoContiun(element, record, index)
-                }
-                // }
-            });
-        }
-        if (itemConfig.iderateList.length > 0) {
-            // 计算使用时间
-            // console.log('叠加器')
-            itemConfig.iderateList.forEach((element: any) => {
-                // 自动计算
-                record[element.itemCode] = String(getTrueIderate(element, record, index)) || ''
-                if (element.linkList.length > 0 || element.iderateList.length > 0) {
-                    gotoContiun(element, record, index)
-                }
-            });
-        }
-
-    }
-    //registerName
-    const isWhyx = ['whyx', 'lyyz', 'qhwy', 'whhk', 'dglb'].includes(appStore.HOSPITAL_ID)
-    const trimStringArr = (arr: any[]) => {
-        return arr.map((str: string) => str.trim()).filter((str: string) => str)
-    }
     const columns: ColumnProps<any>[] | any = [
+        {
+            title: "序号",
+            dataIndex: 'index',
+            width: 50,
+            align: 'center',
+            render: (text: string, record: any, index: number) => <span>{index + 1}</span>
+        },
         //后端返回的自定义项目
-        ...(handbookModel.catalogueData?.formItems || []).map((item: any, index: number) => {
+        ...(handbookModel.formItems || []).map((item: any, index: number) => {
             item['itemCode'] = item.title
             return {
                 title: item.children ? (
@@ -271,6 +167,8 @@ export default observer(function Template2(props: Props) {
                         }, registerCode)}`
 
                     if (item.type == 'date' || item.type == 'date_time' || item.type == 'time') {
+                        console.log("record[item.itemCode]===", record[item.itemCode]);
+                        record[item.itemCode] = record[item.itemCode] || item.defaultValue
                         let format = 'YYYY-MM-DD'
                         if (item.type == 'date_time') format = 'YYYY-MM-DD HH:mm'
                         if (item.type == 'time') format = 'HH:mm';
@@ -312,20 +210,16 @@ export default observer(function Template2(props: Props) {
                                 updateDataSource,
                                 handleNextIptFocus,
                                 onBlur: (newVal: string, oldVal: any) => {
-                                    record.title = newVal
+                                    // record.title = newVal
                                     // 失去焦点,判断是否有影响项
                                     // gotoContiun(item, record, index)
                                 },
                             }}
                         />
+                    } else if (item.type == 'sign') {
+                        children = <span
+                            onClick={() => handleSign(record, item.itemCode)}>{record[item.itemCode] || '签名'}</span>
                     } else {
-                        // const multiple = (() => {
-                        //     if (item.type == "multiple_select")
-                        //         return true
-                        //
-                        //     return false
-                        // })()
-
                         children = <InputColumnRender
                             {...{
                                 cellDisabled,
@@ -347,49 +241,7 @@ export default observer(function Template2(props: Props) {
                 }
             };
         }),
-        {
-            title: "操作",
-            width: 50,
-            className: "",
-            render(text: string, record: any, index: number) {
-                return (
-                    <DoCon>
-                        {cellDisabled(record) ? (
-                            <aside style={{color: "#aaa"}}>删除</aside>
-                        ) : (
-                            <span
-                                onClick={() => handleDeleteRow(record, index)}>
-                删除
-              </span>
-                        )}
-                    </DoCon>
-                );
-            }
-        }
     ];
-
-
-    let handlePer = (arr: string[], data: any) => {
-        let hours: any = ''
-        if (data[arr[0]] && data[arr[1]]) {
-            let startDate = moment(moment(data[arr[0]]).format('YYYY-MM-DD HH:MM'))
-            let endDate = moment(moment(data[arr[1]]).format('YYYY-MM-DD HH:MM'))
-            const m = startDate && endDate ? endDate.diff(startDate, "m") : 0;
-            hours = Math.floor(m / 30) * 0.5 + '小时';
-
-        }
-        data[arr[2]] = String(hours)
-    }
-    const watchRecordSeries = {
-        '起始时间': ['起始时间', '终止时间', '消毒时长'],
-        '终止时间': ['起始时间', '终止时间', '消毒时长'],
-        '消毒时长': ['起始时间', '终止时间', '消毒时长'],
-    }
-    const watchRecord = (value: any, data: any) => {
-        let key = value
-        if (!key || !watchRecordSeries[key]) return
-        handlePer(watchRecordSeries[key], data)
-    }
 
     const handlePreview = (file: any) => {
         if (getFileType(file.name) == 'img') {
@@ -407,104 +259,103 @@ export default observer(function Template2(props: Props) {
         setSelectedRowKeys(payload)
         // console.log(payload)
     }
-    /**自定义签名按钮配置 */
-    const [customSign, setCustomSign] = useState<any[]>([])
-    // 自定义批量按钮
-    const [customBatch, setCustomBatch] = useState<any[]>([])
-    useEffect(() => {
-        setCustomSign(itemConfigList.filter((v: any) => v.type.indexOf('autograph') == 0))
-        setCustomBatch(itemConfigList.filter((v: any) => v.itemCode == '班次'))
-    }, [itemConfigList])
 
+    useEffect(() => {
+        if (handbookModel.detail.itemDataStr) {
+            setDataSource(JSON.parse(handbookModel.detail.itemDataStr))
+        }
+    }, [handbookModel.detail])
+    // useEffect(() => {
+    //     console.log(handbookModel.spinLoading);
+    //     setPageLoading(handbookModel.spinLoading)
+    // }, [handbookModel.spinLoading])
 
     /** 公共函数 */
-    const {
-        onInitData,
-        getPage,
-        onAddBlock,
-        onSave,
-        onDelete,
-        createRow,
-        cellDisabled,
-        exportExcel,
-        handleNextIptFocus,
-        handleUpload,
-        handleDeleteRow,
-        handleAuditAll,
-        fixInputValue,
-        handleCopyCreateRow,
-        deleteSelectedRows,
-    } = getFun({
-        registerCode,
-        registerName,
-        config,
-        setBlockList,
-        setSelectedBlockId,
-        setPageOptions,
-        pageOptions,
-        setTotal,
-        setDataSource,
-        setData2,
-        setData3,
-        setItemConfigList,
-        setRangeConfigList,
-        setPageLoading,
-        date,
-        selectedBlockId,
-        dataSource,
-        data2,
-        data3,
-        selectedRowKeys,
-        setSelectedRowKeys,
-        setConfig,
-        customSign,
-        customBatch,
-        itemConfigList,
-        firstAid,
-    });
-
-    useEffect(() => {
-        onInitData();
-    }, [authStore.selectedDeptCode]);
-
-
-    useEffect(() => {
-        /*数据源传递进去*/
-        // setDataSource(handbookModel.catalogueData?.formItems)
-        // console.log("handbookModel.catalogueData.formItems====",handbookModel.catalogueData?.formItems);
-        // selectedBlockId && getPage();
-        // selectedBlockId && throttler(getPage);
-        // selectedBlockId && throttler(getStatistics)
-    }, []);
+    const {cellDisabled, handleNextIptFocus, handleUpload,} = getFun({setPageLoading, dataSource, setDataSource});
 
     const pageHeaderRef = useRef<HTMLDivElement>(null)
     useLayoutEffect(() => {
         let tableHead: any = document.querySelector(".ant-table-thead");
-        if (appStore.HOSPITAL_ID === 'wjgdszd' && tableHead && pageHeaderRef?.current) {
-            let footerHeight: any = 0;
-            if (data2.length > 0) {
-                footerHeight += 30
-            }
-            if (data3.length > 0) {
-                footerHeight += data3.length * 21
-            }
-            setSurplusHeight(footerHeight + tableHead.offsetHeight + 140 + pageHeaderRef.current?.offsetHeight);
-        } else if (tableHead && pageHeaderRef?.current) {
+        if (tableHead && pageHeaderRef?.current) {
             setSurplusHeight(tableHead.offsetHeight + 140 + pageHeaderRef.current?.offsetHeight);
         }
-
     });
+    const handleSign = (record: any, itemCode: string) => {
+        if (!signValue) {
+            templateSingModal.show({
+                handleOk: (value: any) => {
+                    record.modified = true
+                    record[itemCode] = value.empName;
+                    /**需要记录起来，下次签名直接使用**/
+                    setSignValue(value.empName)
+                    updateDataSource()
+                }
+            })
+        } else {
+            record.modified = true
+            record[itemCode] = signValue;
+            updateDataSource()
+        }
 
-
+    }
+    const handleSave = () => {
+        // globalModal.signModal.show({
+        //     title:'签名验证',
+        //     nameLabel:'输入用户名或工号',
+        //     passwordLabel:' 输入登录密码',
+        //     onCallBack: (empNo: string, password: string) => {
+        //         // onOkCb(params)
+        //         console.log(empNo,password);
+        //     }
+        // })
+        //
+        setPageLoading(true)
+        const {
+            id: catalogId,
+            masterId,
+            templateId,
+            templateType
+        } = handbookModel.curCatalogue
+        trainingSettingApi.saveOrUpdateItemData({
+            catalogId,
+            masterId,
+            templateId,
+            templateType,
+            itemDataStr: JSON.stringify(dataSource)
+        }).then((res) => {
+            // 重新请求详情数据
+            handbookModel.getCatalogueData()
+            setPageLoading(false)
+        })
+    }
+    const handleAdd = () => {
+        setPageLoading(true)
+        setDataSource([...dataSource, {}])
+        setTimeout(() => {
+            setPageLoading(false)
+        }, 500)
+    }
+    const handleDelete = () => {
+        if (selectedRowKeys.length <= 0) {
+            message.warn('未勾选项目')
+            return
+        } else {
+            let list = dataSource.filter((item: any) => !selectedRowKeys.includes(item.key))
+            setDataSource([...list])
+            setSelectedRowKeys && setSelectedRowKeys([])
+        }
+    }
     return (
         <Container>
             <TableCon
-                className='whyxTable'
-            >
+                className='whyxTable'>
+                <Button type='primary' onClick={handleAdd}>添加一行</Button>
+                <Button type='danger' onClick={handleDelete}>删除所选行</Button>
+                <Button onClick={handleSave}>保存</Button>
                 <BaseTable
                     className="record-page-table"
                     loading={pageLoading}
-                    dataSource={handbookModel.catalogueData?.formItems}
+                    dataSource={dataSource}
                     rowSelection={{
                         selectedRowKeys,
                         onChange: handleSelectedChange,
@@ -512,19 +363,6 @@ export default observer(function Template2(props: Props) {
                     columns={columns.filter((item: any) => item)}
                     surplusHeight={surplusHeight}
                     surplusWidth={300}
-                    useOuterPagination
-                    pagination={{
-                        onChange: (pageIndex: number) => {
-                            setPageOptions({...pageOptions, pageIndex})
-                        },
-                        onShowSizeChange: (pageIndex: number, pageSize: number) => {
-                            setPageOptions({...pageOptions, pageSize, pageIndex: 1})
-                        },
-                        pageSizeOptions: ['20', '30', '40', '50', '100'],
-                        current: pageOptions.pageIndex,
-                        pageSize: pageOptions.pageSize,
-                        total: total
-                    }}
                     rowClassName={(record: any, idx: number) => {
                         if (cellDisabled(record)) return 'disabled-row'
 
@@ -532,6 +370,7 @@ export default observer(function Template2(props: Props) {
                     }}
                 />
             </TableCon>
+            <templateSingModal.Component/>
         </Container>
     );
 });

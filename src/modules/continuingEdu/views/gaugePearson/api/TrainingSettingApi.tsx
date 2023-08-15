@@ -155,8 +155,11 @@ export default class TrainingSettingApi extends BaseApiService {
   public async updateFormItem(params:any) {
     return this.post('/formHandBook/updateFormItem',params);
   }
-  public async getAttachment(params:any) {
-    return this.post('/formHandBook/getAttachment',params);
+  public async getDownload(params:any) {
+    return this.post('/formHandBook/download',params,{ responseType: 'blob' });
+  }
+  public async getAllDownloadZip(params:any) {
+    return this.post('/formHandBook/downloadZip',params,{ responseType: 'blob' });
   }
 }
 export const trainingSettingApi = new TrainingSettingApi();

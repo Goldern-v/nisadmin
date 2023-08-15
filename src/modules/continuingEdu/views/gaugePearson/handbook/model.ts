@@ -21,7 +21,7 @@ class HandbookModel {
   public catalogue: ICurCatalogue[] = [];
   /**选中的目录 */
   @observable
-  public curCatalogue: ICurCatalogue | null = null
+  public curCatalogue: any = null
   @observable
   public addConfirmVisible: boolean = false
   /**规培生信息 */
@@ -33,9 +33,15 @@ class HandbookModel {
   /**目录详情配置 */
   @observable
   public detailConfig: types.Obj | null = null
+  /**loadinf */
+  @observable
+  public tableLoading: boolean = false;
+
   @observable
   public detail: types.Obj = {}
-  
+  /**表单数据config配置项**/
+  @observable
+  public  formItems: any = []
   get age() {
     if (!this.info?.birthday) return 0
     return moment().diff(moment(this.info.birthday), 'years')
@@ -120,6 +126,7 @@ class HandbookModel {
       masterId,
       templateId,
       templateType } = this.curCatalogue
+    this.tableLoading = true
     trainingSettingApi.queryTemplateItemAndData({
       catalogId,
       masterId,
@@ -127,6 +134,12 @@ class HandbookModel {
       templateType,
     }).then(res => {
       this.detail = res.data || {}
+      if(templateType == 2){
+        /**处理表单返回的数据 **/
+        this.formItems =res.data?.formItems||[]
+      }
+    }).finally(()=>{
+      this.tableLoading = false
     })
   }
 }
