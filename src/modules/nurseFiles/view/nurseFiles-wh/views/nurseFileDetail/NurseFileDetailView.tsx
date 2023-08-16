@@ -181,6 +181,13 @@ const ROUTE_LIST_DEFAULT = [
     component: OnEducation,
     name: '外出进修'
   },] : []),
+  ...(['whhk'].includes(appStore.HOSPITAL_ID) ? [
+  {
+    /** 方明处理 */
+    type: 'onEducation',
+    component: OnEducation,
+    name: '外出进修'
+  },] : []),
   ...isSdlj ? [
     {
       type: 'continuingEducation_sdlj',
