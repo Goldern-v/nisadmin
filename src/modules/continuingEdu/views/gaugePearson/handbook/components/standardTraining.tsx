@@ -3,23 +3,28 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import {handbookModel} from "src/modules/continuingEdu/views/gaugePearson/handbook/model";
 import BaseTable, { TabledCon, DoCon } from 'src/components/BaseTable'
-import { DatePicker } from "src/vendors/antd";
+import { DatePicker,Button,message } from "src/vendors/antd";
 import moment from 'moment'
+import { trainingSettingApi } from '../../api/TrainingSettingApi';
 export interface Props {
 payload: any;
 }
 export default observer(function StandardTraining(props: Props) {
-  const [tableData, setTableData] = useState([{},{},{}]);
-
+  const [tableData, setTableData] = useState([]);
 useEffect(() => {
   let templateItemListVos = handbookModel?.detail.templateItemListVos || []
+  let tableDateNew:any = []
   templateItemListVos.map((it:any)=>{
     if(it.itemDataStr!=''){
+      // console.log(JSON.parse(it.itemDataStr))
       // 就是有值
-      it = {...it,...JSON.parse(it.itemDataStr)}
-      // let itemDataObj = JSON.parse(it.itemDataStr)
+      tableDateNew.push({...it,...(JSON.parse(it.itemDataStr))})
+    }else{
+      tableDateNew.push(it)
     }
   })
+  // console.log(tableDateNew)
+  setTableData(tableDateNew)
 
 }, [handbookModel?.detail])
 
@@ -79,23 +84,58 @@ useEffect(() => {
     },
     {
       title: "完成培训时间",
-      dataIndex: "itemDataStr",
+      dataIndex: "finishTime",
       align: "center",
       width: 120,
       render: (value: any, row: any, index: number) =>{
-        <DatePicker key={row.id} defaultValue={moment(value)} onChange={(date:any)=>{
-          // console.log(date)
-
-        }}></DatePicker>
+        // const obj = {
+				// 	children: <DatePicker key={row.id} defaultPickerValue={moment(value || undefined)} onChange={(date:any)=>{
+        //     row.finishTime = date.format('YYYY-MM-DD')
+        //   }}></DatePicker>,
+				// 	props: {},
+				// } as any;
+				// obj.props.rowSpan = mergeCells(row.catagory, handbookModel?.detail.templateItemListVos || [], 'catagory', index)
+				// return obj
+        return (<DatePicker key={row.id} defaultValue={moment(value || undefined)} onChange={(date:any)=>{
+          row.finishTime = date.format('YYYY-MM-DD')
+        }}></DatePicker>)
       }
-      
     },
   ];
+
+  const saveTable = ()=>{
+    let paramter:any = {
+      templateItemListVos:[],
+      masterId:handbookModel.curCatalogue?.masterId,
+      templateId:handbookModel.curCatalogue?.templateId,
+      catalogId:handbookModel.curCatalogue?.id,
+      templateType:handbookModel.curCatalogue?.templateType,
+    }
+    let dataObj = {}
+    tableData.map((it:any)=>{
+      dataObj = {
+        finishTime:it.finishTime
+      }
+      paramter.templateItemListVos.push({
+        id:it.id,
+        itemDataStr:JSON.stringify(dataObj)
+      })
+    })
+    handbookModel.tableLoading = true
+    trainingSettingApi.saveOrUpdateItemData(paramter).then((res:any)=>{
+      message.success('保存成功')
+      handbookModel.tableLoading = false
+    }).catch((err:any)=>{
+      handbookModel.tableLoading = false
+
+    })
+  }
   return (
     <Wrapper>
        <BaseTable
+       title={()=><Button onClick={saveTable}> 保存</Button>}
             loading={handbookModel?.tableLoading}
-            dataSource={handbookModel?.detail.templateItemListVos || []}
+            dataSource={tableData || []}
             columns={columns}
             surplusHeight={400}
         />

@@ -5,6 +5,8 @@ import Grade from 'src/modules/continuingEdu/views/gaugePearson/fixed-table/deta
 import Summary from 'src/modules/continuingEdu/views/gaugePearson/fixed-table/detail/summary'
 import { ICurCatalogue } from "./model";
 import standardTraining from "./components/standardTraining";
+import baseExam from "./components/baseExam";
+import specialSkill from "./components/specialSkill";
 
 /***
  * isSearch:是否需要查询
@@ -44,7 +46,7 @@ export const configTemplate = {
   },
   '基础操作技能单项考核汇总表': {
     isSearch: true,
-    component: template2,
+    component: baseExam,
   },
   '临床评定表': {
     isSearch: true,
@@ -52,7 +54,7 @@ export const configTemplate = {
   },
   '专项技能考核表': {
     isSearch: true,
-    component: template2,
+    component: specialSkill,
   },
   '职业素质评定表': {
     isSearch: true,
