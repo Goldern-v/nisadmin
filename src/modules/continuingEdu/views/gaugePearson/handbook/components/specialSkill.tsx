@@ -20,10 +20,6 @@ export default observer(function specialSkill(props: Props) {
   const templateSingModal = createModal(TemplateSingModal)
   const [signValue, setSignValue] = useState() as any
 
-  const [showModal, setShowModal] = useState(false);
-  const [userName, setUserName] = useState(authStore.user?.empNo);
-  const [pwd, setPwd] = useState('');
-
 useEffect(() => {
   let templateItemListVos = handbookModel?.detail.templateItemListVos || []
   let tableDateNew:any = []
@@ -82,7 +78,7 @@ useEffect(() => {
       title: "考核要求",
       dataIndex: "catagory",
       align: "center",
-      width: 80,
+      width: 100,
       render: (value: any, row: any, index: number) => {
 				const obj = {
 					children: <>{value.indexOf('\n')>-1?value.split('\n').map((it:string)=><>{it}<br></br></>):value}</>,
@@ -98,7 +94,7 @@ useEffect(() => {
       align: "center",
       width: 100,
       render: (value: any, row: any, index: number) =>{
-        return (<DatePicker key={row.id} defaultValue={moment(value || undefined)} onChange={(date:any)=>{
+        return (<DatePicker key={row.id} defaultValue={value?moment(value):undefined} onChange={(date:any)=>{
           row.examTime = date.format('YYYY-MM-DD')
           row.modified = true
         }}></DatePicker>)
@@ -109,7 +105,7 @@ useEffect(() => {
       title: '考核结果',
       dataIndex: "score",
       align: "center",
-      width: 40,
+      width: 80,
       render: (value: any, row: any, index: number) =>{
         return (<Input key={row.id} defaultValue={value} onBlur={(e: any) =>{
           row.modified = true
@@ -135,9 +131,9 @@ useEffect(() => {
       title: '备注',
       dataIndex: "remark",
       align: "center",
-      width: 40,
+      width: 80,
       render: (value: any, row: any, index: number) =>{
-        return (<Input key={row.id} defaultValue={value} onBlur={(e: any) =>{
+        return (<Input.TextArea autosize={{minRows: 1}} key={row.id} defaultValue={value} onBlur={(e: any) =>{
           row.modified = true
           row.remark = e.target.value
         }
@@ -165,7 +161,8 @@ useEffect(() => {
         dataObj={
           signName:it.signName || undefined,
           score:it.score || undefined,
-          examTime:it.examTime || undefined
+          examTime:it.examTime || undefined,
+          remark:it.remark || undefined,
         }
       paramter.templateItemListVos.push({
         id:it.id,
@@ -189,16 +186,6 @@ useEffect(() => {
     })
   }
 
-  const updateDataSource = (isAll?: boolean) => {
-    // if (isAll) {
-    //     setDataSource([]);
-    //     setDataSource([...dataSource]);
-    // } else {
-    //     throttler2(() => {
-    //         setDataSource([...dataSource]);
-    //     });
-    // }
-};
   const handleSign = (record: any, itemCode: string) => {
     if (!signValue) {
         templateSingModal.show({
@@ -220,14 +207,6 @@ useEffect(() => {
 
 }
 
-  /**关闭对话框 */
-  const handleOk = ()=>{
-    setShowModal(false)
-  }
-
-  const handleCancel = ()=>{
-    setShowModal(false)
-  }
   return (
     <Wrapper>
        <BaseTable
@@ -236,41 +215,10 @@ useEffect(() => {
             dataSource={tableData || []}
             columns={columns}
             surplusHeight={400}
-            surplusWidth={70}
+            surplusWidth={0}
         />
         <templateSingModal.Component/>
-        <MModal>
-				<Modal width={400}
-					title="签名验证"
-					visible={showModal}
-					onOk={handleOk}
-					onCancel={handleCancel}
-				>
-					<div className='modal-content'>
-						
-						<Row className="item-row">
-							<Col >
-								<div className="label">输入用户名或工号:</div>
-							</Col>
-						</Row>
-						<Row style={{ marginTop: '5px' }}>
-							<Col>
-								<Input defaultValue={userName} placeholder="输入用户名或工号" />
-							</Col>
-						</Row>
-						<Row className="item-row" style={{ marginTop: '15px' }}>
-							<Col>
-								<div className="label">输入登录密码:</div>
-							</Col>
-						</Row>
-						<Row style={{ marginTop: '5px' }}>
-							<Col>
-								<Input placeholder="输入登录密码" value={pwd} onChange={(val:any)=>setPwd(val)} type='password' />
-							</Col>
-						</Row>
-					</div>
-				</Modal>
-			</MModal>
+        
     </Wrapper>
   )
 })
@@ -279,12 +227,6 @@ const Wrapper = styled.div`
   display: none;
 }
 `
-const MModal = styled.div`
-/* .item-row{ */
-	.label{
-		font-size: 14px;
-	}
-/* } */
-`
+
 
 

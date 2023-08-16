@@ -7,6 +7,7 @@ import { ICurCatalogue } from "./model";
 import standardTraining from "./components/standardTraining";
 import baseExam from "./components/baseExam";
 import specialSkill from "./components/specialSkill";
+import professionalism from "./components/professionalism";
 
 /***
  * isSearch:是否需要查询
@@ -58,7 +59,7 @@ export const configTemplate = {
   },
   '职业素质评定表': {
     isSearch: true,
-    component: template2,
+    component: professionalism,
   },
 }
 

@@ -95,7 +95,7 @@ useEffect(() => {
       align: "center",
       width: 100,
       render: (value: any, row: any, index: number) =>{
-        return (<DatePicker key={row.id} defaultValue={moment(value || undefined)} onChange={(date:any)=>{
+        return (<DatePicker key={row.id} defaultValue={value?moment(value):undefined} onChange={(date:any)=>{
           row.examTime = date.format('YYYY-MM-DD')
           row.modified = true
         }}></DatePicker>)
@@ -112,7 +112,7 @@ useEffect(() => {
       align: "center",
       width: 40,
       render: (value: any, row: any, index: number) =>{
-        return (<InputNumber step={0.01} key={row.id} defaultValue={value} onBlur={(e: any) =>{
+        return (<InputNumber precision={2} min={0} max={100} key={row.id} defaultValue={value} onBlur={(e: any) =>{
           row.modified = true
           row.score = e.target.value
         }
@@ -223,7 +223,7 @@ useEffect(() => {
             dataSource={tableData || []}
             columns={columns}
             surplusHeight={400}
-            surplusWidth={70}
+            surplusWidth={0}
         />
         <templateSingModal.Component/>
         <MModal>
@@ -261,7 +261,11 @@ useEffect(() => {
     </Wrapper>
   )
 })
-const Wrapper = styled.div``
+const Wrapper = styled.div`
+.ant-input-number-handler-wrap{
+  display: none;
+}
+`
 const MModal = styled.div`
 /* .item-row{ */
 	.label{
