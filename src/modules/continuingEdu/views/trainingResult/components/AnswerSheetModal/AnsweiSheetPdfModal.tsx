@@ -11,7 +11,7 @@ let defalutUrl = (()=>{
   let protocol = window.location.protocol + "//"
   let host = window.location.host
   let prodUrl = '/crNursing/manage'
-  let originUrl = protocol + host + '/#' + (process.env.NODE_ENV === 'production'?prodUrl:"")
+  let originUrl = protocol + host + (process.env.NODE_ENV === 'production'?prodUrl:"") + '/#' 
   return originUrl
 })()
 export interface Props extends ModalComponentProps {
