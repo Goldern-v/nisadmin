@@ -1,10 +1,10 @@
 import {observer} from 'mobx-react'
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import styled from 'styled-components'
-import {Input} from "antd";
+import {Input, message} from "antd";
 import {handbookModel} from "src/modules/continuingEdu/views/gaugePearson/handbook/model";
 import {trainingSettingApi} from "src/modules/continuingEdu/views/gaugePearson/api/TrainingSettingApi";
-
+const { TextArea } = Input
 export interface IProps {
     isPreview?: boolean
 }
@@ -12,25 +12,48 @@ export interface IProps {
 /**固定表-个人总结 */
 export default observer(function FixedSummary(props: IProps) {
     const {isPreview = false} = props
-    useEffect(() => {
-        console.log("handbookModel.catalogue",handbookModel.catalogueData);
-    }, [])
-    const handleArea =(e:any)=>{
-        trainingSettingApi.saveOrUpdateItemData({
-
-        }).then((res)=>{
-
-        })
+    const [value,setValue]=useState('')
+    const handleArea = (e: any) => {
+        if(!isPreview){
+            const {
+                id: catalogId,
+                masterId,
+                templateId,
+                templateType
+            } = handbookModel.curCatalogue
+            trainingSettingApi.saveOrUpdateItemData({
+                catalogId,
+                masterId,
+                templateId,
+                templateType,
+                dataMaps: {summary:e.target.value}
+            }).then((res) => {
+                // 重新请求详情数据
+                message.success('保存成功')
+                handbookModel.getCatalogueData()
+            })
+        }
     }
+    useEffect(()=>{
+        setValue(handbookModel?.detail?.dataMaps?.summary)
+    },[handbookModel?.detail?.dataMaps?.summary])
     return (
         <Wrapper>
             <div className='title'>
                 个人总结
-                <Input.TextArea
-                    onBlur={handleArea}
-                    className='area-input'
-                    placeholder='请填写个人总结'
-                />
+                {
+                    isPreview ? <TextArea
+                        disabled
+                        className='area-input'
+                        placeholder=""
+                    /> : <TextArea
+                        value={value}
+                        onChange={(e: any) => setValue(e.target.value)}
+                        onBlur={handleArea}
+                        className='area-input'
+                        placeholder='请填写个人总结'
+                    />
+                }
             </div>
         </Wrapper>
     )
