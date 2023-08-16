@@ -66,7 +66,7 @@ const QualityControlRecordEdit = observer(function QualityControlRecordEdit() {
             // 江门妇幼-住院号什么都不做不限制字数，不是必填
           }
           else if (
-            !["gzsrm", "gzhd", "whyx", "fsxt",'925',"lyrm","whhk",'zzwy', 'qhwy','stmz','whsl', 'yczyy','dghm', 'zjhj'].includes(appStore.HOSPITAL_ID) &&
+            !["ytll","gzsrm", "gzhd", "whyx", "fsxt",'925',"lyrm","whhk",'zzwy', 'qhwy','stmz','whsl', 'yczyy','dghm', 'zjhj'].includes(appStore.HOSPITAL_ID) &&
             (isNaN(inpNo) || inpNoLengthArr.indexOf(master[x].length) < 0)
           ) {
             //if (isNaN(inpNo) || inpNoLengthArr.indexOf(master[x].length) < 0) {
