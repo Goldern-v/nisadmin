@@ -1,8 +1,9 @@
 import { ColumnProps } from 'antd/es/table'
-import React, { useEffect, useState } from 'react'
-import { Obj } from 'src/libs/types'
+import React from 'react'
 import BaseTable from 'src/modules/setting/common/TableModel'
 import styled from 'styled-components'
+import {handbookModel} from "src/modules/continuingEdu/views/gaugePearson/handbook/model";
+import {observer} from "mobx-react";
 interface IProps {
   isPreview?: boolean
 }
@@ -18,56 +19,56 @@ const columns: ColumnProps<any>[] = [
     }
   },
   {
-    key: 'idx',
-    dataIndex: 'idx',
+    key: 'type',
+    dataIndex: 'type',
     title: '考核类型',
     width: 100,
     align: 'center',
+    render:(text:string)=>{
+      // type 类型 1：理论考核；2：实操考核
+      return {1:'理论考核',2:'实操考核'}[text]
+    }
   },
   {
-    key: 'idx',
-    dataIndex: 'idx',
+    key: 'examContent',
+    dataIndex: 'examContent',
     title: '考核项目',
     width: 100,
     align: 'center',
   },
   {
-    key: 'idx',
-    dataIndex: 'idx',
+    key: 'examScore',
+    dataIndex: 'examScore',
     title: '考核分数',
     width: 100,
     align: 'center',
   },
   {
-    key: 'idx',
-    dataIndex: 'idx',
+    key: 'examResult',
+    dataIndex: 'examResult',
     title: '考核结果',
     width: 100,
     align: 'center',
-    render(text: any, record: any, idx: number) {
-      return idx + 1
-    }
   },
   {
-    key: 'idx',
-    dataIndex: 'idx',
+    key: 'resitScore',
+    dataIndex: 'resitScore',
     title: '补考后成绩',
     width: 100,
     align: 'center',
   },
 ]
 /**固定表-岗前培训考核成绩 */
-export default function FixedGrade(props: IProps) {
+export default observer(function FixedGrade(props: IProps) {
   const { isPreview = false } = props
-  const info: any[] | undefined = []
   return <Wrapper>
     <div className='title'>岗前培训考核成绩</div>
     <BaseTable
-      dataSource={isPreview ? [] : info}
+      dataSource={isPreview ? [] : handbookModel.detail.preTheoryExamDetails}
       columns={columns}
     />
   </Wrapper>
-}
+})
 const Wrapper: any = styled.div`
 width: 210mm;
 /* height: 960mm; */

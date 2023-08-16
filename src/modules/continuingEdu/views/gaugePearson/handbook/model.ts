@@ -127,6 +127,7 @@ class HandbookModel {
       templateId,
       templateType } = this.curCatalogue
     this.tableLoading = true
+    this.detail={}
     trainingSettingApi.queryTemplateItemAndData({
       catalogId,
       masterId,
