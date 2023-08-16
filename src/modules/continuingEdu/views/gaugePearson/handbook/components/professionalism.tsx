@@ -60,22 +60,16 @@ useEffect(() => {
 		return rowSpan
 	}
   const columns: any = [
+    // {
+    //   title: "序号",
+    //   dataIndex: "index",
+    //   key: "index",
+    //   align: "center",
+    //   width: 40,
+    //   render:(text:any,record:any,index:number)=>index + 1
+    // },
     {
-      title: "序号",
-      dataIndex: "index",
-      key: "index",
-      align: "center",
-      width: 40,
-      render:(text:any,record:any,index:number)=>index + 1
-    },
-    {
-      title: "内容",
-      dataIndex: "content",
-      align: "center",
-      width: 120
-    },
-    {
-      title: "考核要求",
+      title: "项目",
       dataIndex: "catagory",
       align: "center",
       width: 100,
@@ -89,30 +83,48 @@ useEffect(() => {
 			}
     },
     {
-      title: "考核时间",
-      dataIndex: "examTime",
+      title: "评价内容",
+      dataIndex: "content",
       align: "center",
-      width: 100,
-      render: (value: any, row: any, index: number) =>{
-        return (<DatePicker key={row.id} defaultValue={value?moment(value):undefined} onChange={(date:any)=>{
-          row.examTime = date.format('YYYY-MM-DD')
-          row.modified = true
-        }}></DatePicker>)
-      }
-      
+      width: 120
     },
     {
-      title: '考核结果',
+      title: "标准分",
+      dataIndex: "standartrd",
+      align: "center",
+      width: 40
+    },
+    {
+      title: '得分',
       dataIndex: "score",
       align: "center",
-      width: 80,
+      width: 60,
       render: (value: any, row: any, index: number) =>{
-        return (<Input key={row.id} defaultValue={value} onBlur={(e: any) =>{
-          row.modified = true
+        return (<InputNumber style={{width:'auto'}} precision={2} min={0} max={row.standartrd} key={row.id} defaultValue={value} onBlur={(e: any) =>{
           row.score = e.target.value
         }
           
         }/>)
+      }
+    },
+    {
+      title: '护士长评语',
+      dataIndex: "remark",
+      align: "center",
+      width: 80,
+      render: (value: any, row: any, index: number) =>{
+        const obj = {
+					children: <Input.TextArea autosize={{minRows: 2}} key={row.id} defaultValue={value} onBlur={(e: any) =>{
+            row.remark = e.target.value
+          }
+            
+          }/>,
+					props: {rowSpan:0},
+				} as any;
+        if(index===0){
+          obj.props.rowSpan = tableData.length
+        }
+				return obj
       }
     },
     {
@@ -121,26 +133,23 @@ useEffect(() => {
       align: "center",
       width: 60,
       render: (value: any, row: any, index: number) =>{
-        return (<DoCon>
+        const obj = {
+					children: <DoCon>
           <span key={row.id} onClick={() => handleSign(row, 'signName')}>{value || '签名'}</span>
-        </DoCon>)
+        </DoCon>,
+					props: {rowSpan:0},
+				} as any;
+        if(index===0){
+          obj.props.rowSpan = tableData.length
+        }
+				return obj
+        // return (<DoCon>
+        //   <span key={row.id} onClick={() => handleSign(row, 'signName')}>{value || '签名'}</span>
+        // </DoCon>)
       }
       
     },
-    {
-      title: '备注',
-      dataIndex: "remark",
-      align: "center",
-      width: 80,
-      render: (value: any, row: any, index: number) =>{
-        return (<Input.TextArea autosize={{minRows: 1}} key={row.id} defaultValue={value} onBlur={(e: any) =>{
-          row.modified = true
-          row.remark = e.target.value
-        }
-          
-        }/>)
-      }
-    },
+    
   ];
 
   /**保存 */
@@ -153,29 +162,18 @@ useEffect(() => {
       templateType:handbookModel.curCatalogue?.templateType,
     }
     let dataObj = {}
-    let flag = false
     tableData.map((it:any)=>{
-      if(it.modified){
-        flag = true
-        // 有改动的
         dataObj={
           signName:it.signName || undefined,
           score:it.score || undefined,
-          examTime:it.examTime || undefined,
           remark:it.remark || undefined,
         }
       paramter.templateItemListVos.push({
         id:it.id,
         itemDataStr:JSON.stringify(dataObj)
       })
-    }
     })
-    // console.log(paramter)
-    if(!flag){
-      message.warning('没有改动')
-      return false
-    }
-    // return
+    
     handbookModel.tableLoading = true
     trainingSettingApi.saveOrUpdateItemData(paramter).then((res:any)=>{
       message.success('保存成功')
@@ -187,11 +185,24 @@ useEffect(() => {
   }
 
   const handleSign = (record: any, itemCode: string) => {
+    if(record[itemCode]){
+      Modal.confirm({
+        title: '提示',
+        content: '是否清除签名？',
+        okText: '确定',
+        okType: 'danger',
+        cancelText: '取消',
+        onOk: () => {
+          record[itemCode] = '';
+          setTableData([...tableData])
+        }
+    })
+      return false
+    }
     if (!signValue) {
         templateSingModal.show({
             handleOk: (value: any) => {
               // console.log(authStore.user?.empName)
-                record.modified = true
                 record[itemCode] = authStore.user?.empName;
                 /**需要记录起来，下次签名直接使用**/
                 setSignValue(authStore.user?.empName)
@@ -200,7 +211,6 @@ useEffect(() => {
         })
     } else {
       // console.log(signValue)
-        record.modified = true
         record[itemCode] = signValue;
         setTableData([...tableData])
     }
@@ -210,12 +220,13 @@ useEffect(() => {
   return (
     <Wrapper>
        <BaseTable
-       title={()=><Button onClick={saveTable}> 保存</Button>}
+       title={()=><Button type='primary' onClick={saveTable}> 保存</Button>}
             loading={handbookModel?.tableLoading}
             dataSource={tableData || []}
             columns={columns}
-            surplusHeight={400}
+            surplusHeight={350}
             surplusWidth={0}
+            className="custom-table" // 自定义样式类名
         />
         <templateSingModal.Component/>
         
@@ -225,6 +236,15 @@ useEffect(() => {
 const Wrapper = styled.div`
 .ant-input-number-handler-wrap{
   display: none;
+}
+.custom-table td {
+  border: 1px solid #e8e8e8; /* 添加边框 */
+}
+.custom-table .ant-table-title{
+  overflow: hidden;
+  button{
+    float: right;
+  }
 }
 `
 

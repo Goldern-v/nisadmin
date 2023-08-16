@@ -92,11 +92,10 @@ useEffect(() => {
       title: "考核时间",
       dataIndex: "examTime",
       align: "center",
-      width: 100,
+      width: 130,
       render: (value: any, row: any, index: number) =>{
         return (<DatePicker key={row.id} defaultValue={value?moment(value):undefined} onChange={(date:any)=>{
-          row.examTime = date.format('YYYY-MM-DD')
-          row.modified = true
+          row.examTime = date?.format('YYYY-MM-DD') || undefined
         }}></DatePicker>)
       }
       
@@ -108,7 +107,6 @@ useEffect(() => {
       width: 80,
       render: (value: any, row: any, index: number) =>{
         return (<Input key={row.id} defaultValue={value} onBlur={(e: any) =>{
-          row.modified = true
           row.score = e.target.value
         }
           
@@ -134,7 +132,6 @@ useEffect(() => {
       width: 80,
       render: (value: any, row: any, index: number) =>{
         return (<Input.TextArea autosize={{minRows: 1}} key={row.id} defaultValue={value} onBlur={(e: any) =>{
-          row.modified = true
           row.remark = e.target.value
         }
           
@@ -153,10 +150,10 @@ useEffect(() => {
       templateType:handbookModel.curCatalogue?.templateType,
     }
     let dataObj = {}
-    let flag = false
+    // let flag = false
     tableData.map((it:any)=>{
-      if(it.modified){
-        flag = true
+      // if(it.modified){
+        // flag = true
         // 有改动的
         dataObj={
           signName:it.signName || undefined,
@@ -168,13 +165,13 @@ useEffect(() => {
         id:it.id,
         itemDataStr:JSON.stringify(dataObj)
       })
-    }
+    // }
     })
     // console.log(paramter)
-    if(!flag){
-      message.warning('没有改动')
-      return false
-    }
+    // if(!flag){
+    //   message.warning('没有改动')
+    //   return false
+    // }
     // return
     handbookModel.tableLoading = true
     trainingSettingApi.saveOrUpdateItemData(paramter).then((res:any)=>{
@@ -191,7 +188,6 @@ useEffect(() => {
         templateSingModal.show({
             handleOk: (value: any) => {
               // console.log(authStore.user?.empName)
-                record.modified = true
                 record[itemCode] = authStore.user?.empName;
                 /**需要记录起来，下次签名直接使用**/
                 setSignValue(authStore.user?.empName)
@@ -200,7 +196,6 @@ useEffect(() => {
         })
     } else {
       // console.log(signValue)
-        record.modified = true
         record[itemCode] = signValue;
         setTableData([...tableData])
     }
@@ -210,12 +205,13 @@ useEffect(() => {
   return (
     <Wrapper>
        <BaseTable
-       title={()=><Button onClick={saveTable}> 保存</Button>}
+       title={()=><Button type='primary' onClick={saveTable}> 保存</Button>}
             loading={handbookModel?.tableLoading}
             dataSource={tableData || []}
             columns={columns}
-            surplusHeight={400}
+            surplusHeight={350}
             surplusWidth={0}
+            className="custom-table" // 自定义样式类名
         />
         <templateSingModal.Component/>
         
@@ -223,6 +219,12 @@ useEffect(() => {
   )
 })
 const Wrapper = styled.div`
+.custom-table .ant-table-title{
+  overflow: hidden;
+  button{
+    float: right;
+  }
+}
 .ant-input-number-handler-wrap{
   display: none;
 }

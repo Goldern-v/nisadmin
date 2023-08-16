@@ -86,10 +86,10 @@ useEffect(() => {
       title: "完成培训时间",
       dataIndex: "finishTime",
       align: "center",
-      width: 100,
+      width: 130,
       render: (value: any, row: any, index: number) =>{
         return (<DatePicker key={row.id} defaultValue={value?moment(value):undefined} onChange={(date:any)=>{
-          row.finishTime = date.format('YYYY-MM-DD')
+          row.finishTime = date?.format('YYYY-MM-DD') || undefined
         }}></DatePicker>)
       }
     },
@@ -125,15 +125,23 @@ useEffect(() => {
   return (
     <Wrapper>
        <BaseTable
-       title={()=><Button onClick={saveTable}> 保存</Button>}
+       title={()=><Button type='primary' onClick={saveTable}> 保存</Button>}
             loading={handbookModel?.tableLoading}
             dataSource={tableData || []}
             columns={columns}
-            surplusHeight={400}
+            surplusHeight={350}
+            className="custom-table" // 自定义样式类名
         />
     </Wrapper>
   )
 })
-const Wrapper = styled.div``
+const Wrapper = styled.div`
+.custom-table .ant-table-title{
+  overflow: hidden;
+  button{
+    float: right;
+  }
+}
+`
 
 
