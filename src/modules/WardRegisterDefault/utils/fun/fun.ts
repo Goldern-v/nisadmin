@@ -171,7 +171,7 @@ export function getFun(context: any) {
       url = wardRegisterDefaultService.getPageGZSRM(registerCode, params)
     else url = wardRegisterDefaultService.getPage(registerCode, params)
 
-    url.then(res => {
+    url.then(async res => {
         setPageLoading(false)
         if (!res.data) return
 
@@ -207,6 +207,13 @@ export function getFun(context: any) {
           });
         }
         if(location.pathname.includes('QCRG_GSY_12')) res.data.config.hiddenDate=true
+        if(appStore.HOSPITAL_ID === 'dgxg'){
+          let ward = await wardRegisterDefaultService.getNurseByWardCode(registerCode,deptCode)
+          let namelist = ward.data.map((li:any)=>li.empName)
+          res.data.itemConfigList.forEach((item:any)=>{
+            item.itemType==="ward_user" && (item.options=namelist.join(";"))
+          })
+        }
         setItemConfigList(thMerge(res.data.itemConfigList));
         setConfig(res.data.config || {})
         setRangeConfigList(res.data.rangeConfigList);

@@ -52,6 +52,13 @@ export default function SelectCon(props: Props) {
     },
     vague: true
   })
+  const deptCode = appStore.hisMatch({
+    map: {
+      whsl: JSON.parse(sessionStorage.getItem('user')!).deptCode,
+      other: ''
+    },
+    vague: true
+  })
 
   const onSearch = () => {
     emitter.emit("refreshNurseAuditTable");
@@ -94,7 +101,7 @@ export default function SelectCon(props: Props) {
         </Select>
 
         <span style={{ marginLeft: 20 }}>科室：</span>
-        <MultipleDeptSelect deptKey={deptKey} />
+        <MultipleDeptSelect deptKey={deptKey} deptCode={deptCode}/>
 
         <Input
           style={{ marginLeft: 20, width: 360 }}

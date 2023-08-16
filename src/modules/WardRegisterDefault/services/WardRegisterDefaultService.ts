@@ -192,6 +192,9 @@ export default class WardRegisterDefaultService extends BaseApiService {
   public getMenuByDeptCode() {
     return this.get('qcRegisterBlock/getListByDept')
   }
+  public getNurseByWardCode(registerCode:string,wardCode:string) {
+    return this.get(`qcRegisterData/${registerCode}/getNurseByWardCode/${wardCode}`)
+  }
 }
 
 export const wardRegisterDefaultService = new WardRegisterDefaultService();
