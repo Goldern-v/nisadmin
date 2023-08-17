@@ -15,7 +15,7 @@ import { appStore, authStore } from "src/stores";
 import { arrangStatisticsService } from "./services/ArrangStatisticsService";
 import BaseTable from "src/components/BaseTable";
 import { arrangeService } from "../../services/ArrangeService";
-
+import { fileDownload } from "src/utils/file/file";
 export interface Props {
 }
 
@@ -23,6 +23,7 @@ export default observer(function ArrangStatistics() {
   const [date, setDate]: any = useState(getCurrentMonth());
   const [dataSource, setDataSource] = useState([]);
   const [pageLoading, setPageLoading] = useState(false);
+  const [exportLoading, setExportLoading] = useState(false);
   const [showType, setShowType] = useState("班次统计");
   const showTypeList: DictItem[] = [
     {
@@ -180,6 +181,24 @@ export default observer(function ArrangStatistics() {
         });
     }
   };
+  const exportFile = () =>{
+    setExportLoading(true)
+    let fn = arrangStatisticsService.countUserAll
+    if(showType == "工时统计") fn = arrangStatisticsService.schNightHourExport
+    fn.call(arrangStatisticsService,{
+        deptCode: authStore.selectedDeptCode,
+        startTime: (date && date[0] && date[0].format("YYYY-MM-DD")) || "",
+        endTime: (date && date[1] && date[1].format("YYYY-MM-DD")) || "",
+        type: "range_name",
+        status: false
+      },
+      {responseType:'blob'}
+      )
+      .then(async res => {
+        await fileDownload(res)
+        setExportLoading(false)
+      });
+  }
 
   useEffect(() => {
     onLoad();
@@ -214,6 +233,9 @@ export default observer(function ArrangStatistics() {
         <Button type="primary" onClick={onLoad}>
           刷新
         </Button>
+        {appStore.HOSPITAL_ID=='wh' && <Button type="primary" onClick={exportFile} loading={exportLoading}>
+          导出
+        </Button>}
       </PageHeader>
       <div style={{ margin: "0 15px" }}>
         <BaseTable

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Select } from 'antd'
-import { PageObj } from './getPageObj'
+import { PageObj, filterItem } from './getPageObj'
+import { appStore } from 'src/stores'
 import { statisticsViewModal } from '../StatisticsViewModal'
 import { DoCon } from 'src/components/BaseTable'
 import Zimage from 'src/components/Zimage'
@@ -43,7 +44,12 @@ export const pageObj: PageObj = {
       type: 'select',
       name: 'patentType',
       dataSource: statisticsViewModal.getDict('专利类型')
-    }
+    },
+    ...(appStore.HOSPITAL_ID=='wh' ? [{
+      label: '专利排名',
+      type: 'input',
+      name: 'patentLevel'
+    }]as filterItem[] : []),
   ],
   tableList: [
     {

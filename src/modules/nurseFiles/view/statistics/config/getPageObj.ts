@@ -1,7 +1,7 @@
 import { ColumnProps } from 'src/vendors/antd'
 
 export type filterType =
-  | 'select'
+   'select'
   | 'multiplesSelect'
   | 'input'
   | 'yearRangePicker'
