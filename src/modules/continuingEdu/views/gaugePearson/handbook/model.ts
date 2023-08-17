@@ -4,6 +4,8 @@ import { trainingSettingApi } from "../api/TrainingSettingApi";
 import { Modal, message } from "antd";
 import moment from 'moment'
 import { getConfig } from "./detailConfig";
+import {getFun} from "src/modules/WardRegister/utils/fun/fun";
+import {ItemConfigItem} from "src/modules/WardRegisterDefault/utils/fun/fun";
 
 export interface ICurCatalogue extends types.Obj {
   templateType: 1 | 2 | 3 | 4,
@@ -42,6 +44,9 @@ class HandbookModel {
   /**表单数据config配置项**/
   @observable
   public  formItems: any = []
+  @observable
+  /**表单类型数据**/
+  public dataSource:any =[]
   get age() {
     if (!this.info?.birthday) return 0
     return moment().diff(moment(this.info.birthday), 'years')
@@ -127,7 +132,6 @@ class HandbookModel {
       templateId,
       templateType } = this.curCatalogue
     this.tableLoading = true
-    this.detail={}
     trainingSettingApi.queryTemplateItemAndData({
       catalogId,
       masterId,
@@ -137,11 +141,45 @@ class HandbookModel {
       this.detail = res.data || {}
       if(templateType == 2){
         /**处理表单返回的数据 **/
-        this.formItems =res.data?.formItems||[]
+        this.formItems =this.thMerge(res.data?.formItems||[])
+        console.log(this.thMerge(res.data?.formItems || []));
+        if(res.data?.itemDataStr){
+          this.dataSource =JSON.parse(res.data?.itemDataStr)
+        }
       }
     }).finally(()=>{
       this.tableLoading = false
     })
   }
+  thMerge(arr:any){
+    return arr.reduce(
+        (total: any[], current: any, index: number) => {
+          if (current.title.includes(":")) {
+            let pTitle = current.title.split(":")[0];
+            let cTitle = current.title.split(":")[1];
+            current.label = cTitle;
+            let pthObj: any = total.find(item => (item.pTitle || item.title) == pTitle);
+            if (!pthObj) {
+              pthObj = {
+                ...current,
+                pTitle: pTitle,
+                children: [current],
+                colSpan: 1
+              };
+              total.push(pthObj);
+            } else {
+              pthObj.children.push(current);
+              pthObj.colSpan += 1;
+              current.colSpan = 0;
+              total.push(current);
+            }
+          } else {
+            total.push(current);
+          }
+          return total;
+        },
+        []
+    );
+  };
 }
 export const handbookModel = new HandbookModel();

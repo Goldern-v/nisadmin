@@ -6,6 +6,7 @@ import Summary from 'src/modules/continuingEdu/views/gaugePearson/fixed-table/de
 import { ICurCatalogue } from "./model";
 import standardTraining from "./components/standardTraining";
 import baseExam from "./components/baseExam";
+import ClinicalEvaluation from "./components/ClinicalEvaluation";
 import specialSkill from "./components/specialSkill";
 import professionalism from "./components/professionalism";
 
@@ -51,7 +52,8 @@ export const configTemplate = {
   },
   '临床评定表': {
     isSearch: true,
-    component: template2,
+    // Clinical evaluation
+    component: ClinicalEvaluation,
   },
   '专项技能考核表': {
     isSearch: true,
