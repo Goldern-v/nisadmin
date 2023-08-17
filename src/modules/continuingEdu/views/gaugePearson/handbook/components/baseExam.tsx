@@ -179,10 +179,9 @@ useEffect(() => {
     if (!signValue) {
         templateSingModal.show({
             handleOk: (value: any) => {
-              // console.log(authStore.user?.empName)
-                record[itemCode] = authStore.user?.empName;
+                record[itemCode] = value.empNo;
                 /**需要记录起来，下次签名直接使用**/
-                setSignValue(authStore.user?.empName)
+                setSignValue(value.empNo)
                 // updateDataSource()
             }
         })

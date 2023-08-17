@@ -4,8 +4,8 @@ import { Modal, Form, Input,  Radio, Select} from 'antd'
 import { FormComponentProps } from 'antd/lib/form/Form'
 import {appStore, authStore} from 'src/stores'
 import { observer } from 'mobx-react-lite'
-import {to} from "src/libs/fns";
 import {ModalComponentProps} from "src/libs/createModal";
+import service from "src/services/api";
 export interface Props extends FormComponentProps,ModalComponentProps {
     visible: boolean;
     handleOk?: (value: any) => void;
@@ -32,8 +32,10 @@ function TemplateSingModal(props: Props) {
             if (err) {
                 return
             }else{
-                props.handleOk && props.handleOk(value)
-                 onCancel()
+                service.commonApiService.getUser(value.empNo,value.password).then((res:any)=>{
+                    props.handleOk && props.handleOk(value)
+                    onCancel()
+                })
             }
 
         })
@@ -43,7 +45,7 @@ function TemplateSingModal(props: Props) {
             <Wrapper>
                 <Form>
                     <Form.Item {...formItemLayout} label=' 输入用户名或工号'>
-                        {getFieldDecorator('empName', {
+                        {getFieldDecorator('empNo', {
                             initialValue:authStore?.user?.empNo,
                             rules: [{ required: true, message: '用户名或工号不能为空' }]
                         })(<Input />)}

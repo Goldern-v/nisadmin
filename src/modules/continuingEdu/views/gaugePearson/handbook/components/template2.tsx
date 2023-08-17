@@ -1,13 +1,12 @@
 import styled from "styled-components";
-import React, {useState, useEffect, useLayoutEffect, useRef, useMemo} from "react";
-import BaseTable, {DoCon} from "src/components/BaseTable";
+import React, {useState, useEffect, useLayoutEffect, useRef} from "react";
+import BaseTable  from "src/components/BaseTable";
 import {
     ColumnProps,
     message,
 } from "src/vendors/antd";
-import {authStore, appStore} from "src/stores";
 import {observer} from "mobx-react-lite";
-import {PageHeader, Place} from "src/components/common";
+import {PageHeader} from "src/components/common";
 import createModal from "src/libs/createModal";
 import moment from "moment";
 import {throttle} from "src/utils/throttle/throttle";
@@ -35,8 +34,8 @@ const throttler2 = throttle();
 export default observer(function Template2(props: Props) {
     const registerCode = props.payload && props.payload.registerCode;
     const [dataSource, setDataSource]: any = useState([{}]);
-    const [pageLoading, setPageLoading] = useState(false);
     const [surplusHeight, setSurplusHeight]: any = useState(220);
+    const [pageLoading,setPageLoading]=useState(false)
     const [selectedRowKeys, setSelectedRowKeys] = useState([] as any[])
     const [signValue, setSignValue] = useState('')
     const previewModal = createModal(PreviewModal)
@@ -149,7 +148,7 @@ export default observer(function Template2(props: Props) {
             {item.label || item.itemCode}
           </pre>),
                 align: "center",
-                className: "input-cell",
+                className:item.nullUse && "required-cell",
                 colSpan: item.colSpan,
                 width: (15 * item.width || 50) + 8,
                 dataIndex: item.itemCode,
@@ -167,11 +166,14 @@ export default observer(function Template2(props: Props) {
                         }, registerCode)}`
 
                     if (item.type == 'date' || item.type == 'date_time' || item.type == 'time') {
-                        console.log("record[item.itemCode]===", record[item.itemCode]);
-                        record[item.itemCode] = record[item.itemCode] || item.defaultValue
+                        /*不是默认开启不允许有默认值*/
+                        // if(item.itemCode =='日期(年月)'){
+                        //     console.log("record[item.itemCode]",item.itemCode,record,record[item.itemCode]);
+                        // }
+                        record[item.itemCode] = record[item.itemCode] || (item.defaultUse ? item.defaultValue:undefined)
                         let format = 'YYYY-MM-DD'
-                        if (item.type == 'date_time') format = 'YYYY-MM-DD HH:mm'
-                        if (item.type == 'time') format = 'HH:mm';
+                        if (item.type == 'date_time') format = 'YYYY-MM'
+                        if (item.type == 'time') format = 'YYYY-MM-DD HH:mm';
                         children = <DatePickerColumnRender
                             {...{
                                 className: childrenClassName,
@@ -209,11 +211,6 @@ export default observer(function Template2(props: Props) {
                                 itemCode: item.itemCode,
                                 updateDataSource,
                                 handleNextIptFocus,
-                                onBlur: (newVal: string, oldVal: any) => {
-                                    // record.title = newVal
-                                    // 失去焦点,判断是否有影响项
-                                    // gotoContiun(item, record, index)
-                                },
                             }}
                         />
                     } else if (item.type == 'sign') {
@@ -257,21 +254,14 @@ export default observer(function Template2(props: Props) {
 
     const handleSelectedChange = (payload: any[]) => {
         setSelectedRowKeys(payload)
-        // console.log(payload)
     }
 
     useEffect(() => {
-        if (handbookModel.detail.itemDataStr) {
-            setDataSource(JSON.parse(handbookModel.detail.itemDataStr))
-        }
-    }, [handbookModel.detail])
-    // useEffect(() => {
-    //     console.log(handbookModel.spinLoading);
-    //     setPageLoading(handbookModel.spinLoading)
-    // }, [handbookModel.spinLoading])
-
+        let list = handbookModel?.dataSource
+        setDataSource([...list])
+    }, [handbookModel?.dataSource])
     /** 公共函数 */
-    const {cellDisabled, handleNextIptFocus, handleUpload,} = getFun({setPageLoading, dataSource, setDataSource});
+    const {cellDisabled, handleNextIptFocus, handleUpload} = getFun({ setPageLoading,dataSource, setDataSource});
 
     const pageHeaderRef = useRef<HTMLDivElement>(null)
     useLayoutEffect(() => {
@@ -285,9 +275,9 @@ export default observer(function Template2(props: Props) {
             templateSingModal.show({
                 handleOk: (value: any) => {
                     record.modified = true
-                    record[itemCode] = value.empName;
+                    record[itemCode] = value.empNo;
                     /**需要记录起来，下次签名直接使用**/
-                    setSignValue(value.empName)
+                    setSignValue(value.empNo)
                     updateDataSource()
                 }
             })
@@ -299,23 +289,26 @@ export default observer(function Template2(props: Props) {
 
     }
     const handleSave = () => {
-        // globalModal.signModal.show({
-        //     title:'签名验证',
-        //     nameLabel:'输入用户名或工号',
-        //     passwordLabel:' 输入登录密码',
-        //     onCallBack: (empNo: string, password: string) => {
-        //         // onOkCb(params)
-        //         console.log(empNo,password);
-        //     }
-        // })
-        //
-        setPageLoading(true)
         const {
             id: catalogId,
             masterId,
             templateId,
             templateType
         } = handbookModel.curCatalogue
+        /*需要验证必填*/
+        let reslut:boolean =false
+        handbookModel.formItems.map((item:any)=>{
+            if(item.nullUse){
+                dataSource.map((i:any)=>{
+                    if(!i[item.title]){
+                        // console.log(item.title,i,i[item.title]);
+                     reslut =true
+                 }
+                })
+            }
+        })
+        if(reslut){ return message.info('请检查必填项内容') }
+        handbookModel.tableLoading = true
         trainingSettingApi.saveOrUpdateItemData({
             catalogId,
             masterId,
@@ -323,16 +316,18 @@ export default observer(function Template2(props: Props) {
             templateType,
             itemDataStr: JSON.stringify(dataSource)
         }).then((res) => {
+            message.success('保存成功')
             // 重新请求详情数据
             handbookModel.getCatalogueData()
-            setPageLoading(false)
+        }).finally(()=>{
+            handbookModel.tableLoading = false
         })
     }
     const handleAdd = () => {
-        setPageLoading(true)
+        handbookModel.tableLoading = true
         setDataSource([...dataSource, {}])
         setTimeout(() => {
-            setPageLoading(false)
+            handbookModel.tableLoading = false
         }, 500)
     }
     const handleDelete = () => {
@@ -340,21 +335,33 @@ export default observer(function Template2(props: Props) {
             message.warn('未勾选项目')
             return
         } else {
+            handbookModel.tableLoading = true
             let list = dataSource.filter((item: any) => !selectedRowKeys.includes(item.key))
             setDataSource([...list])
             setSelectedRowKeys && setSelectedRowKeys([])
+            handbookModel.tableLoading = false
         }
+    }
+    const title =()=>{
+        return(
+            <div style={{display:"flex",justifyContent:'space-between'}}>
+                <div>
+                    <Button type='primary' onClick={handleAdd}>添加一行</Button>
+                    <Button type='danger' onClick={handleDelete}>删除所选行</Button>
+                </div>
+                <Button type='primary' onClick={handleSave}>保存</Button>
+            </div>
+        )
     }
     return (
         <Container>
             <TableCon
                 className='whyxTable'>
-                <Button type='primary' onClick={handleAdd}>添加一行</Button>
-                <Button type='danger' onClick={handleDelete}>删除所选行</Button>
-                <Button onClick={handleSave}>保存</Button>
+
                 <BaseTable
+                    title={title}
                     className="record-page-table"
-                    loading={pageLoading}
+                    loading={handbookModel?.tableLoading}
                     dataSource={dataSource}
                     rowSelection={{
                         selectedRowKeys,
@@ -377,6 +384,12 @@ export default observer(function Template2(props: Props) {
 
 // @ts-ignore
 const Container = styled(Wrapper)`
+  .required-cell{
+    .ant-table-column-title :before{
+      content: '*';
+      color: red;
+    }
+  }
   .ant-select-disabled .ant-select-selection {
     background: rgba(0, 0, 0, 0.0) !important;
   }

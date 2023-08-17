@@ -39,8 +39,8 @@ export default function DatePickerColumnRender(props: Props) {
 
   //处理时间选择类型
   let dateStr = record[itemCode] || ''
-  console.log("dateStr===",dateStr);
-  let queryClassName = `${itemCode}-${index}`
+    console.log("dateStr====",dateStr);
+    let queryClassName = `${itemCode}-${index}`
   if (format == 'HH:mm') {
     return <TimePicker
       disabled={cellDisabled(record)}
@@ -55,9 +55,7 @@ export default function DatePickerColumnRender(props: Props) {
       className={[className, queryClassName,].join(' ')}
       onChange={(val: any) => {
         let newVal = val ? val.format(_format) : ''
-
         record[itemCode] = newVal
-          console.log("====",record);
           record.modified = true
         updateDataSource()
         onChangeDate && onChangeDate(newVal)
@@ -72,6 +70,7 @@ export default function DatePickerColumnRender(props: Props) {
     showTime={showTime}
     format={_format}
     allowClear
+    value={dateStr ? moment(dateStr, _format) : undefined}
     dropdownClassName="disable-date-ipt"
     onOpenChange={(status) => { }}
     className={[className, queryClassName,].join(' ')}
