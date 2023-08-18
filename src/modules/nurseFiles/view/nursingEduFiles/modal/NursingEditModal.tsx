@@ -25,10 +25,18 @@ export interface Props {
   onOk: any;
   onOkCallBack?: any;
 }
-
+const workTitleDefault = [
+  "见习护士",
+  "护士",
+  '主管护师',
+  '副主任护师',
+  '主任护师',
+  ...(["gxjb"].includes(appStore.HOSPITAL_ID)?['护师']:[])
+]
 export default function NursingEditModal(props: Props) {
   const { visible, params, onCancel, onOk } = props;
   const [deptList, setDeptList]: any = useState([]); // 科室
+  const [workTitle, setWorkTitle]: any = useState(workTitleDefault); 
   const [editLoading, setEditLoading] = useState(false); // 保存loading
   const formRef = React.createRef<Form>();
 
@@ -57,9 +65,15 @@ export default function NursingEditModal(props: Props) {
       setDeptList(res.data.deptList);
     });
   };
+  const getWorkType = () => {
+    service.commonApiService.multiDictInfo(['nursingEduFiles_workType']).then(res=>{
+      setWorkTitle(res.data['nursingEduFiles_workType'])
+    })
+  }
   useEffect(() => {
     if (visible) {
       getDeptList();
+      if(["jmfy"].includes(appStore.HOSPITAL_ID)) getWorkType()
     }
   }, [visible]);
 
@@ -272,13 +286,15 @@ export default function NursingEditModal(props: Props) {
             </Col>
             <Col span={16}>
               <Form.Field name="title">
-                <Select defaultValue="见习护士">
-                  <Select.Option value="见习护士">见习护士</Select.Option>
-                  <Select.Option value="护士">护士</Select.Option>
+                <Select defaultValue={workTitle[0]}>
+                  {
+                    workTitle.map((work:any)=>(<Select.Option value={work} >{work}</Select.Option>))
+                  }
+                  {/* <Select.Option value="护士">护士</Select.Option>
                   <Select.Option value="主管护师">主管护师</Select.Option>
                   <Select.Option value="副主任护师">副主任护师</Select.Option>
-                  <Select.Option value="主任护师">主任护师</Select.Option>
-                  { ["gxjb"].includes(appStore.HOSPITAL_ID) && <Select.Option value="护师">护师</Select.Option> }
+                  <Select.Option value="主任护师">主任护师</Select.Option> */}
+                  {/* { ["gxjb"].includes(appStore.HOSPITAL_ID) && <Select.Option value="护师">护师</Select.Option> } */}
                 </Select>
               </Form.Field>
             </Col>
