@@ -76,13 +76,13 @@ export default observer(function QcItemGroup(props: Props) {
           }
         }else if(appStore.HOSPITAL_ID == 'ytll'){
           if (val === '不达标' && !item.subItemList) {
-            item.remarkDeductScore = item.fixedScore.toString()
+            item.remarkDeductScore = item.fixedScore.toString() || '0'
           } else if (val === '部分达标' && !item.subItemList) {
             // console.log("val===",val);
-            item.remarkDeductScore =item.partialMatchScore ? (Number(item.partialMatchScore)/2).toString():item.partialMatchScore.toString()
+            item.remarkDeductScore =item.partialMatchScore ? item.partialMatchScore:(Number(item.fixedScore)/2 || 0).toString()
             // item.remarkDeductScore = item.partialMatchScore.toString()
           } else if (val === '完全达标') {
-            console.log("val===",val);
+            // console.log("val===",val);
             item.remarkDeductScore = ''
             if (item.subItemList)
               item.subItemList = item.subItemList.map((subItem: any) => ({ ...subItem, checked: false }))
@@ -300,7 +300,7 @@ export default observer(function QcItemGroup(props: Props) {
                             if (e.target.value === '不达标' && !newItem.subItemList) {
                               newItem.remarkDeductScore = newItem.fixedScore.toString()
                             } else if (e.target.value === '部分达标' && !newItem.subItemList) {
-                              newItem.remarkDeductScore = newItem.partialMatchScore.toString()
+                              newItem.remarkDeductScore = newItem.partialMatchScore.toString() || '0'
                             } else if (e.target.value === '完全达标') {
                               newItem.remarkDeductScore = ''
                               if (newItem.subItemList)

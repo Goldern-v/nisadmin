@@ -447,9 +447,9 @@ class QualityControlRecordEditModel {
           }else if(appStore.HOSPITAL_ID == "ytll"){
             if (this.baseInfo.useScore) {
               if (val === '不达标' && !item.subItemList) {
-                item.remarkDeductScore = item.fixedScore.toString()
+                item.remarkDeductScore = item.fixedScore?item.fixedScore.toString():'0'
               }else if (val === '部分达标' && !item.subItemList) {
-                item.remarkDeductScore =item.partialMatchScore ? (Number(item.partialMatchScore)/2).toString():item.partialMatchScore.toString()
+                item.remarkDeductScore =item.partialMatchScore ? item.partialMatchScore:(Number(item.fixedScore)/2 || 0).toString()
               } else if (val === '完全达标') {
                 item.remarkDeductScore = ''
                 if (item.subItemList)
