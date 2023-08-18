@@ -2,7 +2,7 @@ import { observer } from 'mobx-react'
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import {handbookModel} from "src/modules/continuingEdu/views/gaugePearson/handbook/model";
-import BaseTable, { TabledCon, DoCon } from 'src/components/BaseTable'
+import BaseTable, {  DoCon } from 'src/components/BaseTable'
 import { DatePicker,Button,message,Input,Modal,Row,Col,InputNumber } from "src/vendors/antd";
 import moment from 'moment'
 import { authStore } from 'src/stores'
@@ -123,11 +123,18 @@ useEffect(() => {
       dataIndex: "signName",
       align: "center",
       width: 60,
-      render: (value: any, row: any, index: number) =>{
-        return (<DoCon>
-          <span key={row.id} onClick={() => handleSign(row, 'signName')}>{value || '签名'}</span>
-        </DoCon>)
-      }
+        render: (value: any, row: any, index: number) => {
+            const obj = {
+                children: <DoCon>
+                    <span key={row.id} onClick={() => handleSign(row, 'signName')}>{value || '签名'}</span>
+                </DoCon>,
+                props: {rowSpan: 0},
+            } as any;
+            if (index === 0) {
+                obj.props.rowSpan = tableData.length
+            }
+            return obj
+        }
       
     },
   ];
@@ -165,33 +172,38 @@ useEffect(() => {
     })
   }
 
-  const updateDataSource = (isAll?: boolean) => {
-    // if (isAll) {
-    //     setDataSource([]);
-    //     setDataSource([...dataSource]);
-    // } else {
-    //     throttler2(() => {
-    //         setDataSource([...dataSource]);
-    //     });
-    // }
-};
-  const handleSign = (record: any, itemCode: string) => {
-    if (!signValue) {
-        templateSingModal.show({
-            handleOk: (value: any) => {
-                record[itemCode] = value.empNo;
-                /**需要记录起来，下次签名直接使用**/
-                setSignValue(value.empNo)
-                // updateDataSource()
-            }
-        })
-    } else {
-      // console.log(signValue)
-        record[itemCode] = signValue;
-        setTableData([...tableData])
-    }
+    const handleSign = (record: any, itemCode: string) => {
+        if (record[itemCode]) {
+            Modal.confirm({
+                title: '提示',
+                content: '是否清除签名？',
+                okText: '确定',
+                okType: 'danger',
+                cancelText: '取消',
+                onOk: () => {
+                    record[itemCode] = '';
+                    setTableData([...tableData])
+                }
+            })
+            return false
+        }
+        if (!signValue) {
+            templateSingModal.show({
+                handleOk: (value: any) => {
+                    // console.log(authStore.user?.empName)
+                    record[itemCode] = value.empNo;
+                    /**需要记录起来，下次签名直接使用**/
+                    setSignValue(value.empNo)
+                    // updateDataSource()
+                }
+            })
+        } else {
+            // console.log(signValue)
+            record[itemCode] = signValue;
+            setTableData([...tableData])
+        }
 
-}
+    }
 
   /**关闭对话框 */
   const handleOk = ()=>{

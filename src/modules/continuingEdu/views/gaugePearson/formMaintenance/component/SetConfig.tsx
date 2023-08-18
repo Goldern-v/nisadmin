@@ -508,26 +508,11 @@ export default observer(function SetConfig(props: Props) {
         setPageLoading(true);
         trainingSettingApi.updateFormItem(params).then((res: any) => {
             message.success('保存成功')
+            getData();
+        }).finally(()=>{
             setPageLoading(false);
 
-            getData();
         })
-        //     "latHandbookFormItemList": [
-        //         {
-        //             "title": "string",
-        //             "type": "string",
-        //             "options": "string",
-        //             "width": "string",
-        //             "defaultValue": "string"
-        //         }
-        //     ]
-        // wardRegisterDefaultService
-        //   .saveOrUpdateItemConfig(registerCode, blockId, dataSource)
-        //   .then(res => {
-        //     setPageLoading(false);
-        //     getData();
-        //     onOkCallBack();
-        //   });
     };
     const getData = () => {
         setPageLoading(true);

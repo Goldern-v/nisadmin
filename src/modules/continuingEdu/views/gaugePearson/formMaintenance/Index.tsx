@@ -107,7 +107,7 @@ export default observer(function FormMaintenance() {
                     <DoCon >
                         <span onClick={()=>handleReview(record)}>查看</span>
                         <span className={record.isUse !==1?'':'disable-sty'}  onClick={()=>handleAdd('编辑',record)}>编辑</span>
-                        <span className={record.isUse !==1?'':'disable-sty'} onClick={()=>handleDelete(record.id)}>删除</span>
+                        <span className={record.isUse !==1?'':'disable-sty'} onClick={()=>handleDelete(record)}>删除</span>
                     </DoCon>
                 )
             }
@@ -121,21 +121,23 @@ export default observer(function FormMaintenance() {
         );
     }
 
-    const handleDelete =(id:number)=>{
-        if(!id)return
-        Modal.confirm({
-            title: '提示',
-            content: '是否删除该数据',
-            okText: '确定',
-            okType: 'danger',
-            cancelText: '取消',
-            onOk: () => {
-                trainingSettingApi.deleteTemplate({id}).then(()=>{
-                    message.success('删除成功')
-                    getData()
-                })
-            }
-        })
+    const handleDelete =(record:any)=>{
+        if(!record.id)return
+        if(record.isUse !==1) {
+            Modal.confirm({
+                title: '提示',
+                content: '是否删除该数据',
+                okText: '确定',
+                okType: 'danger',
+                cancelText: '取消',
+                onOk: () => {
+                    trainingSettingApi.deleteTemplate({id:record.id}).then(() => {
+                        message.success('删除成功')
+                        getData()
+                    })
+                }
+            })
+        }
 
     }
     const handleCheckBox=(e:any,record:any)=>{
@@ -157,7 +159,9 @@ export default observer(function FormMaintenance() {
         setQuery(newQuery);
     }
     const handleAdd = (title:string,record:any) => {
-        setAddModal({visible:true,title,record})
+        if(record.isUse !==1) {
+            setAddModal({visible: true, title, record})
+        }
     }
     const handleCancel = () => {
         setAddModal({...addModal,visible:false,record:{}})
@@ -218,7 +222,9 @@ export default observer(function FormMaintenance() {
                 <Input
                     defaultValue={query.tableName}
                     onBlur={(e) => {
-                        console.log(e.target.value);
+                        setQuery({...query, tableName: e.target.value})
+                    }}
+                    onPressEnter={(e:any)=>{
                         setQuery({...query, tableName: e.target.value})
                     }}
                     placeholder="请输入表名"

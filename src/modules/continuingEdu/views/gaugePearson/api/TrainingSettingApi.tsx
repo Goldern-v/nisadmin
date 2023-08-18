@@ -145,21 +145,37 @@ export default class TrainingSettingApi extends BaseApiService {
   public async queryTemplateItemAndData(obj: Obj) {
     return this.get(`/studyAndTrain/planTrainStudentInfo/queryTemplateItemAndData?${qs.stringify(obj)}`);
   }
-  //保存或更新模板项数据
+  /**保存或更新模板项数据**/
   public async saveOrUpdateItemData(params:any) {
     return this.post('/studyAndTrain/planTrainStudentInfo/saveOrUpdateItemData',params);
   }
+  /**获取手册模板，表单的子项**/
   public async getTemplateItems(params:any) {
     return this.post('/formHandBook/getTemplateItems',params);
   }
+  /**修改手册表单的子项**/
   public async updateFormItem(params:any) {
     return this.post('/formHandBook/updateFormItem',params);
   }
+  /**
+   * 单个导出
+   * @param templateDd {number}
+   * @returns
+   */
   public async getDownload(params:any) {
     return this.post('/formHandBook/download',params,{ responseType: 'blob' });
   }
+  /**下载所有模板**/
   public async getAllDownloadZip(params:any) {
     return this.post('/formHandBook/downloadZip',params,{ responseType: 'blob' });
+  }
+  /**
+   * 查询所有模板的项和数据（用于手册导出）
+   * @param masterId {number}
+   * @returns
+   */
+  public async exportQueryAllData(masterId: number) {
+    return this.get(`/studyAndTrain/planTrainStudentInfo/queryAllData/${masterId}`);
   }
 }
 export const trainingSettingApi = new TrainingSettingApi();

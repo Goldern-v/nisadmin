@@ -160,8 +160,10 @@ export default observer(function AddModal(props: IProps) {
             setParams({ ...params, deptCode: e })
           }} />
           <span className='label'>层级</span>
-          <Select value={params.hierarchy}>
-            {HIERARCHY.map((v) => <Option value={v} key={v}>{v}</Option>)}
+          <Select value={params.hierarchy} onChange={(e:any)=>{
+            setParams({ ...params, hierarchy: e })
+          }}>
+            {HIERARCHY.map((v) => <Option   value={v} key={v}>{v}</Option>)}
           </Select>
         </PageHeader>
         <div className='form-con'>

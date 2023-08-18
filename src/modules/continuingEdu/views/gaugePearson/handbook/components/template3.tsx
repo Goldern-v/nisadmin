@@ -8,9 +8,9 @@ export interface IProps {
 }
 /**附件 */
 export default observer(function Template3(props: IProps) {
-  return (
+    return (
     <Wrapper>
-      <iframe src={handbookModel?.catalogueData?.attachment?.path} />
+      <iframe src={handbookModel?.detail?.attachment?.path} />
     </Wrapper>
   )
 })

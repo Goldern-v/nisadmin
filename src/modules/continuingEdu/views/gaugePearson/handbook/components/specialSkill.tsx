@@ -118,11 +118,23 @@ useEffect(() => {
       dataIndex: "signName",
       align: "center",
       width: 60,
-      render: (value: any, row: any, index: number) =>{
-        return (<DoCon>
-          <span key={row.id} onClick={() => handleSign(row, 'signName')}>{value || '签名'}</span>
-        </DoCon>)
+      render: (value: any, row: any, index: number) => {
+        const obj = {
+          children: <DoCon>
+            <span key={row.id} onClick={() => handleSign(row, 'signName')}>{value || '签名'}</span>
+          </DoCon>,
+          props: {rowSpan: 0},
+        } as any;
+        if (index === 0) {
+          obj.props.rowSpan = tableData.length
+        }
+        return obj
       }
+      // render: (value: any, row: any, index: number) =>{
+      //   return (<DoCon>
+      //     <span key={row.id} onClick={() => handleSign(row, 'signName')}>{value || '签名'}</span>
+      //   </DoCon>)
+      // }
       
     },
     {
@@ -184,24 +196,37 @@ useEffect(() => {
   }
 
   const handleSign = (record: any, itemCode: string) => {
+    if (record[itemCode]) {
+      Modal.confirm({
+        title: '提示',
+        content: '是否清除签名？',
+        okText: '确定',
+        okType: 'danger',
+        cancelText: '取消',
+        onOk: () => {
+          record[itemCode] = '';
+          setTableData([...tableData])
+        }
+      })
+      return false
+    }
     if (!signValue) {
-        templateSingModal.show({
-            handleOk: (value: any) => {
-              // console.log(authStore.user?.empName)
-                record[itemCode] =value.empNo;
-                /**需要记录起来，下次签名直接使用**/
-                setSignValue(value.empNo)
-                // updateDataSource()
-            }
-        })
+      templateSingModal.show({
+        handleOk: (value: any) => {
+          // console.log(authStore.user?.empName)
+          record[itemCode] = value.empNo;
+          /**需要记录起来，下次签名直接使用**/
+          setSignValue(value.empNo)
+          // updateDataSource()
+        }
+      })
     } else {
       // console.log(signValue)
-        record[itemCode] = signValue;
-        setTableData([...tableData])
+      record[itemCode] = signValue;
+      setTableData([...tableData])
     }
 
-}
-
+  }
   return (
     <Wrapper>
        <BaseTable

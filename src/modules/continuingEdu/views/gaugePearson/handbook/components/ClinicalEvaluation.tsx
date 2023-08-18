@@ -9,6 +9,8 @@ import {Input, DatePicker} from "antd";
 import TemplateSingModal from 'src/modules/continuingEdu/components/SingModal'
 import createModal from "src/libs/createModal";
 import moment from "moment";
+import DeptSelect from "src/components/DeptSelect";
+import { cloneJson } from 'src/utils/json/clone';
 
 export interface Props {
     payload: any;
@@ -32,8 +34,8 @@ export default observer(function ClinicalEvaluation(props: Props) {
         if (handbookModel?.detail?.dataMaps) {
             setHeardValue({...handbookModel?.detail?.dataMaps})
         }
-        setTableData(tableDateNew)
-
+        setTableData([...tableDateNew])
+        console.log("tableDateNew===",tableDateNew);
     }, [handbookModel?.detail])
     const [heardValue, setHeardValue] = useState({} as any)
     // 动态合并单元格
@@ -58,13 +60,14 @@ export default observer(function ClinicalEvaluation(props: Props) {
     const handleInput = (e: any, code: string, record: any) => {
         record.modified = true
         record[code] = e.target.value
+        let cloneData = cloneJson(tableData);
+        setTableData(cloneData)
     }
     const columns: any = [
         {
             title: "项目",
             dataIndex: "catagory",
             align: "center",
-            width: 80,
             render: (value: string, row: any, index: number) => {
                 const obj: any = {
                     children: <>{value.indexOf('\n') > -1 ? value.split('\n').map((it: string) => <>{it}<br></br></>) : value}</>,
@@ -79,7 +82,6 @@ export default observer(function ClinicalEvaluation(props: Props) {
             title: "评价内容",
             dataIndex: "content",
             align: "center",
-            width: 120
         },
         {
             title: '入科评估',
@@ -87,27 +89,23 @@ export default observer(function ClinicalEvaluation(props: Props) {
                 {
                     title: '自评',
                     dataIndex: 'intoOne',
-                    key: 'intoOne',
-                    width: 80,
                     align: "center",
                     render: (text: string, record: any, index: number) => {
                         return <Input
                             key={`intoOne-${index}`}
                             className='table-input'
-                            defaultValue={text} onBlur={(e: any) => handleInput(e, 'intoOne', record)}/>
+                            value={text} onChange={(e: any) => handleInput(e, 'intoOne', record)}/>
                     }
                 },
                 {
                     title: '老师评估',
                     dataIndex: 'intoTwo',
-                    key: 'intoTwo',
-                    width: 80,
                     align: "center",
                     render: (text: string, record: any, index: number) => {
                         return <Input
                             key={`intoTwo-${index}`}
                             className='table-input'
-                            defaultValue={text} onBlur={(e: any) => handleInput(e, 'intoTwo', record)}/>
+                            value={text} onChange={(e: any) => handleInput(e, 'intoTwo', record)}/>
                     }
                 },
             ],
@@ -118,27 +116,23 @@ export default observer(function ClinicalEvaluation(props: Props) {
                 {
                     title: '自评',
                     dataIndex: 'intoThree',
-                    key: 'intoThree',
-                    width: 80,
                     align: "center",
                     render: (text: string, record: any, index: number) => {
                         return <Input
                             key={`intoThree-${index}`}
                             className='table-input'
-                            defaultValue={text} onBlur={(e: any) => handleInput(e, 'intoThree', record)}/>
+                            value={text} onChange={(e: any) => handleInput(e, 'intoThree', record)}/>
                     }
                 },
                 {
                     title: '老师评估',
                     dataIndex: 'intoFour',
-                    key: 'intoFour',
-                    width: 80,
                     align: "center",
                     render: (text: string, record: any, index: number) => {
                         return <Input
                             key={`intoFour-${index}`}
                             className='table-input'
-                            defaultValue={text} onBlur={(e: any) => handleInput(e, 'intoFour', record)}/>
+                            value={text} onChange={(e: any) => handleInput(e, 'intoFour', record)}/>
                     }
                 },
             ],
@@ -149,27 +143,23 @@ export default observer(function ClinicalEvaluation(props: Props) {
                 {
                     title: '自评',
                     dataIndex: 'intoFive',
-                    key: 'intoFive',
-                    width: 80,
                     align: "center",
                     render: (text: string, record: any, index: number) => {
                         return <Input
                             key={`intoFive-${index}`}
                             className='table-input'
-                            defaultValue={text} onBlur={(e: any) => handleInput(e, 'intoFive', record)}/>
+                            defaultValue={text} onChange={(e: any) => handleInput(e, 'intoFive', record)}/>
                     }
                 },
                 {
                     title: '老师评估',
                     dataIndex: 'intoSix',
-                    key: 'intoSix',
-                    width: 80,
                     align: "center",
                     render: (text: string, record: any, index: number) => {
                         return <Input
                             key={`intoSix-${index}`}
                             className='table-input'
-                            defaultValue={text} onBlur={(e: any) => handleInput(e, 'intoSix', record)}/>
+                            defaultValue={text} onChange={(e: any) => handleInput(e, 'intoSix', record)}/>
                     }
                 },
             ],
@@ -226,10 +216,15 @@ export default observer(function ClinicalEvaluation(props: Props) {
             <>
                 <div className='heard'>
                     <div>轮转科室:</div>
-                    <div className='item'>内科病区:<Input style={{width: 120}} value={heardValue?.one}
-                                                          onChange={(e: any) => {
-                                                              setHeardValue({...heardValue, one: e.target.value})
-                                                          }}/></div>
+                    <div className='item' style={{display:'flex',alignItems:'center'}}>内科病区:
+                        <DeptSelect hasAllDept deptCode={heardValue?.one}  onChange={(e: any) => {
+                            setHeardValue({...heardValue, one: e})
+                        }} />
+                        {/*<Input style={{width: 120}} value={heardValue?.one}*/}
+                        {/*                                  onChange={(e: any) => {*/}
+                        {/*                                      setHeardValue({...heardValue, one: e.target.value})*/}
+                        {/*                                  }}/>*/}
+                    </div>
                     <div className='item'>入科时间:<DatePicker
                         value={heardValue?.two ? moment(heardValue?.two) : undefined}
                         format="YYYY-MM-DD"
@@ -272,7 +267,6 @@ export default observer(function ClinicalEvaluation(props: Props) {
                 dataSource={tableData || []}
                 columns={columns}
                 surplusHeight={400}
-                surplusWidth={70}
             />
             <templateSingModal.Component/>
         </Wrapper>
@@ -292,8 +286,9 @@ const Wrapper = styled.div`
   }
 
   .item {
-    margin-right: 5px;
-    margin-top: 5px;
+    margin:5px 8px;
+    //margin-right: 5px;
+    //margin-top: 5px;
     .line {
       display: inline-block;
       height: 28px;

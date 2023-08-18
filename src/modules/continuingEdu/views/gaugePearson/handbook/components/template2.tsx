@@ -3,7 +3,7 @@ import React, {useState, useEffect, useLayoutEffect, useRef} from "react";
 import BaseTable  from "src/components/BaseTable";
 import {
     ColumnProps,
-    message,
+    message, Modal,
 } from "src/vendors/antd";
 import {observer} from "mobx-react-lite";
 import {PageHeader} from "src/components/common";
@@ -271,21 +271,35 @@ export default observer(function Template2(props: Props) {
         }
     });
     const handleSign = (record: any, itemCode: string) => {
-        if (!signValue) {
+        if (record[itemCode]) {
+            Modal.confirm({
+                title: '提示',
+                content: '是否清除签名？',
+                okText: '确定',
+                okType: 'danger',
+                cancelText: '取消',
+                onOk: () => {
+                    record[itemCode] = '';
+                    updateDataSource()
+                }
+            })
+            return false
+        }else{
             templateSingModal.show({
                 handleOk: (value: any) => {
                     record.modified = true
                     record[itemCode] = value.empNo;
                     /**需要记录起来，下次签名直接使用**/
-                    setSignValue(value.empNo)
                     updateDataSource()
                 }
             })
-        } else {
-            record.modified = true
-            record[itemCode] = signValue;
-            updateDataSource()
         }
+        // if (!signValue) {
+        //
+        // } else {
+        //     record[itemCode] = signValue;
+        //     updateDataSource()
+        // }
 
     }
     const handleSave = () => {
