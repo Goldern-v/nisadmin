@@ -22,6 +22,7 @@ import { observer } from "mobx-react-lite";
 import { newStudentCreditTypeList } from "./../StepCommon";
 export interface Props { }
 import { appStore } from "src/stores";
+import { mainPageModal } from "src/modules/continuingEdu/views/mainTablePage/MainPageModal";
 
 export default observer(function Step1() {
   // 组织方式
@@ -140,6 +141,18 @@ export default observer(function Step1() {
         onChange={onFormChange}
       >
         <Row>
+        {appStore.HOSPITAL_ID === "jmfy"&&<Col span={24}>
+        <Form.Field label={`科室`} name="deptCode"> 
+              <Select allowClear={true}
+              >
+                {mainPageModal.deptList.map(item => (
+                  <Select.Option value={item.code} key={item.name}>
+                    {item.name}
+                  </Select.Option>
+                ))}
+              </Select>
+            </Form.Field>
+          </Col>}
           <Col span={24}>
             <Form.Field label={`考试名称`} name="title">
               <Input />

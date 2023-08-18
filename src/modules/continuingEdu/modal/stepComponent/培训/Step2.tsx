@@ -22,6 +22,7 @@ import { CheckUserItem } from "src/modules/notice/page/SentNoticeView";
 import { observer } from "mobx-react-lite";
 import { appStore } from "src/stores";
 import { newStudentCreditTypeList } from "./../StepCommon";
+import { mainPageModal } from "src/modules/continuingEdu/views/mainTablePage/MainPageModal";
 const { TextArea } = Input;
 export interface Props {
 }
@@ -158,6 +159,18 @@ export default observer(function Step1() {
         onChange={onFormChange}
       >
         <Row>
+        {appStore.HOSPITAL_ID === "jmfy"&&<Col span={24}>
+        <Form.Field label={`科室`} name="deptCode"> 
+              <Select allowClear={true}
+              >
+                {mainPageModal.deptList.map(item => (
+                  <Select.Option value={item.code} key={item.name}>
+                    {item.name}
+                  </Select.Option>
+                ))}
+              </Select>
+            </Form.Field>
+          </Col>}
           <Col span={24}>
             <Form.Field label={`培训名称`} name="title">
               <Input />

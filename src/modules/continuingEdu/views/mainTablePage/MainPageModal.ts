@@ -4,6 +4,7 @@ import { crrentMonth } from "src/utils/moment/crrentMonth";
 import { fileDownload } from "src/utils/file/file";
 import { appStore } from "src/stores/index";
 import { stepViewModal } from "../../modal/stepComponent/StepViewModal";
+import service from 'src/services/api'
 
 class MainPageModal {
   @observable public id = ""; //菜单id
@@ -26,6 +27,9 @@ class MainPageModal {
   @observable public trainingKeyPointTree: any = []; // 类型名称
   @observable public knowledgePointDivisionTree: any = []; // 知识点划分
   @observable public learningFormTree: any = []; // 教学方式
+  
+  @observable public deptList=[{code:'',name:''}];//科室
+  @observable public selectDeptCode = ''//选择的科室
 
   @computed
   get postObj() {
@@ -43,7 +47,8 @@ class MainPageModal {
       pageIndex: this.pageIndex, //页码
       pageSize: this.pageSize, //每页大小
       beginTime: this.selectedDate[0].format("YYYY-MM-DD"), //开始时间
-      endTime: this.selectedDate[1].format("YYYY-MM-DD") // 结束时间
+      endTime: this.selectedDate[1].format("YYYY-MM-DD"), // 结束时间
+      deptCode:['jmfy'].includes(appStore.HOSPITAL_ID)?this.selectDeptCode:''
     };
   }
 
@@ -94,9 +99,20 @@ class MainPageModal {
     });
   }
 
+  /**获取科室 */
+  getDeptList(){
+    if(this.deptList.length>1){
+      return false
+    }
+    service.commonApiService.getNursingUnitAll().then(res => {
+      if (res.data.deptList) this.deptList = res.data.deptList
+    })
+  }
+
   async init() {
     await this.initData();
     this.onload();
+    this.getDeptList()
   }
 }
 

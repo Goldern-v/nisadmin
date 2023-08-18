@@ -173,6 +173,32 @@ export default observer(function Header(props: Props) {
     }
   }
 
+  /**江门妇幼增加科室 */
+  const getDept = ()=>{
+    return (
+      <span>
+        <span>科室：</span>
+        <Select
+          style={{ width: 200 }}
+          value={mainPageModal.selectDeptCode}
+          onChange={(val: string) => {
+            mainPageModal.selectDeptCode = val;
+            mainPageModal.pageIndex = 1;
+            mainPageModal.onload();
+          }}
+        >
+          <Select.Option value="">全部</Select.Option>
+          {mainPageModal.deptList.map((item: any, index: number) => (
+            <Select.Option value={item.code} key={index}>
+              {item.name}
+            </Select.Option>
+          ))}
+          {/* <Select.Option value="-1">其他</Select.Option> */}
+        </Select>
+      </span>
+    )
+  }
+
   return (
     <Wrapper>
       <LeftIcon>
@@ -203,6 +229,7 @@ export default observer(function Header(props: Props) {
             </Select.Option>
           ))}
         </Select>
+        {['jmfy'].includes(appStore.HOSPITAL_ID) && getDept()}
       </LeftIcon>
       <RightIcon>
         <Input

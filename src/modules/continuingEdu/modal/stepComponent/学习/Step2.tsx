@@ -17,6 +17,7 @@ import { observer } from "mobx-react-lite";
 import { cloneJson } from "src/utils/json/clone";
 import { appStore } from 'src/stores'
 import { newStudentCreditTypeList } from "./../StepCommon"
+import { mainPageModal } from 'src/modules/continuingEdu/views/mainTablePage/MainPageModal';
 export interface Props { }
 
 export default observer(function Step2() {
@@ -100,6 +101,18 @@ export default observer(function Step2() {
     <Wrapper>
       <Form ref={refForm} labelWidth={100} onChange={onFormChange}>
         <Row>
+        {appStore.HOSPITAL_ID === "jmfy"&&<Col span={24}>
+        <Form.Field label={`科室`} name="deptCode"> 
+              <Select allowClear={true}
+              > 
+                {mainPageModal.deptList.map(item => (
+                  <Select.Option value={item.code} key={item.name}>
+                    {item.name}
+                  </Select.Option>
+                ))}
+              </Select>
+            </Form.Field>
+          </Col>}
           <Col span={24}>
             <Form.Field label={`学习名称`} name="title">
               <Input />

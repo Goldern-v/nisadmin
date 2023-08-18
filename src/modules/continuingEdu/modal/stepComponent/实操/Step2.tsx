@@ -21,6 +21,7 @@ import { observer } from "mobx-react-lite";
 import { newStudentCreditTypeList } from "./../StepCommon";
 export interface Props { }
 import { appStore } from "src/stores";
+import { mainPageModal } from "src/modules/continuingEdu/views/mainTablePage/MainPageModal";
 
 export default observer(function Step1() {
   // 组织方式 1-线上 2-线下
@@ -142,6 +143,18 @@ export default observer(function Step1() {
           实操任务通过后，请在护士助手app对学院进行评分操作
         </div>}
         <Row>
+        {appStore.HOSPITAL_ID === "jmfy"&&<Col span={24}>
+        <Form.Field label={`科室`} name="deptCode"> 
+              <Select allowClear={true}
+              >
+                {mainPageModal.deptList.map(item => (
+                  <Select.Option value={item.code} key={item.name}>
+                    {item.name}
+                  </Select.Option>
+                ))}
+              </Select>
+            </Form.Field>
+          </Col>}
           <Col span={24}>
             <Form.Field label={`实操考核名称`} name="title">
               <Input />

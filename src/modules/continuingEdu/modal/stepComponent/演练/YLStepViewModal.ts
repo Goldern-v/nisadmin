@@ -2,12 +2,16 @@ import { cloneJson } from "src/utils/json/clone";
 import { observable, computed } from "mobx";
 import moment from "moment";
 import { appStore } from "src/stores";
+import { mainPageModal } from "src/modules/continuingEdu/views/mainTablePage/MainPageModal";
 
 const defaultStepData2 = {
   /** 学习名称 **/
   title: "",
   /**  学习开始时间 */
   startTime: "",
+  /**考试科室、江门妇幼 */
+  deptCode:"",
+  deptName:"",
   /**  开放时长 */
   openTime: 1,
   /**  开放时长单位（小时、天、周） */
@@ -133,6 +137,15 @@ class StepViewModal {
       daysToArchive: this.stepData2.daysToArchive,
       organizationWay: this.stepData2.organizationWay,
       address: this.stepData2.address,
+      ...appStore.hisMatch({
+        map:{
+          jmfy:{
+            deptCode:this.stepData2.deptCode || "",
+            deptName:this.stepData2.deptCode?(mainPageModal.deptList || []).filter(it=>it.code==this.stepData2.deptCode)[0].name:""
+          },
+          other:{},
+        }
+      }),
       ...appStore.hisMatch({
         map:{
           lcey:{

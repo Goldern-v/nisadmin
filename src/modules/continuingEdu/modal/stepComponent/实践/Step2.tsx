@@ -18,6 +18,7 @@ import createModal from "src/libs/createModal";
 import SelectPeopleModal from "../公共/selectNurseModal/SelectPeopleModal";
 import { CheckUserItem } from "src/modules/notice/page/SentNoticeView";
 import { newStudentCreditTypeList } from "./../StepCommon";
+import { mainPageModal } from "src/modules/continuingEdu/views/mainTablePage/MainPageModal";
 export interface Props { }
 
 export default observer(function Step2() {
@@ -135,6 +136,18 @@ export default observer(function Step2() {
     <Wrapper>
       <Form ref={refForm} labelWidth={100} onChange={onFormChange}>
         <Row>
+        {appStore.HOSPITAL_ID === "jmfy"&&<Col span={24}>
+        <Form.Field label={`科室`} name="deptCode"> 
+              <Select allowClear={true}
+              >
+                {mainPageModal.deptList.map(item => (
+                  <Select.Option value={item.code} key={item.name}>
+                    {item.name}
+                  </Select.Option>
+                ))}
+              </Select>
+            </Form.Field>
+          </Col>}
           {/* 实践名称 */}
           <Col span={24}>
             <Form.Field label={`实践名称`} name="title">

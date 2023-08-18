@@ -119,6 +119,12 @@ export default observer(function Table(props: Props) {
       width: 300,
       align: "left"
     },
+    ...['jmfy'].includes(appStore.HOSPITAL_ID)?[{
+      title: "科室",
+      dataIndex: "deptName",
+      width: 180,
+      align: "left" 
+    }]:[],
     {
       title: "教学方式",
       dataIndex: "teachingMethod",
