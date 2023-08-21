@@ -30,9 +30,12 @@ export default observer(function PreviewPannel(props: Props) {
           let item = itemList[j];
           switch (item.qcItemValue) {
             case "是":
+            case "完全达标":
               shi++;
               break;
             case "否":
+            case "部分达标":
+            case "不达标":
               fou++;
               break;
             case "不适用":
@@ -87,9 +90,9 @@ export default observer(function PreviewPannel(props: Props) {
     for (let i = 0; i < itemList.length; i++) {
       let item = itemList[i];
       total++;
-      if (item.qcItemValue == "是") shi++;
+      if (item.qcItemValue == "是" || item.qcItemValue == "完全达标") shi++;
 
-      if (item.qcItemValue == "否") fou++;
+      if (item.qcItemValue == "否"||item.qcItemValue == "部分达标"||item.qcItemValue == "不达标") fou++;
     }
 
     total = shi + fou;

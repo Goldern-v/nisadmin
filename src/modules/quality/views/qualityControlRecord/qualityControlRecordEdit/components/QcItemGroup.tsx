@@ -297,10 +297,10 @@ export default observer(function QcItemGroup(props: Props) {
                           qcModel.setItemListErrObj(item.qcItemCode, false)
                           let newItem = { ...item, qcItemValue: e.target.value }
                           if (qcModel.baseInfo.useScore) {
-                            if (e.target.value === '不达标' && !newItem.subItemList) {
-                              newItem.remarkDeductScore = newItem.fixedScore.toString()
+                            if ((e.target.value === '不达标' || e.target.value==='不适用') && !newItem.subItemList) {
+                              newItem.remarkDeductScore = (newItem.fixedScore || 0).toString()
                             } else if (e.target.value === '部分达标' && !newItem.subItemList) {
-                              newItem.remarkDeductScore = newItem.partialMatchScore.toString() || '0'
+                              newItem.remarkDeductScore = newItem.partialMatchScore?newItem.partialMatchScore.toString():(Number(newItem.fixedScore)/2 || 0).toString()
                             } else if (e.target.value === '完全达标') {
                               newItem.remarkDeductScore = ''
                               if (newItem.subItemList)
