@@ -1,5 +1,8 @@
 import React from 'react'
 import { appStore, authStore } from 'src/stores'
+import CryptoJS from"crypto-js"
+import qs from 'qs'
+import axios from 'axios'
 
 export interface navConfigItem {
   onClick?: any;
@@ -144,8 +147,28 @@ export const navConfig = (appStore:any,authStore?:any)=>{
           icon: require("../images/menu-icon/三级质控@2x.png"),
         },
       ],
-    }
+    },
+    {
+      name: "质量管理",
+      onClick:()=>{
+        const acount =  JSON.parse(sessionStorage.getItem('user')!)!.empNo; // 待加密的明文数据
+        const base64SecretKey = 'DjENO3BQGhSCpkwBWghkyQ=='; // 提供的密钥
+        const secretKey = CryptoJS.enc.Base64.parse(base64SecretKey); // 将 Base64 字符串解析为密钥对象
+        const encrypted = CryptoJS.AES.encrypt(acount, secretKey, {
+          mode: CryptoJS.mode.ECB, 
+          padding: CryptoJS.pad.Pkcs7 
+        });
+        const encryptedText = encrypted.toString(); // 将加密后的数据转换为字符串形式
 
+        let params = {account:encryptedText}
+        axios.post(`http://192.168.9.73:9091/qc/system/auth/thirdLogin`,qs.stringify(params)).then(res2=>{
+          if(res2.data.data.accessToken){
+            let {data:{data:{accessToken:token}}} = res2
+            window.open(`http://192.168.9.72:9001/qc-front/#/?token=${token}`)
+          }
+        });
+      }
+    },
   ];
 
 	return  navList
