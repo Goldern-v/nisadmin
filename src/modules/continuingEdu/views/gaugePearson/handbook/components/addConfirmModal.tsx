@@ -38,7 +38,7 @@ export default Form.create()(observer(function (props: IProps) {
       deptName = authStore.deptList.find(v => data.deptCode === v.code)?.name || '全院'
       setFieldsValue({
         deptCode: data.deptCode,
-        handbookName: deptName + '规培手册',
+        handbookName: deptName +data.hierarchy + '规培手册',
       })
     }
   }, [model.addConfirmVisible])

@@ -6,6 +6,7 @@ import Form from "src/components/Form/Form";
 import { Rules } from "src/components/Form/interfaces";
 import {trainingSettingApi} from '../../api/TrainingSettingApi'
 import moment from 'moment'
+import DeptSelect from "src/components/DeptSelect";
 
 interface Teaching {
   value:string,
@@ -238,7 +239,12 @@ export default observer(function AddInternModal(props: Props){
             </Col>
             <Col span={24}>
              <Form.Field label={`科室：`}  name="studyDeptCode" required>
-               <Select placeholder="请选择">
+               <Select
+                   showSearch={ true}
+                   filterOption={(input: any, option: any) =>
+                       option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                   }
+                   placeholder="请选择">
                 {deptList.map(item => {
                   return <Select.Option value={item.code} key={item.code}>{item.name}</Select.Option>
                 })}

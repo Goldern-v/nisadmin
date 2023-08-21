@@ -33,10 +33,9 @@ export default observer(function SetConfig(props: Props) {
     const {queryObj} = appStore
     const [dataSource, setDataSource]: any[] = useState([]);
     const [pageLoading, setPageLoading] = useState(false);
-    const [moveAble, setMoveAble] = useState(false);
     const {registerCode, selectedBlockObj} = props;
 
-    let cascaderOptions: any = [{
+    let cascadeOptions: any = [{
         value: 'text',
         label: '文本',
     },
@@ -68,6 +67,10 @@ export default observer(function SetConfig(props: Props) {
             value: 'sign',
             label: '签名',
         },
+        {
+            value:'studyDept',
+            label: '科室',
+        }
     ];
 
 
@@ -125,10 +128,10 @@ export default observer(function SetConfig(props: Props) {
                         dataIndex: "type",
                         className: ['input-cell', 'required-cell'],
                         width: 300,
-                        render: (text: any, record: any, index: any) => {
+                        render: (text: any, record: any) => {
                             return (
                                 <Cascader changeOnSelect={true}
-                                          options={cascaderOptions}
+                                          options={cascadeOptions}
                                           style={{width: '100%', textAlign: 'center'}}
                                           expandTrigger="hover"
                                           defaultValue={record.cascaderCode || ['text']}
@@ -374,7 +377,7 @@ export default observer(function SetConfig(props: Props) {
                 /*文件，签名，不可编辑*/
                 return (
                     <Input
-                        disabled={['attachment', 'sign', 'text'].includes(record.type)}
+                        disabled={['attachment', 'sign', 'text','studyDept'].includes(record.type)}
                         value={text}
                         onChange={e => {
                             record.defaultValue = e.target.value;
@@ -392,7 +395,7 @@ export default observer(function SetConfig(props: Props) {
             dataIndex: 'defaultUse',
             render(text: boolean, record: any) {
                 return <Switch
-                    disabled={['attachment', 'sign', 'text'].includes(record.type)}
+                    disabled={['attachment', 'sign', 'text','studyDept'].includes(record.type)}
                     checked={text} onChange={(checked: boolean) => {
                         if(record.defaultValue){
                             record.defaultUse = checked
@@ -441,10 +444,6 @@ export default observer(function SetConfig(props: Props) {
     const handleCopy = (index: number) => {
         let obj = dataSource.filter((item: any, key: number) => key == index)
         let newItem = JSON.parse(JSON.stringify(obj))
-        // console.log("newItem===", newItem);
-        // if(newItem.id)delete  newItem.id
-        /* 如果已经有id 需要删除   let newItem = JSON.parse(JSON.stringify(item)) */
-        // obj.
         let newDataSource = [...newItem, ...dataSource]
         setDataSource([])
         setTimeout(() => {
@@ -460,23 +459,6 @@ export default observer(function SetConfig(props: Props) {
         params.splice(index, 1)
         setDataSource([])
         setTimeout(() => setDataSource(params))
-        // if (params[index].oldItemCode) {
-        //   params.splice(index, 1)
-        //
-        //   wardRegisterDefaultService
-        //     .saveOrUpdateItemConfig(registerCode, blockId,
-        //       params.filter((item: any) => item.oldItemCode))
-        //     .then(res => {
-        //       message.success('删除成功')
-        //
-        //       setDataSource([])
-        //       setTimeout(() => setDataSource(params))
-        //     })
-        // } else {
-        //   params.splice(index, 1)
-        //   setDataSource([])
-        //   setTimeout(() => setDataSource(params))
-        // }
     };
     const addRow = () => {
         dataSource.push({type: 'text', itemCode: '', nullUse: true, defaultUse: false});
@@ -537,11 +519,6 @@ export default observer(function SetConfig(props: Props) {
         <Wrapper>
             <ToolCon>
                 <Place/>
-                {/*{selectedBlockObj &&*/}
-                {/*  selectedBlockObj.itemSizeEditable &&*/}
-                {/*  (*/}
-                {/*    <Button onClick={addRow}>添加</Button>*/}
-                {/*  )}*/}
                 <Button onClick={addRow}>添加</Button>
                 <Button onClick={onSave} type="primary">
                     保存
@@ -549,11 +526,11 @@ export default observer(function SetConfig(props: Props) {
             </ToolCon>
             <EditTableCon>
                 <BaseTable
-                    // rowKey="itemCode"
+                    rowKey="itemCode"
                     loading={pageLoading}
                     dataSource={dataSource}
                     columns={columns}
-                    type={["index", moveAble ? "diagRow" : ""]}
+                    type={["index"]}
                     surplusHeight={appStore.wih - (appStore.wih * 0.8 - 200)}
                 />
             </EditTableCon>

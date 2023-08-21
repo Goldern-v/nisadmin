@@ -70,17 +70,19 @@ export default observer(function PearsonHandbook(props: IProps) {
                     <span>{model.age}岁</span>
                     <Place/>
                     <Button onClick={() => appStore.history.goBack()}>返回</Button>
-                    <Button type='primary' onClick={() => onExport()}>导出</Button>
+                    {/*<Button type='primary' onClick={() => onExport()}>导出</Button>*/}
                 </div>
             </div>
             <div className='create-con'>
                 <div>
-                    {model.curHb?.id && <div className=''>
+                    {model.curHb?.id && <div className='create-con-title'>
                         已创建科室:
                     </div>}
                     {
                         model.curHb?.id &&
-                        <Select value={model.curHb?.id} onChange={(e: any, option: any) => model.getCurHb(option)}>
+                        <Select
+                            style={{ width: '180px',marginTop:'6px' }}
+                            value={model.curHb?.id} onChange={(e: any, option: any) => model.getCurHb(option)}>
                             {
                                 model.handbookList.map(v =>
                                     <Option value={v.id} key={v.id}>{v.handbookName}</Option>
@@ -148,6 +150,11 @@ const Wrapper = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
+    .create-con-title {
+      font-weight: bold;
+      color: #333;
+      margin-top: 4px;
+    }
 
   }
 

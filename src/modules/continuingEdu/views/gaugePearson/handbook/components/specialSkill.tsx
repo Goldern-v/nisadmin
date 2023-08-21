@@ -154,7 +154,7 @@ useEffect(() => {
 
   /**保存 */
   const saveTable = ()=>{
-    let paramter:any = {
+    let params:any = {
       templateItemListVos:[],
       masterId:handbookModel.curCatalogue?.masterId,
       templateId:handbookModel.curCatalogue?.templateId,
@@ -173,25 +173,17 @@ useEffect(() => {
           examTime:it.examTime || undefined,
           remark:it.remark || undefined,
         }
-      paramter.templateItemListVos.push({
+      params.templateItemListVos.push({
         id:it.id,
         itemDataStr:JSON.stringify(dataObj)
       })
-    // }
     })
-    // console.log(paramter)
-    // if(!flag){
-    //   message.warning('没有改动')
-    //   return false
-    // }
-    // return
     handbookModel.tableLoading = true
-    trainingSettingApi.saveOrUpdateItemData(paramter).then((res:any)=>{
+    trainingSettingApi.saveOrUpdateItemData(params).then((res:any)=>{
       message.success('保存成功')
       handbookModel.tableLoading = false
-    }).catch((err:any)=>{
+    }).finally(()=>{
       handbookModel.tableLoading = false
-
     })
   }
 
@@ -203,9 +195,11 @@ useEffect(() => {
         okText: '确定',
         okType: 'danger',
         cancelText: '取消',
-        onOk: () => {
+        onOk:async () => {
           record[itemCode] = '';
-          setTableData([...tableData])
+          await  setTableData([...tableData])
+          await  saveTable()
+          /*需要重新跑保存接口*/
         }
       })
       return false

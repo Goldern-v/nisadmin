@@ -25,6 +25,7 @@ import {handbookModel} from "src/modules/continuingEdu/views/gaugePearson/handbo
 import {Button} from "antd";
 import {trainingSettingApi} from "src/modules/continuingEdu/views/gaugePearson/api/TrainingSettingApi";
 import TemplateSingModal from 'src/modules/continuingEdu/components/SingModal'
+import DeptSelect from "src/components/DeptSelect";
 
 export interface Props {
     payload: any;
@@ -188,6 +189,14 @@ export default observer(function Template2(props: Props) {
                                 registerCode,
                             }}
                         />
+                    }else if(item.type == 'studyDept'){
+                        children = <DeptSelect
+                                    deptCode={record[item.itemCode]}
+                                    onChange={(e:any)=>{
+                                        record[item.itemCode] =e
+                                        updateDataSource()
+                                    }}
+                        />
                     } else if (item.type == "attachment") {
                         //处理上传附件类型
                         children = <FileUploadColumnRender
@@ -278,9 +287,10 @@ export default observer(function Template2(props: Props) {
                 okText: '确定',
                 okType: 'danger',
                 cancelText: '取消',
-                onOk: () => {
+                onOk:async () => {
                     record[itemCode] = '';
                     updateDataSource()
+                    handleSave()
                 }
             })
             return false
@@ -363,7 +373,7 @@ export default observer(function Template2(props: Props) {
                     <Button type='primary' onClick={handleAdd}>添加一行</Button>
                     <Button type='danger' onClick={handleDelete}>删除所选行</Button>
                 </div>
-                <Button type='primary' onClick={handleSave}>保存</Button>
+                <Button type='primary' disabled={ !(dataSource.length > 0) } onClick={handleSave}>保存</Button>
             </div>
         )
     }

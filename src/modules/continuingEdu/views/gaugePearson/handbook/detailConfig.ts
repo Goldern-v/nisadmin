@@ -19,10 +19,12 @@ export const config = {
     isSearch: true,
     component: template2,
   },
+  /*表单类型*/
   2: {
     isSearch: true,
     component: template2,
   },
+  /*pdf类型*/
   3: {
     isSearch: true,
     component: template3,

@@ -148,7 +148,7 @@ export default observer(function ClinicalEvaluation(props: Props) {
                         return <Input
                             key={`intoFive-${index}`}
                             className='table-input'
-                            defaultValue={text} onChange={(e: any) => handleInput(e, 'intoFive', record)}/>
+                            value={text} onChange={(e: any) => handleInput(e, 'intoFive', record)}/>
                     }
                 },
                 {
@@ -159,7 +159,7 @@ export default observer(function ClinicalEvaluation(props: Props) {
                         return <Input
                             key={`intoSix-${index}`}
                             className='table-input'
-                            defaultValue={text} onChange={(e: any) => handleInput(e, 'intoSix', record)}/>
+                            value={text} onChange={(e: any) => handleInput(e, 'intoSix', record)}/>
                     }
                 },
             ],

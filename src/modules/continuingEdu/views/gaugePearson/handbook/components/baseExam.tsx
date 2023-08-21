@@ -94,7 +94,7 @@ useEffect(() => {
       dataIndex: "examTime",
       align: "center",
       width: 130,
-      render: (value: any, row: any, index: number) =>{
+      render: (value: any, row: any) =>{
         return (<DatePicker key={row.id} defaultValue={value?moment(value):undefined} onChange={(date:any)=>{
           row.examTime = date?.format('YYYY-MM-DD') || undefined
         }}></DatePicker>)
@@ -110,7 +110,7 @@ useEffect(() => {
       dataIndex: "score",
       align: "center",
       width: 80,
-      render: (value: any, row: any, index: number) =>{
+      render: (value: any, row: any) =>{
         return (<InputNumber style={{width:'auto'}} precision={2} min={0} max={100} key={row.id} defaultValue={value} onBlur={(e: any) =>{
           row.score = e.target.value
         }
@@ -141,7 +141,7 @@ useEffect(() => {
 
   /**保存 */
   const saveTable = ()=>{
-    let paramter:any = {
+    let params:any = {
       templateItemListVos:[],
       masterId:handbookModel.curCatalogue?.masterId,
       templateId:handbookModel.curCatalogue?.templateId,
@@ -156,19 +156,17 @@ useEffect(() => {
           score:it.score || undefined,
           examTime:it.examTime || undefined
         }
-      paramter.templateItemListVos.push({
+        params.templateItemListVos.push({
         id:it.id,
         itemDataStr:JSON.stringify(dataObj)
       })
     })
-    
     handbookModel.tableLoading = true
-    trainingSettingApi.saveOrUpdateItemData(paramter).then((res:any)=>{
+    trainingSettingApi.saveOrUpdateItemData(params).then((res:any)=>{
       message.success('保存成功')
       handbookModel.tableLoading = false
-    }).catch((err:any)=>{
+    }).finally(()=>{
       handbookModel.tableLoading = false
-
     })
   }
 
@@ -180,9 +178,11 @@ useEffect(() => {
                 okText: '确定',
                 okType: 'danger',
                 cancelText: '取消',
-                onOk: () => {
+                onOk:async () => {
                     record[itemCode] = '';
-                    setTableData([...tableData])
+                  await  setTableData([...tableData])
+                  await  saveTable()
+                /*需要重新跑保存接口*/
                 }
             })
             return false
@@ -190,15 +190,12 @@ useEffect(() => {
         if (!signValue) {
             templateSingModal.show({
                 handleOk: (value: any) => {
-                    // console.log(authStore.user?.empName)
                     record[itemCode] = value.empNo;
                     /**需要记录起来，下次签名直接使用**/
                     setSignValue(value.empNo)
-                    // updateDataSource()
                 }
             })
         } else {
-            // console.log(signValue)
             record[itemCode] = signValue;
             setTableData([...tableData])
         }

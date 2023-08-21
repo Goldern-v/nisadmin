@@ -198,6 +198,7 @@ export default observer(function AddModal(props: IProps) {
           onOk={onRealSave}
           data={{
             deptCode: params.deptCode,
+            hierarchy:params.hierarchy
           }} />
       </Wrapper>
     </Modal>
