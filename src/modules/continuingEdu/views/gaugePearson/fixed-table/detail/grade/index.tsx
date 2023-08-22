@@ -6,6 +6,8 @@ import {handbookModel} from "src/modules/continuingEdu/views/gaugePearson/handbo
 import {observer} from "mobx-react";
 interface IProps {
   isPreview?: boolean
+  /**data从规培手册导出中传递 **/
+  exportData?:boolean
 }
 const columns: ColumnProps<any>[] = [
   {
@@ -60,11 +62,11 @@ const columns: ColumnProps<any>[] = [
 ]
 /**固定表-岗前培训考核成绩 */
 export default observer(function FixedGrade(props: IProps) {
-  const { isPreview = false } = props
+  const { isPreview = false,exportData } = props
   return <Wrapper>
     <div className='title'>岗前培训考核成绩</div>
     <BaseTable
-      dataSource={isPreview ? [] : handbookModel.detail.preTheoryExamDetails}
+      dataSource={isPreview ? [] : (exportData || handbookModel.detail.preTheoryExamDetails)}
       columns={columns}
     />
   </Wrapper>

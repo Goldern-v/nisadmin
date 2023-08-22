@@ -1,5 +1,5 @@
 import {observer} from 'mobx-react'
-import React, {useEffect, useMemo, useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import BaseBreadcrumb from 'src/components/BaseBreadcrumb'
 import {Place} from 'src/components/common'
 import {Obj} from 'src/libs/types'
@@ -12,7 +12,7 @@ import {trainingSettingApi} from '../api/TrainingSettingApi'
 import {handbookModel, handbookModel as model} from './model'
 import Menu from './components/menu'
 import Detail from './components/detail'
-
+import ExportBookWhyx from "src/modules/continuingEdu/views/gaugePearson/handbook/exportBookWhyx/ExportNurseFileWh";
 const BG = require('src/modules/nurseFiles/view/nurseFiles-wh/images/顶部背景.png')
 const spacePhoto = require('src/modules/statistic/img/spacePhoto.svg')
 const {Option} = Select
@@ -26,10 +26,12 @@ export default observer(function PearsonHandbook(props: IProps) {
      * 从学习培训跳转通过params传递信息
      */
     const [addVisible, setAddVisible] = useState(false)
+    const [exportVisible, setExportVisible] = useState(false)
+
     const onExport = () => {
-        trainingSettingApi.exportQueryAllData(handbookModel.curCatalogue.masterId).then((res: any) => {
-            console.log(res)
-        })
+        if(handbookModel.curCatalogue.masterId){
+            setExportVisible(true)
+        }
     }
     const onCreate = () => {
         setAddVisible(true)
@@ -70,7 +72,7 @@ export default observer(function PearsonHandbook(props: IProps) {
                     <span>{model.age}岁</span>
                     <Place/>
                     <Button onClick={() => appStore.history.goBack()}>返回</Button>
-                    {/*<Button type='primary' onClick={() => onExport()}>导出</Button>*/}
+                    <Button type='primary' onClick={() => onExport()}>导出</Button>
                 </div>
             </div>
             <div className='create-con'>
@@ -109,6 +111,13 @@ export default observer(function PearsonHandbook(props: IProps) {
             </div>
             <AddModal visible={addVisible} data={model.info} onCancel={() => setAddVisible(false)}
                       onOk={createHandbook}/>
+          {/*导出pdf  */}
+            {exportVisible && (
+                <ExportBookWhyx
+                    masterId={handbookModel.curCatalogue.masterId}
+                    callback={() => { setExportVisible(false) }} />
+            )}
+
         </Wrapper>
     )
 })

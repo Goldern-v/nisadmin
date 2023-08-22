@@ -4,17 +4,21 @@ import styled from 'styled-components'
 import {Input, message} from "antd";
 import {handbookModel} from "src/modules/continuingEdu/views/gaugePearson/handbook/model";
 import {trainingSettingApi} from "src/modules/continuingEdu/views/gaugePearson/api/TrainingSettingApi";
-const { TextArea } = Input
+
+const {TextArea} = Input
+
 export interface IProps {
     isPreview?: boolean
+    /**规培手册导出数据**/
+    exportData?: any
 }
 
 /**固定表-个人总结 */
 export default observer(function FixedSummary(props: IProps) {
-    const {isPreview = false} = props
-    const [value,setValue]=useState('')
+    const {isPreview = false, exportData} = props
+    const [value, setValue] = useState(exportData|| handbookModel?.detail?.dataMaps?.summary)
     const handleArea = (e: any) => {
-        if(!isPreview){
+        if (!isPreview) {
             const {
                 id: catalogId,
                 masterId,
@@ -26,7 +30,7 @@ export default observer(function FixedSummary(props: IProps) {
                 masterId,
                 templateId,
                 templateType,
-                dataMaps: {summary:e.target.value}
+                dataMaps: {summary: e.target.value}
             }).then((res) => {
                 // 重新请求详情数据
                 message.success('保存成功')
@@ -34,9 +38,14 @@ export default observer(function FixedSummary(props: IProps) {
             })
         }
     }
-    useEffect(()=>{
-        setValue(handbookModel?.detail?.dataMaps?.summary)
-    },[handbookModel?.detail?.dataMaps?.summary])
+    useEffect(() => {
+        if(exportData){
+            setValue(exportData)
+        }
+        if(handbookModel?.detail?.dataMaps?.summary){
+            setValue(handbookModel?.detail?.dataMaps?.summary)
+        }
+    }, [exportData,handbookModel?.detail?.dataMaps?.summary])
     return (
         <Wrapper>
             <div className='title'>
@@ -45,7 +54,7 @@ export default observer(function FixedSummary(props: IProps) {
                     isPreview ? <TextArea
                         disabled
                         className='area-input'
-                        placeholder=""
+                        placeholder="xxx"
                     /> : <TextArea
                         value={value}
                         onChange={(e: any) => setValue(e.target.value)}

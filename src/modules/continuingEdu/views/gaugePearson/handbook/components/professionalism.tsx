@@ -9,10 +9,13 @@ import TemplateSingModal from 'src/modules/continuingEdu/components/SingModal'
 import createModal from "src/libs/createModal";
 
 export interface Props {
-    payload: any;
+    // payload: any;
+    exportData?:any
+    isExport?:boolean
 }
 
 export default observer(function professionalism(props: Props) {
+    const {exportData,isExport} =props
     const [tableData, setTableData] = useState([]);
 
     // 签名对话框
@@ -20,7 +23,7 @@ export default observer(function professionalism(props: Props) {
     const [signValue, setSignValue] = useState() as any
 
     useEffect(() => {
-        let templateItemListVos = handbookModel?.detail.templateItemListVos || []
+        let templateItemListVos =exportData|| handbookModel?.detail.templateItemListVos || []
         let tableDateNew: any = []
         templateItemListVos.map((it: any) => {
             if (it.itemDataStr != '') {
@@ -32,7 +35,7 @@ export default observer(function professionalism(props: Props) {
         })
         setTableData(tableDateNew)
 
-    }, [handbookModel?.detail])
+    }, [exportData,handbookModel?.detail])
 
     // 动态合并单元格
     const mergeCells = (text: string, data: any, key: string, index: number) => {
@@ -58,6 +61,14 @@ export default observer(function professionalism(props: Props) {
     }
     const columns: any = [
         {
+            title: "序号",
+            dataIndex: "index",
+            key: "index",
+            align: "center",
+            width: 40,
+            render: (text: any, record: any, index: number) => index + 1
+        },
+        {
             title: "项目",
             dataIndex: "catagory",
             align: "center",
@@ -67,7 +78,7 @@ export default observer(function professionalism(props: Props) {
                     children: <>{value.indexOf('\n') > -1 ? value.split('\n').map((it: string) => <>{it}<br></br></>) : value}</>,
                     props: {},
                 } as any;
-                obj.props.rowSpan = mergeCells(row.catagory, handbookModel?.detail.templateItemListVos || [], 'catagory', index)
+                obj.props.rowSpan = mergeCells(row.catagory, tableData || [], 'catagory', index)
                 return obj
             }
         },
@@ -88,7 +99,10 @@ export default observer(function professionalism(props: Props) {
             dataIndex: "score",
             align: "center",
             width: 60,
-            render: (value: any, row: any, index: number) => {
+            render: (value: any, row: any) => {
+                if(isExport){
+                    return  <div>{value}</div>
+                }
                 return (<InputNumber style={{width: 'auto'}} precision={2} min={0} max={row.standartrd} key={row.id}
                                      defaultValue={value} onBlur={(e: any) => {
                     row.score = e.target.value
@@ -103,6 +117,9 @@ export default observer(function professionalism(props: Props) {
             align: "center",
             width: 80,
             render: (value: any, row: any, index: number) => {
+                if(isExport){
+                    return  <div>{value}</div>
+                }
                 const obj = {
                     children: <Input.TextArea autosize={{minRows: 2}} key={row.id} defaultValue={value}
                                               onBlur={(e: any) => {
@@ -124,6 +141,9 @@ export default observer(function professionalism(props: Props) {
             align: "center",
             width: 60,
             render: (value: any, row: any, index: number) => {
+                if(isExport){
+                    return  <div>{value}</div>
+                }
                 const obj = {
                     children: <DoCon>
                         <span key={row.id} onClick={() => handleSign(row, 'signName')}>{value || '签名'}</span>
@@ -202,15 +222,22 @@ export default observer(function professionalism(props: Props) {
         }
 
     }
-
+    const saveElement = () => {
+        if (!isExport) {
+            return (
+                <Button type='primary' onClick={saveTable}>保存</Button>
+            )
+        }
+    }
     return (
         <Wrapper>
+            {isExport && <div className='title'>职业素质评定表</div>}
             <BaseTable
-                title={() => <Button type='primary' onClick={saveTable}> 保存</Button>}
+                title={saveElement}
                 loading={handbookModel?.tableLoading}
                 dataSource={tableData || []}
                 columns={columns}
-                surplusHeight={350}
+                surplusHeight={isExport ?undefined:350}
                 surplusWidth={0}
                 className="custom-table" // 自定义样式类名
             />
@@ -220,10 +247,16 @@ export default observer(function professionalism(props: Props) {
     )
 })
 const Wrapper = styled.div`
+  //min-height: 200px;
+  .title {
+    line-height: 32px;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+  }
   .ant-input-number-handler-wrap {
     display: none;
   }
-
   .custom-table td {
     border: 1px solid #e8e8e8; /* 添加边框 */
   }

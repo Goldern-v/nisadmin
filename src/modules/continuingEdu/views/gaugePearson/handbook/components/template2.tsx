@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import React, {useState, useEffect, useLayoutEffect, useRef} from "react";
-import BaseTable  from "src/components/BaseTable";
+import BaseTable from "src/components/BaseTable";
 import {
     ColumnProps,
     message, Modal,
@@ -28,17 +28,23 @@ import TemplateSingModal from 'src/modules/continuingEdu/components/SingModal'
 import DeptSelect from "src/components/DeptSelect";
 
 export interface Props {
-    payload: any;
+    payload?: any;
+    /**导出pdf表格columns配置项**/
+    formItems?: any
+    isExport?: boolean
+    tableName?: string
+    /**导出pdf表格columns数据源**/
+    itemDataStr?: any
 }
 
 const throttler2 = throttle();
 export default observer(function Template2(props: Props) {
+    const {formItems, isExport, tableName, itemDataStr} = props
     const registerCode = props.payload && props.payload.registerCode;
-    const [dataSource, setDataSource]: any = useState([{}]);
+    const [dataSource, setDataSource]: any = useState([]);
     const [surplusHeight, setSurplusHeight]: any = useState(220);
-    const [pageLoading,setPageLoading]=useState(false)
+    const [pageLoading, setPageLoading] = useState(false)
     const [selectedRowKeys, setSelectedRowKeys] = useState([] as any[])
-    const [signValue, setSignValue] = useState('')
     const previewModal = createModal(PreviewModal)
     const templateSingModal = createModal(TemplateSingModal)
     const updateDataSource = (isAll?: boolean) => {
@@ -80,7 +86,62 @@ export default observer(function Template2(props: Props) {
         }
         return "";
     };
-
+    const tableTitle =(item:any)=>{
+            return item.children ? (
+                <PTitleTh>
+                    <MergeTitle>
+                        <pre>{item.pTitle || item.itemCode}</pre>
+                    </MergeTitle>
+                    <PTitleCon>
+                        {item.children.map(
+                            (cItem: ItemConfigItem, index: number, arr: any) => (
+                                <CTitleBox
+                                    key={index}
+                                    style={{
+                                        ...{flex: (15 * cItem.width || 50) + 8, width: 0},
+                                        ...(index == arr.length - 1 ? {border: 0} : {})
+                                    }}
+                                >
+                                    {cItem.checkSize ? (
+                                        <ThBox>
+                                            <div className="title">
+                          <span className="title-text">
+                            <pre>
+                              {cItem.label || cItem.itemCode}
+                            </pre>
+                          </span>
+                                            </div>
+                                            <div className="aside">{cItem.checkSize}</div>
+                                        </ThBox>
+                                    ) : (
+                                        <span className="title-text">
+                        <pre>
+                          {cItem.label || cItem.itemCode}
+                        </pre>
+                      </span>
+                                    )}
+                                </CTitleBox>
+                            )
+                        )}
+                    </PTitleCon>
+                </PTitleTh>
+            ) : item.checkSize ? (
+                () => (
+                    <ThBox>
+                        <div className="title"><span className="title-text">
+                <pre>
+                  {item.itemCode}
+                </pre>
+              </span>
+                        </div>
+                        <div className="aside">{item.checkSize}</div>
+                    </ThBox>
+                )
+            ) : (
+                <pre>
+            {item.label || item.itemCode}
+          </pre>)
+    }
 
     const columns: ColumnProps<any>[] | any = [
         {
@@ -94,62 +155,9 @@ export default observer(function Template2(props: Props) {
         ...(handbookModel.formItems || []).map((item: any, index: number) => {
             item['itemCode'] = item.title
             return {
-                title: item.children ? (
-                    <PTitleTh>
-                        <MergeTitle>
-                            <pre>{item.pTitle || item.itemCode}</pre>
-                        </MergeTitle>
-                        <PTitleCon>
-                            {item.children.map(
-                                (cItem: ItemConfigItem, index: number, arr: any) => (
-                                    <CTitleBox
-                                        key={index}
-                                        style={{
-                                            ...{flex: (15 * cItem.width || 50) + 8, width: 0},
-                                            ...(index == arr.length - 1 ? {border: 0} : {})
-                                        }}
-                                    >
-                                        {cItem.checkSize ? (
-                                            <ThBox>
-                                                <div className="title">
-                          <span className="title-text">
-                            <pre>
-                              {cItem.label || cItem.itemCode}
-                            </pre>
-                          </span>
-                                                </div>
-                                                <div className="aside">{cItem.checkSize}</div>
-                                            </ThBox>
-                                        ) : (
-                                            <span className="title-text">
-                        <pre>
-                          {cItem.label || cItem.itemCode}
-                        </pre>
-                      </span>
-                                        )}
-                                    </CTitleBox>
-                                )
-                            )}
-                        </PTitleCon>
-                    </PTitleTh>
-                ) : item.checkSize ? (
-                    () => (
-                        <ThBox>
-                            <div className="title"><span className="title-text">
-                <pre>
-                  {item.itemCode}
-                </pre>
-              </span>
-                            </div>
-                            <div className="aside">{item.checkSize}</div>
-                        </ThBox>
-                    )
-                ) : (
-                    <pre>
-            {item.label || item.itemCode}
-          </pre>),
+                title: tableTitle(item),
                 align: "center",
-                className:item.nullUse && "required-cell",
+                className: item.nullUse && "required-cell",
                 colSpan: item.colSpan,
                 width: (15 * item.width || 50) + 8,
                 dataIndex: item.itemCode,
@@ -171,7 +179,7 @@ export default observer(function Template2(props: Props) {
                         // if(item.itemCode =='日期(年月)'){
                         //     console.log("record[item.itemCode]",item.itemCode,record,record[item.itemCode]);
                         // }
-                        record[item.itemCode] = record[item.itemCode] || (item.defaultUse ? item.defaultValue:undefined)
+                        record[item.itemCode] = record[item.itemCode] || (item.defaultUse ? item.defaultValue : undefined)
                         let format = 'YYYY-MM-DD'
                         if (item.type == 'date_time') format = 'YYYY-MM'
                         if (item.type == 'time') format = 'YYYY-MM-DD HH:mm';
@@ -189,13 +197,13 @@ export default observer(function Template2(props: Props) {
                                 registerCode,
                             }}
                         />
-                    }else if(item.type == 'studyDept'){
+                    } else if (item.type == 'studyDept') {
                         children = <DeptSelect
-                                    deptCode={record[item.itemCode]}
-                                    onChange={(e:any)=>{
-                                        record[item.itemCode] =e
-                                        updateDataSource()
-                                    }}
+                            deptCode={record[item.itemCode]}
+                            onChange={(e: any) => {
+                                record[item.itemCode] = e
+                                updateDataSource()
+                            }}
                         />
                     } else if (item.type == "attachment") {
                         //处理上传附件类型
@@ -248,7 +256,25 @@ export default observer(function Template2(props: Props) {
             };
         }),
     ];
-
+    const exportColumns: ColumnProps<any>[] | any = [
+        {
+            title: "序号",
+            dataIndex: 'index',
+            align: 'center',
+            render: (text: string, record: any, index: number) => <span>{index + 1}</span>
+        },
+        ...(handbookModel.thMerge(formItems || [])).map((item: any) => {
+            item['itemCode'] = item.title
+            return {
+                title: tableTitle(item),
+                align: "center",
+                // className: item.nullUse && "required-cell",
+                colSpan: item.colSpan,
+                // width: (15 * item.width || 50) + 8,
+                dataIndex: item.itemCode,
+            }
+        })
+    ]
     const handlePreview = (file: any) => {
         if (getFileType(file.name) == 'img') {
             reactZmage.browsing({src: file.path, backdrop: 'rgba(0,0,0, .8)'})
@@ -266,11 +292,12 @@ export default observer(function Template2(props: Props) {
     }
 
     useEffect(() => {
-        let list = handbookModel?.dataSource
+        console.log("itemDataStr=====", itemDataStr);
+        let list = itemDataStr || handbookModel?.dataSource
         setDataSource([...list])
-    }, [handbookModel?.dataSource])
+    }, [itemDataStr, handbookModel?.dataSource])
     /** 公共函数 */
-    const {cellDisabled, handleNextIptFocus, handleUpload} = getFun({ setPageLoading,dataSource, setDataSource});
+    const {cellDisabled, handleNextIptFocus, handleUpload} = getFun({setPageLoading, dataSource, setDataSource});
 
     const pageHeaderRef = useRef<HTMLDivElement>(null)
     useLayoutEffect(() => {
@@ -287,14 +314,14 @@ export default observer(function Template2(props: Props) {
                 okText: '确定',
                 okType: 'danger',
                 cancelText: '取消',
-                onOk:async () => {
+                onOk: async () => {
                     record[itemCode] = '';
                     updateDataSource()
                     handleSave()
                 }
             })
             return false
-        }else{
+        } else {
             templateSingModal.show({
                 handleOk: (value: any) => {
                     record.modified = true
@@ -320,18 +347,20 @@ export default observer(function Template2(props: Props) {
             templateType
         } = handbookModel.curCatalogue
         /*需要验证必填*/
-        let reslut:boolean =false
-        handbookModel.formItems.map((item:any)=>{
-            if(item.nullUse){
-                dataSource.map((i:any)=>{
-                    if(!i[item.title]){
+        let reslut: boolean = false
+        handbookModel.formItems.map((item: any) => {
+            if (item.nullUse) {
+                dataSource.map((i: any) => {
+                    if (!i[item.title]) {
                         // console.log(item.title,i,i[item.title]);
-                     reslut =true
-                 }
+                        reslut = true
+                    }
                 })
             }
         })
-        if(reslut){ return message.info('请检查必填项内容') }
+        if (reslut) {
+            return message.info('请检查必填项内容')
+        }
         handbookModel.tableLoading = true
         trainingSettingApi.saveOrUpdateItemData({
             catalogId,
@@ -343,7 +372,7 @@ export default observer(function Template2(props: Props) {
             message.success('保存成功')
             // 重新请求详情数据
             handbookModel.getCatalogueData()
-        }).finally(()=>{
+        }).finally(() => {
             handbookModel.tableLoading = false
         })
     }
@@ -366,40 +395,48 @@ export default observer(function Template2(props: Props) {
             handbookModel.tableLoading = false
         }
     }
-    const title =()=>{
-        return(
-            <div style={{display:"flex",justifyContent:'space-between'}}>
-                <div>
-                    <Button type='primary' onClick={handleAdd}>添加一行</Button>
-                    <Button type='danger' onClick={handleDelete}>删除所选行</Button>
+    const title = () => {
+        if (!isExport) {
+            return (
+                <div style={{display: "flex", justifyContent: 'space-between'}}>
+                    <div>
+                        <Button type='primary' onClick={handleAdd}>添加一行</Button>
+                        <Button type='danger' onClick={handleDelete}>删除所选行</Button>
+                    </div>
+                    <Button type='primary' disabled={!(dataSource.length > 0)} onClick={handleSave}>保存</Button>
                 </div>
-                <Button type='primary' disabled={ !(dataSource.length > 0) } onClick={handleSave}>保存</Button>
-            </div>
-        )
+            )
+        }
     }
     return (
         <Container>
             <TableCon
                 className='whyxTable'>
-
-                <BaseTable
-                    title={title}
-                    className="record-page-table"
-                    loading={handbookModel?.tableLoading}
-                    dataSource={dataSource}
-                    rowSelection={{
-                        selectedRowKeys,
-                        onChange: handleSelectedChange,
-                    }}
-                    columns={columns.filter((item: any) => item)}
-                    surplusHeight={surplusHeight}
-                    surplusWidth={300}
-                    rowClassName={(record: any, idx: number) => {
-                        if (cellDisabled(record)) return 'disabled-row'
-
-                        return ''
-                    }}
-                />
+                {isExport && <div className='title'>{tableName}</div>}
+                {
+                    isExport ? <BaseTable
+                        surplusWidth={0}
+                        title={title}
+                        dataSource={dataSource}
+                        columns={exportColumns.filter((item: any) => item)}
+                    />: <BaseTable
+                        title={title}
+                        className="record-page-table"
+                        loading={handbookModel?.tableLoading}
+                        dataSource={dataSource}
+                        rowSelection={{
+                            selectedRowKeys,
+                            onChange: handleSelectedChange,
+                        }}
+                        columns={ columns.filter((item: any) => item)}
+                        surplusHeight={surplusHeight}
+                        surplusWidth={300}
+                        rowClassName={(record: any, idx: number) => {
+                            if (cellDisabled(record)) return 'disabled-row'
+                            return ''
+                        }}
+                    />
+                }
             </TableCon>
             <templateSingModal.Component/>
         </Container>
@@ -408,12 +445,20 @@ export default observer(function Template2(props: Props) {
 
 // @ts-ignore
 const Container = styled(Wrapper)`
-  .required-cell{
-    .ant-table-column-title :before{
+  .title {
+    line-height: 32px;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  .required-cell {
+    .ant-table-column-title :before {
       content: '*';
       color: red;
     }
   }
+
   .ant-select-disabled .ant-select-selection {
     background: rgba(0, 0, 0, 0.0) !important;
   }
@@ -463,16 +508,6 @@ const Container = styled(Wrapper)`
   }
 
 `;
-const NewPageHeader = styled(PageHeader)`
-  height: auto;
-  min-height: 50px;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-  padding-top: 5px;
-
-  .ant-btn {
-    margin-bottom: 5px;
-  }`;
 
 const ThBox = styled.div`
   height: 100%;

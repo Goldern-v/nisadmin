@@ -174,7 +174,7 @@ export default class TrainingSettingApi extends BaseApiService {
    * @param masterId {number}
    * @returns
    */
-  public async exportQueryAllData(masterId: number) {
+  public async exportQueryAllData(masterId: any) {
     return this.get(`/studyAndTrain/planTrainStudentInfo/queryAllData/${masterId}`);
   }
 }
