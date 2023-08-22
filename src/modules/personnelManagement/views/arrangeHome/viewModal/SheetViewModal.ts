@@ -339,6 +339,7 @@ class SheetViewModal {
       } else {
         try {
           if (this.sheetTableData.length > 0 && !res.data.setting.length) {
+            if (["jmfy"].includes(appStore.HOSPITAL_ID)) this.sheetTableData = []
             throw new Error('排班人员不能为空')
           }
           this.sheetTableData = this.handleSheetTableData(res.data.setting, {});

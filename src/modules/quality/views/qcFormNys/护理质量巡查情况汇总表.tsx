@@ -83,7 +83,7 @@ export default observer(function 护理质量巡查情况汇总表(props: Props)
       endDate: query.endDate.format('YYYY-MM-DD'),
     }
 	// 阳春中医 科室、表单的查询条件改为多选
-    if(['yczyy'].includes(appStore.HOSPITAL_ID)){
+    if(['yczyy','jmfy'].includes(appStore.HOSPITAL_ID)){
 		if(multiplQuery.qcCodes[0]=='' || multiplQuery.qcCodes.length<1){
 			paramter.qcCodes = null
 		}else{
@@ -131,7 +131,7 @@ export default observer(function 护理质量巡查情况汇总表(props: Props)
 		endDate: query.endDate.format('YYYY-MM-DD'),
 	  }
 	  // 阳春中医 科室、表单的查询条件改为多选
-	  if(['yczyy'].includes(appStore.HOSPITAL_ID)){
+	  if(['yczyy','jmfy'].includes(appStore.HOSPITAL_ID)){
 		  if(multiplQuery.qcCodes[0]=='' || multiplQuery.qcCodes.length<1){
 			  paramter.qcCodes = null
 		  }else{
@@ -186,7 +186,7 @@ export default observer(function 护理质量巡查情况汇总表(props: Props)
           <div className="content">
           {appStore.hisMatch({
 				map: {
-				'yczyy': (
+				'yczyy,jmfy': (
 					<Select
 					value={multiplQuery.qcCodes}
 					mode="multiple"
@@ -240,7 +240,7 @@ export default observer(function 护理质量巡查情况汇总表(props: Props)
           <div className="content">
 		  {appStore.hisMatch({
 				map: {
-				'yczyy': (
+				'yczyy,jmfy': (
 					<Select
 					mode="multiple"
 					value={multiplQuery.wardCodes}

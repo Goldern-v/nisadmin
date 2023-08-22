@@ -1231,6 +1231,7 @@ const moveRow = (dragIndex: number, hoverIndex: number) => {
 
 return (
   <Wrapper className={classNames({ isEdit })} id="arrangeSheet">
+    {sheetViewModal.sheetTableData.length ?
     <BaseTable
       loading={sheetViewModal.tableLoading}
       surplusHeight={surplusHeight}
@@ -1306,7 +1307,8 @@ return (
       }}
       type={isEdit && !sheetViewModal.isPush ? ["diagRow"] : []}
       moveRow={moveRow}
-    />
+    /> : ""
+  }
     <contextMenu.Component />
     <editEffectiveTimeModal.Component />
     <editVacationCountModal.Component />
