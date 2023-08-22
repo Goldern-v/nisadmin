@@ -10,19 +10,21 @@ import TemplateSingModal from 'src/modules/continuingEdu/components/SingModal'
 import createModal from "src/libs/createModal";
 import moment from "moment";
 import DeptSelect from "src/components/DeptSelect";
-import { cloneJson } from 'src/utils/json/clone';
+import {cloneJson} from 'src/utils/json/clone';
 
 export interface Props {
-    payload: any;
+    // payload: any;
+    exportData?: any
+    dataMaps?: any
+    isExport?: boolean
 }
 
 export default observer(function ClinicalEvaluation(props: Props) {
+    const {exportData, dataMaps, isExport} = props
     const [tableData, setTableData] = useState([] as any);
     const templateSingModal = createModal(TemplateSingModal)
-
-    // 签名对话框
     useEffect(() => {
-        let templateItemListVos = handbookModel?.detail.templateItemListVos || []
+        let templateItemListVos = exportData || handbookModel?.detail.templateItemListVos || []
         let tableDateNew: any = []
         templateItemListVos.map((it: any) => {
             if (it.itemDataStr != '') {
@@ -35,8 +37,12 @@ export default observer(function ClinicalEvaluation(props: Props) {
             setHeardValue({...handbookModel?.detail?.dataMaps})
         }
         setTableData([...tableDateNew])
-        console.log("tableDateNew===",tableDateNew);
-    }, [handbookModel?.detail])
+    }, [exportData, handbookModel?.detail])
+    useEffect(() => {
+        if (dataMaps) {
+            setHeardValue({...dataMaps})
+        }
+    }, [dataMaps])
     const [heardValue, setHeardValue] = useState({} as any)
     // 动态合并单元格
     const mergeCells = (text: string, data: any, key: string, index: number) => {
@@ -73,7 +79,7 @@ export default observer(function ClinicalEvaluation(props: Props) {
                     children: <>{value.indexOf('\n') > -1 ? value.split('\n').map((it: string) => <>{it}<br></br></>) : value}</>,
                     props: {},
                 } as any;
-                obj.props.rowSpan = mergeCells(row.catagory, handbookModel?.detail.templateItemListVos || [], 'catagory', index)
+                obj.props.rowSpan = mergeCells(row.catagory, tableData || [], 'catagory', index)
                 return obj
             }
         },
@@ -91,6 +97,9 @@ export default observer(function ClinicalEvaluation(props: Props) {
                     dataIndex: 'intoOne',
                     align: "center",
                     render: (text: string, record: any, index: number) => {
+                        if (isExport) {
+                            return <div>{text}</div>
+                        }
                         return <Input
                             key={`intoOne-${index}`}
                             className='table-input'
@@ -102,6 +111,9 @@ export default observer(function ClinicalEvaluation(props: Props) {
                     dataIndex: 'intoTwo',
                     align: "center",
                     render: (text: string, record: any, index: number) => {
+                        if (isExport) {
+                            return <div>{text}</div>
+                        }
                         return <Input
                             key={`intoTwo-${index}`}
                             className='table-input'
@@ -118,6 +130,9 @@ export default observer(function ClinicalEvaluation(props: Props) {
                     dataIndex: 'intoThree',
                     align: "center",
                     render: (text: string, record: any, index: number) => {
+                        if (isExport) {
+                            return <div>{text}</div>
+                        }
                         return <Input
                             key={`intoThree-${index}`}
                             className='table-input'
@@ -129,6 +144,9 @@ export default observer(function ClinicalEvaluation(props: Props) {
                     dataIndex: 'intoFour',
                     align: "center",
                     render: (text: string, record: any, index: number) => {
+                        if (isExport) {
+                            return <div>{text}</div>
+                        }
                         return <Input
                             key={`intoFour-${index}`}
                             className='table-input'
@@ -145,6 +163,9 @@ export default observer(function ClinicalEvaluation(props: Props) {
                     dataIndex: 'intoFive',
                     align: "center",
                     render: (text: string, record: any, index: number) => {
+                        if (isExport) {
+                            return <div>{text}</div>
+                        }
                         return <Input
                             key={`intoFive-${index}`}
                             className='table-input'
@@ -156,6 +177,9 @@ export default observer(function ClinicalEvaluation(props: Props) {
                     dataIndex: 'intoSix',
                     align: "center",
                     render: (text: string, record: any, index: number) => {
+                        if (isExport) {
+                            return <div>{text}</div>
+                        }
                         return <Input
                             key={`intoSix-${index}`}
                             className='table-input'
@@ -210,51 +234,61 @@ export default observer(function ClinicalEvaluation(props: Props) {
     }
     return (
         <Wrapper>
-            <div className='btn-save'>
-                <Button type={'primary'} onClick={saveTable}> 保存</Button>
-            </div>
+            {isExport && <div className='title'>临床评定表</div>}
+            {!isExport && <div className='btn-save'>
+                <Button type={'primary'} onClick={saveTable}>保存</Button>
+            </div>}
             <>
                 <div className='heard'>
                     <div>轮转科室:</div>
-                    <div className='item' style={{display:'flex',alignItems:'center'}}>内科病区:
-                        <DeptSelect hasAllDept deptCode={heardValue?.one}  onChange={(e: any) => {
-                            setHeardValue({...heardValue, one: e})
-                        }} />
-                        {/*<Input style={{width: 120}} value={heardValue?.one}*/}
-                        {/*                                  onChange={(e: any) => {*/}
-                        {/*                                      setHeardValue({...heardValue, one: e.target.value})*/}
-                        {/*                                  }}/>*/}
+                    <div className='item' style={{display: 'flex', alignItems: 'center'}}>内科病区:
+                        {isExport ? heardValue?.one :
+                            <DeptSelect hasAllDept deptCode={heardValue?.one} onChange={(e: any) => {
+                                setHeardValue({...heardValue, one: e})
+                            }}/>}
                     </div>
-                    <div className='item'>入科时间:<DatePicker
-                        value={heardValue?.two ? moment(heardValue?.two) : undefined}
-                        format="YYYY-MM-DD"
-                        onChange={(newTime, dateString: string) => {
-                            setHeardValue({...heardValue, two: dateString})
-                        }}
-                        allowClear={false}
-                    /></div>
-                    <div className='item'>出科时间:<DatePicker
-                        value={heardValue?.three ? moment(heardValue?.three) : undefined}
-                        format="YYYY-MM-DD"
-                        onChange={(newTime, dateString) => {
-                            console.log(newTime);
-                            setHeardValue({...heardValue, three: dateString})
-                        }}
-                        allowClear={false}/></div>
-                    <div className='item'>带教老师:<Input value={heardValue?.four} style={{width: 80}}
-                                                          onChange={(e: any) => {
-                                                              setHeardValue({...heardValue, four: e.target.value})
-                                                          }}/></div>
+                    <div className='item'>入科时间:
+                        {isExport ? heardValue?.two : <DatePicker
+                            value={heardValue?.two ? moment(heardValue?.two) : undefined}
+                            format="YYYY-MM-DD"
+                            onChange={(newTime, dateString: string) => {
+                                setHeardValue({...heardValue, two: dateString})
+                            }}
+                            allowClear={false}
+                        />}
+                    </div>
+                    <div className='item'>出科时间:
+                        {isExport ? heardValue?.three :
+                            <DatePicker
+                                value={heardValue?.three ? moment(heardValue?.three) : undefined}
+                                format="YYYY-MM-DD"
+                                onChange={(newTime, dateString) => {
+                                    console.log(newTime);
+                                    setHeardValue({...heardValue, three: dateString})
+                                }}
+                                allowClear={false}/>}</div>
+                    <div className='item'>带教老师:
+                        {isExport ? heardValue?.three : <Input value={heardValue?.four} style={{width: 80}}
+                                                               onChange={(e: any) => {
+                                                                   setHeardValue({...heardValue, four: e.target.value})
+                                                               }}/>}
+                    </div>
                 </div>
                 <div style={{display: 'flex', alignItems: 'center', lineHeight: '30px'}}>
                     <div className='item'>入科评估老师签名时间:
-                        <div className='line' onClick={() => handleSign('five')}>{heardValue?.five}</div>
+                        {isExport ? heardValue?.five :
+                            <div className='line' onClick={() => handleSign('five')}>{heardValue?.five}</div>}
                     </div>
                     <div className='item'>入科 3月老师签名时间:
-                        <div className='line' onClick={() => handleSign('six')}>{heardValue?.six}</div>
+
+                        {isExport ? heardValue?.six :
+                            <div className='line' onClick={() => handleSign('six')}>{heardValue?.six}</div>
+                        }
                     </div>
                     <div className='item'>出科评估老师签名时间:
-                        <div className='line' onClick={() => handleSign('seven')}>{heardValue?.seven}</div>
+                        {isExport ? heardValue?.seven :
+                            <div className='line' onClick={() => handleSign('seven')}>{heardValue?.seven}</div>
+                        }
                     </div>
                 </div>
                 <p style={{marginTop: 10}}>(1) 掌握情况:未掌握(1分 → 10分) 熟练掌握，根据实践情况给予1-10分，出科评估 ＜
@@ -266,13 +300,19 @@ export default observer(function ClinicalEvaluation(props: Props) {
                 loading={handbookModel?.tableLoading}
                 dataSource={tableData || []}
                 columns={columns}
-                surplusHeight={400}
+                surplusHeight={isExport ?undefined:350}
             />
             <templateSingModal.Component/>
         </Wrapper>
     )
 })
 const Wrapper = styled.div`
+  .title {
+    line-height: 32px;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+  }
   .btn-save {
     height: 30px;
     display: flex;
@@ -286,7 +326,7 @@ const Wrapper = styled.div`
   }
 
   .item {
-    margin:5px 8px;
+    margin: 5px 8px;
     //margin-right: 5px;
     //margin-top: 5px;
     .line {
@@ -303,7 +343,7 @@ const Wrapper = styled.div`
   .table-input {
     border: 0 !important; // 去除未选中状态边框
     outline: none !important; // 去除选中状态边框
-    :focus{
+    :focus {
       border: 0 !important; // 去除未选中状态边框
       outline: none !important; // 去除选中状态边框
       background-color: rgba(0, 0, 0, 0) !important; // 透明背景

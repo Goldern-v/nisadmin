@@ -1,13 +1,10 @@
 import { observer } from 'mobx-react'
-import React from 'react'
+import React, {useEffect} from 'react'
 import styled from 'styled-components'
-import {handbookModel} from "src/modules/continuingEdu/views/gaugePearson/handbook/model";
+import {handbookModel} from "src/modules/continuingEdu/views/gaugePearson/handbook/model"
 
-export interface IProps {
-  
-}
 /**附件 */
-export default observer(function Template3(props: IProps) {
+export default observer(function Template3() {
     return (
     <Wrapper>
       <iframe src={handbookModel?.detail?.attachment?.path} />
