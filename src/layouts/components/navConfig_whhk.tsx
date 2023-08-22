@@ -161,7 +161,7 @@ export const navConfig = (appStore:any,authStore?:any)=>{
         const encryptedText = encrypted.toString(); // 将加密后的数据转换为字符串形式
 
         let params = {account:encryptedText}
-        axios.post(`http://192.168.9.73:9091/qc/system/auth/thirdLogin`,qs.stringify(params)).then(res2=>{
+        axios.post(`http://192.168.9.72:9001/qc/system/auth/thirdLogin`,qs.stringify(params)).then(res2=>{
           if(res2.data.data.accessToken){
             let {data:{data:{accessToken:token}}} = res2
             window.open(`http://192.168.9.72:9001/qc-front/#/?token=${token}`)
