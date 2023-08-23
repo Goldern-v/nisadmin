@@ -1,13 +1,17 @@
+
+
 import { observable, computed } from "mobx";
 import moment from 'moment'
 import { quarterTimes } from "src/enums/date";
 import service from "src/services/api";
 import { qcZzwyApi } from "../qcZzwyApi";
 import { appStore } from "src/stores";
-class CheckSummaryData{
+class IssueAnalysisData{
+
+  @observable public qcLevel = appStore.queryObj?.qcLevel || '1'
 
   @observable public tableLoading = false; //表格loading
-    @observable public tableList:any = []; //表格内容
+    @observable public tableList:any = [{},{},{}]; //表格内容
     @observable public pageIndex: any = 1; //页码
     @observable public pageSize: any = 20; //每页大小
     @observable public total: any = 0; //总条数
@@ -21,7 +25,11 @@ class CheckSummaryData{
 
   @observable public monthRange = [moment(),moment()];//月份时间
 
-  @observable public filterDate: any = [moment(moment()), moment()]
+  @observable public filterDate: any = [moment(moment()), moment()]//日期时间
+
+  @observable public templeteList = []//质控表列表
+  @observable public qcCode='HJ_QCTP_021';//选择的质控表
+
 
 
   // 科室列表
@@ -41,9 +49,10 @@ class CheckSummaryData{
   @computed get postObj(){
     return{
       wardCode:this.deptCode,
-      pageIndex:this.pageIndex,
-      pageSize:this.pageSize,
-      level:appStore.queryObj?.qcLevel || '1'
+      // pageIndex:this.pageIndex,
+      // pageSize:this.pageSize,
+      level:'3'||this.qcLevel,
+      qcCode:this.qcCode
       }
   }
 
@@ -84,15 +93,30 @@ class CheckSummaryData{
       }
     }
     this.tableLoading = true
-    qcZzwyApi.getInspectionSummary({...this.postObj,...times}).then(res=>{
-      this.tableLoading = false
-      this.tableList = this.flattenArray(res.data);
+    qcZzwyApi.getRectificationdeptSummary({...this.postObj,...times}).then(res=>{
+      this.tableLoading = false 
+      this.tableList = res.data;
+      
     }).catch(err=>{
       this.tableLoading = false
 
     })
     
   }
+
+
+  /**获取模板列表 */
+  getTemplateList(){
+    if(this.templeteList.length>0){
+      return false
+    }
+    qcZzwyApi.getTemplateList(this.qcLevel).then(res=>{
+      this.templeteList = res.data || []
+    }).catch(err=>{
+
+    })
+  }
+
   	/**科室列表 */
 	getNursingAll(){
 		if(this.deptList.length>0){
@@ -108,4 +132,4 @@ class CheckSummaryData{
 		})
 	}
 }
-export const checkSummaryData = new CheckSummaryData()
+export const issueAnalysisData = new IssueAnalysisData()

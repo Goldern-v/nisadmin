@@ -112,8 +112,7 @@ export default observer(function CheckSummary() {
 					onChange={(val: any) => {
 						checkSummaryData.deptCode = val.key
 						checkSummaryData.deptName = val.label
-						// getTableList()
-						// onload()
+						checkSummaryData.getTableList()
 					}}
 				>
 					<Option value='全院'>全院</Option>
@@ -127,6 +126,7 @@ export default observer(function CheckSummary() {
 					value={checkSummaryData.selectType}
 					onChange={(val: any) => {
 						checkSummaryData.selectType = val
+						checkSummaryData.getTableList()
 					}}
 				>
 					{checkSummaryData.typeList.map((item: any) => {
@@ -138,12 +138,10 @@ export default observer(function CheckSummary() {
         <DatePicker.RangePicker
         allowClear={false}
 				format={'YYYY-MM-DD'}
-        // value={[moment(checkSummaryData.beginDate), moment(checkSummaryData.endDate)]}
 				value={checkSummaryData.filterDate}
         onChange={(value) => {
 					checkSummaryData.filterDate = value 
-					// checkSummaryData.beginDate = value[0]
-					// checkSummaryData.endDate = value[1]
+					checkSummaryData.getTableList()
         }}
         style={{ width: 220 }}
       /></>}
@@ -151,6 +149,7 @@ export default observer(function CheckSummary() {
         <span>月份：</span>
         <YearMonthRangePicker widthPx={180} value={checkSummaryData.monthRange} onChange={(val:any)=>{
 					checkSummaryData.monthRange = val
+					checkSummaryData.getTableList()
         }} />
       </>}
 				{(checkSummaryData.selectType=='3'||checkSummaryData.selectType=='2')&&<>
@@ -158,12 +157,12 @@ export default observer(function CheckSummary() {
 					<DatePicker className="mr-15"
 						open={yearPickShow}
 						onOpenChange={status => {
-
 							setYearPickShow(status)
 						}}
 						onPanelChange={(value, mode) => {
 							checkSummaryData.year = value
 							setYearPickShow(false)
+							checkSummaryData.getTableList()
 						}}
 						mode="year"
 						style={{ width: 120 }}
@@ -180,9 +179,8 @@ export default observer(function CheckSummary() {
           defaultValue={moment().quarter()}
 					onChange={(val: any) => {
 						checkSummaryData.selectQuarter = val
-            // checkSummaryData.startDateQuarter = quarterTimes(checkSummaryData.year?.format('YYYY'),val)[0]
-            // checkSummaryData.endDateQuarter = quarterTimes(checkSummaryData.year?.format('YYYY'),val)[1]
-					}}
+						checkSummaryData.getTableList()
+            	}}
 				>
 					{
           
@@ -194,13 +192,11 @@ export default observer(function CheckSummary() {
 				</>}
 
 				<Button
-					className="span"
+					className="span" type='primary'
 					onClick={() => checkSummaryData.getTableList()}
 				>
 					查询
 				</Button>
-
-				
 			</PageHeader>
 			<ScrollCon>
 				<BaseTable
@@ -209,18 +205,17 @@ export default observer(function CheckSummary() {
 					dataSource={checkSummaryData.tableList}
 					columns={columns.filter((item: any) => item)}
 					surplusWidth={300}
-					surplusHeight={220}
-					pagination={{
-				    current: checkSummaryData.pageIndex,
-				    total: checkSummaryData.total,
-				    pageSize: checkSummaryData.pageSize,
-				}}
-				onChange={(pagination:any) => {
-					checkSummaryData.pageIndex = pagination.current;
-					checkSummaryData.total = pagination.total;
-					checkSummaryData.pageSize = pagination.pageSize;
-				}}
-					// title={() => { return (<span>{checkSummaryData.deptName}{checkSummaryData.postObj.year}年护理工作质量/管理指标年度汇总</span>) }}
+					surplusHeight={200}
+				// 	pagination={{
+				//     current: checkSummaryData.pageIndex,
+				//     total: checkSummaryData.total,
+				//     pageSize: checkSummaryData.pageSize,
+				// }}
+				// onChange={(pagination:any) => {
+				// 	checkSummaryData.pageIndex = pagination.current;
+				// 	checkSummaryData.total = pagination.total;
+				// 	checkSummaryData.pageSize = pagination.pageSize;
+				// }}
 				/>
 			</ScrollCon>
     </Wrapper>
