@@ -161,10 +161,10 @@ export const navConfig = (appStore:any,authStore?:any)=>{
         const encryptedText = encrypted.toString(); // 将加密后的数据转换为字符串形式
 
         let params = {account:encryptedText}
-        axios.post(`http://119.97.229.206:9092/qc/system/auth/thirdLogin`,qs.stringify(params)).then(res2=>{
+        axios.post(`/crNursing/qc/system/auth/thirdLogin`,qs.stringify(params)).then(res2=>{
           if(res2.data.data.accessToken){
             let {data:{data:{accessToken:token}}} = res2
-            window.open(`http://119.97.229.206:9092/qc-front/#/?token=${token}`)
+            window.open(`/qc-front/?token=${token}`)
           }
         });
       }
