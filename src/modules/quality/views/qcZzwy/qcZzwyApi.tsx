@@ -42,8 +42,8 @@ export default class QcZzwyApi extends BaseApiService {
     }
 
     /**编辑整改措施和追踪评价**/
-    public saveOrUpdateContent() {
-        return this.post('/qcItem/rectificationSummary/saveOrUpdateContent')
+    public saveOrUpdateContent(params:any) {
+        return this.post('/qcItem/rectificationSummary/saveOrUpdateContent',params)
     }
 }
 export const qcZzwyApi = new QcZzwyApi();

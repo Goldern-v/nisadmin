@@ -3,7 +3,6 @@ import React, {useEffect, useState} from 'react'
 import styled from 'styled-components'
 import {PageHeader, PageTitle, Place} from 'src/components/common'
 import {
-    ColumnProps,
     Select,
     DatePicker,
     Button,
@@ -11,10 +10,10 @@ import {
 import moment from 'moment';
 import BaseTable from "src/components/BaseTable";
 import {RectificationData} from './Data';
-import {quarterList, quarterTimes} from 'src/enums/date';
+import {quarterList} from 'src/enums/date';
 import YearMonthRangePicker from 'src/components/YearMonthRangePicker';
-import {checkSummaryData} from "src/modules/quality/views/qcZzwy/qcCheckSummary/checkSummaryData";
-import { Input } from 'antd';
+import {Input, message} from 'antd';
+import {qcZzwyApi} from "src/modules/quality/views/qcZzwy/qcZzwyApi";
 
 const Option = Select.Option;
 export default observer(function RectificationSummary() {
@@ -97,24 +96,51 @@ export default observer(function RectificationSummary() {
             dataIndex: "qcItemName",
             align: "center",
         },
+        // rectificationMeasure 整改措施   trackingEvaluate 追踪评价
         {
             title: "科室整改措施",
-            dataIndex: "qcItemName",
+            dataIndex: "rectificationMeasure.content",
             align: "center",
-            render:(text:string,record:any)=>{
-
+            render: (text: string, record: any) => {
+                return <Input key={record.qcMasterId + 're'}  className='input-value' defaultValue={text}
+                              onBlur={(e: any) => handleChange(e.target.value, record, 3)}/>
             }
         },
         {
             title: "追踪评价",
-            dataIndex: "qcItemName",
+            dataIndex: "trackingEvaluate.content",
             align: "center",
-            width:80,
-            render:(text:string,record:any)=>{
-               return  <Input className='input-value'/>
+            width: 80,
+            render: (text: string, record: any) => {
+                return <Input key={record.qcMasterId + 'tr'} className='input-value' defaultValue={text}
+                              onBlur={(e: any) => handleChange(e.target.value, record, 5)}/>
             }
         },
     ]
+    /** "id": 0,  没有就不传
+     "qcMasterId": 0,  必传
+     "qcItemCode": "string",  必传
+     "type":  3：整改措施  5：追踪评价
+     "content": "string"***/
+    const handleChange = (value: string, record: any, type: number) => {
+        if (!value) return
+
+        let arr: any = []
+        arr.push({
+            content: value,
+            id: type == 3 ? record.rectificationMeasure?.id : record.trackingEvaluate?.id,
+            qcMasterId: record.qcMasterId,
+            qcItemCode: record.qcItemCode,
+            type
+        })
+        RectificationData.tableLoading = true
+        qcZzwyApi.saveOrUpdateContent({contentList: arr}).then((res: any) => {
+            message.success('操作成功')
+            RectificationData.getTableList()
+        }).finally(() => {
+            RectificationData.tableLoading = false
+        })
+    }
     useEffect(() => {
         RectificationData.getTableList()
         RectificationData.getNursingAll()
@@ -173,7 +199,6 @@ export default observer(function RectificationSummary() {
                     <DatePicker className="mr-15"
                                 open={yearPickShow}
                                 onOpenChange={status => {
-
                                     setYearPickShow(status)
                                 }}
                                 onPanelChange={(value, mode) => {
@@ -232,11 +257,13 @@ const Wrapper = styled.div`
 `
 const ScrollCon = styled.div`
   flex: 1;
-  .input-value{
+
+  .input-value {
     outline: none;
     border: 0;
     box-shadow: none;
-    :focus{
+
+    :focus {
       border: 0;
       box-shadow: none;
     }
