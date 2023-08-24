@@ -84,6 +84,9 @@ class CheckSummaryData{
       }
     }
     this.tableLoading = true
+      // qcZzwyApi.getRectificationSummary({...this.postObj,...times}).then(res=>{
+      //     console.log("res===,res",res);
+      // })
     qcZzwyApi.getInspectionSummary({...this.postObj,...times}).then(res=>{
       this.tableLoading = false
       this.tableList = this.flattenArray(res.data);

@@ -27,6 +27,7 @@ import qcThreeMQSummary from './views/qcThreeMQSummary'
 import QcOneMonthReportDgxg from './views/qcOneMonthReportDgxg/QcOneMonthReportDgxg'
 import CheckSummary from './views/qcZzwy/qcCheckSummary/CheckSummary'
 import IssueAnalysis from './views/qcZzwy/issueAnalysis/IssueAnalysis'
+import RectificationSummary from './views/qcZzwy/qcRectificationSummary/RectificationSummary'
 export interface Props extends RouteComponentProps<{ name?: string }> { }
 
 export default function QcOneRouterHj(props: Props) {
@@ -87,8 +88,17 @@ export default function QcOneRouterHj(props: Props) {
     icon: <JCTJ />,
     path: "/qcOneHj/质控表项目问题分析汇总?qcLevel=1",
     component: IssueAnalysis,
-  }
+  },
+    // keepAlive: true,
+    // disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
+    {
+      title: "质控检查反馈整改单",
+      icon: <HZBG />,
+      path: "/qcOneHj/质控检查反馈整改单?qcLevel=1",
+      component: RectificationSummary,
+    }
 ]
+
   const route_一级质控问题原因措施汇总 = {
     title: "一级质控问题原因措施汇总",
     path: "/qcOneHj/一级质控问题原因措施汇总?qcLevel=1",
