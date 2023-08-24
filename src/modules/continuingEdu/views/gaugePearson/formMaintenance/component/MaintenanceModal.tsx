@@ -65,8 +65,12 @@ function MaintenanceModal(props: Props) {
             tableName:record.tableName,
         })
     },[record])
+    const modalStyle ={
+        padding:'6px 24px'
+    }
     return (
         <Modal
+            bodyStyle={{ padding:'6px 24px'}}
             title={title} visible={visible} onOk={onSave} onCancel={handleCancel} okText='确定' centered>
             <Wrapper>
                 <Form>
@@ -138,5 +142,9 @@ const Wrapper = styled.div`
  .ant-form-item .ant-form-item-label {
     text-align: left !important;
   }
+  .ant-form-item{
+    margin-bottom: 0 !important;
+  }
 `
+
 export default Form.create()(observer(MaintenanceModal)) as any

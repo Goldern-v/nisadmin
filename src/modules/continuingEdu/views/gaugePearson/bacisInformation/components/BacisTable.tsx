@@ -203,6 +203,11 @@ export default observer(function ApplyTable(props: Props) {
         columns={columns}
         surplusHeight={230}
         surplusWidth={100}
+        onRow={(record) => {
+          return {
+            onDoubleClick: () => onOpen(record)
+          }
+        }}
         pagination={{
           current: bacisManagData.pageIndex,
           total: bacisManagData.total,

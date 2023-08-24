@@ -683,7 +683,7 @@ export default observer(function SelectCon() {
               ['zzwy','dgxg'].includes(appStore.HOSPITAL_ID)?
                   <DeptSelect
                       hasAllDept={true}
-                      deptCode={authStore.selectedDeptCode}
+                      deptCode={authStore.defaultDeptCode}
                       onChange={handleChange} style={{ width: 160 }} />:
                   <DeptSelect
                       onChange={handleChange} style={{ width: 160 }} />

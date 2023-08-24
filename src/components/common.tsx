@@ -100,7 +100,13 @@ export const Pre = styled.pre`
 export const PageContainer: any = styled.div`
   background: #fff;
   padding: 10px;
-  margin: 0 15px 15px;
+  //margin: 0 15px 15px;
+  ///* border-radius: 5px; */
+`
+export const PageContainerDetail: any = styled.div`
+  background: #fff;
+  padding: 10px;
+  //margin: 0 15px 15px;
   /* border-radius: 5px; */
 `
 

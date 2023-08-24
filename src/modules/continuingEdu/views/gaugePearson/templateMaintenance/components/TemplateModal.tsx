@@ -80,8 +80,11 @@ function TemplateModal(props: Props) {
     const onChange=(e?:any,b?:any,c?:any)=>{
        setFileObj(c)
     }
+    const labelElement =(<span>附件<span style={{ fontStyle: 'italic', fontSize: '12px' }}>(根据模板内容导入否则可能会导入失败)</span></span>)
     return (
-        <Modal title={title} visible={visible} onOk={onSave} onCancel={handleCancel} okText='确定' centered>
+        <Modal
+            bodyStyle={{ padding:'6px 24px'}}
+            title={title} visible={visible} onOk={onSave} onCancel={handleCancel} okText='确定' centered>
             <Wrapper>
                 <Form>
                     <Form.Item {...formItemLayout} label='表名'>
@@ -161,7 +164,7 @@ function TemplateModal(props: Props) {
                             </Radio.Group>)}
                         </Form.Item>
                     }
-                    <Form.Item label="附件">
+                    <Form.Item label={labelElement}>
                         {getFieldDecorator('list', {
                                 initialValue: [],
                                 rules: [
@@ -169,7 +172,9 @@ function TemplateModal(props: Props) {
                                 ],
                                 valuePropName: 'data'
                             })(
-                                <MultiFileUploader onChange={onChange} type={'handbookTemplate'} isFormModel accept={'.xlsx,.xls'} size={1} maxSize={5 * 1024 * 1024} />)}
+                                <MultiFileUploader
+                                    buttonSize='small'
+                                    onChange={onChange} type={'handbookTemplate'} isFormModel accept={'.xlsx,.xls'} size={1} maxSize={5 * 1024 * 1024} />)}
                     </Form.Item>
                 </Form>
             </Wrapper>
@@ -179,6 +184,14 @@ function TemplateModal(props: Props) {
 const Wrapper = styled.div`
  .ant-form-item .ant-form-item-label {
     text-align: left !important;
+  }
+  .ant-form-item{
+    margin-bottom: 0 !important;
+  }
+  .upload-remark{
+    //position: fixed;
+    //bottom: 10px;
+    //left: ;
   }
 `
 export default Form.create()(observer(TemplateModal)) as any

@@ -74,10 +74,10 @@ export default function FixedBaseInfo(props: IProps) {
       <tbody>
         {Array.from(Array(Math.ceil(titleList.length / 2))).map((v: any, i: number) =>
           <tr key={i}>
-            <td>{titleList[2 * i]?.name}</td>
-            <td>{titleList[2 * i]?.code && !isPreview ? info[titleList[2 * i]?.code] : ''}</td>
-            <td>{titleList[2 * i + 1]?.name}</td>
-            <td>{titleList[2 * i + 1]?.code && !isPreview ? info[titleList[2 * i + 1]?.code] : ''}</td>
+            <td style={{padding:isPreview?'8px':'20px'}}>{titleList[2 * i]?.name}</td>
+            <td style={{padding:isPreview?'8px':'20px'}}>{titleList[2 * i]?.code && !isPreview ? info[titleList[2 * i]?.code] : ''}</td>
+            <td style={{padding:isPreview?'8px':'20px'}}>{titleList[2 * i + 1]?.name}</td>
+            <td style={{padding:isPreview?'8px':'20px'}}>{titleList[2 * i + 1]?.code && !isPreview ? info[titleList[2 * i + 1]?.code] : ''}</td>
           </tr>)}
       </tbody>
     </table>
@@ -105,7 +105,7 @@ tbody {
     background-color: #f8f8f8;
   }
   td {
-    padding: 8px;
+    padding:8px;
   }
 }
 `
