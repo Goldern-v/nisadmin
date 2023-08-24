@@ -48,13 +48,13 @@ export default observer(function FixedSummary(props: IProps) {
     }, [exportData,handbookModel?.detail?.dataMaps?.summary])
     return (
         <Wrapper>
-            <div className='title'>
+            <div className='title' style={{ border:isPreview ?'1px solid #999': "none"}}>
                 个人总结
                 {
                     isPreview ? <TextArea
                         disabled
                         className='area-input'
-                        placeholder="xxx"
+                        placeholder=""
                     /> : <TextArea
                         value={value}
                         onChange={(e: any) => setValue(e.target.value)}
@@ -77,7 +77,6 @@ const Wrapper: any = styled.div`
     font-size: 20px;
     font-weight: bold;
     text-align: center;
-    border: 1px solid #999;
     padding: 10px;
 
     .area-input {

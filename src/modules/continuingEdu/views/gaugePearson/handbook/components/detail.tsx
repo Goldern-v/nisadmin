@@ -3,7 +3,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { trainingSettingApi } from '../../api/TrainingSettingApi'
 import { handbookModel as model } from '../model'
-import { PageContainer } from 'src/components/common'
+import {PageContainer, PageContainerDetail} from 'src/components/common'
 export interface IProps {
 }
 
@@ -19,7 +19,6 @@ export default observer(function Detail(props: IProps) {
   //     }))
   //   })
   // }, [])
-
   return (
     <Wrapper>
       {model.detailConfig?.component ?
@@ -28,8 +27,10 @@ export default observer(function Detail(props: IProps) {
   )
 })
 
-const Wrapper = styled(PageContainer)`
-flex: 1;
-height: calc(100% - 15px);
-overflow: auto;
+const Wrapper = styled(PageContainerDetail)`
+  display: flex;
+  justify-content: center;
+  flex: 1;
+  height: calc(100% - 15px);
+  overflow: auto;
 `

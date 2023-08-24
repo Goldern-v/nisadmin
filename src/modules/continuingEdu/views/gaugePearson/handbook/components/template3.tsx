@@ -14,6 +14,7 @@ export default observer(function Template3() {
 
 const Wrapper = styled.div`
 height: 100%;
+  width: 80%;
 iframe {
   width: 100%;
   height: 100%;

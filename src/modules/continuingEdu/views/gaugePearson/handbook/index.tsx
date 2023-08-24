@@ -78,12 +78,12 @@ export default observer(function PearsonHandbook(props: IProps) {
             <div className='create-con'>
                 <div>
                     {model.curHb?.id && <div className='create-con-title'>
-                        已创建科室:
+                       规培生手册
                     </div>}
                     {
                         model.curHb?.id &&
                         <Select
-                            style={{ width: '180px',marginTop:'6px' }}
+                            style={{ width: '200px',marginTop:'6px' }}
                             value={model.curHb?.id} onChange={(e: any, option: any) => model.getCurHb(option)}>
                             {
                                 model.handbookList.map(v =>
@@ -155,7 +155,7 @@ const Wrapper = styled.div`
   }
 
   .create-con {
-    padding: 5px 20px;
+    padding: 5px  20px 5px 0;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -163,6 +163,8 @@ const Wrapper = styled.div`
       font-weight: bold;
       color: #333;
       margin-top: 4px;
+      text-align: center;
+      font-size: 18px;
     }
 
   }

@@ -34,6 +34,7 @@ export interface Props {
   maxSize?: number,
   typeList?: string[],
   isFormModel?: boolean
+  buttonSize?:any
 }
 const setSizeText = (size: number, i = 0): any => {
   let suffixList = ['B', 'K', 'M']
@@ -44,7 +45,7 @@ const setSizeText = (size: number, i = 0): any => {
 }
 
 export default forwardRef(function MultiFileUploader(props: Props) {
-  const { accept, type, onChange, data, readOnly, size, style, maxSize, typeList, isFormModel = false } = props
+  const { accept, type, onChange, data, readOnly, size, style, maxSize, typeList, isFormModel = false,buttonSize ='default' } = props
   const maxSizeText = maxSize ? setSizeText(maxSize) : ''
   const [iptVisible, setIptVisible] = useState(true)
   const [loading, setLoading] = useState(false)
@@ -174,7 +175,7 @@ export default forwardRef(function MultiFileUploader(props: Props) {
     </div>)}
     {!readOnly && notOverSize() &&
       (isFormModel
-        ? <Button className="add-btn" type='primary' ghost onClick={handleUploadOpen}>上传</Button>
+        ? <Button className="add-btn" type='primary' size={buttonSize} ghost onClick={handleUploadOpen}>上传</Button>
         : <div className="add-btn" title="添加文件" onClick={handleUploadOpen}>
           <StyledIcon type={loading ? 'loading' : 'plus'} />
         </div>
