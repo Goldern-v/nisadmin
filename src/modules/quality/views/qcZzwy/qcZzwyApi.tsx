@@ -16,10 +16,7 @@ export default class QcZzwyApi extends BaseApiService {
 		return this.get(`/qcItem/getRectificationdeptSummary?${qs.stringify(obj)}`);
 	}
 
-    // 护理部质量检查汇总表
-    public async getInspectionSummary(obj: any) {
-        return this.post(`/qcItem/getInspectionSummary`, obj);
-    }
+
 
 
     // 导出年度汇总表
