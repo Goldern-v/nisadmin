@@ -109,12 +109,12 @@ export default observer(function TraineeFiles(props: Props) {
       width: 120,
       align: "center"
     },
-    {
+    ...(!['lyrm'].includes(appStore.HOSPITAL_ID)?[{
       title: "是否住宿",
       dataIndex: "isResident",
       width: 80,
       align: "center"
-    },
+    }]:[]),
     {
       title: "宿舍编号",
       dataIndex: "dormitoryNumber",
