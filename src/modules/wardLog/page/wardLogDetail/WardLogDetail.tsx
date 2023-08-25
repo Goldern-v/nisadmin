@@ -53,7 +53,9 @@ export default function WardLogDetail() {
     setPageLoading(true)
     wardLogService.getDetail(appStore.queryObj.id).then((res) => {
       setPageLoading(false)
-
+      res.data.logDetail.forEach((item:any)=>{
+        item.content = item.content.replace(/\n/g,'<br>')
+      })
       setPageData(res.data)
     }, err => setPageLoading(false))
   }

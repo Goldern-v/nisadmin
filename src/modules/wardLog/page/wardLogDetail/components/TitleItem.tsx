@@ -11,7 +11,7 @@ export default function TitleItem(props: Props) {
   return (
     <Wrapper>
       <div className='title'>{title}</div>
-      <div className='aside'>{aside}</div>
+      <div className='aside' dangerouslySetInnerHTML={{ __html: aside }}></div>
     </Wrapper>
   )
 }

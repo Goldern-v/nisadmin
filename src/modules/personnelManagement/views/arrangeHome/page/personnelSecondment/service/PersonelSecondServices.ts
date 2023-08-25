@@ -38,6 +38,10 @@ export default class PersonelSecondServices extends BaseApiService {
   public saveOrUpdateByAudit(saveObj: SaveObj) {
     return this.post(`/schDeptTransferWH/saveOrUpdateByAudit`, saveObj)
   }
+
+  public schDeptTransferWH(params:any) {
+    return this.post(`/schDeptTransferWH/export`, params,{ responseType: "blob" })
+  }
 }
 
 export const personelSecondServices = new PersonelSecondServices()

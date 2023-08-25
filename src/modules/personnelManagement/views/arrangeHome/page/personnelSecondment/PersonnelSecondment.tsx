@@ -11,12 +11,14 @@ import PersonelSecondModal from "./modal/PersonelSecondModal";
 import { personelSecondServices } from "./service/PersonelSecondServices";
 import { appStore, authStore } from "src/stores";
 import DeptSelect from "src/components/DeptSelect";
+import { fileDownload } from "src/utils/file/file";
 export interface Props { }
 
 export default function PersonnelSecondment() {
   const [dataSource, setDataSource] = useState([]);
   const [status, setStatus] = useState("1");
   const [pageLoading, setPageLoading] = useState(false);
+  const [exportLoading, setExportLoading] = useState(false);
   const personelSecondModal = createModal(PersonelSecondModal);
   const [pageOptions, setPageOptions]: any = useState({
     pageIndex: 1,
@@ -130,7 +132,17 @@ export default function PersonnelSecondment() {
         setPageLoading(false);
       });
   };
-
+  const exportExcel = ()=>{
+    setExportLoading(true)
+    let params = {
+      deptCode:authStore.selectedDeptCode,
+      status
+    }
+    personelSecondServices.schDeptTransferWH(params).then((res)=>{
+      fileDownload(res)
+      setExportLoading(false)
+    })
+  }
   useEffect(() => {
     getData();
   }, [pageOptions.pageIndex, pageOptions.pageSize, status]);
@@ -155,6 +167,7 @@ export default function PersonnelSecondment() {
         <Place />
         <span className="label">科室：</span>
         <DeptSelect
+          extraDept = { [{name:"全部",code:""}] }
           onChange={() => {
             getData();
           }}
@@ -179,6 +192,9 @@ export default function PersonnelSecondment() {
         }
         <Button onClick={() => getData()} style={{ marginLeft: 10 }}>
           刷新
+        </Button>
+        <Button onClick={ exportExcel } style={{ marginLeft: 10 }} loading = {exportLoading}>
+          导出
         </Button>
       </Head>
       <BaseTable
