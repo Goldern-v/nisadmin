@@ -22,6 +22,7 @@ export interface Props {
 export default observer(function ArrangStatistics() {
   const [date, setDate]: any = useState(getCurrentMonth());
   const [dataSource, setDataSource] = useState([]);
+  const [defaultSource, setDefaultSource] = useState({});
   const [pageLoading, setPageLoading] = useState(false);
   const [exportLoading, setExportLoading] = useState(false);
   const [showType, setShowType] = useState("班次统计");
@@ -59,7 +60,7 @@ export default observer(function ArrangStatistics() {
       width: 80,
       align: "center",
     },
-    ...Object.getOwnPropertyNames(dataSource[0] || {})
+    ...Object.getOwnPropertyNames(defaultSource || {})
       .filter(item => !(["姓名", "合计", "序列", "EMPNO"].includes(item)))
       .map(item => {
         return {
@@ -111,7 +112,7 @@ export default observer(function ArrangStatistics() {
         ).toFixed(2);
       }
     },
-    ...Object.keys(dataSource[0] || {})
+    ...Object.keys(defaultSource || {})
       .filter(
         (item: any) =>
           item !== "工号" &&
@@ -162,8 +163,10 @@ export default observer(function ArrangStatistics() {
           status: true
         })
         .then(res => {
+          let data:any = JSON.parse(JSON.stringify(res.data))
           setPageLoading(false);
-          setDataSource(res.data || []);
+          setDataSource(data || []);
+          setDefaultSource({...res.data[0]})
         });
     }
 
@@ -176,24 +179,30 @@ export default observer(function ArrangStatistics() {
           endDate: (date && date[1] && date[1].format("YYYY-MM-DD")) || ""
         })
         .then(res => {
-          setDataSource(res.data);
+          let data:any = JSON.parse(JSON.stringify(res.data))
+          setDataSource(data || []);
+          setDefaultSource({...res.data[0]})
           setPageLoading(false);
         });
     }
   };
-  const exportFile = () =>{
+  const exportFile = () =>{ 
     setExportLoading(true)
+    let params = showType == "工时统计"? {
+      wardCode:authStore.selectedDeptCode,
+      startDate:(date && date[0] && date[0].format("YYYY-MM-DD")) || "",
+      endDate:(date && date[1] && date[1].format("YYYY-MM-DD")) || "",
+      type:"range_name"
+    } : {
+      deptCode: authStore.selectedDeptCode,
+      startTime: (date && date[0] && date[0].format("YYYY-MM-DD")) || "",
+      endTime: (date && date[1] && date[1].format("YYYY-MM-DD")) || "",
+      type: "range_name",
+      status: false
+    }
     let fn = arrangStatisticsService.countUserAll
     if(showType == "工时统计") fn = arrangStatisticsService.schNightHourExport
-    fn.call(arrangStatisticsService,{
-        deptCode: authStore.selectedDeptCode,
-        startTime: (date && date[0] && date[0].format("YYYY-MM-DD")) || "",
-        endTime: (date && date[1] && date[1].format("YYYY-MM-DD")) || "",
-        type: "range_name",
-        status: false
-      },
-      {responseType:'blob'}
-      )
+    fn.call(arrangStatisticsService,params,{responseType:'blob'})
       .then(async res => {
         await fileDownload(res)
         setExportLoading(false)
