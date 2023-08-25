@@ -9,10 +9,11 @@ export interface Props {
   value?: any
   onChange?: any
   widthPx?:any
+  className?:any
 }
 
 export default function YearMonthRangePicker(props: Props) {
-  let { value, onChange,widthPx } = props
+  let { value, onChange,widthPx,className } = props
   const [isOpen, setIsOpen] = useState(false)
   const [time, setTime]: any = useState(value)
 
@@ -24,6 +25,7 @@ export default function YearMonthRangePicker(props: Props) {
     <RangePicker
       value={time}
       open={isOpen}
+      className={className}
       style={{width:widthPx}}
       mode={['month', 'month']}
       format='YYYY-MM'

@@ -165,15 +165,14 @@ export default observer(function IssueAnalysis() {
 		
 	]
   useEffect(() => {
-    issueAnalysisData.getTableList()
+    // issueAnalysisData.getTableList()
     issueAnalysisData.getTemplateList()
-    // console.log(appStore.queryObj)
 		issueAnalysisData.getNursingAll()
 	}, [])
   return (
     <Wrapper>
       <PageHeader>
-				<PageTitle>{'护理部质量检查汇总表'}</PageTitle>
+				<PageTitle>{'质控表项目问题分析汇总'}</PageTitle>
 				<Place />
         <span>科室：</span>
 				<Select className="mr-15"
@@ -218,7 +217,7 @@ export default observer(function IssueAnalysis() {
       /></>}
       {issueAnalysisData.selectType=='1' && <>
         <span>月份：</span>
-        <YearMonthRangePicker widthPx={180} value={issueAnalysisData.monthRange} onChange={(val:any)=>{
+        <YearMonthRangePicker className='mr-15' widthPx={180} value={issueAnalysisData.monthRange} onChange={(val:any)=>{
 					issueAnalysisData.monthRange = val
 					issueAnalysisData.getTableList()
         }} />
@@ -263,7 +262,7 @@ export default observer(function IssueAnalysis() {
 				</>}
 
         <span>质控表：</span>
-				<Select className="mr-15"
+				<Select
 					// labelInValue
           showSearch
 					style={{ width: 180 }}
@@ -273,11 +272,10 @@ export default observer(function IssueAnalysis() {
           }
 					onChange={(val: any) => {
 						issueAnalysisData.qcCode = val
-						// issueAnalysisData.deptName = val.label
-						// issueAnalysisData.getTableList()
+						issueAnalysisData.getTableList()
 					}}
 				>
-					<Option value=''>全部</Option>
+					{/* <Option value=''>全部</Option> */}
 					{issueAnalysisData.templeteList.map((item: any) => {
 						return <Option value={item.qcCode} key={item.qcCode}>{item.qcName}</Option>
 					})}
