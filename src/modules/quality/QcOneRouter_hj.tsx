@@ -26,6 +26,8 @@ import 福清一级质控问题原因措施汇总 from './views/qcFormFqfybjy/�
 import qcThreeMQSummary from './views/qcThreeMQSummary'
 import QcOneMonthReportDgxg from './views/qcOneMonthReportDgxg/QcOneMonthReportDgxg'
 import CheckSummary from './views/qcZzwy/qcCheckSummary/CheckSummary'
+import QqualityMWSummary from './views/qcZzwy/qqualityMWSummary/tableList' // 季度质量管理工作总结 Quarterly quality management work summary
+
 export interface Props extends RouteComponentProps<{ name?: string }> { }
 
 export default function QcOneRouterHj(props: Props) {
@@ -76,13 +78,20 @@ export default function QcOneRouterHj(props: Props) {
 
   const route_质控_ZZWY = [
     {
-    title: "护理部质量检查汇总表",
-    icon: <HZBG />,
-    path: "/qcOneHj/护理部质量检查汇总表?qcLevel=1",
-    component: CheckSummary,
-    // keepAlive: true,
-    // disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
-  }
+      title: "护理部质量检查汇总表",
+      icon: <HZBG />,
+      path: "/qcOneHj/护理部质量检查汇总表?qcLevel=1",
+      component: CheckSummary,
+      // keepAlive: true,
+      // disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
+    },
+    {
+      title: "季度质量管理工作总结",
+      icon: <HZBG />,
+      path: "/qcOneHj/季度质量管理工作总结",
+      component: QqualityMWSummary,
+    },
+
 ]
   const route_一级质控问题原因措施汇总 = {
     title: "一级质控问题原因措施汇总",
