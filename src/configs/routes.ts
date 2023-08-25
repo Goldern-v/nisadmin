@@ -859,6 +859,15 @@ const routes: RouteItem[] = [
   ),
     layouts.MainLayout
   ),
+
+  // 月度质控检查总结报告-zzwy
+  setLayout(
+    "/qcMonthCheckReportDetail",
+    lazy(() =>
+    import("src/modules/quality/views/qcZzwy/qcMonthCheckReport/QcMonthCheckReportDetail")
+  ),
+    layouts.MainLayout
+  ),
   setLayout(
     "/committeeWorkReportDetail",
     committeeWorkReportDetail,

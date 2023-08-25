@@ -49,9 +49,7 @@ class IssueAnalysisData{
   @computed get postObj(){
     return{
       wardCode:this.deptCode,
-      // pageIndex:this.pageIndex,
-      // pageSize:this.pageSize,
-      level:'3'||this.qcLevel,
+      level:this.qcLevel,
       qcCode:this.qcCode
       }
   }
@@ -110,10 +108,13 @@ class IssueAnalysisData{
     if(this.templeteList.length>0){
       return false
     }
+    this.tableLoading = true
     qcZzwyApi.getTemplateList(this.qcLevel).then(res=>{
       this.templeteList = res.data || []
+      this.qcCode = res.data[0]?.qcCode
+      this.getTableList()
     }).catch(err=>{
-
+      this.tableLoading = false
     })
   }
 
