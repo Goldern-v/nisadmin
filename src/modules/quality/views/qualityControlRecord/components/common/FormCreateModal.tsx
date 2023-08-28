@@ -13,10 +13,12 @@ export interface Props {
   onCancel?: Function,
   level: string,
   title?: string
+/**漳州五院 其他默认执行handleOk  **/
+  zzwyCreat?:boolean
 }
 
 export default observer(function FormCreateModal(props: Props) {
-  const { visible, onOk, onCancel, title, level } = props
+  const { visible, onOk, onCancel, title, level,zzwyCreat } = props
   const [formList, setFormList] = useState([] as any)
   const [formListLoading, setFormListLoaindg] = useState(false)
 
@@ -85,8 +87,10 @@ export default observer(function FormCreateModal(props: Props) {
               onClick={() => setActiveIdx(idx)}
               title={item.qcName}
               onDoubleClick={() => {
-                onOk && onOk()
-                handleOk(idx)
+                let qcCodeObj:any ={}
+                if (filterList[idx]) qcCodeObj = filterList[idx]
+                onOk && onOk(qcCodeObj)
+                if(!zzwyCreat)handleOk(idx)
               }}>
               <div className="icon">
                 <img src={require('./../../assets/报告单@3x.png')} alt="" />

@@ -552,7 +552,8 @@ const SingleSignOnDefault = lazy(() => import("src/modules/SingleSignOn/default/
 const SingleSignOnGzsrm = lazy(() => import("src/modules/SingleSignOn/gzsrm/SingleSignOnGzsrm"))
 /**规培生手册详情 */
 const PearsonHandbook = lazy(() => import("src/modules/continuingEdu/views/gaugePearson/handbook/index"))
-
+/**漳州五院--季度质量分析报告详情**/
+const QuarterlyAnalysisReportZzwyDetail =lazy(() => import("src/modules/quality/views/qcZzwy/qcQuarterlyAnalysisReport/Detail"))
 // 移动端界面-患者随访问卷首页
 const routes: RouteItem[] = [
   setLayout("/demo", demo),
@@ -1066,6 +1067,7 @@ const routes: RouteItem[] = [
   setLayout("/nursingFollowUp", NursingFollowUp, layouts.MainLayout),
   setLayout("/nursingFollowUpDetail", FollowUpDetailView, layouts.MainLayout),
   setLayout("/pearsonHandbook", PearsonHandbook, layouts.MainLayout),
+  setLayout("/quarterlyAnalysisReportZzwyDetail", QuarterlyAnalysisReportZzwyDetail, layouts.MainLayout),
   {
     path: "/continuingEdu",
     redirect: "/continuingEdu/人员管理"

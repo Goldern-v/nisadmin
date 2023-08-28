@@ -45,5 +45,32 @@ export default class QcZzwyApi extends BaseApiService {
     public saveOrUpdateContent(params:any) {
         return this.post('/qcItem/rectificationSummary/saveOrUpdateContent',params)
     }
+    /**获取分页报告**/
+    public qcReportGetPage(params:any) {
+        return this.post('/qcReport/getPage',params)
+    }
+    /**创建分析报告**/
+    public createQcReport(params:any) {
+        return this.post('/qcReport/createQcReport',params)
+    }
+/**查看报告**/
+    public getQcReportById(reportId:number) {
+        return this.get(`/getQcReport/reportId?${reportId}`)
+    }
+/**保存报告**/
+public saveQcReport(params:number) {
+    return this.post(`/qcReport/saveQcReport`,params)
+}
+/**季度质量分析报告（一级、二级项目内容）
+ * @param params.beginDate {string}
+ * @param params.endDate {string}
+ * @param params.wardCode {string}
+ * @param params.qcCode {string}
+ * @param params.qcItemLevel {string}
+ *
+ * **/
+public getQcItemDataList(params:any) {
+    return this.post(`/qcReport/getQcItemDataList`,params)
+}
 }
 export const qcZzwyApi = new QcZzwyApi();

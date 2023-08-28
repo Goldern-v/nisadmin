@@ -45,7 +45,7 @@ export default observer(function RectificationSummary() {
             align: 'center',
             render: (value: any, row: any, index: number) => {
                 const obj = {
-                    children: value,
+                    children: `${value}(检查时间:${row.masterEvalDate} 检查人员:${row.masterCreatorName})`,
                     props: {},
                 } as any;
                 obj.props.rowSpan = mergeCells(row.masterQcCode, RectificationData.tableList, 'masterQcCode', index)
