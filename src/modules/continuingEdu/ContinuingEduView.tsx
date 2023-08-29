@@ -213,7 +213,7 @@ export default function ContinuingEdu(props: Props) {
   //晋升管理 根据医院切换
   const PromotionSettingCons = appStore.hisMatch({
     map: {
-      "hj,dgxg,lyyz,qhwy,nfsd,dglb,qzde,dghm": [
+      "hj,lyyz,qhwy,nfsd,dglb,qzde,dghm": [
         {
           title: "晋升管理", 
           icon: <JSGL />,
@@ -222,6 +222,29 @@ export default function ContinuingEdu(props: Props) {
           hide: () =>
             queyMenuAuthInfo("nm_lat_promotemanage") ||
             authStore.isOnlyInternsManage,
+        },
+      ],
+      "dgxg": [
+        {
+          title: "晋升", 
+          icon: <JSGL />,
+          children: [
+            {
+              title: "晋升管理", 
+              icon: <JSGL />,
+              path: "/continuingEdu/晋升管理",
+              component: 晋升管理_hj,
+              hide: () =>
+                queyMenuAuthInfo("nm_lat_promotemanage") ||
+                authStore.isOnlyInternsManage,
+            },
+            {
+              title: "晋升申请",
+              icon: <JSGL />,
+              path: "/continuingEdu/PromotionApplication",
+              component: PromotionApplication,
+            },
+          ]
         },
       ],
       
@@ -729,7 +752,7 @@ export default function ContinuingEdu(props: Props) {
     component: 培训统计分析,
     // hide: () => queyMenuAuthInfo("nm_lat_teachingPlanManage") || authStore.isOnlyInternsManage
     hide: () =>
-      !["hj", "gxjb", "dgxg",'lyyz','qhwy', 'nfsd', 'dglb', 'qzde', 'dghm'].includes(appStore.HOSPITAL_ID) ||
+      !["hj", "gxjb",'lyyz','qhwy', 'nfsd', 'dglb', 'qzde', 'dghm'].includes(appStore.HOSPITAL_ID) ||
       authStore.isOnlyInternsManage,
   };
   const TrainingChartAnalysisCon = {
@@ -737,7 +760,7 @@ export default function ContinuingEdu(props: Props) {
     icon: <JSGL />,
     path: "/continuingEdu/trainingChartAnalysis",
     component: TrainingChartAnalysis,
-    hide: () => !["hj", "dgxg",'lyyz','qhwy', 'nfsd', 'dglb', 'qzde', 'dghm'].includes(appStore.HOSPITAL_ID),
+    hide: () => !["hj",'lyyz','qhwy', 'nfsd', 'dglb', 'qzde', 'dghm'].includes(appStore.HOSPITAL_ID),
   };
 
   const PracticalOperation = [
@@ -809,7 +832,7 @@ const getIcon = (icon: any) => {
     },
     ...appStore.hisMatch({
       map: {
-        "hj,dgxg,lyyz,qhwy,nfsd,dglb,qzde,dghm": [
+        "hj,lyyz,qhwy,nfsd,dglb,qzde,dghm": [
           {
             title: "人员管理",
             icon: <RYGL />,
@@ -826,6 +849,43 @@ const getIcon = (icon: any) => {
                 title: "其他人员",
                 path: "/continuingEdu/其他人员",
                 component: 其他人员,
+              },
+              {
+                title: "分组设置",
+                path: "/continuingEdu/人员分组设置",
+                component: 人员分组设置,
+                hide: true,
+              },
+            ],
+          },
+          {
+            title: "培训手册",
+            icon: <JSGL />,
+            path: "/continuingEdu/培训手册",
+            component: 培训手册,
+          },
+          {
+            title: "审核发布",
+            icon: <YNXXB />,
+            path: "/continuingEdu/审核发布",
+            component: 审核集中管理,
+            hide: () =>
+              queyMenuAuthInfo("nm_lat_auditmanage") ||
+              authStore.isOnlyInternsManage,
+          },
+        ],
+        "dgxg": [
+          {
+            title: "人员管理",
+            icon: <RYGL />,
+            hide: () =>
+              queyMenuAuthInfo("nm_lat_personelManage") ||
+              authStore.isOnlyInternsManage,
+            children: [
+              {
+                title: "护理人员",
+                path: "/continuingEdu/人员管理",
+                component: 人员管理,
               },
               {
                 title: "分组设置",
@@ -992,7 +1052,7 @@ const getIcon = (icon: any) => {
       title: "实习生管理",
       path: "/continuingEdu",
       icon: <JXJH />,
-      
+      hide: () => ["dgxg"].includes(appStore.HOSPITAL_ID),
       children: [
         ...appStore.hisMatch({
           map: {
@@ -1027,6 +1087,7 @@ const getIcon = (icon: any) => {
       title: "规培生管理",
       path: "/continuingEdu",
       icon: <JXJH />,
+      hide: () => ["dgxg"].includes(appStore.HOSPITAL_ID),
       children: [
         {
           title: "规培生基本信息汇总表",
@@ -1049,6 +1110,7 @@ const getIcon = (icon: any) => {
       title: "进修生管理",
       path: "/continuingEdu",
       icon: <JXJH />,
+      hide: () => ["dgxg"].includes(appStore.HOSPITAL_ID),
       children: [
         ...appStore.hisMatch({
           map: {
@@ -1097,6 +1159,7 @@ const getIcon = (icon: any) => {
       icon: <JSGL />,
       path: "/continuingEdu/PromotionApplication",
       component: PromotionApplication,
+      hide: () => ["dgxg"].includes(appStore.HOSPITAL_ID)
     },
     {
       title: "类型管理",

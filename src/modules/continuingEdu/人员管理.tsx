@@ -380,6 +380,7 @@ export default observer(function 人员管理(props: Props) {
         newQuery.currentLevel = value;
         break;
       case "Zw":
+      case "Jxrz":
         newQuery.job = value;
         break;
       case "Fz":

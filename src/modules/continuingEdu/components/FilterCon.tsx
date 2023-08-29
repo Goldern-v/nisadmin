@@ -30,6 +30,9 @@ const setFilterAdapter = (label: string, value: string, callback: any) => {
     case '职务':
       name = 'Zw'
       break
+    case '教学任职':
+      name = 'Jxrz'
+      break
     case '分组':
       name = 'Fz'
       break
@@ -48,6 +51,7 @@ export interface Props {
     Zc: string,
     Cj: string,
     Zw: string,
+    Jxrz?: string,
     Fz?: string
   }
 }
@@ -75,6 +79,7 @@ export default observer(function FilterCon(props: Props) {
         'gxjb': ['全部', '护士', '护师', '主管护师', '副主任护师', '主任护师'],
         'lcey': ['全部', ...TITLE_LIST_lcey],
         'ytll': ['全部', '护士', '护师', '主管护师', '副主任护师', '主任护师'],
+        'dgxg': ['全部', '助理护士', '护士', '护师', '主管护师', '副主任护师', '主任护师'],
         default: ['全部', '见习期护士', '护士', '护师', '主管护师', '副主任护师', '主任护师']
       }
     }),
@@ -121,6 +126,18 @@ export default observer(function FilterCon(props: Props) {
           '护理部副主任',
           '护理部主任',
         ],
+        'dgxg': [
+          '全部',
+          '无',
+          '教学小组组长',
+          '教学秘书',
+          '护理组长',
+          '副护士长',
+          '护士长',
+          '护理部主任助理',
+          '护理部副主任',
+          '护理部主任'
+        ],
         other: [
           '全部',
           '无',
@@ -134,7 +151,18 @@ export default observer(function FilterCon(props: Props) {
           '护理部主任'
         ]
       }
-    })
+    }),
+    ...['dgxg'].includes(appStore.HOSPITAL_ID)?
+    {教学任职: appStore.hisMatch({
+      map: {
+        'dgxg': [
+          '无',
+          '培训组组长',
+          '教学秘书',
+          '带教老师',
+        ]
+      }
+    })}:{}
   } as any
 
   if (appStore.HOSPITAL_ID === 'hj')
@@ -161,6 +189,9 @@ export default observer(function FilterCon(props: Props) {
       }
       case '职务': {
         return filter.Zw
+      }
+      case '教学任职': {
+        return filter.Jxrz || ""
       }
       case '分组': {
         return filter.Fz || ''

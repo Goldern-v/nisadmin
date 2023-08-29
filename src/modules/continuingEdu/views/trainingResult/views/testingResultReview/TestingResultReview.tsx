@@ -338,6 +338,19 @@ export default observer(function TestingResultReview() {
             }
           />
         ),
+        'dgxg': (
+          <BaseTabs
+            config={
+              [
+                {
+                  title: '考试情况统计与分析',
+                  index: "1",
+                  component: <HjExamResultAnalyse />
+                }
+              ]
+            }
+          />
+        ),
         'default': (
           <MainPannel>
             <QueryPannel />
