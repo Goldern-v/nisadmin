@@ -29,6 +29,7 @@ import CheckSummary from './views/qcZzwy/qcCheckSummary/CheckSummary'
 import IssueAnalysis from './views/qcZzwy/issueAnalysis/IssueAnalysis'
 import RectificationSummary from './views/qcZzwy/qcRectificationSummary/RectificationSummary'
 import QcMonthCheckReportList from './views/qcZzwy/qcMonthCheckReport/QcMonthCheckReportList'
+import QuarterlyAnalysisReportZzwy from './views/qcZzwy/qcQuarterlyAnalysisReport/Index'
 export interface Props extends RouteComponentProps<{ name?: string }> { }
 
 export default function QcOneRouterHj(props: Props) {
@@ -101,7 +102,13 @@ export default function QcOneRouterHj(props: Props) {
       icon: <JCTJ />,
       path: "/qcOneHj/月度质控检查总结报告?qcLevel=1",
       component: QcMonthCheckReportList,
-    }
+    },
+
+    {title: "季度质量分析报告",
+      icon: <HZBG />,
+      path: "/qcOneHj/季度质量分析报告?qcLevel=1",
+      component: QuarterlyAnalysisReportZzwy,
+    },
 ]
 
   const route_一级质控问题原因措施汇总 = {
