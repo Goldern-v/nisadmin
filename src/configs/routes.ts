@@ -136,6 +136,11 @@ const QualityControlRecordDetail = lazy(() =>
     "src/modules/quality/views/qualityControlRecord/qualityControlRecordDetail/QualityControlRecordDetail"
   )
 );
+// 一级质控 - 季度质量管理工作总结
+const QqualityMWSummaryDetail = lazy(() => 
+  import('src/modules/quality/views/qcZzwy/qqualityMWSummary/details')
+)
+
 const qualityControlRecordEdit = lazy(() =>
   import(
     "src/modules/quality/views/qualityControlRecord/qualityControlRecordEdit/QualityControlRecordEdit"
@@ -838,6 +843,14 @@ const routes: RouteItem[] = [
     AnalysisDetail,
     layouts.MainLayout
   ),
+
+  setLayout(
+    "/qqualityMWSummaryDetail",
+    QqualityMWSummaryDetail,
+    layouts.MainLayout
+  ),
+
+
   // 三级质控汇总详情
   setLayout(
     "/qcThreeResultDetail",
