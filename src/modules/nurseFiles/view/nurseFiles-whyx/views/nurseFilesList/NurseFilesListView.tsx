@@ -83,8 +83,8 @@ const columns: ColumnProps<any>[] = [
   },
   {
     title: '层级',
-    dataIndex: 'nurseHierarchy',
-    key: 'nurseHierarchy',
+    dataIndex: appStore.HOSPITAL_ID === 'whhk'?'user_hierarchy':'nurseHierarchy',
+    key: appStore.HOSPITAL_ID === 'whhk'?'user_hierarchy':'nurseHierarchy',
     width: 70,
     align: 'center'
   },
