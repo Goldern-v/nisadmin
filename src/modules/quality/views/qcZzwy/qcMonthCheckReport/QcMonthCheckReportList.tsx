@@ -2,8 +2,9 @@ import { observer } from 'mobx-react'
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { PageHeader, PageTitle, Place } from 'src/components/common'
+import { globalModal } from 'src/global/globalModal'
 import {
-	Input,
+	Modal,
 	Select,
 	DatePicker,
 	Button,
@@ -15,6 +16,7 @@ import { qcMonthCheckData } from './qcMonthCheckData';
 import CreateMonthCheckReport from './CreateMonthCheckReport';
 import { appStore } from 'src/stores';
 import qs from 'qs';
+import { qcZzwyApi } from '../qcZzwyApi'
 const Option = Select.Option;
 
 
@@ -32,44 +34,44 @@ export default observer(function QcMonthCheckReportList() {
   },
 		{
 			title: "报告名称",
-			dataIndex: "masterQcName",
+			dataIndex: "reportName",
 			align: "center",
 			width: 220,
 			
 		},
 		{
 			title: "科室",
-			dataIndex: "firstLevelItemName",
+			dataIndex: "wardName",
 			align: "center",
 			width: 100,
      
 		},
 		{
 			title: "报告年份",
-			dataIndex: "firstLevelEvalRate",
+			dataIndex: "reportYear",
 			align: "center",
 			width: 80,
      
 		},
     {
 			title: "报告月份",
-			dataIndex: "firstLevelEvalRate2",
+			dataIndex: "reportMonth",
 			align: "center",
 			width: 80,
      
 		},
     {
 			title: "创建人",
-			dataIndex: "firstLevelEvalRate3",
+			dataIndex: "creatorName",
 			align: "center",
 			width: 80,
      
 		},
     {
 			title: "创建时间",
-			dataIndex: "firstLevelEvalRate4",
+			dataIndex: "createTime",
 			align: "center",
-			width: 80,
+			width: 160,
      
 		},
     {
@@ -80,8 +82,8 @@ export default observer(function QcMonthCheckReportList() {
       render: (value: any, record: any, index: number) => {
           return (<DoCon>
             <span onClick={() => { turnToDetail(record) }}>查看</span>
-            <span onClick={() => console.log('111')}>编辑</span>
-            <span onClick={() => console.log('111')}>删除</span>
+            <span onClick={() => {openModal('编辑',record)}}>编辑</span>
+            <span onClick={() => {deleteItem(record)}}>删除</span>
             {/* <span key={row.id} onClick={() => handleSign(row, 'signName')}>{value || '签名'}</span> */}
         </DoCon>)
       }
@@ -89,15 +91,38 @@ export default observer(function QcMonthCheckReportList() {
   },
   ]
 		
+	/**查看 */
   const turnToDetail = (record: any) => {
 		// ?${qs.stringify(record)}
 		const { id, batch } = record
 		qcMonthCheckData.currentItem = record
-		// trainExamData.passScore = record.passScore || 60
-		appStore.history.push(`/qcMonthCheckReportDetail?${qs.stringify({ id, batch, year: moment().format('YYYY') })}`)
+
+		// trainExamData.passScore = record.passScore || 60 
+		appStore.history.push(`/qcMonthCheckReportDetail?${qs.stringify({ id, batch, year: moment().format('YYYY'),qcLevel:appStore.queryObj?.qcLevel })}`)
+	}
+
+	/**删除 */
+	const deleteItem = (record: any)=>{
+		globalModal.confirm('删除确定', '你确定要删除该记录吗?').then((res) => {
+			qcZzwyApi.deleteQcReport({reportId:record.id}).then((res) => {
+				// getTableData()
+			})
+		}).catch(err=>{
+			console.log(err)
+		})
+		
+		// })
+	}
+
+	const openModal = (title:string,record?:any)=>{
+		qcMonthCheckData.currentItem = record || {}
+		qcMonthCheckData.modalTitle = title
+		qcMonthCheckData.addConfirmVisible=true
 	}
 
   const handleOk = () => {
+		appStore.history.push(`/qcMonthCheckReportDetail?${qs.stringify({qcLevel:appStore.queryObj?.qcLevel })}`)
+
 		qcMonthCheckData.addConfirmVisible = false
 	}
 	const handleCancel = () => {
@@ -121,7 +146,7 @@ export default observer(function QcMonthCheckReportList() {
 						// qcMonthCheckData.getTableList()
 					}}
 				>
-					<Option value='全院'>全院</Option>
+					<Option value="">全院</Option>
 					{qcMonthCheckData.deptList.map((item: any) => {
 						return <Option value={item.code} key={item.code}>{item.name}</Option>
 					})}
@@ -141,7 +166,7 @@ export default observer(function QcMonthCheckReportList() {
 				</Button>
         <Button
 					className="span" type='primary'
-					onClick={() => qcMonthCheckData.addConfirmVisible=true}
+					onClick={() => openModal('新建')}
 				>
 					创建
 				</Button>
