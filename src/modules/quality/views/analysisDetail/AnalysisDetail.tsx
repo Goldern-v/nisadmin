@@ -115,6 +115,12 @@ export default observer(function AnalysisDetail() {
       }, 500)
     });
   }
+
+  const toShenke = ()=>{
+    if(appStore.HOSPITAL_ID==="whyx") return Number(report.status) > 0
+    else return (Number(report.status) > 0 && report.statusName != '审核完成')
+  }
+
   return (
     <Wrapper>
       <HeadCon>
@@ -137,7 +143,7 @@ export default observer(function AnalysisDetail() {
           )}
 
 
-          { Number(report.status) > 0 && report.statusName != '审核完成' && (
+          { toShenke() && (
             <Button type='primary' onClick={() => setVisible(true)}>审核</Button>
           )}
 
