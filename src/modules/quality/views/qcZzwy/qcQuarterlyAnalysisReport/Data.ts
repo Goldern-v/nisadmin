@@ -1,4 +1,4 @@
-import {observable, computed} from "mobx";
+import {observable, computed, action} from "mobx";
 import moment from 'moment'
 import {qcZzwyApi} from "../qcZzwyApi";
 import {appStore} from "src/stores";
@@ -30,6 +30,13 @@ class QuarterlyAnalysisReportZzwy {
     @observable public contentValue: string = ''
     /**整改措施内容 input**/
     @observable public rectification: string = ''
+    /**二级项目 --简称**/
+    @observable public referredTable: any = []
+    /**鱼骨图数据**/
+    @observable public fishValueObj: any = Array.from(Array(40)).reduce((prev, cur, i) => {
+        prev[`v${i + 1}`] = '';
+        return prev
+    }, {})
 
     @computed get postObj() {
         return {
@@ -42,6 +49,20 @@ class QuarterlyAnalysisReportZzwy {
         }
     }
 
+    @action
+    updateFishValueObj(value:any){
+        this.fishValueObj  =value
+        console.log(this.fishValueObj);
+    }
+    @action
+    updateSummaryTable(index: number, key: string, value: any) {
+        this.summaryTable[index][key] = value;
+    }
+
+    @action
+    updateReferredTable(index: number, key: string, value: any) {
+        this.referredTable[index][key] = value;
+    }
 
     getTableList() {
         // 默认按月份
@@ -63,22 +84,48 @@ class QuarterlyAnalysisReportZzwy {
     /*保存报告**/
     saveQcReport() {
 //判断后边处理
-        console.log("this.qcReportItemDtoList====", this.qcReportItemDtoList);
+//         console.log("this.qcReportItemDtoList====", this.qcReportItemDtoList);
+//         console.log("this.summaryTable===",this.summaryTable);
+        // console.log("this.referredTable===",this.referredTable);/
+        // return
         let list: any = this.qcReportItemDtoList.map((item: any, index: number) => {
             let itemValue: any = {}
-            /*第一部分*/
-            if (index == 0) {
-                itemValue = {
-                    summarize: this.summarize,
-                    inspectTable: this.inspectTable,
-                    summaryTable: this.summaryTable,
-                    contentValue: this.contentValue
-                }
-            } else if (index == 2) {
-                itemValue ={
-                    rectification:this.rectification
-                }
+            switch (index) {
+                case 0 :
+                    itemValue = {
+                        summarize: this.summarize,
+                        inspectTable: this.inspectTable,
+                        summaryTable: this.summaryTable,
+                        contentValue: this.contentValue
+                    }
+                    break
+                case 1:
+                    itemValue = {fishValueObj: this.fishValueObj}
+                    break
+                case 2:
+                    itemValue = {rectification: this.rectification}
+                    break
+                case 3:
+                    itemValue = {referredTable: this.referredTable}
+                    break
+                case 4:
+                    break
+                default :
+                    return
             }
+            /*第一部分*/
+            // if (index == 0) {
+            //     itemValue = {
+            //         summarize: this.summarize,
+            //         inspectTable: this.inspectTable,
+            //         summaryTable: this.summaryTable,
+            //         contentValue: this.contentValue
+            //     }
+            // } else if (index == 2) {
+            //     itemValue = {
+            //         rectification: this.rectification
+            //     }
+            // }
             return {
                 reportMasterId: this.reportMasterData.id,
                 reportItemId: item.id,
@@ -92,8 +139,8 @@ class QuarterlyAnalysisReportZzwy {
             templateName: "季度质量分析报告",
             qcReportItemDataList: list,
             ...this.reportMasterData,
-            startDate: "2023-01-01",
-            endDate: "2023-12-30",
+            // startDate: "2023-01-01",
+            // endDate: "2023-12-30",
         }
         /** 分析报告按模块分 第一部分 为 { summarize:string,inspectTable:arr,three:arr,four:string } ***/
         qcZzwyApi.saveQcReport(params).then((res: any) => {
@@ -156,15 +203,27 @@ class QuarterlyAnalysisReportZzwy {
             if (item.qcReportItemDataList) {
                 if (index == 0 && item.qcReportItemDataList[0].itemValue) {
                     let obj: any = JSON.parse(item.qcReportItemDataList[0].itemValue)
-                    this.summarize = obj.summarize
-                    this.contentValue = obj.contentValue
+                    this.summarize = obj.summarize || ""
+                    this.contentValue = obj.contentValue || ''
+                    this.summaryTable = obj.summaryTable || []
                     //     还有二级项目内容
                 }
+                /**鱼骨图内容**/
+                if (index == 1 && item.qcReportItemDataList[0].itemValue) {
+                    let obj: any = JSON.parse(item.qcReportItemDataList[0].itemValue)
+                    if(obj.fishValueObj) this.fishValueObj = obj.fishValueObj
+                    console.log("this.fishValueObj===",this.fishValueObj);
+                }
+                /**整改措施**/
                 if (index == 2 && item.qcReportItemDataList[0].itemValue) {
                     let obj: any = JSON.parse(item.qcReportItemDataList[0].itemValue)
                     this.rectification = obj.rectification
                 }
-
+                /**追踪评价**/
+                if (index == 3 && item.qcReportItemDataList[0].itemValue) {
+                    let obj: any = JSON.parse(item.qcReportItemDataList[0].itemValue)
+                    this.referredTable = obj.referredTable || []
+                }
             }
         })
     }
@@ -226,6 +285,31 @@ class QuarterlyAnalysisReportZzwy {
                     return {};
             }
         }
+    }
+
+    /**获取到的二级项目以及简称内容 label ，simpleName
+     *
+     * data来源可能是从点击添加出现的二级弹窗内容的回调，也可能是获取详情后的数据
+     * **/
+    handleSelectReport(data: any) {
+        this.summaryTable = []
+        this.referredTable = []
+        data.map((item: any) => {
+            this.summaryTable.push({
+                label: item.label,
+                code: item.qcItemCode,
+                evalRate: undefined,
+            })
+            this.referredTable.push({
+                simpleName: item.simpleName,
+                b: undefined,
+                c: undefined,
+                d: undefined,
+                e: undefined,
+                g: undefined
+            })
+        })
+        console.log(this.summaryTable);
     }
 }
 

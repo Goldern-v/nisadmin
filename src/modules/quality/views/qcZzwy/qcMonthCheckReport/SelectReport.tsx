@@ -13,7 +13,7 @@ import styled from 'styled-components'
 // import { preJobManageApi } from "../PreJobManageApi";
 export interface Props extends FormComponentProps {
   visible: boolean,
-  handleOk: () => void,
+  handleOk: any,
   handleCancel: () => void,
 }
 const formItemLayout = {
@@ -55,7 +55,7 @@ function SelectReport(props: Props) {
       let keys = Object.keys(value)
       qcMonthCheckData.templateData.itemCodeList = keys
       // console.log(keys,tempArray)
-      handleOk()
+      handleOk(value)
       // console.log('创建的内容',value)
    
     })

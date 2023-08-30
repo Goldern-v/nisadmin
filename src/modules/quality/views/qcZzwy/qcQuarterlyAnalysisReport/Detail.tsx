@@ -16,6 +16,8 @@ import {qcZzwyApi} from "src/modules/quality/views/qcZzwy/qcZzwyApi";
 import QcFishBone from "src/modules/quality/views/qcZzwy/qcQuarterlyAnalysisReport/qcFishBone/fish-bone";
 import ChartCylindricality
     from "src/modules/quality/views/qcZzwy/qcQuarterlyAnalysisReport/components/ChartCylindricality";
+import SelectReport from '../qcMonthCheckReport/SelectReport';
+import {qcMonthCheckData} from "src/modules/quality/views/qcZzwy/qcMonthCheckReport/qcMonthCheckData";
 
 const {TextArea} = Input
 
@@ -27,7 +29,9 @@ interface Props {
 export default observer(function QuarterlyAnalysisReportZzwyDetail(props: Props) {
     const {queryObj} = appStore
     const {creatorName, creatorTime, summaryFormName, reportYear, reportQuarter} = QuarterlyZzwyData.reportMasterData
-    let master = props.detailData?.master || {};
+    const [selectTableModal, setSelectTableModal] = useState(false);
+    const [fishValue,setFishValue]=useState({} as any)
+    const [summaryTable,setSummaryTable] =useState([] as any)
     const topHeaderBack = () => {
         // appStore.history.push(
         //   props.detailData.master.qcLevel == '3'
@@ -39,20 +43,15 @@ export default observer(function QuarterlyAnalysisReportZzwyDetail(props: Props)
         appStore.history.goBack()
     };
     const columnsOne: ColumnProps<any>[] = [
-        // "firstLevelItemName”：“配套设施”，
-        // "firstLevelItemCode":
-        // "H]_OCIT_053*.
-        // "firstlevelEvalRate"
         {
             title: '一级指标',
             dataIndex: "firstLevelItemName",
-            width: 100,
             align: 'center'
         },
         {
             title: '合格率(%)',
             dataIndex: "firstlevelEvalRate",
-            width: 100,
+            width: 80,
             align: 'center',
             render: (text: string) => {
                 return `${text}%`
@@ -62,59 +61,77 @@ export default observer(function QuarterlyAnalysisReportZzwyDetail(props: Props)
     const columnsTwo: ColumnProps<any>[] = [
         {
             title: '项目',
-            dataIndex: "firstLevelItemName",
+            dataIndex: "simpleName",
             align: 'center'
         },
         {
             title: '追踪前得分率(%)',
-            dataIndex: "firstlevelEvalRate",
+            dataIndex: "b",
             align: 'center',
-            render: (text: string, record: any) => {
-                return (
-                    <Input value={text} onInput={(e: any) => {
-                    }}/>
-                )
+            render: (text: string, record: any,index:number) => {
+                return <Input defaultValue={text} onBlur={(e: any) => {
+                    QuarterlyZzwyData.updateReferredTable(index,'b',e.target.value)
+                }}/>
             }
         },
         {
             title: '追踪者',
-            dataIndex: "firstlevelEvalRate",
+            dataIndex: "c",
             align: 'center',
-            render: (text: string, record: any) => {
-                return (
-                    <Input value={text} onInput={(e: any) => {
-                    }}/>
-                )
+            render: (text: string, record: any,index:number) => {
+                return <Input defaultValue={text} onBlur={(e: any) => {
+                    QuarterlyZzwyData.updateReferredTable(index,'c',e.target.value)
+                }}/>
             }
         },
         {
             title: '追踪时间',
-            dataIndex: "firstlevelEvalRate",
+            dataIndex: "d",
             align: 'center',
-            render: (text: string) => {
-                return `${text}%`
+            render: (text: string, record: any,index:number) => {
+                return <Input defaultValue={text} onBlur={(e: any) => {
+                    QuarterlyZzwyData.updateReferredTable(index,'d',e.target.value)
+                }}/>
             }
         },
         {
             title: '追踪后得分率',
-            dataIndex: "firstlevelEvalRate",
+            dataIndex: "e",
             align: 'center',
-            render: (text: string, record: any) => {
-                return (
-                    <Input value={text} onInput={(e: any) => {
-                    }}/>
-                )
+            render: (text: string, record: any,index:number) => {
+                return <Input defaultValue={text} onBlur={(e: any) => {
+                    QuarterlyZzwyData.updateReferredTable(index,'e',e.target.value)
+                }}/>
             }
         },
         {
             title: '追踪结果',
-            dataIndex: "firstlevelEvalRate",
+            dataIndex: "g",
             align: 'center',
-            render: (text: string, record: any) => {
-                return (
-                    <Input value={text} onInput={(e: any) => {
-                    }}/>
-                )
+            render: (text: string, record: any,index:number) => {
+                return <Input defaultValue={text} onBlur={(e: any) => {
+                    QuarterlyZzwyData.updateReferredTable(index,'g',e.target.value)
+                }}/>
+            }
+        }
+    ]
+    const columnsThree: ColumnProps<any>[] = [
+        {
+            title: '质量内容',
+            dataIndex: "label",
+            align: 'center'
+        },
+        {
+            title: '合格率(%)',
+            dataIndex: "evalRate",
+            width: 80,
+            align: 'center',
+            render: (text: string, record: any, index: number) => {
+                console.log("text===",text);
+                return <Input defaultValue={text}  onBlur={(e: any) => {
+                       // record.evalRate =e.target.value
+                    QuarterlyZzwyData.updateSummaryTable(index,'evalRate',e.target.value)
+                }}/>
             }
         }
     ]
@@ -123,12 +140,9 @@ export default observer(function QuarterlyAnalysisReportZzwyDetail(props: Props)
             QuarterlyZzwyData.getQcReportById(queryObj.master)
         }
     }, [queryObj.master])
-    const handleFishItem =(obj:any)=>{
+    const handleFishItem = (obj: any) => {
         console.log(obj);
-    }
-    const  fishValue={
-        'v0':1,
-        'v1':4,
+        QuarterlyZzwyData.updateFishValueObj(obj)
     }
     return (
         <Con>
@@ -200,12 +214,13 @@ export default observer(function QuarterlyAnalysisReportZzwyDetail(props: Props)
                     <>
                         <Summary>
                             <h5 className='title-sty'>条目汇总表</h5>
-                            <Button type='primary'>添加</Button>
+                            <Button type='primary' onClick={() => setSelectTableModal(true)}>添加</Button>
                         </Summary>
                         <BaseTable
                             style={{padding: 0}}
+                            // dataSource={summaryTable}
                             dataSource={QuarterlyZzwyData.summaryTable}
-                            columns={columnsOne}
+                            columns={columnsThree}
                         />
                     </>
                     <>
@@ -225,15 +240,16 @@ export default observer(function QuarterlyAnalysisReportZzwyDetail(props: Props)
                         <h6 className='title-sty'>四、追踪评价</h6>
                         <BaseTable
                             style={{padding: 0}}
-                            dataSource={QuarterlyZzwyData.summaryTable}
+                            dataSource={QuarterlyZzwyData.referredTable}
                             columns={columnsTwo}
                         />
-                        <div style={{margin:'20px 0'}}>
-                            <QcFishBone value={fishValue} onChange={handleFishItem}/>
+                        <div style={{margin: '20px 0'}}>
+                            {/*QuarterlyZzwyData.fishValueObj*/}
+                            <QcFishBone value={QuarterlyZzwyData.fishValueObj}  onChange={handleFishItem}/>
                         </div>
                         {/*<QcFishBone/>*/}
                     </>
-                    <Summary style={{height:"auto"}}>
+                    <Summary style={{height: "auto"}}>
                         <h6 className='title-sty'>五、对上季度项目得分率的条目进行效果评价（支持图片上传</h6>
                         <MultiFileUploader
                             accept={'image/png,image/jpeg,image/gif,image/webp,image/apng,image/svg'}
@@ -246,6 +262,23 @@ export default observer(function QuarterlyAnalysisReportZzwyDetail(props: Props)
                     <ChartCylindricality/>
                 </Content>
             </MidCon>
+            <SelectReport
+                visible={selectTableModal}
+                handleOk={(value: any) => {
+                  //   setSummaryTable([])
+                  //   let list:any =[]
+                  //    qcMonthCheckData.templateData.itemCodeObj.map((item:any)=>{
+                  //        list.push({
+                  //           label: item.label,
+                  //           code: item.qcItemCode,
+                  //           evalRate: undefined,
+                  //       })
+                  //   })
+                  // setSummaryTable(list)
+                  //   QuarterlyZzwyData.handleSelectReport(qcMonthCheckData.templateData.itemCodeObj)
+                    setSelectTableModal(false)
+                }}
+                handleCancel={() => setSelectTableModal(false)}/>
             {/*</Spin>*/}
         </Con>
     )
