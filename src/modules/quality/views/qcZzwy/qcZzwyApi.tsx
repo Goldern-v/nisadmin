@@ -53,9 +53,13 @@ export default class QcZzwyApi extends BaseApiService {
     public createQcReport(params:any) {
         return this.post('/qcReport/createQcReport',params)
     }
+    /**删除报告**/
+    public deleteQcReport(params:any) {
+        return this.post('/qcReport/deleteQcReport',params)
+    }
 /**查看报告**/
     public getQcReportById(reportId:number) {
-        return this.get(`/getQcReport/reportId?${reportId}`)
+        return this.get(`/qcReport/getQcReport/${reportId}`)
     }
 /**保存报告**/
 public saveQcReport(params:number) {
@@ -72,5 +76,39 @@ public saveQcReport(params:number) {
 public getQcItemDataList(params:any) {
     return this.post(`/qcReport/getQcItemDataList`,params)
 }
+
+/***删除
+ *
+ * {
+ *     "reportId": "string",
+ * }
+ * **/
+public qcItemDeleteQcReport(params:any) {
+    return this.post(`/qcReport/deleteQcReport`,params)
+}
+    /**二级指标的上个月的数据与之比对
+     * {
+     *     "wardCode": "string",
+     *     "startDate": "string",
+     *     "endDate": "string",
+     *     "reportLevel": "string",
+     *     "qcItemCodeList": [
+     *         "string"
+     *     ]
+     * }
+     *
+     **/
+
+/**根据报告表Code找到报告表下的二级项目 */
+public getReportTwoItem(qcCode:any) {
+    return this.get(`/qcReport/getReportTwoItem/${qcCode}`)
+}
+
+/**二级指标的上个月的数据与之比对 */
+public getRatioByItemCode(qcCode:any) {
+    return this.post(`/api/qcReport/getRatioByItemCode`)
+}
+
+
 }
 export const qcZzwyApi = new QcZzwyApi();

@@ -13,7 +13,7 @@ class QcMonthCheckData{
     @observable public pageSize: any = 20; //每页大小
     @observable public total: any = 0; //总条数
 
-  @observable public deptCode = "全院"; //科室
+  @observable public deptCode = ""; //科室
   @observable public deptName = "全院"; //科室名称
 
   @observable public monthRange = [moment(),moment()];//月份时间
@@ -25,19 +25,77 @@ class QcMonthCheckData{
   // 创建/编辑的弹框
   @observable public addConfirmVisible:boolean = false;
   @observable public modalTitle:string = '创建';//创建/编辑
+  @observable public createModalData:any = {};// 创建对话框的内容
+  
   @observable public currentItem={
     month:moment(),//月份
-    deptCode:authStore.defaultDeptCode,//科室
+    deptCode:{key:authStore.defaultDeptCode,label:authStore.defaultDeptCodeName},//科室
     name:'',//名称
+    id:'1'
+  }
+
+
+  // 详情的数据modal
+  @observable public reportTwoItemModal:boolean = false;
+  @observable public templateList:any = []//模板列表
+  @observable public reportTwoItem:any = []//根据报告表Code找到报告表下的二级项目
+  @observable public templateData:any = {
+    qcCode:'',
+    itemCodeObj:[],//二级项目对象，name，code，简称simpleName
+    itemCodeList:[]//二级项目的codelist，用于获取柱状图传参
+  }
+
+  // 详情接口拿到的数据-创建接口
+  @observable public reportMasterData:any = null
+  @observable public qcReportItemDtoList:any = null
+  // 检查情况
+  @observable public ZZWY_YDZKJCZJ_L1_001:any = {
+    tableList:[]
+  }
+  // 二、小结
+  @observable public ZZWY_YDZKJCZJ_L1_002:any = {
+    summary:''
+  }
+  // 三． 本月质量改进项目
+  @observable public ZZWY_YDZKJCZJ_L1_003:any={
+    date:'',//日期
+    itemCodeObj:this.templateData.itemCodeObj || [],//二级项目对象，name，code，简称simpleName
+    improveGoals:'',//改进目标
+    steps:'',//整改措施：
+    check:'',//检查情况
+
+  }
+  // 四、效果评价及标准化结果
+  @observable public ZZWY_YDZKJCZJ_L1_004:any = {
+    textArea:''
   }
   
   @computed get postObj(){
     return{
-      wardCode:this.deptCode,
-      pageIndex:this.pageIndex,
-      pageSize:this.pageSize,
-      level:appStore.queryObj?.qcLevel || '1'
+        wardCode:this.deptCode,
+        pageIndex:this.pageIndex,
+        pageSize:this.pageSize,
+        // level:appStore.queryObj?.qcLevel || '1'
+        templateName: '月度质控检查总结报告',
+        hospitalCode: 'zzwy',
+        reportLevel: appStore.queryObj?.qcLevel || '1',
       }
+  }
+
+  @computed get detailObj(){
+    return{
+        "hospitalCode": "zzwy",
+        "templateName": "月度质控检查总结报告",
+        "reportName": this.createModalData.name,
+        "reportLevel": appStore.queryObj.qcLevel,
+        "reportYear": moment(this.createModalData.month).year(),
+        "reportMonth": moment(this.createModalData.month).month()+1,
+        // "reportQuarter": "第一季度",
+        "startDate": moment(this.createModalData.month).startOf('month').format('YYYY-MM-DD'),
+        "endDate": moment(this.createModalData.month).endOf('month').format('YYYY-MM-DD'),
+        "wardCode": this.createModalData.deptCode.key,
+        "wardName": this.createModalData.deptCode.label,
+    }
   }
 
   flattenArray(obj:any){
@@ -58,9 +116,10 @@ class QcMonthCheckData{
       endDate:moment(this.monthRange[1]).endOf('month').format('YYYY-MM-DD'),
     }
     this.tableLoading = true
-    qcZzwyApi.getInspectionSummary({...this.postObj,...times}).then(res=>{
+    qcZzwyApi.qcReportGetPage({...this.postObj,...times}).then(res=>{
       this.tableLoading = false
-      this.tableList = this.flattenArray(res.data);
+      this.tableList = res.data.list || [];
+      this.total = res.data.totalCount || 0
     }).catch(err=>{
       this.tableLoading = false
 
@@ -81,5 +140,43 @@ class QcMonthCheckData{
 
 		})
 	}
+
+  /**获取模板列表 */
+  getTemplateList(){
+    if(this.templateList.length>1){
+      return false
+    }
+    qcZzwyApi.getTemplateList(appStore.queryObj?.qcLevel).then(res=>{
+      this.templateList = res.data || []
+    }).catch(err=>{
+
+    })
+  }
+
+  getReportTwoItem(qcCode:any){
+    qcZzwyApi.getReportTwoItem(qcCode).then(res=>{
+      this.reportTwoItem = res.data || []
+    }).catch(err=>{
+
+    })
+  }
+
+
+  getInspectionSummary(){
+    qcZzwyApi.getInspectionSummary({
+      wardCode:this.createModalData.deptCode?.key|| '236',
+      beginDate:moment(this.createModalData.month).startOf('month').format('YYYY-MM-DD') || '2023-08-01',
+      endDate:moment(this.createModalData.month).endOf('month').format('YYYY-MM-DD') || '2023-08-31',
+      level:appStore.queryObj.qcLevel,
+    }).then(res=>{
+      // this.tableLoading = false
+      this.ZZWY_YDZKJCZJ_L1_001.tableList = this.flattenArray(res.data);
+      // console.log(this.ZZWY_YDZKJCZJ_L1_001.tableList)
+    }).catch(err=>{
+      // this.tableLoading = false
+  
+    })
+  }
+  
 }
 export const qcMonthCheckData = new QcMonthCheckData()

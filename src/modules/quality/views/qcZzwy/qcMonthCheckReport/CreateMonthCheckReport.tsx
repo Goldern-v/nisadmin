@@ -40,7 +40,8 @@ function CreateMonthCheckReport(props: Props) {
         return
       }
       console.log('创建的内容',value)
-   
+      qcMonthCheckData.createModalData = value
+      handleOk()
     })
   }
 
@@ -63,15 +64,15 @@ function CreateMonthCheckReport(props: Props) {
             initialValue: moment(qcMonthCheckData.currentItem.month) || moment(),
             rules: [{ required: true, message: '质控月份不能为空' }]
           })
-            (<DatePicker.MonthPicker style={{ width: '100%' }} />)}
+            (<DatePicker.MonthPicker disabled={qcMonthCheckData.currentItem.id?true:false} style={{ width: '100%' }} />)}
         </Form.Item>
 
         <Form.Item {...formItemLayout} label='质控科室'>
           {getFieldDecorator('deptCode', {
-            initialValue: qcMonthCheckData.currentItem.deptCode || '',
+            initialValue: qcMonthCheckData.currentItem.deptCode || {key:authStore.defaultDeptCode,label:authStore.defaultDeptCodeName},
             rules: [{ required: true, message: '质控科室不能为空' }]
           })(
-            <Select
+            <Select labelInValue
               style={{ width: '100%' }} >
               {authStore.deptList.map(v =>
                     <Option value={v.code} key={v.code}>{v.name}</Option>)}
