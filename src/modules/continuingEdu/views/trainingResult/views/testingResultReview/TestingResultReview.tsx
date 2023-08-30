@@ -320,7 +320,7 @@ export default observer(function TestingResultReview() {
     // console.log(appStore)
     return appStore.hisMatch({
       map: {
-        'hj,nys,gxjb,whyx,sdlj,whhk': (
+        'hj,nys,gxjb,whyx,sdlj,whhk,dgxg': (
           <BaseTabs
             config={
               [
@@ -329,19 +329,6 @@ export default observer(function TestingResultReview() {
                   index: "0",
                   component: <HjExaminationDetails />
                 },
-                {
-                  title: '考试情况统计与分析',
-                  index: "1",
-                  component: <HjExamResultAnalyse />
-                }
-              ]
-            }
-          />
-        ),
-        'dgxg': (
-          <BaseTabs
-            config={
-              [
                 {
                   title: '考试情况统计与分析',
                   index: "1",

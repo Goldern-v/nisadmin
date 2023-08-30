@@ -307,6 +307,10 @@ class StatisticsApi extends BaseApiService {
     return this.post('/countInformation/countEducation', query)
   }
 
+  public countInformationExport(query: any) {
+    return this.post('/countInformation/export', query,{ responseType: 'blob' })
+  }
+
   // 统计性别
   public countSex(query: any) {
     return this.post('/countInformation/countSex', query)

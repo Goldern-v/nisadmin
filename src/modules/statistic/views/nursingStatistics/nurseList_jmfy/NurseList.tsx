@@ -1,10 +1,11 @@
 import styled from 'styled-components'
 import CardItem from './CardItem'
 import { statisticsApi } from 'src/modules/statistic/api/StatisticsApi'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect,useRef } from 'react'
 import {Button, DatePicker, Select, Spin} from 'antd'
 import MidHeader from './MidHeader'
 import {appStore} from "src/stores";
+import printing from "printing";
 import moment from "src/vendors/moment";
 import {currentMonth, currentQuater, currentYear} from "src/utils/date/rangeMethod";
 const RangePicker = DatePicker.RangePicker
@@ -19,6 +20,7 @@ export default function BedSituation() {
   const [midList, setMidList] = useState([])
   const [rightList, setRightList] = useState([])
   const [spinning, setSpinning] = useState(false)
+  const tableRef = useRef<HTMLDivElement | null>(null);
   const [query, setQuery] = useState({
     startDate: moment('1999-01-01').format('YYYY-MM-DD'),
     endDate: _currentMonth[1].format('YYYY-MM-DD'),
@@ -84,6 +86,41 @@ export default function BedSituation() {
   useEffect(() => {
     getData()
   }, [])
+
+  const exportPdf = ()=>{
+    printing(tableRef.current!, {
+      injectGlobalCss: true,
+      scanStyles: false,
+      css: `
+        @page {
+          margin: 10px;
+        }
+        .tableBox{
+          box-shadow: none;
+          padding: 0;
+        }
+        .Info{
+          margin-top: -10px;
+        }
+        .Info>div{
+          font-size: 12px;
+          margin-right: 0;
+        }
+        .SpinCon{
+          position: absolute;
+          left: 0px;
+          top: 85px;
+          width: auto;
+          height: auto;
+          transform: scaleX(0.7) translateX(-210px);
+        }
+        .Footer{
+          display:none;
+        }
+      `,
+    });
+  }
+
   return (
     <Wrapper>
       <HeaderCon>
@@ -105,57 +142,58 @@ export default function BedSituation() {
             }}
             allowClear={false} />
         <Button type="primary" onClick={getData}>查询</Button>
+      {['jmfy'].includes(appStore.HOSPITAL_ID) && <Button type="primary" onClick={exportPdf}>导出pdf</Button>}
       </HeaderCon>
       <ScrollCon>
-        <Container>
-          {/* <HisName>东莞市厚街医院</HisName>
-          <Title>东莞市厚街医院</Title> */}
-          <MidHeader />
-          <Info>
-            {infoList.map((item: any) => (
-              <InfoItem>
-                {item.key}：{item.value}人
-              </InfoItem>
-            ))}
-          </Info>
-          <SpinCon>
-            <Spin spinning={spinning}>
-              <MainPart>
-                <CardCon>
-                  {leftList.map((item) => (
-                    <CardItem data={item} />
-                  ))}
-                </CardCon>
-                <CardCon>
-                  {midList.map((item) => (
-                    <CardItem data={item} />
-                  ))}
-                </CardCon>
-                <CardCon>
-                  {rightList.map((item) => (
-                    <CardItem data={item} />
-                  ))}
-                </CardCon>
-              </MainPart>
-            </Spin>
-          </SpinCon>
-          <Footer>
-            <span>图例：</span>
-            <span>主任护师：</span>
-            <div className='block color-1' />
-            <span>副主任护师：</span>
-            <div className='block color-2' />
-            <span>主管护师：</span>
-            <div className='block color-3' />
-            <span>护 师：</span>
-            <div className='block color-4' />
-            <span>护 士：</span>
-            <div className='block color-5' />
-            {/* <span>培训护师：</span>
-            <div className='block color-6' /> */}
-            <span>见习期护士：</span>
-            <div className='block color-6' />
-          </Footer>
+        <Container ref={tableRef} className="tableBox">
+            {/* <HisName>东莞市厚街医院</HisName>
+            <Title>东莞市厚街医院</Title> */}
+            <MidHeader />
+            <Info className="Info">
+              {infoList.map((item: any) => (
+                <InfoItem>
+                  {item.key}：{item.value}人
+                </InfoItem>
+              ))}
+            </Info>
+            <SpinCon className="SpinCon">
+              <Spin spinning={spinning}>
+                <MainPart>
+                  <CardCon>
+                    {leftList.map((item) => (
+                      <CardItem data={item} />
+                    ))}
+                  </CardCon>
+                  <CardCon>
+                    {midList.map((item) => (
+                      <CardItem data={item} />
+                    ))}
+                  </CardCon>
+                  <CardCon>
+                    {rightList.map((item) => (
+                      <CardItem data={item} />
+                    ))}
+                  </CardCon>
+                </MainPart>
+              </Spin>
+            </SpinCon>
+            <Footer className="Footer">
+              <span>图例：</span>
+              <span>主任护师：</span>
+              <div className='block color-1' />
+              <span>副主任护师：</span>
+              <div className='block color-2' />
+              <span>主管护师：</span>
+              <div className='block color-3' />
+              <span>护 师：</span>
+              <div className='block color-4' />
+              <span>护 士：</span>
+              <div className='block color-5' />
+              {/* <span>培训护师：</span>
+              <div className='block color-6' /> */}
+              <span>见习期护士：</span>
+              <div className='block color-6' />
+            </Footer>
         </Container>
       </ScrollCon>
     </Wrapper>
@@ -173,6 +211,8 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   overflow: hidden;
+`
+const Con = styled.div`
 `
 const Wrapper = styled.div`
   /* width: auto; */

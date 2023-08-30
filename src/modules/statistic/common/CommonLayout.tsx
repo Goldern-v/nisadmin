@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button } from 'antd'
+import { Button } from 'antd';
+import {Con} from './css/CommonLayout';
 
 export interface Props {
   header: any
@@ -40,7 +41,7 @@ const HeaderCon = styled.div`
   }
 `
 
-const BodyCon = styled.div`
+const BodyCon = styled(Con)`
   flex: 1;
   height: 0;
   margin: 20px;
@@ -50,20 +51,7 @@ const BodyCon = styled.div`
   border-radius: 5px;
   overflow: auto;
 
-  .main-title{
-    margin: 0 auto;
-    width: 510px;
-    height: 29px;
-    font-size: 21px !important;
-    font-weight: bold;
-    color: rgba(51,51,51,1);
-    line-height: 29px;
-    text-align: center;
-    position: 'relative';
-  }
-  .sub-title{
-    text-align: center;
-  }
+
   .right-group{
     position: absolute;
     right: 15px;

@@ -1,6 +1,6 @@
 import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
-import { Button, DatePicker, Radio, Select, Spin } from 'antd'
+import React, { useState, useEffect,useRef } from 'react'
+import { Button, DatePicker, Radio, Select, Spin,message } from 'antd'
 import CommonLayout from './../../common/CommonLayout'
 import { observer } from 'mobx-react'
 import { appStore, authStore } from 'src/stores'
@@ -8,7 +8,11 @@ import BaseTable from 'src/components/BaseTable'
 import { statisticsApi } from './../../api/StatisticsApi'
 import { ColumnProps } from 'antd/lib/table'
 import moment from 'src/vendors/moment'
+import printing from "printing";
 import { currentMonth, currentQuater, currentYear } from 'src/utils/date/rangeMethod'
+import {Con} from 'src/modules/statistic/common/css/CommonLayout.ts';
+import { fileDownload } from "src/utils/file/file"
+
 const RangePicker = DatePicker.RangePicker
 
 const Option = Select.Option
@@ -32,8 +36,10 @@ export default observer(function 护士离职原因分析() {
   const [data, setData] = useState([] as any)
 
   const [loading, setLoading] = useState(false)
+  const [loadingExcel, setLoadingExcel] = useState(false)
+  const tableRef = useRef<HTMLDivElement | null>(null);
 
-  const columns: ColumnProps<any>[] = [
+  const otherColumns: ColumnProps<any>[] = [
     {
       title: '序号',
       width: 80,
@@ -77,7 +83,72 @@ export default observer(function 护士离职原因分析() {
       })
     },
   ]
-
+  const columnsJMFY: ColumnProps<any>[] = [
+    {
+      title: '序号',
+      width: 80,
+      align: 'center',
+      render: (val: any, record: any, idx: number) => idx + 1
+    },
+    {
+      title: '科室',
+      width: 180,
+      dataIndex: 'deptName',
+      align: 'center',
+      render: (text: any, record: any) => ({
+        props: { rowSpan: record.rowSpan },
+        children: text
+      })
+    },
+    {
+      title: '离职人数',
+      width: 80,
+      dataIndex: 'num',
+      align: 'center',
+      render: (text: any, record: any) => ({
+        props: { rowSpan: record.rowSpan },
+        children: text
+      })
+    },
+    {
+      title: '姓名',
+      dataIndex: 'empName',
+      align: 'left',
+    },
+    {
+      title: '学历',
+      dataIndex: 'highestEducation',
+      align: 'left',
+    },
+    {
+      title: '年龄',
+      dataIndex: 'age',
+      align: 'left',
+    },
+    {
+      title: '工作年限',
+      dataIndex: 'workYear',
+      align: 'left',
+    },
+    {
+      title: '离职原因',
+      dataIndex: 'remark',
+      align: 'left',
+      render: (val: any, record: any, idx: number) => val || "无"
+    },
+    {
+      title: '离职率',
+      width: 80,
+      dataIndex: 'quitRate',
+      align: 'center',
+      render: (text: any, record: any) => ({
+        props: { rowSpan: record.rowSpan },
+        children: text
+      })
+    },
+  ]
+  const columns = ['jmfy'].includes(appStore.HOSPITAL_ID) ? columnsJMFY : otherColumns
+ 
   const handleSearch = () => getData()
 
   const getData = () => {
@@ -120,6 +191,44 @@ export default observer(function 护士离职原因分析() {
     getData()
   }, [query])
 
+  const exportPdf = ()=>{
+    printing(tableRef.current!, {
+      injectGlobalCss: true,
+      scanStyles: false,
+      css: `
+        @page {
+          margin: 10px;
+        }
+        .ant-table-body{
+          max-height: none !important;
+          height: auto !important;
+        }
+        .tableBox{
+          height:1100px;
+          overflow:hidden;
+          page-break-after: always;
+        }
+      `,
+    });
+  }
+
+  const exportExcel = ()=>{
+    setLoadingExcel(true)
+    try{
+      statisticsApi.countInformationExport(query).then(res=>{
+        fileDownload(res)
+        setLoadingExcel(false)
+        message.success('导出成功')
+      }).catch(err=>{
+        message.error('导出失败')
+        setLoadingExcel(false)
+      })
+    } catch(err){
+      message.error('导出失败')
+      setLoadingExcel(false)
+    }
+  }
+
   return <CommonLayout
     header={<div>
       <Select
@@ -161,14 +270,19 @@ export default observer(function 护士离职原因分析() {
         }}
         allowClear={false} />
       <Button type="primary" onClick={handleSearch}>查询</Button>
+      {['jmfy'].includes(appStore.HOSPITAL_ID) && <Button type="primary" onClick={exportPdf}>导出pdf</Button>}
+      {['jmfy'].includes(appStore.HOSPITAL_ID) && <Button type="primary" onClick={exportExcel} loading={loadingExcel}>导出</Button>}
     </div>}
-    body={<Spin spinning={loading}>
-      <div className="main-title">护士离职原因分析</div>
-      <div className="sub-title">统计日期：{query.startDate} 至 {query.endDate}</div>
-      <BaseTable
-        surplusWidth={500}
-        surplusHeight={320}
-        columns={columns}
-        dataSource={data} />
-    </Spin>} />
+      body={<Spin spinning={loading}>
+        <Con ref={tableRef} className="tableBox">
+          <div className='main-title'>护士离职原因分析</div>
+          <div className='sub-title'>统计日期：{query.startDate} 至 {query.endDate}</div>
+          <BaseTable
+            surplusWidth={500}
+            surplusHeight={320}
+            columns={columns}
+            dataSource={data} />
+        </Con>
+      </Spin>} 
+      />
 })
