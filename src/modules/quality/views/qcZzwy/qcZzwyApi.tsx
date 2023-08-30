@@ -55,7 +55,7 @@ export default class QcZzwyApi extends BaseApiService {
     }
 /**查看报告**/
     public getQcReportById(reportId:number) {
-        return this.get(`/getQcReport/reportId?${reportId}`)
+        return this.get(`/qcReport/getQcReport/${reportId}`)
     }
 /**保存报告**/
 public saveQcReport(params:number) {
@@ -72,5 +72,30 @@ public saveQcReport(params:number) {
 public getQcItemDataList(params:any) {
     return this.post(`/qcReport/getQcItemDataList`,params)
 }
+/***删除
+ *
+ * {
+ *     "reportId": "string",
+ * }
+ * **/
+public qcItemDeleteQcReport(params:any) {
+    return this.post(`/qcReport/deleteQcReport`,params)
+}
+    /**二级指标的上个月的数据与之比对
+     * {
+     *     "wardCode": "string",
+     *     "startDate": "string",
+     *     "endDate": "string",
+     *     "reportLevel": "string",
+     *     "qcItemCodeList": [
+     *         "string"
+     *     ]
+     * }
+     *
+     **/
+    public getRatioByItemCode(params:any) {
+        return this.post(`/qcReport/getRatioByItemCode`,params)
+    }
+
 }
 export const qcZzwyApi = new QcZzwyApi();

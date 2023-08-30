@@ -20,6 +20,7 @@ export interface Props extends FormComponentProps, ModalComponentProps {
     onCancel: () => void;
     title: string;
     record?: any
+    qcLevel?:any
 }
 
 const formItemLayout = {
@@ -32,29 +33,30 @@ const formItemLayout = {
 }
 const qcQuarter = ['全年', '上半年', '下半年', '第一季度', '第二季度', '第三季度', '第四季度']
 const qcMonthList = [
-    "1月",
-    "2月",
-    "3月",
-    "4月",
-    "5月",
-    "6月",
-    "7月",
-    "8月",
-    "9月",
-    "10月",
-    "11月",
-    "12月",
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "10",
+    "11",
+    "12",
 ];
 
 function QcQuarterlyModal(props: Props) {
-    // console.log(appStore.match.params);
     const [formCreateVisible, setFormCreateVisible] = useState(false);
+    /**表单可选内容*/
+    const [summaryForm,setSummaryForm] =useState({} as any)
     let {
         visible,
-        handleOk,
         onCancel,
         title,
         record,
+        qcLevel,
         form: {getFieldDecorator, validateFields, setFieldsValue, resetFields, getFieldValue}
     } = props
 
@@ -63,20 +65,39 @@ function QcQuarterlyModal(props: Props) {
             if (err) {
                 return
             }
+            let timeObj:any ={}
+            timeObj =  QuarterlyZzwyData.getDateRange(value.reportType,value.qcTime,moment(value.reportYear).format('YYYY'))
+            // console.log('value====',value,);
+            // if(value.reportType =='季度'){
+            //
+            // }else{
+            //     let old = new Date(value.reportYear, value.qcTime + 1, 0)
+            //     timeObj['startDate'] =`${value.reportYear}-${value.qcTime}-01`
+            //     timeObj['endDate'] =`${value.reportYear}-${value.qcTime}-${old}`
+            // }
+            console.log("timeObj===",timeObj);
+            /**需要根据选的报告类型来组装时间**/
             let params = {
                 hospitalCode: 'zzwy',
-                reportLevel: 1, //暂时写死
+                reportLevel: qcLevel,
                 ...value,
-                templateName: '季度质量分析报告',
-                reportYear: moment(value.reportYear).format('YYYY')
+                summaryFormCode:summaryForm.qcCode,
+                templateName: '季度质量分析报告', //固定
+                reportYear: moment(value.reportYear).format('YYYY'),
+                ...timeObj
+                // startDate:timeObj[''],
+                // endDate:'2024-12-30',
             }
             qcZzwyApi.createQcReport({...params}).then((res: any) => {
                 console.log(res);
                 QuarterlyZzwyData.reportMasterData = res.data.reportMasterData
                 QuarterlyZzwyData.qcReportItemDtoList =res.data.qcReportItemDtoList
-                QuarterlyZzwyData.saveQcReport()
+                /**数据清空**/
+                QuarterlyZzwyData.summarize =''
+                QuarterlyZzwyData.contentValue=''
+                // QuarterlyZzwyData.analysisItemValue(res.data.qcReportItemDtoList)
                 onCancel()
-                appStore.history.push(`/QuarterlyAnalysisReportZzwyDetail`);
+                appStore.history.push(`/QuarterlyAnalysisReportZzwyDetail?qcLevel=${qcLevel}`);
                 // message.success('操作成功')
             })
         })
@@ -91,7 +112,7 @@ function QcQuarterlyModal(props: Props) {
             <Wrapper>
                 <Form>
                     <Form.Item label='报告类型' {...formItemLayout} >
-                        {getFieldDecorator('reportQuarter', {
+                        {getFieldDecorator('reportType', {
                             initialValue: "季度",
                             rules: [{required: true, message: '季度不能为空'}]
                         })(
@@ -117,8 +138,8 @@ function QcQuarterlyModal(props: Props) {
                             initialValue:moment(),
                         })(<YearPicker style={{width: '100%'}}/>)}
                     </Form.Item>
-                    {getFieldValue('reportQuarter') == '季度' && <Form.Item label='质控时间' {...formItemLayout} >
-                        {getFieldDecorator('reportMonth', {
+                    {getFieldValue('reportType') == '季度' && <Form.Item label='质控时间' {...formItemLayout} >
+                        {getFieldDecorator('qcTime', {
                             initialValue: "全年",
                             rules: [{required: true, message: '质控时间不能为空'}]
                         })(
@@ -139,9 +160,9 @@ function QcQuarterlyModal(props: Props) {
                             </Select>
                         )}
                     </Form.Item>}
-                    {getFieldValue('reportQuarter') == '月度' && <Form.Item label='质控时间' {...formItemLayout} >
-                        {getFieldDecorator('reportMonth', {
-                            initialValue: "1月",
+                    {getFieldValue('reportType') == '月度' && <Form.Item label='质控时间' {...formItemLayout} >
+                        {getFieldDecorator('qcTime', {
+                            initialValue: "1",
                             rules: [{required: true, message: '质控时间不能为空'}]
                         })(
                             <Select
@@ -154,7 +175,7 @@ function QcQuarterlyModal(props: Props) {
                                 {qcMonthList.map((item: any) => {
                                     return (
                                         <Select.Option value={item} key={item}>
-                                            {item}
+                                            {item}月
                                         </Select.Option>
                                     )
                                 })}
@@ -204,13 +225,13 @@ function QcQuarterlyModal(props: Props) {
                 <FormCreateModal
                     onCancel={() => setFormCreateVisible(false)}
                     onOk={(qcCodeObj: any) => {
-                        console.log(qcCodeObj);
-                        setFieldsValue({summaryFormName: qcCodeObj?.qcName,summaryFormCode:qcCodeObj?.qcCode})
+                        setFieldsValue({summaryFormName: qcCodeObj?.qcName})
+                        setSummaryForm(qcCodeObj)
                         setFormCreateVisible(false)
                     }}
                     visible={formCreateVisible}
                     zzwyCreat={true}
-                    level={'1'}
+                    level={qcLevel}
                 />
             </Wrapper>
 

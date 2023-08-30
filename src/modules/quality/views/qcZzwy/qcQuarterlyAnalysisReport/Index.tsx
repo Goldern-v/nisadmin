@@ -7,23 +7,19 @@ import {
     DatePicker,
     Button,
 } from "src/vendors/antd";
-import moment from 'moment';
-import BaseTable from "src/components/BaseTable";
+import BaseTable, {DoCon} from "src/components/BaseTable";
 import {QuarterlyZzwyData} from './Data';
-import {quarterList} from 'src/enums/date';
-import YearMonthRangePicker from 'src/components/YearMonthRangePicker';
-import {Input, message} from 'antd';
-import {qcZzwyApi} from "src/modules/quality/views/qcZzwy/qcZzwyApi";
 import DeptSelect from "src/components/DeptSelect";
 import QcQuarterlyModal from './components/AddModal'
 import createModal from "src/libs/createModal";
 import {appStore} from "src/stores";
+import {globalModal} from "src/global/globalModal";
 
 const Option = Select.Option;
 export default observer(function QuarterlyAnalysisReportZzwy() {
-    const { queryObj } = appStore
+    const {queryObj} = appStore
     const qcLevel = queryObj.qcLevel || '3'
-    console.log("qcLevel===",qcLevel);
+    console.log("qcLevel===", qcLevel);
     let QcQuarterly = createModal(QcQuarterlyModal)
     const columns: any = [
         {
@@ -35,46 +31,71 @@ export default observer(function QuarterlyAnalysisReportZzwy() {
         },
         {
             title: '报告名称',
-            dataIndex: 'masterQcName',
+            dataIndex: 'reportName',
             align: 'center',
+            // render:(text:string,record:any)=> `${record.reportYear}`
 
         },
         {
             title: '表单',
-            dataIndex: 'masterEvalRate',
+            dataIndex: 'summaryFormName',
             align: 'center',
 
         },
         {
             title: '科室',
-            dataIndex: 'firstLevelEvalRate',
+            dataIndex: 'wardName',
             align: 'center',
 
         },
         {
             title: "报告年份",
-            dataIndex: "secondLevelItemName",
+            dataIndex: "reportYear",
             align: "center",
 
         },
         {
             title: "时间",
-            dataIndex: "qcItemName",
+            dataIndex: "reportMonth",
             align: "center",
         },
         {
             title: "创建人",
-            dataIndex: "rectificationMeasure.content",
+            dataIndex: "creatorName",
             align: "center",
 
         },
         {
             title: "创建时间",
-            dataIndex: "trackingEvaluate.content",
+            dataIndex: "creatorTime",
             align: "center",
             width: 80,
         },
+        {
+            title: " 操作 ",
+            width: 80,
+            render(text: string, record: any, index: number) {
+                return (
+                    <DoCon>
+                        <span onClick={() => handleReview(record)}>查看</span>
+                        <span
+                            onClick={() => {
+                                globalModal
+                                    .confirm("删除确认", "你确定删除该数据吗？")
+                                    .then(res => {
+                                        QuarterlyZzwyData.qcItemDeleteQcReport(record.id)
+                                    });
+                            }}>
+                  删除
+                </span>
+                    </DoCon>
+                );
+            }
+        }
     ]
+    const handleReview = (record: any) => {
+        appStore.history.push(`/QuarterlyAnalysisReportZzwyDetail?qcLevel=${qcLevel}&master=${record.id}`);
+    }
     /** "id": 0,  没有就不传
      "qcMasterId": 0,  必传
      "qcItemCode": "string",  必传
@@ -85,14 +106,11 @@ export default observer(function QuarterlyAnalysisReportZzwy() {
     }
     const handleAdd = () => {
         QcQuarterly.show({
-          title:"创建",
+            title: "创建",
+            qcLevel: qcLevel,
         })
     }
-    const handleReview =(record:any)=>{
-        appStore.history.push(
-            `/QuarterlyAnalysisReportZzwyDetail`
-        );
-    }
+
     // useEffect(()=>{
     //
     // },[])
@@ -102,8 +120,8 @@ export default observer(function QuarterlyAnalysisReportZzwy() {
                 <PageTitle>质控检查反馈整改单</PageTitle>
                 <Place/>
                 <span>科室：</span>
-                <DeptSelect onChange={onChange}/>
-                <span>日期：</span>
+                <DeptSelect hasAllDept onChange={onChange}/>
+                <span>报告日期：</span>
                 <DatePicker.RangePicker
                     allowClear={false}
                     format={'YYYY-MM-DD'}
@@ -120,7 +138,7 @@ export default observer(function QuarterlyAnalysisReportZzwy() {
                     创建
                 </Button>
                 <Button
-                    onClick={()=>QuarterlyZzwyData.getTableList()}
+                    onClick={() => QuarterlyZzwyData.getTableList()}
                     className="span">
                     查询
                 </Button>
@@ -130,7 +148,7 @@ export default observer(function QuarterlyAnalysisReportZzwy() {
                 className="record-page-table"
                 onRow={(record: any) => {
                     return {
-                        onDoubleClick: () =>handleReview(record)
+                        onDoubleClick: () => handleReview(record)
                     }
                 }}
                 loading={QuarterlyZzwyData.tableLoading}
