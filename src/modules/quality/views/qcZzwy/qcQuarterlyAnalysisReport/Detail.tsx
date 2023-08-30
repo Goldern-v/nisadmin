@@ -13,7 +13,9 @@ import MultipleImageUploader from "src/components/ImageUploader/MultipleImageUpl
 import {trainingResultModel} from "src/modules/continuingEdu/views/trainingResult/models/TrainingResultModel";
 import MultiFileUploader from "src/components/MultiFileUploader";
 import {qcZzwyApi} from "src/modules/quality/views/qcZzwy/qcZzwyApi";
-import FishBone1 from "src/modules/badEventsNew/views/BadEventStatisticalReportDetail/components/fish-bone";
+import QcFishBone from "src/modules/quality/views/qcZzwy/qcQuarterlyAnalysisReport/qcFishBone/fish-bone";
+import ChartCylindricality
+    from "src/modules/quality/views/qcZzwy/qcQuarterlyAnalysisReport/components/ChartCylindricality";
 
 const {TextArea} = Input
 
@@ -23,6 +25,7 @@ interface Props {
 }
 
 export default observer(function QuarterlyAnalysisReportZzwyDetail(props: Props) {
+    const {queryObj} = appStore
     const {creatorName, creatorTime, summaryFormName, reportYear, reportQuarter} = QuarterlyZzwyData.reportMasterData
     let master = props.detailData?.master || {};
     const topHeaderBack = () => {
@@ -36,24 +39,97 @@ export default observer(function QuarterlyAnalysisReportZzwyDetail(props: Props)
         appStore.history.goBack()
     };
     const columnsOne: ColumnProps<any>[] = [
+        // "firstLevelItemName”：“配套设施”，
+        // "firstLevelItemCode":
+        // "H]_OCIT_053*.
+        // "firstlevelEvalRate"
         {
             title: '一级指标',
-            dataIndex: "non",
+            dataIndex: "firstLevelItemName",
             width: 100,
             align: 'center'
         },
         {
             title: '合格率(%)',
-            dataIndex: "non",
+            dataIndex: "firstlevelEvalRate",
             width: 100,
-            align: 'center'
+            align: 'center',
+            render: (text: string) => {
+                return `${text}%`
+            }
         }
     ]
-    useEffect(()=>{
-        qcZzwyApi.getQcReportById(1).then((res:any)=>{
-
-        })
-    },[])
+    const columnsTwo: ColumnProps<any>[] = [
+        {
+            title: '项目',
+            dataIndex: "firstLevelItemName",
+            align: 'center'
+        },
+        {
+            title: '追踪前得分率(%)',
+            dataIndex: "firstlevelEvalRate",
+            align: 'center',
+            render: (text: string, record: any) => {
+                return (
+                    <Input value={text} onInput={(e: any) => {
+                    }}/>
+                )
+            }
+        },
+        {
+            title: '追踪者',
+            dataIndex: "firstlevelEvalRate",
+            align: 'center',
+            render: (text: string, record: any) => {
+                return (
+                    <Input value={text} onInput={(e: any) => {
+                    }}/>
+                )
+            }
+        },
+        {
+            title: '追踪时间',
+            dataIndex: "firstlevelEvalRate",
+            align: 'center',
+            render: (text: string) => {
+                return `${text}%`
+            }
+        },
+        {
+            title: '追踪后得分率',
+            dataIndex: "firstlevelEvalRate",
+            align: 'center',
+            render: (text: string, record: any) => {
+                return (
+                    <Input value={text} onInput={(e: any) => {
+                    }}/>
+                )
+            }
+        },
+        {
+            title: '追踪结果',
+            dataIndex: "firstlevelEvalRate",
+            align: 'center',
+            render: (text: string, record: any) => {
+                return (
+                    <Input value={text} onInput={(e: any) => {
+                    }}/>
+                )
+            }
+        }
+    ]
+    useEffect(() => {
+        if (queryObj.master) {
+            QuarterlyZzwyData.getQcReportById(queryObj.master)
+        }
+    }, [queryObj.master])
+    const handleFishItem =(obj:any)=>{
+        console.log(obj);
+    }
+    const  fishValue={
+        'v0':1,
+        'v1':4,
+    }
     return (
         <Con>
             <TopHeader>
@@ -91,7 +167,7 @@ export default observer(function QuarterlyAnalysisReportZzwyDetail(props: Props)
                 <div className="topHeaderTitle">
                     <div className="title">{`${reportYear}年第${reportQuarter}${summaryFormName}总结`}</div>
                     <div className="topHeaderButton">
-                        <Button>导出</Button>
+                        <Button onClick={() => QuarterlyZzwyData.saveQcReport()}>保存</Button>
                         <Button>打印</Button>
                         <Button onClick={topHeaderBack}>返回</Button>
                     </div>
@@ -106,14 +182,18 @@ export default observer(function QuarterlyAnalysisReportZzwyDetail(props: Props)
             {/*<Spin>*/}
             <MidCon>
                 <Content>
+
                     <>
-                        <h2 className='center-title'>2023年消化内科第三季度检查总结</h2>
-                        <TextArea placeholder='请输入总结内容' rows={10}/>
+                        <h2 className='center-title'>{`${reportYear}年第${reportQuarter}${summaryFormName}总结`}</h2>
+                        <TextArea placeholder='请输入总结内容'
+                                  value={QuarterlyZzwyData.summarize}
+                                  onChange={(e: any) => QuarterlyZzwyData.summarize = e.target.value}
+                                  rows={10}/>
                     </>
                     <>
                         <h5 className='title-sty'>检查情况表</h5>
                         <BaseTable
-                            dataSource={[]}
+                            dataSource={QuarterlyZzwyData.inspectTable}
                             columns={columnsOne}
                         />
                     </>
@@ -124,31 +204,46 @@ export default observer(function QuarterlyAnalysisReportZzwyDetail(props: Props)
                         </Summary>
                         <BaseTable
                             style={{padding: 0}}
-                            dataSource={[]}
+                            dataSource={QuarterlyZzwyData.summaryTable}
                             columns={columnsOne}
                         />
                     </>
                     <>
                         <h6 className='title-sty'>检查中发现存在主要内容</h6>
-                        <TextArea placeholder='请输入检查中发现存在主要内容' rows={7}/>
+                        <TextArea placeholder='请输入检查中发现存在主要内容'
+                                  value={QuarterlyZzwyData.contentValue}
+                                  onChange={(e: any) => QuarterlyZzwyData.contentValue = e.target.value}
+                                  rows={7}/>
                     </>
                     <>
                         <h6 className='title-sty'>三、整改措施</h6>
-                        <TextArea placeholder='请输入整改措施内容' rows={7}/>
+                        <TextArea placeholder='请输入整改措施内容'
+                                  onChange={(e: any) => QuarterlyZzwyData.rectification = e.target.value}
+                                  value={QuarterlyZzwyData.rectification} rows={7}/>
                     </>
                     <>
                         <h6 className='title-sty'>四、追踪评价</h6>
-                        <FishBone1/>
+                        <BaseTable
+                            style={{padding: 0}}
+                            dataSource={QuarterlyZzwyData.summaryTable}
+                            columns={columnsTwo}
+                        />
+                        <div style={{margin:'20px 0'}}>
+                            <QcFishBone value={fishValue} onChange={handleFishItem}/>
+                        </div>
+                        {/*<QcFishBone/>*/}
                     </>
-                    <Summary>
+                    <Summary style={{height:"auto"}}>
                         <h6 className='title-sty'>五、对上季度项目得分率的条目进行效果评价（支持图片上传</h6>
                         <MultiFileUploader
-                            buttonSize='small'
-                            type={'handbookTemplate'}
-                            isFormModel accept={'image/png,image/jpeg,image/gif,image/webp,image/apng,image/svg'}
+                            accept={'image/png,image/jpeg,image/gif,image/webp,image/apng,image/svg'}
                             size={1}
-                            maxSize={5 * 1024 * 1024}/>
+                            maxSize={2097152}
+                        />
                     </Summary>
+
+                    {/*柱形图*/}
+                    <ChartCylindricality/>
                 </Content>
             </MidCon>
             {/*</Spin>*/}
