@@ -1,32 +1,151 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Spin, Button } from 'antd'
+import { Spin, Button, message } from 'antd'
 import { ScrollBox } from 'src/components/common'
 import { appStore } from 'src/stores'
 import BreadcrumbBox from "src/layouts/components/BreadcrumbBox";
 import FirstTable from './first'
 import SecondTable from './second'
 import ThirdTable from './third'
-// import qs from "qs";
+import Four from './four'
+import { api } from '../api'
+import { firstData } from './first/firstData'
+import { secondData } from './second/secondData'
+import { thirdData } from './third/data'
+import { fourData } from './four/fourData'
 
 interface Props {
-  // detailData: any;
-  // onload: any;
+
 }
 
 function QqualityMWSummaryDetail(props: Props) {
-  let [detailData, setDetailData]: any = useState([])
   let [loading, setLoading] = useState(false)
-  // let master = props.detailData.master || {};
+  let { qcReportItemDtoList, reportMasterData }: any = localStorage.getItem('qqualityMWSummaryDetail') ? JSON.parse(localStorage.getItem('qqualityMWSummaryDetail') || '') : {}
 
-  const onload = () => {
-    let id = appStore.match.params.id
-    setLoading(false)
+  let detail_check: any = localStorage.getItem('detail_check')
+
+  const [details, setDetails]:any = useState({})
+
+  const detailsSave = async() => {
+    let { qcReportItemDtoList: details_List, reportMasterData: details_masterData } = details
+    let masterData:any = details_masterData && details_masterData.id ? details_masterData : reportMasterData
+    let list: any = details_List ? details_List : qcReportItemDtoList
+
+    let qcReportItemDataList = list.map((item: any, index: number) => {
+      let reportMasterId = (item?.qcReportItemDataList && item?.qcReportItemDataList[0]?.reportMasterId) || '';
+      let itemCode = item.itemCode;
+      let itemName = item.itemName;
+      let indexNo = index + 2;
+      let id = (item?.qcReportItemDataList && item?.qcReportItemDataList[0]?.id) || '';
+      let reportTemplateId = item?.reportTemplateId;
+      let itemValue = ''
     
+      if (index === 0) {
+        itemValue = JSON.stringify({
+          tableList: firstData.firstTableList_DE,
+          name_nurse: firstData.name_nurse
+        });
+      } else if (index === 1) {
+        itemValue = JSON.stringify({
+          case: secondData.case,
+          tableList: secondData.tableList,
+          detailLists: secondData.detailLists
+        });
+      } else if (index === 2) {
+        itemValue = JSON.stringify({
+          evaluate: thirdData.evaluate,
+          tableList: thirdData.tableList
+        });
+      } else if (index === 3) {
+        itemValue = JSON.stringify({
+          performance: fourData.performance,
+          tableList: fourData.tableList,
+          nameTS: fourData.nameTS
+        });
+      }
+    
+      return {
+        reportMasterId,
+        reportItemId: '',
+        itemCode,
+        itemName,
+        indexNo,
+        id,
+        reportTemplateId,
+        itemValue
+      };
+    });
+
+    let lists = {
+      reportMasterId: (list[0]?.qcReportItemDataList && list[0].qcReportItemDataList[0]?.reportMasterId) || '',
+      reportItemId: '',
+      itemCode: list[0]?.itemCode,
+      itemName: list[0]?.itemName,
+      indexNo: 1,
+      id: (list[0]?.qcReportItemDataList && list[0].qcReportItemDataList[1]?.id) || '',
+      reportTemplateId: list[0]?.reportTemplateId,
+      itemValue: JSON.stringify({
+        tableList: firstData.firstTableList_UD,
+        name_deptName: firstData.name_deptName
+      })
+    }
+    qcReportItemDataList.push(lists)
+    
+    let params = {
+      hospitalCode: 'zzwy',
+      templateName: '季度质量管理工作总结',
+      reportLevel: '1',
+      id: masterData.id || '',
+      // ...masterData,
+      reportYear: masterData.reportYear,
+      reportMonth: masterData.reportMonth,
+      reportQuarter: masterData.reportQuarter,
+      startDate: masterData.startDate,
+      endDate: masterData.endDate,
+      wardCode: masterData.wardCode,
+      wardName: masterData.wardName,
+      reportName: masterData.reportName,
+      qcReportItemDataList
+    };
+    
+    let  data = await api.saveQcReport(params)
+    if (data.code === '200') {
+      message.success('保存成功')
+      appStore.history.push('/qcOneHj/季度质量管理工作总结')
+      // setDetails(data.data || {})
+      // let { qcReportItemDtoList: List } = data.data
+      // getTable(List)
+
+      
+
+    } else {
+      message.error(data.desc)
+    }
   }
 
+  const getTable = (list: any) => {
+    const parseData = (index: any, key: any, idx = 0) => {
+      return list[index]?.qcReportItemDataList && JSON.parse(list[index]?.qcReportItemDataList[idx]?.itemValue)?.[key];
+    }
+    firstData.firstTableList_UD = parseData(0, 'tableList') || [];
+    firstData.name_nurse = parseData(0, 'name_nurse') || '';
+    firstData.firstTableList_DE = parseData(0, 'tableList', 1) || [];
+    firstData.name_deptName = parseData(0, 'name_deptName', 1) || '';
+
+    secondData.case = parseData(1, 'case') || '';
+    secondData.tableList = parseData(1, 'tableList') || [];
+    secondData.detailLists = parseData(1, 'detailLists') || [];
+
+    thirdData.evaluate = parseData(2, 'evaluate') || '';
+    thirdData.tableList = parseData(2, 'tableList') || [];
+
+    fourData.performance = parseData(3, 'performance') || '';
+    fourData.tableList = parseData(3, 'tableList') || [];
+    fourData.nameTS = parseData(3, 'nameTS') || '';
+  } 
+
   useEffect(() => {
-    onload()
+    getTable(qcReportItemDtoList)
   }, [])
 
   return (
@@ -49,18 +168,18 @@ function QqualityMWSummaryDetail(props: Props) {
           ]}
         />
         <div className="button">
-          <div>2023年消化内科第三季度管理工作总结</div>
+          <div>{ reportMasterData?.reportName }</div>
           <div>
-            <Button>返回</Button>
-            <Button>导出</Button>
-            <Button type="primary">保存</Button>
+            <Button onClick={() => appStore.history.push('/qcOneHj/季度质量管理工作总结') }>返回</Button>
+            {/* <Button>导出</Button> */}
+            <Button type="primary" onClick={detailsSave}>保存</Button>
             <Button type="danger">删除</Button>
           </div>
         </div>
         <div className='item'>
-          <span>状态: 未保存</span>
-          <span>创建人：张三</span>
-          <span>创建时间：2021-11-12 18:12:2</span>
+          <span>状态: { reportMasterData?.status === '-1' ? '未保存' : '已保存'}</span>
+          <span>创建人：{ reportMasterData?.creatorName }</span>
+          <span>创建时间：{ reportMasterData?.createTime }</span>
         </div>
       </HeaderCon>
       <MidCon>
@@ -75,10 +194,13 @@ function QqualityMWSummaryDetail(props: Props) {
             )}
           </SpinCon>
           <TableCon>
-            <div className='title'>2023年消化内科第三季度护理质量检查总结</div>
-            <FirstTable />
-            <SecondTable />
-            <ThirdTable />
+            <div className={detail_check === '0' ? 'detail_check': ''}>
+              <div className='title'>{ reportMasterData?.reportName }</div>
+              <FirstTable />
+              <SecondTable />
+              <ThirdTable />
+              <Four />
+            </div>
           </TableCon>
         </MidConScrollCon>
       </MidCon>
@@ -121,6 +243,9 @@ const MidCon = styled.div`
   flex: 1;
   height: calc(100vh - 145px);
   background: #efefef;
+  .detail_check{
+    pointer-events: none;
+  }
 `
 const MidConScrollCon = styled.div`
   height: 100%;
@@ -157,32 +282,6 @@ const TableCon = styled(ScrollBox)`
     font-weight: 800;
   }
   
-`
-const MidRightCon = styled.div`
-  width: 317px;
-  height: 100%;
-  /* background-color: gray; */
-  align-items: stretch;
-  background: rgba(247, 250, 250, 1);
-  overflow-y: auto;
-  ::-webkit-scrollbar {
-    /*滚动条整体样式*/
-    width: 6px; /*高宽分别对应横竖滚动条的尺寸*/
-    height: 10px;
-  }
-  ::-webkit-scrollbar-thumb {
-    /*滚动条里面小方块*/
-    border-radius: 5px;
-    box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.2);
-    background: rgba(0, 0, 0, 0.2);
-  }
-  /*定义滚动条轨道 内阴影+圆角*/
-  ::-webkit-scrollbar-track {
-    /*滚动条里面轨道*/
-    box-shadow: inset 0 0 5px #ffffff;
-    border-radius: 5px;
-    background-color: #ffffff;
-  }
 `
 const SpinCon = styled.div`
   .LoadingCon {

@@ -139,7 +139,6 @@ export default observer(function TableList() {
     let newLsit = [...thirdData.tableList]
     newLsit[index][text] = value;
     thirdData.tableList = [...newLsit]
-    console.log(thirdData.tableList, 888899)
   }
 
   const addTableList = () => {
@@ -178,7 +177,7 @@ export default observer(function TableList() {
 					dataSource={thirdData.tableList}
 					columns={columns.filter((item: any) => item)}
 					surplusWidth={780}
-					surplusHeight={420}
+					surplusHeight={620}
 				/>
 			</ScrollCon>
       

@@ -1,3 +1,4 @@
+import { type } from 'os';
 import { observable, computed } from "mobx";
 import moment from 'moment'
 import { quarterTimes } from "src/enums/date";
@@ -14,6 +15,8 @@ let quarter = {
 
 class FirstDataDetails{
 
+  @observable public detailsData: any= localStorage.getItem('qqualityMWSummaryDetail') ? JSON.parse(localStorage.getItem('qqualityMWSummaryDetail') || '') : {}
+
   @observable public tableLoading = false; //表格loading
  
   @observable public reportName: String = `护理质量检查总结` // 2023年第一季度全院护理质量检查总结
@@ -21,8 +24,12 @@ class FirstDataDetails{
 
   // 创建表
   @observable public firstModalAdd = false;
-  @observable public type = "护理部目标值"
-  @observable public name = ""
+  @observable public type_nurse = ""
+  @observable public name_nurse = ""
+
+  @observable public type_deptName = ""
+  @observable public name_deptName = ""
+
 
   // 护理部表
   @observable public firstTableList_UD: any = []
@@ -32,60 +39,17 @@ class FirstDataDetails{
    
 
 
-  getTableList(){
-    this.firstTableList_UD = [
-      {
-        id: 1,
-        qcName: '2023年第一季度全院护理质量检查总结'
-      },
-      {
-        id: 1,
-        qcName: 'www1'
-      },
-      {
-        id: 2,
-        qcName: 'www2'
-      },
-      {
-        id: 2,
-        qcName: 'www2'
-      }
-    ];
-
-    this.firstTableList_DE = [
-      {
-        id: 1,
-        qcName: '2023年第一季度全院护理质量检查总结'
-      },
-      {
-        id: 1,
-        qcName: 'www1'
-      },
-      {
-        id: 2,
-        qcName: 'www2'
-      },
-      {
-        id: 2,
-        qcName: 'www2'
-      }
-    ]
-
-    // this.tableLoading = true
-    // qcZzwyApi.getInspectionSummary({...this.postObj,...times}).then(res=>{
-    //   this.tableLoading = false
-    //   // console.log(res.data)
-    //   // this.tableList = this.flattenArray(res.data);
-      
-    // }).catch(err=>{
-    //   this.tableLoading = false
-
-    // })
-    
-  }
-
-
-  tableAddOk() {
+  tableAddOk(value: any) {
+    const { type, name } = value
+    if (type === 'nurse') { 
+      this.type_nurse = type
+      this.name_nurse = name
+    } else {
+      this.type_deptName = type
+      this.name_deptName = name
+    }
+    // 创建成功
+    this.tableAddonCancel()
 
   }
   tableAddonCancel() {

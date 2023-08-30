@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { PageHeader, PageTitle } from 'src/components/common'
 import {
@@ -7,8 +7,6 @@ import {
 } from "src/vendors/antd";
 import BaseTable from "src/components/BaseTable";
 import { firstData } from './firstData';
-import { table1AddDaeta } from './model/table1_add_data';
-import { table2AddDaeta } from './model/table2_add_data';
 import FirsrtAddTable from './model/addTable';
 import Table1Add from './model/table1_add'
 import Table2Add from './model/table2_add'
@@ -39,32 +37,32 @@ export default observer(function TableList() {
       title: '项目',
       colSpan: 2,
       align: "center",
-      dataIndex: 'qcName',
-      width: 160,
+      dataIndex: 'groupName',
+      width: 100,
       render: (value: any, row: any, index: number) => {
 				const obj = {
 					children: value,
 					props: {},
 				} as any;
-				obj.props.rowSpan = mergeCells(row.id, firstData.firstTableList_UD, 'id', index)
+				obj.props.rowSpan = mergeCells(row.groupId, firstData.firstTableList_UD, 'groupId', index)
 				return obj
 			}
     },
     {
-			dataIndex: "totalScore",
+			dataIndex: "qcName",
 			align: "center",
       colSpan: 0,
-      width: 100,
+      width: 160,
 		},
 		{
 			title: "目标值",
-			dataIndex: "totalScore",
+			dataIndex: "nurseDeptTargetValue",
 			align: "center",
       width: 100,
 		},
 		{
 			title: "合格率",
-			dataIndex: "realScore",
+			dataIndex: "evalRate",
 			align: "center",
       width: 100,
 		},
@@ -75,48 +73,46 @@ export default observer(function TableList() {
   const columns_DE: any = [
     {
       title: '项目',
-      colSpan: 2,
       align: "center",
       dataIndex: 'qcName',
-      width: 160,
-      render: (value: any, row: any, index: number) => {
-				const obj = {
-					children: value,
-					props: {},
-				} as any;
-				obj.props.rowSpan = mergeCells(row.id, firstData.firstTableList_UD, 'id', index)
-				return obj
-			}
+      width: 200
     },
-    {
-			dataIndex: "totalScore",
-			align: "center",
-      colSpan: 0,
-      width: 100,
-		},
 		{
 			title: "护理部目标值",
-			dataIndex: "totalScore1",
+			dataIndex: "nurseDeptTargetValue",
 			align: "center",
       width: 100,
 		},
     {
 			title: "科室目标值",
-			dataIndex: "totalScore2",
+			dataIndex: "deptTargetValue",
 			align: "center",
       width: 100,
 		},
 		{
 			title: "合格率",
-			dataIndex: "realScore",
+			dataIndex: "evalRate",
 			align: "center",
       width: 100,
 		},
    
 	]
 
+  let { qcReportItemDtoList, reportMasterData } = firstData?.detailsData
+
+  const [table1_add, setTable1_add] = useState(false)
+  const handleCancel = () => {
+    setTable1_add(false);
+  };
+
+  const [table2_add, setTable2_add] = useState(false)
+  const handleCancel2 = () => {
+    setTable2_add(false);
+  };
+
+
 	useEffect(() => {
-		firstData.getTableList()
+    console.log(1111111111, 666666666666)
 	}, [])
 	
   return (
@@ -127,45 +123,47 @@ export default observer(function TableList() {
 			</PageHeader>
       <FirsrtAddTable />
 
-      {/* 护理部 */}
-			<ScrollCon>
-        <div className='button'>
-          <Button size="small" type="primary">编辑</Button>
-          <Button size="small" type="primary" onClick={() => table1AddDaeta.table1_add = true }>添加</Button>
-        </div>
-        <div className="hearder">表1  202x年第x季度临床护理质量检查过程指标情况</div>
-				<BaseTable
-					className="details-first_table"
-					loading={firstData.tableLoading}
-					dataSource={firstData.firstTableList_UD}
-					columns={columns_UD.filter((item: any) => item)}
-					surplusWidth={780}
-					surplusHeight={420}
-				/>
-			</ScrollCon>
+      { (firstData.name_nurse || firstData.type_deptName) && <>
+        {/* 护理部 */}
+        { (firstData.name_nurse)  && <ScrollCon>
+          <div className='button'>
+            <Button size="small" type="primary">编辑</Button>
+            <Button size="small" type="primary" onClick={() => setTable1_add(true) }>添加</Button>
+          </div>
+          <div className="hearder">{ firstData.name_nurse }</div>
+          <BaseTable
+            className="details-first_table"
+            loading={firstData.tableLoading}
+            dataSource={firstData.firstTableList_UD}
+            columns={columns_UD.filter((item: any) => item)}
+            surplusWidth={780}
+            surplusHeight={620}
+          />
+        </ScrollCon>}
 
-      {/* 表1 添加数据model */}
-      <Table1Add />
-      
-      {/* 科室 */}
-      <ScrollCon>
-        <div className='button'>
-          <Button size="small" type="primary">编辑</Button>
-          <Button size="small" type="primary" onClick={() => table2AddDaeta.table2_add = true }>添加</Button>
-        </div>
-        <div className="hearder">表2  202x年第x季度临床护理质量检查过程指标情况</div>
-				<BaseTable
-					className="details-first_table"
-					loading={firstData.tableLoading}
-					dataSource={firstData.firstTableList_DE}
-					columns={columns_DE.filter((item: any) => item)}
-					surplusWidth={780}
-					surplusHeight={420}
-				/>
-			</ScrollCon>
+        {/* 表1 添加数据model */}
+        <Table1Add table_add={table1_add} handleCancel={handleCancel} />
+        
+        {/* 科室 */}
+        {(firstData.name_deptName) && <ScrollCon>
+          <div className='button'>
+            <Button size="small" type="primary">编辑</Button>
+            <Button size="small" type="primary" onClick={() => setTable2_add(true) }>添加</Button>
+          </div>
+          <div className="hearder">{ firstData.name_deptName }</div>
+          <BaseTable
+            className="details-first_table"
+            loading={firstData.tableLoading}
+            dataSource={firstData.firstTableList_DE}
+            columns={columns_DE.filter((item: any) => item)}
+            surplusWidth={780}
+            surplusHeight={620}
+          />
+        </ScrollCon>}
 
-       {/* 表2 添加数据model */}
-       <Table2Add />
+        {/* 表2 添加数据model */}
+        <Table2Add table_add={table2_add} handleCancel={handleCancel2} />
+      </>}
       
     </Wrapper>
   )

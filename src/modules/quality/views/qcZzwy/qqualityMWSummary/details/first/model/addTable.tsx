@@ -32,6 +32,12 @@ export default Form.create()(observer(function (props: IProps) {
   }
 
 
+  const onSave = () => {
+    validateFields((err, value) => {
+      if (err) return
+      model.tableAddOk(value)
+    })
+  }
   // useEffect(() => {
   //   if (model.nodeVisible)
   //     setValue(model.editContentData[model.index].rollBackType)
@@ -43,7 +49,7 @@ export default Form.create()(observer(function (props: IProps) {
     <Modal
       title="添加表"
       visible={model.firstModalAdd}
-      onOk={() => model.tableAddOk()}
+      onOk={onSave}
       onCancel={(() => model.tableAddonCancel())}
       okText='确定'
       centered
@@ -55,33 +61,29 @@ export default Form.create()(observer(function (props: IProps) {
           <Form.Item label="类型">
             {
               getFieldDecorator('type', {
-                initialValue: model.type,
+                initialValue: 'nurse',
                 rules: [
                   { required: true, message: '类型不能为空' }
                 ]
               })
             (
               <Select
-                defaultValue={model.type}
-                onChange={(val: any) => {
-                  model.type = val
-                }}
               >
-                <Option value="护理部目标值">护理部目标值</Option>
-                <Option value="科室目标值">科室目标值</Option>
+                <Option value="nurse">护理部目标值</Option>
+                <Option value="deptName">科室目标值</Option>
               </Select>
             )}
           </Form.Item>
           <Form.Item label="名称">
             {
               getFieldDecorator('name', {
-                initialValue: model.name,
+                initialValue: '',
                 rules: [
                   { required: true, message: '名称不能为空' }
                 ]
               })
             (
-              <Input placeholder='如：表2  202x年第x季度临床护理质量检查过程指标情况' onChange={(val: any) => model.name = val} />
+              <Input placeholder='如：表2  202x年第x季度临床护理质量检查过程指标情况' />
             )}
           </Form.Item>
         </Form>

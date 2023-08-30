@@ -3,76 +3,34 @@ import { Modal, Input, Table, Popconfirm } from 'antd/es'
 import { observer } from 'mobx-react'
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import moment from 'moment';
-import {
-	ColumnProps,
-	Select,
-	DatePicker,
-	Button,
-} from "src/vendors/antd";
+
 import { FormComponentProps } from 'antd/es/form'
-import { table2AddDaeta as table } from './table2_add_data';
+import { api } from 'src/modules/quality/views/qcZzwy/qqualityMWSummary/api'
+import { firstData } from '../firstData'
 
 const { Search } = Input;
-
 export interface IProps extends FormComponentProps {
+  table_add: boolean | undefined;
+  handleCancel: () => void;
 }
-
 export interface Props {
 }
 export default Form.create()(observer(function (props: IProps) {
-  const { form: { getFieldDecorator, validateFields, setFieldsValue, resetFields } } = props
-  
-  const columns: any = [
-    {
-      key: 'idx',
-      dataIndex: 'idx',
-      title: '序号',
-      width: 50,
-      align: 'center',
-      render(text: any, record: any, idx: number) {
-        return idx + 1
-      }
-    },
-    {
-      title: '分组名称',
-      dataIndex: 'name',
-      width: 260,
-      align: 'center',
-      render: (text: any, record: any, index: number) => {
-        return table.tableList.length >= 1 ? (
-          <Form.Item style={{ margin: 0 }}>
-            <Input 
-              value={record['name']} 
-              placeholder='请填写...' 
-              onChange={e => inputChangeGroup(e, index,  'name', table.tableList, '1')} 
-              onBlur={save}
-              onPressEnter={save}
-            />
-          </Form.Item>
-        ) : null
-      }
-    },
-    {
-      title: '操作',
-      width: 60,
-      align: 'center',
-      dataIndex: 'operation',
-      render: (text:any, record: any) => 
-        table.tableList.length >= 1 ? (
-          <Popconfirm title="Sure to delete?" onConfirm={() => rowDelete(record)}>
-            <a>删除</a>
-          </Popconfirm>
-      ) : null,
-    },
-	]
+  const { table_add, handleCancel, form: { getFieldDecorator, validateFields, setFieldsValue, resetFields } } = props
+
+  const [tableList_group, setTableList_group]: any[] = useState([]);
+  const [tableList_group_TS, setTableList_group_TS] = useState([]);
+  const [selectedRows, setSelectedRows]:any[] = useState([])
+
+  const [selectedRowKeys, setSelectedRowKeys]:any = useState([]);
+
 
   const columns_group: any = [
     {
-      key: 'idx',
-      dataIndex: 'idx',
+      key: 'qcCode',
+      dataIndex: 'qcCode',
       title: '序号',
-      width: 50,
+      width: 80,
       align: 'center',
       render(text: any, record: any, idx: number) {
         return idx + 1
@@ -80,25 +38,24 @@ export default Form.create()(observer(function (props: IProps) {
     },
     {
       title: '表单名称',
-      dataIndex: 'name',
-      width: 230,
+      dataIndex: 'qcName',
+      width: 300,
       align: 'center',
     },
     {
       title: '护理部目标值',
-      dataIndex: 'value',
-      width: 120,
+      dataIndex: 'nurseDeptTargetValue',
+      width: 160,
       align: 'center',
       render: (text: any, record: any, index: number) => {
-        return table.tableList.length >= 1 ? (
+        return tableList_group.length >= 1 ? (
           <Form.Item style={{ margin: 0 }}>
             <Input 
-              readOnly={record.readOnly}
-              value={record['value']} 
+              // readOnly={!record.readOnly}
+              value={record[`nurseDeptTargetValue`] || ''} 
               placeholder='请填写...' 
-              onChange={e => inputChangeGroup(e, index, 'value', table.tableList_group)} 
-              onBlur={save}
-              onPressEnter={save}
+              onChange={e => inputChangeGroup(e.target.value, record, index, 'nurseDeptTargetValue')} 
+              
             />
           </Form.Item>
         ) : null
@@ -106,19 +63,18 @@ export default Form.create()(observer(function (props: IProps) {
     },
     {
       title: '科室目标值',
-      dataIndex: 'value1',
-      width: 120,
+      dataIndex: 'deptTargetValue',
+      width: 160,
       align: 'center',
       render: (text: any, record: any, index: number) => {
-        return table.tableList.length >= 1 ? (
+        return tableList_group.length >= 1 ? (
           <Form.Item style={{ margin: 0 }}>
             <Input 
-              readOnly={record.readOnly}
-              value={record['value1']} 
+              // readOnly={!record.readOnly}
+              value={record[`deptTargetValue`] || ''} 
               placeholder='请填写...' 
-              onChange={e => inputChangeGroup(e, index, 'value1', table.tableList_group)} 
-              onBlur={save}
-              onPressEnter={save}
+              onChange={e => inputChangeGroup(e.target.value, record, index, 'deptTargetValue')} 
+              
             />
           </Form.Item>
         ) : null
@@ -126,112 +82,114 @@ export default Form.create()(observer(function (props: IProps) {
     }
 	]
 
-  const inputChangeGroup = (e: React.ChangeEvent<HTMLInputElement>, index: number, code: string, tableList: any, type: string = '2') => {
-    const { value } = e.target;
-    let newLsit = [...tableList]
-    newLsit[index][code] = value;
-    if (type === '1') {
-      table.tableList = [...newLsit]
-    }else {
-      table.tableList_group = [...newLsit]
-    }
+  const inputChangeGroup = (value: any, record:any, index: number, text: string) => {
+    setTableList_group((prevTableList: any) => {
+      const updatedTableList: any[] = prevTableList.map((item: any, idx: number) => {
+        if (idx === index) {
+          return {
+            ...item,
+            [text]: value
+          };
+        }
+        return item;
+      });
+  
+      // 更新selectedRows中对应行的数据
+      const updatedSelectedRows = selectedRows.map((row: any) => {
+        if (row.qcCode === record.qcCode) {
+          return {
+            ...row,
+            [text]: value
+          };
+        }
+        return row;
+      });
+  
+      setSelectedRows(updatedSelectedRows);
+      return updatedTableList;
+    });
 
-  }
-
-
-  const save = () => {
-    console.log(table.tableList, 6666666666)
   }
   
-  const rowDelete = (row: any) => {
-    console.log(row, 77777)
-  }
-
-  const add = () => {
-    let newLsit = [...table.tableList]
-    table.tableList = [...table.tableList, { name: ''}]
-  }
-
-  const getMock = () => {
-    const targetKeys = [];
-    const mockData = [];
-    for (let i = 0; i < 20; i++) {
-      const data = {
-        key: i.toString(),
-        title: `content${i + 1}`,
-        description: `description of content${i + 1}`,
-        chosen: Math.random() * 2 > 1,
-      };
-      if (data.chosen) {
-        targetKeys.push(data.key);
-      }
-      mockData.push(data);
-    }
-    table.mockData = [...mockData]
-    table.targetKeys = [...targetKeys]
-    // this.setState({ mockData, targetKeys });
-  };
-
   const rowSelection = {
-    onChange: (selectedRowKeys: any, selectedRows: any) => {
-      console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+    selectedRowKeys,
+    onChange: (selectedRowKeys: any[]) => {
+      setSelectedRowKeys(selectedRowKeys);
     },
     onSelect: (record: any, selected: any, selectedRows: any) => {
-      if (selected) {
-        record.readOnly = false;
-      } else {
-        record.readOnly = true;
-      }
-      console.log(record, selected, selectedRows, 111);
+      setSelectedRows(selectedRows)
     },
     onSelectAll: (selected: any, selectedRows: any, changeRows: any) => {
-      console.log(selected, selectedRows, changeRows, 222);
+      setSelectedRows(selectedRows)
     },
   };
 
+  const getTemplateList = async() => {
+    let { data } = await api.templateList()
+    setTableList_group(data || []);
+    setTableList_group_TS(data || [])
+  }
+
+  const tableAddOk = async () => {
+    let { reportMasterData }: any = localStorage.getItem('qqualityMWSummaryDetail') ? JSON.parse(localStorage.getItem('qqualityMWSummaryDetail') || '') : {}
+    let params = {
+      reportLevel: reportMasterData?.reportLevel,
+      startDate: reportMasterData?.startDate,
+      endDate: reportMasterData?.endDate,
+      wardCode: reportMasterData?.wardCode,
+      getEvalRateDataList: selectedRows
+    }
+    let { data } = await api.getMasterEvalRate(params)
+    firstData.firstTableList_DE = data || []
+    handleChildCancel()
+  }
+
+  const handleChildCancel = () => {
+    handleCancel()
+    resetFields()
+  };
 
   useEffect(() => {
-    table.getTableList()
-    getMock()
+    getTemplateList()
   }, [])
+  useEffect(() => { 
+    if (table_add) {
+      const keys = firstData.firstTableList_DE.map((item: any) => item.qcCode);
+      setSelectedRowKeys(keys);
+    }
+  }, [table_add])
+
   
   return (
     <Modal
-      width={ 1000 }
+      width={ 800 }
       title="护理部目标值的添加"
-      visible={table.table2_add}
-      onOk={() => table.tableAddOk()}
-      onCancel={(() => table.tableAddonCancel())}
+      visible={table_add}
+      onOk={tableAddOk}
+      onCancel={handleChildCancel}
       okText='确定'
       centered
     >
       <Wrapper>
-        <div className="table1">
-          <Button onClick={add} size="small" type="primary" style={{ marginBottom: 16 }}>
-            添加分组
-          </Button>
-          <Table
-            rowClassName={() => 'editable-row'}
-            bordered
-            dataSource={table.tableList}
-            columns={columns}
-            pagination={false}
-          />
-        </div>
-        <div className="line"></div>
         <div>
           <Search
-            placeholder="input search text"
-            onSearch={(value: any) => console.log(value)}
+            placeholder="请输入表单名称"
+            onSearch={(value: any) => {
+              if (!value) return setTableList_group(tableList_group_TS)
+              let group = tableList_group.filter((group: any) => group.qcName.indexOf(value) !== -1)
+              setTableList_group(group)
+            }}
+            
             style={{ width: 200, marginBottom: '10px' }}
           />
           <Table
+            rowKey="qcCode"
             rowSelection={rowSelection}
-            rowClassName={() => 'editable-row'}
             bordered
-            dataSource={table.tableList_group}
+            dataSource={tableList_group}
             columns={columns_group}
             pagination={false}
+            scroll={{ y: 400 }}
           />
         </div>
         
@@ -259,5 +217,9 @@ const Wrapper = styled.div`
     font-size: 13px !important;
     height: 30px !important;
   }
+  .highlight-row{
+    background-color: #cfe6dc;
+  }
+
 
 `

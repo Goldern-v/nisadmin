@@ -26,23 +26,9 @@ export default Form.create()(observer(function (props: IProps) {
   const { form: { getFieldDecorator, validateFields, setFieldsValue, resetFields } } = props
 
   const [yearPickShow, setYearPickShow] = useState(false);
-  const [value, setValue] = useState<number>(1)
-
-  const handleChange = (e: any) => {
-    setValue(e.target.value)
-  }
-
-  let quarter = {
-    0: '全年',
-    1: '第一季度',
-    2: '第二季度',
-    3: '第三季度',
-    4: '第四季度',
-  }
 
   const onSave = () => {
     validateFields((err, value) => {
-      console.log(err, value, 777777)
       if (err) return
       model.tableAddOk(value)
     })

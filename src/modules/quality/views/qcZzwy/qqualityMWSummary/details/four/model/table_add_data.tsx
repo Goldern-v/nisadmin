@@ -11,19 +11,21 @@ import {
 	Button,
 } from "src/vendors/antd";
 import { FormComponentProps } from 'antd/es/form'
-import { secondData as model } from '../secondData';
 import { api } from 'src/modules/quality/views/qcZzwy/qqualityMWSummary/api'
 
+import { fourData } from '../fourData'
 
 const Option = Select.Option;
 
 export interface IProps extends FormComponentProps {
+  table_add_data: boolean | undefined;
+  handleCancel: () => void;
 }
 
 export interface Props {
 }
 export default Form.create()(observer(function (props: IProps) {
-  const { form: { getFieldDecorator, validateFields, setFieldsValue, resetFields } } = props
+  const { table_add_data, handleCancel, form: { getFieldDecorator, validateFields, setFieldsValue, resetFields } } = props
 
   const [formList, setFormList]: any[] = useState([])
   const [selectedObjects, setSelectedObjects] = useState([]);
@@ -43,15 +45,15 @@ export default Form.create()(observer(function (props: IProps) {
       startDate: reportMasterData?.startDate,
       endDate: reportMasterData?.endDate,
       wardCode: reportMasterData?.wardCode,
+      type: 1,
       getEvalRateDataList: selectedObjects
     }
     let { data } = await api.getMasterEvalRate(params)
-    model.tableList = data || []
-    model.secondtModalAdd = false
-    resetFields()
+    fourData.tableList = data || []
+    handleonCancel()
   }
   const handleonCancel = () => {
-    model.secondtModalAdd = false
+    handleCancel()
     resetFields()
   }
 
@@ -66,17 +68,17 @@ export default Form.create()(observer(function (props: IProps) {
   }, [])
 
   useEffect(() => {
-    if (model.secondtModalAdd) {
+    if (table_add_data) {
       setFieldsValue({
-        'select-multiple': model.tableList.map((item: any) => item.qcCode)
+        'select-multiple': fourData.tableList.map((item: any) => item.qcCode)
       });
     }
-  }, [model.secondtModalAdd])
+  }, [table_add_data])
   
   return (
     <Modal
       title="添加"
-      visible={model.secondtModalAdd}
+      visible={table_add_data}
       onOk={handleOk}
       onCancel={handleonCancel}
       okText='确定'

@@ -25,13 +25,13 @@ export default observer(function TableList() {
   const columns: any = [
 		{
 			title: "内容",
-			dataIndex: "name",
+			dataIndex: "qcName",
 			align: "center",
       width: 200,
 		},
 		{
 			title: "合格率(%)",
-			dataIndex: "value",
+			dataIndex: "evalRate",
 			align: "center",
       width: 100,
 		},
@@ -69,17 +69,18 @@ export default observer(function TableList() {
   })
 
   const handleDetailList = (idx: number, data: Obj) => {
-    console.log(idx, data, 666666)
     setDetailList(val => {
       return val.map((v, i) => idx === i ? { ...v, ...data } : v)
     })
-    console.log(detailList, 6666666666)
   }
 
 	useEffect(() => {
-    secondData.getTableList()
-    setDetailList(secondData.tableList)
-	}, [])
+    setDetailList((prevDetailList) => [...prevDetailList, ...secondData.tableList]);
+  }, [secondData.tableList]);
+
+  useEffect(() => {
+    secondData.detailLists = detailList
+  }, [detailList]);
 	
   return (
     <Wrapper>
@@ -87,7 +88,7 @@ export default observer(function TableList() {
 				<div>二、护理质量检查情况</div>
 			</PageHeader>
       <div>
-        <TextArea rows={5} />
+        <TextArea value={secondData.case} onChange={(e) => secondData.case = e.target.value } rows={5} />
       </div>
 
 			<ScrollCon>
@@ -102,20 +103,20 @@ export default observer(function TableList() {
 					dataSource={secondData.tableList}
 					columns={columns.filter((item: any) => item)}
 					surplusWidth={780}
-					surplusHeight={420}
+					surplusHeight={620}
 				/>
 			</ScrollCon>
       <AddTable />
       {
         (detailList).map((v: any, i: number) =>
         <>
-          <div key={`${v.eventType}-0`}>{i + 1}、{v.eventType}</div>
+          <div key={`${v.qcCode}-0`}>{i + 1}、{v.qcName}</div>
           <div>主要存在问题</div>
-          <TextArea key={`${v.eventType}-1`} value={v?.envetHandle} autosize={{ minRows: 3 }} onInput={(e: any) => handleDetailList(i, { 'problem': e.target.value })} />
-          <div className="causes" key={`${v.eventType}-2`}>原因分析</div>
-          <Fishbone key={`${v.eventType}-3`} value={v} reflect={fishBoneFish} onChange={(e: any) => handleDetailList(i, e)} />
-          <div key={`${v.eventType}-4`}>整改措施</div>
-          <TextArea className='measures' key={`${v.eventType}-5`} value={v?.envetHandle} autosize={{ minRows: 3 }} onInput={(e: any) => handleDetailList(i, { 'measures': e.target.value })} />
+          <TextArea key={`${v.qcCode}-1`} value={v?.problem} autosize={{ minRows: 3 }} onInput={(e: any) => handleDetailList(i, { 'problem': e.target.value })} />
+          <div className="causes" key={`${v.qcCode}-2`}>原因分析</div>
+          <Fishbone key={`${v.qcCode}-3`} value={v} reflect={fishBoneFish} onChange={(e: any) => handleDetailList(i, e)} />
+          <div key={`${v.qcCode}-4`}>整改措施</div>
+          <TextArea className='measures' key={`${v.qcCode}-5`} value={v?.measures} autosize={{ minRows: 3 }} onInput={(e: any) => handleDetailList(i, { 'measures': e.target.value })} />
         </>)
       }
     </Wrapper>

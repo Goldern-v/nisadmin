@@ -7,37 +7,21 @@ import {
 	Select,
 	DatePicker,
 	Button,
+  Popconfirm
 } from "src/vendors/antd";
 import moment from 'moment';
 import BaseTable, { DoCon } from "src/components/BaseTable";
 import { tableListData } from './tableListData';
 import { quarterAndYear1 } from 'src/enums/date';
-
 import TableAddModal from "./model/tableAdd"
+import { api } from './api';
+import { appStore } from 'src/stores'
+import { message } from 'antd';
 
 const Option = Select.Option;
 // const { RangePicker } = DatePicker
 export default observer(function TableList() {
 	const [yearPickShow, setYearPickShow] = useState(false);
-	// 动态合并单元格
-	const mergeCells = (text: string, data: any, key: string, index: number) => {
-		if (text == '') {
-			// 没有code值的时候
-			return 1
-		}
-		if (index !== 0 && text === data[index - 1][key]) {
-			return 0
-		}
-		let rowSpan = 1
-
-		for (let i = index + 1; i < data.length; i++) {
-			if (text !== data[i][key]) {
-				break;
-			}
-			rowSpan++
-		}
-		return rowSpan
-	}
   const columns: any = [
     {
       key: 'idx',
@@ -51,7 +35,7 @@ export default observer(function TableList() {
     },
     {
 			title: "报告名称",
-			dataIndex: "qcName",
+			dataIndex: "reportName",
 			align: "center",
 			width: 220,
 		},
@@ -71,21 +55,21 @@ export default observer(function TableList() {
 		},
 		{
 			title: "季度",
-			dataIndex: "totalScore",
+			dataIndex: "reportQuarter",
 			align: "center",
 			width: 100,
 
 		},
 		{
 			title: "创建人",
-			dataIndex: "realScore",
+			dataIndex: "creatorName",
 			align: "center",
 			width: 100,
 
 		},
 		{
 			title: "创建时间",
-			dataIndex: "realGetScore",
+			dataIndex: "createTime",
 			align: "center",
 			width: 160,
 		},
@@ -98,31 +82,47 @@ export default observer(function TableList() {
         return (
           <DoCon>
             <span
-              // onClick={() => {
-              //   onDoubleClick(row);
-              // }}
+              onClick={() => {
+                onDoubleClick(row, '查看');
+              }}
             >
               查看
             </span>
             <span
-              // onClick={() => {
-              //   onDoubleClick(row);
-              // }}
+              onClick={() => {
+                onDoubleClick(row, '编辑');
+              }}
             >
               编辑
             </span>
-            <span
-              // onClick={() => {
-              //   onDoubleClick(row);
-              // }}
-            >
-              删除
-            </span>
+            <Popconfirm title="确定要删除吗?" onConfirm={(event:any) => {event.stopPropagation(); onDoubleClick(row, '删除');}}>
+              <a onClick={(event) => event.stopPropagation()}>删除</a>
+            </Popconfirm>
           </DoCon>
         );
       },
     },
 	]
+  const onDoubleClick = async (row: any, status: string) => {
+    if (status === '删除') {
+      let res = await api.deleteQcReport({reportId: row.id})
+      if (res.code === '200') message.success('删除成功')
+      else message.error(res.desc || '删除失败')
+      tableListData.getTableList()
+      return 
+    }
+
+    let { data } = await api.getQcReport(row.id)
+    if (status === '查看') {
+      localStorage.setItem('detail_check', '0')
+      appStore.history.push('/qqualityMWSummaryDetail')
+
+    } else if(status === '编辑') {
+      localStorage.setItem('detail_check', '1')
+      appStore.history.push('/qqualityMWSummaryDetail')
+    }
+    localStorage.setItem('qqualityMWSummaryDetail', data && JSON.stringify(data))
+  }
 
 	useEffect(() => {
 		tableListData.getTableList()
@@ -186,6 +186,7 @@ export default observer(function TableList() {
             ))
           }
 				</Select>
+        <Button onClick={() => tableListData.getTableList() }>查询</Button>
 				<Button onClick={() => tableListData.tableAddVisible = true }>创建</Button>
 			</PageHeader>
 
@@ -217,6 +218,10 @@ const Wrapper = styled.div`
   .mr-15{
     margin-right: 15px;
   }
+  .mr-15:last-of-type{
+    margin-right: 0;
+  }
+  
 `
 const ScrollCon = styled.div`
   flex: 1;

@@ -1,4 +1,4 @@
-import { router } from '@/router/index';
+// import { router } from '@/router/index';
 // import { api } from 'src/services/api/index';
 import { observable, computed } from "mobx";
 import moment from 'moment'
@@ -52,7 +52,8 @@ class QqualityMWSummaryData{
       hospitalCode: 'zzwy',
       templateName: '季度质量管理工作总结',
       reportYear: this.year?.format('YYYY'),
-      reportLevel: '1'
+      reportLevel: '1',
+      
     }
   }
 
@@ -71,31 +72,23 @@ class QqualityMWSummaryData{
     // 季度
     let times = {}
     if (this.selectQuarter !== '全部') {
-      console.log(quarterTimes(this.year?.format('YYYY'),this.selectQuarter)[0], this.selectQuarter)
       times = {
         startDate: quarterTimes(this.year?.format('YYYY'),this.selectQuarter)[0],
-        endDate: quarterTimes(this.year?.format('YYYY'),this.selectQuarter)[1]
+        endDate: quarterTimes(this.year?.format('YYYY'),this.selectQuarter)[1],
+        reportQuarter: quarter[this.selectQuarter] //季度
       }
     } else {
       times = {
-        startDate: this.year?.format('YYYY'),
-        endDate: this.year?.format('YYYY')
+        startDate: '',
+        endDate: '',
+        reportQuarter: '', //季度
       }
     }
     
     this.tableLoading = true
     api.getPage({...this.postObj, ...times}).then(res=>{
       this.tableLoading = false
-      console.log(res.data)
-      // this.tableList = this.flattenArray(res.data);
-      this.tableList = [
-        {
-          qcName: ' 2023年第三季度消化内科管理工作总结'
-        },
-        {
-          qcName: ' 2023年第二季度骨科管理工作总结'
-        }
-      ]
+      this.tableList = res.data.list
     }).catch(err=>{
       this.tableLoading = false
 
@@ -146,7 +139,8 @@ class QqualityMWSummaryData{
     }).then((res:any)=>{
       if (res.code === '200') {
         message.success('创建成功')
-        router.push('./qqualityMWSummaryDetail')
+        localStorage.setItem('qqualityMWSummaryDetail', JSON.stringify(res.data))
+        appStore.history.push('/qqualityMWSummaryDetail')
       }  
       this.tableAddonCancel()
     })
