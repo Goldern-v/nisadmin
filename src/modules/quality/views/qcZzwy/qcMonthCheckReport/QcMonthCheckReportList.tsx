@@ -7,6 +7,7 @@ import {
 	Modal,
 	Select,
 	DatePicker,
+	message,
 	Button,
 } from "src/vendors/antd";
 import moment from 'moment';
@@ -17,6 +18,7 @@ import CreateMonthCheckReport from './CreateMonthCheckReport';
 import { appStore } from 'src/stores';
 import qs from 'qs';
 import { qcZzwyApi } from '../qcZzwyApi'
+
 const Option = Select.Option;
 
 
@@ -83,7 +85,7 @@ export default observer(function QcMonthCheckReportList() {
           return (<DoCon>
             <span onClick={() => { turnToDetail(record) }}>查看</span>
             <span onClick={() => {openModal('编辑',record)}}>编辑</span>
-            <span onClick={() => {deleteItem(record)}}>删除</span>
+            <span onClick={() => {deleteItem(record,index)}}>删除</span>
             {/* <span key={row.id} onClick={() => handleSign(row, 'signName')}>{value || '签名'}</span> */}
         </DoCon>)
       }
@@ -98,14 +100,16 @@ export default observer(function QcMonthCheckReportList() {
 		qcMonthCheckData.currentItem = record
 
 		// trainExamData.passScore = record.passScore || 60 
-		appStore.history.push(`/qcMonthCheckReportDetail?${qs.stringify({ id, batch, year: moment().format('YYYY'),qcLevel:appStore.queryObj?.qcLevel })}`)
+		appStore.history.push(`/qcMonthCheckReportDetail?${qs.stringify({ id,qcLevel:appStore.queryObj?.qcLevel })}`)
 	}
 
 	/**删除 */
-	const deleteItem = (record: any)=>{
+	const deleteItem = (record: any,index:number)=>{
 		globalModal.confirm('删除确定', '你确定要删除该记录吗?').then((res) => {
 			qcZzwyApi.deleteQcReport({reportId:record.id}).then((res) => {
 				// getTableData()
+				message.success('删除成功！')
+				qcMonthCheckData.tableList.splice(index,1)
 			})
 		}).catch(err=>{
 			console.log(err)
@@ -129,6 +133,11 @@ export default observer(function QcMonthCheckReportList() {
 		qcMonthCheckData.addConfirmVisible = false
 
 	}
+	
+	useEffect(() => {
+		qcMonthCheckData.getTableList()
+	}, [])
+	
 		
   return (
     <Wrapper>
@@ -143,7 +152,7 @@ export default observer(function QcMonthCheckReportList() {
 					onChange={(val: any) => {
 						qcMonthCheckData.deptCode = val.key
 						qcMonthCheckData.deptName = val.label
-						// qcMonthCheckData.getTableList()
+						qcMonthCheckData.getTableList()
 					}}
 				>
 					<Option value="">全院</Option>
@@ -156,7 +165,7 @@ export default observer(function QcMonthCheckReportList() {
         <><span>日期：</span>
         <YearMonthRangePicker className='mr-15' widthPx={180} value={qcMonthCheckData.monthRange} onChange={(val:any)=>{
 					qcMonthCheckData.monthRange = val
-					// qcMonthCheckData.getTableList()
+					qcMonthCheckData.getTableList()
         }} /></>
 				<Button
 					className="span"

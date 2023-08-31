@@ -48,6 +48,24 @@ class QcMonthCheckData{
   // 详情接口拿到的数据-创建接口
   @observable public reportMasterData:any = null
   @observable public qcReportItemDtoList:any = null
+  @observable public sourceMap = {
+    ZZWY_YDZKJCZJ_L1_001:{
+      tableList:[]
+    },
+    ZZWY_YDZKJCZJ_L1_002:{
+      summary:''
+    },
+    ZZWY_YDZKJCZJ_L1_003:{
+      date:undefined,//日期
+      itemCodeObj:this.templateData.itemCodeObj || [],//二级项目对象，name，code，简称simpleName
+      improveGoals:'',//改进目标
+      steps:'',//整改措施：
+      check:'',//检查情况
+    },
+    ZZWY_YDZKJCZJ_L1_004:{
+      textArea:'',
+    }
+  }
   // 检查情况
   @observable public ZZWY_YDZKJCZJ_L1_001:any = {
     tableList:[]
@@ -58,13 +76,17 @@ class QcMonthCheckData{
   }
   // 三． 本月质量改进项目
   @observable public ZZWY_YDZKJCZJ_L1_003:any={
-    date:'',//日期
+    date:undefined,//日期
     itemCodeObj:this.templateData.itemCodeObj || [],//二级项目对象，name，code，简称simpleName
     improveGoals:'',//改进目标
     steps:'',//整改措施：
     check:'',//检查情况
 
   }
+
+  // 柱状图
+  @observable public fields:any = []
+  @observable public devData:any = []
   // 四、效果评价及标准化结果
   @observable public ZZWY_YDZKJCZJ_L1_004:any = {
     textArea:''
@@ -162,6 +184,7 @@ class QcMonthCheckData{
   }
 
 
+  /**获取第一个表格的数据 */
   getInspectionSummary(){
     qcZzwyApi.getInspectionSummary({
       wardCode:this.createModalData.deptCode?.key|| '236',
@@ -177,6 +200,41 @@ class QcMonthCheckData{
   
     })
   }
+
+  getRatioByItemCode(){
+    qcZzwyApi.getRatioByItemCode({
+      wardCode:this.reportMasterData.wardCode,
+      qcItemCodeList:this.templateData.itemCodeList,
+      startDate:this.reportMasterData.startDate,
+      endDate:this.reportMasterData.endDate,
+      reportLevel:appStore.queryObj.qcLevel,
+    }).then(res=>{
+      let data = res.data|| []
+      let newData:any = []
+      let itemArry:any = []
+      let smallObj:any = {}
+      let fields:any = []//key值
+      data.map((it:any)=>{
+        itemArry = []
+        smallObj = {}
+        fields = it.reportRatioDto.months
+        it.reportRatioDto.months.map((ii:any,index:number)=>{
+          smallObj.name = it.qcItemName
+            smallObj[ii] = Number(it.reportRatioDto.ratios[index])
+            // 
+        })
+        itemArry.push(smallObj)
+        newData.push(itemArry)
+        
+      })
+      this.fields = fields
+      this.devData = newData
+
+    }).catch(err=>{
+      
+    })
+  }
+
   
 }
 export const qcMonthCheckData = new QcMonthCheckData()

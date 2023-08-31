@@ -89,12 +89,7 @@ export default function QcOneRouterHj(props: Props) {
       // keepAlive: true,
       // disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
     },
-    {
-      title: "季度质量管理工作总结",
-      icon: <HZBG />,
-      path: "/qcOneHj/季度质量管理工作总结",
-      component: QqualityMWSummary,
-    },
+    
   {
     title: "质控表项目问题分析汇总",
     icon: <JCTJ />,
@@ -118,6 +113,12 @@ export default function QcOneRouterHj(props: Props) {
       icon: <HZBG />,
       path: "/qcOneHj/季度质量分析报告?qcLevel=1",
       component: QuarterlyAnalysisReportZzwy,
+    },
+    {
+      title: "季度质量管理工作总结",
+      icon: <HZBG />,
+      path: "/qcOneHj/季度质量管理工作总结",
+      component: QqualityMWSummary,
     },
 ]
 

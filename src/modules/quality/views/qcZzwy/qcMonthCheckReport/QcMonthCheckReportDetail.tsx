@@ -4,7 +4,7 @@ import { Button, message, Spin,Table,InputNumber,Input,DatePicker } from 'src/ve
 import { useRef } from 'src/types/react'
 import printing from 'printing'
 import moment from 'moment'
-
+import MultiFileUploader from "src/components/MultiFileUploader";
 import styled from 'styled-components'
 import { ScrollBox } from 'src/components/common'
 import BaseBreadcrumb from 'src/components/BaseBreadcrumb'
@@ -12,6 +12,8 @@ import { appStore } from 'src/stores'
 import SelectReport from './SelectReport'
 import { qcMonthCheckData } from './qcMonthCheckData'
 import { qcZzwyApi } from '../qcZzwyApi'
+import QcFishBone from '../qcQuarterlyAnalysisReport/qcFishBone/fish-bone'
+import ChartCylindricalityMonth from './ChartCylindricalityMonth'
 
 
 export default observer(function QcMonthCheckReportDetail() {
@@ -19,31 +21,30 @@ export default observer(function QcMonthCheckReportDetail() {
   const [isPrint, setIsPrint] = useState(false)
   const [text1, setText1] = useState('');
   const [selectTableModal, setSelectTableModal] = useState(false);
+  const {id,qcLevel} = appStore.queryObj
 
+  /**保存 */
   const onSave = ()=>{
-    // console.log(qcMonthCheckData.ZZWY_YDZKJCZJ_L1_001)
-    // console.log(qcMonthCheckData.ZZWY_YDZKJCZJ_L1_002)
-    // console.log(qcMonthCheckData.ZZWY_YDZKJCZJ_L1_003)
-    // console.log(qcMonthCheckData.ZZWY_YDZKJCZJ_L1_004)
     let qcReportItemDtoList = qcMonthCheckData.qcReportItemDtoList || []
     let qcReportItemDataList:any = []
     qcReportItemDtoList.map((it:any)=>{
-      // it.qcReportItemDataList=[]
       qcReportItemDataList.push({
         itemCode:it.itemCode,
         itemValue:JSON.stringify(qcMonthCheckData[it.itemCode]),
         reportItemId:it.id,
-        reportMasterId:qcMonthCheckData.reportMasterData.id
-
+        reportMasterId:qcMonthCheckData.reportMasterData.id || null,
+        id:it.qcReportItemDataList?it.qcReportItemDataList[0].id:null,
       })
+      // console.log(it.qcReportItemDataList)
     })
+    // console.log(qcReportItemDataList)
+    // return false
     let paramter = {
       ...qcMonthCheckData.reportMasterData,
       hospitalCode:'zzwy',
       templateName:'月度质控检查总结报告',
       qcReportItemDataList
     }
-    // console.log(paramter)
     qcZzwyApi.saveQcReport(paramter).then(res=>{
       message.success('保存成功')
       appStore.history.goBack()
@@ -109,8 +110,8 @@ export default observer(function QcMonthCheckReportDetail() {
     }, 500)
   }
 
+  /**输入赋值 */
   const onhandleBlur = (val:any,record:any,key:string)=>{
-    // console.log(val)
     record[key] = val
   }
 
@@ -119,23 +120,23 @@ export default observer(function QcMonthCheckReportDetail() {
       { title: ' 项目 ', dataIndex: 'qcName',align: 'center',width:100 },
       { title: '护理部目标值(%)',width:50, dataIndex: 'k1', align: 'center',
         render: (datas: any, record: any) => {
-              return (<InputNumber className='table-input' onBlur={(e) => onhandleBlur(e.target.value, record,'k1')} defaultValue={datas} />)
+              return (<InputNumber key={id+record.wardCode} className='table-input' onBlur={(e) => onhandleBlur(e.target.value, record,'k1')} defaultValue={datas} />)
             }
       },
       {
         title: '科室目标值(%)',width:50,  dataIndex: 'k2', align: 'center',
         render: (datas: any, record: any) => {
-          return (<InputNumber className='table-input' onBlur={(e) => onhandleBlur(e.target.value, record,'k2')} defaultValue={datas} />)
+          return (<InputNumber key={id+record.wardCode} className='table-input' onBlur={(e) => onhandleBlur(e.target.value, record,'k2')} defaultValue={datas} />)
         }
       },
       { title: '检查及格率(%)', dataIndex: 'passRate', align: 'center' },
       { title: '评估人',  dataIndex: 'k3', align: 'center', width:80,
       render: (datas: any, record: any) => {
-        return (<Input className='table-input' onBlur={(e) => onhandleBlur(e.target.value, record,'k3')} defaultValue={datas} />)
+        return (<Input key={id+record.wardCode} className='table-input' onBlur={(e) => onhandleBlur(e.target.value, record,'k3')} defaultValue={datas} />)
       } },
       { title: '需改进条目', dataIndex: 'k4', align: 'center',
       render: (datas: any, record: any) => {
-        return (<Input className='table-input' onBlur={(e) => onhandleBlur(e.target.value, record,'k4')} defaultValue={datas} />)
+        return (<Input key={id+record.wardCode} className='table-input' onBlur={(e) => onhandleBlur(e.target.value, record,'k4')} defaultValue={datas} />)
       } },
       { 
         title: '单项及格率(%)', 
@@ -143,11 +144,11 @@ export default observer(function QcMonthCheckReportDetail() {
         children:[
           { title: '上个月',  dataIndex: 'k5', align: 'center',
           render: (datas: any, record: any) => {
-            return (<InputNumber className='table-input' onBlur={(e) => onhandleBlur(e.target.value, record,'k5')} defaultValue={datas} />)
+            return (<InputNumber key={id+record.wardCode} className='table-input' onBlur={(e) => onhandleBlur(e.target.value, record,'k5')} defaultValue={datas} />)
           } },
           { title: '当月',  dataIndex: 'k6', align: 'center',
           render: (datas: any, record: any) => {
-            return (<InputNumber className='table-input' onBlur={(e) => onhandleBlur(e.target.value, record,'k6')} defaultValue={datas} />)
+            return (<InputNumber key={id+record.wardCode} className='table-input' onBlur={(e) => onhandleBlur(e.target.value, record,'k6')} defaultValue={datas} />)
           } },
         ]
       },
@@ -159,6 +160,14 @@ export default observer(function QcMonthCheckReportDetail() {
     return [{},{},{}]
   }
 
+  const  fishValue={
+    'v0':1,
+    'v1':4,
+}
+const handleFishItem =(obj:any)=>{
+  console.log(obj);
+}
+
   /**本月质量改进项目 */
   const getTableColumns2 = ()=>{
     return [
@@ -168,9 +177,10 @@ export default observer(function QcMonthCheckReportDetail() {
           return (<div>
           <span style={{width:'100px'}}>日期：</span>
           <DatePicker 
+            defaultValue={moment(qcMonthCheckData.ZZWY_YDZKJCZJ_L1_003.date) || undefined}
               // className='table-input'
               onChange={(date:any)=>{
-                qcMonthCheckData.ZZWY_YDZKJCZJ_L1_003.date = date.format('YYYY-MM-DD')
+                qcMonthCheckData.ZZWY_YDZKJCZJ_L1_003.date = date?.format('YYYY-MM-DD') || undefined
               }}
           /></div>)
         }
@@ -199,23 +209,73 @@ export default observer(function QcMonthCheckReportDetail() {
     ] as any
   }
   useEffect(() => {
-    qcMonthCheckData.getInspectionSummary()
-    /**创建分析报告 */
-    createQcReport()
+    if(id){
+      // 有id，就调查看接口
+      getQcReportById()
+    }else{
+      /**创建分析报告 */
+      createQcReport()
+    }
+    // qcMonthCheckData.getInspectionSummary()
+    
   }, [])
 
   /**创建分析报告 */
   const createQcReport = ()=>{
-    qcZzwyApi.createQcReport({"hospitalCode":"zzwy",
-    "templateName":"月度质控检查总结报告","reportName":"Vicky",
-    "reportLevel":"1","reportYear":2023,"reportMonth":8,
-    "startDate":"2023-08-01","endDate":"2023-08-31","wardCode":"236",
-    "wardName":"七病区"}).then(res=>{
+    let paramter = {
+      "hospitalCode":"zzwy",
+      "templateName":"月度质控检查总结报告",
+      "reportName":qcMonthCheckData.createModalData.name,
+      "reportLevel":qcLevel,
+      "reportYear":moment(qcMonthCheckData.createModalData.month).year(),
+      "reportMonth":moment(qcMonthCheckData.createModalData.month).month()+1,
+      "startDate":moment(qcMonthCheckData.createModalData.month).startOf('month').format('YYYY-MM-DD'),
+      "endDate":moment(qcMonthCheckData.createModalData.month).endOf('month').format('YYYY-MM-DD'),
+      "wardCode":qcMonthCheckData.createModalData.deptCode.key,
+      "wardName":qcMonthCheckData.createModalData.deptCode.label,
+    }
+    let paramter2 = {
+      "hospitalCode":"zzwy",
+      "templateName":"月度质控检查总结报告",
+      "reportName":"Vicky",
+      "reportLevel":"1",
+      "reportYear":2023,
+      "reportMonth":8,
+      "startDate":"2023-08-01",
+      "endDate":"2023-08-31",
+      "wardCode":"236",
+      "wardName":"七病区"
+    }
+    qcZzwyApi.createQcReport(paramter).then(res=>{
       qcMonthCheckData.reportMasterData = res.data.reportMasterData || {}
       qcMonthCheckData.qcReportItemDtoList = res.data.qcReportItemDtoList || []
+      qcMonthCheckData.qcReportItemDtoList.map((it:any)=>{
+        qcMonthCheckData[it.itemCode] = qcMonthCheckData.sourceMap[it.itemCode]
+      })
+      // 新建的时候需要
+      qcMonthCheckData.getInspectionSummary()
     }).catch(err=>{
 
     })
+  }
+
+  /**查看报告 */
+  const getQcReportById = ()=>{
+    // console.log(id)
+    qcZzwyApi.getQcReportById(id).then(res=>{
+      qcMonthCheckData.reportMasterData = res.data.reportMasterData || {}
+      qcMonthCheckData.qcReportItemDtoList = res.data.qcReportItemDtoList || []
+      qcMonthCheckData.qcReportItemDtoList.map((it:any)=>{
+        qcMonthCheckData[it.itemCode] = it.qcReportItemDataList[0].itemValue?
+          JSON.parse(it.qcReportItemDataList[0].itemValue):
+          qcMonthCheckData.sourceMap[it.itemCode]
+          console.log(qcMonthCheckData[it.itemCode])
+      })
+      // console.log(qcMonthCheckData.ZZWY_YDZKJCZJ_L1_001)
+    }).catch(err=>{
+
+    })
+    
   }
   
   return (
@@ -255,7 +315,7 @@ export default observer(function QcMonthCheckReportDetail() {
             <>
             <div className='first-content-box'>
               <div className='first-title'>{`一、检查情况`}</div>
-              <div className='second-content-table-table' style={{ width: '700px', margin: '0 auto' }}>
+              <div className='second-content-table-table' style={{ width: '900px', margin: '0 auto' }}>
                 <Table className='constom-table' rowClassName={() => 'editable-row'} 
                   bordered dataSource={qcMonthCheckData.ZZWY_YDZKJCZJ_L1_001.tableList|| []} 
                   columns={getTableColumns()} pagination={false}  />
@@ -263,51 +323,60 @@ export default observer(function QcMonthCheckReportDetail() {
             </div>
             <div className='first-content-box'>
               <div className='first-title'>{`二、小结`}</div>
-              <Input.TextArea className='print-page__ipt' autosize={{ minRows: 3}} 
-              // value={text1} 
-              // onChange={ (e: any) => setText1(e.target.value)}
-              onBlur={(e)=>qcMonthCheckData.ZZWY_YDZKJCZJ_L1_002.summary = e.target.value}
+              <Input.TextArea key={id} className='print-page__ipt' 
+              value={qcMonthCheckData.ZZWY_YDZKJCZJ_L1_002.summary} autosize={{ minRows: 3}} 
+              onChange={ (e: any) => qcMonthCheckData.ZZWY_YDZKJCZJ_L1_002.summary = e.target.value}
                />
             </div>
             <div className='first-content-box'>
               <div className='first-title'>{`三、本月质量改进项目`}</div>
-              <div className='second-content-table-table' style={{ width: '700px', margin: '0 auto' }}>
+              <div className='second-content-table-table' style={{ width: '900px', margin: '0 auto' }}>
                 <Table className='constom-table' rowClassName={() => 'editable-row'} 
                   bordered dataSource={[{}]}  showHeader={false}
                   columns={getTableColumns2()} pagination={false}
                   footer={() => {
                     return (<div style={{width:'100%',display:'flex'}}>
                       <span style={{display:'block',width:'90px'}}>改进目标:</span>
-                      <Input.TextArea autosize={{ minRows: 1}}
-                      onBlur={(e)=>qcMonthCheckData.ZZWY_YDZKJCZJ_L1_003.improveGoals = e.target.value} />
-
+                      <Input.TextArea key={id} value={qcMonthCheckData.ZZWY_YDZKJCZJ_L1_003.improveGoals} autosize={{ minRows: 1}}
+                      onChange={(e)=>qcMonthCheckData.ZZWY_YDZKJCZJ_L1_003.improveGoals = e.target.value} />
                     </div>)
                   }}
                   />
               </div>
-              <div className='second-content-table-table second-box' style={{ width: '700px', margin: '20px auto' }}>
+              <div className='second-content-table-table second-box' style={{ width: '900px', margin: '20px auto' }}>
                 <h4 className='second-title'>计划阶段（P）</h4>
                 <p>（一）检查情况：</p>
-                <Input 
-                onBlur={(e)=>qcMonthCheckData.ZZWY_YDZKJCZJ_L1_003.check = e.target.value} />
+                <Input key={id} value={qcMonthCheckData.ZZWY_YDZKJCZJ_L1_003.check}
+                onChange={(e)=>qcMonthCheckData.ZZWY_YDZKJCZJ_L1_003.check = e.target.value} />
                 <p>（二）原因分析：</p>
-                <div>
-                  鱼骨图位置
+                <div style={{margin:'20px 0'}}>
+                <QcFishBone value={fishValue} onChange={handleFishItem}/>
                 </div>
-                <h4 className='second-title'>执行阶段（D）</h4>
-                <p>整改措施：</p>
-                <Input.TextArea autosize={{ minRows: 5}} 
-                onBlur={(e)=>qcMonthCheckData.ZZWY_YDZKJCZJ_L1_003.steps = e.target.value} />
+                <h4 className='second-title' style={{marginTop:'40px'}}>执行阶段（D）</h4>
+                <p >整改措施：</p>
+                <Input.TextArea key={id} autosize={{ minRows: 5}} value={qcMonthCheckData.ZZWY_YDZKJCZJ_L1_003.steps}
+                onChange={(e)=>qcMonthCheckData.ZZWY_YDZKJCZJ_L1_003.steps = e.target.value} />
               </div>
             </div>
             <div className='first-content-box'>
               <div className='first-title'>{`四、效果评价及标准化结果`}</div>
-              <div className='second-content-table-table second-box' style={{ width: '700px', margin: '20px auto' }}>
+              <div className='second-content-table-table second-box' style={{ width: '900px', margin: '20px auto' }}>
+                <div>
                 <h4 className='second-title'>上个月专项检查不达标效果评价（C）</h4>
-                <div>柱状图</div>
+                <MultiFileUploader
+                            accept={'image/png,image/jpeg,image/gif,image/webp,image/apng,image/svg'}
+                            size={1}
+                            maxSize={2097152}
+                        />
+                </div>
+                
+                {/*柱形图*/}
+                {(qcMonthCheckData.devData||[]).map((it:any)=><ChartCylindricalityMonth data={it} fields={qcMonthCheckData.fields}/>)}
+                
                 {/* <h4 className='second-title'>请输入</h4> */}
-                <Input.TextArea placeholder='请输入……' autosize={{ minRows: 5}}
-                onBlur={(e)=>qcMonthCheckData.ZZWY_YDZKJCZJ_L1_004.textArea = e.target.value} />
+                <Input.TextArea placeholder='请输入……' key={id}
+                value={qcMonthCheckData.ZZWY_YDZKJCZJ_L1_004.textArea} autosize={{ minRows: 5}}
+                onChange={(e)=>qcMonthCheckData.ZZWY_YDZKJCZJ_L1_004.textArea = e.target.value} />
                 
               </div>
             </div>
@@ -349,7 +418,7 @@ const HeadCon = styled.div`
   }
 `
 const Page = styled.div`
-  width: 780px;
+  width: 1000px;
   margin: 20px auto 20px;
   padding-bottom: 10px;
   background: #fff;
@@ -383,9 +452,9 @@ const ScrollCon = styled(ScrollBox)`
 
   /* 二级题目 */
   .second-box{
-    border: 1px solid;
+    /* border: 1px solid; */
     /* margin-top: 20px; */
-    padding: 20px 14px;
+    /* padding: 20px 14px; */
     p,h4{
       line-height: 1;
       margin-bottom: 0;
