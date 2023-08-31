@@ -1209,11 +1209,16 @@ const moveRow = (dragIndex: number, hoverIndex: number) => {
           }
         } else if (pc == "ant-table-body-outer") {
           /** left */
-          leftList = update(leftList, {
-            $splice: [[dragIndex, 1], [hoverIndex, 0, leftList[dragIndex]]],
-          });
+          if(["lyrm"].includes(appStore.HOSPITAL_ID)){
+            let drag = [...leftList].slice(dragIndex,dragIndex + 1)
+            let hoverItem = leftList.splice(hoverIndex,1,...drag)
+            leftList.splice(dragIndex,1,...hoverItem)
+          }else{
+            leftList = update(leftList, {
+              $splice: [[dragIndex, 1], [hoverIndex, 0, leftList[dragIndex]]],
+            });
+          }
         }
-
         let list = leftList.map((item: any, index: number) => {
           item.settingDtos = rightList[index].map((r: any) => ({
             ...r,
