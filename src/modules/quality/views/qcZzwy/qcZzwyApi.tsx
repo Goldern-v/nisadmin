@@ -96,16 +96,14 @@ public qcItemDeleteQcReport(params:any) {
      *
      **/
 
-/**根据报告表Code找到报告表下的二级项目 */
-public getReportTwoItem(qcCode:any) {
-    return this.get(`/qcReport/getReportTwoItem/${qcCode}`)
-}
+        /**根据报告表Code找到报告表下的二级项目 */
+        public getReportTwoItem(qcCode:any) {
+            return this.get(`/qcReport/getReportTwoItem/${qcCode}`)
+        }
 
-/**二级指标的上个月的数据与之比对 */
-public getRatioByItemCode(qcCode:any) {
-    return this.post(`/api/qcReport/getRatioByItemCode`)
-}
-
-
+        /**二级指标的上个月的数据与之比对 */
+        public getRatioByItemCode(params:any) {
+            return this.post(`/qcReport/getRatioByItemCode`,params)
+        }
 }
 export const qcZzwyApi = new QcZzwyApi();

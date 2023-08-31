@@ -33,6 +33,13 @@ import 质控表单汇总 from "./views/qcDghl/质控表单汇总";
 import 二级质控问题原因措施汇总 from "./views/qcFormGzsrm/二级质控问题原因措施汇总";
 import 福清二级质控问题原因措施汇总 from "./views/qcFormFqfybjy/二级质控问题原因措施汇总";
 import qcThreeMQSummary from './views/qcThreeMQSummary'
+import CheckSummary from './views/qcZzwy/qcCheckSummary/CheckSummary'
+import IssueAnalysis from './views/qcZzwy/issueAnalysis/IssueAnalysis'
+import RectificationSummary from './views/qcZzwy/qcRectificationSummary/RectificationSummary'
+import QcMonthCheckReportList from './views/qcZzwy/qcMonthCheckReport/QcMonthCheckReportList'
+import QuarterlyAnalysisReportZzwy from './views/qcZzwy/qcQuarterlyAnalysisReport/Index'
+import QqualityMWSummary from './views/qcZzwy/qqualityMWSummary/tableList' // 季度质量管理工作总结 Quarterly quality management work summary
+
 // import Analysis from "./views/analysis/Analysis";
 export interface Props extends RouteComponentProps<{ name?: string }> {}
 export default observer(function QcTwoRouter(props: Props) {
@@ -95,6 +102,77 @@ export default observer(function QcTwoRouter(props: Props) {
     hide: !authStore.level2Watch,
     disabledKeepAlive: true,
   };
+  const route_default = [
+    {
+      title: "二级质控月度报告",
+      icon: <YDBG />,
+      path: "/qcTwo/workSummaryReportList",
+      component: WorkSummaryReportList,
+      keepAlive: true,
+      disabledKeepAlive:
+        (appStore.history && appStore.history.action) !== "POP",
+    },
+    {
+      title: "防疫专项检查分析报告",
+      icon: <YDBG />,
+      path: "/qcTwo/防疫专项检查分析报告",
+      component: 防疫专项检查片区汇总,
+      keepAlive: true,
+      // hide: !appStore.isDev,
+      disabledKeepAlive:
+        (appStore.history && appStore.history.action) !== "POP",
+    },
+    {
+      title: "防疫专项检查汇总报告",
+      icon: <YDBG />,
+      path: "/qcTwo/防疫专项检查汇总",
+      component: 防疫专项检查汇总,
+      keepAlive: true,
+      // hide: !appStore.isDev,
+      disabledKeepAlive:
+        (appStore.history && appStore.history.action) !== "POP",
+    },
+  ];
+  const route_质控_ZZWY = [
+    {
+      title: "护理部质量检查汇总表",
+      icon: <HZBG />,
+      path: "/qcTwo/护理部质量检查汇总表?qcLevel=3",
+      component: CheckSummary,
+    },
+    
+  {
+    title: "质控表项目问题分析汇总",
+    icon: <JCTJ />,
+    path: "/qcTwo/质控表项目问题分析汇总?qcLevel=3",
+    component: IssueAnalysis,
+  },
+    {
+      title: "质控检查反馈整改单",
+      icon: <HZBG />,
+      path: "/qcTwo/质控检查反馈整改单?qcLevel=3",
+      component: RectificationSummary,
+    },
+    {
+      title: "月度质控检查总结报告",
+      icon: <JCTJ />,
+      path: "/qcTwo/月度质控检查总结报告?qcLevel=3",
+      component: QcMonthCheckReportList,
+    },
+
+    {title: "季度质量分析报告",
+      icon: <HZBG />,
+      path: "/qcTwo/季度质量分析报告?qcLevel=3",
+      component: QuarterlyAnalysisReportZzwy,
+    },
+    {
+      title: "季度质量管理工作总结",
+      icon: <HZBG />,
+      path: "/qcTwo/季度质量管理工作总结?qcLevel=3",
+      component: QqualityMWSummary,
+    },
+]
+
 
   // const route_summaryReport = {
   //   title: "二级质控汇总报告",
@@ -236,38 +314,12 @@ export default observer(function QcTwoRouter(props: Props) {
         },
       ],
       'whyx,whhk': [route_analysis],
-      // whyx: [route_analysis, route_summaryReport, route_problemSummary],
-      default: [
-        {
-          title: ['fssdy'].includes(appStore.HOSPITAL_ID)?"交叉检查月度报告":"二级质控月度报告",
-          icon: <YDBG />,
-          path: "/qcTwo/workSummaryReportList",
-          component: WorkSummaryReportList,
-          keepAlive: true,
-          disabledKeepAlive:
-            (appStore.history && appStore.history.action) !== "POP",
-        },
-        {
-          title: "防疫专项检查分析报告",
-          icon: <YDBG />,
-          path: "/qcTwo/防疫专项检查分析报告",
-          component: 防疫专项检查片区汇总,
-          keepAlive: true,
-          // hide: !appStore.isDev,
-          disabledKeepAlive:
-            (appStore.history && appStore.history.action) !== "POP",
-        },
-        {
-          title: "防疫专项检查汇总报告",
-          icon: <YDBG />,
-          path: "/qcTwo/防疫专项检查汇总",
-          component: 防疫专项检查汇总,
-          keepAlive: true,
-          // hide: !appStore.isDev,
-          disabledKeepAlive:
-            (appStore.history && appStore.history.action) !== "POP",
-        },
+      zzwy:[
+        ...route_default,
+        ...route_质控_ZZWY
       ],
+      // whyx: [route_analysis, route_summaryReport, route_problemSummary],
+      default: route_default,
     },
     vague: true,
   });

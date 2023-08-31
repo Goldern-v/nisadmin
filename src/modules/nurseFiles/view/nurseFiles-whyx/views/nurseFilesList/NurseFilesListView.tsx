@@ -86,7 +86,10 @@ const columns: ColumnProps<any>[] = [
     dataIndex: appStore.HOSPITAL_ID === 'whhk'?'user_hierarchy':'nurseHierarchy',
     key: appStore.HOSPITAL_ID === 'whhk'?'user_hierarchy':'nurseHierarchy',
     width: 70,
-    align: 'center'
+    align: 'center',
+    render(val,row){
+      return row.nurseExpand.user_hierarchy
+    } 
   },
   {
     title: '职务',

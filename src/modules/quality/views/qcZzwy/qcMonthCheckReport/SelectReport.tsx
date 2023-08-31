@@ -36,13 +36,14 @@ function SelectReport(props: Props) {
 
   const [fileName, setFileName] = useState('');
   const [codeList, setCodeList] = useState([]);//二级项目list
+  // 由于选择数据之后，之前的simpleName会丢失，记录旧数据用于对比,{}
+  const [sourceCodeList, setSourceCodeList] = useState({});
 
   const onSave = (e: any) => {
     validateFields((err, value) => {
       if (err) {
         return
       }
-      // console.log(value)
       let tempArray:any = []
       value.itemCode.map((it:any)=>{
         it.simpleName = value[it.key]
@@ -54,6 +55,7 @@ function SelectReport(props: Props) {
       delete value.qcCode
       let keys = Object.keys(value)
       qcMonthCheckData.templateData.itemCodeList = keys
+      qcMonthCheckData.getRatioByItemCode()
       // console.log(keys,tempArray)
       handleOk(value)
       // console.log('创建的内容',value)
@@ -65,6 +67,11 @@ function SelectReport(props: Props) {
     if (visible) {
       resetFields()
       setCodeList(qcMonthCheckData.templateData.itemCodeObj || [])
+      let newObj = {}
+      for (const item of qcMonthCheckData.templateData.itemCodeObj || []) {
+        newObj[item.key] = item;
+      }
+      setSourceCodeList(newObj || {})
       qcMonthCheckData.getTemplateList()
     }
   }, [visible])
@@ -104,7 +111,10 @@ function SelectReport(props: Props) {
                   option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                 }
                 onChange={(val:any)=>{
-                  // console.log(val)
+                  // console.log(sourceCodeList)
+                  val.map((it:any)=>{
+                    it.simpleName=sourceCodeList[it.key]?.simpleName || undefined
+                  })
                   setCodeList(val)
 
                 }} 
