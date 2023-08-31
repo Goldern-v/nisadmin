@@ -1,5 +1,5 @@
 
-import { observable, computed } from "mobx";
+import { observable, computed,action } from "mobx";
 import moment from 'moment'
 import { quarterTimes } from "src/enums/date";
 import service from "src/services/api";
@@ -26,12 +26,22 @@ class QcMonthCheckData{
   @observable public addConfirmVisible:boolean = false;
   @observable public modalTitle:string = '创建';//创建/编辑
   @observable public createModalData:any = {};// 创建对话框的内容
-  
+  @observable public currentItemSource={
+    month:moment(),//月份
+    wardName:authStore.defaultDeptCodeName,
+    wardCode:authStore.defaultDeptCode,
+
+    // wardCode:{key:authStore.defaultDeptCode,label:authStore.defaultDeptCodeName},//科室
+    reportName:null,//名称
+    id:null
+  }
   @observable public currentItem={
     month:moment(),//月份
-    deptCode:{key:authStore.defaultDeptCode,label:authStore.defaultDeptCodeName},//科室
-    name:'',//名称
-    id:'1'
+    wardName:authStore.defaultDeptCodeName,
+    wardCode:authStore.defaultDeptCode,
+    // wardCode:{key:authStore.defaultDeptCode,label:authStore.defaultDeptCodeName},//科室
+    reportName:null,//名称
+    id:null
   }
 
 
@@ -61,9 +71,15 @@ class QcMonthCheckData{
       improveGoals:'',//改进目标
       steps:'',//整改措施：
       check:'',//检查情况
+      fishValueObj:Array.from(Array(40)).reduce((prev, cur, i) => {
+        prev[`v${i + 1}`] = '';
+        return prev
+    }, {}),//鱼骨图
     },
     ZZWY_YDZKJCZJ_L1_004:{
       textArea:'',
+      fields:[],
+      devData:[]
     }
   }
   // 检查情况
@@ -81,15 +97,34 @@ class QcMonthCheckData{
     improveGoals:'',//改进目标
     steps:'',//整改措施：
     check:'',//检查情况
-
+    fishValueObj:Array.from(Array(40)).reduce((prev, cur, i) => {
+      prev[`v${i + 1}`] = '';
+      return prev
+  }, {}),//鱼骨图
   }
 
+  /**鱼骨图数据**/
+  @observable public updateFish:string = '';//拿到数据就更新鱼骨图
+//   @observable public fishValueObj: any = Array.from(Array(40)).reduce((prev, cur, i) => {
+//     prev[`v${i + 1}`] = '';
+//     return prev
+// }, {})
+
+@action
+    updateFishValueObj(value:any){
+      this.ZZWY_YDZKJCZJ_L1_003.fishValueObj = value
+        // this.fishValueObj  =value
+        // console.log(this.fishValueObj);
+    }
+
   // 柱状图
-  @observable public fields:any = []
-  @observable public devData:any = []
+  // @observable public fields:any = []
+  // @observable public devData:any = []
   // 四、效果评价及标准化结果
   @observable public ZZWY_YDZKJCZJ_L1_004:any = {
-    textArea:''
+    textArea:'',
+    fields:[],
+    devData:[]
   }
   
   @computed get postObj(){
@@ -227,8 +262,8 @@ class QcMonthCheckData{
         newData.push(itemArry)
         
       })
-      this.fields = fields
-      this.devData = newData
+      this.ZZWY_YDZKJCZJ_L1_004.fields = fields
+      this.ZZWY_YDZKJCZJ_L1_004.devData = newData
 
     }).catch(err=>{
       

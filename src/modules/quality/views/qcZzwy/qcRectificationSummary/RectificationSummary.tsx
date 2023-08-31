@@ -93,7 +93,7 @@ export default observer(function RectificationSummary() {
         },
         {
             title: "存在问题",
-            dataIndex: "qcItemName",
+            dataIndex: "remark",
             align: "center",
         },
         // rectificationMeasure 整改措施   trackingEvaluate 追踪评价

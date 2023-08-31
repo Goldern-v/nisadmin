@@ -12,7 +12,7 @@ import { appStore } from 'src/stores'
 import SelectReport from './SelectReport'
 import { qcMonthCheckData } from './qcMonthCheckData'
 import { qcZzwyApi } from '../qcZzwyApi'
-import QcFishBone from '../qcQuarterlyAnalysisReport/qcFishBone/fish-bone'
+import QcFishBoneMonth from './qcFishBoneMonth/fish-bone'
 import ChartCylindricalityMonth from './ChartCylindricalityMonth'
 
 
@@ -22,6 +22,7 @@ export default observer(function QcMonthCheckReportDetail() {
   const [text1, setText1] = useState('');
   const [selectTableModal, setSelectTableModal] = useState(false);
   const {id,qcLevel} = appStore.queryObj
+  const [updateFish, setUpdateFish] = useState('');
 
   /**保存 */
   const onSave = ()=>{
@@ -53,6 +54,7 @@ export default observer(function QcMonthCheckReportDetail() {
     })
   }
   const onPrint = (isPrint: boolean) => {
+    // return false
     setIsPrint(isPrint)
     let printFun = isPrint ? printing : printing.preview
     setTimeout(() => {
@@ -120,23 +122,23 @@ export default observer(function QcMonthCheckReportDetail() {
       { title: ' 项目 ', dataIndex: 'qcName',align: 'center',width:100 },
       { title: '护理部目标值(%)',width:50, dataIndex: 'k1', align: 'center',
         render: (datas: any, record: any) => {
-              return (<InputNumber key={id+record.wardCode} className='table-input' onBlur={(e) => onhandleBlur(e.target.value, record,'k1')} defaultValue={datas} />)
+              return (<InputNumber key={record.wardCode+'k1'+id} className='table-input' onBlur={(e) => onhandleBlur(e.target.value, record,'k1')} defaultValue={datas} />)
             }
       },
       {
         title: '科室目标值(%)',width:50,  dataIndex: 'k2', align: 'center',
         render: (datas: any, record: any) => {
-          return (<InputNumber key={id+record.wardCode} className='table-input' onBlur={(e) => onhandleBlur(e.target.value, record,'k2')} defaultValue={datas} />)
+          return (<InputNumber key={record.wardCode+'k2'+id} className='table-input' onBlur={(e) => onhandleBlur(e.target.value, record,'k2')} defaultValue={datas} />)
         }
       },
       { title: '检查及格率(%)', dataIndex: 'passRate', align: 'center' },
       { title: '评估人',  dataIndex: 'k3', align: 'center', width:80,
       render: (datas: any, record: any) => {
-        return (<Input key={id+record.wardCode} className='table-input' onBlur={(e) => onhandleBlur(e.target.value, record,'k3')} defaultValue={datas} />)
+        return (<Input key={record.wardCode+'k3'+id} className='table-input' onBlur={(e) => onhandleBlur(e.target.value, record,'k3')} defaultValue={datas} />)
       } },
       { title: '需改进条目', dataIndex: 'k4', align: 'center',
       render: (datas: any, record: any) => {
-        return (<Input key={id+record.wardCode} className='table-input' onBlur={(e) => onhandleBlur(e.target.value, record,'k4')} defaultValue={datas} />)
+        return (<Input key={record.wardCode+'k4'+id} className='table-input' onBlur={(e) => onhandleBlur(e.target.value, record,'k4')} defaultValue={datas} />)
       } },
       { 
         title: '单项及格率(%)', 
@@ -144,11 +146,11 @@ export default observer(function QcMonthCheckReportDetail() {
         children:[
           { title: '上个月',  dataIndex: 'k5', align: 'center',
           render: (datas: any, record: any) => {
-            return (<InputNumber key={id+record.wardCode} className='table-input' onBlur={(e) => onhandleBlur(e.target.value, record,'k5')} defaultValue={datas} />)
+            return (<InputNumber key={record.wardCode+'k5'+id} className='table-input' onBlur={(e) => onhandleBlur(e.target.value, record,'k5')} defaultValue={datas} />)
           } },
           { title: '当月',  dataIndex: 'k6', align: 'center',
           render: (datas: any, record: any) => {
-            return (<InputNumber key={id+record.wardCode} className='table-input' onBlur={(e) => onhandleBlur(e.target.value, record,'k6')} defaultValue={datas} />)
+            return (<InputNumber key={record.wardCode+'k6'+id} className='table-input' onBlur={(e) => onhandleBlur(e.target.value, record,'k6')} defaultValue={datas} />)
           } },
         ]
       },
@@ -161,11 +163,12 @@ export default observer(function QcMonthCheckReportDetail() {
   }
 
   const  fishValue={
-    'v0':1,
-    'v1':4,
-}
+      'v0':1,
+      'v1':4,
+  }
 const handleFishItem =(obj:any)=>{
-  console.log(obj);
+  // console.log(obj);
+  qcMonthCheckData.updateFishValueObj(obj)
 }
 
   /**本月质量改进项目 */
@@ -193,6 +196,7 @@ const handleFishItem =(obj:any)=>{
             <span style={{width:'100px'}}>改进项目:</span>
             <Button onClick={()=>{setSelectTableModal(true)}}>选择项目</Button>
               <div>
+                <span>已选项目：</span>
                 {qcMonthCheckData.templateData.itemCodeObj.map((it:any)=>{
                   return <span style={{marginRight:'15px'}}>{it.simpleName}</span>
                 })
@@ -254,6 +258,8 @@ const handleFishItem =(obj:any)=>{
       })
       // 新建的时候需要
       qcMonthCheckData.getInspectionSummary()
+      setUpdateFish(moment().valueOf()+'')//更新鱼骨图
+      // qcMonthCheckData.updateFish = moment().valueOf()+''
     }).catch(err=>{
 
     })
@@ -269,9 +275,9 @@ const handleFishItem =(obj:any)=>{
         qcMonthCheckData[it.itemCode] = it.qcReportItemDataList[0].itemValue?
           JSON.parse(it.qcReportItemDataList[0].itemValue):
           qcMonthCheckData.sourceMap[it.itemCode]
-          console.log(qcMonthCheckData[it.itemCode])
       })
-      // console.log(qcMonthCheckData.ZZWY_YDZKJCZJ_L1_001)
+      // 更新鱼骨图
+      setUpdateFish(moment().valueOf()+'')
     }).catch(err=>{
 
     })
@@ -281,18 +287,19 @@ const handleFishItem =(obj:any)=>{
   return (
     <Wrapper>
       <HeadCon>
-        <BaseBreadcrumb data={[{ name: '月度质控检查总结报告', link: '/qcOneHj/月度质控检查总结报告?qcLevel=1' }, { name: '报告详情', link: '' }]} />
-        <div className='title'>{qcMonthCheckData.reportMasterData?.reportYear}年
-        {qcMonthCheckData.reportMasterData?.wardName}{qcMonthCheckData.reportMasterData?.reportMonth}月
-        {qcMonthCheckData.reportMasterData?.reportName}
+        <BaseBreadcrumb data={[{ name: '月度质控检查总结报告', link: '/qcOneHj/月度质控检查总结报告?qcLevel='+qcLevel }, { name: '报告详情', link: '' }]} />
+        <div className='title'>
+        {qcMonthCheckData.reportMasterData?.reportName || ''}
     
         {/* {qcMonthCheckData.createModalData.deptCode.label}{moment(qcMonthCheckData.createModalData.month).month()+1}月{qcMonthCheckData.createModalData.name} */}
         {/* {'2023年消化内科5月护理质量检查总结'} */}
         </div>
         <div className='aside'>
           <span>
-            <span>状态：待保存</span>
-            <span>创建人：{qcMonthCheckData.reportMasterData?.creatorName || ''}</span>
+            {qcMonthCheckData.reportMasterData?.status=='-1' && <span style={{marginRight:'16px'}}>状态：待保存</span>}
+            {qcMonthCheckData.reportMasterData?.status=='0' && <span style={{marginRight:'16px'}}>状态：已保存</span>}
+            
+            <span style={{marginRight:'16px'}}>创建人：{qcMonthCheckData.reportMasterData?.creatorName || ''}</span>
             <span>创建时间：{qcMonthCheckData.reportMasterData?.createTime || ''}</span>
             
           </span>
@@ -306,8 +313,8 @@ const handleFishItem =(obj:any)=>{
       <ScrollCon>
         {/* <Spin spinning={spinning} > */} 
           <Page ref={pageRef} className='print-page'>
-            <div style={{ fontSize: '30px', fontWeight: 700, textAlign: 'center', lineHeight: '60px' }}>
-            {qcMonthCheckData.reportMasterData?.reportMonth}月{qcMonthCheckData.reportMasterData?.reportName}
+            <div style={{ fontSize: '30px', fontWeight: 700, textAlign: 'center', lineHeight: '60px',marginTop:"20px" }}>
+            {qcMonthCheckData.reportMasterData?.reportName || ''}
             {/* {moment(qcMonthCheckData.createModalData.month).month()+1}月{qcMonthCheckData.createModalData.name} */}
               {/* {'5月护理质量检查总结'} */}
               </div>
@@ -323,7 +330,7 @@ const handleFishItem =(obj:any)=>{
             </div>
             <div className='first-content-box'>
               <div className='first-title'>{`二、小结`}</div>
-              <Input.TextArea key={id} className='print-page__ipt' 
+              <Input.TextArea key={id+'summary'} className='print-page__ipt' 
               value={qcMonthCheckData.ZZWY_YDZKJCZJ_L1_002.summary} autosize={{ minRows: 3}} 
               onChange={ (e: any) => qcMonthCheckData.ZZWY_YDZKJCZJ_L1_002.summary = e.target.value}
                />
@@ -337,8 +344,13 @@ const handleFishItem =(obj:any)=>{
                   footer={() => {
                     return (<div style={{width:'100%',display:'flex'}}>
                       <span style={{display:'block',width:'90px'}}>改进目标:</span>
-                      <Input.TextArea key={id} value={qcMonthCheckData.ZZWY_YDZKJCZJ_L1_003.improveGoals} autosize={{ minRows: 1}}
-                      onChange={(e)=>qcMonthCheckData.ZZWY_YDZKJCZJ_L1_003.improveGoals = e.target.value} />
+                      <Input.TextArea key={id+'improveGoals'} 
+                      value={qcMonthCheckData.ZZWY_YDZKJCZJ_L1_003.improveGoals} 
+                      autosize={{ minRows: 1}}
+                      onChange={(e: any) =>{
+                        qcMonthCheckData.ZZWY_YDZKJCZJ_L1_003.improveGoals = e.target.value
+                        qcMonthCheckData.ZZWY_YDZKJCZJ_L1_003 = {...qcMonthCheckData.ZZWY_YDZKJCZJ_L1_003}
+                        }} />
                     </div>)
                   }}
                   />
@@ -346,35 +358,38 @@ const handleFishItem =(obj:any)=>{
               <div className='second-content-table-table second-box' style={{ width: '900px', margin: '20px auto' }}>
                 <h4 className='second-title'>计划阶段（P）</h4>
                 <p>（一）检查情况：</p>
-                <Input key={id} value={qcMonthCheckData.ZZWY_YDZKJCZJ_L1_003.check}
+                <Input key={id+'check'} value={qcMonthCheckData.ZZWY_YDZKJCZJ_L1_003.check}
                 onChange={(e)=>qcMonthCheckData.ZZWY_YDZKJCZJ_L1_003.check = e.target.value} />
                 <p>（二）原因分析：</p>
                 <div style={{margin:'20px 0'}}>
-                <QcFishBone value={fishValue} onChange={handleFishItem}/>
+                <QcFishBoneMonth value={fishValue} updateFish={updateFish} onChange={handleFishItem}/>
                 </div>
                 <h4 className='second-title' style={{marginTop:'40px'}}>执行阶段（D）</h4>
                 <p >整改措施：</p>
-                <Input.TextArea key={id} autosize={{ minRows: 5}} value={qcMonthCheckData.ZZWY_YDZKJCZJ_L1_003.steps}
+                <Input.TextArea key={id+'steps'} autosize={{ minRows: 5}} value={qcMonthCheckData.ZZWY_YDZKJCZJ_L1_003.steps}
                 onChange={(e)=>qcMonthCheckData.ZZWY_YDZKJCZJ_L1_003.steps = e.target.value} />
               </div>
             </div>
             <div className='first-content-box'>
               <div className='first-title'>{`四、效果评价及标准化结果`}</div>
               <div className='second-content-table-table second-box' style={{ width: '900px', margin: '20px auto' }}>
-                <div>
-                <h4 className='second-title'>上个月专项检查不达标效果评价（C）</h4>
-                <MultiFileUploader
+                <div style={{marginBottom:'20px'}}>
+                <h4 className='second-title'>上个月专项检查不达标效果评价（C）(百分比%)</h4>
+                {/* <MultiFileUploader
                             accept={'image/png,image/jpeg,image/gif,image/webp,image/apng,image/svg'}
                             size={1}
                             maxSize={2097152}
-                        />
+                        /> */}
                 </div>
                 
                 {/*柱形图*/}
-                {(qcMonthCheckData.devData||[]).map((it:any)=><ChartCylindricalityMonth data={it} fields={qcMonthCheckData.fields}/>)}
+                <div style={{width:'500px',marginLeft:'150px'}}>
+
                 
+                {(qcMonthCheckData.ZZWY_YDZKJCZJ_L1_004.devData||[]).map((it:any)=><ChartCylindricalityMonth data={it} fields={qcMonthCheckData.ZZWY_YDZKJCZJ_L1_004.fields}/>)}
+                </div>
                 {/* <h4 className='second-title'>请输入</h4> */}
-                <Input.TextArea placeholder='请输入……' key={id}
+                <Input.TextArea placeholder='请输入……' key={id+'textArea'}
                 value={qcMonthCheckData.ZZWY_YDZKJCZJ_L1_004.textArea} autosize={{ minRows: 5}}
                 onChange={(e)=>qcMonthCheckData.ZZWY_YDZKJCZJ_L1_004.textArea = e.target.value} />
                 

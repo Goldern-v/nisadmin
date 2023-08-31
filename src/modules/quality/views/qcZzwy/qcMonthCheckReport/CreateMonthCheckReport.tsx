@@ -32,14 +32,15 @@ function CreateMonthCheckReport(props: Props) {
     form: { getFieldDecorator, validateFields, setFieldsValue, resetFields }
   } = props
 
-  const [fileName, setFileName] = useState('');
+  // const [defaultName, setDefaultName] = useState('');
+  const defaultName = moment().year()+'年'+authStore.defaultDeptCodeName+(moment().month()+1)+'月护理质量检查总结'
 
   const onSave = (e: any) => {
     validateFields((err, value) => {
       if (err) {
         return
       }
-      console.log('创建的内容',value)
+      // console.log('创建的内容',value)
       qcMonthCheckData.createModalData = value
       handleOk()
     })
@@ -48,6 +49,8 @@ function CreateMonthCheckReport(props: Props) {
   useEffect(() => {
     if (visible) {
       resetFields()
+      // console.log(moment().year()+'年'+authStore.defaultDeptCodeName+(moment().month()+1)+'月护理质量检查总结')
+      // setDefaultName(moment().year()+'年'+authStore.defaultDeptCodeName+(moment().month()+1)+'月护理质量检查总结')
     }
   }, [visible])
 
@@ -69,10 +72,13 @@ function CreateMonthCheckReport(props: Props) {
 
         <Form.Item {...formItemLayout} label='质控科室'>
           {getFieldDecorator('deptCode', {
-            initialValue: qcMonthCheckData.currentItem.deptCode || {key:authStore.defaultDeptCode,label:authStore.defaultDeptCodeName},
+            initialValue: {key:qcMonthCheckData.currentItem.wardCode,label:qcMonthCheckData.currentItem.wardName} || {key:authStore.defaultDeptCode,label:authStore.defaultDeptCodeName},
             rules: [{ required: true, message: '质控科室不能为空' }]
           })(
-            <Select labelInValue
+            <Select labelInValue showSearch disabled={qcMonthCheckData.currentItem.id?true:false}
+            filterOption={(input:any, option:any) =>
+              option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+            }
               style={{ width: '100%' }} >
               {authStore.deptList.map(v =>
                     <Option value={v.code} key={v.code}>{v.name}</Option>)}
@@ -81,7 +87,7 @@ function CreateMonthCheckReport(props: Props) {
         </Form.Item>
         <Form.Item {...formItemLayout} label='报告名称'>
           {getFieldDecorator('name', {
-            initialValue: qcMonthCheckData.currentItem.name || null,
+            initialValue: qcMonthCheckData.currentItem.reportName || defaultName,
             rules: [{ required: true, message: '报告名称不能为空' }]
           })(<Input style={{ width: '100%' }} />)}
         </Form.Item>

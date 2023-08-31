@@ -125,9 +125,28 @@ export default observer(function QcMonthCheckReportList() {
 	}
 
   const handleOk = () => {
-		appStore.history.push(`/qcMonthCheckReportDetail?${qs.stringify({qcLevel:appStore.queryObj?.qcLevel })}`)
+		if(qcMonthCheckData.currentItem.id){
+			// 有id,就保存数据
+			qcZzwyApi.updateQcReport({
+				id:qcMonthCheckData.currentItem.id,
+				reportName:qcMonthCheckData.createModalData.name
+			}).then(res=>{
+				qcMonthCheckData.getTableList()
 
+				message.success('修改成功')
+				qcMonthCheckData.addConfirmVisible = false
+				qcMonthCheckData.currentItem = qcMonthCheckData.currentItemSource
+			
+			}).catch(err=>{
+
+			})
+		}else{
+
+		// 新建数据
+		appStore.history.push(`/qcMonthCheckReportDetail?${qs.stringify({qcLevel:appStore.queryObj?.qcLevel })}`)
 		qcMonthCheckData.addConfirmVisible = false
+	}
+		
 	}
 	const handleCancel = () => {
 		qcMonthCheckData.addConfirmVisible = false
@@ -175,7 +194,7 @@ export default observer(function QcMonthCheckReportList() {
 				</Button>
         <Button
 					className="span" type='primary'
-					onClick={() => openModal('新建')}
+					onClick={() => openModal('新建',qcMonthCheckData.currentItemSource)}
 				>
 					创建
 				</Button>
