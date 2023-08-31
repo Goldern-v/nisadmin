@@ -24,7 +24,7 @@ import NurseFileDetailView_lcey from 'src/modules/nurseFiles/view/nurseFiles-lce
 import NurseFileDetailView_nfzxy from 'src/modules/nurseFiles/view/nurseFiles-nfzxy/views/nurseFileDetail/NurseFileDetailView'
 import NurseAudit_nys from 'src/modules/nurseFiles/view/nurseFiles-nys/views/nurseAudit/NurseAudit'
 import NurseFileDetailView_nys from 'src/modules/nurseFiles/view/nurseFiles-nys/views/nurseFileDetail/NurseFileDetailView'
-import AnsweiSheetPdf from 'src/modules/continuingEdu/views/trainingResult/components/AnswerSheetModal/AnsweiSheetTemplate'
+// import AnsweiSheetPdf from 'src/modules/continuingEdu/views/trainingResult/components/AnswerSheetModal/AnsweiSheetTemplate'
 import NurseAudit_wh from 'src/modules/nurseFiles/view/nurseFiles-wh/views/nurseAudit/NurseAudit'
 import NurseFileDetailView_wh from 'src/modules/nurseFiles/view/nurseFiles-wh/views/nurseFileDetail/NurseFileDetailView'
 import NurseAudit_whyx from 'src/modules/nurseFiles/view/nurseFiles-whyx/views/nurseAudit/NurseAudit'
@@ -377,7 +377,7 @@ if (process.env.REACT_APP_HOSPITAL_ID === "hj") {
       NursingRulesNewDetail,
       layouts.MainLayout
     ),
-    setLayout("/answeiSheetPdf", AnsweiSheetPdf),
+    // setLayout("/answeiSheetPdf", AnsweiSheetPdf),
     setLayout(
       "/NursingRulesPagePreView",
       NursingRulesPagePreview,

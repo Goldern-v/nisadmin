@@ -6,6 +6,7 @@ import React, { useState, useEffect, useLayoutEffect } from "react";
 import AnsweiSheetTemplate from './AnsweiSheetTemplate'
 import { trainingResultService } from './../../api/TrainingResultService'
 import { fileDownload } from "src/utils/file/file";
+import printing from "printing";
 
 let defalutUrl = (()=>{
   let protocol = window.location.protocol + "//"
@@ -36,20 +37,29 @@ export default observer(function AnswerSheetModal(props: Props) {
   } = props;
   const [loading, setLoading] = useState(false);
   const load = (flag:boolean) =>{
-    console.log(flag,'load');
     setLoading(flag)
   }
   const toPdf = ()=>{
-    load(true);
-    let req: Promise<any>;
-    let pageUrl = defalutUrl + `/answeiSheetPdf?cetpId=${cetpId}&empNo=${empNo}&token=${sessionStorage.getItem("authToken")}`
+    // load(true);
+    // let req: Promise<any>;
+    // let pageUrl = defalutUrl + `/answeiSheetPdf?cetpId=${cetpId}&empNo=${empNo}&token=${sessionStorage.getItem("authToken")}`
     try{
-      req = trainingResultService.reviewExamPaperExportPdf(pageUrl).then(async res=>{
-        await fileDownload(res)
-        load(false);
-      });
+      printing(document.getElementById("InfoDetailContainer")!, {
+        injectGlobalCss: true,
+        scanStyles: false,
+        css: `
+          @page {
+            margin: 10px;
+          }
+        `,
+      })
+
+      // req = trainingResultService.reviewExamPaperExportPdf(pageUrl).then(async res=>{
+      //   await fileDownload(res)
+      //   load(false);
+      // });
     }catch(err){
-      load(false);
+      // load(false);
     }
   }
   return (

@@ -124,7 +124,7 @@ export default observer(function AnswerSheetTemplate(props: Props) {
     )
   }
   return (
-    <InfoDetailContainer>
+    <InfoDetailContainer id="InfoDetailContainer">
         {InfoDetail()}
         {questionCon()}
     </InfoDetailContainer>

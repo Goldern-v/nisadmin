@@ -46,7 +46,7 @@ export default observer(function PlanMonth(props: Props) {
     const [data, setData] = useState(new Object() as any)
     const [currContent, setCurrContent] = useState({ id: null, content: '', status: null });//点击的当前item
 
-    
+
     // 初始化
     useEffect(() => {
         // init()
@@ -54,7 +54,7 @@ export default observer(function PlanMonth(props: Props) {
         // setCurrContent({id:null,content:''})
         // setfForceUpdate(false);
         // setTimeout(() => {
-        //   setfForceUpdate(true); 
+        //   setfForceUpdate(true);
         // }, 0);
         // console.log(props.getTitle)
         // console.log(location)
@@ -97,17 +97,17 @@ export default observer(function PlanMonth(props: Props) {
                 message.success('保存成功')
                 planDatas.modalVisible = false
                 // 直接打开编辑器
-                
+
                 // planDatas.itemList[0] = res.data || {}
-                // setCurrContent(res.data); 
+                // setCurrContent(res.data);
                 // planDatas.contentItem = {id:null,content:'',status:null}
-                // planDatas.contentItem = res.data; 
+                // planDatas.contentItem = res.data;
 
                 planDatas.yearYear = planDatas.createYear
                 planDatas.getList(res.data.id)
                 // planDatas.getDetail(res.data.id)
                 // 先把条件设置成
-                
+
             } else {
                 message.error(res.desc)
             }
@@ -210,7 +210,7 @@ export default observer(function PlanMonth(props: Props) {
         planDatas.contentItem = {id:null,content:'',status:null}
       }
     }, [])
-    
+
     return (
         <Wrapper>
             <PlanHeader title={props.getTitle}></PlanHeader>
@@ -279,7 +279,7 @@ export default observer(function PlanMonth(props: Props) {
                                         {planDatas.attchList.map((it:any)=>{
                                             return (<a href={it.path} download={it.name} key={it.id}>{it.name}</a>)
                                         })}
-                                        
+
                                         {/* <a href='#' download="视频教程模板">模板下载</a> */}
                                         {/* <a href='#' download="视频教程模板">模板下载</a> */}
                                     </div>
@@ -358,21 +358,21 @@ export default observer(function PlanMonth(props: Props) {
                   </Option>
                 ))}
               </Select>
-            
+
                             </div>
                         <div className="item-row" style={{ marginTop: '15px' }}>
                                 <div className="label" style={{fontWeight: 'bold',marginBottom: '.3em'}}>年份</div>
-                           
+
                                 <DatePicker
                                     open={yearPickShow1}
                                     onOpenChange={status => {
                                         setYearPickShow1(status)
                                     }}
                                     onPanelChange={(value, mode) => {
-                                        
+
                                         planDatas.createYear = value
                                         setYearPickShow1(false)
-                                        
+
                                     }}
                                     mode="year"
                                     style={{ width: '100%' }}
@@ -385,13 +385,13 @@ export default observer(function PlanMonth(props: Props) {
                         {planDatas.pathname.indexOf('quarter') > -1 &&
                             <div className="item-row" style={{ marginTop: '15px' }}>
                                     <div className="label" style={{fontWeight: 'bold',marginBottom: '.3em'}}>季度</div>
-                                
+
                                     <Select
                                         style={{ width: '100%' }}
                                         value={planDatas.createQuarter}
                                         onChange={(val: any) => {
                                             planDatas.createQuarter = val
-                                           
+
                                         }}
                                     >
                                         {
@@ -451,8 +451,8 @@ p{
         .left-item{
             border-bottom: 1px solid #ddd;
             padding:5px;
-           
-            
+
+
             .plan-left-title{
                 width: 100%;
                 display: flex;
@@ -472,7 +472,7 @@ p{
                 .ant-badge-status-text{
                     font-size: 12px;
                     margin-left:3px;
-                    
+
                 }
                 &.through{
                     .ant-badge-status-text{
@@ -516,7 +516,7 @@ p{
                 }
             }
         }
-        
+
 }
 .content{
         flex:1;
@@ -635,7 +635,7 @@ p{
 const MModal = styled.div`
 font-size: 13px;
 	.modal-content{
-		
+
 	}
 	.item-row{
     margin-bottom: 20px;
