@@ -30,6 +30,8 @@ class FirstDataDetails{
   @observable public type_deptName = ""
   @observable public name_deptName = ""
 
+  @observable public edit_type = "nurse"
+  @observable public edit_name = ""
 
   // 护理部表
   @observable public firstTableList_UD: any = []

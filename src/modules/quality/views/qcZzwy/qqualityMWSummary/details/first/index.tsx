@@ -11,7 +11,10 @@ import FirsrtAddTable from './model/addTable';
 import Table1Add from './model/table1_add'
 import Table2Add from './model/table2_add'
 
-export default observer(function TableList() {
+export interface Props {
+}
+
+const TableList: React.FC<Props> = observer(function(props: Props) {
 	// 动态合并单元格
 	const mergeCells = (text: string, data: any, key: string, index: number) => {
 		if (text == '') {
@@ -109,11 +112,18 @@ export default observer(function TableList() {
   const handleCancel2 = () => {
     setTable2_add(false);
   };
-
-
-	useEffect(() => {
-    console.log(1111111111, 666666666666)
-	}, [])
+  const onEdit = (type: string) => {
+    firstData.firstModalAdd = true
+    if (type === 'nurse') {
+      firstData.edit_type = 'nurse'
+      firstData.edit_name = firstData.name_nurse
+    } else {
+      
+      firstData.edit_type = 'deptName'
+      firstData.edit_name = firstData.name_deptName
+      console.log(firstData.edit_name, 55555)
+    }
+  }
 	
   return (
     <Wrapper>
@@ -122,12 +132,11 @@ export default observer(function TableList() {
 				<Button type="primary" size="small" onClick={() => firstData.firstModalAdd = true }>添加表</Button>
 			</PageHeader>
       <FirsrtAddTable />
-
       { (firstData.name_nurse || firstData.type_deptName) && <>
         {/* 护理部 */}
         { (firstData.name_nurse)  && <ScrollCon>
           <div className='button'>
-            <Button size="small" type="primary">编辑</Button>
+            <Button size="small" type="primary" onClick={() => onEdit('nurse')}>编辑</Button>
             <Button size="small" type="primary" onClick={() => setTable1_add(true) }>添加</Button>
           </div>
           <div className="hearder">{ firstData.name_nurse }</div>
@@ -147,7 +156,7 @@ export default observer(function TableList() {
         {/* 科室 */}
         {(firstData.name_deptName) && <ScrollCon>
           <div className='button'>
-            <Button size="small" type="primary">编辑</Button>
+            <Button size="small" type="primary" onClick={() => onEdit('')}>编辑</Button>
             <Button size="small" type="primary" onClick={() => setTable2_add(true) }>添加</Button>
           </div>
           <div className="hearder">{ firstData.name_deptName }</div>
@@ -168,6 +177,9 @@ export default observer(function TableList() {
     </Wrapper>
   )
 })
+
+export default TableList;
+
 const Wrapper = styled.div`
   .details-first_table{
     width: 100%;

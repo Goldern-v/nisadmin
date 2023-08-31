@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useLayoutEffect } from 'react'
 import { Spin, Button, message } from 'antd'
 import { ScrollBox } from 'src/components/common'
 import { appStore } from 'src/stores'
@@ -24,18 +24,19 @@ function QqualityMWSummaryDetail(props: Props) {
 
   let detail_check: any = localStorage.getItem('detail_check')
 
-  const [details, setDetails]:any = useState({})
+  // const [details, setDetails]:any = useState({})
 
   const detailsSave = async() => {
-    let { qcReportItemDtoList: details_List, reportMasterData: details_masterData } = details
-    let masterData:any = details_masterData && details_masterData.id ? details_masterData : reportMasterData
-    let list: any = details_List ? details_List : qcReportItemDtoList
+    let masterData:any = reportMasterData || {}
+    let list: any = qcReportItemDtoList || []
 
-    let qcReportItemDataList = list.map((item: any, index: number) => {
+    console.log(secondData.detailLists, '入参')
+
+    let qcReportItemDataLists = list.map((item: any, index: number) => {
       let reportMasterId = (item?.qcReportItemDataList && item?.qcReportItemDataList[0]?.reportMasterId) || '';
       let itemCode = item.itemCode;
       let itemName = item.itemName;
-      let indexNo = index + 2;
+      let indexNo = index + 1;
       let id = (item?.qcReportItemDataList && item?.qcReportItemDataList[0]?.id) || '';
       let reportTemplateId = item?.reportTemplateId;
       let itemValue = ''
@@ -43,7 +44,7 @@ function QqualityMWSummaryDetail(props: Props) {
       if (index === 0) {
         itemValue = JSON.stringify({
           tableList: firstData.firstTableList_DE,
-          name_nurse: firstData.name_nurse
+          name_deptName: firstData.name_deptName
         });
       } else if (index === 1) {
         itemValue = JSON.stringify({
@@ -75,21 +76,21 @@ function QqualityMWSummaryDetail(props: Props) {
         itemValue
       };
     });
-
     let lists = {
-      reportMasterId: (list[0]?.qcReportItemDataList && list[0].qcReportItemDataList[0]?.reportMasterId) || '',
+      reportMasterId: (list[0]?.qcReportItemDataList && list[0].qcReportItemDataList[1]?.reportMasterId) || '',
       reportItemId: '',
       itemCode: list[0]?.itemCode,
       itemName: list[0]?.itemName,
-      indexNo: 1,
+      indexNo: 5,
       id: (list[0]?.qcReportItemDataList && list[0].qcReportItemDataList[1]?.id) || '',
       reportTemplateId: list[0]?.reportTemplateId,
       itemValue: JSON.stringify({
         tableList: firstData.firstTableList_UD,
-        name_deptName: firstData.name_deptName
+        name_nurse: firstData.name_nurse
       })
     }
-    qcReportItemDataList.push(lists)
+
+    let qcReportItemDataList = [lists, ...qcReportItemDataLists]
     
     let params = {
       hospitalCode: 'zzwy',
@@ -112,12 +113,7 @@ function QqualityMWSummaryDetail(props: Props) {
     if (data.code === '200') {
       message.success('保存成功')
       appStore.history.push('/qcOneHj/季度质量管理工作总结')
-      // setDetails(data.data || {})
-      // let { qcReportItemDtoList: List } = data.data
-      // getTable(List)
-
-      
-
+      localStorage.setItem('qqualityMWSummaryDetail', data.data && JSON.stringify(data.data))
     } else {
       message.error(data.desc)
     }
@@ -127,14 +123,16 @@ function QqualityMWSummaryDetail(props: Props) {
     const parseData = (index: any, key: any, idx = 0) => {
       return list[index]?.qcReportItemDataList && JSON.parse(list[index]?.qcReportItemDataList[idx]?.itemValue)?.[key];
     }
-    firstData.firstTableList_UD = parseData(0, 'tableList') || [];
-    firstData.name_nurse = parseData(0, 'name_nurse') || '';
-    firstData.firstTableList_DE = parseData(0, 'tableList', 1) || [];
-    firstData.name_deptName = parseData(0, 'name_deptName', 1) || '';
+    firstData.firstTableList_UD = parseData(0, 'tableList', 1) || [];
+    firstData.name_nurse = parseData(0, 'name_nurse', 1) || '';
+    firstData.firstTableList_DE = parseData(0, 'tableList') || [];
+    firstData.name_deptName = parseData(0, 'name_deptName') || '';
 
     secondData.case = parseData(1, 'case') || '';
     secondData.tableList = parseData(1, 'tableList') || [];
     secondData.detailLists = parseData(1, 'detailLists') || [];
+
+    console.log(secondData.detailLists, 66666666666, '测试')
 
     thirdData.evaluate = parseData(2, 'evaluate') || '';
     thirdData.tableList = parseData(2, 'tableList') || [];
@@ -145,8 +143,9 @@ function QqualityMWSummaryDetail(props: Props) {
   } 
 
   useEffect(() => {
-    getTable(qcReportItemDtoList)
+    getTable(qcReportItemDtoList || [])
   }, [])
+
 
   return (
     <Con>
