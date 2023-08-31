@@ -151,8 +151,8 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
       return "http://192.168.1.54:9904";
     // 东莞谢岗
     case "dgxg":
-      // return "http://183.234.1.124:9093"; //正式
-      return "http://192.168.1.144:6061"; //正式
+      return "http://183.234.1.124:9093"; //正式
+      // return "http://192.168.1.144:6061"; //正式
     // return "http://192.168.1.54:9882"
     // 武汉汉口医院
     case "whhk":
