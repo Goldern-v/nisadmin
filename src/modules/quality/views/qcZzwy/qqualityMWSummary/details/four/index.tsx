@@ -61,12 +61,12 @@ export default observer(function TableList() {
       </div>
       <FirsrtAddTable />
 
-      { (reportMasterData.id || fourData.nameTS) && <>
+      {(fourData.nameTS) && <>
         
         {/* 科室 */}
         <ScrollCon>
           <div className='button'>
-            <Button size="small" type="primary">编辑</Button>
+            <Button size="small" type="primary" onClick={() => fourData.Addtable = true} >编辑</Button>
             <Button size="small" type="primary" onClick={() => setTable_add_data(true) }>添加</Button>
           </div>
           <div className="hearder">{ fourData.nameTS }</div>

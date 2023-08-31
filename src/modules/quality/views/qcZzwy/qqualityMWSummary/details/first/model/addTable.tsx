@@ -61,7 +61,7 @@ export default Form.create()(observer(function (props: IProps) {
           <Form.Item label="类型">
             {
               getFieldDecorator('type', {
-                initialValue: 'nurse',
+                initialValue: model.edit_type,
                 rules: [
                   { required: true, message: '类型不能为空' }
                 ]
@@ -77,7 +77,7 @@ export default Form.create()(observer(function (props: IProps) {
           <Form.Item label="名称">
             {
               getFieldDecorator('name', {
-                initialValue: '',
+                initialValue: model.edit_name,
                 rules: [
                   { required: true, message: '名称不能为空' }
                 ]

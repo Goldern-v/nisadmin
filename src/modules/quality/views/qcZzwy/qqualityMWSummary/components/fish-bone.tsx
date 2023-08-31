@@ -158,11 +158,7 @@ export default function FishBone1(props: any) {
       setEditVal(obj)
     }
   }, [value])
-  useEffect(() => {
-    
-    // setEditVal(value)
-    console.log('test-editVal', editVal)
-  }, [editVal])
+
   const onIpt = (e: Obj, key: string) => {
 
     setEditVal({ ...editVal, [key]: e.target.value })

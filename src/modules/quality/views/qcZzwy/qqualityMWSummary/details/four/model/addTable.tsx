@@ -44,7 +44,7 @@ export default Form.create()(observer(function (props: IProps) {
           <Form.Item label="名称">
             {
               getFieldDecorator('name', {
-                initialValue: '',
+                initialValue: model.nameTS,
                 rules: [
                   { required: true, message: '名称不能为空' }
                 ]

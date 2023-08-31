@@ -19,6 +19,8 @@ const { TextArea } = Input;
 
 export default observer(function TableList() {
 
+  // console.log(secondData.detailLists, 6666666666666666666)
+
   const [detailList, setDetailList] = useState<Obj[]>([])
 
   // 护理部表
@@ -69,18 +71,24 @@ export default observer(function TableList() {
   })
 
   const handleDetailList = (idx: number, data: Obj) => {
+    console.log(idx, data)
     setDetailList(val => {
       return val.map((v, i) => idx === i ? { ...v, ...data } : v)
     })
   }
 
 	useEffect(() => {
-    setDetailList((prevDetailList) => [...prevDetailList, ...secondData.tableList]);
+    setDetailList((prevDetailList) => [...prevDetailList, ...detailList]);
   }, [secondData.tableList]);
 
   useEffect(() => {
-    secondData.detailLists = detailList
+    secondData.detailLists = [...detailList]
   }, [detailList]);
+
+  useEffect(() => {
+    setDetailList(secondData.detailLists)
+  }, []);
+
 	
   return (
     <Wrapper>
@@ -111,12 +119,12 @@ export default observer(function TableList() {
         (detailList).map((v: any, i: number) =>
         <>
           <div key={`${v.qcCode}-0`}>{i + 1}、{v.qcName}</div>
-          <div>主要存在问题</div>
-          <TextArea key={`${v.qcCode}-1`} value={v?.problem} autosize={{ minRows: 3 }} onInput={(e: any) => handleDetailList(i, { 'problem': e.target.value })} />
-          <div className="causes" key={`${v.qcCode}-2`}>原因分析</div>
-          <Fishbone key={`${v.qcCode}-3`} value={v} reflect={fishBoneFish} onChange={(e: any) => handleDetailList(i, e)} />
-          <div key={`${v.qcCode}-4`}>整改措施</div>
-          <TextArea className='measures' key={`${v.qcCode}-5`} value={v?.measures} autosize={{ minRows: 3 }} onInput={(e: any) => handleDetailList(i, { 'measures': e.target.value })} />
+          <div key={`${v.qcCode}-1`}>主要存在问题</div>
+          <TextArea key={`${v.qcCode}-2`} value={v?.problem} autosize={{ minRows: 3 }} onInput={(e: any) => handleDetailList(i, { 'problem': e.target.value })} />
+          <div className="causes" key={`${v.qcCode}-3`}>原因分析</div>
+          <Fishbone key={`${v.qcCode}-4`} value={v} reflect={fishBoneFish} onChange={(e: any) => handleDetailList(i, e)} />
+          <div key={`${v.qcCode}-5`}>整改措施</div>
+          <TextArea className='measures' key={`${v.qcCode}-6`} value={v?.measures} autosize={{ minRows: 3 }} onInput={(e: any) => handleDetailList(i, { 'measures': e.target.value })} />
         </>)
       }
     </Wrapper>
