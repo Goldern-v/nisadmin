@@ -20,9 +20,13 @@ export default Form.create()(observer(function (props: IProps) {
 
   const [tableList_group, setTableList_group]: any[] = useState([]);
   const [tableList_group_TS, setTableList_group_TS] = useState([]);
+
   const [selectedRows, setSelectedRows]:any[] = useState([])
 
   const [selectedRowKeys, setSelectedRowKeys]:any = useState([]);
+
+  const [nurseValues, setnurseValues] = useState({});
+  const [depValues, setdepValues] = useState({});
 
 
   const columns_group: any = [
@@ -52,7 +56,8 @@ export default Form.create()(observer(function (props: IProps) {
           <Form.Item style={{ margin: 0 }}>
             <Input 
               // readOnly={!record.readOnly}
-              value={record[`nurseDeptTargetValue`] || ''} 
+              value={nurseValues[`nurseDeptTargetValue-${record.qcCode}`] || ''}
+              // value={record[`nurseDeptTargetValue`] || ''} 
               placeholder='请填写...' 
               onChange={e => inputChangeGroup(e.target.value, record, index, 'nurseDeptTargetValue')} 
               
@@ -71,7 +76,8 @@ export default Form.create()(observer(function (props: IProps) {
           <Form.Item style={{ margin: 0 }}>
             <Input 
               // readOnly={!record.readOnly}
-              value={record[`deptTargetValue`] || ''} 
+              // value={record[`deptTargetValue`] || ''} 
+              value={depValues[`deptTargetValue-${record.qcCode}`] || ''}
               placeholder='请填写...' 
               onChange={e => inputChangeGroup(e.target.value, record, index, 'deptTargetValue')} 
               
@@ -104,7 +110,16 @@ export default Form.create()(observer(function (props: IProps) {
         }
         return row;
       });
-  
+      setnurseValues(prevInputValues => ({
+        ...prevInputValues,
+        [`${text}-${record.qcCode}`]: value,
+      }));
+
+      setdepValues(prevInputValues => ({
+        ...prevInputValues,
+        [`${text}-${record.qcCode}`]: value,
+      }));
+
       setSelectedRows(updatedSelectedRows);
       return updatedTableList;
     });
@@ -116,11 +131,17 @@ export default Form.create()(observer(function (props: IProps) {
     onChange: (selectedRowKeys: any[]) => {
       setSelectedRowKeys(selectedRowKeys);
     },
-    onSelect: (record: any, selected: any, selectedRows: any) => {
-      setSelectedRows(selectedRows)
+    onSelect: (record: any, selected: any, _selectedRows: any) => {
+      const updatedSelectedRows = selectedRows.filter((row: any) => row.qcCode !== record.qcCode);
+      if (selected) {
+        setSelectedRows((prevSelectedRows: any[]) => [...prevSelectedRows, record]);
+      } else {
+        setSelectedRows(updatedSelectedRows);
+      }
     },
-    onSelectAll: (selected: any, selectedRows: any, changeRows: any) => {
-      setSelectedRows(selectedRows)
+    onSelectAll: (selected: any, _selectedRows: any, changeRows: any) => {
+      const updatedSelectedRows = selected ? [...selectedRows, ...changeRows] : selectedRows.filter((row: any) => !changeRows.some((changeRow: any) => changeRow.qcCode === row.qcCode));
+      setSelectedRows(updatedSelectedRows);
     },
   };
 
@@ -140,8 +161,11 @@ export default Form.create()(observer(function (props: IProps) {
       getEvalRateDataList: selectedRows
     }
     let { data } = await api.getMasterEvalRate(params)
-    firstData.firstTableList_DE = data || []
-    handleChildCancel()
+    firstData.firstTableList_DE = [...data] || []
+
+    
+
+    handleCancel()
   }
 
   const handleChildCancel = () => {
@@ -152,11 +176,28 @@ export default Form.create()(observer(function (props: IProps) {
   useEffect(() => {
     getTemplateList()
   }, [])
+
   useEffect(() => { 
     if (table_add) {
-      const keys = firstData.firstTableList_DE.map((item: any) => item.qcCode);
+
+      const keys = firstData.firstTableList_DE.map((item: any) => {
+        setnurseValues(prevInputValues => ({
+          ...prevInputValues,
+          [`nurseDeptTargetValue-${item.qcCode}`]: item.nurseDeptTargetValue || '',
+        }));
+  
+        setdepValues(prevInputValues => ({
+          ...prevInputValues,
+          [`deptTargetValue-${item.qcCode}`]: item.deptTargetValue || '',
+        }));
+
+        return item.qcCode
+      });
+
       setSelectedRowKeys(keys);
+      setSelectedRows(firstData.firstTableList_DE)
     }
+    
   }, [table_add])
 
   
