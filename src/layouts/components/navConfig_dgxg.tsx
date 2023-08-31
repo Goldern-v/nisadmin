@@ -72,7 +72,7 @@ const baseConfig: navConfigItem[] = [
   {
     name: "护士长手册",
     path: "/nurseHandBookNew",
-    hidden: !authStore.isNotANormalNurse
+    // hidden: !authStore.isNotANormalNurse
   },
   {
     name: '病区登记本',
