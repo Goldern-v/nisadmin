@@ -50,6 +50,13 @@ import 三级质控护理质量统计汇总 from "./views/qcFormGzsrm/三级质�
 import qcThreeMQSummary from './views/qcThreeMQSummary/index'
 import { CONFIG_TITLE } from './utils/enums'
 import qcQSummary from './views/qcQSummary'
+import CheckSummary from './views/qcZzwy/qcCheckSummary/CheckSummary'
+import IssueAnalysis from './views/qcZzwy/issueAnalysis/IssueAnalysis'
+import RectificationSummary from './views/qcZzwy/qcRectificationSummary/RectificationSummary'
+import QcMonthCheckReportList from './views/qcZzwy/qcMonthCheckReport/QcMonthCheckReportList'
+import QuarterlyAnalysisReportZzwy from './views/qcZzwy/qcQuarterlyAnalysisReport/Index'
+import QqualityMWSummary from './views/qcZzwy/qqualityMWSummary/tableList' // 季度质量管理工作总结 Quarterly quality management work summary
+
 export interface Props extends RouteComponentProps<{ name?: string }> {}
 export default function QcThreeRouter(props: Props) {
   useEffect(() => {}, [props.history.location.pathname]);
@@ -202,6 +209,46 @@ export default function QcThreeRouter(props: Props) {
     component: committeeWorkReport,
     hide: !authStore.level3publishedWatch,
   }
+  const route_质控_ZZWY = [
+    {
+      title: "护理部质量检查汇总表",
+      icon: <HZBG />,
+      path: "/qcThree/护理部质量检查汇总表?qcLevel=3",
+      component: CheckSummary,
+      
+    },
+    
+  {
+    title: "质控表项目问题分析汇总",
+    icon: <JCTJ />,
+    path: "/qcThree/质控表项目问题分析汇总?qcLevel=3",
+    component: IssueAnalysis
+  },
+    {
+      title: "质控检查反馈整改单",
+      icon: <HZBG />,
+      path: "/qcThree/质控检查反馈整改单?qcLevel=3",
+      component: RectificationSummary,
+    },
+    {
+      title: "月度质控检查总结报告",
+      icon: <JCTJ />,
+      path: "/qcThree/月度质控检查总结报告?qcLevel=3",
+      component: QcMonthCheckReportList,
+    },
+
+    {title: "季度质量分析报告",
+      icon: <HZBG />,
+      path: "/qcThree/季度质量分析报告?qcLevel=3",
+      component: QuarterlyAnalysisReportZzwy,
+    },
+    {
+      title: "季度质量管理工作总结",
+      icon: <HZBG />,
+      path: "/qcThree/季度质量管理工作总结?qcLevel=3",
+      component: QqualityMWSummary,
+    },
+]
 
   let extra_menu: any = appStore.hisMatch({
     map: {
@@ -308,6 +355,15 @@ export default function QcThreeRouter(props: Props) {
         route_三级质控汇总报告,
         // route_三级质控问题汇总,
         route_检查表单统计表,
+      ],
+      zzwy: [
+        route_护理质量巡查情况汇总表_nys,
+        route_护理质量检查小结,
+        route_三级质控月度报告,
+        route_三级质控汇总报告,
+        route_三级质控问题汇总,
+        route_检查表单统计表,
+        ...route_质控_ZZWY,
       ],
       other: [
         route_护理质量巡查情况汇总表_nys,

@@ -86,8 +86,6 @@ export default function QcOneRouterHj(props: Props) {
       icon: <HZBG />,
       path: "/qcOneHj/护理部质量检查汇总表?qcLevel=1",
       component: CheckSummary,
-      // keepAlive: true,
-      // disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
     },
     
   {
