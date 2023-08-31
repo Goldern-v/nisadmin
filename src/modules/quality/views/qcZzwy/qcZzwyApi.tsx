@@ -16,9 +16,6 @@ export default class QcZzwyApi extends BaseApiService {
 		return this.get(`/qcItem/getRectificationdeptSummary?${qs.stringify(obj)}`);
 	}
 
-
-
-
     // 导出年度汇总表
     public async exportSumYearTable(obj: any) {
         return this.post(`/goodEvent/manageIndicatorsDynamic/exportGatherByDeptCodeAndYear`, obj,

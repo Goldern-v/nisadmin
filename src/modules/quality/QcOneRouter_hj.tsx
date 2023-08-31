@@ -30,6 +30,8 @@ import IssueAnalysis from './views/qcZzwy/issueAnalysis/IssueAnalysis'
 import RectificationSummary from './views/qcZzwy/qcRectificationSummary/RectificationSummary'
 import QcMonthCheckReportList from './views/qcZzwy/qcMonthCheckReport/QcMonthCheckReportList'
 import QuarterlyAnalysisReportZzwy from './views/qcZzwy/qcQuarterlyAnalysisReport/Index'
+import QqualityMWSummary from './views/qcZzwy/qqualityMWSummary/tableList' // 季度质量管理工作总结 Quarterly quality management work summary
+
 export interface Props extends RouteComponentProps<{ name?: string }> { }
 
 export default function QcOneRouterHj(props: Props) {
@@ -80,11 +82,19 @@ export default function QcOneRouterHj(props: Props) {
 
   const route_质控_ZZWY = [
     {
-    title: "护理部质量检查汇总表",
-    icon: <HZBG />,
-    path: "/qcOneHj/护理部质量检查汇总表?qcLevel=1",
-    component: CheckSummary,
-  },
+      title: "护理部质量检查汇总表",
+      icon: <HZBG />,
+      path: "/qcOneHj/护理部质量检查汇总表?qcLevel=1",
+      component: CheckSummary,
+      // keepAlive: true,
+      // disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP"
+    },
+    {
+      title: "季度质量管理工作总结",
+      icon: <HZBG />,
+      path: "/qcOneHj/季度质量管理工作总结",
+      component: QqualityMWSummary,
+    },
   {
     title: "质控表项目问题分析汇总",
     icon: <JCTJ />,

@@ -3,7 +3,8 @@ import {Obj} from "src/libs/types"
 import styled from "styled-components"
 import React from 'react'
 import {Button, Input, Icon} from "antd"
-
+import {QuarterlyZzwyData} from "src/modules/quality/views/qcZzwy/qcQuarterlyAnalysisReport/Data";
+import debounce from "lodash/debounce";
 const {TextArea} = Input
 const list = [
     {
@@ -320,23 +321,23 @@ export default function QcFishBone(props: any) {
     const [editVal, setEditVal] = useState<Obj>(defEditVal)
     const [listState, setListState] = useState([...list]); // 初始化状态
     useEffect(() => {
-        if (reflect) {
-            const obj: Obj = {}
-            for (const key in reflect) {
-                obj[key] = value[reflect[key]] || ''
-            }
-            setEditVal(obj)
-        }
-    }, [value])
+
+        setEditVal(QuarterlyZzwyData.fishValueObj)
+        console.log(QuarterlyZzwyData.fishValueObj);
+    }, [QuarterlyZzwyData.fishValueObj])
     // useEffect(() => {
-    //     console.log('test-editVal', editVal)
+    //     // console.log('test-editVal', editVal)
     // }, [editVal])
 
 
     const onIpt = (e: Obj, key: string) => {
         setEditVal({...editVal, [key]: e.target.value})
         // onChange && onChange({[reflect[key]]: e.target.value})
-        onChange && onChange(editVal)
+        console.log(editVal);
+        debounce(()=>{
+            // console.log(1);
+            onChange && onChange(editVal)
+        },1000)
     }
     /**删除选中元素**/
     const handleDelete = (k: number, vKey: number) => {
@@ -345,6 +346,7 @@ export default function QcFishBone(props: any) {
         newList[k].child[vKey]['hide'] = true; // 设置隐藏属性为 true
         newList[k].child[vKey]['value'] = ''
         editVal[obj['key']] = ''
+        onChange && onChange(editVal)
         setListState(newList);
     };
     const handleAddElement = (k: number) => {
