@@ -156,11 +156,22 @@ function QqualityMWSummaryDetail(props: Props) {
     let printFun = isPrint ? printing : printing.preview
     setTimeout(() => {
       printFun(pageRef.current, {
+        // beforePrint: formatter,
         // 插入所有link和style标签到打印，默认是false
         injectGlobalCss: true,
         // 指定扫描样式，默认是true（全部）
         scanStyles: false,
         css: `
+          .ant-input{
+            padding: 0;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            width: 100%;
+            height: auto;
+          }
+          #baseTable .ant-input{
+            border: 0px
+          }
            .ant-btn {
              display: none;
            }

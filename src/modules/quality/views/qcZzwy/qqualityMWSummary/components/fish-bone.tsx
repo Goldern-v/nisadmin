@@ -9,31 +9,31 @@ const list = [
   {
     text: "个人因素",
     idx: 1,
-    style: { top: '-6px', left: '78px' },
+    style: { top: '0', left: '78px' },
     key: 'v0',
     child: [
       {
         key: "v1",
-        style: { top: '40px', left: '31px' },
+        style: { top: '55px', left: '32px' },
       },
       {
         key: "v2",
-        style: { top: '24px', left: '138px' },
+        style: { top: '42px', left: '142px' },
       },
       {
         key: "v3",
-        style: { top: '104px', left: '58px' },
+        style: { top: '110px', left: '49px' },
       },
       {
         key: "v4",
-        style: { top: '88px', left: '164px' },
+        style: { top: '110px', left: '164px' },
       },
     ],
   },
   {
     text: "管 理",
     idx: 2,
-    style: { top: '-6px', left: '226px' },
+    style: { top: '0', left: '226px' },
     key: 'v5',
     child: [
       {
@@ -42,95 +42,95 @@ const list = [
       },
       {
         key: "v7",
-        style: { top: '54px', left: '188px' },
+        style: { top: '74px', left: '192px' },
       },
       {
         key: "v8",
-        style: { top: '118px', left: '214px', textAlign: 'right'},
+        style: { top: '147px', left: '214px', textAlign: 'right'},
       },
     ],
   },
   {
     text: "管 理",
     idx: 2,
-    style: { top: '-6px', left: '377px' },
+    style: { top: '0', left: '377px' },
     key: 'v9',
     child: [
       {
         key: "v10",
-        style: { top: '35px', left: '449px' },
+        style: { top: '62px', left: '454px' },
       },
       {
         key: "v11",
-        style: { top: '95px', left: '359px' },
+        style: { top: '120px', left: '360px' },
       },
       {
         key: "v12",
-        style: { top: '94px', left: '471px' },
+        style: { top: '120px', left: '471px' },
       },
     ],
   },
   {
     text: "环 境",
     idx: 3,
-    style: { bottom: '22px', left: '78px' },
+    style: { bottom: '28px', left: '78px' },
     key: "v13",
     child: [
       {
         key: "v14",
-        style: { bottom: '108px', left: '58px', textAlign: 'right' },
+        style: { bottom: '162px', left: '58px', textAlign: 'right' },
       },
       {
         key: "v15",
-        style: { bottom: '70px', left: '158px', textAlign: 'left' },
+        style: { bottom: '128px', left: '161px', textAlign: 'left' },
       },
       {
         key: "v16",
-        style: { bottom: '45px', left: '33px', textAlign: 'right' },
+        style: { bottom: '100px', left: '40px', textAlign: 'right' },
       },
     ],
   },
   {
     text: "制 度",
     idx: 4,
-    style: { bottom: '22px', left: '232px' },
+    style: { bottom: '28px', left: '232px' },
     key: "v17",
     child: [
       {
         key: "v18",
-        style: { bottom: '106px', left: '211px', textAlign: 'right'  },
+        style: { bottom: '170px', left: '216px', textAlign: 'right'  },
       },
       {
         key: "v19",
-        style: { bottom: '93px', left: '320px', textAlign: 'left' },
+        style: { bottom: '142px', left: '318px', textAlign: 'left' },
       },
       {
         key: "v20",
-        style: { bottom: '59px', left: '305px' },
+        style: { bottom: '103px', left: '306px' },
       },
       {
         key: "v21",
-        style: { bottom: '33px', left: '182px' },
+        style: { bottom: '91px', left: '193px' },
       },
     ],
   },
   {
     text: "设 备",
     idx: 5,
-    style: { bottom: '22px', left: '384px' },
+    style: { bottom: '28px', left: '384px' },
     key: "v22",
     child: [
       {
         key: "v23",
-        style: { bottom: '121px', left: '372px' },
+        style: { bottom: '177px', left: '374px' },
       },
       {
         key: "v24",
-        style: { bottom: '65px', left: '465px' },
+        style: { bottom: '115px', left: '468px' },
       },
       {
         key: "v25",
-        style: { bottom: '27px', left: '335px' },
+        style: { bottom: '71px', left: '342px' },
       },
     ],
   },
@@ -176,7 +176,7 @@ export default function FishBone1(props: any) {
       <div className="fb-ctx">
         {list.map((v: any) =>
           <>
-            <div className="fb-ctx-item" key={v.idx} style={v.style}>
+            <div className="fb-ctx-item" key={v.idx} style={v.style} >
               {/* {v.text} */}
               <Input
                 className="fb-ctx-ipt"
@@ -189,14 +189,16 @@ export default function FishBone1(props: any) {
             </div>
             {
               v.child.map((v1: any) =>
-                <Input
-                  className="fb-ctx-ipt"
-                  type="text"
-                  key={v1.key}
-                  style={v1.style}
-                  value={editVal ? editVal[v1.key] : ''}
-                  onInput={(e) => onIpt(e, v1.key)}
-                />
+                <span className="fb-ctx-div" style={v1.style}>
+                  <Input
+                    className="fb-ctx-ipt"
+                    type="text"
+                    key={v1.key}
+                    style={{ textAlign: 'center' }}
+                    value={editVal ? editVal[v1.key] : ''}
+                    onInput={(e) => onIpt(e, v1.key)}
+                  />
+                </span>
               )}
           </>
         )
@@ -213,10 +215,11 @@ export default function FishBone1(props: any) {
 }
 
 const Wrapper = styled.div`
-  margin: 20px 0;
+  margin: 20px auto;
+  width: 700px;
   .fb-container {
     position: relative;
-    height:300px;
+    height:400px;
     width: 100%;
     .fb-bg {
       position: absolute;
@@ -225,8 +228,9 @@ const Wrapper = styled.div`
       width: 100%;
       height: 100%;
     }
-    .fb-ctx-item {
+    .fb-ctx-item, .fb-ctx-div {
       position: absolute;
+      text-align: center;
     }
     .fb-ctx-ipt {
       position: absolute;
@@ -241,7 +245,7 @@ const Wrapper = styled.div`
 
     .fb-header__ipt, .fb-trail__ipt {
       position: absolute;
-      top: 45%;
+      top: 46.5%;
       width: 100px !important;
       background: transparent;
       text-align: center;
@@ -251,7 +255,8 @@ const Wrapper = styled.div`
       right: 0;
     }
     .fb-trail__ipt{
-      left: 0;
+      left: 28px;
+      top: 43%;
     }
   }
 `
