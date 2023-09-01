@@ -1,5 +1,5 @@
 import { Radio, Form } from 'antd'
-import { Modal, Input } from 'antd/es'
+import { Modal, Input, Button } from 'antd/es'
 import { observer } from 'mobx-react'
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
@@ -27,6 +27,34 @@ export default Form.create()(observer(function (props: IProps) {
       resetFields()
     })
   }
+
+  const handleDelete = () => {
+    model.nameTS = ''
+    model.tableList = []
+    onCancel()
+  }
+
+  const onButtons = () => {
+    let buttons = []
+    let btns = [
+      <Button key="cancel" onClick={onCancel}>取消</Button>,
+      <Button key="ok" type="primary" onClick={onSave}>确定</Button>
+    ]
+    let btn = <Button key="delete" onClick={handleDelete}>删除</Button>
+
+    if (model.del) {
+      buttons = [btn, ...btns]
+    } else {
+      buttons = [...btns]
+    }
+    return buttons
+  }
+
+  useEffect(() => {
+    if (!model.Addtable){
+      model.del = false
+    }
+  }, [model.Addtable])
   
   return (
     <Modal
@@ -36,6 +64,7 @@ export default Form.create()(observer(function (props: IProps) {
       onCancel={onCancel}
       okText='确定'
       centered
+      footer={onButtons()}
     >
       <Wrapper>
         <Form 

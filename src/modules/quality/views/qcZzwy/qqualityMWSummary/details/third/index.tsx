@@ -177,7 +177,6 @@ export default observer(function TableList() {
 					dataSource={thirdData.tableList}
 					columns={columns.filter((item: any) => item)}
 					surplusWidth={780}
-					surplusHeight={620}
 				/>
 			</ScrollCon>
       
@@ -190,6 +189,9 @@ const Wrapper = styled.div`
   }
   #baseTable{
     padding: 10px 0 !important;
+  }
+  .bHdIpD#baseTable .ant-table-body{
+    overflow-y: auto !important
   }
   .measures{
     margin-bottom: 10px;

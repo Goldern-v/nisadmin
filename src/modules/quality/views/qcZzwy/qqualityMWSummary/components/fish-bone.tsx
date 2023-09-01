@@ -165,89 +165,93 @@ export default function FishBone1(props: any) {
     onChange && onChange({ [reflect[key]]: e.target.value })
   }
 
-  return (<Wrapper className="fb-container">
-    <img className="fb-bg" src={fishBoneSvg} alt="鱼骨" />
-    <Input
-      className="fb-trail__ipt"
-      value={editVal ? editVal.v27 : ''}
-      onInput={(e: Obj) => onIpt(e, 'v27')}
-    />
-    <div className="fb-ctx">
-      {list.map((v: any) =>
-        <>
-          <div className="fb-ctx-item" key={v.idx} style={v.style}>
-            {/* {v.text} */}
-            <Input
-              className="fb-ctx-ipt"
-              key={v.key}
-              style={{ textAlign: 'center' }}
-              value={editVal ? editVal[v.key] : ''}
-              onInput={(e) => onIpt(e, v.key)}
-            />
-          </div>
-          {
-            v.child.map((v1: any) =>
+  return (<Wrapper>
+    <div className="fb-container">
+      <img className="fb-bg" src={fishBoneSvg} alt="鱼骨" />
+      <Input
+        className="fb-trail__ipt"
+        value={editVal ? editVal.v27 : ''}
+        onInput={(e: Obj) => onIpt(e, 'v27')}
+      />
+      <div className="fb-ctx">
+        {list.map((v: any) =>
+          <>
+            <div className="fb-ctx-item" key={v.idx} style={v.style}>
+              {/* {v.text} */}
               <Input
                 className="fb-ctx-ipt"
-                key={v1.key}
-                style={v1.style}
-                value={editVal ? editVal[v1.key] : ''}
-                onInput={(e) => onIpt(e, v1.key)}
+                type="text"
+                key={v.key}
+                style={{ textAlign: 'center' }}
+                value={editVal ? editVal[v.key] : ''}
+                onInput={(e) => onIpt(e, v.key)}
               />
-            )}
-        </>
-      )
-      }
+            </div>
+            {
+              v.child.map((v1: any) =>
+                <Input
+                  className="fb-ctx-ipt"
+                  type="text"
+                  key={v1.key}
+                  style={v1.style}
+                  value={editVal ? editVal[v1.key] : ''}
+                  onInput={(e) => onIpt(e, v1.key)}
+                />
+              )}
+          </>
+        )
+        }
+      </div>
+      <Input
+        className="fb-header__ipt"
+        type="text"
+        value={editVal ? editVal.v26 : ''}
+        onInput={(e: Obj) => onIpt(e, 'v26')}
+      />
     </div>
-    <Input
-      className="fb-header__ipt"
-      type="text"
-      value={editVal ? editVal.v26 : ''}
-      onInput={(e: Obj) => onIpt(e, 'v26')}
-    />
   </Wrapper>)
 }
 
 const Wrapper = styled.div`
   margin: 20px 0;
-
-&.fb-container {
-  position: relative;
-  height:300px;
-  .fb-bg {
-    position: absolute;
-    left: 0;
-    top: 0;
+  .fb-container {
+    position: relative;
+    height:300px;
     width: 100%;
-    height: 100%;
-  }
-  .fb-ctx-item {
-    position: absolute;
-  }
-  .fb-ctx-ipt {
-    position: absolute;
-    width: 100px !important;
-    background: transparent;
-    font-size: 12px;
-    height: 25px !important;
-    &:nth-child(2n) {
-      text-align: right;
+    .fb-bg {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+    }
+    .fb-ctx-item {
+      position: absolute;
+    }
+    .fb-ctx-ipt {
+      position: absolute;
+      width: 100px !important;
+      background: transparent;
+      font-size: 12px;
+      height: 25px !important;
+      &:nth-child(2n) {
+        text-align: right;
+      }
+    }
+
+    .fb-header__ipt, .fb-trail__ipt {
+      position: absolute;
+      top: 45%;
+      width: 100px !important;
+      background: transparent;
+      text-align: center;
+      height: 25px !important;
+    }
+    .fb-header__ipt{
+      right: 0;
+    }
+    .fb-trail__ipt{
+      left: 0;
     }
   }
-
-  .fb-header__ipt, .fb-trail__ipt {
-    position: absolute;
-    top: 45%;
-    width: 100px !important;
-    background: transparent;
-    text-align: center;
-    height: 25px !important;
-  }
-  .fb-header__ipt{
-    right: 0;
-  }
-  .fb-trail__ipt{
-    left: 0;
-  }
-}
 `

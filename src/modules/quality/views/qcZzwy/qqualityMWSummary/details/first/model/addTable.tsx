@@ -5,9 +5,8 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import moment from 'moment';
 import {
-	ColumnProps,
 	Select,
-	DatePicker,
+	message,
 	Button,
 } from "src/vendors/antd";
 import { FormComponentProps } from 'antd/es/form'
@@ -38,12 +37,39 @@ export default Form.create()(observer(function (props: IProps) {
       model.tableAddOk(value)
     })
   }
-  // useEffect(() => {
-  //   if (model.nodeVisible)
-  //     setValue(model.editContentData[model.index].rollBackType)
-  //   else
-  //     setValue(1)
-  // }, [model.nodeVisible])
+  const handleDelete = () => {
+    if (model.edit_type === 'nurse') {
+      model.name_nurse = ''
+      model.firstTableList_UD = []
+    } else {
+      model.name_deptName = ''
+      model.firstTableList_DE = []
+    }
+    message.success('删除成功')
+    model.tableAddonCancel()
+  }
+  useEffect(() => {
+    if (!model.firstModalAdd){
+      model.del = false
+    }
+      
+  }, [model.firstModalAdd])
+
+  const onButtons = () => {
+    let buttons = []
+    let btns = [
+      <Button key="cancel" onClick={(() => model.tableAddonCancel())}>取消</Button>,
+      <Button key="ok" type="primary" onClick={onSave}>确定</Button>
+    ]
+    let btn = <Button key="delete" onClick={handleDelete}>删除</Button>
+
+    if (model.del) {
+      buttons = [btn, ...btns]
+    } else {
+      buttons = [...btns]
+    }
+    return buttons
+  }
   
   return (
     <Modal
@@ -51,8 +77,8 @@ export default Form.create()(observer(function (props: IProps) {
       visible={model.firstModalAdd}
       onOk={onSave}
       onCancel={(() => model.tableAddonCancel())}
-      okText='确定'
       centered
+      footer={onButtons()}
     >
       <Wrapper>
         <Form 
@@ -68,6 +94,7 @@ export default Form.create()(observer(function (props: IProps) {
               })
             (
               <Select
+                disabled={model.del}
               >
                 <Option value="nurse">护理部目标值</Option>
                 <Option value="deptName">科室目标值</Option>

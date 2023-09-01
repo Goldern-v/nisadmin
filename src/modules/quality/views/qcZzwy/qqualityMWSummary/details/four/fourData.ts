@@ -17,6 +17,8 @@ class FourDataDetails{
   @observable public Addtable = false;
   @observable public nameTS = ""
 
+  @observable public del = false;
+
 
   @observable public tableList: any = []
    

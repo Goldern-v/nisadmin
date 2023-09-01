@@ -102,7 +102,6 @@ export default observer(function TableList(props: Props) {
 					dataSource={secondData.tableList}
 					columns={columns.filter((item: any) => item)}
 					surplusWidth={780}
-					surplusHeight={620}
 				/>
 			</ScrollCon>
       <AddTable />
@@ -127,6 +126,9 @@ const Wrapper = styled.div`
   }
   #baseTable{
     padding: 10px 0 !important;
+  }
+  .bHdIpD#baseTable .ant-table-body{
+    overflow-y: auto !important
   }
   .measures{
     margin-bottom: 10px;

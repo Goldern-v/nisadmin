@@ -21,30 +21,32 @@ export default observer(function TableList() {
       title: '项目',
       align: "center",
       dataIndex: 'qcName',
-      width: 200
+      width: 180
     },
 		{
 			title: "合格率",
 			dataIndex: "evalRate",
 			align: "center",
-      width: 100,
+      width: 120,
 		},
     {
 			title: "本季度",
 			dataIndex: "evalRate",
 			align: "center",
-      width: 100,
+      width: 120,
 		},
    
 	]
-
-  let { qcReportItemDtoList, reportMasterData } = fourData?.detailsData
 
   const [table_add_data, setTable_add_data] = useState(false)
   const handleCancel = () => {
     setTable_add_data(false);
   };
 
+  const onEdit = () => {
+    fourData.Addtable = true
+    fourData.del = true
+  }
 
 	useEffect(() => {
 		fourData.getTableList()
@@ -66,7 +68,7 @@ export default observer(function TableList() {
         {/* 科室 */}
         <ScrollCon>
           <div className='button'>
-            <Button size="small" type="primary" onClick={() => fourData.Addtable = true} >编辑</Button>
+            <Button size="small" type="primary" onClick={onEdit} >编辑</Button>
             <Button size="small" type="primary" onClick={() => setTable_add_data(true) }>添加</Button>
           </div>
           <div className="hearder">{ fourData.nameTS }</div>
@@ -76,7 +78,6 @@ export default observer(function TableList() {
             dataSource={fourData.tableList}
             columns={columns.filter((item: any) => item)}
             surplusWidth={780}
-            surplusHeight={620}
           />
         </ScrollCon>
         {/* table添加数据 */}
@@ -92,6 +93,9 @@ const Wrapper = styled.div`
   }
   #baseTable{
     padding: 10px 0 !important;
+  }
+  .bHdIpD#baseTable .ant-table-body{
+    overflow-y: auto !important
   }
 `
 const ScrollCon = styled.div`

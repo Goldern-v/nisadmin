@@ -118,11 +118,10 @@ const TableList: React.FC<Props> = observer(function(props: Props) {
       firstData.edit_type = 'nurse'
       firstData.edit_name = firstData.name_nurse
     } else {
-      
       firstData.edit_type = 'deptName'
       firstData.edit_name = firstData.name_deptName
-      console.log(firstData.edit_name, 55555)
     }
+    firstData.del = true;
   }
 	
   return (
@@ -146,7 +145,6 @@ const TableList: React.FC<Props> = observer(function(props: Props) {
             dataSource={firstData.firstTableList_UD}
             columns={columns_UD.filter((item: any) => item)}
             surplusWidth={780}
-            surplusHeight={620}
           />
         </ScrollCon>}
 
@@ -166,7 +164,6 @@ const TableList: React.FC<Props> = observer(function(props: Props) {
             dataSource={firstData.firstTableList_DE}
             columns={columns_DE.filter((item: any) => item)}
             surplusWidth={780}
-            surplusHeight={620}
           />
         </ScrollCon>}
 
@@ -183,9 +180,13 @@ export default TableList;
 const Wrapper = styled.div`
   .details-first_table{
     width: 100%;
+    
   }
   #baseTable{
     padding: 10px 0 !important;
+  }
+  .bHdIpD#baseTable .ant-table-body{
+    overflow-y: auto !important
   }
 `
 const ScrollCon = styled.div`

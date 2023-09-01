@@ -39,6 +39,11 @@ export default class Api extends BaseApiService{
 		return this.post(`/qcReport/deleteQcReport`, obj);
 	}
 
+  // 修改报告
+  public updateQcReport(obj: any) {
+		return this.post(`/qcReport/updateQcReport`, obj);
+	}
+
 	// 导出年度汇总表
   public async exportSumYearTable(obj: any) {
     return this.post(`/goodEvent/manageIndicatorsDynamic/exportGatherByDeptCodeAndYear`, obj,

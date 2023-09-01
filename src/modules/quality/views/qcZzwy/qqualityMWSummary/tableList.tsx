@@ -20,8 +20,12 @@ import { message } from 'antd';
 
 const Option = Select.Option;
 // const { RangePicker } = DatePicker
+
 export default observer(function TableList() {
 	const [yearPickShow, setYearPickShow] = useState(false);
+
+  const [rowEdit, setRowEdit]  = useState({});
+
   const columns: any = [
     {
       key: 'idx',
@@ -112,22 +116,30 @@ export default observer(function TableList() {
       return 
     }
 
-    let { data } = await api.getQcReport(row.id)
     if (status === '查看') {
-      localStorage.setItem('detail_check', '0')
+      let { data } = await api.getQcReport(row.id)
+      // localStorage.setItem('detail_check', '0')
       appStore.history.push('/qqualityMWSummaryDetail')
+      sessionStorage.setItem('qqualityMWSummaryDetail', data && JSON.stringify(data))
+      localStorage.setItem('qqualityMWSummaryDetail', data && JSON.stringify(data))
 
     } else if(status === '编辑') {
-      localStorage.setItem('detail_check', '1')
-      appStore.history.push('/qqualityMWSummaryDetail')
+      tableListData.tableAddVisible = true
+      setRowEdit(row)
+      // localStorage.setItem('detail_check', '1')
+      // appStore.history.push('/qqualityMWSummaryDetail')
     }
-    localStorage.setItem('qqualityMWSummaryDetail', data && JSON.stringify(data))
+    
   }
 
 	useEffect(() => {
 		tableListData.getTableList()
 		tableListData.getNursingAll()
 	}, [])
+
+  useEffect(() => {
+		tableListData.getTableList()
+	}, [tableListData.pageIndex, tableListData.pageSize])
 	
   return (
     <Wrapper>
@@ -187,7 +199,7 @@ export default observer(function TableList() {
           }
 				</Select>
         <Button onClick={() => tableListData.getTableList() }>查询</Button>
-				<Button onClick={() => tableListData.tableAddVisible = true }>创建</Button>
+				<Button onClick={() => {tableListData.tableAddVisible = true; setRowEdit({})} }>创建</Button>
 			</PageHeader>
 
 			<ScrollCon>
@@ -210,7 +222,7 @@ export default observer(function TableList() {
 				}}
 				/>
 			</ScrollCon>
-      <TableAddModal />
+      <TableAddModal rowEdit={rowEdit} />
     </Wrapper>
   )
 })

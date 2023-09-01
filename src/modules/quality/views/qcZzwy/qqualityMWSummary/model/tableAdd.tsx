@@ -1,4 +1,4 @@
-import { Radio, Form } from 'antd'
+import { Radio, Form, message } from 'antd'
 import { Modal, Input } from 'antd/es'
 import { observer } from 'mobx-react'
 import React, { useEffect, useState } from 'react'
@@ -14,40 +14,80 @@ import { FormComponentProps } from 'antd/es/form'
 import { tableListData as model } from '../tableListData'
 import { quarterAndYear1 } from 'src/enums/date';
 import { api } from '../api';
+import { Object } from 'lodash'
 
 const Option = Select.Option;
 
 export interface IProps extends FormComponentProps {
+  rowEdit: any
 }
-
+let quarter = {
+  '全年': 0,
+  '第一季度': 1,
+  '第二季度': 2,
+  '第三季度': 3,
+  '第四季度': 4,
+}
 export interface Props {
 }
 export default Form.create()(observer(function (props: IProps) {
-  const { form: { getFieldDecorator, validateFields, setFieldsValue, resetFields } } = props
+  const { rowEdit, form: { getFieldDecorator, validateFields, setFieldsValue, resetFields } } = props
 
   const [yearPickShow, setYearPickShow] = useState(false);
 
+  const [_disabled, setDisabled] = useState(false)
+
   const onSave = () => {
-    validateFields((err, value) => {
+    validateFields(async(err, value) => {
       if (err) return
-      model.tableAddOk(value)
+      if (rowEdit?.id) {
+        let data  = await api.updateQcReport({
+          id: rowEdit.id,
+          reportName: value?.reportName || ''
+        })
+        if (data.code === '200') {
+          message.success('修改成功')
+          model.getTableList()
+        } else {
+          message.error(data.desc || '修改失败')
+        }
+        onCancel()
+        console.log(data)
+      } else {
+        model.tableAddOk(value)
+      }
+      
     })
+  }
+
+  const onCancel = () => {
+    model.tableAddonCancel()
+    resetFields()
   }
     
 
-  // useEffect(() => {
-  //   if (model.nodeVisible)
-  //     setValue(model.editContentData[model.index].rollBackType)
-  //   else
-  //     setValue(1)
-  // }, [model.nodeVisible])
+  useEffect(() => {
+    if (rowEdit?.id) {
+      model.add_Quarter = quarter[rowEdit.reportQuarter]
+      model.add_deptCode = rowEdit.wardCode
+      setFieldsValue({
+        reportYear: moment(rowEdit.reportYear),
+        reportQuarter: quarter[rowEdit.reportQuarter],
+        wardCode: rowEdit.wardCode,
+        reportName: rowEdit.reportName
+      })
+      setDisabled(true)
+    }
+    else setDisabled(false)
+    
+  }, [rowEdit])
   
   return (
     <Modal
       title="创建"
       visible={model.tableAddVisible}
       onOk={onSave}
-      onCancel={(() => model.tableAddonCancel())}
+      onCancel={onCancel}
       okText='确定'
       centered
     >
@@ -80,6 +120,7 @@ export default Form.create()(observer(function (props: IProps) {
                 allowClear={true}
                 placeholder='选择年份'
                 format="YYYY"
+                disabled={_disabled}
               />
             )}
           </Form.Item>
@@ -93,7 +134,8 @@ export default Form.create()(observer(function (props: IProps) {
               })
             (
               <Select
-                defaultValue={moment().quarter()}
+                disabled={_disabled}
+                // defaultValue={moment().quarter()}
                 onChange={(val: any) => {
                   model.add_Quarter = val
                   model.cahngeReportName()
@@ -117,6 +159,7 @@ export default Form.create()(observer(function (props: IProps) {
               })
             (
               <Select
+                disabled={_disabled}
                 onChange={(val: any) => {
                   let obj = model.deptList.find((item: any) => item.code === val)
                   model.add_deptName = obj?.name

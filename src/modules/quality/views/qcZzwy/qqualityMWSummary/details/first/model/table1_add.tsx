@@ -22,7 +22,7 @@ export interface Props {
 }
 export default Form.create()(observer(function (props: IProps) {
   const { table_add, handleCancel, form: { getFieldDecorator, validateFields, setFieldsValue, resetFields } } = props
-  
+  const [loading, setLoading] = useState(false)
   const [tableList, setTableList]: any[] = useState([])
   
   const [selectedRow, setSelectedRow]: any= useState({});
@@ -81,7 +81,6 @@ export default Form.create()(observer(function (props: IProps) {
     },
 	]
 
-  
   const columns_group: any = [
     {
       key: 'qcCode',
@@ -191,17 +190,20 @@ export default Form.create()(observer(function (props: IProps) {
   };
 
   const getTemplateList = async() => {
+    setLoading(true)
     let { data } = await api.templateList()
     setTemplateData(data || [])
     setTableList_group_TS(data || [])
+    setLoading(false)
   }
 
   let onRowGetFrom = async(row: any) => {
-    console.log(row, tableList, 'ces')
+    
     if (!row) {
       setTableList_group([])
       return
     }
+    setLoading(true)
     setTableList_group(templateData || []);
     setSelectedRow(row)
     let list = tableList.find((item:any) => row.groupId === item.groupId)
@@ -218,6 +220,7 @@ export default Form.create()(observer(function (props: IProps) {
     } else {
       setSelectedRows([]); 
     }
+    setLoading(false)
   }
   const tableAddOk = async () => {
     let newtableLists:any = tableList.flatMap((item:any) => 
@@ -315,6 +318,7 @@ export default Form.create()(observer(function (props: IProps) {
           />
           <Table
             rowKey="qcCode"
+            loading={loading}
             rowSelection={rowSelection}
             bordered
             dataSource={tableList_group}
