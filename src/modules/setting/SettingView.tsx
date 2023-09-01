@@ -1,6 +1,7 @@
 import LeftMenu from "src/components/LeftMenu";
 import styled from "styled-components";
 import React, { useEffect } from "react";
+import { KeepAlive } from 'react-keep-alive'
 import { RouteComponentProps } from "src/components/RouterView";
 import { appStore } from "src/stores";
 import HealthPropagandaView from "./../healthPropaganda/HealthPropagandaView";
@@ -8,8 +9,11 @@ import settingViewModel from "./SettingViewModel";
 import AutomaticPush from "./view/AutomaticPush";
 import CategoryDictionary from "./view/CategoryDictionary";
 
+import { ReactComponent as CFJL } from './images/CFJL.svg'
 import { ReactComponent as JKXJZD } from "./images/JKXJZD.svg";
+import { ReactComponent as CFJHB } from './images/CFJHB.svg'
 import { ReactComponent as JJRSZ } from "./images/JJRSZ.svg";
+import { ReactComponent as CFJHBG } from './images/CFJHBG.svg'
 import { ReactComponent as KSPHSZ } from "./images/KSPHSZ.svg";
 
 import 绩效参数设置 from "./view/绩效参数设置";
@@ -19,6 +23,9 @@ import 健康宣教字典 from "./../healthPropaganda/健康宣教字典";
 import Preview from "./view/components/Preview";
 import DeptFileShare from "src/modules/deptReferSetting/views/DeptFileShare";
 import FlatManage from "src/modules/deptReferSetting/views/FlatManage";
+import ScheduleView from 'src/modules/quality/views/checkWard/view/schedule/ScheduleView'
+import CheckWardReportList from 'src/modules/quality/views/checkWard/view/reportList/CheckWardReportList'
+import RecordView from 'src/modules/quality/views/checkWard/view/record/RecordView'
 import FlatManageProblemList from "src/modules/deptReferSetting/views/FlatManageProblemList";
 import ManagementSummary from "src/modules/deptReferSetting/views/ManagementSummary";
 import HealthEducationReportList from "../healthEducationReport/healthEducationReportList/HealthEducationReportList";
@@ -114,6 +121,7 @@ const LEFT_MENU_CONFIG = [
         title: "扁平管理设置",
         path: "/setting/扁平管理设置",
         component: FlatManage,
+        hide:appStore.HOSPITAL_ID == "whsl"
       },
       ...appStore.hisMatch({
         map: {
@@ -155,6 +163,55 @@ const LEFT_MENU_CONFIG = [
           icon: <KSPHSZ />,
           path: '/setting/area-control',
           component: areaControl
+        },
+      ],
+      whsl:[
+        {
+          title: '扁平管理',
+          component: FlatManage,
+          icon: <KSPHSZ />,
+          children: [
+            {
+              title: '扁平管理设置',
+              path: '/setting/扁平管理设置',
+              component: FlatManage
+            },
+            {
+              title: '扁平管理问题查看',
+              path: '/setting/扁平管理问题查看',
+              component: FlatManageProblemList
+              // hide: true
+            },
+            {
+              title: '扁平管理汇总',
+              path: '/setting/扁平管理汇总',
+              component: ManagementSummary
+            }
+          ]
+        },
+        {
+          title: "特殊时段查房记录",
+          path: "/setting/checkWard",
+          icon: <CFJL />,
+          component: RecordView,
+          keepAlive: true,
+          disabledKeepAlive:
+            (appStore.history && appStore.history.action) !== "POP",
+        },
+        {
+          title: "特殊时段计划表",
+          path: "/setting/schedule",
+          icon: <CFJHB />,
+          component: ScheduleView,
+        },
+        {
+          title: "特殊时段查房统计报告",
+          path: "/setting/checkWardReportList",
+          icon: <CFJHBG />,
+          component: CheckWardReportList,
+          keepAlive: true,
+          disabledKeepAlive:
+            (appStore.history && appStore.history.action) !== "POP",
         },
       ],
       other: []
@@ -247,11 +304,22 @@ export default function SettingView(props: Props) {
         {/*
         <TopCon>{currentRoute && currentRoute.title}</TopCon>
         <TableCon> */}
-        {currentRoute && currentRoute.component && (
-          <currentRoute.component
-            getTitle={currentRoute && currentRoute.title}
-          />
-        )}
+        {currentRoute &&
+          currentRoute.component &&
+          (currentRoute.keepAlive ? (
+            <KeepAlive
+              name={currentRoute.path}
+              disabled={currentRoute.disabledKeepAlive}
+            >
+              <currentRoute.component
+                getTitle={currentRoute && currentRoute.title}
+              />
+            </KeepAlive>
+          ) : (
+            <currentRoute.component
+              getTitle={currentRoute && currentRoute.title}
+            />
+          ))}
         {/* </TableCon>
          */}
       </MainCon>
