@@ -1,9 +1,11 @@
 import { observer } from 'mobx-react'
 import React, { useEffect, useState } from 'react'
-import { Button, message, Spin,Table,InputNumber,Input,DatePicker } from 'src/vendors/antd'
+import { Button, message, Spin,Table,InputNumber,Input,DatePicker,Icon } from 'src/vendors/antd'
 import { useRef } from 'src/types/react'
 import printing from 'printing'
 import moment from 'moment'
+import service from 'src/services/api'
+import { to } from 'src/libs/fns'
 import MultiFileUploader from "src/components/MultiFileUploader";
 import styled from 'styled-components'
 import { ScrollBox } from 'src/components/common'
@@ -14,6 +16,8 @@ import { qcMonthCheckData } from './qcMonthCheckData'
 import { qcZzwyApi } from '../qcZzwyApi'
 import QcFishBoneMonth from './qcFishBoneMonth/fish-bone'
 import ChartCylindricalityMonth from './ChartCylindricalityMonth'
+import MultipleImageUploader from 'src/components/ImageUploader/MultipleImageUploader'
+import ImageUploader from 'src/components/ImageUploader'
 
 
 export default observer(function QcMonthCheckReportDetail() {
@@ -162,13 +166,17 @@ export default observer(function QcMonthCheckReportDetail() {
     return [{},{},{}]
   }
 
-  const  fishValue={
-      'v0':1,
-      'v1':4,
-  }
-const handleFishItem =(obj:any)=>{
+  const  fishValueSource=Array.from(Array(40)).reduce((prev, cur, i) => {
+    prev[`v${i + 1}`] = '';
+    return prev
+}, {})
+const handleFishItem =(obj:any,index?:number)=>{
   // console.log(obj);
+  // console.log(index)
   qcMonthCheckData.updateFishValueObj(obj)
+  // if(index===0){
+  //   qcMonthCheckData.updateFishValueArray(obj,index)
+  // }
 }
 
   /**本月质量改进项目 */
@@ -276,12 +284,73 @@ const handleFishItem =(obj:any)=>{
           JSON.parse(it.qcReportItemDataList[0].itemValue):
           qcMonthCheckData.sourceMap[it.itemCode]
       })
+      // debugger
+      // qcMonthCheckData.ZZWY_YDZKJCZJ_L1_003.fishValueArr.map((ii:any)=>{
+      //   console.log(ii)
+      // })
       // 更新鱼骨图
       setUpdateFish(moment().valueOf()+'')
     }).catch(err=>{
 
     })
     
+  }
+
+  const uploadCard = async (file: any) => {
+    let obj: any = {
+      file,
+    }
+
+    const [err, res] = await to(qcZzwyApi.upload(obj))
+    if (err) {
+      return ''
+    }
+    // console.log(res.data)
+    if (res.data) {
+      let pathImg = `${res.data.path}`
+      return pathImg
+    }
+  }
+
+  // 上传附件
+	const handleUploading = () => {
+		let importElId = 'sxslrb_import_file_el'
+		let lastEl = document.getElementById('importElId')
+		if (lastEl) document.body.removeChild(lastEl)
+
+		let importEl = document.createElement('input')
+		importEl.id = importElId
+		importEl.style.display = 'none'
+    importEl.accept = 'image/jpg, image/jpeg, image/png, image/bmp'
+		importEl.type = 'file'
+		importEl.onchange = (e: any) => {
+			let file = e.target.files[0]
+			qcZzwyApi.upload({file})
+				.then((res: any) => {
+					if (res.code == '200') {
+            // console.log(res.data)
+            message.success('上传成功')
+            // debugger
+            if(!qcMonthCheckData.ZZWY_YDZKJCZJ_L1_004.imgList){
+              qcMonthCheckData.ZZWY_YDZKJCZJ_L1_004.imgList = []
+            }
+            qcMonthCheckData.ZZWY_YDZKJCZJ_L1_004.imgList.push({path:res.data?.path || '',name:res.data?.name|| ''})
+						// console.log(qcMonthCheckData.ZZWY_YDZKJCZJ_L1_004.imgList)
+            // if (res.data.id) {
+						// 	// 附件列表
+						// 	(planDatas.attchList as any).push(res.data)
+						// }
+					}
+				}).catch(err => {
+				})
+			document.body.removeChild(importEl)
+		}
+		document.body.appendChild(importEl)
+		importEl.click()
+
+	}
+  const addFish = ()=>{
+    qcMonthCheckData.ZZWY_YDZKJCZJ_L1_003.fishValueArr.push(fishValueSource)
   }
   
   return (
@@ -361,8 +430,26 @@ const handleFishItem =(obj:any)=>{
                 <Input key={id+'check'} value={qcMonthCheckData.ZZWY_YDZKJCZJ_L1_003.check}
                 onChange={(e)=>qcMonthCheckData.ZZWY_YDZKJCZJ_L1_003.check = e.target.value} />
                 <p>（二）原因分析：</p>
+                {/* <Button type="primary" icon="upload" onClick={addFish}>添加</Button> */}
                 <div style={{margin:'20px 0'}}>
-                <QcFishBoneMonth value={fishValue} updateFish={updateFish} onChange={handleFishItem}/>
+
+
+                  {/* {qcMonthCheckData.ZZWY_YDZKJCZJ_L1_003.fishValueArr.map((fish:any,index:number)=>{
+                    return(
+                      <div>
+                        <div style={{textAlign:'right',overflow:'hidden'}}>
+                        
+                        <Icon onClick={()=>{
+                        qcMonthCheckData.ZZWY_YDZKJCZJ_L1_003.fishValueArr.splice(index,1)
+                      }} className='delete-hover' type="delete" style={{fontSize:'24px',color:'#f00'}} />
+                    </div>
+                        <QcFishBoneMonth value={fish} index={index} updateFish={updateFish+index} onChange={handleFishItem}/>
+                      </div>)
+                    
+                  })} */}
+
+
+                <QcFishBoneMonth value={qcMonthCheckData.ZZWY_YDZKJCZJ_L1_003.fishValueObj} updateFish={updateFish} onChange={handleFishItem}/>
                 </div>
                 <h4 className='second-title' style={{marginTop:'40px'}}>执行阶段（D）</h4>
                 <p >整改措施：</p>
@@ -373,20 +460,40 @@ const handleFishItem =(obj:any)=>{
             <div className='first-content-box'>
               <div className='first-title'>{`四、效果评价及标准化结果`}</div>
               <div className='second-content-table-table second-box' style={{ width: '900px', margin: '20px auto' }}>
-                <div style={{marginBottom:'20px'}}>
-                <h4 className='second-title'>上个月专项检查不达标效果评价（C）(百分比%)</h4>
-                {/* <MultiFileUploader
-                            accept={'image/png,image/jpeg,image/gif,image/webp,image/apng,image/svg'}
-                            size={1}
-                            maxSize={2097152}
-                        /> */}
+                <div style={{marginBottom:'20px',display:'flex'}}>
+                <h4 className='second-title' style={{lineHeight:'32px',marginRight:'20px'}}>上个月专项检查不达标效果评价（C）(柱状图百分比%)</h4>
+                <Button type="primary" icon="upload" onClick={handleUploading}>添加图片</Button>
                 </div>
                 
                 {/*柱形图*/}
                 <div style={{width:'500px',marginLeft:'150px'}}>
+                  {(qcMonthCheckData.ZZWY_YDZKJCZJ_L1_004?.imgList || []).map((ii:any,inx:number)=>{
+                    return(<div style={{width:'100%'}}>
+                      <div style={{textAlign:'right',overflow:'hidden'}}>
+                        {/* 删除附件 */}
+                        <Icon onClick={()=>{
+                        qcMonthCheckData.ZZWY_YDZKJCZJ_L1_004.imgList.splice(inx,1)
+                        console.log(qcMonthCheckData.ZZWY_YDZKJCZJ_L1_004.devData)
+                      }} className='delete-hover' type="delete" style={{fontSize:'24px',color:'#f00'}} />
+                    </div>
+                      <img alt="example" style={{ width: '100%',height:'300px',border:'1px solid #000',borderRadius:'8px' }} src={ii.path} />
+                      <p style={{fontSize:'16px',textAlign:'center'}}>{ii.name}</p>
+                    </div>)
+                  })
 
+                  }
                 
-                {(qcMonthCheckData.ZZWY_YDZKJCZJ_L1_004.devData||[]).map((it:any)=><ChartCylindricalityMonth data={it} fields={qcMonthCheckData.ZZWY_YDZKJCZJ_L1_004.fields}/>)}
+                {(qcMonthCheckData.ZZWY_YDZKJCZJ_L1_004.devData||[]).map((it:any,idx:number)=>{
+                  return(
+                    <>
+                    <div style={{textAlign:'right',overflow:'hidden'}}><Icon onClick={()=>{
+                      qcMonthCheckData.ZZWY_YDZKJCZJ_L1_004.devData.splice(idx,1)
+                      console.log(qcMonthCheckData.ZZWY_YDZKJCZJ_L1_004.devData)
+                    }} className='delete-hover' type="delete" style={{fontSize:'24px',color:'#f00'}} /></div>
+                  <ChartCylindricalityMonth data={it} fields={qcMonthCheckData.ZZWY_YDZKJCZJ_L1_004.fields}/>
+                  </>
+                  )
+                  })}
                 </div>
                 {/* <h4 className='second-title'>请输入</h4> */}
                 <Input.TextArea placeholder='请输入……' key={id+'textArea'}
@@ -440,6 +547,10 @@ const Page = styled.div`
   box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
   overflow: hidden;
   min-height:700px;
+  .delete-hover:hover{
+    cursor: pointer;
+    scale: 1.2;
+  }
 `
 
 const ScrollCon = styled(ScrollBox)`

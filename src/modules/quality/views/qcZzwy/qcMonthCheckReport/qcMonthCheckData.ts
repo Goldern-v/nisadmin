@@ -30,7 +30,7 @@ class QcMonthCheckData{
     month:moment(),//月份
     wardName:authStore.defaultDeptCodeName,
     wardCode:authStore.defaultDeptCode,
-
+    startDate:moment(),
     // wardCode:{key:authStore.defaultDeptCode,label:authStore.defaultDeptCodeName},//科室
     reportName:null,//名称
     id:null
@@ -39,6 +39,7 @@ class QcMonthCheckData{
     month:moment(),//月份
     wardName:authStore.defaultDeptCodeName,
     wardCode:authStore.defaultDeptCode,
+    startDate:moment(),
     // wardCode:{key:authStore.defaultDeptCode,label:authStore.defaultDeptCodeName},//科室
     reportName:null,//名称
     id:null
@@ -75,11 +76,16 @@ class QcMonthCheckData{
         prev[`v${i + 1}`] = '';
         return prev
     }, {}),//鱼骨图
+  //   fishValueArr:[Array.from(Array(40)).reduce((prev, cur, i) => {
+  //     prev[`v${i + 1}`] = '';
+  //     return prev
+  // }, {})]
     },
     ZZWY_YDZKJCZJ_L1_004:{
       textArea:'',
       fields:[],
-      devData:[]
+      devData:[],//有多个鱼骨图
+      imgList:[],//附近图片的path
     }
   }
   // 检查情况
@@ -101,6 +107,17 @@ class QcMonthCheckData{
       prev[`v${i + 1}`] = '';
       return prev
   }, {}),//鱼骨图
+//   fishValueArr:[Array.from(Array(40)).reduce((prev, cur, i) => {
+//     prev[`v${i + 1}`] = '';
+//     return prev
+// }, {})]
+  }
+  // 四、效果评价及标准化结果
+  @observable public ZZWY_YDZKJCZJ_L1_004:any = {
+    textArea:'',
+    fields:[],
+    devData:[],
+    imgList:[],//附近图片的path
   }
 
   /**鱼骨图数据**/
@@ -116,16 +133,17 @@ class QcMonthCheckData{
         // this.fishValueObj  =value
         // console.log(this.fishValueObj);
     }
+    @action
+    updateFishValueArray(value:any,index:number){
+      this.ZZWY_YDZKJCZJ_L1_003.fishValueArr[index] = value
+        // this.fishValueObj  =value
+        // console.log(this.fishValueObj);
+    }
 
   // 柱状图
   // @observable public fields:any = []
   // @observable public devData:any = []
-  // 四、效果评价及标准化结果
-  @observable public ZZWY_YDZKJCZJ_L1_004:any = {
-    textArea:'',
-    fields:[],
-    devData:[]
-  }
+  
   
   @computed get postObj(){
     return{

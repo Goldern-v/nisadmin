@@ -302,11 +302,12 @@ export interface Props {
     /**接收值**/
     onChange?: Function,
     updateFish?:any,
+    index?:number
 
 }
 
 export default function QcFishBoneMonth(props: any) {
-    const {value, onChange,updateFish} = props
+    const {value, onChange,updateFish,index} = props
     const generateData = (count: any) => {
         const data = {};
         for (let i = 0; i <= count; i++) {
@@ -325,9 +326,9 @@ export default function QcFishBoneMonth(props: any) {
     const [listState, setListState] = useState([...list]); // 初始化状态
     
     useEffect(() => {
-        setEditVal(qcMonthCheckData.ZZWY_YDZKJCZJ_L1_003.fishValueObj)
-        // console.log('拿到数据啦',updateFish)
-        // console.log(qcMonthCheckData.ZZWY_YDZKJCZJ_L1_003.fishValueObj)
+        setEditVal(value)
+        // setEditVal(qcMonthCheckData.ZZWY_YDZKJCZJ_L1_003.fishValueObj)
+        
     }, [updateFish])
 
     const handleSearch = debounce((value: any, key: string) => {
@@ -340,7 +341,7 @@ export default function QcFishBoneMonth(props: any) {
         // const {value} = e.target || ''
         setEditVal({...editVal, [key]: e.target.value || ''})
         setEditVal((vb:any)=>{
-            onChange && onChange(vb)
+            onChange && onChange(vb,index)
             return vb
         })
         
@@ -373,7 +374,7 @@ export default function QcFishBoneMonth(props: any) {
                         <Input className="fb-ctx-item"
                                maxLength={25}
                                onChange={(e) => onIpt(e, v.key)}
-                               value={editVal ? editVal[v.key] : ''} key={v.idx} style={v.style}/>
+                               value={editVal ? editVal[v.key] : ''} key={v.idx+updateFish} style={v.style}/>
                         <Button className='fb-ctx-add' size={'small'} style={v.buttonStyle}
                                 onClick={() => handleAddElement(k)}>+</Button>
                     </>
@@ -385,7 +386,7 @@ export default function QcFishBoneMonth(props: any) {
                                         <TextArea
                                             maxLength={25}
                                             className="fb-ctx-ipt"
-                                            key={v1.key}
+                                            key={v1.key+updateFish}
                                             style={v1.style}
                                             value={editVal ? editVal[v1.key] : ''}
                                             onChange={(e) => onIpt(e, v1.key)}
@@ -415,6 +416,7 @@ export default function QcFishBoneMonth(props: any) {
             }
         </div>
         <Input
+            key={'v18'+updateFish}
             className="fb-header__ipt"
             type="text"
             maxLength={25}

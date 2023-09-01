@@ -66,6 +66,17 @@ export default class QcZzwyApi extends BaseApiService {
 public saveQcReport(params:number) {
     return this.post(`/qcReport/saveQcReport`,params)
 }
+/**保存报告**/
+public upload(obj:any) {
+    const trancePostData = new FormData();
+    for (let key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        trancePostData.append(key, obj[key]);
+      }
+    }
+    // return this.post(`/file/uploadNurse`, trancePostData);
+    return this.post(`/qcReport/upload`,trancePostData)
+}
 /**季度质量分析报告（一级、二级项目内容）
  * @param params.beginDate {string}
  * @param params.endDate {string}

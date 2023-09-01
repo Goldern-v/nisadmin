@@ -32,8 +32,8 @@ function CreateMonthCheckReport(props: Props) {
     form: { getFieldDecorator, validateFields, setFieldsValue, resetFields }
   } = props
 
-  // const [defaultName, setDefaultName] = useState('');
-  const defaultName = moment().year()+'年'+authStore.defaultDeptCodeName+(moment().month()+1)+'月护理质量检查总结'
+  const [defaultName, setDefaultName] = useState(moment().year()+'年'+authStore.defaultDeptCodeName+(moment().month()+1)+'月护理质量检查总结');
+  // const defaultName = moment().year()+'年'+authStore.defaultDeptCodeName+(moment().month()+1)+'月护理质量检查总结'
 
   const onSave = (e: any) => {
     validateFields((err, value) => {
@@ -64,10 +64,17 @@ function CreateMonthCheckReport(props: Props) {
 
         <Form.Item {...formItemLayout} label='质控月份'>
           {getFieldDecorator('month', {
-            initialValue: moment(qcMonthCheckData.currentItem.month) || moment(),
+            initialValue: moment(qcMonthCheckData.currentItem.startDate) || moment(),
             rules: [{ required: true, message: '质控月份不能为空' }]
           })
-            (<DatePicker.MonthPicker disabled={qcMonthCheckData.currentItem.id?true:false} style={{ width: '100%' }} />)}
+            (<DatePicker.MonthPicker disabled={qcMonthCheckData.currentItem.id?true:false} 
+            style={{ width: '100%' }}
+            onChange={(date:any)=>{
+              qcMonthCheckData.currentItem.startDate = date
+              setDefaultName(moment(date).year()+'年'
+              +qcMonthCheckData.currentItem.wardName+(moment(date).month()+1)+'月护理质量检查总结')
+            }}
+             />)}
         </Form.Item>
 
         <Form.Item {...formItemLayout} label='质控科室'>
@@ -79,7 +86,13 @@ function CreateMonthCheckReport(props: Props) {
             filterOption={(input:any, option:any) =>
               option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
             }
-              style={{ width: '100%' }} >
+              style={{ width: '100%' }} 
+              onChange={(val:any)=>{
+                qcMonthCheckData.currentItem.wardCode = val.key
+                qcMonthCheckData.currentItem.wardName = val.label
+                setDefaultName(moment(qcMonthCheckData.currentItem.startDate).year()+'年'
+              +val.label+(moment(qcMonthCheckData.currentItem.startDate).month()+1)+'月护理质量检查总结')
+              }}>
               {authStore.deptList.map(v =>
                     <Option value={v.code} key={v.code}>{v.name}</Option>)}
             </Select>
