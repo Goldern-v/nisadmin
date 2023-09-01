@@ -306,7 +306,7 @@ const handleFishItem =(obj:any)=>{
         </div>
         <div className='tool-con'>
           <Button onClick={() => onSave()} >保存</Button>
-          <Button onClick={() => onPrint(true)} >导出</Button>
+          {/* <Button onClick={() => onPrint(true)} >导出</Button> */}
           <Button onClick={() => appStore.history.goBack()}>返回</Button>
         </div>
       </HeadCon>
