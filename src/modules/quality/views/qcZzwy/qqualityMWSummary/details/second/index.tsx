@@ -16,12 +16,14 @@ import Fishbone from '../../components/fish-bone';
 
 const { TextArea } = Input;
 
+export interface Props {
+  detailList: any,
+  setDetailLists: (idx: number, data: Obj) => void,
+  addDetailList: () => void
+}
 
-export default observer(function TableList() {
-
-  // console.log(secondData.detailLists, 6666666666666666666)
-
-  const [detailList, setDetailList] = useState<Obj[]>([])
+export default observer(function TableList(props: Props) {
+  let { detailList, setDetailLists, addDetailList} = props;
 
   // 护理部表
   const columns: any = [
@@ -71,24 +73,13 @@ export default observer(function TableList() {
   })
 
   const handleDetailList = (idx: number, data: Obj) => {
-    console.log(idx, data)
-    setDetailList(val => {
-      return val.map((v, i) => idx === i ? { ...v, ...data } : v)
-    })
+    setDetailLists(idx, data)
   }
 
-	useEffect(() => {
-    setDetailList((prevDetailList) => [...prevDetailList, ...detailList]);
+  useEffect(() => {
+    addDetailList()
+
   }, [secondData.tableList]);
-
-  useEffect(() => {
-    secondData.detailLists = [...detailList]
-  }, [detailList]);
-
-  useEffect(() => {
-    setDetailList(secondData.detailLists)
-  }, []);
-
 	
   return (
     <Wrapper>

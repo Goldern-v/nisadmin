@@ -27,8 +27,16 @@ export default Form.create()(observer(function (props: IProps) {
   
   const [selectedRow, setSelectedRow]: any= useState({});
 
+  const [inputValues, setInputValues] = useState({});
+
   const [tableList_group, setTableList_group]: any[] = useState([]);
   const [tableList_group_TS, setTableList_group_TS] = useState([]);
+
+  const [selectedRows, setSelectedRows] = useState([])
+
+  const [templateData, setTemplateData] :any = useState([])
+
+  const [shouldExecuteOnRowGetFrom, setShouldExecuteOnRowGetFrom] = useState(false);
 
   
   const columns: any = [
@@ -54,8 +62,6 @@ export default Form.create()(observer(function (props: IProps) {
               value={record['groupName']} 
               placeholder='请填写...' 
               onChange={e => handleInputChange(e, index)} 
-              onBlur={save}
-              onPressEnter={save}
             />
           </Form.Item>
         ) : null
@@ -75,7 +81,7 @@ export default Form.create()(observer(function (props: IProps) {
     },
 	]
 
-  const [inputValues, setInputValues] = useState({});
+  
   const columns_group: any = [
     {
       key: 'qcCode',
@@ -106,16 +112,12 @@ export default Form.create()(observer(function (props: IProps) {
               value={inputValues[`${selectedRow.groupId}-${record.qcCode}`] || ''} 
               placeholder='请填写...' 
               onChange={e => inputChangeGroup(e, record, index)} 
-              onBlur={save}
-              onPressEnter={save}
             />
           </Form.Item>
         ) : null
       }
     }
 	]
-
-
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
     const { value } = e.target;
@@ -149,23 +151,18 @@ export default Form.create()(observer(function (props: IProps) {
       [`${selectedRow.groupId}-${record.qcCode}`]: value,
     }));
   }
-
-
-  const save = () => {
-  }
   
   const rowDelete = (row: any, index: number) => {
     tableList.splice(index, 1)
     onRowGetFrom(tableList[0])
   }
 
+
   const add = () => {
-    
     let lists = [...tableList, { groupId: tableList.length + 1 , groupName: ''}]
     setTableList(lists)
+    setShouldExecuteOnRowGetFrom(false);
   }
-
-  const [selectedRows, setSelectedRows] = useState([])
 
 
   const rowSelection = {
@@ -193,15 +190,14 @@ export default Form.create()(observer(function (props: IProps) {
     return record.groupId === selectedRow.groupId ? 'highlight-row' : '';
   };
 
-  const [templateData, setTemplateData] :any = useState([])
   const getTemplateList = async() => {
     let { data } = await api.templateList()
     setTemplateData(data || [])
     setTableList_group_TS(data || [])
   }
 
-  
   let onRowGetFrom = async(row: any) => {
+    console.log(row, tableList, 'ces')
     if (!row) {
       setTableList_group([])
       return
@@ -210,13 +206,19 @@ export default Form.create()(observer(function (props: IProps) {
     setSelectedRow(row)
     let list = tableList.find((item:any) => row.groupId === item.groupId)
     if (list && list.mychildren && list.mychildren.length > 0) {
-      let qcCodes = list.mychildren.map((it:any) => it.qcCode)
+      let qcCodes = list.mychildren.map((it:any) => {
+        setInputValues((prevInputValues: any) => ({
+          ...prevInputValues,
+          [`${row.groupId}-${it.qcCode}`]: it.nurseDeptTargetValue || "",
+        }));
+        return it.qcCode
+      })
       setSelectedRows(qcCodes); 
+      
     } else {
       setSelectedRows([]); 
     }
   }
-
   const tableAddOk = async () => {
     let newtableLists:any = tableList.flatMap((item:any) => 
       item.mychildren?.map((child:any) => ({
@@ -241,10 +243,10 @@ export default Form.create()(observer(function (props: IProps) {
   }
 
 
-
   useEffect(() => {
     getTemplateList()
   }, [])
+
   useEffect(() => { 
     if (table_add) {
       let tableLists = [...firstData.firstTableList_UD]
@@ -259,14 +261,16 @@ export default Form.create()(observer(function (props: IProps) {
         return acc;
       }, []);
       setTableList(mergedTableLists)
+      setShouldExecuteOnRowGetFrom(true);
     }
-    
-    
   }, [table_add])
 
   useEffect(() => {
-    onRowGetFrom(tableList[0]);
-  }, [tableList]);
+    if (shouldExecuteOnRowGetFrom) {
+      onRowGetFrom(tableList[0]);
+      setShouldExecuteOnRowGetFrom(false);
+    }
+  }, [shouldExecuteOnRowGetFrom]);
   
   return (
     <Modal

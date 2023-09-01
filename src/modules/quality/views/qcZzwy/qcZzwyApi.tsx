@@ -54,6 +54,10 @@ export default class QcZzwyApi extends BaseApiService {
     public deleteQcReport(params:any) {
         return this.post('/qcReport/deleteQcReport',params)
     }
+    /**修改报告**/
+    public updateQcReport(params:any) {
+        return this.post('/qcReport/updateQcReport',params)
+    }
 /**查看报告**/
     public getQcReportById(reportId:number) {
         return this.get(`/qcReport/getQcReport/${reportId}`)

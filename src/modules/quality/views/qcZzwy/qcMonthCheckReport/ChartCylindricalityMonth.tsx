@@ -52,7 +52,9 @@ export default function ChartCylindricalityMonth(props: Props){
         <Tooltip />
         <Axis />
         <Legend />
-        <Bar position="月份*百分比" color="name" adjust={[{ type: 'dodge', marginRatio: 1 / 32 }]} />
+        
+        {/* size={30}, // 设置柱子宽度 */}
+        <Bar position="月份*百分比" color="name" size={30} adjust={[{ type: 'dodge', marginRatio: 1 / 32 }]} />
       </Chart>
     );
 }

@@ -13,6 +13,7 @@ import { firstData } from './first/firstData'
 import { secondData } from './second/secondData'
 import { thirdData } from './third/data'
 import { fourData } from './four/fourData'
+import { Obj } from 'src/libs/types'
 
 interface Props {
 
@@ -20,6 +21,10 @@ interface Props {
 
 function QqualityMWSummaryDetail(props: Props) {
   let [loading, setLoading] = useState(false)
+
+  const [detailList, setDetailList]:any = useState([])
+
+
   let { qcReportItemDtoList, reportMasterData }: any = localStorage.getItem('qqualityMWSummaryDetail') ? JSON.parse(localStorage.getItem('qqualityMWSummaryDetail') || '') : {}
 
   let detail_check: any = localStorage.getItem('detail_check')
@@ -29,8 +34,6 @@ function QqualityMWSummaryDetail(props: Props) {
   const detailsSave = async() => {
     let masterData:any = reportMasterData || {}
     let list: any = qcReportItemDtoList || []
-
-    console.log(secondData.detailLists, '入参')
 
     let qcReportItemDataLists = list.map((item: any, index: number) => {
       let reportMasterId = (item?.qcReportItemDataList && item?.qcReportItemDataList[0]?.reportMasterId) || '';
@@ -50,7 +53,7 @@ function QqualityMWSummaryDetail(props: Props) {
         itemValue = JSON.stringify({
           case: secondData.case,
           tableList: secondData.tableList,
-          detailLists: secondData.detailLists
+          detailLists: detailList
         });
       } else if (index === 2) {
         itemValue = JSON.stringify({
@@ -130,9 +133,8 @@ function QqualityMWSummaryDetail(props: Props) {
 
     secondData.case = parseData(1, 'case') || '';
     secondData.tableList = parseData(1, 'tableList') || [];
-    secondData.detailLists = parseData(1, 'detailLists') || [];
-
-    console.log(secondData.detailLists, 66666666666, '测试')
+    // secondData.detailLists = parseData(1, 'detailLists') || [];
+    setDetailList(parseData(1, 'detailLists') || [])
 
     thirdData.evaluate = parseData(2, 'evaluate') || '';
     thirdData.tableList = parseData(2, 'tableList') || [];
@@ -141,6 +143,24 @@ function QqualityMWSummaryDetail(props: Props) {
     fourData.tableList = parseData(3, 'tableList') || [];
     fourData.nameTS = parseData(3, 'nameTS') || '';
   } 
+
+  const setDetailLists = (idx: number, data: Obj) => {
+    setDetailList((val: any[]) => {
+      return val.map((v, i) => idx === i ? { ...v, ...data } : v)
+    })
+  };
+
+  useEffect(() => {
+    
+  }, [secondData.tableList]);
+  const addDetailList = () => {
+    setDetailList((prevDetailList: any) => {
+      const filteredTableList = secondData.tableList.filter((item: any) => {
+        return !prevDetailList.some((detail: any) => detail.qcCode === item.qcCode);
+      });
+      return prevDetailList.concat(filteredTableList);
+    });
+  }
 
   useEffect(() => {
     getTable(qcReportItemDtoList || [])
@@ -196,7 +216,7 @@ function QqualityMWSummaryDetail(props: Props) {
             <div className={detail_check === '0' ? 'detail_check': ''}>
               <div className='title'>{ reportMasterData?.reportName }</div>
               <FirstTable />
-              <SecondTable />
+              <SecondTable detailList={detailList} setDetailLists={setDetailLists} addDetailList={addDetailList} />
               <ThirdTable />
               <Four />
             </div>

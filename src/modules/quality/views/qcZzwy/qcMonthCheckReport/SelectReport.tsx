@@ -90,7 +90,9 @@ function SelectReport(props: Props) {
               initialValue: qcMonthCheckData.templateData.qcCode || '',
               rules: [{ required: true, message: '表模板不能为空' }]
             })(
-              <Select
+              <Select showSearch filterOption={(input:any, option:any) =>
+                option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+              }
                 style={{ width: '100%' }}
                 onChange={(val:any)=>{
                   qcMonthCheckData.getReportTwoItem(val)

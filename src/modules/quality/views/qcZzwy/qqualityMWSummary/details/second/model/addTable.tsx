@@ -46,7 +46,7 @@ export default Form.create()(observer(function (props: IProps) {
       getEvalRateDataList: selectedObjects
     }
     let { data } = await api.getMasterEvalRate(params)
-    model.tableList = data || []
+    model.tableList = [...data] || []
     model.secondtModalAdd = false
     resetFields()
   }
