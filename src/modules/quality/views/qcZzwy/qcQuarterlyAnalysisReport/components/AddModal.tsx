@@ -1,16 +1,13 @@
 import React, {useState, useEffect} from 'react'
 import styled from "styled-components";
-import {Modal, Form, Input, Radio, Select, message, DatePicker} from 'antd'
+import {Modal, Form, Input, Select} from 'antd'
 import {FormComponentProps} from 'antd/lib/form/Form'
 import {observer} from 'mobx-react-lite'
 import {ModalComponentProps} from "src/libs/createModal";
 import {appStore, authStore} from "src/stores";
 import {QuarterlyZzwyData} from "src/modules/quality/views/qcZzwy/qcQuarterlyAnalysisReport/Data";
 import moment from "moment";
-import {monthList} from "src/enums/date";
-import FormCreateModal from "src/modules/quality/views/qualityControlRecord/components/common/FormCreateModal";
-import {qualityControlRecordVM} from "src/modules/quality/views/qualityControlRecord/QualityControlRecordVM";
-import app from "src/App";
+import FormCreateModal from './CreateForm'
 import {qcZzwyApi} from "src/modules/quality/views/qcZzwy/qcZzwyApi";
 import YearPicker from 'src/components/YearPicker';
 
@@ -67,15 +64,7 @@ function QcQuarterlyModal(props: Props) {
             }
             let timeObj: any = {}
             timeObj = QuarterlyZzwyData.getDateRange(value.reportType, value.qcTime, moment(value.reportYear).format('YYYY'))
-            // console.log('value====',value,);
-            // if(value.reportType =='季度'){
-            //
-            // }else{
-            //     let old = new Date(value.reportYear, value.qcTime + 1, 0)
-            //     timeObj['startDate'] =`${value.reportYear}-${value.qcTime}-01`
-            //     timeObj['endDate'] =`${value.reportYear}-${value.qcTime}-${old}`
-            // }
-            console.log("timeObj===", timeObj);
+            // console.log("timeObj===", timeObj);
             /**需要根据选的报告类型来组装时间**/
             let params = {
                 hospitalCode: 'zzwy',
@@ -87,7 +76,7 @@ function QcQuarterlyModal(props: Props) {
                 ...timeObj
             }
             QuarterlyZzwyData.resetPropertiesToDefault()
-            console.log("QuarterlyZzwyData.reportMasterData21111111",QuarterlyZzwyData.reportMasterData);
+            // console.log("QuarterlyZzwyData.reportMasterData21111111",QuarterlyZzwyData.reportMasterData);
             qcZzwyApi.createQcReport({...params}).then( (res: any) => {
                 /**数据清空**/
                 QuarterlyZzwyData.updateReportMasterData(res.data)
@@ -227,7 +216,6 @@ function QcQuarterlyModal(props: Props) {
                         setFormCreateVisible(false)
                     }}
                     visible={formCreateVisible}
-                    zzwyCreat={true}
                     level={qcLevel}
                 />
             </Wrapper>

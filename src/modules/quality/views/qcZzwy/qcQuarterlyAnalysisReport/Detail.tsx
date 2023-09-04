@@ -213,7 +213,7 @@ export default observer(function QuarterlyAnalysisReportZzwyDetail(props: Props)
                 </div>
             </TopHeader>
             {/*内容*/}
-            {/*<Spin>*/}
+            <Spin  spinning={QuarterlyZzwyData.contentLoading}>
             <MidCon>
                 <Content>
                     <>
@@ -323,8 +323,14 @@ export default observer(function QuarterlyAnalysisReportZzwyDetail(props: Props)
                             )
                         })}
                     </div>
+                    <ContentEnd>
+                        <h2>漳州市第五医院</h2>
+                        <div>{QuarterlyZzwyData.reportMasterData?.creatorTime}</div>
+                    </ContentEnd>
                 </Content>
             </MidCon>
+
+            </Spin>
             <AnalysisSelectReport
                 visible={selectTableModal}
                 handleOk={(value: any) => {
@@ -439,4 +445,9 @@ const Summary = styled.div`
   justify-content: space-between;
   align-items: center;
   margin: 10px 0;
+`
+const ContentEnd =styled.div`
+ display: flex;
+  justify-content: flex-end;
+  
 `

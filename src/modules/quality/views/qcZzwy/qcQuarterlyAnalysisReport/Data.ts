@@ -8,6 +8,7 @@ import {qcMonthCheckData} from "src/modules/quality/views/qcZzwy/qcMonthCheckRep
 
 class QuarterlyAnalysisReportZzwy {
     @observable public tableLoading = false; //表格loading
+    @observable public contentLoading = false //页面loading
     @observable public tableList: any = []; //表格内容
     @observable public pageIndex: any = 1; //页码
     @observable public pageSize: any = 20; //每页大小
@@ -72,6 +73,7 @@ class QuarterlyAnalysisReportZzwy {
         this.qcReportItemDtoList = data.qcReportItemDtoList
         // console.log("this.reportMasterData===2222",this.reportMasterData);
     }
+
     @action
     updateFishValueObj(value: any, index: number) {
         // this.fishValueObj  =value
@@ -126,10 +128,11 @@ class QuarterlyAnalysisReportZzwy {
 
     /*保存报告**/
     saveQcReport() {
+        this.contentLoading = true
         let qcReportItemDtoList = this.qcReportItemDtoList || []
-        let qcReportItemDataList:any = []
-        qcReportItemDtoList.map((it:any,index:number)=>{
-            let itemValue: any ={}
+        let qcReportItemDataList: any = []
+        qcReportItemDtoList.map((it: any, index: number) => {
+            let itemValue: any = {}
             switch (index) {
                 case 0 :
                     itemValue = {
@@ -155,27 +158,14 @@ class QuarterlyAnalysisReportZzwy {
                     return
             }
             qcReportItemDataList.push({
-                itemCode:it.itemCode,
-                itemValue:JSON.stringify(itemValue),
-                reportItemId:it.id,
-                reportMasterId:this.reportMasterData.id || null,
-                id:it.qcReportItemDataList?it.qcReportItemDataList[0].id:null,
+                itemCode: it.itemCode,
+                itemValue: JSON.stringify(itemValue),
+                reportItemId: it.id,
+                reportMasterId: this.reportMasterData.id || null,
+                id: it.qcReportItemDataList ? it.qcReportItemDataList[0].id : null,
             })
-
-
-        // let newList:any =this.qcReportItemDtoList
-        // newList.map((it: any, index: number) => {
-        //
-        //     it.qcReportItemDataList.map((item:any,k:number)=>{
-        //         return {
-        //             ...item,
-        //             itemValue:JSON.stringify(itemValue)
-        //         }
-        //     })
-        //     return { ...it }
         })
-        console.log("this.qcReportItemDtoList===",qcReportItemDataList);
-        // console.log(qcReportItemDataList);
+        console.log("this.qcReportItemDtoList===", qcReportItemDataList);
         let params = {
             hospitalCode: "zzwy",
             templateName: "季度质量分析报告",
@@ -188,6 +178,8 @@ class QuarterlyAnalysisReportZzwy {
             message.success('保存成功')
             this.getTableList()
             appStore.history.goBack()
+        }).finally(() => {
+            this.contentLoading = false
         })
     }
 
@@ -205,11 +197,12 @@ class QuarterlyAnalysisReportZzwy {
      * **/
     getQcItemDataList(type: string) {
         let params = {
-            beginDate: this.reportMasterData.startDate,
-            endDate: this.reportMasterData.endDate,
+            startDate: `${this.reportMasterData.startDate} 00:00:00`,
+            endDate: `${this.reportMasterData.endDate} 23:59:59`,
             wardCode: this.reportMasterData.wardCode,
             qcItemLevel: type,
-            qcCode: this.reportMasterData.qcCode
+            qcCode: this.reportMasterData.summaryFormCode,
+            qcLevel:this.qcLevel
         }
         qcZzwyApi.getQcItemDataList(params).then((res: any) => {
             console.log("res===", res);
@@ -218,13 +211,15 @@ class QuarterlyAnalysisReportZzwy {
 
     /**获取分析报告详情**/
     getQcReportById(master: number) {
+        this.contentLoading = true
         qcZzwyApi.getQcReportById(master).then((res: any) => {
             this.reportMasterData = res.data.reportMasterData
             this.qcReportItemDtoList = res.data.qcReportItemDtoList
             this.analysisItemValue(res.data.qcReportItemDtoList)
             this.getQcItemDataList('first')
             this.getQcItemDataList('second')
-
+        }).finally(() => {
+            this.contentLoading = false
         })
     }
 
@@ -264,7 +259,7 @@ class QuarterlyAnalysisReportZzwy {
                     this.referredTable = obj.referredTable || []
                 }
                 /**柱状图**/
-                if (index == 3 && item.qcReportItemDataList[0].itemValue) {
+                if (index == 4 && item.qcReportItemDataList[0].itemValue) {
                     this.analysisChartData = obj.analysisChartData || []
                 }
             }
@@ -414,7 +409,7 @@ class QuarterlyAnalysisReportZzwy {
         this.reportMasterData = {}
         this.qcReportItemDtoList = []
         this.reportTwoItem = []
-        this.summarize =''
+        this.summarize = ''
         this.summaryTable = []
         this.analysisChartData = {
             textArea: '',
