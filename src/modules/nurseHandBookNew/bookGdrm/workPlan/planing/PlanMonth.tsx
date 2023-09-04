@@ -341,9 +341,9 @@ export default observer(function PlanMonth(props: Props) {
                     <div className='modal-content'>
                     <div className="item-row" >
                     <div
-              className="label"
-              style={{ fontWeight: "bold", marginBottom: ".3em" }}
-            >
+                        className="label"
+                        style={{ fontWeight: "bold", marginBottom: ".3em" }}
+                        >
               科室</div>
               <Select
                 style={{ width: "100%" }}

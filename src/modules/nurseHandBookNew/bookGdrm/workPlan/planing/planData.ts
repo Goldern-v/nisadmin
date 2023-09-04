@@ -15,6 +15,7 @@ import {
     Row, Col,
     Empty
 } from 'src/vendors/antd'
+import { appStore } from "src/stores";
 
 class planData {
     @observable public year = moment() as undefined | moment.Moment; //年份
@@ -42,17 +43,19 @@ class planData {
     @observable public mainLoading = false;//查询或者初始化的时候的loading
     @observable public detailLoading = false;//获取详情的时候的loading
     @observable public maxWidthTitle = 1400;//浏览器屏幕大小，控制左上标题的显示，默认1400，特殊1600
-    
-    
+
+
     // 年份汇总数据
     @observable public deptCodeYear = ""; //科室
     @observable public deptNameYear = ""; //科室名称
-    
+
     // 年份汇总数据 end
 
     // 月份计划
     @observable public pathname = "";//路径pathname
     @observable public createDeptCode = ''; //科室
+    // @observable public createDeptName = ''; //科室名
+
     @observable public createYear = moment() as undefined | moment.Moment; //年份
     @observable public createQuarter = moment().quarter() as unknown; //季度
     @observable public createMonth = moment().month() + 1; //yue份
@@ -97,6 +100,7 @@ class planData {
             type:this.typeObject[this.pathname],
             year: this.createYear?.year(),
             deptCode:this.createDeptCode,
+            // deptName:this.createDeptName,
         }
     }
 
@@ -120,11 +124,13 @@ class planData {
             //   code:''
             // })
             this.deptList = res.data.treeDept || []
-            this.createDeptCode = res.data.userDeptCode || ''
+            this.createDeptCode = ['dgxg'].includes(appStore.HOSPITAL_ID)? res.data.userDeptName : res.data.userDeptCode || ''
+            // this.createDeptCode = res.data.userDeptName || ''
+            // console.log(this.deptList,'dddddddddddddddddd');
 
             // setDeptListAll(res.data)
           }).catch(err=>{
-  
+
           })
     }
 
@@ -152,7 +158,7 @@ class planData {
 		}
 		return tips
 	}
-    /**工作计划/总结列表 
+    /**工作计划/总结列表
 	 * 保存编辑框的时候会带id，带id就回显这一条数据，不是选中第一条
 	*/
     getList(id?:any){
@@ -192,7 +198,7 @@ class planData {
 							this.getDetail(id)
 							break;
 						}
-						
+
 					}
 				}else{
 					if(this.itemList.length>0){
@@ -201,7 +207,7 @@ class planData {
 						this.getDetail(this.itemList[0].id)
 					}
 				}
-                
+
             }
         }).catch(err=>{
           this.mainLoading = false
@@ -278,7 +284,7 @@ class planData {
     }
     document.body.appendChild(importEl)
     importEl.click()
-  
+
   }
   /**编辑页面导出 */
   exportEditor(){
