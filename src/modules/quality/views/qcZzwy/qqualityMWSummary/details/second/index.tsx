@@ -128,7 +128,7 @@ const Wrapper = styled.div`
     padding: 10px 0 !important;
   }
   .bHdIpD#baseTable .ant-table-body{
-    overflow-y: auto !important
+    overflow: auto !important;
   }
   .measures{
     margin-bottom: 10px;

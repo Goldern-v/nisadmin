@@ -239,7 +239,7 @@ function QqualityMWSummaryDetail(props: Props) {
 
   useEffect(() => {
     
-    setTimeout(() => {
+    let timeoutId = setTimeout(() => {
       let { qcReportItemDtoList, reportMasterData }: any = localStorage.getItem('qqualityMWSummaryDetail') ? JSON.parse(localStorage.getItem('qqualityMWSummaryDetail') || '') : {};
       setQcReportItemDtoList(qcReportItemDtoList || []);
       setReportMasterData(reportMasterData || {});
@@ -247,6 +247,7 @@ function QqualityMWSummaryDetail(props: Props) {
     });
     
     return () => {
+      clearTimeout(timeoutId);
       localStorage.removeItem('qqualityMWSummaryDetail');
     };
   }, [])
