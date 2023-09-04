@@ -24,11 +24,11 @@ class QqualityMWSummaryData{
   @observable public pageSize: any = 20; //每页大小
   @observable public total: any = 0; //总条数
 
-  @observable public year = moment() as undefined | moment.Moment; //年份
+  @observable public year:any = null; //年份
   @observable public deptCode = "全院"; //科室
   @observable public deptName = "全院"; //科室名称
 
-  @observable public selectQuarter: any = moment().quarter();//当前选择的季度
+  @observable public selectQuarter: any = '全部';//当前选择的季度
 
   // @observable public filterDate: any = [moment(moment()), moment()]
 
@@ -51,7 +51,7 @@ class QqualityMWSummaryData{
       pageSize:this.pageSize + '',
       hospitalCode: 'zzwy',
       templateName: '季度质量管理工作总结',
-      reportYear: this.year?.format('YYYY'),
+      reportYear: this.year ? this.year.format('YYYY') : '',
       reportLevel: '1',
       
     }
@@ -71,6 +71,7 @@ class QqualityMWSummaryData{
   getTableList(){
     // 季度
     let times = {}
+    console.log(this.selectQuarter, 666666666, this.selectQuarter !== '全部')
     if (this.selectQuarter !== '全部') {
       times = {
         startDate: quarterTimes(this.year?.format('YYYY'),this.selectQuarter)[0],

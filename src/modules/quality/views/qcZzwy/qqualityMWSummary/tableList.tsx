@@ -133,13 +133,13 @@ export default observer(function TableList() {
   }
 
 	useEffect(() => {
-		tableListData.getTableList()
+		// tableListData.getTableList()
 		tableListData.getNursingAll()
 	}, [])
 
   useEffect(() => {
 		tableListData.getTableList()
-	}, [tableListData.pageIndex, tableListData.pageSize])
+	}, [tableListData.pageIndex, tableListData.pageSize, tableListData.deptCode,tableListData.year, tableListData.selectQuarter ])
 	
   return (
     <Wrapper>
@@ -154,7 +154,6 @@ export default observer(function TableList() {
 					onChange={(val: any) => {
 						tableListData.deptCode = val.key
 						tableListData.deptName = val.label
-						tableListData.getTableList()
 					}}
 				>
 					<Option value='全院'>全院</Option>
@@ -171,8 +170,11 @@ export default observer(function TableList() {
           }}
           onPanelChange={(value, mode) => {
             tableListData.year = value
-            tableListData.getTableList()
             setYearPickShow(false)
+          }}
+          onChange={(value, mode) => {
+            tableListData.year = value
+            tableListData.selectQuarter = '全部'
           }}
           mode="year"
           style={{ width: 120 }}
@@ -185,15 +187,14 @@ export default observer(function TableList() {
 				<span>季度：</span>
 				<Select className="mr-15"
 					style={{ width: 100 }}
-          defaultValue={moment().quarter()}
+          value={tableListData.selectQuarter}
 					onChange={(val: any) => {
 						tableListData.selectQuarter = val
-            tableListData.getTableList()
 					}}
 				>
           <Option value='全部'>全部</Option>
 					{
-            quarterAndYear1.map((v: any, i: number) => (
+            tableListData.year && quarterAndYear1.map((v: any, i: number) => (
               <Option key={i} value={i}>{v}</Option>
             ))
           }
