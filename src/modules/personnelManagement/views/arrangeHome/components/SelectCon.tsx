@@ -21,7 +21,7 @@ import { printModal } from '../viewModal/PrintModal'
 
 export interface Props {
 }
-const isWhArr = ['wh', 'gxjb', 'fsxt', '925', 'whyx', 'lyyz', 'qhwy', 'whsl', 'ytll', 'whhk', 'dglb', 'zzwy', 'dghm', 'zjhj']
+const isWhArr = ['wh', 'gxjb', 'fsxt', '925', 'whyx', 'lyyz', 'qhwy', 'whsl', 'ytll', 'whhk', 'dglb', 'zzwy', 'dghm', 'zjhj','gdsfy']
 export default observer(function SelectCon() {
   const [isInit, setIsInit] = useState(true);
   const [bigDeptList, setBigDeptList] = useState([]);

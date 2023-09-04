@@ -144,7 +144,7 @@ export default observer(function MainBox() {
             width: 70,
           },
         ],
-        'wh,gzsrm,gxjb,lyyz,qhwy,ytll,dglb,dghm': [
+        'wh,gzsrm,gxjb,lyyz,qhwy,ytll,dglb,dghm,gdsfy': [
           {
             title: "开始时间",
             dataIndex: "startDate",

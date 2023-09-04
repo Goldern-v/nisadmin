@@ -30,6 +30,7 @@ export default function PersonnelManagementView() {
   const leftMenuConfig = (() => {
     switch (appStore.HOSPITAL_ID) {
       case 'wh':
+      case 'gdsfy':
       case 'lyyz':
       case 'fssdy':
       case 'fsxt':

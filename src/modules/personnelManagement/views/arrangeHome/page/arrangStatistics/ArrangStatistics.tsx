@@ -107,7 +107,7 @@ export default observer(function ArrangStatistics() {
           total += record[current];
           return total;
         }, 0);
-        return ['wh', 'lyyz', 'qhwy', "ytll", 'whhk', 'dglb', 'dghm'].includes(appStore.HOSPITAL_ID) ? Number(sum) : Number(
+        return ['wh', 'lyyz', 'qhwy', "ytll", 'whhk', 'dglb', 'dghm','gdsfy'].includes(appStore.HOSPITAL_ID) ? Number(sum) : Number(
           sum + Number(record["加班"]) - Number(record["减班"])
         ).toFixed(2);
       }
@@ -242,7 +242,7 @@ export default observer(function ArrangStatistics() {
         <Button type="primary" onClick={onLoad}>
           刷新
         </Button>
-        {appStore.HOSPITAL_ID=='wh' && <Button type="primary" onClick={exportFile} loading={exportLoading}>
+        {['wh','gdsfy'].includes(appStore.HOSPITAL_ID) && <Button type="primary" onClick={exportFile} loading={exportLoading}>
           导出
         </Button>}
       </PageHeader>

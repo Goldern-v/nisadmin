@@ -11,6 +11,7 @@ import { ReactComponent as SYSC } from 'src/modules/UserManual/images/SYSC.svg'
 import { navConfig, navConfigItem } from './navConfig_hj'
 import { navConfig as navConfig_hjInterns } from './navConfig_hjInterns'
 import { navConfig as navConfig_wh } from './navConfig_wh'
+import { navConfig as navConfig_gdsfy } from './navConfig_gdsfy'
 import { navConfig as navConfig_fssdy } from './navConfig_fssdy'
 import { navConfig as navConfig_fssdySelf } from './navConfig_fssdySelf'
 import { navConfig as navConfig_whSelf } from './navConfig_whSelf'
@@ -143,6 +144,8 @@ export default observer(function NavBar(props: any) {
       else return navConfig_whSelf;
     } else if (appStore.HOSPITAL_ID == "ys") {
       return navConfig_ys;
+    } else if (appStore.HOSPITAL_ID == "gdsfy") {
+      return navConfig_gdsfy;
     } else if (appStore.HOSPITAL_ID == "nys") {
       return navConfig_nys;
     } else if (appStore.HOSPITAL_ID == "dzlc") {

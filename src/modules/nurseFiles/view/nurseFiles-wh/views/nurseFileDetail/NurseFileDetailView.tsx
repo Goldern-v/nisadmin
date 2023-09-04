@@ -162,13 +162,13 @@ const ROUTE_LIST_DEFAULT = [
     name: '文章'
   },
   
-  ...(['wh','zzwy', 'dghm', 'ytll', 'dglb','sdlj'].includes(appStore.HOSPITAL_ID) ? [{
+  ...(['wh','gdsfy','zzwy', 'dghm', 'ytll', 'dglb','sdlj'].includes(appStore.HOSPITAL_ID) ? [{
     /** 方明处理 */
     type: 'personWinning',
     component: PersonWinning,
     name: '个人获奖'
   }]: []),
-  ...(['wh','zzwy', 'qhwy', 'dghm', 'ytll', 'dglb','sdlj'].includes(appStore.HOSPITAL_ID) ? [
+  ...(['wh','gdsfy','zzwy', 'qhwy', 'dghm', 'ytll', 'dglb','sdlj'].includes(appStore.HOSPITAL_ID) ? [
   {
     /** 吴敏处理 */
     type: 'specializNurse',
@@ -287,7 +287,7 @@ const ROUTE_LIST_DEFAULT = [
     component: OrganizationChange,
     name: '编制变动'
   }] : [],
-  ...appStore.HOSPITAL_ID === 'wh' || appStore.HOSPITAL_ID === 'fsxt' || appStore.HOSPITAL_ID === 'ytll' ? [{
+  ...['wh','fsxt','ytll','gdsfy'].includes(appStore.HOSPITAL_ID) ? [{
     type: 'WardInnovate',
     component: WardInnovate,
     name: '科室创新'

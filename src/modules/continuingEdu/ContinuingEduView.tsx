@@ -1422,25 +1422,25 @@ const getIcon = (icon: any) => {
           title: "手册表单维护",
           path: "/continuingEdu/formMaintenance",
           component: FormMaintenance,
-           hide: appStore.HOSPITAL_ID !=='whyx',
+           hide: !['whyx','gdsfy'].includes(appStore.HOSPITAL_ID)
         },
         {
           title: "手册模板维护",
           path: "/continuingEdu/templateMaintenance",
           component: TemplateMaintenance,
-          hide: appStore.HOSPITAL_ID !=='whyx'
+          hide: !['whyx','gdsfy'].includes(appStore.HOSPITAL_ID)
         },
         {
           title: "手册附件维护",
           path: "/continuingEdu/手册附件维护",
           component: attachment,
-          hide: appStore.HOSPITAL_ID !=='whyx'
+          hide: !['whyx','gdsfy'].includes(appStore.HOSPITAL_ID)
         },
         {
           title: "手册固定表维护",
           path: "/continuingEdu/手册固定表维护",
           component: fixedTable,
-          hide: appStore.HOSPITAL_ID !=='whyx'
+          hide: !['whyx','gdsfy'].includes(appStore.HOSPITAL_ID)
         },
       ],
     },
@@ -1448,7 +1448,7 @@ const getIcon = (icon: any) => {
   ];
   const LEFT_MENU_CONFIG = appStore.hisMatch({
     map: {
-      'whyx,whhk': LEFT_MENU_CONFIG_WHYX,
+      'whyx,whhk,gdsfy': LEFT_MENU_CONFIG_WHYX,
       default:LEFT_MENU_CONFIG_DEFAULT
     },
     vague: true,

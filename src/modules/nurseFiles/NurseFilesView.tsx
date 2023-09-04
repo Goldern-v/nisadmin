@@ -56,6 +56,7 @@ export default observer(function NurseFilesView(props: Props) {
   const OnTheJobComponent = (() => {
     switch (appStore.HOSPITAL_ID) {
       case "wh":
+      case "gdsfy":
       case 'lyyz':
       case 'qhwy':
       case 'zhzxy':
@@ -802,6 +803,7 @@ export default observer(function NurseFilesView(props: Props) {
   const menuConfig = () => {
     switch (appStore.HOSPITAL_ID) {
       case "wh":
+      case "gdsfy":
       case 'lyyz':
       case 'qhwy':
       case 'ytll':
@@ -871,7 +873,7 @@ export default observer(function NurseFilesView(props: Props) {
         'zzwy',
         'dglb',
         'lyrm',
-        'zhzxy', 'dghm', 'zjhj',
+        'zhzxy', 'dghm', 'zjhj','gdsfy',
         appStore.isDev ? "wh" : "wh_production",
       ].indexOf(appStore.HOSPITAL_ID) >= 0
     )

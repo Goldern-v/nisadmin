@@ -271,7 +271,7 @@ export default function QcThreeRouter(props: Props) {
         route_三级质控问题汇总,
         route_检查表单统计表,
       ],
-      wh: [
+      'wh,gdsfy': [
         route_三级质控月度报告,
         route_三级质控汇总报告,
         route_三级质控问题汇总,
