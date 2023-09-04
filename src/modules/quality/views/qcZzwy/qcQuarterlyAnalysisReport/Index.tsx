@@ -33,8 +33,11 @@ export default observer(function QuarterlyAnalysisReportZzwy() {
             title: '报告名称',
             dataIndex: 'reportName',
             align: 'center',
-            // render:(text:string,record:any)=> `${record.reportYear}`
-
+            render:(text:string,record:any)=>{
+                return(
+                    <div>{`${record.reportYear}-${record.qcTime}-${record.summaryFormName}`}</div>
+                )
+            }
         },
         {
             title: '表单',
@@ -56,18 +59,18 @@ export default observer(function QuarterlyAnalysisReportZzwy() {
         },
         {
             title: "时间",
-            dataIndex: "reportMonth",
+            dataIndex: "qcTime",
             align: "center",
         },
         {
             title: "创建人",
-            dataIndex: "creatorName",
+            dataIndex: "createName",
             align: "center",
 
         },
         {
             title: "创建时间",
-            dataIndex: "creatorTime",
+            dataIndex: "createTime",
             align: "center",
             width: 80,
         },

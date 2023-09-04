@@ -4,6 +4,7 @@ import {qcZzwyApi} from "../qcZzwyApi";
 import {appStore} from "src/stores";
 import {message} from "antd";
 import {quarterTimes} from "src/enums/date";
+import {qcMonthCheckData} from "src/modules/quality/views/qcZzwy/qcMonthCheckReport/qcMonthCheckData";
 
 class QuarterlyAnalysisReportZzwy {
     @observable public tableLoading = false; //表格loading
@@ -32,11 +33,27 @@ class QuarterlyAnalysisReportZzwy {
     @observable public rectification: string = ''
     /**二级项目 --简称**/
     @observable public referredTable: any = []
+    @observable public templateList: any = []//模板列表
+    @observable public templateData: any = {
+        qcCode: '',
+        itemCodeObj: [],//二级项目对象，name，code，简称simpleName
+        itemCodeList: []//二级项目的codelist，用于获取柱状图传参
+    }
+    /**柱状图数据**/
+    @observable public analysisChartData: any = {
+        textArea: '',
+        fields: [],
+        devData: [],
+        imgList: [],//附近图片的path
+    }
+    @observable public reportTwoItem: any = []//根据报告表Code找到报告表下的二级项目
     /**鱼骨图数据**/
-    @observable public fishValueObj: any = Array.from(Array(40)).reduce((prev, cur, i) => {
-        prev[`v${i + 1}`] = '';
-        return prev
-    }, {})
+    @observable public fishValueObj: any = [
+        Array.from(Array(50)).reduce((prev, cur, i) => {
+            prev[`v${i + 1}`] = '';
+            return prev
+        }, {})
+    ]
 
     @computed get postObj() {
         return {
@@ -50,10 +67,18 @@ class QuarterlyAnalysisReportZzwy {
     }
 
     @action
-    updateFishValueObj(value:any){
-        this.fishValueObj  =value
-        console.log(this.fishValueObj);
+    updateReportMasterData(data: any) {
+        this.reportMasterData = data.reportMasterData
+        this.qcReportItemDtoList = data.qcReportItemDtoList
+        // console.log("this.reportMasterData===2222",this.reportMasterData);
     }
+    @action
+    updateFishValueObj(value: any, index: number) {
+        // this.fishValueObj  =value
+        this.fishValueObj[index] = value
+        // console.log(this.fishValueObj);
+    }
+
     @action
     updateSummaryTable(index: number, key: string, value: any) {
         this.summaryTable[index][key] = value;
@@ -62,6 +87,24 @@ class QuarterlyAnalysisReportZzwy {
     @action
     updateReferredTable(index: number, key: string, value: any) {
         this.referredTable[index][key] = value;
+    }
+
+    /**动态添加鱼骨图内容**/
+    @action
+    handleAddFishValue() {
+        let obj: any = Array.from(Array(50)).reduce((prev, cur, i) => {
+            prev[`v${i + 1}`] = '';
+            return prev
+        }, {})
+        this.fishValueObj.push(obj)
+    }
+
+    @action
+    handleDeleteFishValue(index: number) {
+        if (this.fishValueObj.length == 1) {
+            return message.info('至少保留一张')
+        }
+        this.fishValueObj = this.fishValueObj.filter((item: any, k: number) => k !== index)
     }
 
     getTableList() {
@@ -83,13 +126,10 @@ class QuarterlyAnalysisReportZzwy {
 
     /*保存报告**/
     saveQcReport() {
-//判断后边处理
-//         console.log("this.qcReportItemDtoList====", this.qcReportItemDtoList);
-//         console.log("this.summaryTable===",this.summaryTable);
-        // console.log("this.referredTable===",this.referredTable);/
-        // return
-        let list: any = this.qcReportItemDtoList.map((item: any, index: number) => {
-            let itemValue: any = {}
+        let qcReportItemDtoList = this.qcReportItemDtoList || []
+        let qcReportItemDataList:any = []
+        qcReportItemDtoList.map((it:any,index:number)=>{
+            let itemValue: any ={}
             switch (index) {
                 case 0 :
                     itemValue = {
@@ -109,38 +149,39 @@ class QuarterlyAnalysisReportZzwy {
                     itemValue = {referredTable: this.referredTable}
                     break
                 case 4:
+                    itemValue = {analysisChartData: this.analysisChartData}
                     break
                 default :
                     return
             }
-            /*第一部分*/
-            // if (index == 0) {
-            //     itemValue = {
-            //         summarize: this.summarize,
-            //         inspectTable: this.inspectTable,
-            //         summaryTable: this.summaryTable,
-            //         contentValue: this.contentValue
-            //     }
-            // } else if (index == 2) {
-            //     itemValue = {
-            //         rectification: this.rectification
-            //     }
-            // }
-            return {
-                reportMasterId: this.reportMasterData.id,
-                reportItemId: item.id,
-                itemCode: item.itemCode,
-                itemNo: item.itemNo,
-                itemValue: itemValue ? JSON.stringify(itemValue) : ''
-            }
+            qcReportItemDataList.push({
+                itemCode:it.itemCode,
+                itemValue:JSON.stringify(itemValue),
+                reportItemId:it.id,
+                reportMasterId:this.reportMasterData.id || null,
+                id:it.qcReportItemDataList?it.qcReportItemDataList[0].id:null,
+            })
+
+
+        // let newList:any =this.qcReportItemDtoList
+        // newList.map((it: any, index: number) => {
+        //
+        //     it.qcReportItemDataList.map((item:any,k:number)=>{
+        //         return {
+        //             ...item,
+        //             itemValue:JSON.stringify(itemValue)
+        //         }
+        //     })
+        //     return { ...it }
         })
+        console.log("this.qcReportItemDtoList===",qcReportItemDataList);
+        // console.log(qcReportItemDataList);
         let params = {
             hospitalCode: "zzwy",
             templateName: "季度质量分析报告",
-            qcReportItemDataList: list,
+            // qcReportItemDataList:newList,
+            qcReportItemDataList,
             ...this.reportMasterData,
-            // startDate: "2023-01-01",
-            // endDate: "2023-12-30",
         }
         /** 分析报告按模块分 第一部分 为 { summarize:string,inspectTable:arr,three:arr,four:string } ***/
         qcZzwyApi.saveQcReport(params).then((res: any) => {
@@ -149,6 +190,7 @@ class QuarterlyAnalysisReportZzwy {
             appStore.history.goBack()
         })
     }
+
 
     /**获取分析报告内容 一级，二级
      *
@@ -176,8 +218,6 @@ class QuarterlyAnalysisReportZzwy {
 
     /**获取分析报告详情**/
     getQcReportById(master: number) {
-        this.reportMasterData = {}
-        this.qcReportItemDtoList = []
         qcZzwyApi.getQcReportById(master).then((res: any) => {
             this.reportMasterData = res.data.reportMasterData
             this.qcReportItemDtoList = res.data.qcReportItemDtoList
@@ -201,8 +241,8 @@ class QuarterlyAnalysisReportZzwy {
         arr.map((item: any, index: number) => {
             /**默认itemValue被转化成数组，默认只取第一项**/
             if (item.qcReportItemDataList) {
+                let obj: any = JSON.parse(item.qcReportItemDataList[0].itemValue)
                 if (index == 0 && item.qcReportItemDataList[0].itemValue) {
-                    let obj: any = JSON.parse(item.qcReportItemDataList[0].itemValue)
                     this.summarize = obj.summarize || ""
                     this.contentValue = obj.contentValue || ''
                     this.summaryTable = obj.summaryTable || []
@@ -210,19 +250,22 @@ class QuarterlyAnalysisReportZzwy {
                 }
                 /**鱼骨图内容**/
                 if (index == 1 && item.qcReportItemDataList[0].itemValue) {
-                    let obj: any = JSON.parse(item.qcReportItemDataList[0].itemValue)
-                    if(obj.fishValueObj) this.fishValueObj = obj.fishValueObj
-                    console.log("this.fishValueObj===",this.fishValueObj);
+                    if (obj.fishValueObj) {
+                        this.fishValueObj = obj.fishValueObj
+                        console.log("this.fishValueObj===", this.fishValueObj);
+                    }
                 }
                 /**整改措施**/
                 if (index == 2 && item.qcReportItemDataList[0].itemValue) {
-                    let obj: any = JSON.parse(item.qcReportItemDataList[0].itemValue)
                     this.rectification = obj.rectification
                 }
                 /**追踪评价**/
                 if (index == 3 && item.qcReportItemDataList[0].itemValue) {
-                    let obj: any = JSON.parse(item.qcReportItemDataList[0].itemValue)
                     this.referredTable = obj.referredTable || []
+                }
+                /**柱状图**/
+                if (index == 3 && item.qcReportItemDataList[0].itemValue) {
+                    this.analysisChartData = obj.analysisChartData || []
                 }
             }
         })
@@ -230,15 +273,15 @@ class QuarterlyAnalysisReportZzwy {
 
     /**根据类型 季度，月度，通过年份，月份处理开始时间，结束时间**/
     getDateRange(reportType: string, option: any, year: any) {
-        console.log(reportType, option, year);
+        // console.log(reportType, option, year);
         const startYear = year;
         const startDate = moment(new Date(startYear, 0, 1)).format('YYYY-MM-DD');
-        console.log(startDate);
+        // console.log(startDate);
         const endDate = moment(new Date(startYear, 11, 31)).format('YYYY-MM-DD');
-        console.log(endDate);
+        // console.log(endDate);
         if (reportType == '月度') {
             let old = moment(new Date(year, option, 0)).format('YYYY-MM-DD')
-            console.log("old===", old);
+            // console.log("old===", old);
             return {
                 startDate: `${year}-${option}-01`,
                 endDate: old
@@ -309,7 +352,90 @@ class QuarterlyAnalysisReportZzwy {
                 g: undefined
             })
         })
-        console.log(this.summaryTable);
+    }
+
+    getRatioByItemCode() {
+        qcZzwyApi.getRatioByItemCode({
+            wardCode: this.reportMasterData.wardCode,
+            qcItemCodeList: this.templateData.itemCodeList,
+            startDate: this.reportMasterData.startDate,
+            endDate: this.reportMasterData.endDate,
+            reportLevel: appStore.queryObj.qcLevel,
+        }).then(res => {
+            let data = res.data || []
+            let newData: any = []
+            let itemArry: any = []
+            let smallObj: any = {}
+            let fields: any = []//key值
+            data.map((it: any) => {
+                itemArry = []
+                smallObj = {}
+                fields = it.reportRatioDto.months
+                it.reportRatioDto.months.map((ii: any, index: number) => {
+                    smallObj.name = it.qcItemName
+                    smallObj[ii] = Number(it.reportRatioDto.ratios[index])
+                    //
+                })
+                itemArry.push(smallObj)
+                newData.push(itemArry)
+
+            })
+            this.analysisChartData.fields = fields
+            this.analysisChartData.devData = newData
+
+        }).catch(err => {
+
+        })
+    }
+
+    /**获取模板列表 */
+    getTemplateList() {
+        if (this.templateList.length > 1) {
+            return false
+        }
+        qcZzwyApi.getTemplateList(appStore.queryObj?.qcLevel).then(res => {
+            this.templateList = res.data || []
+        }).catch(err => {
+
+        })
+    }
+
+    getReportTwoItem(qcCode: any) {
+        qcZzwyApi.getReportTwoItem(qcCode).then(res => {
+            this.reportTwoItem = res.data || []
+        }).catch(err => {
+
+        })
+    }
+
+    /**清空上一次保存的数据，避免数据乱**/
+    @action
+    resetPropertiesToDefault() {
+        this.reportMasterData = {}
+        this.qcReportItemDtoList = []
+        this.reportTwoItem = []
+        this.summarize =''
+        this.summaryTable = []
+        this.analysisChartData = {
+            textArea: '',
+            fields: [],
+            devData: [],
+            imgList: [],//附近图片的path
+        }
+        this.templateData = {
+            qcCode: '',
+            itemCodeObj: [],//二级项目对象，name，code，简称simpleName
+            itemCodeList: []//二级项目的codelist，用于获取柱状图传参
+        }
+        this.referredTable = []
+        this.rectification = ''
+        this.fishValueObj = [
+            Array.from(Array(50)).reduce((prev, cur, i) => {
+                prev[`v${i + 1}`] = '';
+                return prev
+            }, {})
+        ]
+
     }
 }
 

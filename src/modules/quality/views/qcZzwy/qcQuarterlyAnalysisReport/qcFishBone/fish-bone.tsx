@@ -5,6 +5,7 @@ import React from 'react'
 import {Button, Input, Icon} from "antd"
 import {QuarterlyZzwyData} from "src/modules/quality/views/qcZzwy/qcQuarterlyAnalysisReport/Data";
 import debounce from "lodash/debounce";
+
 const {TextArea} = Input
 const list = [
     {
@@ -299,45 +300,39 @@ export interface Props {
     value?: Obj,
     /**接收值**/
     onChange?: Function,
+    updateFish?: any
+    index: number
 
 }
 
 export default function QcFishBone(props: any) {
-    const {value, onChange} = props
-    const generateData = (count: any) => {
-        const data = {};
-        for (let i = 0; i <= count; i++) {
-            const key = `v${i}`;
-            const value = `b006208${i + 4}`;
-            data[key] = value;
-        }
-        return Object.freeze(data);
-    };
-    const defEditVal = () => Array.from(Array(40)).reduce((prev, cur, i) => {
+    const {value, onChange, updateFish, index} = props
+    // const generateData = (count: any) => {
+    //     const data = {};
+    //     for (let i = 0; i <= count; i++) {
+    //         const key = `v${i}`;
+    //         const value = `b006208${i + 4}`;
+    //         data[key] = value;
+    //     }
+    //     return Object.freeze(data);
+    // };
+    const defEditVal = () => Array.from(Array(50)).reduce((prev, cur, i) => {
         prev[`v${i + 1}`] = '';
         return prev
     }, {})
-    const reflect: any = generateData(40)
+    // const reflect: any = generateData(50)
     const [editVal, setEditVal] = useState<Obj>(defEditVal)
     const [listState, setListState] = useState([...list]); // 初始化状态
     useEffect(() => {
-
-        setEditVal(QuarterlyZzwyData.fishValueObj)
-        console.log(QuarterlyZzwyData.fishValueObj);
-    }, [QuarterlyZzwyData.fishValueObj])
-    // useEffect(() => {
-    //     // console.log('test-editVal', editVal)
-    // }, [editVal])
-
-
+        setEditVal(QuarterlyZzwyData.fishValueObj[index])
+        console.log(QuarterlyZzwyData.fishValueObj[index]);
+    }, [updateFish])
     const onIpt = (e: Obj, key: string) => {
         setEditVal({...editVal, [key]: e.target.value})
-        // onChange && onChange({[reflect[key]]: e.target.value})
-        console.log(editVal);
-        debounce(()=>{
-            // console.log(1);
-            onChange && onChange(editVal)
-        },1000)
+        setEditVal((vb: any) => {
+            onChange && onChange(vb, index)
+            return vb
+        })
     }
     /**删除选中元素**/
     const handleDelete = (k: number, vKey: number) => {
@@ -359,7 +354,13 @@ export default function QcFishBone(props: any) {
         }
     };
     return (<Wrapper className="fb-container">
-        <img className="fb-bg" src={fishBoneSvg} alt="鱼骨"/>
+        {
+            QuarterlyZzwyData.fishValueObj.length > 1 && <Button
+                className='fb-button-delete'
+                type='danger' size='small'
+                onClick={() => QuarterlyZzwyData.handleDeleteFishValue(index)}>删除</Button>
+        }
+        <img className="fb-bg"  alt="鱼骨图" src={fishBoneSvg}/>
         <div className="fb-ctx">
             {listState.map((v: any, k: number) =>
                 <>
@@ -412,8 +413,8 @@ export default function QcFishBone(props: any) {
             className="fb-header__ipt"
             type="text"
             maxLength={25}
-            value={editVal ? editVal.v18 : ''}
-            onInput={(e: Obj) => onIpt(e, 'v0')}
+            value={editVal ? editVal.v46 : ''}
+            onInput={(e: Obj) => onIpt(e, 'v46')}
         />
     </Wrapper>)
 }
@@ -421,8 +422,15 @@ export default function QcFishBone(props: any) {
 const Wrapper = styled.div`
 
   &.fb-container {
+    margin: 50px 0;
     position: relative;
     height: 611px;
+
+    .fb-button-delete {
+      position: absolute;
+      right: 20px;
+      top: -10px;
+    }
 
     .fb-bg {
       position: absolute;
