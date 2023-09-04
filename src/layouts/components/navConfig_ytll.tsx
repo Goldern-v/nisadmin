@@ -77,7 +77,7 @@ export const navConfig = (appStore: any, authStore?: any): navConfigItem[] => {
       ],
     },
     {
-      name: "护士长满意度调查表",
+      name: "满意度调查表",
       path: "/nurseSatisfactionSurvey",
     },
     {
@@ -100,6 +100,10 @@ export const navConfig = (appStore: any, authStore?: any): navConfigItem[] => {
     {
       name: "通知公告",
       path: "/notice",
+    },
+    {
+      name: "病区管理",
+      path: "/wardManagement"
     },
     {
       name: "护理制度",

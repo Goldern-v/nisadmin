@@ -201,7 +201,7 @@ export default observer(function MyCreateList() {
   return (
     <Wrapper>
       <PageHeader>
-      <PageTitle>护士长满意度调查表</PageTitle>
+      <PageTitle>{['ytll'].includes(appStore.HOSPITAL_ID)?'满意度调查表':'护士长满意度调查表'}</PageTitle>
         <Place />
         <span className='label'>年份:</span>
         <Select

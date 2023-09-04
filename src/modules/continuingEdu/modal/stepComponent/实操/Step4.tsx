@@ -12,7 +12,7 @@ import { appStore } from "src/stores";
 import service from "src/services/api";
 
 export interface Props {}
-const isWhyx = ['whyx', 'fsxt', '925', 'whhk', 'fssdy', 'zjhj'].includes(appStore.HOSPITAL_ID)
+const isWhyx = ['whyx', 'fsxt', '925', 'whhk', 'fssdy', 'zjhj','ytll'].includes(appStore.HOSPITAL_ID)
 export default observer(function Step4() {
   const [isOk, setIsOk] = useState(false); // app评分开关默认值
   const testPage = createModal(TestPageModal); // 习题预览弹窗
@@ -106,7 +106,7 @@ export default observer(function Step4() {
           </Col>
         </Row>
         <Row style={{ marginTop: 20 }}>
-          {["wh","gxjb","ytll"].includes(appStore.HOSPITAL_ID) ? (
+          {["wh","gxjb"].includes(appStore.HOSPITAL_ID) ? (
             <Col span={24} style={{ height: "28px" }}>
               <span className="labelSpan">上传题库</span>
               <Checkbox
