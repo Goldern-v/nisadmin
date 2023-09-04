@@ -185,7 +185,7 @@ const Wrapper = styled.div`
   #baseTable{
     padding: 10px 0 !important;
   }
-  .bHdIpD#baseTable .ant-table-body{
+  #baseTable .ant-table-body{
     overflow: auto !important;
   }
 `
