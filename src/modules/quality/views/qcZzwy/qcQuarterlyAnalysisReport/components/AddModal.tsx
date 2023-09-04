@@ -20,7 +20,7 @@ export interface Props extends FormComponentProps, ModalComponentProps {
     onCancel: () => void;
     title: string;
     record?: any
-    qcLevel?:any
+    qcLevel?: any
 }
 
 const formItemLayout = {
@@ -50,7 +50,7 @@ const qcMonthList = [
 function QcQuarterlyModal(props: Props) {
     const [formCreateVisible, setFormCreateVisible] = useState(false);
     /**表单可选内容*/
-    const [summaryForm,setSummaryForm] =useState({} as any)
+    const [summaryForm, setSummaryForm] = useState({} as any)
     let {
         visible,
         onCancel,
@@ -65,8 +65,8 @@ function QcQuarterlyModal(props: Props) {
             if (err) {
                 return
             }
-            let timeObj:any ={}
-            timeObj =  QuarterlyZzwyData.getDateRange(value.reportType,value.qcTime,moment(value.reportYear).format('YYYY'))
+            let timeObj: any = {}
+            timeObj = QuarterlyZzwyData.getDateRange(value.reportType, value.qcTime, moment(value.reportYear).format('YYYY'))
             // console.log('value====',value,);
             // if(value.reportType =='季度'){
             //
@@ -75,30 +75,27 @@ function QcQuarterlyModal(props: Props) {
             //     timeObj['startDate'] =`${value.reportYear}-${value.qcTime}-01`
             //     timeObj['endDate'] =`${value.reportYear}-${value.qcTime}-${old}`
             // }
-            console.log("timeObj===",timeObj);
+            console.log("timeObj===", timeObj);
             /**需要根据选的报告类型来组装时间**/
             let params = {
                 hospitalCode: 'zzwy',
                 reportLevel: qcLevel,
                 ...value,
-                summaryFormCode:summaryForm.qcCode,
+                summaryFormCode: summaryForm.qcCode,
                 templateName: '季度质量分析报告', //固定
                 reportYear: moment(value.reportYear).format('YYYY'),
                 ...timeObj
-                // startDate:timeObj[''],
-                // endDate:'2024-12-30',
             }
-            qcZzwyApi.createQcReport({...params}).then((res: any) => {
-                console.log(res);
-                QuarterlyZzwyData.reportMasterData = res.data.reportMasterData
-                QuarterlyZzwyData.qcReportItemDtoList =res.data.qcReportItemDtoList
+            QuarterlyZzwyData.resetPropertiesToDefault()
+            console.log("QuarterlyZzwyData.reportMasterData21111111",QuarterlyZzwyData.reportMasterData);
+            qcZzwyApi.createQcReport({...params}).then( (res: any) => {
                 /**数据清空**/
-                QuarterlyZzwyData.summarize =''
-                QuarterlyZzwyData.contentValue=''
+                QuarterlyZzwyData.updateReportMasterData(res.data)
+                // QuarterlyZzwyData.qcReportItemDtoList = res.data.qcReportItemDtoList
                 // QuarterlyZzwyData.analysisItemValue(res.data.qcReportItemDtoList)
+                console.log("QuarterlyZzwyData.reportMasterData===",QuarterlyZzwyData.reportMasterData);
                 onCancel()
                 appStore.history.push(`/QuarterlyAnalysisReportZzwyDetail?qcLevel=${qcLevel}`);
-                // message.success('操作成功')
             })
         })
     }
@@ -134,8 +131,8 @@ function QcQuarterlyModal(props: Props) {
                         )}
                     </Form.Item>
                     <Form.Item {...formItemLayout} label='质控年度'>
-                        {getFieldDecorator('reportYear',{
-                            initialValue:moment(),
+                        {getFieldDecorator('reportYear', {
+                            initialValue: moment(),
                         })(<YearPicker style={{width: '100%'}}/>)}
                     </Form.Item>
                     {getFieldValue('reportType') == '季度' && <Form.Item label='质控时间' {...formItemLayout} >
