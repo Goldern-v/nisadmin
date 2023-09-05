@@ -1404,6 +1404,12 @@ const getIcon = (icon: any) => {
             authStore.isOnlyInternsManage,
         },
         {
+          title: "选择题新建和编辑",
+          hide: true,
+          path: "/continuingEdu/choiceQuestionEdit",
+          component: ChoiceQustionEdit,
+        },
+        {
           title: "菜单设置",
           path: "/continuingEdu/菜单设置",
           component: 菜单设置,
