@@ -245,10 +245,14 @@ class QuarterlyAnalysisReportZzwy {
                 }
                 /**鱼骨图内容**/
                 if (index == 1 && item.qcReportItemDataList[0].itemValue) {
-                    if (obj.fishValueObj) {
-                        this.fishValueObj = obj.fishValueObj
-                        console.log("this.fishValueObj===", this.fishValueObj);
-                    }
+                    // if (obj.fishValueObj) {
+                    //     this.fishValueObj = obj.fishValueObj
+                    //     console.log("this.fishValueObj===", this.fishValueObj);
+                    // }
+                    this.fishValueObj = obj.fishValueObj ||  Array.from(Array(50)).reduce((prev, cur, i) => {
+                        prev[`v${i + 1}`] = '';
+                        return prev
+                    }, {})
                 }
                 /**整改措施**/
                 if (index == 2 && item.qcReportItemDataList[0].itemValue) {

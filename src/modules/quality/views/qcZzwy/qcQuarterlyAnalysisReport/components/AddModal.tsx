@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import styled from "styled-components";
-import {Modal, Form, Input, Select} from 'antd'
+import {Modal, Form, Input, Select, message} from 'antd'
 import {FormComponentProps} from 'antd/lib/form/Form'
 import {observer} from 'mobx-react-lite'
 import {ModalComponentProps} from "src/libs/createModal";
@@ -10,6 +10,7 @@ import moment from "moment";
 import FormCreateModal from './CreateForm'
 import {qcZzwyApi} from "src/modules/quality/views/qcZzwy/qcZzwyApi";
 import YearPicker from 'src/components/YearPicker';
+import {qcMonthCheckData} from "src/modules/quality/views/qcZzwy/qcMonthCheckReport/qcMonthCheckData";
 
 export interface Props extends FormComponentProps, ModalComponentProps {
     visible: boolean;
@@ -64,7 +65,6 @@ function QcQuarterlyModal(props: Props) {
             }
             let timeObj: any = {}
             timeObj = QuarterlyZzwyData.getDateRange(value.reportType, value.qcTime, moment(value.reportYear).format('YYYY'))
-            // console.log("timeObj===", timeObj);
             /**需要根据选的报告类型来组装时间**/
             let params = {
                 hospitalCode: 'zzwy',
@@ -75,17 +75,25 @@ function QcQuarterlyModal(props: Props) {
                 reportYear: moment(value.reportYear).format('YYYY'),
                 ...timeObj
             }
-            QuarterlyZzwyData.resetPropertiesToDefault()
-            // console.log("QuarterlyZzwyData.reportMasterData21111111",QuarterlyZzwyData.reportMasterData);
-            qcZzwyApi.createQcReport({...params}).then( (res: any) => {
+            /**有id走编辑，无走新增**/
+            if (record?.id) {
+                qcZzwyApi.updateQcReport({
+                    id: record?.id,
+                    reportName: value.reportName
+                }).then((res: any) => {
+                    message.success('更新成功')
+                    onCancel()
+                    QuarterlyZzwyData.getTableList()
+                })
+            }else{
                 /**数据清空**/
-                QuarterlyZzwyData.updateReportMasterData(res.data)
-                // QuarterlyZzwyData.qcReportItemDtoList = res.data.qcReportItemDtoList
-                // QuarterlyZzwyData.analysisItemValue(res.data.qcReportItemDtoList)
-                console.log("QuarterlyZzwyData.reportMasterData===",QuarterlyZzwyData.reportMasterData);
-                onCancel()
-                appStore.history.push(`/QuarterlyAnalysisReportZzwyDetail?qcLevel=${qcLevel}`);
-            })
+                QuarterlyZzwyData.resetPropertiesToDefault()
+                qcZzwyApi.createQcReport({...params}).then((res: any) => {
+                    QuarterlyZzwyData.updateReportMasterData(res.data)
+                    onCancel()
+                    appStore.history.push(`/QuarterlyAnalysisReportZzwyDetail?qcLevel=${qcLevel}`);
+                })
+            }
         })
     }
     useEffect(() => {
@@ -99,10 +107,11 @@ function QcQuarterlyModal(props: Props) {
                 <Form>
                     <Form.Item label='报告类型' {...formItemLayout} >
                         {getFieldDecorator('reportType', {
-                            initialValue:record?.reportType || "季度",
+                            initialValue: record?.reportType || "季度",
                             rules: [{required: true, message: '季度不能为空'}]
                         })(
                             <Select
+                                disabled={record?.id}
                                 showSearch
                                 filterOption={(input: any, option: any) =>
                                     option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
@@ -121,12 +130,12 @@ function QcQuarterlyModal(props: Props) {
                     </Form.Item>
                     <Form.Item {...formItemLayout} label='质控年度'>
                         {getFieldDecorator('reportYear', {
-                            initialValue:record?.reportYear  ? moment(record?.reportYear) : moment(),
-                        })(<YearPicker  disabled={record?.id} style={{width: '100%'}}/>)}
+                            initialValue: record?.reportYear ? moment(record?.reportYear) : moment(),
+                        })(<YearPicker disabled={record?.id} style={{width: '100%'}}/>)}
                     </Form.Item>
                     {getFieldValue('reportType') == '季度' && <Form.Item label='质控时间' {...formItemLayout} >
                         {getFieldDecorator('qcTime', {
-                            initialValue:record?.qcTime || "全年",
+                            initialValue: record?.qcTime || "全年",
                             rules: [{required: true, message: '质控时间不能为空'}]
                         })(
                             <Select
@@ -149,7 +158,7 @@ function QcQuarterlyModal(props: Props) {
                     </Form.Item>}
                     {getFieldValue('reportType') == '月度' && <Form.Item label='质控时间' {...formItemLayout} >
                         {getFieldDecorator('qcTime', {
-                            initialValue:record?.qcTime || "1",
+                            initialValue: record?.qcTime || "1",
                             rules: [{required: true, message: '质控时间不能为空'}]
                         })(
                             <Select
@@ -172,7 +181,7 @@ function QcQuarterlyModal(props: Props) {
                     </Form.Item>}
                     <Form.Item label='质控科室' {...formItemLayout} >
                         {getFieldDecorator('wardCode', {
-                            initialValue:record?.wardCode || '全院',
+                            initialValue: record?.wardCode || '全院',
                             rules: [{required: true, message: '科室不能为空'}]
                         })(
                             <Select
@@ -195,20 +204,22 @@ function QcQuarterlyModal(props: Props) {
                     </Form.Item>
                     <Form.Item label='报告名称' {...formItemLayout} >
                         {getFieldDecorator('reportName', {
-                            initialValue:record?.reportName || '',
+                            initialValue: record?.reportName || '',
                             rules: [{required: true, message: '报告名称不能为空'}]
                         })(<Input/>
                         )}
                     </Form.Item>
                     <Form.Item label='模板名称' {...formItemLayout} >
                         {getFieldDecorator('summaryFormName', {
-                            initialValue:record?.summaryFormName || '',
+                            initialValue: record?.summaryFormName || '',
                             rules: [{required: true, message: '模板名称不能为空'}]
-                        })(<Input suffix={
-                            <div onClick={() => setFormCreateVisible(true)}>
-                                ...
-                            </div>
-                        }/>)}
+                        })(<Input
+                            disabled={record?.id}
+                            suffix={
+                                <div onClick={() => setFormCreateVisible(true)}>
+                                    ...
+                                </div>
+                            }/>)}
                     </Form.Item>
                 </Form>
                 <FormCreateModal
