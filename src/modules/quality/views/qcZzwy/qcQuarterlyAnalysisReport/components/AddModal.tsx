@@ -99,7 +99,7 @@ function QcQuarterlyModal(props: Props) {
                 <Form>
                     <Form.Item label='报告类型' {...formItemLayout} >
                         {getFieldDecorator('reportType', {
-                            initialValue: "季度",
+                            initialValue:record?.reportType || "季度",
                             rules: [{required: true, message: '季度不能为空'}]
                         })(
                             <Select
@@ -121,15 +121,16 @@ function QcQuarterlyModal(props: Props) {
                     </Form.Item>
                     <Form.Item {...formItemLayout} label='质控年度'>
                         {getFieldDecorator('reportYear', {
-                            initialValue: moment(),
-                        })(<YearPicker style={{width: '100%'}}/>)}
+                            initialValue:record?.reportYear  ? moment(record?.reportYear) : moment(),
+                        })(<YearPicker  disabled={record?.id} style={{width: '100%'}}/>)}
                     </Form.Item>
                     {getFieldValue('reportType') == '季度' && <Form.Item label='质控时间' {...formItemLayout} >
                         {getFieldDecorator('qcTime', {
-                            initialValue: "全年",
+                            initialValue:record?.qcTime || "全年",
                             rules: [{required: true, message: '质控时间不能为空'}]
                         })(
                             <Select
+                                disabled={record?.id}
                                 showSearch
                                 filterOption={(input: any, option: any) =>
                                     option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
@@ -148,10 +149,11 @@ function QcQuarterlyModal(props: Props) {
                     </Form.Item>}
                     {getFieldValue('reportType') == '月度' && <Form.Item label='质控时间' {...formItemLayout} >
                         {getFieldDecorator('qcTime', {
-                            initialValue: "1",
+                            initialValue:record?.qcTime || "1",
                             rules: [{required: true, message: '质控时间不能为空'}]
                         })(
                             <Select
+                                disabled={record?.id}
                                 showSearch
                                 filterOption={(input: any, option: any) =>
                                     option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
@@ -170,10 +172,11 @@ function QcQuarterlyModal(props: Props) {
                     </Form.Item>}
                     <Form.Item label='质控科室' {...formItemLayout} >
                         {getFieldDecorator('wardCode', {
-                            initialValue: '全院',
+                            initialValue:record?.wardCode || '全院',
                             rules: [{required: true, message: '科室不能为空'}]
                         })(
                             <Select
+                                disabled={record?.id}
                                 showSearch
                                 filterOption={(input: any, option: any) =>
                                     option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
@@ -192,14 +195,14 @@ function QcQuarterlyModal(props: Props) {
                     </Form.Item>
                     <Form.Item label='报告名称' {...formItemLayout} >
                         {getFieldDecorator('reportName', {
-                            initialValue: '',
+                            initialValue:record?.reportName || '',
                             rules: [{required: true, message: '报告名称不能为空'}]
                         })(<Input/>
                         )}
                     </Form.Item>
                     <Form.Item label='模板名称' {...formItemLayout} >
                         {getFieldDecorator('summaryFormName', {
-                            initialValue: '',
+                            initialValue:record?.summaryFormName || '',
                             rules: [{required: true, message: '模板名称不能为空'}]
                         })(<Input suffix={
                             <div onClick={() => setFormCreateVisible(true)}>
@@ -238,17 +241,5 @@ const Wrapper = styled.div`
     width: 100%;
   }
 `
-const ClickBtn = styled.span`
-  position: absolute;
-  right: 0;
-  top: 0;
-  border-left: none;
-  width: 50px;
-  height: 100%;
-  line-height: 28px;
-  cursor: pointer;
-  text-align: center;
-  border-top-right-radius: 4px;
-  border-bottom-right-radius: 4px;
-`
+
 export default Form.create()(observer(QcQuarterlyModal)) as any

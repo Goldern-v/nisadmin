@@ -35,7 +35,7 @@ export default class QcZzwyApi extends BaseApiService {
     /**质控检查反馈整改单汇总**/
 
     public getRectificationSummary(params:any) {
-        return this.get(`/qcItem/getRectificationSummary?wardCode=${params.wardCode}&beginDate=${params.beginDate}&endDate=${params.endDate}`)
+        return this.get(`/qcItem/getRectificationSummary?wardCode=${params.wardCode}&beginDate=${params.beginDate}&endDate=${params.endDate}&qcLevel=${params.qcLevel}`)
     }
 
     /**编辑整改措施和追踪评价**/

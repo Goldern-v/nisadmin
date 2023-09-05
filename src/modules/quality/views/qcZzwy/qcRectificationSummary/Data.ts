@@ -3,6 +3,7 @@ import moment from 'moment'
 import {quarterTimes} from "src/enums/date";
 import service from "src/services/api";
 import {qcZzwyApi} from "../qcZzwyApi";
+import {appStore} from "src/stores";
 
 class RectificationSummaryData {
     @observable public tableLoading = false; //表格loading
@@ -42,23 +43,11 @@ class RectificationSummaryData {
             wardCode: this.deptCode,
             pageIndex: this.pageIndex,
             pageSize: this.pageSize,
-            // 季度的开始时间和结束时间
-            // beginDate:quarterTimes(this.year?.format('YYYY'),this.selectQuarter)[0],
-            // endDate:quarterTimes(this.year?.format('YYYY'),this.selectQuarter)[1]
+            qcLevel:appStore.queryObj?.qcLevel
         }
     }
 
-    flattenArray(obj: any) {
-        let arr: any = [];
-        for (let key in obj) {
-            if (Array.isArray(obj[key])) {
-                arr = arr.concat(obj[key]);
-            } else if (typeof obj[key] === 'object') {
-                arr = arr.concat(this.flattenArray(obj[key]));
-            }
-        }
-        return arr;
-    }
+
 
     getTableList() {
         // 默认按月份
@@ -86,6 +75,7 @@ class RectificationSummaryData {
             }
         }
         this.tableLoading = true
+        console.log("this.postObj===",this.postObj);
         qcZzwyApi.getRectificationSummary({...this.postObj, ...times}).then(res => {
             this.tableLoading = false
             this.tableList =res.data

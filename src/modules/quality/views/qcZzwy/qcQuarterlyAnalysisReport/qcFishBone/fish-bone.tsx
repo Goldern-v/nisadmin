@@ -2,9 +2,9 @@ import {useEffect, useState} from "react"
 import {Obj} from "src/libs/types"
 import styled from "styled-components"
 import React from 'react'
-import {Button, Input, Icon} from "antd"
+import {Button, Input, Icon, message} from "antd"
 import {QuarterlyZzwyData} from "src/modules/quality/views/qcZzwy/qcQuarterlyAnalysisReport/Data";
-import debounce from "lodash/debounce";
+import {toJS} from "mobx";
 
 const {TextArea} = Input
 const list = [
@@ -302,11 +302,12 @@ export interface Props {
     onChange?: Function,
     updateFish?: any
     index: number
+    isPrint?: boolean
 
 }
 
 export default function QcFishBone(props: any) {
-    const {value, onChange, updateFish, index} = props
+    const {value, onChange, updateFish, index, isPrint} = props
     // const generateData = (count: any) => {
     //     const data = {};
     //     for (let i = 0; i <= count; i++) {
@@ -323,9 +324,20 @@ export default function QcFishBone(props: any) {
     // const reflect: any = generateData(50)
     const [editVal, setEditVal] = useState<Obj>(defEditVal)
     const [listState, setListState] = useState([...list]); // 初始化状态
+    // useEffect(() => {
+    //     /**需要重新变为false**/
+    //     let newList = list.map((item: any) => {
+    //         item.child.map((i: any) => {
+    //             i['hide'] = false
+    //             i[]
+    //             return i
+    //         })
+    //         return item
+    //     })
+    //     setListState([...newList])
+    // }, [value])
     useEffect(() => {
-        setEditVal(QuarterlyZzwyData.fishValueObj[index])
-        console.log(QuarterlyZzwyData.fishValueObj[index]);
+        setEditVal(value)
     }, [updateFish])
     const onIpt = (e: Obj, key: string) => {
         setEditVal({...editVal, [key]: e.target.value})
@@ -345,6 +357,9 @@ export default function QcFishBone(props: any) {
         setListState(newList);
     };
     const handleAddElement = (k: number) => {
+        if (listState[k].child.filter((item: any) => !item.hide).length == 8) {
+            return message.info('不能再多了~')
+        }
         const newList = [...listState];
         const hideIndex = newList[k].child.findIndex((item: any) => item.hide);
         if (hideIndex !== -1) {
@@ -360,15 +375,23 @@ export default function QcFishBone(props: any) {
                 type='danger' size='small'
                 onClick={() => QuarterlyZzwyData.handleDeleteFishValue(index)}>删除</Button>
         }
-        <img className="fb-bg"  alt="鱼骨图" src={fishBoneSvg}/>
+        <img className="fb-bg" alt="鱼骨图" src={fishBoneSvg}/>
         <div className="fb-ctx">
             {listState.map((v: any, k: number) =>
                 <>
                     <>
-                        <Input className="fb-ctx-item"
-                               maxLength={25}
-                               onInput={(e) => onIpt(e, v.key)}
-                               value={editVal ? editVal[v.key] : ''} key={v.idx} style={v.style}/>
+                        {isPrint ? <p className='fb-ctx-ipt print-page__pfish print-page__ptext print-page__ipt'
+                                      style={{
+                                          ...v.style,
+                                          whiteSpace: 'pre-wrap',
+                                          // textDecoration:"underline",
+                                          // borderBottom:'1px solid #00A680'
+                                      }}>{editVal ? editVal[v.key] : ''}</p> :
+                            <Input className="fb-ctx-item"
+                                   maxLength={25}
+                                   onInput={(e) => onIpt(e, v.key)}
+                                   value={editVal ? editVal[v.key] : ''} key={v.idx} style={v.style}/>
+                        }
                         <Button className='fb-ctx-add' size={'small'} style={v.buttonStyle}
                                 onClick={() => handleAddElement(k)}>+</Button>
                     </>
@@ -377,14 +400,24 @@ export default function QcFishBone(props: any) {
                             if (!v1.hide) {
                                 return (
                                     <div id='input-container'>
-                                        <TextArea
-                                            maxLength={25}
-                                            className="fb-ctx-ipt"
-                                            key={v1.key}
-                                            style={v1.style}
-                                            value={editVal ? editVal[v1.key] : ''}
-                                            onInput={(e) => onIpt(e, v1.key)}
-                                        />
+                                        {
+                                            isPrint ?
+                                                <p className='fb-ctx-ipt print-page__pfish print-page__ptext print-page__ipt'
+                                                   style={{
+                                                       ...v1.style,
+                                                       whiteSpace: 'pre-wrap',
+                                                       textDecoration:"underline",
+                                                       borderBottom:'1px solid #000'
+                                                   }}>{editVal ? editVal[v1.key] : ''}</p> :
+                                                <TextArea
+                                                    maxLength={25}
+                                                    className="fb-ctx-ipt"
+                                                    key={v1.key}
+                                                    style={v1.style}
+                                                    value={editVal ? editVal[v1.key] : ''}
+                                                    onInput={(e) => onIpt(e, v1.key)}
+                                                />
+                                        }
                                         {
                                             vKey > 2 && <Icon
                                                 className="delete-icon"
@@ -409,13 +442,18 @@ export default function QcFishBone(props: any) {
             )
             }
         </div>
-        <Input
+        {isPrint ? <p className='fb-header__ipt print-page__pfish print-page__ptext print-page__ipt'
+                      style={{
+                          whiteSpace: 'pre-wrap',
+                          // textDecoration:"underline",
+                          // borderBottom:'1px solid #00A680'
+        }}>{editVal ? editVal.v46 : ''}</p> : <Input
             className="fb-header__ipt"
             type="text"
             maxLength={25}
             value={editVal ? editVal.v46 : ''}
             onInput={(e: Obj) => onIpt(e, 'v46')}
-        />
+        />}
     </Wrapper>)
 }
 

@@ -63,7 +63,7 @@ class QuarterlyAnalysisReportZzwy {
             pageSize: this.pageSize,
             templateName: '季度质量分析报告',
             hospitalCode: 'zzwy',
-            reportLevel: 1
+            reportLevel: appStore.queryObj?.qcLevel || '1',
         }
     }
 
@@ -116,7 +116,7 @@ class QuarterlyAnalysisReportZzwy {
             endDate: moment(this.filterDate[1]).format('YYYY-MM-DD')
         }
         this.tableLoading = true
-        qcZzwyApi.qcReportGetPage({...this.postObj, ...times, reportLevel: this.qcLevel}).then(res => {
+        qcZzwyApi.qcReportGetPage({...this.postObj, ...times}).then(res => {
             this.tableLoading = false
             this.tableList = res.data.list || []
         }).catch(err => {
@@ -202,10 +202,10 @@ class QuarterlyAnalysisReportZzwy {
             wardCode: this.reportMasterData.wardCode,
             qcItemLevel: type,
             qcCode: this.reportMasterData.summaryFormCode,
-            qcLevel:this.qcLevel
+            level:appStore.queryObj?.qcLevel
         }
         qcZzwyApi.getQcItemDataList(params).then((res: any) => {
-            console.log("res===", res);
+            this.inspectTable =res.data
         })
     }
 
@@ -217,7 +217,7 @@ class QuarterlyAnalysisReportZzwy {
             this.qcReportItemDtoList = res.data.qcReportItemDtoList
             this.analysisItemValue(res.data.qcReportItemDtoList)
             this.getQcItemDataList('first')
-            this.getQcItemDataList('second')
+            // this.getQcItemDataList('second')
         }).finally(() => {
             this.contentLoading = false
         })
@@ -355,7 +355,7 @@ class QuarterlyAnalysisReportZzwy {
             qcItemCodeList: this.templateData.itemCodeList,
             startDate: this.reportMasterData.startDate,
             endDate: this.reportMasterData.endDate,
-            reportLevel: appStore.queryObj.qcLevel,
+            reportLevel: appStore.queryObj?.qcLevel,
         }).then(res => {
             let data = res.data || []
             let newData: any = []
@@ -424,12 +424,12 @@ class QuarterlyAnalysisReportZzwy {
         }
         this.referredTable = []
         this.rectification = ''
-        this.fishValueObj = [
-            Array.from(Array(50)).reduce((prev, cur, i) => {
-                prev[`v${i + 1}`] = '';
-                return prev
-            }, {})
-        ]
+        // this.fishValueObj = [
+        //     Array.from(Array(50)).reduce((prev, cur, i) => {
+        //         prev[`v${i + 1}`] = '';
+        //         return prev
+        //     }, {})
+        // ]
 
     }
 }

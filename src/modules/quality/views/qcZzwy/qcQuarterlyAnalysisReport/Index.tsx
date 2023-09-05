@@ -19,7 +19,6 @@ const Option = Select.Option;
 export default observer(function QuarterlyAnalysisReportZzwy() {
     const {queryObj} = appStore
     const qcLevel = queryObj.qcLevel || '3'
-    console.log("qcLevel===", qcLevel);
     let QcQuarterly = createModal(QcQuarterlyModal)
     const columns: any = [
         {
@@ -35,7 +34,7 @@ export default observer(function QuarterlyAnalysisReportZzwy() {
             align: 'center',
             render:(text:string,record:any)=>{
                 return(
-                    <div>{`${record.reportYear}-${record.qcTime}-${record.summaryFormName}`}</div>
+                    <div>{`${record.reportYear}-${record.qcTime}-${record.reportName}`}</div>
                 )
             }
         },
@@ -55,16 +54,18 @@ export default observer(function QuarterlyAnalysisReportZzwy() {
             title: "报告年份",
             dataIndex: "reportYear",
             align: "center",
+            width: 80
 
         },
         {
             title: "时间",
             dataIndex: "qcTime",
             align: "center",
+            width: 120
         },
         {
             title: "创建人",
-            dataIndex: "createName",
+            dataIndex: "creatorName",
             align: "center",
 
         },
@@ -72,15 +73,16 @@ export default observer(function QuarterlyAnalysisReportZzwy() {
             title: "创建时间",
             dataIndex: "createTime",
             align: "center",
-            width: 80,
+            width: 120,
         },
         {
             title: " 操作 ",
-            width: 80,
+            width: 120,
             render(text: string, record: any, index: number) {
                 return (
                     <DoCon>
                         <span onClick={() => handleReview(record)}>查看</span>
+                        <span onClick={()=>handleEditRecord(record)}>编辑</span>
                         <span
                             onClick={() => {
                                 globalModal
@@ -99,6 +101,13 @@ export default observer(function QuarterlyAnalysisReportZzwy() {
     const handleReview = (record: any) => {
         appStore.history.push(`/QuarterlyAnalysisReportZzwyDetail?qcLevel=${qcLevel}&master=${record.id}`);
     }
+    const handleEditRecord =(record:any)=>{
+        QcQuarterly.show({
+            title: "编辑",
+            qcLevel: qcLevel,
+            record
+        })
+    }
     /** "id": 0,  没有就不传
      "qcMasterId": 0,  必传
      "qcItemCode": "string",  必传
@@ -113,14 +122,13 @@ export default observer(function QuarterlyAnalysisReportZzwy() {
             qcLevel: qcLevel,
         })
     }
-
-    // useEffect(()=>{
-    //
-    // },[])
+    useEffect(()=>{
+        QuarterlyZzwyData.getTableList()
+    },[])
     return (
         <Wrapper>
             <PageHeader>
-                <PageTitle>质控检查反馈整改单</PageTitle>
+                <PageTitle>季度质量分析报告</PageTitle>
                 <Place/>
                 <span>科室：</span>
                 <DeptSelect hasAllDept onChange={onChange}/>

@@ -2,18 +2,18 @@ import {observer} from 'mobx-react'
 import React, {useEffect, useState} from 'react'
 import styled from 'styled-components'
 import BreadcrumbBox from "src/layouts/components/BreadcrumbBox";
-import {appStore, authStore} from "src/stores";
+import {appStore} from "src/stores";
 import {Button, Input, Spin} from "antd";
 import BaseTable from "src/components/BaseTable";
 import {QuarterlyZzwyData} from "src/modules/quality/views/qcZzwy/qcQuarterlyAnalysisReport/Data";
 import {ColumnProps} from "antd/es/table";
 import {qcZzwyApi} from "src/modules/quality/views/qcZzwy/qcZzwyApi";
 import QcFishBone from "src/modules/quality/views/qcZzwy/qcQuarterlyAnalysisReport/qcFishBone/fish-bone";
-
 import {Icon, message} from "src/vendors/antd";
 import ChartCylindricalityMonth from "src/modules/quality/views/qcZzwy/qcMonthCheckReport/ChartCylindricalityMonth";
 import AnalysisSelectReport from './components/AnalysisSelectReport';
-import {qcMonthCheckData} from "src/modules/quality/views/qcZzwy/qcMonthCheckReport/qcMonthCheckData";
+import printing from "printing";
+import {useRef} from "src/types/react";
 
 const {TextArea} = Input
 
@@ -24,21 +24,79 @@ interface Props {
 
 export default observer(function QuarterlyAnalysisReportZzwyDetail(props: Props) {
     const {queryObj} = appStore
-    const {creatorName, creatorTime, summaryFormName, reportYear, reportQuarter} = QuarterlyZzwyData.reportMasterData
+    const pageRef: any = useRef<HTMLElement>()
+    // const {creatorName, creatorTime, summaryFormName, reportYear, reportQuarter} = QuarterlyZzwyData.reportMasterData
     const [selectTableModal, setSelectTableModal] = useState(false);
-    const [updateFish, setUpdateFish] = useState('');
-    const [fishValue, setFishValue] = useState({} as any)
-    const [summaryTable, setSummaryTable] = useState([] as any)
+    const [canvasImgArray, setCanvasImgArray] = useState([]);
+    const [isPrint, setIsPrint] = useState(false)
+    const [updateFish,setUpdateFish] =useState(undefined as any)
     const topHeaderBack = () => {
-        // appStore.history.push(
-        //   props.detailData.master.qcLevel == '3'
-        //     ? `/qcThree?noRefresh=1`
-        //     : props.detailData.master.qcLevel == '2'
-        //       ? `/qcTwo?noRefresh=1`
-        //       : `/qcThree?noRefresh=1`
-        // )
         appStore.history.goBack()
     };
+    const onPrint = (isPrint: boolean) => {
+        setIsPrint(isPrint)
+        let printFun = isPrint ? printing : printing.preview
+        setTimeout(() => {
+            printFun(pageRef.current, {
+                // 插入所有link和style标签到打印，默认是false
+                injectGlobalCss: true,
+                // 指定扫描样式，默认是true（全部）
+                scanStyles: false,
+                css: `
+           .ant-btn {
+             display: none;
+           }
+           .print-page__ptext{
+            padding:0 6px;
+          }
+           .print-page {
+             box-shadow: none;
+             -webkit-print-color-adjust: exact;
+             margin: 0 auto;
+           }
+           .page-title {
+             min-height: 20px;
+             padding: 0px 30px 20px;
+           }
+           .page-title .title {
+             text-align: center;
+             margin-right: 0;
+           }
+           .fb-container{
+            position: relative;
+           }
+           table, img {
+             page-break-inside: avoid;
+           }
+           pre {
+            page-break-after: avoid;
+           }
+           * {
+             color: #000 !important;
+           }
+           .ant-spin-nested-loading{
+             height:auto;
+           }
+           .footer-title {
+             min-height: 0;
+             margin-bottom: 0;
+           }
+           table { page-break-inside:auto }
+           tr{ page-break-inside:avoid; page-break-after:auto }
+          .chart-con>div{
+            display: none;
+          }
+          .chart-con .chart-con-img{
+            max-width: 100%;
+            display: inline!important;
+          }
+        `
+            }).then(() => {
+                setIsPrint(false)
+            })
+        }, 500)
+    }
+
     const columnsOne: ColumnProps<any>[] = [
         {
             title: '一级指标',
@@ -47,8 +105,8 @@ export default observer(function QuarterlyAnalysisReportZzwyDetail(props: Props)
         },
         {
             title: '合格率(%)',
-            dataIndex: "firstlevelEvalRate",
-            width: 80,
+            dataIndex: "firstLevelEvalRate",
+            width: 100,
             align: 'center',
             render: (text: string) => {
                 return `${text}%`
@@ -66,6 +124,9 @@ export default observer(function QuarterlyAnalysisReportZzwyDetail(props: Props)
             dataIndex: "b",
             align: 'center',
             render: (text: string, record: any, index: number) => {
+                if(isPrint){
+                    return  <span>{text}%</span>
+                }
                 return <Input defaultValue={text} onBlur={(e: any) => {
                     QuarterlyZzwyData.updateReferredTable(index, 'b', e.target.value)
                 }}/>
@@ -76,6 +137,9 @@ export default observer(function QuarterlyAnalysisReportZzwyDetail(props: Props)
             dataIndex: "c",
             align: 'center',
             render: (text: string, record: any, index: number) => {
+                if(isPrint){
+                    return  <span>{text}</span>
+                }
                 return <Input defaultValue={text} onBlur={(e: any) => {
                     QuarterlyZzwyData.updateReferredTable(index, 'c', e.target.value)
                 }}/>
@@ -86,6 +150,9 @@ export default observer(function QuarterlyAnalysisReportZzwyDetail(props: Props)
             dataIndex: "d",
             align: 'center',
             render: (text: string, record: any, index: number) => {
+                if(isPrint){
+                    return  <span>{text}</span>
+                }
                 return <Input defaultValue={text} onBlur={(e: any) => {
                     QuarterlyZzwyData.updateReferredTable(index, 'd', e.target.value)
                 }}/>
@@ -96,6 +163,9 @@ export default observer(function QuarterlyAnalysisReportZzwyDetail(props: Props)
             dataIndex: "e",
             align: 'center',
             render: (text: string, record: any, index: number) => {
+                if(isPrint){
+                    return  <span>{text}%</span>
+                }
                 return <Input defaultValue={text} onBlur={(e: any) => {
                     QuarterlyZzwyData.updateReferredTable(index, 'e', e.target.value)
                 }}/>
@@ -106,6 +176,9 @@ export default observer(function QuarterlyAnalysisReportZzwyDetail(props: Props)
             dataIndex: "g",
             align: 'center',
             render: (text: string, record: any, index: number) => {
+                if(isPrint){
+                    return  <span>{text}</span>
+                }
                 return <Input defaultValue={text} onBlur={(e: any) => {
                     QuarterlyZzwyData.updateReferredTable(index, 'g', e.target.value)
                 }}/>
@@ -124,9 +197,10 @@ export default observer(function QuarterlyAnalysisReportZzwyDetail(props: Props)
             width: 80,
             align: 'center',
             render: (text: string, record: any, index: number) => {
-                console.log("text===", text);
+                if(isPrint){
+                    return  <span>{text}%</span>
+                }
                 return <Input defaultValue={text} onBlur={(e: any) => {
-                    // record.evalRate =e.target.value
                     QuarterlyZzwyData.updateSummaryTable(index, 'evalRate', e.target.value)
                 }}/>
             }
@@ -134,7 +208,6 @@ export default observer(function QuarterlyAnalysisReportZzwyDetail(props: Props)
     ]
 
     const handleFishItem = (obj: any, index: number) => {
-        console.log(obj, index);
         QuarterlyZzwyData.updateFishValueObj(obj, index)
     }
     const handleUploading = () => {
@@ -151,9 +224,7 @@ export default observer(function QuarterlyAnalysisReportZzwyDetail(props: Props)
             qcZzwyApi.upload({file})
                 .then((res: any) => {
                     if (res.code == '200') {
-                        // console.log(res.data)
                         message.success('上传成功')
-                        // debugger
                         if (!QuarterlyZzwyData.analysisChartData.imgList) {
                             QuarterlyZzwyData.analysisChartData.imgList = []
                         }
@@ -173,9 +244,21 @@ export default observer(function QuarterlyAnalysisReportZzwyDetail(props: Props)
     useEffect(() => {
         if (queryObj.master) {
             QuarterlyZzwyData.resetPropertiesToDefault()
+            setUpdateFish(Math.random())
             QuarterlyZzwyData.getQcReportById(queryObj.master)
         }
     }, [queryObj.master])
+    useEffect(() => {
+        // debugger
+        setTimeout(() => {
+            let canvasImgList: any = []
+            let canvasEl2 = document.getElementsByTagName('canvas')
+            for (let i = 0; i < canvasEl2.length; i++) {
+                canvasImgList.push(canvasEl2[i].toDataURL())
+            }
+            setCanvasImgArray(canvasImgList)
+        }, 1000);
+    }, [QuarterlyZzwyData.analysisChartData.devData])
     return (
         <Con>
             <TopHeader>
@@ -187,8 +270,12 @@ export default observer(function QuarterlyAnalysisReportZzwyDetail(props: Props)
                     }}
                     data={[
                         {
-                            name: "质控检查反馈整改单",
-                            link: '/qcOneHj'
+                            name: "季度质量分析报告",
+                            link: `${{
+                                '3': '/qcThree',
+                                '2': '/qcTwo',
+                                '1': '/qcOneHj'
+                            }[queryObj?.qcLevel]}/季度质量分析报告?qcLevel=${queryObj?.qcLevel}`
                         },
                         {
                             name: "记录详情",
@@ -196,10 +283,11 @@ export default observer(function QuarterlyAnalysisReportZzwyDetail(props: Props)
                     ]}
                 />
                 <div className="topHeaderTitle">
-                    <div className="title">{`${QuarterlyZzwyData.reportMasterData?.reportYear}年第${QuarterlyZzwyData.reportMasterData?.reportQuarter}${QuarterlyZzwyData.reportMasterData.summaryFormName}总结`}</div>
+                    <div
+                        className="title">{`${QuarterlyZzwyData.reportMasterData?.reportYear}年第${QuarterlyZzwyData.reportMasterData?.reportQuarter}${QuarterlyZzwyData.reportMasterData.summaryFormName}总结`}</div>
                     <div className="topHeaderButton">
                         <Button onClick={() => QuarterlyZzwyData.saveQcReport()}>保存</Button>
-                        <Button>打印</Button>
+                        <Button onClick={() => onPrint(true)}>导出</Button>
                         <Button onClick={topHeaderBack}>返回</Button>
                     </div>
                 </div>
@@ -213,122 +301,133 @@ export default observer(function QuarterlyAnalysisReportZzwyDetail(props: Props)
                 </div>
             </TopHeader>
             {/*内容*/}
-            <Spin  spinning={QuarterlyZzwyData.contentLoading}>
-            <MidCon>
-                <Content>
-                    <>
-                        <h2 className='center-title'>{`${QuarterlyZzwyData.reportMasterData?.reportYear}年第${QuarterlyZzwyData.reportMasterData?.reportQuarter}${QuarterlyZzwyData.reportMasterData?.summaryFormName}总结`}</h2>
-                        <TextArea placeholder='请输入总结内容'
-                                  value={QuarterlyZzwyData.summarize}
-                                  onChange={(e: any) => QuarterlyZzwyData.summarize = e.target.value}
-                                  rows={10}/>
-                    </>
-                    <>
-                        <h5 className='title-sty'>检查情况表</h5>
-                        <BaseTable
-                            dataSource={QuarterlyZzwyData.inspectTable}
-                            columns={columnsOne}
-                        />
-                    </>
-                    <>
+            <Spin spinning={QuarterlyZzwyData.contentLoading}>
+                <MidCon ref={pageRef}>
+                    <Content>
+                        <>
+                            <h2 className='center-title'>{`${QuarterlyZzwyData.reportMasterData?.reportYear}年第${QuarterlyZzwyData.reportMasterData?.reportQuarter}${QuarterlyZzwyData.reportMasterData?.summaryFormName}总结`}</h2>
+                            <TextArea placeholder='请输入总结内容'
+                                      value={QuarterlyZzwyData.summarize}
+                                      onChange={(e: any) => QuarterlyZzwyData.summarize = e.target.value}
+                                      rows={10}/>
+                        </>
+                        <>
+                            <h5 className='title-sty'>检查情况表</h5>
+                            <BaseTable
+                                dataSource={QuarterlyZzwyData.inspectTable}
+                                columns={columnsOne}
+                            />
+                        </>
+                        <>
+                            <Summary>
+                                <h5 className='title-sty'>条目汇总表</h5>
+                                {!isPrint &&
+                                    <Button type='primary' onClick={() => setSelectTableModal(true)}>添加</Button>}
+                            </Summary>
+                            <BaseTable
+                                style={{padding: 0}}
+                                dataSource={QuarterlyZzwyData.summaryTable}
+                                columns={columnsThree}
+                            />
+                        </>
+                        <>
+                            <h6 className='title-sty'>检查中发现存在主要内容</h6>
+                            <TextArea placeholder='请输入检查中发现存在主要内容'
+                                      value={QuarterlyZzwyData.contentValue}
+                                      onChange={(e: any) => QuarterlyZzwyData.contentValue = e.target.value}
+                                      rows={7}/>
+                        </>
                         <Summary>
-                            <h5 className='title-sty'>条目汇总表</h5>
-                            <Button type='primary' onClick={() => setSelectTableModal(true)}>添加</Button>
+                            <h5 className='title-sty'>原因分析</h5>
+                            {!isPrint && <Button type={'primary'}
+                                                 onClick={() => QuarterlyZzwyData.handleAddFishValue()}>添加鱼骨图</Button>}
                         </Summary>
-                        <BaseTable
-                            style={{padding: 0}}
-                            dataSource={QuarterlyZzwyData.summaryTable}
-                            columns={columnsThree}
-                        />
-                    </>
-                    <>
-                        <h6 className='title-sty'>检查中发现存在主要内容</h6>
-                        <TextArea placeholder='请输入检查中发现存在主要内容'
-                                  value={QuarterlyZzwyData.contentValue}
-                                  onChange={(e: any) => QuarterlyZzwyData.contentValue = e.target.value}
-                                  rows={7}/>
-                    </>
-                    <Summary>
-                        <h5 className='title-sty'>原因分析</h5>
-                        <Button type={'primary'} onClick={() => QuarterlyZzwyData.handleAddFishValue()}>添加鱼骨图</Button>
-                    </Summary>
-                    {/*鱼骨图*/}
-                    <div style={{margin: '20px 0'}}>
-                        {
-                            QuarterlyZzwyData.fishValueObj.map((item: any, index: number) => {
-                                return (
-                                    <QcFishBone
-                                        key={`${index}+fish`}
-                                        value={item}
-                                        updateFish={updateFish}
-                                        index={index}
-                                        onChange={(obj: any) => handleFishItem(obj, index)}/>
-                                )
-                            })
-                        }
-                    </div>
-                    <>
-                        <h6 className='title-sty'>三、整改措施</h6>
-                        <TextArea placeholder='请输入整改措施内容'
-                                  onChange={(e: any) => QuarterlyZzwyData.rectification = e.target.value}
-                                  value={QuarterlyZzwyData.rectification} rows={7}/>
-                    </>
-                    <>
-                        <h6 className='title-sty'>四、追踪评价</h6>
-                        <BaseTable
-                            style={{padding: 0}}
-                            dataSource={QuarterlyZzwyData.referredTable}
-                            columns={columnsTwo}
-                        />
-                    </>
-                    <Summary style={{height: "auto"}}>
-                        <h6 className='title-sty'>五、对上季度项目得分率的条目进行效果评价（支持图片上传</h6>
-                        <Button type="primary" icon="upload" onClick={handleUploading}>添加图片</Button>
-                    </Summary>
+                        {/*鱼骨图*/}
+                        <div style={{margin: '20px 0'}}>
+                            {
+                                QuarterlyZzwyData.fishValueObj.map((item: any, index: number) => {
+                                    return (
+                                      <>
+                                          <QcFishBone
+                                              key={`${index}+fish`}
+                                              value={item}
+                                              index={index}
+                                              isPrint={isPrint}
+                                              updateFish={updateFish+index}
+                                              onChange={(obj: any) => handleFishItem(obj, index)}/>
+                                          <div style={{height:'2px',background:"#ededed",borderBottom:"1px dashed"}}></div>
+                                      </>
+                                    )
+                                })
+                            }
+                        </div>
+                        <>
+                            <h6 className='title-sty'>三、整改措施</h6>
+                            <TextArea placeholder='请输入整改措施内容'
+                                      onChange={(e: any) => QuarterlyZzwyData.rectification = e.target.value}
+                                      value={QuarterlyZzwyData.rectification} rows={7}/>
+                        </>
+                        <>
+                            <h6 className='title-sty'>四、追踪评价</h6>
+                            <BaseTable
+                                style={{padding: 0}}
+                                dataSource={QuarterlyZzwyData.referredTable}
+                                columns={columnsTwo}
+                            />
+                        </>
+                        <Summary style={{height: "auto"}}>
+                            <h6 className='title-sty'>五、对上季度项目得分率的条目进行效果评价（支持图片上传</h6>
+                            {!isPrint &&
+                                <Button type="primary" icon="upload" onClick={handleUploading}>添加图片</Button>}
+                        </Summary>
 
-
-                    <div style={{width: '500px', marginLeft: '150px'}}>
-                        {(QuarterlyZzwyData.analysisChartData?.imgList || []).map((ii: any, inx: number) => {
-                            return (<div style={{width: '100%'}}>
-                                <div style={{textAlign: 'right', overflow: 'hidden'}}>
-                                    {/* 删除附件 */}
-                                    <Icon onClick={() => {
-                                        QuarterlyZzwyData.analysisChartData.imgList.splice(inx, 1)
-                                    }} className='delete-hover' type="delete"
-                                          style={{fontSize: '24px', color: '#f00'}}/>
-                                </div>
-                                <img alt="example" style={{
-                                    width: '100%',
-                                    height: '300px',
-                                    border: '1px solid #000',
-                                    borderRadius: '8px'
-                                }} src={ii.path}/>
-                                <p style={{fontSize: '16px', textAlign: 'center'}}>{ii.name}</p>
-                            </div>)
-                        })}
-                        {/*柱形图*/}
-                        {(QuarterlyZzwyData.analysisChartData.devData || []).map((it: any, idx: number) => {
-                            return (
-                                <>
-                                    <div
-                                        style={{textAlign: 'right', overflow: 'hidden'}}><Icon onClick={() => {
-                                        QuarterlyZzwyData.analysisChartData.devData.splice(idx, 1)
-                                    }} className='delete-hover' type="delete" style={{
-                                        fontSize: '24px',
-                                        color: '#f00'
-                                    }}/></div>
-                                    <ChartCylindricalityMonth data={it}
-                                                              fields={QuarterlyZzwyData.analysisChartData.fields}/>
-                                </>
-                            )
-                        })}
-                    </div>
-                    <ContentEnd>
-                        <h2>漳州市第五医院</h2>
-                        <div>{QuarterlyZzwyData.reportMasterData?.creatorTime}</div>
-                    </ContentEnd>
-                </Content>
-            </MidCon>
+                        <div style={{display: 'flex', justifyContent: "center", alignItems: 'center'}}>
+                            <div style={{width: '600px'}}>
+                                {(QuarterlyZzwyData.analysisChartData?.imgList || []).map((ii: any, inx: number) => {
+                                    return (<div style={{width: '100%'}}>
+                                        <div style={{textAlign: 'right', overflow: 'hidden'}}>
+                                            {/* 删除附件 */}
+                                            {!isPrint && <Icon onClick={() => {
+                                                QuarterlyZzwyData.analysisChartData.imgList.splice(inx, 1)
+                                            }} className='delete-hover' type="delete"
+                                                               style={{fontSize: '24px', color: '#f00'}}/>}
+                                        </div>
+                                        <img alt="example" style={{
+                                            width: '100%',
+                                            height: '300px',
+                                            border: '1px solid #000',
+                                            borderRadius: '8px'
+                                        }} src={ii.path}/>
+                                        <p style={{fontSize: '16px', textAlign: 'center'}}>{ii.name}</p>
+                                    </div>)
+                                })}
+                                {/*柱形图*/}
+                                {(QuarterlyZzwyData.analysisChartData.devData || []).map((it: any, idx: number) => {
+                                    return (
+                                        <>
+                                            {!isPrint && <div
+                                                style={{textAlign: 'right', overflow: 'hidden'}}><Icon onClick={() => {
+                                                QuarterlyZzwyData.analysisChartData.devData.splice(idx, 1)
+                                            }} className='delete-hover' type="delete" style={{
+                                                fontSize: '24px',
+                                                color: '#f00'
+                                            }}/></div>}
+                                            {isPrint ? <img
+                                                width={600}
+                                                height='auto'
+                                                src={canvasImgArray[idx]} alt=""/> : <ChartCylindricalityMonth data={it}
+                                                                                                               fields={QuarterlyZzwyData.analysisChartData.fields}/>}
+                                        </>
+                                    )
+                                })}
+                            </div>
+                        </div>
+                        <ContentEnd>
+                            <h2>漳州市第五医院</h2>
+                            <div>{QuarterlyZzwyData.reportMasterData?.creatorTime}</div>
+                        </ContentEnd>
+                    </Content>
+                </MidCon>
 
             </Spin>
             <AnalysisSelectReport
@@ -337,7 +436,6 @@ export default observer(function QuarterlyAnalysisReportZzwyDetail(props: Props)
                     setSelectTableModal(false)
                 }}
                 handleCancel={() => setSelectTableModal(false)}/>
-            {/*</Spin>*/}
         </Con>
     )
 })
@@ -446,8 +544,8 @@ const Summary = styled.div`
   align-items: center;
   margin: 10px 0;
 `
-const ContentEnd =styled.div`
- display: flex;
+const ContentEnd = styled.div`
+  display: flex;
   justify-content: flex-end;
-  
+
 `
