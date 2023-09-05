@@ -983,11 +983,15 @@ export default observer(function 敏感指标登记本(props: Props) {
    console.log(value);
    setDeptCode(value)
  }
+ const canXiuDing = ()=>{
+  if(appStore.HOSPITAL_ID === 'gzsrm') return true
+  return authStore.isAdmin
+ }
 
   return (
     <Container>
       <NewPageHeader ref={pageHeaderRef}>
-        {authStore.isAdmin && (
+        {canXiuDing() && (
           <Button style={{ marginLeft: 0 }} onClick={onAddBlock}>
             修订
           </Button>
