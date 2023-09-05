@@ -42,6 +42,7 @@ function CreateMonthCheckReport(props: Props) {
       }
       // console.log('创建的内容',value)
       qcMonthCheckData.createModalData = value
+      qcMonthCheckData.createModalData.month = moment(value.month).format('YYYY-MM')
       handleOk()
     })
   }

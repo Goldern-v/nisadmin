@@ -143,7 +143,7 @@ export default observer(function QcMonthCheckReportList() {
 		}else{
 
 		// 新建数据
-		appStore.history.push(`/qcMonthCheckReportDetail?${qs.stringify({qcLevel:appStore.queryObj?.qcLevel })}`)
+		appStore.history.push(`/qcMonthCheckReportDetail?${qs.stringify({qcLevel:appStore.queryObj?.qcLevel,...qcMonthCheckData.createModalData })}`)
 		qcMonthCheckData.addConfirmVisible = false
 	}
 		

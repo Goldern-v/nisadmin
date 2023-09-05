@@ -29,11 +29,16 @@ export default observer(function QcMonthCheckReportDetail() {
   const {id,qcLevel} = appStore.queryObj
   const [updateFish, setUpdateFish] = useState('');
   const [canvasImgArry, setCanvasImgArry] = useState([]);
+  const [spinning, setSpinning] = useState(true);
 
   /**保存 */
   const onSave = ()=>{
     // console.log(qcMonthCheckData.ZZWY_YDZKJCZJ_L1_003.fishValueArr)
     // return false
+    if(spinning){
+      message.warning('努力加载中，请稍后操作')
+      return false
+    }
     let qcReportItemDtoList = qcMonthCheckData.qcReportItemDtoList || []
     let qcReportItemDataList:any = []
     qcReportItemDtoList.map((it:any)=>{
@@ -63,6 +68,10 @@ export default observer(function QcMonthCheckReportDetail() {
   }
   const onPrint = (isPrint: boolean) => {
     // return false
+    if(spinning){
+      message.warning('努力加载中，请稍后操作')
+      return false
+    }
     setIsPrint(isPrint)
     let printFun = isPrint ? printing : printing.preview
     setTimeout(() => {
@@ -233,7 +242,10 @@ const handleFishItem =(obj:any,index:number)=>{
       // 有id，就调查看接口
       getQcReportById()
     }else{
+      qcMonthCheckData.createModalData = appStore.queryObj
+      console.log(appStore.queryObj)
       /**创建分析报告 */
+      
       createQcReport()
     }
     // qcMonthCheckData.getInspectionSummary()
@@ -254,19 +266,8 @@ const handleFishItem =(obj:any,index:number)=>{
       "wardCode":qcMonthCheckData.createModalData.deptCode.key,
       "wardName":qcMonthCheckData.createModalData.deptCode.label,
     }
-    let paramter2 = {
-      "hospitalCode":"zzwy",
-      "templateName":"月度质控检查总结报告",
-      "reportName":"Vicky",
-      "reportLevel":"1",
-      "reportYear":2023,
-      "reportMonth":8,
-      "startDate":"2023-08-01",
-      "endDate":"2023-08-31",
-      "wardCode":"236",
-      "wardName":"七病区"
-    }
     qcZzwyApi.createQcReport(paramter).then(res=>{
+      setSpinning(false)
       qcMonthCheckData.reportMasterData = res.data.reportMasterData || {}
       qcMonthCheckData.qcReportItemDtoList = res.data.qcReportItemDtoList || []
       qcMonthCheckData.qcReportItemDtoList.map((it:any)=>{
@@ -285,6 +286,7 @@ const handleFishItem =(obj:any,index:number)=>{
   const getQcReportById = ()=>{
     // console.log(id)
     qcZzwyApi.getQcReportById(id).then(res=>{
+      setSpinning(false)
       qcMonthCheckData.reportMasterData = res.data.reportMasterData || {}
       qcMonthCheckData.qcReportItemDtoList = res.data.qcReportItemDtoList || []
       qcMonthCheckData.qcReportItemDtoList.map((it:any)=>{
@@ -409,7 +411,7 @@ const handleFishItem =(obj:any,index:number)=>{
         </div>
       </HeadCon>
       <ScrollCon>
-        {/* <Spin spinning={spinning} > */} 
+        <Spin spinning={spinning} > 
           <Page ref={pageRef} className='print-page'>
             <div style={{ fontSize: '30px', fontWeight: 700, textAlign: 'center', lineHeight: '60px',marginTop:"20px" }}>
             {qcMonthCheckData.reportMasterData?.reportName || ''}
@@ -547,7 +549,7 @@ const handleFishItem =(obj:any,index:number)=>{
             </div>
             </>
           </Page>
-        {/* </Spin> */}
+        </Spin>
       </ScrollCon>
       <SelectReport 
       visible={selectTableModal}
