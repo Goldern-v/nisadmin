@@ -67,6 +67,8 @@ import 护士层级分布 from "./views/护士层级分布/护士层级分布";
 import 护士在职状态分析 from "./views/护士在职状态分析/护士在职状态分析";
 //护士离职原因分析
 import 护士离职原因分析 from "./views/护士离职原因分析/护士离职原因分析";
+//继续教育一览表
+import 继续教育一览表 from "./views/继续教育一览表/继续教育一览表";
 // 发热患者统计
 // 病区设备统计
 // 全院护理人员一览表
@@ -354,6 +356,11 @@ export default function StatisticView() {
       },
       vague:true
     }),
+    {
+      name: "继续教育一览表",
+      path: "/statistic/继续教育一览表",
+      component: 继续教育一览表,
+    }
   ];
   // const leftNursingStatistics = [{ name: '护理人员一览表', path: '/statistic/护理人员一览表', component: NurseList }]
 

@@ -141,6 +141,7 @@ const LEFT_MENU_CONFIG = [
                   title: "护士离职原因分析", path: "/statistic/护士离职原因分析",
                 },
                 { title: "护理人员一览表", path: "/statistic/护理人员一览表" },
+                { title: "继续教育一览表", path: "/statistic/继续教育一览表" },
               ],
               default: [
                 {

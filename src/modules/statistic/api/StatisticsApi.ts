@@ -71,10 +71,10 @@ class StatisticsApi extends BaseApiService {
   // 护士休假统计（按月份）
   public async postNurseByMonth(classShow: string, showType: any, exportData: any = true) {
     if (classShow === '白班') {
-      classShow = ['whyx','whhk'].includes(appStore.HOSPITAL_ID) ? '白班' : 'A班'
+      classShow = ['whyx','whhk','jmfy'].includes(appStore.HOSPITAL_ID) ? '白班' : 'A班'
       classShow = ['nys'].includes(appStore.HOSPITAL_ID) ? '日班' : classShow
     } else if (classShow === '夜班') {
-      classShow=['nys','whyx','whhk'].includes(appStore.HOSPITAL_ID)?{'nys':'夜班','whyx':'N班','whhk':'N班'}[appStore.HOSPITAL_ID]:'P班'
+      classShow=['nys','whyx','whhk','jmfy'].includes(appStore.HOSPITAL_ID)?{'nys':'夜班','jmfy':'夜班','whyx':'N班','whhk':'N班'}[appStore.HOSPITAL_ID]:'P班'
     } else if (classShow === '休假') {
       classShow = '休假'
     }
@@ -141,9 +141,9 @@ class StatisticsApi extends BaseApiService {
   // 科室休假统计（按月份）
   public async postDepartmentByMonth(classShow: any, showType: any, exportData: any = true) {
     if (classShow === '白班') {
-      classShow = ['whyx','whhk'].includes(appStore.HOSPITAL_ID) ? '白班' : 'A班'
+      classShow = ['whyx','whhk','jmfy'].includes(appStore.HOSPITAL_ID) ? '白班' : 'A班'
     } else if (classShow === '夜班') {
-      classShow ='P班'
+      classShow = {'jmfy':'夜班'}[appStore.HOSPITAL_ID] || 'P班'
     } else if (classShow === '休假') {
       classShow = '休假'
     } else {
@@ -348,6 +348,10 @@ class StatisticsApi extends BaseApiService {
   /** 统计职称 */
   public countTitle(query: any) {
     return this.post('/countInformation/countTitle', query)
+  }
+  
+  public findNurseContinuingEducation(query: any) {
+    return this.post('/nurseContinuingEducation/findNurseContinuingEducation', query)
   }
 
   /** 统计职务 */
