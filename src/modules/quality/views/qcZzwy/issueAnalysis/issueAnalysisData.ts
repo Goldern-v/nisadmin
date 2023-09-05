@@ -11,7 +11,7 @@ class IssueAnalysisData{
   @observable public qcLevel = appStore.queryObj?.qcLevel || '1'
 
   @observable public tableLoading = false; //表格loading
-    @observable public tableList:any = [{},{},{}]; //表格内容
+    @observable public tableList:any = []; //表格内容
     @observable public pageIndex: any = 1; //页码
     @observable public pageSize: any = 20; //每页大小
     @observable public total: any = 0; //总条数
@@ -27,7 +27,7 @@ class IssueAnalysisData{
 
   @observable public filterDate: any = [moment(moment()), moment()]//日期时间
 
-  @observable public templeteList = []//质控表列表
+  @observable public templeteList = [{qcCode:''}]//质控表列表
   @observable public qcCode='HJ_QCTP_021';//选择的质控表
 
 
@@ -49,7 +49,7 @@ class IssueAnalysisData{
   @computed get postObj(){
     return{
       wardCode:this.deptCode,
-      level:this.qcLevel,
+      level:appStore.queryObj?.qcLevel || '1',
       qcCode:this.qcCode
       }
   }
@@ -105,11 +105,14 @@ class IssueAnalysisData{
 
   /**获取模板列表 */
   getTemplateList(){
-    if(this.templeteList.length>0){
-      return false
-    }
+    // debugger
+    // if(this.templeteList.length>0){
+    //   this.qcCode = this.templeteList[0].qcCode
+    //   this.getTableList()
+    //   return false
+    // }
     this.tableLoading = true
-    qcZzwyApi.getTemplateList(this.qcLevel).then(res=>{
+    qcZzwyApi.getTemplateList(appStore.queryObj?.qcLevel || '1').then(res=>{
       this.templeteList = res.data || []
       this.qcCode = res.data[0]?.qcCode
       this.getTableList()

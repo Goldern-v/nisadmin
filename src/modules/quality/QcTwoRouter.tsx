@@ -137,38 +137,38 @@ export default observer(function QcTwoRouter(props: Props) {
     {
       title: "护理部质量检查汇总表",
       icon: <HZBG />,
-      path: "/qcTwo/护理部质量检查汇总表?qcLevel=3",
+      path: "/qcTwo/护理部质量检查汇总表?qcLevel=2",
       component: CheckSummary,
     },
     
   {
     title: "质控表项目问题分析汇总",
     icon: <JCTJ />,
-    path: "/qcTwo/质控表项目问题分析汇总?qcLevel=3",
+    path: "/qcTwo/质控表项目问题分析汇总?qcLevel=2",
     component: IssueAnalysis,
   },
     {
       title: "质控检查反馈整改单",
       icon: <HZBG />,
-      path: "/qcTwo/质控检查反馈整改单?qcLevel=3",
+      path: "/qcTwo/质控检查反馈整改单?qcLevel=2",
       component: RectificationSummary,
     },
     {
       title: "月度质控检查总结报告",
       icon: <JCTJ />,
-      path: "/qcTwo/月度质控检查总结报告?qcLevel=3",
+      path: "/qcTwo/月度质控检查总结报告?qcLevel=2",
       component: QcMonthCheckReportList,
     },
 
     {title: "季度质量分析报告",
       icon: <HZBG />,
-      path: "/qcTwo/季度质量分析报告?qcLevel=3",
+      path: "/qcTwo/季度质量分析报告?qcLevel=2",
       component: QuarterlyAnalysisReportZzwy,
     },
     {
       title: "季度质量管理工作总结",
       icon: <HZBG />,
-      path: "/qcTwo/季度质量管理工作总结?qcLevel=3",
+      path: "/qcTwo/季度质量管理工作总结?qcLevel=2",
       component: QqualityMWSummary,
     },
 ]

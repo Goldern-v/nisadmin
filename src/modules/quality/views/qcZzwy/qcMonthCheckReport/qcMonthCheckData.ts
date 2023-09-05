@@ -72,14 +72,14 @@ class QcMonthCheckData{
       improveGoals:'',//改进目标
       steps:'',//整改措施：
       check:'',//检查情况
-      fishValueObj:Array.from(Array(40)).reduce((prev, cur, i) => {
+      fishValueObj:Array.from(Array(50)).reduce((prev, cur, i) => {
         prev[`v${i + 1}`] = '';
         return prev
     }, {}),//鱼骨图
-  //   fishValueArr:[Array.from(Array(40)).reduce((prev, cur, i) => {
-  //     prev[`v${i + 1}`] = '';
-  //     return prev
-  // }, {})]
+    fishValueArr:[Array.from(Array(50)).reduce((prev, cur, i) => {
+      prev[`v${i + 1}`] = '';
+      return prev
+  }, {id:Math.floor(1000 + Math.random() * 9000)})],
     },
     ZZWY_YDZKJCZJ_L1_004:{
       textArea:'',
@@ -103,14 +103,14 @@ class QcMonthCheckData{
     improveGoals:'',//改进目标
     steps:'',//整改措施：
     check:'',//检查情况
-    fishValueObj:Array.from(Array(40)).reduce((prev, cur, i) => {
+    fishValueObj:Array.from(Array(50)).reduce((prev, cur, i) => {
       prev[`v${i + 1}`] = '';
       return prev
   }, {}),//鱼骨图
-//   fishValueArr:[Array.from(Array(40)).reduce((prev, cur, i) => {
-//     prev[`v${i + 1}`] = '';
-//     return prev
-// }, {})]
+  fishValueArr:[Array.from(Array(50)).reduce((prev, cur, i) => {
+    prev[`v${i + 1}`] = '';
+    return prev
+}, {id:Math.floor(1000 + Math.random() * 9000)})]
   }
   // 四、效果评价及标准化结果
   @observable public ZZWY_YDZKJCZJ_L1_004:any = {
@@ -127,17 +127,13 @@ class QcMonthCheckData{
 //     return prev
 // }, {})
 
-@action
-    updateFishValueObj(value:any){
-      this.ZZWY_YDZKJCZJ_L1_003.fishValueObj = value
-        // this.fishValueObj  =value
-        // console.log(this.fishValueObj);
-    }
+// @action
+//     updateFishValueObj(value:any){
+//       this.ZZWY_YDZKJCZJ_L1_003.fishValueObj = value
+//     }
     @action
     updateFishValueArray(value:any,index:number){
       this.ZZWY_YDZKJCZJ_L1_003.fishValueArr[index] = value
-        // this.fishValueObj  =value
-        // console.log(this.fishValueObj);
     }
 
   // 柱状图

@@ -16,8 +16,9 @@ import { qcMonthCheckData } from './qcMonthCheckData'
 import { qcZzwyApi } from '../qcZzwyApi'
 import QcFishBoneMonth from './qcFishBoneMonth/fish-bone'
 import ChartCylindricalityMonth from './ChartCylindricalityMonth'
-import MultipleImageUploader from 'src/components/ImageUploader/MultipleImageUploader'
-import ImageUploader from 'src/components/ImageUploader'
+// import MultipleImageUploader from 'src/components/ImageUploader/MultipleImageUploader'
+// import ImageUploader from 'src/components/ImageUploader'
+// import { OVERFLOW_WRAP } from 'html2canvas/dist/types/css/property-descriptors/overflow-wrap'
 
 
 export default observer(function QcMonthCheckReportDetail() {
@@ -27,9 +28,12 @@ export default observer(function QcMonthCheckReportDetail() {
   const [selectTableModal, setSelectTableModal] = useState(false);
   const {id,qcLevel} = appStore.queryObj
   const [updateFish, setUpdateFish] = useState('');
+  const [canvasImgArry, setCanvasImgArry] = useState([]);
 
   /**保存 */
   const onSave = ()=>{
+    // console.log(qcMonthCheckData.ZZWY_YDZKJCZJ_L1_003.fishValueArr)
+    // return false
     let qcReportItemDtoList = qcMonthCheckData.qcReportItemDtoList || []
     let qcReportItemDataList:any = []
     qcReportItemDtoList.map((it:any)=>{
@@ -71,6 +75,9 @@ export default observer(function QcMonthCheckReportDetail() {
            .ant-btn {
              display: none;
            }
+           .print-page__ptext{
+            padding:0 6px;
+          }
            .print-page {
              box-shadow: none;
              -webkit-print-color-adjust: exact;
@@ -83,6 +90,9 @@ export default observer(function QcMonthCheckReportDetail() {
            .page-title .title {
              text-align: center;
              margin-right: 0;
+           }
+           .fb-container{
+            position: relative;
            }
            table, img {
              page-break-inside: avoid;
@@ -166,16 +176,13 @@ export default observer(function QcMonthCheckReportDetail() {
     return [{},{},{}]
   }
 
-  const  fishValueSource=Array.from(Array(40)).reduce((prev, cur, i) => {
-    prev[`v${i + 1}`] = '';
-    return prev
-}, {})
-const handleFishItem =(obj:any,index?:number)=>{
+
+const handleFishItem =(obj:any,index:number)=>{
   // console.log(obj);
   // console.log(index)
-  qcMonthCheckData.updateFishValueObj(obj)
+  // qcMonthCheckData.updateFishValueObj(obj)
   // if(index===0){
-  //   qcMonthCheckData.updateFishValueArray(obj,index)
+    qcMonthCheckData.updateFishValueArray(obj,index)
   // }
 }
 
@@ -183,17 +190,18 @@ const handleFishItem =(obj:any,index?:number)=>{
   const getTableColumns2 = ()=>{
     return [
       {
-        title: 'keshi', dataIndex: 'actualCheckNum2', align: 'center',width:250,
+        title: 'keshi', dataIndex: 'actualCheckNum2',width:250,
         render: (datas: any, record: any) => {
           return (<div>
           <span style={{width:'100px'}}>日期：</span>
-          <DatePicker 
+          {!isPrint && <DatePicker 
             defaultValue={moment(qcMonthCheckData.ZZWY_YDZKJCZJ_L1_003.date) || undefined}
-              // className='table-input'
               onChange={(date:any)=>{
                 qcMonthCheckData.ZZWY_YDZKJCZJ_L1_003.date = date?.format('YYYY-MM-DD') || undefined
               }}
-          /></div>)
+          />}
+          {isPrint&& <span>{qcMonthCheckData.ZZWY_YDZKJCZJ_L1_003.date || '暂无选择'}</span>}
+          </div>)
         }
       },
         {
@@ -312,6 +320,20 @@ const handleFishItem =(obj:any,index?:number)=>{
     }
   }
 
+
+  useEffect(() => {
+    // debugger
+    setTimeout(() => {
+      let canvasImgList:any = []
+      let canvasEl2 = document.getElementsByTagName('canvas')
+      for (let i = 0; i < canvasEl2.length; i++) {
+        canvasImgList.push(canvasEl2[i].toDataURL())
+      }
+      setCanvasImgArry(canvasImgList)
+    }, 1000);
+  }, [qcMonthCheckData.ZZWY_YDZKJCZJ_L1_004.devData])
+  
+
   // 上传附件
 	const handleUploading = () => {
 		let importElId = 'sxslrb_import_file_el'
@@ -350,7 +372,13 @@ const handleFishItem =(obj:any,index?:number)=>{
 
 	}
   const addFish = ()=>{
-    qcMonthCheckData.ZZWY_YDZKJCZJ_L1_003.fishValueArr.push(fishValueSource)
+    // qcMonthCheckData.ZZWY_YDZKJCZJ_L1_003.fishValueArr.push(fishValueSource)
+    let obj: any = Array.from(Array(50)).reduce((prev, cur, i) => {
+      prev[`v${i + 1}`] = '';
+      return prev
+  }, {id:Math.floor(1000 + Math.random() * 9000)})
+  qcMonthCheckData.ZZWY_YDZKJCZJ_L1_003.fishValueArr.push(obj)
+  console.log(qcMonthCheckData.ZZWY_YDZKJCZJ_L1_003.fishValueArr)
   }
   
   return (
@@ -375,7 +403,8 @@ const handleFishItem =(obj:any,index?:number)=>{
         </div>
         <div className='tool-con'>
           <Button onClick={() => onSave()} >保存</Button>
-          {/* <Button onClick={() => onPrint(true)} >导出</Button> */}
+          <Button onClick={() => onPrint(true)} >导出</Button>
+          {/* <Button onClick={() => setIsPrint(true)} >导出222</Button> */}
           <Button onClick={() => appStore.history.goBack()}>返回</Button>
         </div>
       </HeadCon>
@@ -399,10 +428,13 @@ const handleFishItem =(obj:any,index?:number)=>{
             </div>
             <div className='first-content-box'>
               <div className='first-title'>{`二、小结`}</div>
-              <Input.TextArea key={id+'summary'} className='print-page__ipt' 
+              <div style={{width: '900px',margin: '0 auto 20px' }}>
+              {!isPrint && <Input.TextArea key={id+'summary'} 
               value={qcMonthCheckData.ZZWY_YDZKJCZJ_L1_002.summary} autosize={{ minRows: 3}} 
               onChange={ (e: any) => qcMonthCheckData.ZZWY_YDZKJCZJ_L1_002.summary = e.target.value}
-               />
+               />}
+              {isPrint && <p className='print-page__ptext print-page_pipt print-page__ipt' style={{ 'whiteSpace': 'pre-wrap' }}>{qcMonthCheckData.ZZWY_YDZKJCZJ_L1_002.summary}</p>}
+               </div>
             </div>
             <div className='first-content-box'>
               <div className='first-title'>{`三、本月质量改进项目`}</div>
@@ -413,48 +445,56 @@ const handleFishItem =(obj:any,index?:number)=>{
                   footer={() => {
                     return (<div style={{width:'100%',display:'flex'}}>
                       <span style={{display:'block',width:'90px'}}>改进目标:</span>
-                      <Input.TextArea key={id+'improveGoals'} 
+                      {!isPrint &&<Input.TextArea key={id+'improveGoals'} 
                       value={qcMonthCheckData.ZZWY_YDZKJCZJ_L1_003.improveGoals} 
                       autosize={{ minRows: 1}}
                       onChange={(e: any) =>{
                         qcMonthCheckData.ZZWY_YDZKJCZJ_L1_003.improveGoals = e.target.value
                         qcMonthCheckData.ZZWY_YDZKJCZJ_L1_003 = {...qcMonthCheckData.ZZWY_YDZKJCZJ_L1_003}
-                        }} />
+                        }} />}
+                      {isPrint && <p className='print-page__ptext print-page_pipt print-page__ipt' style={{ 'whiteSpace': 'pre-wrap',width:'100%' }}>{qcMonthCheckData.ZZWY_YDZKJCZJ_L1_003.improveGoals}</p>}
+
                     </div>)
                   }}
                   />
               </div>
+
               <div className='second-content-table-table second-box' style={{ width: '900px', margin: '20px auto' }}>
                 <h4 className='second-title'>计划阶段（P）</h4>
                 <p>（一）检查情况：</p>
                 <Input key={id+'check'} value={qcMonthCheckData.ZZWY_YDZKJCZJ_L1_003.check}
                 onChange={(e)=>qcMonthCheckData.ZZWY_YDZKJCZJ_L1_003.check = e.target.value} />
-                <p>（二）原因分析：</p>
-                {/* <Button type="primary" icon="upload" onClick={addFish}>添加</Button> */}
+                <div style={{margin:'20px 0',display:'flex'}}>
+                  <p>（二）原因分析：</p>
+                  <Button type="primary" onClick={addFish}>添加鱼骨图</Button>
+                </div>
                 <div style={{margin:'20px 0'}}>
-
-
-                  {/* {qcMonthCheckData.ZZWY_YDZKJCZJ_L1_003.fishValueArr.map((fish:any,index:number)=>{
+                  {qcMonthCheckData.ZZWY_YDZKJCZJ_L1_003.fishValueArr.map((fish:any,index:number)=>{
                     return(
                       <div>
                         <div style={{textAlign:'right',overflow:'hidden'}}>
                         
                         <Icon onClick={()=>{
+                          if(qcMonthCheckData.ZZWY_YDZKJCZJ_L1_003.fishValueArr.length===1){
+                            return message.warning('至少保留一张鱼骨图')
+                          }
+                          // console.log(index)
+
                         qcMonthCheckData.ZZWY_YDZKJCZJ_L1_003.fishValueArr.splice(index,1)
+                        console.log(qcMonthCheckData.ZZWY_YDZKJCZJ_L1_003.fishValueArr)
                       }} className='delete-hover' type="delete" style={{fontSize:'24px',color:'#f00'}} />
                     </div>
-                        <QcFishBoneMonth value={fish} index={index} updateFish={updateFish+index} onChange={handleFishItem}/>
+                        <QcFishBoneMonth key={`${fish.id}+fish`} value={fish} index={index} isPrint={isPrint} updateFish={updateFish+index} onChange={handleFishItem}/>
                       </div>)
-                    
-                  })} */}
-
-
-                <QcFishBoneMonth value={qcMonthCheckData.ZZWY_YDZKJCZJ_L1_003.fishValueObj} updateFish={updateFish} onChange={handleFishItem}/>
+                  })}
+                {/* <QcFishBoneMonth value={qcMonthCheckData.ZZWY_YDZKJCZJ_L1_003.fishValueObj} isPrint={isPrint} updateFish={updateFish} onChange={handleFishItem}/> */}
                 </div>
                 <h4 className='second-title' style={{marginTop:'40px'}}>执行阶段（D）</h4>
                 <p >整改措施：</p>
-                <Input.TextArea key={id+'steps'} autosize={{ minRows: 5}} value={qcMonthCheckData.ZZWY_YDZKJCZJ_L1_003.steps}
-                onChange={(e)=>qcMonthCheckData.ZZWY_YDZKJCZJ_L1_003.steps = e.target.value} />
+                {!isPrint && <Input.TextArea key={id+'steps'} autosize={{ minRows: 5}} value={qcMonthCheckData.ZZWY_YDZKJCZJ_L1_003.steps}
+                onChange={(e)=>qcMonthCheckData.ZZWY_YDZKJCZJ_L1_003.steps = e.target.value} />}
+                {isPrint && <p className='print-page__ptext print-page_pipt print-page__ipt' style={{ 'whiteSpace': 'pre-wrap' }}>{qcMonthCheckData.ZZWY_YDZKJCZJ_L1_003.steps}</p>}
+
               </div>
             </div>
             <div className='first-content-box'>
@@ -471,10 +511,10 @@ const handleFishItem =(obj:any,index?:number)=>{
                     return(<div style={{width:'100%'}}>
                       <div style={{textAlign:'right',overflow:'hidden'}}>
                         {/* 删除附件 */}
-                        <Icon onClick={()=>{
+                        {!isPrint &&<Icon onClick={()=>{
                         qcMonthCheckData.ZZWY_YDZKJCZJ_L1_004.imgList.splice(inx,1)
                         console.log(qcMonthCheckData.ZZWY_YDZKJCZJ_L1_004.devData)
-                      }} className='delete-hover' type="delete" style={{fontSize:'24px',color:'#f00'}} />
+                      }} className='delete-hover' type="delete" style={{fontSize:'24px',color:'#f00'}} />}
                     </div>
                       <img alt="example" style={{ width: '100%',height:'300px',border:'1px solid #000',borderRadius:'8px' }} src={ii.path} />
                       <p style={{fontSize:'16px',textAlign:'center'}}>{ii.name}</p>
@@ -485,21 +525,24 @@ const handleFishItem =(obj:any,index?:number)=>{
                 
                 {(qcMonthCheckData.ZZWY_YDZKJCZJ_L1_004.devData||[]).map((it:any,idx:number)=>{
                   return(
-                    <>
-                    <div style={{textAlign:'right',overflow:'hidden'}}><Icon onClick={()=>{
+                    <div>
+                    {!isPrint &&<div style={{textAlign:'right',overflow:'hidden'}}><Icon onClick={()=>{
                       qcMonthCheckData.ZZWY_YDZKJCZJ_L1_004.devData.splice(idx,1)
-                      console.log(qcMonthCheckData.ZZWY_YDZKJCZJ_L1_004.devData)
-                    }} className='delete-hover' type="delete" style={{fontSize:'24px',color:'#f00'}} /></div>
-                  <ChartCylindricalityMonth data={it} fields={qcMonthCheckData.ZZWY_YDZKJCZJ_L1_004.fields}/>
-                  </>
+                    }} className='delete-hover' type="delete" style={{fontSize:'24px',color:'#f00'}} /></div>}
+                  
+                  {isPrint?<img src={canvasImgArry[idx]} alt="" />:
+                  <ChartCylindricalityMonth data={it} fields={qcMonthCheckData.ZZWY_YDZKJCZJ_L1_004.fields}/>}
+                   
+                  </div>
                   )
                   })}
                 </div>
                 {/* <h4 className='second-title'>请输入</h4> */}
-                <Input.TextArea placeholder='请输入……' key={id+'textArea'}
+
+                {!isPrint&&<Input.TextArea placeholder='请输入……' key={id+'textArea'}
                 value={qcMonthCheckData.ZZWY_YDZKJCZJ_L1_004.textArea} autosize={{ minRows: 5}}
-                onChange={(e)=>qcMonthCheckData.ZZWY_YDZKJCZJ_L1_004.textArea = e.target.value} />
-                
+                onChange={(e)=>qcMonthCheckData.ZZWY_YDZKJCZJ_L1_004.textArea = e.target.value} />}
+                {isPrint && <p className='print-page__ptext print-page_pipt print-page__ipt' style={{ 'whiteSpace': 'pre-wrap' }}>{qcMonthCheckData.ZZWY_YDZKJCZJ_L1_004.textArea}</p>}
               </div>
             </div>
             </>
@@ -551,6 +594,22 @@ const Page = styled.div`
     cursor: pointer;
     scale: 1.2;
   }
+  /* 打印的p标签 */
+  .print-page_pipt{
+		white-space:normal; 
+		word-break:break-all;
+		border: 1px solid #d9d9d9;
+		border-radius: 4px;
+		padding: 2px;
+		min-height: 60px;
+		/* word-wrap: break-word; */
+	}
+  .print-page__ipt {
+    /* margin: 0px 60px 15px; */
+    resize: none;
+    /* width: calc(100% - 120px); */
+		line-height: 1.5;
+  }
 `
 
 const ScrollCon = styled(ScrollBox)`
@@ -601,11 +660,7 @@ const ScrollCon = styled(ScrollBox)`
       padding: 16px 6px;
     }
   }
-  .print-page__ipt {
-    margin: 0px 20px 15px;
-    resize: none;
-    width: calc(100% - 40px);
-  }
+
 
   /* 输入框样式 */
   .ant-input-number-handler-wrap {
@@ -621,5 +676,7 @@ const ScrollCon = styled(ScrollBox)`
     }
 
   }
+
+  
   
 `

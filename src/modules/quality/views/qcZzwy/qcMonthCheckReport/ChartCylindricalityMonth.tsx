@@ -39,7 +39,7 @@ export default function ChartCylindricalityMonth(props: Props){
       const dataTrue = dv.rows;
     return (
    
-    <Chart forceFit height={400} data={dataTrue}>
+    <Chart forceFit height={400} data={dataTrue} renderer='canvas'>
         <Tooltip />
         <Axis />
         <Legend />

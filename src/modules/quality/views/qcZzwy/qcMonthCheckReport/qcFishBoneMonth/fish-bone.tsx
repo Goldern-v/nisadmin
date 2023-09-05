@@ -302,12 +302,13 @@ export interface Props {
     /**接收值**/
     onChange?: Function,
     updateFish?:any,
-    index?:number
+    index?:number,
+    isPrint?:boolean
 
 }
 
 export default function QcFishBoneMonth(props: any) {
-    const {value, onChange,updateFish,index} = props
+    const {value, onChange,updateFish,index,isPrint} = props
     const generateData = (count: any) => {
         const data = {};
         for (let i = 0; i <= count; i++) {
@@ -317,10 +318,10 @@ export default function QcFishBoneMonth(props: any) {
         }
         return Object.freeze(data);
     };
-    const defEditVal = () => Array.from(Array(40)).reduce((prev, cur, i) => {
+    const defEditVal = () => Array.from(Array(50)).reduce((prev, cur, i) => {
         prev[`v${i + 1}`] = '';
         return prev
-    }, {})
+    }, {id:Math.floor(1000 + Math.random() * 9000)})
     const reflect: any = generateData(40)
     const [editVal, setEditVal] = useState<Obj>(defEditVal)
     const [listState, setListState] = useState([...list]); // 初始化状态
@@ -332,7 +333,6 @@ export default function QcFishBoneMonth(props: any) {
     }, [updateFish])
 
     const handleSearch = debounce((value: any, key: string) => {
-        // console.log('1');
         onChange && onChange({...editVal, [key]: value})
       }, 5000); // 设置延迟时间为 500 毫秒
     
@@ -365,16 +365,26 @@ export default function QcFishBoneMonth(props: any) {
             setListState(newList);
         }
     };
-    return (<Wrapper className="fb-container">
+    return (<Wrapper>
+        <div className="fb-container">
+        {/* {
+            qcMonthCheckData.ZZWY_YDZKJCZJ_L1_003.fishValueArr.length > 1 && <Button
+                className='fb-button-delete'
+                type='danger' size='small'
+                onClick={() => QuarterlyZzwyData.handleDeleteFishValue(index)}>删除</Button>
+        } */}
         <img className="fb-bg" src={fishBoneSvg} alt="鱼骨"/>
         <div className="fb-ctx">
             {listState.map((v: any, k: number) =>
                 <>
                     <>
-                        <Input className="fb-ctx-item"
+                    {isPrint?<p className='fb-ctx-ipt print-page__pfish print-page__ptext print-page__ipt' style={{ ...v.style,'whiteSpace': 'pre-wrap' }}>{editVal ? editVal[v.key] : ''}</p>:
+                    <Input className="fb-ctx-item"
+                                // key={editVal.id+v.key}
+                                // data-key={editVal.id+v.key}
                                maxLength={25}
                                onChange={(e) => onIpt(e, v.key)}
-                               value={editVal ? editVal[v.key] : ''} key={v.idx+updateFish} style={v.style}/>
+                               value={editVal ? editVal[v.key] : ''}  style={v.style}/>}
                         <Button className='fb-ctx-add' size={'small'} style={v.buttonStyle}
                                 onClick={() => handleAddElement(k)}>+</Button>
                     </>
@@ -383,14 +393,17 @@ export default function QcFishBoneMonth(props: any) {
                             if (!v1.hide) {
                                 return (
                                     <div id='input-container'>
+                                        {isPrint?<p className='fb-ctx-ipt print-page__ptext print-page__pfish print-page__ipt' style={{ ...v1.style,'whiteSpace': 'pre-wrap' }}>{editVal ? editVal[v1.key] : ''}</p>:
                                         <TextArea
+                                        // data-key={editVal.id+v1.key}
                                             maxLength={25}
                                             className="fb-ctx-ipt"
-                                            key={v1.key+updateFish}
+                                            // key={editVal.id+v1.key}
                                             style={v1.style}
                                             value={editVal ? editVal[v1.key] : ''}
                                             onChange={(e) => onIpt(e, v1.key)}
-                                        />
+                                        />}
+
                                         {
                                             vKey > 2 && <Icon
                                                 className="delete-icon"
@@ -415,20 +428,32 @@ export default function QcFishBoneMonth(props: any) {
             )
             }
         </div>
-        <Input
-            key={'v18'+updateFish}
+        {isPrint?<p className='fb-header__ipt print-page__pfish print-page__ptext print-page__ipt' style={{ 'whiteSpace': 'pre-wrap' }}>{editVal ? editVal.v46 : ''}</p>:<Input
+            // key={editVal.id+'v46'}
             className="fb-header__ipt"
             type="text"
             maxLength={25}
-            value={editVal ? editVal.v18 : ''}
-            onChange={(e: Obj) => onIpt(e, 'v0')}
-        />
+            value={editVal ? editVal.v46 : ''}
+            onChange={(e: Obj) => onIpt(e, 'v46')}
+        />}
+        </div>
     </Wrapper>)
 }
 
 const Wrapper = styled.div`
-
-  &.fb-container {
+margin: 20px 0;
+p{
+    
+}
+.print-page__pfish{
+    margin: 0;
+		white-space:normal; 
+		word-break:break-all;
+		border: 1px solid #d9d9d9;
+		border-radius: 4px;
+		padding: 2px;
+	}
+  .fb-container {
     position: relative;
     height: 611px;
 
