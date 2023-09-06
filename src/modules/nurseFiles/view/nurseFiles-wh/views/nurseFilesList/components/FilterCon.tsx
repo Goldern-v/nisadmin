@@ -116,7 +116,11 @@ export default observer(function FilterCon() {
       postObj.sex = value.sex
     }
     if (is925) {
-      postObj.identityType = value.identityType
+      if(appStore.HOSPITAL_ID === '925'){
+        postObj.identityType =value.identityType && value.identityType.indexOf('类') > 0 ? value.identityType.slice(0,2) : value.identityType
+      }else{
+        postObj.identityType = value.identityType
+      }
       // postObj.rewardName = value.rewardName
       const [d1, d2] = value.goHospitalWorkDate || []
       postObj.goHospitalWorkDateStart = d1 ? d1.format(dateFormat3) : ''
