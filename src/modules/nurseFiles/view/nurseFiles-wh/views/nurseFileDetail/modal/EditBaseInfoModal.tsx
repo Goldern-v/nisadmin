@@ -602,6 +602,16 @@ export default function EditWorkHistoryModal(props: Props) {
               </Select>
             </Form.Field>
           </Col>
+          {
+              appStore.HOSPITAL_ID === "925" && (
+                  <Col span={12}>
+                    <Form.Field label={`鞋码大小`} name="shoeSize">
+                      <SelectOrAutoInput dict="鞋码大小" />
+                      {/*<Input  />*/}
+                    </Form.Field>
+                  </Col>
+              )
+          }
           <Col span={12}>
             {
               appStore.hisMatch({
@@ -639,6 +649,7 @@ export default function EditWorkHistoryModal(props: Props) {
               })
             }
           </Col>
+
           {
             isSdlj && <Col span={12} style={{ height: '52px' }}>
               <Form.Field label={`冬季鞋码大小`} name="maps.winter_shoe_size">
@@ -646,6 +657,7 @@ export default function EditWorkHistoryModal(props: Props) {
               </Form.Field>
             </Col>
           }
+
           {
             appStore.HOSPITAL_ID === "gzsrm" && (
               <Col span={12}>
