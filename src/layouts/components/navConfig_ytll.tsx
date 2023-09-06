@@ -51,7 +51,8 @@ export const navConfig = (appStore: any, authStore?: any): navConfigItem[] => {
         },
         {
           name: "一级质量",
-          path: "/qcOneHj",
+          // path: "/qcOneHj",
+          path:'/qcOneDghl',
           icon: require("../images/menu-icon/一级质控@2x.png"),
         },
         // {

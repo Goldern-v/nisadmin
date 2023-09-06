@@ -1,10 +1,11 @@
 import styled from "styled-components";
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import { Menu } from "antd";
 import { appStore } from "src/stores";
 import { traineeShiftModal } from "../modules/nurseFiles/view/traineeShift/TraineeShiftModal";
 import { observer } from "mobx-react-lite";
 import { LeftMenuConIn } from "./LeftMenuPage";
+import { auditEduPlantService } from "src/modules/continuingEdu/views/auditEduPlant/api/AuditEduPlantService";
 
 const SubMenu = Menu.SubMenu;
 
@@ -20,7 +21,7 @@ export interface Props {
 export default observer(function LeftMenu(props: Props) {
   const { showLeft = true } = props
   const [openKeys, setOpenKeys]: any = useState("");
-
+  const [auditList,setAuditList] =useState(0)
   const handleSelect = (e: any) => {
 
     if (props.beforeRouter) {
@@ -46,7 +47,22 @@ export default observer(function LeftMenu(props: Props) {
 
     return !!hide;
   };
-
+/**需要判断是否有待我审核数据**/
+useEffect(()=>{
+    if(appStore.HOSPITAL_ID === 'ytll'){
+      auditEduPlantService.queryToAuditPageList({
+        firstLevelMenuId: "",
+        secondLevelMenuId: "",
+        keyWord: "",
+        pageSize: 20,
+        pageIndex: 1
+      }).then((res:any)=>{
+        if(res.data){
+          setAuditList(res.data?.list.length)
+        }
+      })
+    }
+},[])
   const renderMenu = (list: any) => {
     return list
       .filter((item: any) => {
@@ -93,6 +109,8 @@ export default observer(function LeftMenu(props: Props) {
                       +
                     </AddIcon>
                   )}
+                  {/*是否有审核*/}
+                { auditList && item.title ==='审核发布' && <HasAudit/>}
                   <span className="selected-arrow">
                     <img src={require("./images/菜单选中右箭头.png")} alt="" />
                   </span>
@@ -275,6 +293,7 @@ const Wrapper = styled.div<LeftMenuConIn>`
           fill: ${active_text_color};
         }
         .menu-item {
+          position: relative;
           color: ${active_text_color} !important;
         }
       }
@@ -399,4 +418,13 @@ const MenuItemCon = styled.div<{textColor: string}>`
     }
     return ''
   }}
+`
+const HasAudit =styled.div`
+  position: absolute;
+  width: 11px;
+  height: 11px;
+  top: 0;
+  right:0;
+   background: red;
+  border-radius: 50%;
 `
