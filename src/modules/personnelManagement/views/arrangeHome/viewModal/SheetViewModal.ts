@@ -309,6 +309,7 @@ class SheetViewModal {
         [
           "wh",
           "gxjb",
+          'zzwy',
           "nys",
           "lyyz",
           "qhwy",

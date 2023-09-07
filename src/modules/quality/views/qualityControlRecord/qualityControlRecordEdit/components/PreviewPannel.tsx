@@ -45,7 +45,9 @@ export default observer(function PreviewPannel(props: Props) {
 
           // 分数类型累计分数
           if (baseInfo.useScore) {
-            if (item.fixedScore) totalScore += item.fixedScore;
+            if(appStore.HOSPITAL_ID == "ytll"){
+              if(item.fixedScore && item.qcItemValue!=="不适用") totalScore += item.fixedScore;
+            } else if(item.fixedScore) totalScore += item.fixedScore;
 
             if (item.remarkDeductScore) {
               deductScore += Number(item.remarkDeductScore);
@@ -62,12 +64,12 @@ export default observer(function PreviewPannel(props: Props) {
 
     total = shi + fou;
     // 使用题数计算通过率
-    if (total && !baseInfo.useScore)
-      rate = parseInt(((shi / total) * 10000).toString()) / 100;
+    console.log(baseInfo.useScore,'baseInfo.useScore');
+    console.log(totalScore,'totalScore');
+    console.log(deductScore,'deductScore');
+    if (total && !baseInfo.useScore) rate = parseInt(((shi / total) * 10000).toString()) / 100;
     // 使用分数计算通过率
-    else
-      rate =
-        totalScore == 0 ? 0 : ((totalScore - deductScore) * 100) / totalScore;
+    else rate = totalScore == 0 ? 0 : ((totalScore - deductScore) * 100) / totalScore;
 
     return {
       shi,

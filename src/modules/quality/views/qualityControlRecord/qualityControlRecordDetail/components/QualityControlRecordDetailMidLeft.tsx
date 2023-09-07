@@ -142,10 +142,10 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
 
   const qcResult = () => {
     if (detailData.master?.useScore) {
-      let netTotalScore = detailData.master?.netTotalScore || 0
-      let deductTotalScore = detailData.master?.deductTotalScore || 0
+      let params = appStore.HOSPITAL_ID === 'ytll'? detailData.itemCount : detailData.master 
+      let netTotalScore = params?.netTotalScore || 0
+      let deductTotalScore = params?.deductTotalScore || 0
       let totalScore = netTotalScore + deductTotalScore
-
       return <div>
         <span>质控结果：</span>
         <span>得分({netTotalScore}) </span>
