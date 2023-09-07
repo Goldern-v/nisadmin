@@ -754,7 +754,7 @@ if (["wh", "gzsrm", "gxjb", "fsxt", '925', "whyx", 'whhk', 'sdlj', 'fssdy', "gdt
     }),
     ...appStore.hisMatch({
       map: {
-        'fsxt,925,sdlj,zzwy,qzde,qhwy,zjhj': [],//佛山杏坛去除累计结余添加本周结余
+        'fsxt,925,sdlj,zzwy,qzde,qhwy': [],//佛山杏坛去除累计结余添加本周结余
         other: [
           {
             title: (
@@ -1069,8 +1069,9 @@ useLayoutEffect(() => {
                 'qzde': 3,
                 fqfybjy: 5,
                 nys: (isEdit ? 6 : 5),
-                'wjgdszd,wh,gxjb,jmfy,dghl,gzsrm,fsxt,925,whyx,whhk,gdtj,lyyz,whsl,ytll,whhk,nfsd,dglb,dghm,zjhj': 6,
+                'wjgdszd,wh,gxjb,jmfy,dghl,gzsrm,fsxt,925,whyx,whhk,gdtj,lyyz,whsl,ytll,whhk,nfsd,dglb,dghm': 6,
                 zhzxy: 9,
+                'zjhj':7,
                 'zzwy':5,
                 fssdy: 7,
                 'hj,sdlj': 4,
