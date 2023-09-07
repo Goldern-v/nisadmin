@@ -21,7 +21,7 @@ export interface Props {
 export default observer(function LeftMenu(props: Props) {
   const { showLeft = true } = props
   const [openKeys, setOpenKeys]: any = useState("");
-  const [auditList,setAuditList] =useState(0)
+  const [auditList,setAuditList] =useState(undefined)
   const handleSelect = (e: any) => {
 
     if (props.beforeRouter) {
@@ -47,9 +47,10 @@ export default observer(function LeftMenu(props: Props) {
 
     return !!hide;
   };
-/**需要判断是否有待我审核数据**/
+/**需要判断学习培训内容是否有待我审核数据**/
 useEffect(()=>{
-    if(appStore.HOSPITAL_ID === 'ytll'){
+  console.log(appStore.match.path)
+    if(appStore.HOSPITAL_ID === 'ytll' && (appStore.match.path.indexOf('/continuingEdu')>=0)){
       auditEduPlantService.queryToAuditPageList({
         firstLevelMenuId: "",
         secondLevelMenuId: "",
