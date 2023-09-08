@@ -114,13 +114,19 @@ export default observer(function TraineeFiles(props: Props) {
       dataIndex: "isResident",
       width: 80,
       align: "center"
-    }]:[]),
-    {
+    },{
       title: "宿舍编号",
       dataIndex: "dormitoryNumber",
       width: 180,
       align: "center"
-    },
+    }]:[]),
+    // ...(!['lyrm'].includes(appStore.HOSPITAL_ID)?[{
+    //   title: "宿舍编号",
+    //   dataIndex: "dormitoryNumber",
+    //   width: 180,
+    //   align: "center"
+    // }]:[]),
+
     {
       title: "实习时间",
       dataIndex: "实习时间",
