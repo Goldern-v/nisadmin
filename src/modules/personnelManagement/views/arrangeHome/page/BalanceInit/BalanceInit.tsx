@@ -119,13 +119,27 @@ export default observer(function FollowUpRecord() {
     }),
     ...appStore.hisMatch({
       map: {
-        'qhwy,dglb': [
+        'qhwy': [
           {
             title: "产假结余",
             dataIndex: "maternityHourNow",
             width: 100,
             align: "center",
           },
+          {
+            title: "探亲假",
+            dataIndex: "homeHourNow",
+            width: 100,
+            align: "center",
+          },
+          {
+            title: "公差结余",
+            dataIndex: "toleranceHourNow",
+            width: 100,
+            align: "center",
+          },
+        ],
+        'dglb': [
           {
             title: "探亲假",
             dataIndex: "homeHourNow",

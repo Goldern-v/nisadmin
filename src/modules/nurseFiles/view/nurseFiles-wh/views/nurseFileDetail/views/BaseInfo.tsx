@@ -308,9 +308,13 @@ export default observer(function BaseInfo() {
               };
             case "qhwy":
             case 'whhk':
-            case 'dglb':
               return {
                 鞋码大小: data.shoeSize,
+                护理学会会员证号: data.membershipCardNumber,
+              };
+            case 'dglb':
+              return {
+                家庭住址: data.address,
                 护理学会会员证号: data.membershipCardNumber,
               };
             case 'lyrm':

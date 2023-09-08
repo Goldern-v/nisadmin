@@ -554,6 +554,11 @@ export function openAuditModal(
                         举办结束时间: `hostEndDate`,
                       },
                     ],
+                    dglb:[
+                      {
+                        授予学分: `creditGranted`,
+                      }
+                    ],
                     other: [],
                   }
                 }),
@@ -651,8 +656,11 @@ export function openAuditModal(
               {
                 时间: `completionDate`,
                 课题类别: 'subjectType'
-              }
-            ],
+              }],
+              dglb:[{
+                完成情况: `courseCompletion`,
+                时间: `completionDate`,
+              }],
               other: [{
                 授予单位: `grantUnit`,
                 完成情况: `courseCompletion`,
@@ -736,7 +744,7 @@ export function openAuditModal(
               },
               {
                 时间: `completionDate`,
-                ...("zhzxy" == appStore.HOSPITAL_ID
+                ...(["zhzxy",'dglb'].includes(appStore.HOSPITAL_ID)
                   ? {}
                   : { 授予单位: `grantUnit` }),
               },
@@ -1241,8 +1249,20 @@ export function openAuditModal(
           },
           {
             单位: `unit`,
+            ...(['dglb'].includes(appStore.HOSPITAL_ID) ? {职务: `post`} : {})
             // 专业技术工作: 'professionalWork'
           },
+          ...appStore.hisMatch({
+            map: {
+              dglb:[
+                {
+                  专业技术工作: `professionalWork`,
+                  技术职称: `professional`,
+                }
+              ],
+              other: [],
+            }
+          }),
           // {
           //   技术职称: 'professional',
           //   职务: 'post'

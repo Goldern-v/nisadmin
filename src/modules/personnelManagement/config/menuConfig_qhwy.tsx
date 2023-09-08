@@ -114,13 +114,13 @@ export const meunConfig: meunConfigItem[] = [
         // hide: !authStore.isRoleManage
         iSlimit: true,
       },
-      {
+      ...appStore.HOSPITAL_ID !== 'dglb' ? [{
         title: "节假日查询",
         path: "/personnelManagement/holidaysList",
         component: HolidaysList,
         // hide: !authStore.isRoleManage
         iSlimit: true,
-      },
+      }]:[],
       {
         title: "休假记录查询",
         path: "/personnelManagement/leaveRecord",

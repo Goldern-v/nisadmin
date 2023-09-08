@@ -144,7 +144,7 @@ export default function EditArticleModal(props: Props) {
               </Form.Field>
             </Col>
             {
-              'zzwy' !== appStore.HOSPITAL_ID &&
+              !['zzwy','dglb'].includes(appStore.HOSPITAL_ID) &&
               <Col span={24}>
                 <Form.Field label={`作者`} name='articleAuthor'>
                   <Select>

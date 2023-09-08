@@ -235,13 +235,29 @@ export default function EditBalanceModal(props: Props) {
                         })
                     }
                     {
-                        ['qhwy', 'dglb', 'whsl'].includes(appStore.HOSPITAL_ID) && (
+                        ['qhwy', 'whsl'].includes(appStore.HOSPITAL_ID) && (
                             <React.Fragment>
                                 <Col span={24}>
                                     <Form.Field label={`产假结余`} name="maternityHourNow">
                                         <InputNumber />
                                     </Form.Field>
                                 </Col>
+                                <Col span={24}>
+                                    <Form.Field label={`探亲假`} name="homeHourNow">
+                                        <InputNumber />
+                                    </Form.Field>
+                                </Col>
+                                <Col span={24}>
+                                    <Form.Field label={`公差结余`} name="toleranceHourNow">
+                                        <InputNumber />
+                                    </Form.Field>
+                                </Col>
+                            </React.Fragment>
+                        )
+                    }
+                    {
+                        ['dglb'].includes(appStore.HOSPITAL_ID) && (
+                            <React.Fragment>
                                 <Col span={24}>
                                     <Form.Field label={`探亲假`} name="homeHourNow">
                                         <InputNumber />

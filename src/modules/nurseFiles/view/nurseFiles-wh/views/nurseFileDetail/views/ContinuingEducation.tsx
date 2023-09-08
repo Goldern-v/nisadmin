@@ -99,43 +99,70 @@ export default observer(function PersonWinning() {
       width: 210,
       align: 'center'
     },
-    ...(
-      'dghm' === appStore.HOSPITAL_ID
-      ? [{
-        title: '举办开始时间',
-        dataIndex: 'hostStartDate',
-        key: 'hostStartDate',
-        width: 90,
-        align: 'center'
+    ...appStore.hisMatch({
+      map: {
+        "dglb":[
+          {
+            title: '授予学分',
+            dataIndex: 'creditGranted',
+            key: 'creditGranted',
+            width: 90,
+            align: 'center'
+          },
+          {
+            title: '附件',
+            dataIndex: 'urlImageOne',
+            key: 'urlImageOne',
+            width: 90,
+            align: 'center',
+            render: (text: any, row: any, index: any) => {
+              return <DoCon>{row.urlImageOne ? <Zimage text='查看' list={row.urlImageOne.split(',')} /> : ''}</DoCon>
+            }
+          },
+        ],
+        'dghm':[{
+            title: '举办开始时间',
+            dataIndex: 'hostStartDate',
+            key: 'hostStartDate',
+            width: 90,
+            align: 'center'
+          },
+          {
+            title: '举办结束时间',
+            dataIndex: 'hostEndDate',
+            key: 'hostEndDate',
+            width: 90,
+            align: 'center'
+          },
+          {
+            title: '附件',
+            dataIndex: 'fj',
+            key: 'fj',
+            width: 80,
+            align: 'center',
+            render: (text: any, row: any, index: any) => {
+              return <DoCon>{row.urlImageOne ? <Zimage text='查看' list={row.urlImageOne.split(',')} /> : ''}</DoCon>
+            }
+          },
+          // {
+          //   title: '状态',
+          //   dataIndex: 'auditedStatusName',
+          //   key: 'auditedStatusName',
+          //   width: 120,
+          //   align: 'center'
+          // },
+        ]
       },
-      {
-        title: '举办结束时间',
-        dataIndex: 'hostEndDate',
-        key: 'hostEndDate',
-        width: 90,
-        align: 'center'
+      vague: true
+    }),
+    ...appStore.hisMatch({
+      map: {
+        "dglb,dghm":[
+          Do('nurseWHContinueStudy', editContinuingEducationModal, getTableData)
+        ],
       },
-      {
-        title: '附件',
-        dataIndex: 'fj',
-        key: 'fj',
-        width: 80,
-        align: 'center',
-        render: (text: any, row: any, index: any) => {
-          return <DoCon>{row.urlImageOne ? <Zimage text='查看' list={row.urlImageOne.split(',')} /> : ''}</DoCon>
-        }
-      },
-      // {
-      //   title: '状态',
-      //   dataIndex: 'auditedStatusName',
-      //   key: 'auditedStatusName',
-      //   width: 120,
-      //   align: 'center'
-      // },
-      Do('nurseWHContinueStudy', editContinuingEducationModal, getTableData)
-    ]
-      : []
-    ),
+      vague: true
+    }),
   ]
   //后端不加字段了 直接在原来的字段上改
   const columnsZhzxy: ColumnProps<any>[] = [

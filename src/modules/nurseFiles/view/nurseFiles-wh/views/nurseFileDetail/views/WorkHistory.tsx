@@ -94,6 +94,34 @@ export default observer(function WorkHistory() {
     //   width: 100,
     //   align: 'center'
     // },
+    ...appStore.hisMatch({
+      map: {
+        "dglb":[
+          {
+            title: '技术职称',
+            dataIndex: 'professional',
+            key: 'professional',
+            width: 100,
+            align: 'center'
+          },
+          {
+            title: '专业技术工作',
+            dataIndex: 'professionalWork',
+            key: 'professionalWork',
+            width: 100,
+            align: 'center'
+          },
+          {
+            title: '职务',
+            dataIndex: 'post',
+            key: 'post',
+            width: 100,
+            align: 'center'
+          },
+        ]
+      },
+      vague: true
+    }),
     {
       title: '状态',
       dataIndex: 'auditedStatusName',

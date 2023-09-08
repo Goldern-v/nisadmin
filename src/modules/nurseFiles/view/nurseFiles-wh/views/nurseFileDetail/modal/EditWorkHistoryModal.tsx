@@ -133,22 +133,25 @@ export default function EditWorkHistoryModal(props: Props) {
               <Input />
             </Form.Field>
           </Col>
-
-          {/* <Col span={24}>
-            <Form.Field label={`专业技术工作`} name='professionalWork'>
-              <AutoComplete dataSource={nurseFileDetailViewModal.getDict('专业技术工作').map((item) => item.name)} />
-            </Form.Field>
-          </Col>
-          <Col span={24}>
-            <Form.Field label={`技术职称`} name='professional'>
-              <AutoComplete dataSource={nurseFileDetailViewModal.getDict('技术职称').map((item) => item.name)} />
-            </Form.Field>
-          </Col>
-          <Col span={24}>
-            <Form.Field label={`职务`} name='post'>
-              <AutoComplete dataSource={nurseFileDetailViewModal.getDict('职务').map((item) => item.name)} />
-            </Form.Field>
-          </Col> */}
+          {['dglb'].includes(appStore.HOSPITAL_ID) ? 
+            [
+              <Col span={24}>
+                <Form.Field label={`专业技术工作`} name='professionalWork'>
+                  <AutoComplete dataSource={nurseFileDetailViewModal.getDict('专业技术工作').map((item) => item.name)} />
+                </Form.Field>
+              </Col>,
+              <Col span={24}>
+                <Form.Field label={`技术职称`} name='professional'>
+                  <AutoComplete dataSource={nurseFileDetailViewModal.getDict('技术职称').map((item) => item.name)} />
+                </Form.Field>
+              </Col>,
+              <Col span={24}>
+                <Form.Field label={`职务`} name='post'>
+                  <AutoComplete dataSource={nurseFileDetailViewModal.getDict('职务').map((item) => item.name)} />
+                </Form.Field>
+              </Col>
+            ] : []
+          }
         </Row>
       </Form>
     </Modal>

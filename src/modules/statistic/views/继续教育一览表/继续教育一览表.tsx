@@ -28,8 +28,8 @@ export default observer(function 护士离职原因分析() {
   const { deptList } = authStore
   const [query, setQuery] = useState({
     deptCode:"",
-    startDate: _currentMonth[0].format('YYYY-MM-DD'),
-    endDate: _currentMonth[1].format('YYYY-MM-DD'),
+    startTime: _currentMonth[0].format('YYYY-MM-DD'),
+    endTime: _currentMonth[1].format('YYYY-MM-DD'),
   })
 
   const [data, setData] = useState([] as any)
@@ -174,7 +174,7 @@ export default observer(function 护士离职原因分析() {
       <RangePicker
         className="content-item"
         style={{ width: 220 }}
-        value={[moment(query.startDate), moment(query.endDate)]}
+        value={[moment(query.startTime), moment(query.endTime)]}
         ranges={{
           '本月': _currentMonth,
           '本季度': _currentQuater,
@@ -183,8 +183,8 @@ export default observer(function 护士离职原因分析() {
         onChange={(payload: any) => {
           setQuery({
             ...query,
-            startDate: payload[0].format('YYYY-MM-DD'),
-            endDate: payload[1].format('YYYY-MM-DD'),
+            startTime: payload[0].format('YYYY-MM-DD'),
+            endTime: payload[1].format('YYYY-MM-DD'),
           })
         }}
         allowClear={false} />
@@ -194,7 +194,7 @@ export default observer(function 护士离职原因分析() {
       body={<Spin spinning={loading}>
         <Con ref={tableRef} className="tableBox">
           <div className='main-title'>继续教育一览表</div>
-          <div className='sub-title'>统计日期：{query.startDate} 至 {query.endDate}</div>
+          <div className='sub-title'>统计日期：{query.startTime} 至 {query.endTime}</div>
           <BaseTable
             surplusWidth={500}
             surplusHeight={320}

@@ -165,6 +165,20 @@ export default function EditPersonWinningModal(props: Props) {
                   <Input />
                 </Form.Field>
               </Col>
+              {['dglb'].includes(appStore.HOSPITAL_ID) ? 
+                [
+                <Col span={24}>
+                  <Form.Field label={`授予学分`} name='creditGranted'>
+                    <Input />
+                  </Form.Field>
+                </Col>,
+                <Col span={24}>
+                  <Form.Field label={`附件`} name='urlImageOne'>
+                    <MultipleImageUploader text='添加图片' tip={'审批报告盖章签字后的扫描件'} />
+                  </Form.Field>
+                </Col>
+                ] : []
+              }
             </React.Fragment>
             : <React.Fragment>
               <Col span={24}>

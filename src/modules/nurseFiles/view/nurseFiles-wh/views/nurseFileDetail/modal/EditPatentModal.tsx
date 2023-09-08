@@ -5,6 +5,7 @@ import { ModalComponentProps } from 'src/libs/createModal'
 import Form from 'src/components/Form'
 import { nurseFilesService } from '../../../services/NurseFilesService'
 import { nurseFileDetailViewModal } from '../NurseFileDetailViewModal'
+import { appStore } from 'src/stores'
 import { to } from 'src/libs/fns'
 import { Rules } from 'src/components/Form/interfaces'
 import moment from 'moment'
@@ -171,11 +172,11 @@ export default function EditPatentModal(props: Props) {
                 </Select>
               </Form.Field>
             </Col>
-            <Col span={24}>
+            {!['dglb'].includes(appStore.HOSPITAL_ID) && <Col span={24}>
               <Form.Field label={`授权公告日`} name='grantNoticeDate'>
                 <DatePicker format={dateFormat3} />
               </Form.Field>
-            </Col>
+            </Col>}
 
             <Col span={24}>
               <Form.Field label={`附件`} name='urlImageOne'>

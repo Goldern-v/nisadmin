@@ -162,7 +162,7 @@ export default observer(function Awards() {
     },
     ...appStore.hisMatch({
       map: {
-        zzwy: [],
+        'zzwy,dglb': [],
         dghm: [
           {
             title: '期刊年月',
@@ -188,7 +188,8 @@ export default observer(function Awards() {
             align: 'center',
           },
         ]
-      }
+      },
+      vague: true
     }),
     {
       title: '期刊号',

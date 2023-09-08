@@ -49,7 +49,11 @@ export default observer(function PreviewPannel(props: Props) {
               if(item.fixedScore && item.qcItemValue!=="不适用") totalScore += item.fixedScore;
             } else if(item.fixedScore) totalScore += item.fixedScore;
 
-            if (item.remarkDeductScore) {
+            let addRemarkDeductScore = (()=>{
+              if(appStore.HOSPITAL_ID == "ytll") return item.remarkDeductScore && item.qcItemValue!=="不适用"
+              else return item.remarkDeductScore
+            })()
+            if (addRemarkDeductScore) {
               deductScore += Number(item.remarkDeductScore);
             } else if (item.subItemList) {
               item.subItemList
