@@ -49,6 +49,8 @@ import { navConfig as navConfig_whhk } from './navConfig_whhk'
 import { navConfig as navConfig_nfsd } from './navConfig_nfsd'
 import { navConfig as navConfig_qzde } from './navConfig_qzde'
 import { navConfig as navConfig_dghm } from './navConfig_dghm'
+import { navConfig as navConfig_zjhj } from './navConfig_zjhj'
+
 
 const toNavLink = (path: string | undefined) => {
   if (path) appStore.history.push(path);
@@ -182,11 +184,14 @@ export default observer(function NavBar(props: any) {
       // return navConfig_gxjb
       if (authStore.isRoleManage) return navConfig_gxjb;
       else return navConfig_gxjbSelf;
-    } else if (isFsxt) {
+    } else if (["fsxt", "925"].includes(appStore.HOSPITAL_ID)) {
       // return navConfig_fssdy
       if (authStore.isRoleManage) return navConfig_fsxt;
       else return navConfig_fsxtSelf;
-    } else if (appStore.HOSPITAL_ID == "whyx") {
+    }else if (appStore.HOSPITAL_ID == "zjhj") {
+        return navConfig_zjhj;
+    }
+    else if (appStore.HOSPITAL_ID == "whyx") {
       return navConfig_whyx(appStore, authStore);
     } else if (appStore.HOSPITAL_ID == "sdlj") {
       return navConfig_sdlj(appStore, authStore);

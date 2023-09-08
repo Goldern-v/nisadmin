@@ -1,5 +1,5 @@
 import React from "react";
-import { authStore } from "src/stores";
+import {appStore, authStore} from "src/stores";
 import ArrangeHome from "../views/arrangeHome/ArrangeHome";
 import NurseSettingViewNew from "src/modules/personnelManagement/views/arrangeHome/page/NurseSetting/NurseSettingView";
 import ShiftSettingViewNew from "src/modules/personnelManagement/views/arrangeHome/page/ShiftSetting/ShiftSettingView";
@@ -91,7 +91,7 @@ export const meunConfig: meunConfigItem[] = [
         component: StandardTime,
         // hide: !(authStore.user?.empNo == 'G6051' || authStore.user?.empNo == 'ADMIN')
         iSlimit: true,
-        special: true
+        special:appStore.HOSPITAL_ID !=='zjhj'
       },
       {
         title: "加减班列表查询",
