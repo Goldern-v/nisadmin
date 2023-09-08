@@ -379,6 +379,10 @@ export default class AuthStore {
   public get isHL() {
     return !!(this.user && this.user.empNo === '75')
   }
+  /**亚心--三级质控结果汇总表 删除发布创建权限 */
+  public get isYXQCR1103() {
+    if (this.user?.roleManageCodeList?.find((code: string) => code === "YX_QCR1103")) return true
+  }
   public get isEmpNoAdmin() {
     return !!(this.user && this.user.empNo == 'admin')
   }
@@ -388,7 +392,7 @@ export default class AuthStore {
   }
   // 三级质控审核权限
   public get level3Check() {
-    return this.isZJ || this.isHL || this.isEmpNoAdmin
+    return this.isZJ || this.isHL || this.isEmpNoAdmin ||this.isYXQCR1103
   }
   // 二级质控查看权限
   public get level2Watch() {
