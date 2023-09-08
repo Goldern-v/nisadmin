@@ -41,7 +41,7 @@ export default function TraineeFilesEditModal(props: Props) {
     education: val => !!val || "学历不能为空",
     idCardNo: val => !!val || "身份证号码不能为空",
     phone: val => !!val || "联系电话不能为空",
-    isResident: val => !!val || "是否住宿不能为空",
+    isResident: val => appStore.HOSPITAL_ID !== 'lyrm' &&  (!!val || "是否住宿不能为空"),
     studyTime: val => appStore.HOSPITAL_ID !== 'gzhd' && (!!val || "实习时间不能为空"),
     studyDeptCode: val => !!val || "实习科室不能为空",
     isCPCMember: val => appStore.HOSPITAL_ID == 'gzhd' && (!!val || "党员不能为空"),
@@ -348,29 +348,34 @@ export default function TraineeFilesEditModal(props: Props) {
               </Form.Field>
             </Col>
           </Row>
-          <Row>
-            <Col span={6} className="label">
-              <span className={appStore.HOSPITAL_ID == 'nys' ? 'displayNone' : "mustWrite"}>*</span> 是否住宿:
-            </Col>
-            <Col span={16}>
-              <Form.Field name="isResident">
-                <Radio.Group buttonStyle="solid">
-                  <Radio.Button value="1">是</Radio.Button>
-                  <Radio.Button value="0">否</Radio.Button>
-                </Radio.Group>
-              </Form.Field>
-            </Col>
-          </Row>
-          <Row>
-            <Col span={6} className="label">
-              宿舍编号:
-            </Col>
-            <Col span={16}>
-              <Form.Field name="dormitoryNumber">
-                <Input />
-              </Form.Field>
-            </Col>
-          </Row>
+          {
+            appStore.HOSPITAL_ID !=='lyrm' &&
+              <Row>
+                <Col span={6} className="label">
+                  <span className={appStore.HOSPITAL_ID == 'nys' ? 'displayNone' : "mustWrite"}>*</span> 是否住宿:
+                </Col>
+                <Col span={16}>
+                  <Form.Field name="isResident">
+                    <Radio.Group buttonStyle="solid">
+                      <Radio.Button value="1">是</Radio.Button>
+                      <Radio.Button value="0">否</Radio.Button>
+                    </Radio.Group>
+                  </Form.Field>
+                </Col>
+              </Row>
+          }
+          {
+              appStore.HOSPITAL_ID !=='lyrm' && <Row>
+                <Col span={6} className="label">
+                  宿舍编号:
+                </Col>
+                <Col span={16}>
+                  <Form.Field name="dormitoryNumber">
+                    <Input />
+                  </Form.Field>
+                </Col>
+              </Row>
+          }
           <Row>
             <Col span={6} className="label">
               <span className={appStore.HOSPITAL_ID == 'gzhd' || appStore.HOSPITAL_ID == 'nys' ? 'displayNone' : "mustWrite"}>*</span> 实习时间:
