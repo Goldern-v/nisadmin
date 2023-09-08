@@ -126,7 +126,7 @@ const baseConfig: navConfigItem[] = [
       const encryptedText = encrypted.toString(); // 将加密后的数据转换为字符串形式
 
       let params = {account:encryptedText}
-      axios.post(`/crNursing/qc/front/system/auth/thirdLogin`,qs.stringify(params)).then(res2=>{
+      axios.post(`/crNursing/qc/system/auth/thirdLogin`,qs.stringify(params)).then(res2=>{
         if(res2.data.data.accessToken){
           let {data:{data:{accessToken:token}}} = res2
           window.open(`http://192.168.103.158:9091/qc-front/?token=${token}`)
