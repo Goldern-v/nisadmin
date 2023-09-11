@@ -1134,6 +1134,14 @@ const getIcon = (icon: any) => {
     
     ...appStore.hisMatch({
       map:{
+        'ytll':[
+          {
+            title: "实操评分管理",
+            icon: <TKGL />,
+            path: "/continuingEdu/PracticalOperationScorFSXT",
+            component: PracticalOperationScoreFSXT,
+          },
+        ],
         other:[
           ...PracticalOperation,
         ]
