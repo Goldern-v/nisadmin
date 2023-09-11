@@ -294,7 +294,6 @@ const Wrapper = styled.div<LeftMenuConIn>`
           fill: ${active_text_color};
         }
         .menu-item {
-          position: relative;
           color: ${active_text_color} !important;
         }
       }
