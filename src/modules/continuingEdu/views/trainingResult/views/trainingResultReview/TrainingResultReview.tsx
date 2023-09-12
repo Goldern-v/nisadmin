@@ -25,6 +25,7 @@ import AnswerSheetModal from './../../components/AnswerSheetModal/AnswerSheetMod
 import { trainingResultModel } from './../../models/TrainingResultModel'
 import { trainingResultService } from '../../api/TrainingResultService'
 import TrainingRecordTable from './TrainingRecordTable'
+import TrainingRecordTableWhyx from './TrainingRecordTableWhyx'
 import { Obj } from 'src/libs/types'
 
 const TabPane = Tabs.TabPane
@@ -388,6 +389,14 @@ export default observer(function TrainingResultReview() {
     }
   }
 
+  const whichTrainingTable = () => {
+    const tableMap = {
+      whyx: <TrainingRecordTableWhyx/>,
+      other: <TrainingRecordTable/>
+    }
+    return tableMap[appStore.HOSPITAL_ID] || tableMap.other;
+  }
+
   useEffect(() => {
     getImgList()
   }, [imgListQuery])
@@ -551,7 +560,7 @@ export default observer(function TrainingResultReview() {
           )}
           {["whyx", "whhk"].includes(appStore.HOSPITAL_ID) &&
             <TabPane tab="培训实施记录" key="2">
-              <TrainingRecordTable />
+              { whichTrainingTable() }
             </TabPane>}
         </Tabs>
       </TableWrapper>

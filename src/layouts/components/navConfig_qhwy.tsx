@@ -89,11 +89,6 @@ export const navConfig = (appStore:any,authStore?:any)=>{
       name: "学习培训",
       path: "/continuingEdu"
     },
-    // // {
-    // //   name: "不良事件",
-    // //   path: "/wardRegister",
-    // //   hidden: !appStore.isDev
-    // // },
     {
       name: "通知公告",
       path: "/notice"
@@ -115,6 +110,11 @@ export const navConfig = (appStore:any,authStore?:any)=>{
     //   name: "病区管理",
     //   path: "/wardManagement"
     // },
+    {
+      name: "不良事件",
+      path: "/badEventsNew",
+      // hidden: !appStore.isDev
+    },
     {
       name: "统计查询",
       path: "/statistic",
