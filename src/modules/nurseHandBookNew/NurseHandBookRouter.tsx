@@ -14,6 +14,7 @@ import { nurseHandBookService } from './services/NurseHandBookService'
 import { Obj } from 'src/libs/types'
 import ListLyrm from './views/list-lyrm'
 import ListGzsrm from './views/list-gzsrm'
+import List925 from './views/list-jew'
 
 /**是否拥有menuList */
 const IS_EXTRA_ROUTE = ['lyrm', 'gzsrm'].includes(appStore.HOSPITAL_ID)
@@ -285,6 +286,7 @@ export default function NurseHandBookRouter() {
           component: () => appStore.hisMatch({
             map: {
               gzsrm: <ListGzsrm options={v} />,
+              925:<List925 options={v}/>,
               other: <ListLyrm options={v} />
               // other: null
             }
