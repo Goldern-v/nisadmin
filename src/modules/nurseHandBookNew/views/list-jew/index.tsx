@@ -199,6 +199,38 @@ export default observer(function (props: Props) {
       setColumns(newColumns)
       getFormList()
     },
+    month_no_create_more:() => {
+      setQuery({
+        ...query,
+        year: moment(),
+        month:moment().format('M'),
+      })
+      setAddQuery({
+        ...addQuery,
+        year: moment(),
+        month:moment().format('M'),
+      })
+      const newColumns = [
+        {
+          title: '年份',
+          align: 'center',
+          dataIndex: 'year',
+          render: (text: string) => {
+            return `${text}年`
+          }
+        },
+        {
+          title: '月份',
+          align: 'center',
+          dataIndex: 'month',
+          render: (text: string) => {
+            return `${text}月`
+          }
+        }
+      ]
+      setColumns(newColumns)
+      getFormList()
+    }
   }
 
   const onOkBAdd = (params: Obj) => {

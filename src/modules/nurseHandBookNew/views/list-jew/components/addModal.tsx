@@ -93,7 +93,14 @@ export default function (props: Props) {
   const handleFormChange = (key: any, val: any) => {
 
   }
-
+  const monthList = (() => {
+    let currentMonth = 12;
+    let monthArr = []
+    while (currentMonth--) {
+      monthArr.push(currentMonth + 1)
+    }
+    return monthArr
+  })()
   return (
     <Modal
       title='创建'
@@ -142,7 +149,20 @@ export default function (props: Props) {
                 </Form.Field>
               </Col>
             </Row>}
-
+          {
+              addQuery?.month !== undefined &&
+              <Row>
+                <Col span={8} className='label'>
+                  月份：
+                </Col>
+                <Col span={16}>
+                  <Form.Field name='month'>
+                    <Select>
+                      {monthList.map((month: number) => <Option value={`${month}`} key={month}>{month}</Option>)}
+                    </Select>
+                  </Form.Field>
+                </Col>
+              </Row>}
           <Row>
             <Col span={8} className='label'>
               科室：

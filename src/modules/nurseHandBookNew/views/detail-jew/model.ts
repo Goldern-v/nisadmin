@@ -11,6 +11,7 @@ import { Modal } from "antd";
 import { preview, print } from "printing";
 import moment from 'moment'
 import { Obj } from "src/libs/types";
+import {tableConConfig} from "src/modules/nurseHandBookNew/views/detail-lyrm/config";
 const dateFormat = 'YYYY-MM-DD HH:mm:ss'
 
 class NurseHandBookRecordModel {
@@ -104,8 +105,13 @@ class NurseHandBookRecordModel {
         } else {
           this.configFn = null
         }
-        if (this.editorData === '' && this.configFn) {
-          this.configFn.initContent.call(this)
+        if (this.editorData ==='' && this.configFn) {
+          const config = tableConConfig[this.detail?.record?.menuCode]
+          if (config) {
+            this.configFn.initContent.call(this, config.rows, config.columns.length)
+          } else {
+            this.configFn.initContent.call(this)
+          }
         }
 
         this.loading = false;

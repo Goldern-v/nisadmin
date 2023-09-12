@@ -36,6 +36,14 @@ export default observer(function (props: Props) {
       [key]: e
     })
   }
+    const monthList = (() => {
+        let currentMonth = 12;
+        let monthArr = []
+        while (currentMonth--) {
+            monthArr.push(currentMonth + 1)
+        }
+        return monthArr
+    })()
   return (
     <Wrapper>
       <PageTitle>{title}</PageTitle>
@@ -69,6 +77,15 @@ export default observer(function (props: Props) {
         <DatePicker.RangePicker format={dateFormat} value={[query.startTime, query.endTime]} onChange={(e: any) => { changeQuery(e, 'date') }} />
       </>
       }
+        {query.hasOwnProperty('month') &&
+            <>
+                <span className='label'>月份:</span>
+                <Select
+                    value={query.month}
+                    onChange={(month: string) =>  changeQuery(month, 'month')}>
+                    {monthList.map((month: number) => <Option value={`${month}`} key={month}>{month}</Option>)}
+                </Select>
+            </>}
       <span className='label'>状态:</span>
       <Select value={query.status} onChange={(e: any) => { changeQuery(e, 'status') }}>
         {
