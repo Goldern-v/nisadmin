@@ -49,7 +49,8 @@ export default observer(function (props: Props) {
   return (
     <Wrapper className='con--a4' ref={model.ctxRef}>
       <div className='title'>
-        {model.detail?.record?.[config?.titleType || 'menuName']}
+      护理论文登记表
+        {/* {model.detail?.record?.[config?.titleType || 'menuName']} */}
       </div>
       <table>
         <colgroup>
@@ -61,6 +62,7 @@ export default observer(function (props: Props) {
         </colgroup>
         <thead>
           <tr>
+            <td>序号</td>
             {
               columns.map((v: Obj, i: number) => (
                 <td key={i}>{v.title}</td>
@@ -73,16 +75,19 @@ export default observer(function (props: Props) {
             (model.editorData || []).map((v: Obj, i: number) => {
               return (
                 <tr key={i}>
+                  <td>{i}</td>
                   {
-                    columns.map((v1: Obj, i1: number) => (
-                      <td key={`${i}-${i1}`}>
-                        <ChildCon {...{
-                          component: v1.component,
-                          value: v[`v${i1}`],
-                          onChange: (e: any) => onChange(e, { index: i, key: `v${i1}` })
-                        }} />
-                      </td>
-                    ))
+                    columns.map((v1: Obj, i1: number) => {
+                      return (
+                        <td key={`${i}-${i1}`}>
+                              <ChildCon {...{
+                                  component: v1.component,
+                                  value: v[`v${i1}`],
+                                  onChange: (e: any) => onChange(e, {index: i, key: `v${i1}`})
+                              }} />
+                          </td>
+                      )
+                  })
                   }
                 </tr>
               )
@@ -90,7 +95,7 @@ export default observer(function (props: Props) {
           }
         </tbody>
       </table>
-      {config?.tip && <div className='fs-s'>{config?.tip}</div>}
+      {/* {config?.tip && <div className='fs-s'>{config?.tip}</div>} */}
     </Wrapper>
   )
 })

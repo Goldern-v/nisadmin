@@ -51,15 +51,57 @@ export default {
     },
     editTime: true,
   },
-  "925GZJHJZZD_5,925HLLWDJ_9_1,925JSGXDJ_9_2,925JSGXDJ_9_3,925WCXXJXDJ_9_4,925JSJXJXDJ_9_5,925HRHSDJ_9_7": {
+  "925GZJHJZZD_5": {
     initContent(row = 27, col = 4) {
       const self: any = this;
       const arr = createArr(row, (j, k) => createObjV(col));
       self.handleEditorChange(arr);
     },
   },
-  "925NDXLJH_3": {
-    initContent(row = 24, col = 4) {
+  "925HLLWDJ_9_1": {
+    initContent(row = 26, col = 4) {
+      const self: any = this;
+      const arr = createArr(row, (j, k) => createObjV(col));
+      self.handleEditorChange(arr);
+    },
+  },
+  "925JSGXDJ_9_2": {
+    initContent(row = 26, col = 4) {
+      const self: any = this;
+      const arr = createArr(row, (j, k) => createObjV(col));
+      self.handleEditorChange(arr);
+    },
+  },
+  "925JSGXDJ_9_3": {
+    initContent(row = 26, col = 4) {
+      const self: any = this;
+      const arr = createArr(row, (j, k) => createObjV(col));
+      self.handleEditorChange(arr);
+    },
+  },
+  "925WCXXJXDJ_9_4": {
+    initContent(row = 26, col = 4) {
+      const self: any = this;
+      const arr = createArr(row, (j, k) => createObjV(col));
+      self.handleEditorChange(arr);
+    },
+  },
+  "925JSJXJXDJ_9_5": {
+    initContent(row = 26, col = 4) {
+      const self: any = this;
+      const arr = createArr(row, (j, k) => createObjV(col));
+      self.handleEditorChange(arr);
+    },
+  },
+  "925HLRYJDDJ_9_6": {
+    initContent(row = 26, col = 4) {
+      const self: any = this;
+      const arr = createArr(row, (j, k) => createObjV(col));
+      self.handleEditorChange(arr);
+    },
+  },
+  "925HRHSDJ_9_7": {
+    initContent(row = 26, col = 4) {
       const self: any = this;
       const arr = createArr(row, (j, k) => createObjV(col));
       self.handleEditorChange(arr);
@@ -270,14 +312,14 @@ export const tableConConfig = {
   },
   "925HLLWDJ_9_1": {
     columns: [
-      {
-        title: "序号",
-        width: "15%",
-        component: "DataPicker",
-      },
+      // {
+      //   title: "序号",
+      //   width: "15%",
+      // },
       {
         title: "日期",
         width: "15%",
+        component: "DataPicker",
       },
       {
         title: "作 者",
@@ -411,7 +453,7 @@ export const tableConConfig = {
       {
         title: "单   位",
         width: "30%",
-        component: "DataPicker",
+        // component: "DataPicker",
       },
       {
         title: "来院时间",
@@ -431,11 +473,34 @@ export const tableConConfig = {
     isAdd: true,
     rows: 20,
   },
+  "925HLRYJDDJ_9_6": {
+    columns: [
+      {
+        title: "嘉奖",
+        width: "10%",
+      },
+      {
+        title: "立功",
+        width: "10%",
+      },
+      {
+        title: "荣誉称号",
+        width: "10%",
+        // component: "DataPicker",
+      },
+      {
+        title: "其他",
+        width: "30%",
+      },
+    ],
+    isAdd: true,
+    rows: 20,
+  },
   "925HRHSDJ_9_7": {
     columns: [
       {
         title: "日期",
-        width: "8%",
+        width: "15%",
         component: "DataPicker",
       },
       {
@@ -444,23 +509,23 @@ export const tableConConfig = {
       },
       {
         title: "内容摘要",
-        width: "18%",
+        width: "16%",
         // component: "DataPicker",
       },
       {
         title: "满意度调查反馈",
-        width: "20%",
-        component: "DataPicker",
+        width: "16%",
+        // component: "DataPicker",
       },
       {
         title: "口头表扬",
         width: "6%",
-        component: "DataPicker",
+        // component: "DataPicker",
       },
       {
         title: "意见本",
         width: "10%",
-        component: "DataPicker",
+        // component: "DataPicker",
       },
       {
         title:"报刊媒体报道",
