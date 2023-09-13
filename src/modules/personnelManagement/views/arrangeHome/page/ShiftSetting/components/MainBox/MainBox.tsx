@@ -578,7 +578,14 @@ export default function MainBox() {
       selectedRowsArray = new Array();
 
       if (res && res.data) {
-        tableData = res.data;
+        if(['dgxg'].includes(appStore.HOSPITAL_ID)){
+          tableData = res.data.reduce((prev:any,next:any)=>{
+            let indx = prev?.findIndex((item:any)=>item[0].nameColor === next.nameColor)
+            indx>=0 ? (prev[indx]?.push(next)) : (prev?.push([next]))
+            return prev
+          },[])?.flat()
+        } else tableData = res.data;
+        
         let rowKeys = new Array();
         tableData.map((oneObj: any, index: number) => {
           if (oneObj.status === true) {
