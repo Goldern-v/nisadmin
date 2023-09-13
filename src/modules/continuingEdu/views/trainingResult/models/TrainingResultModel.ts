@@ -42,6 +42,9 @@ class TrainingResultModel {
   @observable trainingDepartment = "";//培训科室
   @observable trainingPhotos = ""; //培训照片
   @observable trainingDeptName = [] as any[]; //科室
+  @observable title = ""; //培训主题
+  @observable statistics = ""; //培训统计
+  @observable summary = ""; //培训内容及效果总结
 
   /**是否为线下签到类型 */
   @computed get isSignType() {
@@ -263,6 +266,9 @@ class TrainingResultModel {
       this.trainingDepartment = res.data.latTrainImplementationResult?.trainingDepartment || ''
       this.trainingPhotos = res.data.latTrainImplementationResult?.trainingPhotos || '' //培训照片
       this.comments = res.data.latTrainImplementationResult?.comments || '' //效果评价/培训考核
+      this.title = res.data.latTrainImplementationResult?.title;
+      this.statistics = res.data.latTrainImplementationResult?.statistics;
+      this.summary = res.data.latTrainImplementationResult?.summary;
 
       let empNameList = res.data.personList.map((item:any) => {
           return item.empName
@@ -287,6 +293,9 @@ class TrainingResultModel {
       comments: this.comments,
       trainingDepartment: this.trainingDepartment,
       trainingPhotos: this.trainingPhotos,
+      title: this.title,
+      statistics: this.statistics,
+      summary: this.summary
     };
     trainingResultService
       .saveOrUpdateTrainImplementation(obj)

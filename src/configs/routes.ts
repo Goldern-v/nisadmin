@@ -20,6 +20,7 @@ import demo1 from "src/demo1";
 import dailyNightRoundsSummaryDetail from 'src/modules/quality/views/dailyNightRoundsSummary/detail'
 import detailLyrm from 'src/modules/nurseHandBookNew/views/detail-lyrm'
 import detailGzsrm from 'src/modules/nurseHandBookNew/views/detail-gzsrm'
+import detail925 from 'src/modules/nurseHandBookNew/views/detail-jew'
 import TheoryExamDetail from 'src/modules/continuingEdu/views/preJobTraining/theoryExam/TheoryExamDetail'
 import TheoryExamScore from 'src/modules/continuingEdu/views/preJobTraining/theoryExam/TheoryExamScore'
 import TrainExamDetail from 'src/modules/continuingEdu/views/preJobManage/trainingExamManage/TrainExamDetail'
@@ -701,7 +702,7 @@ const routes: RouteItem[] = [
     appStore.hisMatch({
       map: {
         nys: BadEventsNewDetailNys,
-        gzsrm: BadEventsNewDetailGzsrm,
+        'gzsrm,qhwy': BadEventsNewDetailGzsrm,
         hj: BadEventsNewDetail,
         'fsxt,925,zjhj': BadEventsNewDetailFsxt,
         other: BadEventsNewDetailCommon
@@ -716,7 +717,7 @@ const routes: RouteItem[] = [
     "/badEventsNewDetail/:id",
     appStore.hisMatch({
       map: {
-        gzsrm: BadEventsNewDetailGzsrm,
+        'gzsrm,qhwy': BadEventsNewDetailGzsrm,
         // fqfybjy: BadEventsNewDetailCommon,
         // yczyy: BadEventsNewDetailCommon,
         // other: BadEventsNewDetail
@@ -980,6 +981,7 @@ const routes: RouteItem[] = [
     {
       map: {
         gzsrm: detailGzsrm,
+        925:detail925,
         other: detailLyrm
         // other: null
       }

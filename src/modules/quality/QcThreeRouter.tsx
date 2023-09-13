@@ -55,7 +55,8 @@ import IssueAnalysis from './views/qcZzwy/issueAnalysis/IssueAnalysis'
 import RectificationSummary from './views/qcZzwy/qcRectificationSummary/RectificationSummary'
 import QcMonthCheckReportList from './views/qcZzwy/qcMonthCheckReport/QcMonthCheckReportList'
 import QuarterlyAnalysisReportZzwy from './views/qcZzwy/qcQuarterlyAnalysisReport/Index'
-import QqualityMWSummary from './views/qcZzwy/qqualityMWSummary/tableList' // 季度质量管理工作总结 Quarterly quality management work summary
+import QqualityMWSummary from './views/qcZzwy/qqualityMWSummary/tableList'
+import JmFyAnalysis from "src/modules/quality/views/analysis/JmFyAnalysis"; // 季度质量管理工作总结 Quarterly quality management work summary
 
 export interface Props extends RouteComponentProps<{ name?: string }> {}
 export default function QcThreeRouter(props: Props) {
@@ -133,7 +134,20 @@ export default function QcThreeRouter(props: Props) {
     keepAlive: true,
     disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP",
   };
-
+  const route_JMFY_三级质控月度报告 = {
+    title: appStore.hisMatch({
+      map: {
+        fqfybjy: CONFIG_TITLE[3] + '月度报告',
+        fssdy: '专项检查月度报告',
+        other: '三级质控月度报告'
+      }
+    }),
+    icon: <YDBG />,
+    path: "/qcThree/JmFyAnalysis",
+    component: JmFyAnalysis,
+    keepAlive: true,
+    disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP",
+  };
   const route_三级质控汇总报告 = {
     title: appStore.hisMatch({
       map: {
@@ -354,6 +368,14 @@ export default function QcThreeRouter(props: Props) {
         route_三级质控月度报告,
         route_三级质控汇总报告,
         // route_三级质控问题汇总,
+        route_检查表单统计表,
+      ],
+      jmfy:[
+        route_护理质量巡查情况汇总表_nys,
+        route_护理质量检查小结,
+        route_JMFY_三级质控月度报告,
+        route_三级质控汇总报告,
+        route_三级质控问题汇总,
         route_检查表单统计表,
       ],
       zzwy: [
