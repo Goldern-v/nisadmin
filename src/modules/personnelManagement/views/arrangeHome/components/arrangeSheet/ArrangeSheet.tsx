@@ -1027,7 +1027,7 @@ useLayoutEffect(() => {
         (document as any).querySelector("#arrangeSheet .ant-table-body")
           .scrollWidth ==
         (document as any).querySelector("#arrangeSheet .ant-table-body")
-          .clientWidth && appStore.HOSPITAL_ID !== 'dgxg'
+          .clientWidth && appStore.HOSPITAL_ID !== 'dgxg' && appStore.HOSPITAL_ID !== 'dghm'
       ) {
         /**一般是左边固定宽度 + 备注宽度 */
         let baseWidth: number = appStore.hisMatch({
