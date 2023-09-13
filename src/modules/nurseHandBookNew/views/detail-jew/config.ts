@@ -5,7 +5,7 @@ import MonthlyWork from "src/modules/nurseHandBookNew/views/detail-jew/component
 const arr2 = Array.from(Array(12), (j,k) => k)
 /**提个不同表单的初始化操作 */
 export default {
-  '925NDXLJH_3': {
+  '925NDXLJH_2': {
     initContent() {
       const self: any = this;
       self.handleEditorChange({
@@ -57,7 +57,20 @@ export default {
       const arr = createArr(row, (j, k) => createObjV(col));
       self.handleEditorChange(arr);
     },
-    // Component: MonthlyWork,
+  },
+  "925NDXLJH_3": {
+    initContent(row = 24, col = 4) {
+      const self: any = this;
+      const arr = createArr(row, (j, k) => createObjV(col));
+      self.handleEditorChange(arr);
+    },
+  },
+  "925JDGZJH_4": {
+    initContent(row = 28, col = 4) {
+      const self: any = this;
+      const arr = createArr(row, (j, k) => createObjV(col));
+      self.handleEditorChange(arr);
+    },
   },
 };
 /**
@@ -110,6 +123,110 @@ export const tableConConfig = {
       {
         title: "",
         width: "96%",
+      },
+    ],
+    rows: 27,
+    titleType: "title",
+    tip: ``
+  },
+  '925NDXLJH_3':{
+    columns: [
+  // {
+  //   title: "时间",
+  //   width: "8%",
+  //   // component: "DataPicker",
+  // },
+  {
+    title: "制度培训计划",
+    width: "15%",
+  },
+  {
+    title: "理论学习计划",
+    width: "15%",
+  },
+  {
+    title: "负责人",
+    width: "10%",
+  },
+  {
+    title: "护理疑难病例讨论",
+    width: "25%",
+  },
+  {
+    title: "护理教学查房",
+    width: "15%",
+  },
+  {
+        title: "负责人",
+        width: "10%",
+      },
+],
+    operationColumns:[
+      {
+        title: "时间",
+        width: "15%",
+        component: "DataPicker",
+      },
+      {
+        title: "操作项目",
+        width: "15%",
+      },
+      {
+        title: "负责人",
+        width: "15%",
+      },
+      {
+        title: "时间",
+        width: "15%",
+        component: "DataPicker",
+      },
+      {
+        title: "操作项目",
+        width: "15%",
+      },
+      {
+        title: "负责人",
+        width: "15%",
+      },
+    ],
+    otherColumns:[ {
+      title: "时间",
+      width: "15%",
+      component: "DataPicker",
+    }, {
+      title: "内容",
+      width: "32%",
+    }, {
+      title: "负责人",
+      width: "12%",
+    }, {
+      title: "内容",
+      width: "32%",
+    }, {
+      title: "负责人",
+      width: "12%",
+    },],
+    isAdd: true,
+    rows: 12,
+    titleType: "title",
+  },
+  '925JDGZJH_4':{
+    columns: [
+      {
+        title: "季度工作计划",
+        width: "10%",
+      },
+      {
+        title: "内容",
+        width: "50%",
+      },
+      {
+        title: "完成",
+        width: "15%",
+      },
+      {
+        title: "备注",
+        width: "15%",
       },
     ],
     rows: 27,

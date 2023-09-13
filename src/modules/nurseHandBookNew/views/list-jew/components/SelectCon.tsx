@@ -7,6 +7,7 @@ import { Obj } from 'src/libs/types'
 import { authStore } from 'src/stores'
 import styled from 'styled-components'
 import { STATUS_LIST } from '../utils/enums'
+import {quarterList} from "src/enums/date";
 const { Option } = Select
 
 const dateFormat = 'YYYY-MM-DD';
@@ -33,7 +34,7 @@ export default observer(function (props: Props) {
     }
     setQuery({
       ...query,
-      [key]: e
+      [key]:  e
     })
   }
     const monthList = (() => {
@@ -77,6 +78,18 @@ export default observer(function (props: Props) {
         <DatePicker.RangePicker format={dateFormat} value={[query.startTime, query.endTime]} onChange={(e: any) => { changeQuery(e, 'date') }} />
       </>
       }
+        {
+            query.quarter !==undefined &&
+            <>
+            <span>季度:</span>
+            <Select
+                value={query.quarter}
+                onChange={(quarter: string) =>  changeQuery(quarter, 'quarter')}>
+             {quarterList.map((quarter: string) => <Option value={`${quarter}`} key={quarter}>{quarter}</Option>)}
+            </Select>
+            </>
+
+        }
         {query.hasOwnProperty('month') &&
             <>
                 <span className='label'>月份:</span>
