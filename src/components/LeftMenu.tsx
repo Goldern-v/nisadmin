@@ -21,7 +21,7 @@ export interface Props {
 export default observer(function LeftMenu(props: Props) {
   const { showLeft = true } = props
   const [openKeys, setOpenKeys]: any = useState("");
-  const [auditList,setAuditList] =useState(undefined)
+  const [auditList,setAuditList] =useState(false)
   const handleSelect = (e: any) => {
 
     if (props.beforeRouter) {
@@ -59,7 +59,7 @@ useEffect(()=>{
         pageIndex: 1
       }).then((res:any)=>{
         if(res.data){
-          setAuditList(res.data?.list.length)
+          setAuditList(res.data?.list.length > 0)
         }
       })
     }
@@ -111,7 +111,7 @@ useEffect(()=>{
                     </AddIcon>
                   )}
                   {/*是否有审核*/}
-                { auditList && item.title ==='审核发布' && <HasAudit/>}
+                { auditList &&  item.title ==='审核发布' && <HasAudit/>}
                   <span className="selected-arrow">
                     <img src={require("./images/菜单选中右箭头.png")} alt="" />
                   </span>
