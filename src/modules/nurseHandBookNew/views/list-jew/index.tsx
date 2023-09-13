@@ -262,13 +262,42 @@ export default observer(function (props: Props) {
       ]
       setColumns(newColumns)
       getFormList()
+    },
+    no_validate_create_more:()=>{
+      setQuery({
+        ...query,
+      })
+      setAddQuery({
+        ...addQuery,
+        code:"no_validate_create_more",
+      })
+      const newColumns = [
+        {
+          title: '封面名称',
+          align: 'center',
+          dataIndex: 'title',
+          render: (text: string) => {
+            return `${text}`
+          }
+        },
+        // {
+        //   title: '季度',
+        //   align: 'center',
+        //   dataIndex: 'quarter',
+        //   render: (text: string) => {
+        //     return `第${text}季度`
+        //   }
+        // }
+      ]
+      setColumns(newColumns)
+      getFormList()
     }
   }
 
   const onOkBAdd = (params: Obj) => {
     const { menuCode } = options
     const title = formatTitle(params, options)
-    const data: Obj = { ...params }
+    const data: Obj = { ...params,detail:params.url }
     if (!params.menuCode) {
       data.menuCode = menuCode
     }
@@ -276,7 +305,8 @@ export default observer(function (props: Props) {
     nurseHandBookService.createOrUpdate(data).then(res => {
       if (res.code === '200') {
         const { id } = res.data
-        appStore.history.push(`/nurseHandBookNewForm/detail?id=${id}`)
+        let link =params.url?`/nurseHandBookNewForm/detail?id=${id}&url=${params.url}`:`/nurseHandBookNewForm/detail?id=${id}`
+        appStore.history.push(link)
       }
     })
   }
