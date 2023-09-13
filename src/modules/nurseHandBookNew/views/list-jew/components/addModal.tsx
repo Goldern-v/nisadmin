@@ -10,6 +10,7 @@ import YearPicker from 'src/components/YearPicker'
 import { ModalComponentProps } from 'src/libs/createModal'
 import { authStore } from 'src/stores'
 import SelectFilter from 'src/components/SelectFilter'
+import {quarterList} from "src/enums/date";
 const { Option } = Select
 export interface Props extends ModalComponentProps {
   onOkCb: Function
@@ -24,7 +25,7 @@ const ALL_RULE: Rules = {
   date: (val) => val?.length == 2 || '请选择日期',
   menuCode: (val) => !!val || '请选择记录表',
 }
-
+const Quarter ={'第一季度':1,'第二季度':2,'第三季度':3,'第四季度':4}
 export default function (props: Props) {
   const refForm = useRef<any>()
   const [rules, setRules] = useState<Obj>({})
@@ -77,6 +78,7 @@ export default function (props: Props) {
             deptName
           }
           if (params.hasOwnProperty('year')) params.year = params.year ? params.year.format('YYYY') : ''
+          if (params.hasOwnProperty('quarter')) params.quarter =Quarter[params.quarter]
           if (params.hasOwnProperty('date')) {
             const [startTime = '', endTime = ''] = params.date
             params.startTime = startTime ? startTime.format('YYYY-MM-DD') + ' 00:00:00' : ''
@@ -149,6 +151,20 @@ export default function (props: Props) {
                 </Form.Field>
               </Col>
             </Row>}
+          {
+              addQuery?.quarter !== undefined &&
+              <Row>
+                <Col span={8} className='label'>
+                  季度：
+                </Col>
+                <Col span={16}>
+                  <Form.Field name='quarter'>
+                    <Select>
+                      {quarterList.map((quarter: string) => <Option value={`${quarter}`} key={quarter}>{quarter}</Option>)}
+                    </Select>
+                  </Form.Field>
+                </Col>
+              </Row>}
           {
               addQuery?.month !== undefined &&
               <Row>

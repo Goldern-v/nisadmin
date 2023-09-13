@@ -20,11 +20,11 @@ import AuditModal from './components/auditModal'
 export interface Props {
   options: Obj
 }
-
+const Quarter ={'第一季度':1,'第二季度':2,'第三季度':3,'第四季度':4}
+const QuarterV ={1:'第一季度',2:'第二季度',3:'第三季度',4:'第四季度'}
 /** 13张表的菜单页，by925 */
 export default observer(function (props: Props) {
   const { options } = props
-
   /**创建弹窗 */
   const addModal = createModal(AddModal)
   useEffect(() => {
@@ -230,6 +230,38 @@ export default observer(function (props: Props) {
       ]
       setColumns(newColumns)
       getFormList()
+    },
+    quarter_not_more:()=>{
+      setQuery({
+        ...query,
+        year: moment(),
+        quarter:QuarterV[moment().quarter()],
+      })
+      setAddQuery({
+        ...addQuery,
+        year: moment(),
+        quarter:QuarterV[moment().quarter()],
+      })
+      const newColumns = [
+        {
+          title: '年份',
+          align: 'center',
+          dataIndex: 'year',
+          render: (text: string) => {
+            return `${text}年`
+          }
+        },
+        {
+          title: '季度',
+          align: 'center',
+          dataIndex: 'quarter',
+          render: (text: string) => {
+            return `第${text}季度`
+          }
+        }
+      ]
+      setColumns(newColumns)
+      getFormList()
     }
   }
 
@@ -273,6 +305,11 @@ export default observer(function (props: Props) {
       params.startTime = startTime ? startTime.format('YYYY-MM-DD') + ' 00:00:00' : ''
       params.endTime = endTime ? endTime.format('YYYY-MM-DD') + ' 23:59:59' : ''
     }
+    console.log("params.quarter===",params.quarter);
+    if(params.hasOwnProperty('quarter')){
+      params.quarter =Quarter[params.quarter]
+    }
+
     nurseHandBookService.getTableDataList(params).then((res: Obj) => {
       setTableData(res.data.list || [])
       setTotal(res.data.totalCount)
