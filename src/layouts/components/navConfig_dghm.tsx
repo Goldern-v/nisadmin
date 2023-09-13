@@ -69,7 +69,11 @@ export const navConfig = (appStore: any, authStore?: any) => {
     },
     {
       name: "敏感指标",
-      path: "/indicator"
+      // path: "/indicator"
+      onClick:()=>{
+        let token = sessionStorage.getItem('authToken') || ''
+        window.open(`/bcyNursingQuality/ssoLogin?token=${token}`)
+      }
     },
     {
       name: "统计查询",
