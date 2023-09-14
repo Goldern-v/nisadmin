@@ -12,12 +12,14 @@ import { preview, print } from "printing";
 import moment from 'moment'
 import { Obj } from "src/libs/types";
 import {tableConConfig} from "src/modules/nurseHandBookNew/views/detail-lyrm/config";
+import service from "src/services/api";
 const dateFormat = 'YYYY-MM-DD HH:mm:ss'
 
 class NurseHandBookRecordModel {
   @observable public detail: useAuditStatus.Props = {
     record: {},
     nodeList: [],
+    isAudit:false
   };
   @observable public id: string = "";
   @observable public editorData: any = "";
@@ -28,7 +30,8 @@ class NurseHandBookRecordModel {
   @observable public auditModal: any = null
   @observable public isPrint: boolean = false
   @observable public ctxRef: any = null
-
+/**科室护士data**/
+@observable public  nurseList:any =[]
   constructor() {
     this.auditModal = createModal(auditModal)
   }
@@ -88,8 +91,9 @@ class NurseHandBookRecordModel {
       .getNHRById({ id: this.id })
       .then((res: types.Obj) => {
         const {
-          record: { detail, title = "", menuCode = '', time },
+          record: { detail,deptCode, title = "", menuCode = '', time },
         } = res.data;
+        this.getNurseList(deptCode)
         this.detail = res.data;
         if (detail) {
           this.editorData = JSON.parse(detail);
@@ -205,8 +209,13 @@ class NurseHandBookRecordModel {
       print(this.ctxRef.current, {
         injectGlobalCss: true,
         scanStyles: false,
-        // direction: "vertical",
+        direction: "vertical",
         css: `
+        body {
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+          color-adjust: exact;
+        }
         @page {
           margin: 0;
         }
@@ -223,14 +232,41 @@ class NurseHandBookRecordModel {
           page-break-inside: auto;
           page-break-after: auto
         }
+        tr .ant-select-selection{
+        border:none
+        }
+         
+        i.anticon, .ant-select-arrow {
+          display: none;
+        }
+        .date-con .ant-calendar-picker {
+          flex: 1;
+        }
+        .ant-calendar-picker-input.ant-input {
+          display: flex;
+          border: none;
+        }
+        .date-con pre {
+          white-space: nowrap;
+        }
+        
         .title {
           border: none;
           padding: 0;
+        }
+        .title-con .ant-input.title {
+          padding: 0px;
         }
         `,
       }).then(() => this.isPrint = false)
     })
   }
+/**获取当前科室护士列表**/
+public getNurseList(deptCode:any){
+  service.commonApiService.userDictInfo(deptCode).then((res) => {
+    this.nurseList = res.data
+  })
+}
 }
 
 export const nurseHandbookRecordModel = new NurseHandBookRecordModel();

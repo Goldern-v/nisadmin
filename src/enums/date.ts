@@ -34,7 +34,7 @@ export const monthList = [
   '十一月',
   '十二月',
 ]
-
+export const quarterYear =[ '上半年','下半年']
 const startAndEnd = {
   0:['01-01','12-31'],
   1:['01-01','03-31'],

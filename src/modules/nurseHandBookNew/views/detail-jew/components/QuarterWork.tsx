@@ -1,22 +1,29 @@
 import React, {memo, useMemo} from 'react'
 import styled from 'styled-components'
 import {nurseHandbookRecordModel as model} from '../model'
-import {DatePicker, Input} from 'antd'
+import {DatePicker, Input, Select} from 'antd'
 import {observer} from 'mobx-react'
 import {DetailCtxCon} from 'src/modules/nurseHandBookNew/style'
 import {ChangeOrFocus, Obj} from 'src/libs/types'
 import cloneDeep from 'lodash/cloneDeep'
 import {dateFormat, dateFormat3, tableConConfig} from '../config'
-
 import moment, {isMoment} from 'moment'
 import {isOfType} from 'src/utils/ts.utils'
-
+const {Option} = Select
 export interface Props {
 }
 
 const ChildCon = memo((props: any) => {
     const {value, component, ...other} = props
     switch (component) {
+        case 'Dead':
+            return (
+                <Select
+                    style={{width:80}}
+                    value={value||''}  {...other}>
+                    {(model?.nurseList||[]).map((nurse: any) => <Option key={nurse.empNo}>{nurse.empName}</Option>)}
+                </Select>
+            )
         case 'DataPicker':
             return (
                 <DatePicker className='cell-ipt'
