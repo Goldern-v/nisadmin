@@ -68,7 +68,7 @@ export default observer(function Step4() {
     } else {
       stepViewModal.stepData2.totalScores = data.questionStatList?.reduce((total: any, current: any) => {
         return total + current.totalScores;
-      }, 0);
+      }, 0).toFixed(2);
     }
   };
 

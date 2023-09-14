@@ -31,8 +31,8 @@ export default observer(function UpdateTable(props: Props) {
 
   /** 总分 */
   let totalScore = dataSource.reduce((total: any, current: any) => {
-    return total + current.totalScores;
-  }, 0);
+    return (total + current.totalScores);
+  }, 0).toFixed(2);
 
   const columns: ColumnProps<any>[] = [
     {
@@ -107,7 +107,7 @@ export default observer(function UpdateTable(props: Props) {
       dataIndex: "totalScores",
       render(text: any, record: any, index: number) {
         if (index == 0) return <span>{totalScore}</span>;
-        return text;
+        return text.toFixed(2);
       }
     }
   ];
