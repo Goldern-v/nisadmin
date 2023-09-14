@@ -285,7 +285,7 @@ export default observer(function 敏感指标登记本(props: Props) {
 
   }
   //registerName
-  const isWhyx = ['whyx', 'lyyz', 'qhwy', 'whhk', 'dglb'].includes(appStore.HOSPITAL_ID)
+  const isWhyx = ['whyx', 'lyyz', 'qhwy', 'whhk', 'dglb','ytll'].includes(appStore.HOSPITAL_ID)
 
   const columns: ColumnProps<any>[] | any = [
     ...appStore.hisMatch({
