@@ -7,7 +7,7 @@ import { Obj } from 'src/libs/types'
 import { authStore } from 'src/stores'
 import styled from 'styled-components'
 import { STATUS_LIST } from '../utils/enums'
-import {quarterList} from "src/enums/date";
+import {quarterList, quarterYear} from "src/enums/date";
 const { Option } = Select
 
 const dateFormat = 'YYYY-MM-DD';
@@ -97,6 +97,15 @@ export default observer(function (props: Props) {
                     value={query.month}
                     onChange={(month: string) =>  changeQuery(month, 'month')}>
                     {monthList.map((month: number) => <Option value={`${month}`} key={month}>{month}</Option>)}
+                </Select>
+            </>}
+        {query.hasOwnProperty('halfYear') &&
+            <>
+                <span className='label'>年度:</span>
+                <Select
+                    value={query.halfYear}
+                    onChange={(halfYear: string) =>  changeQuery(halfYear, 'halfYear')}>
+                    {quarterYear.map((halfYear: string) => <Option value={`${halfYear}`} key={halfYear}>{halfYear}</Option>)}
                 </Select>
             </>}
       <span className='label'>状态:</span>

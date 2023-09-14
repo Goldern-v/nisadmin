@@ -6,55 +6,37 @@ import AuditHeader from 'src/components/audit-page/AuditHeader'
 import { nurseHandbookRecordModel as model } from './model'
 import { Button, Spin } from 'antd'
 import CtxCon from './components/ctxCon'
+import AuditProcess from "src/components/audit-page/AuditProcess";
+import useAuditStatus from "src/hooks/useAuditStatus";
 
 export interface Props {
 }
 /** form29详情，by贵州 */
 export default observer(function (props: Props) {
   const ctxRef = useRef<any>(null)
-
+  const { curNode } = useAuditStatus(model.detail)
   const btnList = useMemo(() => {
-    const { status = '' } = model.detail?.record || {}
-    // 待提交，已撤回
-    if (status === 0 || status === -1) {
-      return (<>
-        {<Button type='primary' onClick={() => model.onCommit('0')}>{status === 0 ? '暂存' : '编辑'}</Button>}
-        <Button type='primary' onClick={() => model.onCommit('2')}>提交</Button>
-      </>)
-    }
-    // 已提交
-    else if (status === 2) {
-      return (
-        // temporary ok
-        authStore.isDepartment ?
-          <>
-            <Button type='primary' onClick={() => model.onCommit('2')}>保存</Button>
-          </>
-          :
+    const { canHandle, nodeCode, state } = curNode
+    if(model.detail?.isAudit){
+      if (canHandle && (nodeCode === 'commit' || nodeCode == undefined)) {
+        return (<>
+          <Button type='primary' onClick={() => model.onCommit('0')}>暂存</Button>
+          <Button type='primary' onClick={() => model.onCommit('1')}>提交</Button>
+        </>)
+      }
+      // 已提交
+      if (nodeCode === 'commit' && state === '1') {
+        return (<>
           <Button type='primary' onClick={() => model.onCancel()}>撤回</Button>
-      )
-    }
-    // 撤回中
-    else if (status === 1 && authStore.isDepartment) {
-      return (<>
-        <Button type='primary' onClick={() => model.onCommit('1')}>编辑</Button>
-        <Button type='primary' onClick={() => model.openAudit()}>处理</Button>
-      </>)
-    }
-
-    return ''
-  }, [model.detail])
-
-  const btnListGSYHZSC_2 = useMemo(()=>{
-    if(model.detail?.record?.menuCode=='GSYHZSC_2'){
-      return (<>
-          <Button type='primary' onClick={()=>model.addEditorData(12)}>添加下一页</Button>
-          <Button type='primary' onClick={()=>model.addEditorData(4)}>添加工作目标</Button>
-      </>)
+          {authStore.isDepartment && <>
+            <Button type='primary' onClick={() => model.onCommit('0')}>暂存</Button>
+            <Button type='primary' onClick={() => model.openAudit()}>审核</Button>
+          </>}
+        </>)
+      }
     }
     return ''
-  },[model.detail])
-
+  }, [curNode])
   useEffect(() => {
     return () => {
       model.auditModal.unMount()
@@ -86,10 +68,10 @@ export default observer(function (props: Props) {
             <Button onClick={() => appStore.history.goBack()}>返回</Button>
             <Button onClick={model.onPrint}>打印</Button>
             {btnList}
-            {btnListGSYHZSC_2}
           </>}
         />
         <MainWrapper>
+          { model.detail?.isAudit && <AuditProcess process={model.detail?.nodeList || []} /> }
           <div className='main-ctx'>
             <CtxCon />
           </div>
@@ -110,7 +92,7 @@ const MainWrapper = styled.div`
   height: calc(100% - 76px);
   position: relative;
   .main-ctx {
-    /* width: calc(100% - 250px); */
+   width: calc(100% - 200px); 
     height: 100%;
     padding: 15px 120px 15px;
     overflow-y: auto;

@@ -65,7 +65,11 @@ export default observer(function (props: Props) {
       setSelectedRowKeys(keys)
     }
   }
-
+  const getHalfYear =()=>{
+    let currentDate = new Date();
+    let currentMonth = currentDate.getMonth() + 1; // JavaScript 中月份从 0 开始，所以需要加 1
+    return  currentMonth >= 1 && currentMonth <= 6 ? '上半年':'下半年'
+  }
   const defColumns: any[] = [
     {
       title: '序号',
@@ -280,14 +284,27 @@ export default observer(function (props: Props) {
             return `${text}`
           }
         },
-        // {
-        //   title: '季度',
-        //   align: 'center',
-        //   dataIndex: 'quarter',
-        //   render: (text: string) => {
-        //     return `第${text}季度`
-        //   }
-        // }
+      ]
+      setColumns(newColumns)
+      getFormList()
+    },
+    half_year_not_more:()=>{
+      setQuery({
+        ...query,
+        year: moment(),
+        halfYear:getHalfYear()
+      })
+      setAddQuery({
+        ...addQuery,
+        year: moment(),
+        halfYear:getHalfYear()
+      })
+      const newColumns = [
+        {
+          title: '年度',
+          align: 'center',
+          dataIndex: 'halfYear',
+        },
       ]
       setColumns(newColumns)
       getFormList()
@@ -297,11 +314,16 @@ export default observer(function (props: Props) {
   const onOkBAdd = (params: Obj) => {
     const { menuCode } = options
     const title = formatTitle(params, options)
+    if(params.hasOwnProperty('halfYear')){
+      console.log(params.halfYear);
+      params.halfYear = params.halfYear ==='上半年' ? 0 : 1
+    }
     const data: Obj = { ...params,detail:params.url }
     if (!params.menuCode) {
       data.menuCode = menuCode
     }
     title && (data.title = title)
+
     nurseHandBookService.createOrUpdate(data).then(res => {
       if (res.code === '200') {
         const { id } = res.data
@@ -335,11 +357,13 @@ export default observer(function (props: Props) {
       params.startTime = startTime ? startTime.format('YYYY-MM-DD') + ' 00:00:00' : ''
       params.endTime = endTime ? endTime.format('YYYY-MM-DD') + ' 23:59:59' : ''
     }
-    console.log("params.quarter===",params.quarter);
     if(params.hasOwnProperty('quarter')){
       params.quarter =Quarter[params.quarter]
     }
-
+    if(params.hasOwnProperty('halfYear')){
+      console.log(params.halfYear);
+      params.halfYear = params.halfYear ==='上半年' ? 0 : 1
+    }
     nurseHandBookService.getTableDataList(params).then((res: Obj) => {
       setTableData(res.data.list || [])
       setTotal(res.data.totalCount)
@@ -367,11 +391,14 @@ export default observer(function (props: Props) {
       setFormList(res.data || [])
     })
   }
+  /**isAudit 为ture才能审核**/
   const openAudit = () => {
-    if (selectedRowKeys.length === 0) {
-      return message.warning('请勾选需要审批的数据')
+    if(options?.isAudit ){
+      if (selectedRowKeys.length === 0) {
+        return message.warning('请勾选需要审批的数据')
+      }
+      setAuditVisible(true)
     }
-    setAuditVisible(true)
   }
   const handleAudit = (params: any) => {
     const data = selectedRows.map((v: Obj) => ({ ...params, nodeCode: v.nextNode, id: v.id }))

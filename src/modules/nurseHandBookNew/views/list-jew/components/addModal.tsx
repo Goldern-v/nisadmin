@@ -10,7 +10,7 @@ import YearPicker from 'src/components/YearPicker'
 import { ModalComponentProps } from 'src/libs/createModal'
 import { authStore } from 'src/stores'
 import SelectFilter from 'src/components/SelectFilter'
-import {quarterList} from "src/enums/date";
+import {quarterList, quarterYear} from "src/enums/date";
 import { Input, Icon } from 'antd/es'
 import MultiFileUploader from "src/components/MultiFileUploader";
 const { Option } = Select
@@ -228,6 +228,22 @@ export default function (props: Props) {
                   }
                 </Col>
               </Row>
+          }
+          {
+              addQuery.halfYear !==undefined &&
+              <Row>
+                <Col span={8} className='label'>
+                 年度：
+                </Col>
+                  <Col span={16}>
+                    <Form.Field name='halfYear'>
+                      <Select>
+                        {quarterYear.map((quarter: string) => <Option value={`${quarter}`} key={quarter}>{quarter}</Option>)}
+                      </Select>
+                    </Form.Field>
+                  </Col>
+              </Row>
+            // quarterYear
           }
           <Row>
             <Col span={8} className='label'>
