@@ -62,13 +62,14 @@ export default observer(function (props: Props) {
                 </colgroup>
                 <thead>
                 <tr>
-                    <td colSpan={2}>内容</td>
+                    <td colSpan={2} rowSpan={2}>内容</td>
                     <td  colSpan={2}>完成情况</td>
                 </tr>
                 <tr>
+
                     {
                         columns.map((v: Obj, i: number) =>(
-                            <td key={i}>{v.title}</td>
+                          [2,3].includes(i) &&  <td  key={i}>{v.title}</td>
                         ))
                     }
                 </tr>
@@ -78,11 +79,11 @@ export default observer(function (props: Props) {
                     (model.editorData|| []).map((v: Obj, i: number) => {
                         return (
                             <tr key={i}>
-                                <td>{i< 13 ? '季度工作计划1':'季度工作计划2'}</td>
+                                {[0,14].includes(i) &&<td rowSpan={14}>{ i< 14 ? '季度工作计划':'存在或待解决的问题'}</td>}
                                 {
                                     columns.map((v1: Obj, i1: number) => {
                                         return (
-                                          <td key={`${i}-${i1}`}>
+                                            i1 !==columns.length -1 && <td key={`${i}-${i1}`}>
                                                 <ChildCon {...{
                                                     component: v1.component,
                                                     value: v[`v${i1}`],

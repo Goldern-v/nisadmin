@@ -111,6 +111,10 @@ export const navConfig = (appStore:any,authStore?:any)=>{
     //   path: "/wardManagement"
     // },
     {
+      name: "护士长手册",
+      path: "/nurseHandBookNew",
+    },
+    {
       name: "不良事件",
       path: "/badEventsNew",
       // hidden: !appStore.isDev

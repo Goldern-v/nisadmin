@@ -146,7 +146,8 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
             return "http://192.168.1.125:9900";//测试环境，标准版后端
         // 烟台玲珑医院
         case "ytll":
-            return "http://192.168.1.54:9893";
+            // return "http://192.168.1.54:9893";
+            return 'http://221.214.210.170:39094'
         // 925
         case "925":
             return "http://192.168.1.54:9904";

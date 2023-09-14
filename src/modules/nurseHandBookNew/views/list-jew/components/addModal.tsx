@@ -2,7 +2,7 @@ import moment from 'moment'
 import Form from 'src/components/Form'
 import styled from 'styled-components'
 import React, { useLayoutEffect, useRef, useState } from 'react'
-import { Col, DatePicker, Modal, Row, Select } from 'antd'
+import {Col, DatePicker, message, Modal, Row, Select} from 'antd'
 import { Rules } from 'src/components/Form/interfaces'
 
 import { Obj } from 'src/libs/types'
@@ -11,6 +11,8 @@ import { ModalComponentProps } from 'src/libs/createModal'
 import { authStore } from 'src/stores'
 import SelectFilter from 'src/components/SelectFilter'
 import {quarterList} from "src/enums/date";
+import { Input, Icon } from 'antd/es'
+import MultiFileUploader from "src/components/MultiFileUploader";
 const { Option } = Select
 export interface Props extends ModalComponentProps {
   onOkCb: Function
@@ -30,6 +32,8 @@ export default function (props: Props) {
   const refForm = useRef<any>()
   const [rules, setRules] = useState<Obj>({})
   const { visible, onCancel, onOkCb, addQuery = {}, formList } = props
+  /**封面url**/
+  const [pathUrl,setPathUrl] =useState({} as any)
   const { deptList } = authStore
   useLayoutEffect(() => {
     if (visible) {
@@ -69,6 +73,10 @@ export default function (props: Props) {
       current
         .validateFields()
         .then((res: any) => {
+          console.log(pathUrl);
+          if( addQuery.code =='no_validate_create_more' && Object.keys(pathUrl).length === 0){
+            return message.info('封面未上传')
+          }
           let { deptCode, menuCode } = formData
           const deptName = deptList.find(v => v.code === deptCode)?.name || ''
           const menuName = formList.find(v => v.menuCode === menuCode)?.name || ''
@@ -83,6 +91,9 @@ export default function (props: Props) {
             const [startTime = '', endTime = ''] = params.date
             params.startTime = startTime ? startTime.format('YYYY-MM-DD') + ' 00:00:00' : ''
             params.endTime = endTime ? endTime.format('YYYY-MM-DD') + ' 23:59:59' : ''
+          }
+          if(pathUrl){
+            params['url']=pathUrl?.path
           }
           if (menuName) params.menuName = menuName
 
@@ -103,6 +114,11 @@ export default function (props: Props) {
     }
     return monthArr
   })()
+  const onChange=(e?:any)=>{
+    if(e[0]){
+      setPathUrl(e[0])
+    }
+  }
   return (
     <Modal
       title='创建'
@@ -179,6 +195,40 @@ export default function (props: Props) {
                   </Form.Field>
                 </Col>
               </Row>}
+          {/* 护士长手册封面 */}
+          {
+            addQuery.code =='no_validate_create_more' &&
+              <Row>
+                <Col span={8} className='label' >
+                  名称：
+                </Col>
+                <Col span={16}>
+                  <Form.Field  name='title' required>
+                    <Input  placeholder='请输入文件名称'/>
+                  </Form.Field>
+                </Col>
+              </Row>
+          }
+          {
+              addQuery.code =='no_validate_create_more' &&
+              <Row>
+                <Col span={8} className='label'>
+                  <span style={{color:"red",marginRight:4}}>*</span>上传文件：
+                </Col>
+                <Col span={16}>
+                  {
+                    pathUrl && pathUrl.fileName ? <div className='fileContent'>
+                    <div className='fileName'>{pathUrl.fileName}</div>
+                      <Icon onClick={()=>setPathUrl(undefined)} className='delete-icon' type={'delete'}/>
+                    </div>: <MultiFileUploader
+                        isFormModel
+                        onChange={onChange}
+                        accept={'.pdf'} size={1} maxSize={8 * 1024 * 1024}
+                    />
+                  }
+                </Col>
+              </Row>
+          }
           <Row>
             <Col span={8} className='label'>
               科室：
@@ -216,4 +266,24 @@ const Wrapper = styled.div`
       width: 100%;
     }
   }
+  .form-model .add-btn{
+    top: 0;
+  }
+  .fileContent{
+    position: relative;
+    .fileName{
+      text-align: left;
+    }
+  }
+  .delete-icon {
+    position: absolute;
+    right: 0;
+    top: 4px;
+    visibility: hidden;
+  }
+
+  .fileContent:hover .delete-icon {
+    visibility: visible;
+  }
+ 
 `

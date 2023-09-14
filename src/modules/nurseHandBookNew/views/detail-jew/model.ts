@@ -124,7 +124,7 @@ class NurseHandBookRecordModel {
   @action
   public init = async (cb?: Function) => {
     this.configFn = null
-    const { id } = appStore.queryObj;
+    const { id} = appStore.queryObj;
     this.id = id;
     this.getDetail();
   };
@@ -142,12 +142,18 @@ class NurseHandBookRecordModel {
    * @param status 
    */
   public onCommit = (status: string) => {
+    const {url}=appStore.queryObj
+    /**封面url数据**/
+    if(url){
+      this.editorData = JSON.stringify(url)
+    }
     let detail = this.editorData;
     if (typeof this.editorData !== "string") {
       // 对富文本的数据做转义
       // data.detail = data.detail.replace(/\n\r/g, '')
       detail = JSON.stringify(detail);
     }
+
     const params: types.Obj = {
       id: this.id,
       status,

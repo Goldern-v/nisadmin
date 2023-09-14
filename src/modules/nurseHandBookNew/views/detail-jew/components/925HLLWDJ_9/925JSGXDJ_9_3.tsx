@@ -60,7 +60,9 @@ export default observer(function (props: Props) {
           }
         </colgroup>
         <thead>
-          <tr>
+         
+          <tr> 
+          <td>序号</td>
             {
               columns.map((v: Obj, i: number) => (
                 <td key={i}>{v.title}</td>
@@ -73,6 +75,7 @@ export default observer(function (props: Props) {
             (model.editorData || []).map((v: Obj, i: number) => {
               return (
                 <tr key={i}>
+                  <td>{i}</td>
                   {
                     columns.map((v1: Obj, i1: number) => (
                       <td key={`${i}-${i1}`}>

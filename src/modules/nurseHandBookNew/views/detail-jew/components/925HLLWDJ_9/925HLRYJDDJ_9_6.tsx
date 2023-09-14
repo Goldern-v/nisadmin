@@ -1,115 +1,116 @@
-import React from 'react'
+import React, { memo, useMemo } from 'react'
 import styled from 'styled-components'
 import { nurseHandbookRecordModel as model } from '../../model'
-import { Button, Input,message} from 'antd'
+import { DatePicker, Input } from 'antd'
 import { observer } from 'mobx-react'
 import { DetailCtxCon } from 'src/modules/nurseHandBookNew/style'
-import { Obj } from 'src/libs/types'
+import { ChangeOrFocus, Obj } from 'src/libs/types'
 import cloneDeep from 'lodash/cloneDeep'
-import { globalModal } from "src/global/globalModal"
-const { TextArea } = Input
+import { dateFormat, dateFormat3, tableConConfig } from '../../config'
+
+import moment, { isMoment } from 'moment'
+import { isOfType } from 'src/utils/ts.utils'
+
 export interface Props {
 }
-
-/**护士长月工作计划 */
+const ChildCon = memo((props: any) => {
+  const { value, component, ...other } = props
+  switch (component) {
+    case 'DataPicker':
+      return (
+        <DatePicker className='cell-ipt'
+          format={dateFormat3} value={value ? moment(value) : undefined} {...other} />)
+    default:
+      return <Input className='cell-ipt ta-c' value={value} {...other} />
+  }
+}, (prev: any, next: any) => {
+  return prev?.value == next?.value
+})
+/**表格类表单 */
 export default observer(function (props: Props) {
 
+  const columns = useMemo(() => tableConConfig[model.detail?.record?.menuCode]?.columns || [], [model.id])
+  const config = useMemo(() => tableConConfig[model.detail?.record?.menuCode] || {}, [model.id])
   const onChange = (e: any, config: Obj) => {
-    const { index , key } = config
+    const { index, key } = config
+    let value: any = e
+    if (isMoment(e)) {
+      value = e.format(dateFormat)
+    } else if (isOfType<ChangeOrFocus>(e, 'target')) {
+      value = e.target.value || e.currentTarget.innerText
+    } else if (e instanceof Array) {
+      value = e.join(',')
+    }
     const newData = cloneDeep(model.editorData)
-    newData[index][key] = e.target.value
+    newData[index][key] = value
     model.handleEditorChange(newData)
   }
 
-
-  const removeObj = (idx:number)=>{
-    globalModal
-		.confirm( `提示`,`是否确认删除？`)
-		.then((res) => {
-      model.editorData.splice(idx,4)
-      message.success('删除成功！')
-     
-		}).catch(err=>{
-
-		})
-  }
-
   return (
-    <Wrapper ref={model.ctxRef}  style={{ pointerEvents: model.allowEdit ? 'auto' : 'none' }}>
-      <div className='title'>护士受表彰及奖励记录</div>
+    <Wrapper className='con--a4' ref={model.ctxRef}>
+      <div className='title'>
+        {model.detail?.record?.[config?.titleType || 'menuName']}
+      </div>
       <table>
         <colgroup>
-          <col width='10%' />
-          <col width='5%' />
-          <col width='10%' />
-          <col width='15%' />
-          <col width='10%' />
-          <col width='10%' />
-          <col width='10%' />
+          {
+            columns.map((v: Obj, i: number) => (
+              <col key={i} {...(v.width ? { width: v.width } : {})} />
+            ))
+          }
         </colgroup>
         <thead>
           <tr>
-            <th colSpan={4}>表彰类别</th>
+            <td rowSpan={2}>日期</td>
+            <td rowSpan={2}>姓名</td>
+            <td colSpan={4}>表彰类别</td>
+            <td rowSpan={2}>奖励方式</td>
           </tr>
           <tr>
-            <th rowSpan={3}>日期</th>
-            <th rowSpan={3}>姓名</th>
-            <th>嘉奖</th>
-            <th>立功</th>
-            <th>荣誉称号</th>
-            <th>其他</th>
-            <th rowSpan={3}>奖励方式</th>
+            {
+              columns.map((v: Obj, i: number) => (
+                <td key={i}>{v.title}</td>
+              ))
+            }
           </tr>
         </thead>
         <tbody>
           {
             (model.editorData || []).map((v: Obj, i: number) => {
               return (
-                <>
-                  <tr key={i}>
-                    {v.title !== undefined && <td rowSpan={4} className='ta-l' style={{position:'relative'}}>
-                    {(!model.isPrint && model.editorData.length/4>3) && <Button className='delete-btn' type='danger' shape="circle" size='small' icon="delete" onClick={()=>{removeObj(i)}}></Button>}
-                      <TextArea className='cell-ipt' autosize={{minRows: 4}} value={v.title} onChange={(e) => onChange(e, { index: i, key: 'title' })}></TextArea>
-                    </td>}
-                    <td>{i % 4 + 1}</td>
-                    <td className='ta-l'>
-                      <TextArea className='cell-ipt' autosize={{minRows: 1}} value={v.v1} onChange={(e) => onChange(e, { index: i, key: 'v1' })}></TextArea>
-                    </td>
-                    <td className='ta-l'>
-                      <Input className='cell-ipt' value={v.v2} onChange={(e) => onChange(e, { index: i, key: 'v2' })}></Input>
-                    </td>
-                    <td className='ta-l'>
-                      <Input className='cell-ipt' value={v.v3} onChange={(e) => onChange(e, { index: i, key: 'v3' })}></Input>
-                    </td>
-                    <td className='ta-l'>
-                      <Input className='cell-ipt' value={v.v4} onChange={(e) => onChange(e, { index: i, key: 'v4' })}></Input>
-                    </td>
-                    <td className='ta-l'>
-                      <TextArea className='cell-ipt' autosize={{minRows: 1}} value={v.v5} onChange={(e) => onChange(e, { index: i, key: 'v5' })}></TextArea>
-                    </td>
-                  </tr>
-                </>
+                <tr key={i}>
+                  <td>
+                  <DatePicker className='cell-ipt'
+                      format={dateFormat3} value={v.v6 ? moment(v.v6) : undefined} onChange={(e) => onChange(e, { index: i, key: 'v6' })} />
+                  </td>
+                  <td>
+                    <Input className='cell-ipt ta-c' value={v.v7} onChange={(e) => onChange(e, { index: i, key: 'v7' })} />
+                  </td>
+                  {
+                    columns.map((v1: Obj, i1: number) => (
+                      <td key={`${i}-${i1}`}>
+                        <ChildCon {...{
+                          component: v1.component,
+                          value: v[`v${i1}`],
+                          onChange: (e: any) => onChange(e, { index: i, key: `v${i1}` })
+                        }} />
+                      </td>
+                    ))
+                  }
+                  <td>
+                    <Input className='cell-ipt ta-c' value={v.v5} onChange={(e) => onChange(e, { index: i, key: 'v5' })} />
+                  </td>
+                </tr>
               )
             })
           }
         </tbody>
       </table>
+      {config?.tip && <div className='fs-s'>{config?.tip}</div>}
     </Wrapper>
   )
 })
 
 const Wrapper = styled(DetailCtxCon)`
-  th {
-    line-height: 32px;
-  }
-  .delete-btn{
-    position: absolute;
-    right: -5px;
-    top: -10px;
-    z-index: 2;
-  }
-  /* textarea {
-    min-height: 80px;
-    height: auto;
-  } */
+
 `

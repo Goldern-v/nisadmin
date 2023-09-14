@@ -16,12 +16,15 @@ import HLRYJDDJ_9_6 from './925HLLWDJ_9/925HLRYJDDJ_9_6'
 import HRHSDJ_9_7 from './925HLLWDJ_9/925HRHSDJ_9_7'
 import YearWork from "src/modules/nurseHandBookNew/views/detail-jew/components/YearWork";
 import QuarterWork from "src/modules/nurseHandBookNew/views/detail-jew/components/QuarterWork";
+import PdfViewer from "src/modules/nursingRulesNew-wh/components/PdfViewer";
+import {appStore} from "src/stores";
+
 export interface Props {
 }
 export default observer(function (props: Props) {
   const { menuCode = '' } = model.detail?.record || {}
 
-  if (['925NDXLJH_2', '925BNGZZJ_6'].includes(menuCode))
+  if (['925NDXLJH_2','925NDGZJH_2', '925BNGZZJ_6'].includes(menuCode))
     return <EditPage />
   
   else if ('GSYHZSC_2' === menuCode)  return <GSYHZSC_2 />
@@ -38,5 +41,6 @@ export default observer(function (props: Props) {
   else if('925GZJHJZZD_5' === menuCode)return  <MonthlyWork/>
   else if('925NDXLJH_3' ===menuCode)return  <YearWork/>
   else if('925JDGZJH_4' ===menuCode)return  <QuarterWork/>
+  else if ('925SCFM_1' === menuCode) return <PdfViewer file={ appStore.queryObj.url || model.editorData.url} width={780 - 2} />
   return <div></div>
 })

@@ -269,6 +269,7 @@ export const formatTitle = (params: Obj, options: Obj) => {
     deptName = "",
     menuName = "",
     menuCode: menuCodeP,
+      title
   } = params;
   if (menuCodeP) {
     if ("LYHZSC_4_2" === menuCodeP)
@@ -290,6 +291,9 @@ export const formatTitle = (params: Obj, options: Obj) => {
     ].includes(menuCode)
   )
     return `${year}年${deptName}${name}`;
+  if('925SCFM_1' === menuCode){
+    return  title||name
+  }
   return name;
 };
 /**使用tableCon的表单配置
