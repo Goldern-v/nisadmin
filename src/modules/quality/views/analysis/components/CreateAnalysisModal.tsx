@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react'
 import { Modal, Row, Col, Radio, Select, DatePicker, Input } from 'antd'
 import Form from 'src/components/Form'
 import { Rules } from 'src/components/Form/interfaces'
-// import { appStore } from 'src/stores'
+import { appStore } from 'src/stores'
 // import { observer } from 'mobx-react-lite'
 import Moment from 'moment'
 
@@ -15,13 +15,19 @@ export interface Props {
   onOk: any
   onCancel: any
   groupRoleList: any
+  biaodanList?: any
   allowClear?: boolean
   loading?: boolean
 }
 
 export default function CreateAnalysisModal(props: Props) {
   const refForm = React.createRef<Form>()
-
+  
+  const roleRule = (()=>{
+    let rule = ['jmfy'].includes(appStore.HOSPITAL_ID) ? 
+    [{qcCode: (val:any) => (!!val || '请选择表单小组')}] : []
+    return rule
+  })()
   const rules: Rules = {
     reportName: (val) => !!val || '请填写报告名称',
     groupRoleCode: (val) => !!val || '请选择质控组',
@@ -30,8 +36,14 @@ export default function CreateAnalysisModal(props: Props) {
     beginDate: (val) => !!val || '请选择开始时间',
     endDate: (val) => !!val || '请选择结束时间'
   }
+  const dynamicRules = roleRule.reduce((result:any, rule:any) => {
+    const [ruleName] = Object.keys(rule)
+    result[ruleName] = rule[ruleName]
+      return result
+  }, {} as Rules)
 
-  const { visible, onCancel, onOk, groupRoleList, allowClear, loading } = props
+  Object.assign(rules, dynamicRules)
+  const { visible, onCancel, onOk, groupRoleList, biaodanList, allowClear, loading } = props
   const [yearPickerIsOpen, setYearPickerIsOpen] = useState(false)
 
   const [beginDate, setBeginDate] = useState(null as any | null)
@@ -51,6 +63,7 @@ export default function CreateAnalysisModal(props: Props) {
             endDate: null,
             reportName: '',
             groupRoleCode: '',
+            qcCode:"",
             indexInType: month
           })
         }
@@ -68,10 +81,11 @@ export default function CreateAnalysisModal(props: Props) {
       current
         .validateFields()
         .then((res) => {
-          let { reportName, groupRoleCode, year, beginDate, endDate, indexInType } = formData
+          let { reportName, groupRoleCode,qcCode, year, beginDate, endDate, indexInType } = formData
           let params: any = {
             reportName: reportName,
             groupRoleCode: groupRoleCode,
+            qcCode:qcCode,
             year: year ? year.format('YYYY') : '',
             beginDate: beginDate ? beginDate.format('YYYY-MM-DD') : '',
             endDate: endDate ? endDate.format('YYYY-MM-DD') : '',
@@ -246,22 +260,40 @@ export default function CreateAnalysisModal(props: Props) {
               </Form.Field>
             </Col>
           </Row>
+          {['jmfy'].includes(appStore.HOSPITAL_ID) && 
+            <Row>
+              <Col span={5} className='label'>
+                表单小组：
+              </Col>
+              <Col span={19}>
+                <Form.Field name='qcCode'>
+                  <Select>
+                    {biaodanList.map((item: any) => (
+                      <Option value={item.qcCode} key={item.qcCode}>
+                        {item.qcName}
+                      </Option>
+                    ))}
+                  </Select>
+                </Form.Field>
+              </Col>
+            </Row>
+          }
           <Row>
-            <Col span={5} className='label'>
-              质控组：
-            </Col>
-            <Col span={19}>
-              <Form.Field name='groupRoleCode'>
-                <Select>
-                  {groupRoleList.map((item: any) => (
-                    <Option value={item.code} key={item.code}>
-                      {item.name}
-                    </Option>
-                  ))}
-                </Select>
-              </Form.Field>
-            </Col>
-          </Row>
+              <Col span={5} className='label'>
+                质控组：
+              </Col>
+              <Col span={19}>
+                <Form.Field name='groupRoleCode'>
+                  <Select>
+                    {groupRoleList.map((item: any) => (
+                      <Option value={item.code} key={item.code}>
+                        {item.name}
+                      </Option>
+                    ))}
+                  </Select>
+                </Form.Field>
+              </Col>
+            </Row>
           <Row>
             <Col span={5} className='label'>
               报告名称：

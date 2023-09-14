@@ -319,7 +319,7 @@ export default observer(function TopCon(props: any) {
           <FormSelect refreshData={props.refreshData} />
         </React.Fragment>
       )}
-      {["hj", 'nfsd', 'qzde'].includes(appStore.HOSPITAL_ID) && (
+      {["hj", 'nfsd', 'qzde','jmfy'].includes(appStore.HOSPITAL_ID) && (
         <React.Fragment>
           <span style={{ margin: "0 3px 0 15px" }}>表单小组:</span>
           <TableSelect refreshData={props.refreshData} />

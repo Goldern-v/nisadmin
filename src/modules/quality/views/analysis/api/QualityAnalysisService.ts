@@ -12,6 +12,9 @@ export default class QualityAnalysisService extends BaseApiService {
   public getPage(query: any) {
     return this.post('/qcAnalysis/getPage', query)
   }
+  public getQCItem(query: any) {
+    return this.post('/qcItem/template/findList', query)
+  }
   public createReport(params: any) {
     return this.post('/qcAnalysis/createReport', params)
   }

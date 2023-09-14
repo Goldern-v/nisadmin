@@ -19,11 +19,19 @@ const api = new QualityAnalysisService();
 const Option = Select.Option;
 
 export default observer(function JmFyAnalysis() {
+    const WrapperStyle = (()=>{
+        if(appStore.HOSPITAL_ID === "jmfy") return {
+            paddingTop:"80px"
+        }
+    })()
+
+
     const [yearPickerIsOpen, setYearPickerIsOpen] = useState(false);
     const [createAnalysisVisible, setCreateAnalysisVisible] = useState(false);
     const [createClear, setCreateClear] = useState(true);
     const {history} = appStore;
     const [groupRoleList, setGroupRolelist] = useState([]);
+    const [biaodanList, setBiaodanList] = useState([]);
     const [groupRoleListSelf, setGroupRolelistSelf] = useState([]);
 
     //进度条相关
@@ -51,6 +59,9 @@ export default observer(function JmFyAnalysis() {
         }
         api.qcRoleCode().then((res) => {
             if (res.data instanceof Array) setGroupRolelist(res.data);
+        });
+        api.getQCItem({level:3}).then((res) => {
+            if (res.data instanceof Array) setBiaodanList(res.data);
         });
         api.qcRoleCodeSelf().then((res) => {
             if (res.data instanceof Array) setGroupRolelistSelf(res.data);
@@ -428,8 +439,8 @@ export default observer(function JmFyAnalysis() {
         init()
     }, [query.year, query.indexInType])
     return (
-        <Wrapper>
-            <div className="topbar">
+        <Wrapper style={ WrapperStyle }>
+            <div className={`topbar ${[appStore.HOSPITAL_ID === "jmfy" && 'jmfyTopbar'].join(' ')}`}>
                 <div className="float-left">
                     <PageTitle>{'fqfybjy' === appStore.HOSPITAL_ID ? CONFIG_TITLE[level] : rankTextList[level] + '级质控'}月度报告</PageTitle>
                 </div>
@@ -483,25 +494,46 @@ export default observer(function JmFyAnalysis() {
                             </Select>
                         </div>
                     </div>
-                    <div className="item">
-                        <div className="label">质控组：</div>
-                        <div className="content">
-                            <Select
-                                value={query.groupRoleCode}
-                                onChange={(groupRoleCode: any) => {
-                                    setQuery({...query, groupRoleCode});
-                                }}
-                                className="recode-type-select"
-                            >
-                                <Option value="">全部</Option>
-                                {groupRoleList.map((item: any) => (
-                                    <Option value={item.code} key={item.code}>
-                                        {item.name}
-                                    </Option>
-                                ))}
-                            </Select>
+                    {['jmfy'].includes(appStore.HOSPITAL_ID) && 
+                        <div className="item">
+                            <div className="label">表单小组：</div>
+                            <div className="content">
+                                <Select
+                                    value={query.qcCode}
+                                    onChange={(qcCode: any) => {
+                                        setQuery({...query, qcCode});
+                                    }}
+                                    className="recode-type-select"
+                                >
+                                    <Option value="">全部</Option>
+                                    {biaodanList.map((item: any) => (
+                                        <Option value={item.qcCode} key={item.qcCode}>
+                                            {item.qcName}
+                                        </Option>
+                                    ))}
+                                </Select>
+                            </div>
                         </div>
-                    </div>
+                    }
+                    <div className="item">
+                            <div className="label">质控组：</div>
+                            <div className="content">
+                                <Select
+                                    value={query.groupRoleCode}
+                                    onChange={(groupRoleCode: any) => {
+                                        setQuery({...query, groupRoleCode});
+                                    }}
+                                    className="recode-type-select"
+                                >
+                                    <Option value="">全部</Option>
+                                    {groupRoleList.map((item: any) => (
+                                        <Option value={item.code} key={item.code}>
+                                            {item.name}
+                                        </Option>
+                                    ))}
+                                </Select>
+                            </div>
+                        </div>
                     <div className="item">
                         <Button onClick={handleSearch}>查询</Button>
                     </div>
@@ -561,6 +593,7 @@ export default observer(function JmFyAnalysis() {
                 onOk={handleCreateOk}
                 onCancel={handleCreateCancel}
                 groupRoleList={groupRoleListSelf}
+                biaodanList={biaodanList}
                 loading={!!(createLoading == "start")}
             />
             {/*门诊柱状图*/}
@@ -600,6 +633,10 @@ const Wrapper = styled.div`
     box-sizing: border-box;
     height: 55px;
     overflow: hidden;
+
+    &.jmfyTopbar{
+        height: auto;
+    }
 
     .float-left {
       float: left;
