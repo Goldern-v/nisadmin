@@ -17,7 +17,7 @@ export default observer(function (props: Props) {
   const { curNode } = useAuditStatus(model.detail)
   const btnList = useMemo(() => {
     const { canHandle, nodeCode, state } = curNode
-    if(model.detail?.isAudit){
+    if(model.detail?.audit){
       if (canHandle && (nodeCode === 'commit' || nodeCode == undefined)) {
         return (<>
           <Button type='primary' onClick={() => model.onCommit('0')}>暂存</Button>
@@ -71,7 +71,7 @@ export default observer(function (props: Props) {
           </>}
         />
         <MainWrapper>
-          { model.detail?.isAudit && <AuditProcess process={model.detail?.nodeList || []} /> }
+          { model.detail?.audit && <AuditProcess process={model.detail?.nodeList || []} /> }
           <div className='main-ctx'>
             <CtxCon />
           </div>

@@ -19,7 +19,7 @@ class NurseHandBookRecordModel {
   @observable public detail: useAuditStatus.Props = {
     record: {},
     nodeList: [],
-    isAudit:false
+    audit:false
   };
   @observable public id: string = "";
   @observable public editorData: any = "";
