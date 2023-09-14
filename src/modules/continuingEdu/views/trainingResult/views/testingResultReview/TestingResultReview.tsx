@@ -50,7 +50,7 @@ export default observer(function TestingResultReview() {
   // 添加补考弹窗控制
   const [editVisible, setEditVisible] = useState(false)
 
-  const tableDateSpecial: any = (appStore.HOSPITAL_ID == 'hj' || appStore.HOSPITAL_ID == 'gxjb' || appStore.HOSPITAL_ID == 'nys' || appStore.HOSPITAL_ID == 'zzwy') && !appStore.queryObj.editable ? [
+  const tableDateSpecial: any = (appStore.HOSPITAL_ID == 'hj'|| appStore.HOSPITAL_ID == 'nys'|| appStore.HOSPITAL_ID == 'zzwy' || appStore.HOSPITAL_ID == 'gxjb') && !appStore.queryObj.editable ? [
     {
       dataIndex: 'answerCountsAndTotalCounts',
       title: '答题',
@@ -69,7 +69,64 @@ export default observer(function TestingResultReview() {
       align: 'center',
       width: 70,
     }
-  ] : [
+  ] : (appStore.HOSPITAL_ID == 'dgxg' ) ? [
+    {
+      dataIndex: 'totalScores',
+      title: '最终成绩',
+      align: 'center',
+      width: 70,
+    },
+    {
+      dataIndex: 'passedDesc',
+      title: '及格',
+      align: 'center',
+      width: 70,
+      render: (text: string) => {
+        if (text == '不及格')
+          return <span style={{ color: 'red' }}>{text}</span>
+        else
+          return <span>{text}</span>
+      }
+    },
+    {
+      dataIndex: 'finishTime',
+      title: '答题时间',
+      align: 'center',
+      width: 180,
+      render: (finishTime: string) => {
+        if (finishTime) return finishTime
+        return '未答题'
+      }
+    },
+    {
+      dataIndex: 'resultPublishDesc',
+      title: '发布成绩',
+      align: 'center',
+      width: 60
+    },
+    // {
+    //   dataIndex: 'creditDesc',
+    //   title: '学分',
+    //   align: 'center',
+    //   width: 120,
+    //   render: (text: string) => {
+    //     if (text) return text
+    //     return '0'
+    //   }
+    // },
+    // {
+    //   dataIndex: 'classHoursDesc',
+    //   title: '学时',
+    //   align: 'center',
+    //   width: 100,
+    // },
+    {
+      dataIndex: 'scoreEmpName',
+      title: '评分人',
+      align: 'center',
+      width: 80,
+    }
+  ]:[
     {
       dataIndex: 'totalScores',
       title: '最终成绩',
@@ -128,7 +185,85 @@ export default observer(function TestingResultReview() {
     }
   ]
 
-  const columns: ColumnProps<any>[] = [
+  const columns: ColumnProps<any>[] = (appStore.HOSPITAL_ID == 'dgxg') ? [
+    {
+      dataIndex: 'empName',
+      title: '姓名',
+      align: 'center',
+      width: 80,
+    },
+    {
+      dataIndex: 'empNo',
+      title: '工号',
+      align: 'center',
+      width: 60,
+    },
+    {
+      dataIndex: 'empTitle',
+      title: '职称',
+      align: 'center',
+      width: 80,
+    },
+    // {
+    //   dataIndex: 'bigDeptName',
+    //   title: '片区',
+    //   align: 'center',
+    //   width: 80,
+    // },
+    {
+      dataIndex: 'deptName',
+      title: '病区',
+      align: 'center',
+      width: 120,
+    },
+    {
+      dataIndex: 'isValidResult',
+      title: '成绩有效',
+      align: 'center',
+      width: 70,
+      render: (isValidResult: number, record: any) => {
+        const itemScoreConfirm = () => {
+          scoreConfirm.show({
+            onOkCallBack: () => {
+              message.success(`${record.empName} 的成绩修改成功`)
+              trainingResultModel.getTableData()
+            },
+            cetpId: appStore.queryObj.id,
+            empNoList: [record.empNo],
+            isValidResult: record.isValidResult.toString() || ''
+          })
+        }
+
+        if (isValidResult == 1)
+          return <span
+            style={{ color: 'blue', cursor: 'pointer' }}
+            onClick={itemScoreConfirm}>
+            有效
+          </span>
+        else
+          return <span
+            style={{ color: 'red', cursor: 'pointer' }}
+            onClick={itemScoreConfirm}>
+            无效
+          </span>
+      }
+    },
+    ...tableDateSpecial,
+    {
+      title: '操作',
+      dataIndex: 'resitCetpId',
+      width: 100,
+      render: (text: string, record: any) => {
+        const btnText = editable ? '立即评分' : '查看成绩'
+        return <DoCon>
+          <span onClick={() => handleAnwserSheetReview(record)}>{btnText}</span>
+          {<span onClick={() => exportPdf(record)}>导出个人试题情况</span>}
+          {/* {(appStore.HOSPITAL_ID == 'hj' || appStore.HOSPITAL_ID == 'gxjb' || appStore.HOSPITAL_ID == 'nys' || appStore.HOSPITAL_ID == 'zzwy') && !appStore.queryObj.editable && record.participateResitExam == 1 && <span onClick={() => handleAnwserSheetReview(record, text)}>查看补考答卷</span>} */}
+        </DoCon>
+      }
+    }
+  ]
+ : [
     {
       dataIndex: 'empName',
       title: '姓名',
@@ -200,7 +335,7 @@ export default observer(function TestingResultReview() {
         const btnText = editable ? '立即评分' : '查看成绩'
         return <DoCon>
           <span onClick={() => handleAnwserSheetReview(record)}>{btnText}</span>
-          {appStore.HOSPITAL_ID == 'dgxg' && <span onClick={() => exportPdf(record)}>导出个人试题情况</span>}
+          {/* {appStore.HOSPITAL_ID == 'dgxg' && <span onClick={() => exportPdf(record)}>导出个人试题情况</span>} */}
           {(appStore.HOSPITAL_ID == 'hj' || appStore.HOSPITAL_ID == 'gxjb' || appStore.HOSPITAL_ID == 'nys' || appStore.HOSPITAL_ID == 'zzwy') && !appStore.queryObj.editable && record.participateResitExam == 1 && <span onClick={() => handleAnwserSheetReview(record, text)}>查看补考答卷</span>}
         </DoCon>
       }
