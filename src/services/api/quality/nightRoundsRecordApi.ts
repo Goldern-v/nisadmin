@@ -33,6 +33,10 @@ class Api extends BaseApiService {
   getItem(id: string, type: string) {
     return this.get(`${this.getPrefix(type)}pcDetail?id=${id}`);
   }
+  
+  delete(id: string) {
+    return this.get(`nurseRoundsRecord/delete?id=${id}`);
+  }
 
   /** 保存 */
   saveItem(params: Object, type: string) {
@@ -87,17 +91,17 @@ class Api extends BaseApiService {
     return arr[type] || arr[1];
   }
   /**查询 */
-  getSummary(val: any) {
+  getSummary(val: any,type?:any) {
     const year = val.format("YYYY");
     return this.get(
-      `${this.getSummaryPrefix()?.list}?${qs.stringify({ year })}`
+      `${this.getSummaryPrefix(type)?.list}?${qs.stringify({ year })}`
     );
   }
   /**导出 */
-  exportSummary(val: any) {
+  exportSummary(val: any,type?:any) {
     const year = val.format("YYYY");
     return this.get(
-      `${this.getSummaryPrefix()?.export}?${qs.stringify({ year })}`,
+      `${this.getSummaryPrefix(type)?.export}?${qs.stringify({ year })}`,
       {
         responseType: "blob",
       }

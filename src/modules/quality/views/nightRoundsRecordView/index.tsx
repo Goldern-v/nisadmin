@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import React, { useEffect, useState } from 'react'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
 import { observer } from 'mobx-react-lite'
-import { Button, DatePicker, Select } from 'antd'
+import { Button, DatePicker, Select,Modal,message } from 'antd'
 import { appStore, authStore } from 'src/stores'
 import { fileDownload } from "src/utils/file/file";
 import api from 'src/services/api/quality/nightRoundsRecordApi'
@@ -85,6 +85,9 @@ export default observer((props: Props) => {
             <span onClick={() => handleView(row)}>
               查看
             </span>
+            {!(row.status>2) && ['jmfy'].includes(appStore.HOSPITAL_ID) && 
+              <span style={{color:'red'}} onClick={ ()=>toDelete(row) }>删除</span>
+            }
           </DoCon>
         );
       }
@@ -103,6 +106,20 @@ export default observer((props: Props) => {
         ...item.itemDataMap
       }
     }))
+  }
+
+  const toDelete = (row:any)=>{
+    Modal.confirm({
+      title: '是否确认删除？',
+      onOk() {
+        api.delete(row.id).then(res=>{
+          if(res.code=="200"){
+            message.success('删除成功');
+            getList()
+          }else message.error('删除失败')
+        })
+      },
+    });
   }
 
   const handleView = (row: any) => {

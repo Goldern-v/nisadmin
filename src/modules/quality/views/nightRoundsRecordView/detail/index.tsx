@@ -9,6 +9,7 @@ import moment from 'moment'
 import ContainerWard from "./components/container-ward";
 import { Obj } from "src/libs/types";
 import { globalModal } from "src/global/globalModal";
+import { withRouter } from 'react-router-dom'
 import { fileDownload } from "src/utils/file/file";
 import printFn from "printing";
 import ContainerTwo from "./components/container-two";
@@ -16,7 +17,9 @@ interface Props {
 
 }
 /**护长/二值护士夜查房详情页 by江门妇幼 */
-export default observer((props: Props) => {
+export default withRouter(observer((props: Props) => {
+  // const { history } = props;
+
   const { history, queryObj } = appStore
   const [master, setMaster]: any = useState({})
   const [process, setProcess]: any[] = useState([])
@@ -128,9 +131,69 @@ export default observer((props: Props) => {
       console.log('test-e', e)
     }
   }
+
+  const toBohuiConfirm = async () => {
+    const nextNode = getNextNode()
+    if (!nextNode) return
+    try {
+      const res = await api.saveItem({
+        recordId: master.id,
+        handleNodeParam: {
+          nodeCode: nextNode.nodeCode,
+          nopass: false,
+          handleContent: user.handleContent
+        },
+      }, queryObj.type)
+      if (res.code == 200) {
+        message.success('驳回成功')
+        await getData()
+      }
+    } catch (e) {
+      console.log('test-e', e)
+    }
+  }
+
   const onExport = () => {
     api.exportTable(master.id, queryObj.type).then(res => {
       fileDownload(res)
+    })
+  }
+
+  const toDelete = ()=>{
+    Modal.confirm({
+      title: '是否确认删除？',
+      onOk() {
+        api.delete(master.id).then(res=>{
+          if(res.code=="200"){
+            message.success('删除成功');
+            history.replace('/checkWard/headNurNightRoundsRecordView')
+          }else message.error('删除失败')
+        })
+      },
+    });
+  }
+
+  const toConfirm = ()=>{
+    setProcessVisible(false)
+    globalModal.signModal.show({
+      onCallBack: (empNo: string, password: string) => {
+        handleCheck()
+      }
+    })
+  }
+
+  const showBohui =()=>{
+    if(appStore.HOSPITAL_ID==="jmfy"){
+      return (master.status == 1 || master.status ==3)
+    }
+    return false
+  }
+  const toBohui = ()=>{
+    setProcessVisible(false)
+    globalModal.signModal.show({
+      onCallBack: (empNo: string, password: string) => {
+        toBohuiConfirm()
+      }
     })
   }
 
@@ -180,6 +243,9 @@ export default observer((props: Props) => {
         </div>
         <div className='right-bottom'>
           <Button className="con-item" onClick={() => history.goBack()}>返回</Button>
+          {!(master.status>2) && ['jmfy'].includes(appStore.HOSPITAL_ID) && 
+            <Button type="danger" onClick={ toDelete }>删除</Button>
+          }
           {hasSubmit() && <Button type='primary' className="con-item" onClick={() => handleSubmit()}>提交</Button>}
           {hasAudit && <Button type='primary' className="con-item" onClick={() => handleAudit()}>审核</Button>}
           <Button className="con-item" onClick={onExport}>导出</Button>
@@ -222,17 +288,24 @@ export default observer((props: Props) => {
         title="审核"
         visible={processVisible}
         width={500}
-        onOk={() => {
-          setProcessVisible(false)
-          globalModal.signModal.show({
-            onCallBack: (empNo: string, password: string) => {
-              handleCheck()
-            }
-          })
-        }}
-        onCancel={() => {
-          setProcessVisible(false)
-        }}
+        footer={[
+          <>
+          <Button onClick={ ()=>{setProcessVisible(false)} }>取消</Button>
+          {showBohui() && <Button type="danger" onClick={ toBohui }>驳回</Button>}
+          <Button type='primary' onClick={ toConfirm }>确定</Button>
+          </>
+        ]}
+        // onOk={() => {
+        //   setProcessVisible(false)
+        //   globalModal.signModal.show({
+        //     onCallBack: (empNo: string, password: string) => {
+        //       handleCheck()
+        //     }
+        //   })
+        // }}
+        // onCancel={() => {
+        //   setProcessVisible(false)
+        // }}
       >
         <div style={{ lineHeight: '28px', fontSize: '16px' }}>
           {/* <Row style={{ marginBottom: '10px' }}>
@@ -265,8 +338,7 @@ export default observer((props: Props) => {
       </Modal>
     </Wrapper>
   )
-})
-
+}))
 const Wrapper = styled.div`
   height: 100%;
   overflow: hidden;
