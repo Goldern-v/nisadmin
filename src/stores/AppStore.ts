@@ -18,7 +18,7 @@ interface FullLoadingBarObj {
   isFullpage?: boolean;
 }
 
-type hisIds = "hj" | "wh" | "ys" | "nys" | "dzlc" | "gzhd" | "lcey" | "germ" | "jmfy" | "dghl" | "dgxg" | "yczyy" | "nfzxy" | "xzsn" | "fqfybjy" | "wjgdszd" | "bhsrm" | "qzxyy" | "fssdy" | "gxjb" | "fsxt" | "whyx" | "gzsrm" | "sdlj" | "lyrm" | "gdtj" | "whfk" | "lyyz" | "qhwy" | "whsl" | "zzwy" | "ytll" | "zhzxy" | 'whhk' | 'nfsd'| '925' | 'dglb' | 'stmz' | 'qzde' | 'dghm' | 'zjhj' | 'gdsfy';
+type hisIds = "hj" | "wh" | "ys" | "nys" | "dzlc" | "gzhd" | "lcey" | "germ" | "jmfy" | "dghl" | "dgxg" | "yczyy" | "nfzxy" | "xzsn" | "fqfybjy" | "wjgdszd" | "bhsrm" | "qzxyy" | "fssdy" | "gxjb" | "fsxt" | "whyx" | "gzsrm" | "sdlj" | "lyrm" | "gdtj" | "whfk" | "lyyz" | "qhwy" | "whsl" | "zzwy" | "ytll" | "zhzxy" | 'whhk' | 'nfsd'| '925' | 'dglb' | 'stmz' | 'qzde' | 'dghm' | 'zjhj' | 'gdsfy'|'xyzy';
 // type HisAdapterMap = { [p in hisIds]?: any };
 type HisAdapterMap = Record<string, any>;
 
@@ -136,6 +136,8 @@ export default class AppStore {
       case "zhzxy":
         logoUrl = require(`src/assets/images/${this.HOSPITAL_ID}Logo.png`);
       case "whhk":
+        logoUrl = require(`src/assets/images/${this.HOSPITAL_ID}Logo.png`);
+      case "xyzy":
         logoUrl = require(`src/assets/images/${this.HOSPITAL_ID}Logo.png`);
       default:
         break;
