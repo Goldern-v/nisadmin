@@ -75,7 +75,7 @@ export default withRouter(observer((props: Props) => {
   const handleSubmit = async () => {
     const { id, subFormItems, problems, title, roundsRecordProblem } = form1
     /**form1单选需要必填 */
-    const isForm1ItemValueNull: boolean = subFormItems.some((v: Obj) => v.value == null)
+    const isForm1ItemValueNull: boolean = subFormItems?.some((v: Obj) => v.value == null)
     if (isForm1ItemValueNull) {
       return message.warning(`${title}选项为必填`)
     }
@@ -92,9 +92,9 @@ export default withRouter(observer((props: Props) => {
       antiepidemicSaveInfo: {
         id,
         problem: problems,
-        itemSelectedInfos: subFormItems.map((v: Obj) => ({ id: v.id, value: v.value }))
+        itemSelectedInfos: subFormItems?.map((v: Obj) => ({ id: v.id, value: v.value }))
       }
-    }, queryObj.type)
+    },"")
     if (res.code == 200) {
       message.success('提交成功')
       await getData()

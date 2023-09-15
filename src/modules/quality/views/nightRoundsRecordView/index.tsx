@@ -72,7 +72,8 @@ export default observer((props: Props) => {
       align: "center",
       render: (text: string, row: Obj) => {
         let item: SelectItem | undefined = STATUS_LIST.find((v: SelectItem) => text == v.value)
-        return <span style={{ color: item?.color }}>{item?.label || row.statusDescription}</span>
+        if(appStore.HOSPITAL_ID=="jmfy") return <span style={{ color: item?.color }}>{row.statusDescription}</span>
+        else return <span style={{ color: item?.color }}>{item?.label || row.statusDescription}</span>
       }
     },
     {
