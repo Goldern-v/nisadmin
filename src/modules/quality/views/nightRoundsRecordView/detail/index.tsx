@@ -122,7 +122,7 @@ export default withRouter(observer((props: Props) => {
           nopass: user.nopass,
           handleContent: user.handleContent
         },
-      }, queryObj.type)
+      },"")
       if (res.code == 200) {
         message.success('审核成功')
         await getData()
