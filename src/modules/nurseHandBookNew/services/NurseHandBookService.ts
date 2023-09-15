@@ -147,6 +147,17 @@ export default class NurseHandBookService extends BaseApiService {
   public getFormListNHR(params: Obj) {
     return this.post(`/nurseHandbook/common/formList?${qs.stringify(params)}`)
   }
+/**
+ *
+ * 护士长手册年度病人
+ * "wardCode": "030602",
+ *     "year": 2023,
+ *     "type": 1
+ *     1为住院病人，2为出院病人，3为特级病人，4为一级病人，5为二级病人，6为病危病人
+ * **/
+public getYearData(params: Obj) {
+  return this.post(`/nurseHandbookPatient/getData`,params)
+}
 }
 
 export const nurseHandBookService = new NurseHandBookService()

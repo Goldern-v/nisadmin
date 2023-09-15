@@ -1,7 +1,7 @@
 import React, {memo, useMemo} from 'react'
 import styled from 'styled-components'
 import {nurseHandbookRecordModel as model} from '../model'
-import {DatePicker, Input, Select} from 'antd'
+import {Button, DatePicker, Input, message, Select} from 'antd'
 import {observer} from 'mobx-react'
 import {DetailCtxCon} from 'src/modules/nurseHandBookNew/style'
 import {ChangeOrFocus, Obj} from 'src/libs/types'
@@ -9,6 +9,8 @@ import cloneDeep from 'lodash/cloneDeep'
 import {dateFormat, dateFormat3, tableConConfig} from '../config'
 import moment, {isMoment} from 'moment'
 import {isOfType} from 'src/utils/ts.utils'
+import {createArr} from "src/utils/array/array";
+import {createObjV} from "src/utils/object/object";
 const {Option} = Select
 export interface Props {
 }
@@ -39,7 +41,7 @@ export default observer(function (props: Props) {
 
     const columns = useMemo(() => tableConConfig[model.detail?.record?.menuCode]?.columns || [], [model.id])
    const config = useMemo(() => tableConConfig[model.detail?.record?.menuCode] || {}, [model.id])
-    const onChange = (e: any, config: Obj) => {
+    const onChange = (type:string,e: any, config: Obj) => {
         const {index, key} = config
         let value: any = e
         if (isMoment(e)) {
@@ -50,10 +52,33 @@ export default observer(function (props: Props) {
             value = e.join(',')
         }
         const newData = cloneDeep(model.editorData)
-        newData[index][key] = value
+        newData[type][index][key]=value
+        // newData[index][key] = value
         model.handleEditorChange(newData)
     }
+ const handleCopyItem =(type:string)=>{
+     const newData = cloneDeep(model.editorData)
+     const conData = createArr(12, (j, k) => createObjV(4));
+     newData[type] = [...newData[type],...conData]
+     model.handleEditorChange(newData)
+ }
+ const handleDeleteItem =(type:string)=>{
+     const newData = cloneDeep(model.editorData)
+     let startIndex = newData[type].length - 12;
+     if (startIndex >= 12) {
+         newData[type].splice(startIndex, 12);
+         model.handleEditorChange(newData)
+     }else{
+         return message.info('不能再删除了~')
+     }
 
+ }
+const BtnList =useMemo(()=>{
+    return <>
+        <Button className='addButton' type='primary' onClick={()=>handleCopyItem('arr1')}>添加一行</Button>
+        <Button className='deleteButton' type='danger' onClick={()=>handleDeleteItem('arr1')}>删除一行</Button>
+    </>
+},[])
     return (
         <Wrapper className='con--a4' ref={model.ctxRef}>
             <div className='title'>
@@ -82,29 +107,66 @@ export default observer(function (props: Props) {
                 </tr>
                 </thead>
                 <tbody>
+                {/*季度工作计划*/}
                 {
-                    (model.editorData|| []).map((v: Obj, i: number) => {
+                    ((model.editorData?.arr1)|| []).map((v: Obj, i: number,all:any) => {
                         return (
-                            <tr key={i}>
-                                {[0,14].includes(i) &&<td rowSpan={14}>{ i< 14 ? '季度工作计划':'存在或待解决的问题'}</td>}
-                                {
-                                    columns.map((v1: Obj, i1: number) => {
-                                        return (
-                                            i1 !==columns.length -1 && <td key={`${i}-${i1}`}>
-                                                <ChildCon {...{
-                                                    component: v1.component,
-                                                    value: v[`v${i1}`],
-                                                    onChange: (e: any) => onChange(e, {index: i, key: `v${i1}`})
-                                                }} />
-                                            </td>
-                                        )
-                                    })
-                                }
-                            </tr>
+                             <tr key={i}>
+                                 {[0,all.length].includes(i) && <td rowSpan={all.length}>季度工作计划</td>}
+                                 {
+                                     columns.map((v1: Obj, i1: number,c1:any) => {
+                                         return (
+                                             i1 !==columns.length -1 && <td key={`${i}-${i1}`} style={{position:"relative"}}>
+                                                 <ChildCon {...{
+                                                     component: v1.component,
+                                                     value: v[`v${i1}`],
+                                                     onChange: (e: any) => onChange('arr1',e, {index: i, key: `v${i1}`})
+                                                 }} />
+                                                 {  (i === all.length -1) &&( i1 === c1.length - 2 ) &&
+                                                     <>
+                                                         <Button className='addButton' type='primary' onClick={()=>handleCopyItem('arr1')}>添加一页</Button>
+                                                         <Button className='deleteButton' type='danger' onClick={()=>handleDeleteItem('arr1')}>删除一页</Button>
+                                                     </>
+                                                 }
+                                             </td>
+                                         )
+                                     })
+                                 }
+                             </tr>
 
                         )
                     })
                 }
+                {
+                    ((model.editorData?.arr2)|| []).map((v: Obj, i: number,all:any) => {
+                        return (
+                               <tr key={i}>
+                                   { [0,all.length].includes(i) && <td rowSpan={all.length}>存在或待解决的问题</td> }
+                                   {
+                                       columns.map((v1: Obj, i1: number,c1:any) => {
+                                           return (
+                                               i1 !==columns.length -1 && <td key={`${i}-${i1}`} style={{position:"relative"}}>
+                                                   <ChildCon {...{
+                                                       component: v1.component,
+                                                       value: v[`v${i1}`],
+                                                       onChange: (e: any) => onChange('arr2',e, {index: i, key: `v${i1}`})
+                                                   }} />
+                                                   {  (i === all.length -1) &&( i1 === c1.length - 2 ) &&
+                                                       <>
+                                                           <Button className='addButton' type='primary' onClick={()=>handleCopyItem('arr2')}>添加一页</Button>
+                                                           <Button className='deleteButton' type='danger' onClick={()=>handleDeleteItem('arr2')}>删除一页</Button>
+                                                       </>
+                                                   }
+                                               </td>
+                                           )
+                                       })
+                                   }
+                               </tr>
+
+                        )
+                    })
+                }
+                {/*存在或待解决的问题*/}
                 </tbody>
             </table>
             {config?.tip && <div className='fs-s'>{config?.tip}</div>}
@@ -119,5 +181,14 @@ const Wrapper = styled(DetailCtxCon)`
       border-bottom: none;
       text-align: center;
     }
-
+  .addButton{
+    position:absolute;
+    right:-90px;
+    height:35px
+  }
+  .deleteButton{
+    position:absolute;
+    right:-200px;
+    height:35px
+  }
 `
