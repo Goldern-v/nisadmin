@@ -9,6 +9,7 @@ import configFqfybjy from './config/fqfybjy'
 import configGzsrm from './config/gzsrm'
 import configSdlj from './config/sdlj'
 import configDghm from './config/dghm'
+import configZzwy from './config/zzwy'
 import { starRatingReportEditModel } from "src/modules/personnelManagement/views/arrangeHome/page/nightChargingReport/model/StarRatingReportEditModel";
 
 export interface Props {
@@ -52,7 +53,8 @@ export default observer(function Table(props: Props) {
           'sdlj,nfsd,qzde': configSdlj.getTable(list, otherObj, updateOtherObj),
           //暂时隐藏20210926
           gzsrm: configGzsrm.getTable(list,remark,sumTotalMoney,sumTotalNum,sumTotalWanbaNum,sumTotalZaobaNum,sumTotalZbNum),
-          'dghm,zzwy': configDghm.getTable(list),
+          'dghm': configDghm.getTable(list),
+          'zzwy': configZzwy.getTable(list),
           default: configDefault.getTable(list)
         },
         vague: true

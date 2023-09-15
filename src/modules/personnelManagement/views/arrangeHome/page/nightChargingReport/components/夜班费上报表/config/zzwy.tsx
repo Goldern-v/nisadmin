@@ -179,7 +179,7 @@ const ExtraItem = ({ item, index }: ExtraItemIn) => {
     return (
       <>
         <td key={`${v.timeType}${index}1`}>{item.schNightTotalContentList[idx].num}</td>
-        <td key={`${v.timeType}${index}2`}>{item.schNightTotalContentList[idx].total}</td>
+        <td key={`${v.timeType}${index}2`}>{item.schNightTotalContentList[idx].standard}</td>
       </>
     )
   })}</>
