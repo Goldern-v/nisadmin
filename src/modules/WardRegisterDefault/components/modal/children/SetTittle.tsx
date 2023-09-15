@@ -306,6 +306,7 @@ export default observer(function SetTittle(props: Props) {
                     updateDataSource()
                   }}>
                   <Option value="">下拉选项</Option>
+                  <Option value="autograph">签名</Option>
                   <Option value="multiple_select">多项选择</Option>
                   <Option value="ward_user">科室护士</Option>
                   <Option value="attachment">附件上传</Option>

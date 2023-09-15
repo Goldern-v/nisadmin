@@ -156,10 +156,12 @@ export default observer(function (props: Props) {
     year_no_create_more: () => {
       setQuery({
         ...query,
+        menuCode: '',
         year: moment()
       })
       setAddQuery({
         ...addQuery,
+        menuCode: '',
         year: moment()
       })
       const newColumns = [
@@ -167,9 +169,15 @@ export default observer(function (props: Props) {
           title: '年份',
           align: 'center',
           dataIndex: 'year'
+        },
+        {
+          title: '标题',
+          align: 'center',
+          dataIndex: 'title'
         }
       ]
       setColumns(newColumns)
+      getFormList()
     },
     start_end_time_create_more: () => {
       const [startTime, endTime] = currentMonth()

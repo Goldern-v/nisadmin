@@ -285,7 +285,7 @@ export default observer(function 敏感指标登记本(props: Props) {
 
   }
   //registerName
-  const isWhyx = ['whyx', 'lyyz', 'qhwy', 'whhk', 'dglb'].includes(appStore.HOSPITAL_ID)
+  const isWhyx = ['whyx', 'lyyz', 'qhwy', 'whhk', 'dglb','ytll'].includes(appStore.HOSPITAL_ID)
 
   const columns: ColumnProps<any>[] | any = [
     ...appStore.hisMatch({
@@ -611,7 +611,7 @@ export default observer(function 敏感指标登记本(props: Props) {
     ] : [],
     ...appStore.hisMatch({
       map: {
-        'whyx,lyyz,qhwy,whhk,dglb': [],
+        'whyx,lyyz,qhwy,whhk,dglb,ytll': [],
         other: (config.signList || []).map((signItem: any) =>
           signRowObj({
             title: signItem.title,
@@ -797,12 +797,12 @@ export default observer(function 敏感指标登记本(props: Props) {
   /**批量按钮 */
   const SelectedBtnCon = observer(function (props: Record<string, any>) {
     const { config, customSign } = props;
-    const general = ['whyx', 'whhk'].includes(appStore.HOSPITAL_ID) && !!customSign?.length // && customSign.find((item: any) => item.itemCode == '护士签名')// && customBatch.length != 0
+    const general = ['whyx', 'whhk','ytll'].includes(appStore.HOSPITAL_ID) && !!customSign?.length // && customSign.find((item: any) => item.itemCode == '护士签名')// && customBatch.length != 0
     return (<Fragment>
       {
         appStore.hisMatch({
           map: {
-            'whyx,lyyz,qhwy,whhk,dglb': (
+            'whyx,lyyz,qhwy,whhk,dglb,ytll': (
               <Fragment>
                 {customSign && customSign.map((item: any) => (
                   <Button
