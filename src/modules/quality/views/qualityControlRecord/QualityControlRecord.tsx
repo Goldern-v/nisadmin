@@ -106,6 +106,12 @@ export default observer(function QualityControlRecord() {
         qcCode: qualityControlRecordVM.qcCode || "",
         creatorName: qualityControlRecordVM.creatorName || "",
       };
+      if(['ytll'].includes(appStore.HOSPITAL_ID) && level==2){
+        Object.assign(sendData,{
+          type:"",
+          groupRoleCode:qualityControlRecordVM.groupRoleCode
+        })
+      }
       qualityControlRecordApi
         .instanceGetPageByCondition(sendData)
         .then((res: any) => {

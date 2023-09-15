@@ -50,6 +50,11 @@ export default class QualityControlRecordApi extends BaseApiService {
   public async dictTemplate() {
     return this.get(`/qcItem/dict/template`)
   }
+
+  public qcRoleCode() {
+    return this.get('/qcItem/dict/qcRoleCode')
+  }
+  
   // 字典：质控表流程状态
   public async dictChainNode() {
     return this.get(`/qcItem/dict/chainNode`)

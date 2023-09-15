@@ -26,6 +26,7 @@ class QualityControlRecordVM {
   @observable public filterForm: any = ''
   @observable public filterState: any = ''
   @observable public filterDeptCode: any = ''
+  @observable public groupRoleCode: any = ''
   @observable public level: any = 3
   @observable public readWay: any = 1
   @observable public allData: any = {}

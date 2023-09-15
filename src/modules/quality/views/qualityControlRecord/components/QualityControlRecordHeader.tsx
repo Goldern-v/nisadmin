@@ -24,6 +24,7 @@ const Option = Select.Option;
 
 export default observer(function TopCon(props: any) {
   const [formCreateVisible, setFormCreateVisible] = useState(false);
+  const [groupRoleList, setGroupRolelist] = useState([]);
 
   const handleCreate = () => {
     setFormCreateVisible(true);
@@ -123,6 +124,10 @@ export default observer(function TopCon(props: any) {
       });
       if (res.data)
         setQcCodeList([{ qcCode: "", qcName: "全部" }, ...res.data]);
+      if(['ytll'].includes(appStore.HOSPITAL_ID)){
+        const roleArr = await qualityControlRecordApi.qcRoleCode()
+        setGroupRolelist(roleArr?.data)
+      }
     } catch (err) {}
   };
   const isWhyx = ["whyx","whhk"].includes(appStore.HOSPITAL_ID);
@@ -306,6 +311,22 @@ export default observer(function TopCon(props: any) {
           >
             {filterDeptList.map((item: any) => (
               <Option value={item.code} key={item.code} title={item.name}>
+                {item.name}
+              </Option>
+            ))}
+          </Select>
+          <span style={{ margin: "0 3px 0 15px" }}>质控组:</span>
+          <Select
+            value={qualityControlRecordVM.groupRoleCode}
+            onChange={(groupRoleCode: any) => {
+              qualityControlRecordVM.groupRoleCode = groupRoleCode;
+              props.refreshData();
+            }}
+            style={{ width: 150 }}
+          >
+            <Option value="">全部</Option>
+            {groupRoleList.map((item: any) => (
+              <Option value={item.code} key={item.code}>
                 {item.name}
               </Option>
             ))}
