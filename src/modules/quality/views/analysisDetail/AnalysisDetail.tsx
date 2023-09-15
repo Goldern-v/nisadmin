@@ -121,6 +121,11 @@ export default observer(function AnalysisDetail() {
     else return (Number(report.status) > 0 && report.statusName != '审核完成')
   }
 
+  const cancelStatuts = ()=>{
+    if(appStore.HOSPITAL_ID==="whyx") return report.status != '0'
+    return (report.status != '0' && report.statusName != '审核完成')
+  }
+
   return (
     <Wrapper>
       <HeadCon>
@@ -135,7 +140,7 @@ export default observer(function AnalysisDetail() {
         <div className='tool-con'>
           {report.status == '0'&&checkRole()&&(<Button onClick={onDelete}>删除</Button>)}
           {/* <Button onClick={() => onPrint(false)}>预览</Button> */}
-          {report.status != '0' && report.statusName != '审核完成' && checkRole() && (
+          {cancelStatuts() && checkRole() && (
             <Button onClick={onCancelPublish}>撤销</Button>
           )}
           { report.status == '0' && checkRole() && (
