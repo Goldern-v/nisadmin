@@ -151,7 +151,8 @@ export default observer(function PersonWinning() {
           //   width: 120,
           //   align: 'center'
           // },
-        ]
+        ],
+        other:[]
       },
       vague: true
     }),
@@ -160,6 +161,7 @@ export default observer(function PersonWinning() {
         "dglb,dghm":[
           Do('nurseWHContinueStudy', editContinuingEducationModal, getTableData)
         ],
+        other:[],
       },
       vague: true
     }),

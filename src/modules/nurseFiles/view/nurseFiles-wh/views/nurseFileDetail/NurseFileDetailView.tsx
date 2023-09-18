@@ -353,7 +353,7 @@ const ROUTE_LIST_925 = [
     name: '专著'
   },
   {
-    type: 'ContinuingEducation',
+    type: 'continuingEducation',
     component: ContinuingEducation,
     name: '举办继续教育培训班'
   },
