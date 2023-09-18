@@ -18,6 +18,7 @@ export interface Props extends ModalComponentProps {
   onOkCb: Function
   addQuery: Obj
   formList: Obj[]
+  menuCode?:string
 }
 const dateFormat = 'YYYY-MM-DD';
 
@@ -25,18 +26,19 @@ const ALL_RULE: Rules = {
   year: (val) => !!val || '请选择年份',
   deptCode: (val) => !!val || '请选择科室',
   date: (val) => val?.length == 2 || '请选择日期',
-  menuCode: (val) => !!val || '请选择记录表',
+  // menuCode: (val) => !!val || '请选择记录表',
 }
 const Quarter ={'第一季度':1,'第二季度':2,'第三季度':3,'第四季度':4}
 export default function (props: Props) {
   const refForm = useRef<any>()
   const [rules, setRules] = useState<Obj>({})
-  const { visible, onCancel, onOkCb, addQuery = {}, formList } = props
+  const { visible, onCancel, onOkCb, addQuery = {}, formList,menuCode } = props
   /**封面url**/
   const [pathUrl,setPathUrl] =useState({} as any)
   const { deptList } = authStore
   useLayoutEffect(() => {
     if (visible) {
+      console.log(addQuery);
       if (addQuery) {
         setRules(Object.keys(addQuery).reduce((prev, cur) => {
           if (ALL_RULE[cur]) {
@@ -67,13 +69,15 @@ export default function (props: Props) {
   }, [visible])
   const handleOk = () => {
     let current = refForm.current
-    // debugger
+
     if (current) {
       let formData = current.getFields()
+      if(menuCode ==='925NDBRDJ_7' && !formData.menuCode){
+        return message.info('记录表不能为空')
+      }
       current
         .validateFields()
         .then((res: any) => {
-          console.log(pathUrl);
           if( addQuery.code =='no_validate_create_more' && Object.keys(pathUrl).length === 0){
             return message.info('封面未上传')
           }
@@ -99,7 +103,9 @@ export default function (props: Props) {
 
           onOkCb && onOkCb(params)
         })
-        .catch((e: any) => { })
+        .catch((e: any) => {
+          console.log(e);
+        })
     }
   }
 

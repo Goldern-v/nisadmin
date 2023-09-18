@@ -17,13 +17,16 @@ export default observer(function (props: Props) {
   const { curNode } = useAuditStatus(model.detail)
   const btnList = useMemo(() => {
     const { canHandle, nodeCode, state } = curNode
-    if(model.detail?.audit){
+
+
       if (canHandle && (nodeCode === 'commit' || nodeCode == undefined)) {
         return (<>
           <Button type='primary' onClick={() => model.onCommit('0')}>暂存</Button>
-          <Button type='primary' onClick={() => model.onCommit('1')}>提交</Button>
+          {/*提交*/}
+          <Button type='primary' onClick={() => model.onCommit('1')}>保存</Button>
         </>)
       }
+    if(model.detail?.audit){
       // 已提交
       if (nodeCode === 'commit' && state === '1') {
         return (<>
@@ -92,7 +95,7 @@ const MainWrapper = styled.div`
   height: calc(100% - 76px);
   position: relative;
   .main-ctx {
-   width: calc(100% - 200px); 
+   width: calc(100% - 250px); 
     height: 100%;
     padding: 15px 120px 15px;
     overflow-y: auto;

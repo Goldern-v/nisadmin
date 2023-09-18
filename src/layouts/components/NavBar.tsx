@@ -34,6 +34,7 @@ import { navConfig as navConfig_gxjb } from './navConfig_gxjb'
 import { navConfig as navConfig_gxjbSelf } from './navConfig_gxjbSelf'
 import { navConfig as navConfig_whyx } from './navConfig_whyx'
 import { navConfig as navConfig_fsxt } from './navConfig_fsxt'
+import { navConfig as navConfig_jew } from './navConfig_jew'
 import { navConfig as navConfig_fsxtSelf } from './navConfig_fsxtSelf'
 import { navConfig as navConfig_sdlj } from './navConfig_sdlj'
 import { navConfig as navConfig_lyrm } from './navConfig_lyrm'
@@ -181,17 +182,18 @@ export default observer(function NavBar(props: any) {
       if (authStore.isRoleManage) return navConfig_fssdy;
       else return navConfig_fssdySelf;
     } else if (appStore.HOSPITAL_ID == "gxjb") {
-      // return navConfig_gxjb
+      // return navConfig_gxjb  navConfig_jew
       if (authStore.isRoleManage) return navConfig_gxjb;
       else return navConfig_gxjbSelf;
-    } else if (["fsxt", "925"].includes(appStore.HOSPITAL_ID)) {
+    } else if (["fsxt"].includes(appStore.HOSPITAL_ID)) {
       // return navConfig_fssdy
       if (authStore.isRoleManage) return navConfig_fsxt;
       else return navConfig_fsxtSelf;
     }else if (appStore.HOSPITAL_ID == "zjhj") {
         return navConfig_zjhj;
-    }
-    else if (appStore.HOSPITAL_ID == "whyx") {
+    }else if (appStore.HOSPITAL_ID == "925") {
+      return navConfig_jew;
+  }else if (appStore.HOSPITAL_ID == "whyx") {
       return navConfig_whyx(appStore, authStore);
     } else if (appStore.HOSPITAL_ID == "sdlj") {
       return navConfig_sdlj(appStore, authStore);

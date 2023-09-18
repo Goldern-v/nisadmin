@@ -1,4 +1,4 @@
-// 佛山第一人民医院 用聊城二院模板
+// 九二五医院
 import React from "react";
 import { appStore, authStore } from "src/stores";
 // import { authStore } from 'src/stores';
@@ -12,33 +12,16 @@ export interface navConfigItem {
   icon?: any;
   menuStyle?: React.CSSProperties;
 }
-const is925 = ['zjhj'].includes(appStore.HOSPITAL_ID)
+const is925 = ["925", 'zjhj'].includes(appStore.HOSPITAL_ID)
 const baseConfig: navConfigItem[] = [
   {
     name: "首页",
     path: "/home",
   },
   {
-    name: "审核管理",
-    path: "/auditsManagement",
-    // hidden: !authStore.isRoleManage
+    name: "护理排班",
+    path: "/personnelManagement",
   },
-  {
-    name: "病区日志",
-    path: "/wardLog",
-    // hidden: !appStore.isDev
-  },
-  {
-    name: "档案管理",
-    path: "/nurseFile",
-    // hidden: !authStore.isRoleManage
-  },
-  {
-    name: "我的档案",
-    path: "/selfNurseFile",
-    hidden: !is925
-  },
-  // 不良事件功能暂时屏蔽
   {
     name: "不良事件",
     path: "/badEventsNew",
@@ -69,6 +52,12 @@ const baseConfig: navConfigItem[] = [
       //   path: '',
       //   icon: require('../images/menu-icon/病区登记本@2x.png')
       // },
+      {
+        name: "质控模板",
+        path: "/qcTemplates",
+        icon: require("../images/menu-icon/三级质控@2x.png"),
+        hidden:appStore.HOSPITAL_ID !=='925'
+      },
       {
         name: "查询统计",
         path: "/queryStatistics",
@@ -104,29 +93,54 @@ const baseConfig: navConfigItem[] = [
     // hidden: !appStore.isDev
   },
   {
-    name: "病区登记本",
-    path: "/wardRegister",
-  },
-  {
     name: "统计查询",
     path: "/statistic",
   },
   {
-    name: "通知公告",
-    path: "/notice",
+    name: "档案管理",
+    path: "/nurseFile",
+    // hidden: !authStore.isRoleManage
+  },
+  {
+    name: "我的档案",
+    path: "/selfNurseFile",
+    hidden: !is925
+  },
+  {
+    name: "病区日志",
+    path: "/wardLog",
+    // hidden: !appStore.isDev
+  },
+  {
+    name: "审核管理",
+    path: "/auditsManagement",
+    // hidden: !authStore.isRoleManage
   },
   {
     name: "护理制度",
     path: "/nursingRulesNew",
   },
+  
+  {
+    name: "通知公告",
+    path: "/notice",
+  },
+  // 不良事件功能暂时屏蔽
+  
+  
+  
+  {
+    name: "病区登记本",
+    path: "/wardRegister",
+  },
+ 
+  
+  
   {
     name: "系统设置",
     path: "/setting",
   },
-  {
-    name: "护理排班",
-    path: "/personnelManagement",
-  },
+  
 ];
 
 const beConfig: navConfigItem[] = [];

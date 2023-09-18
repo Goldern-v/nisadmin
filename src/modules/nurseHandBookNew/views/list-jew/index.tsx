@@ -16,6 +16,7 @@ import { message, Modal } from 'antd'
 import { STATUS_LIST } from './utils/enums'
 import { formatTitle } from '../detail-lyrm/config'
 import AuditModal from './components/auditModal'
+import { nurseHandbookRecordModel as model } from '../detail-jew/model'
 
 export interface Props {
   options: Obj
@@ -113,7 +114,7 @@ export default observer(function (props: Props) {
       render: (text: string, row: Obj) => {
         return (
           <DoCon>
-            <span onClick={() => appStore.history.push(`/nurseHandBookNewForm/detail?id=${row.id}`)}>查看</span>
+            <span onClick={() => appStore.history.push(`/nurseHandBookNewForm/detail?id=${row.id}&menuCode=${row.menuCode}`)}>查看</span>
             <span onClick={() => { onDel(row.id) }}>删除</span>
           </DoCon>
         )
@@ -156,12 +157,12 @@ export default observer(function (props: Props) {
     year_no_create_more: () => {
       setQuery({
         ...query,
-        menuCode: '',
+        menuCode:options.menuCode === '925NDBRDJ_7' ? '':undefined,
         year: moment()
       })
       setAddQuery({
         ...addQuery,
-        menuCode: '',
+        menuCode:options.menuCode === '925NDBRDJ_7' ? '':undefined,
         year: moment()
       })
       const newColumns = [
@@ -335,7 +336,7 @@ export default observer(function (props: Props) {
     nurseHandBookService.createOrUpdate(data).then(res => {
       if (res.code === '200') {
         const { id } = res.data
-        let link =params.url?`/nurseHandBookNewForm/detail?id=${id}&url=${params.url}`:`/nurseHandBookNewForm/detail?id=${id}`
+        let link =params.url?`/nurseHandBookNewForm/detail?id=${id}&url=${params.url}&menuCode=${options.menuCode}`:`/nurseHandBookNewForm/detail?id=${id}&menuCode=${options.menuCode}`
         appStore.history.push(link)
       }
     })
@@ -345,6 +346,7 @@ export default observer(function (props: Props) {
       onOkCb: onOkBAdd,
       formList,
       addQuery,
+      menuCode:options?.menuCode
     })
   }
 
@@ -397,6 +399,7 @@ export default observer(function (props: Props) {
     const { menuCode } = options
     nurseHandBookService.getFormListNHR({ menuCode }).then(res => {
       setFormList(res.data || [])
+      model.formListMenu = res.data||[]
     })
   }
   /**isAudit 为ture才能审核**/

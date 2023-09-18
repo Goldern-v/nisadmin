@@ -110,21 +110,31 @@ export default {
     },
   },
   "925NDXLJH_3": {
-    initContent(row = 24, col = 4) {
+    initContent(row = 36, col = 4) {
       const self: any = this;
-      const arr = createArr(row, (j, k) => createObjV(col));
-      self.handleEditorChange(arr);
+      const arr1 = createArr(12, (j, k) => createObjV(col));
+      const arr2 = createArr(5, (j, k) => createObjV(col));
+      const arr3 = createArr(5, (j, k) => createObjV(col));
+      self.handleEditorChange({arr1,arr2,arr3});
     },
   },
   "925JDGZJH_4": {
-    initContent(row = 28, col = 4) {
+    initContent(row = 24, col = 4) {
       const self: any = this;
-      const arr = createArr(row, (j, k) => createObjV(col));
-      self.handleEditorChange(arr);
+      const arr1 = createArr(12, (j, k) => createObjV(col));
+      const arr2 = createArr(12, (j, k) => createObjV(col));
+      self.handleEditorChange({arr1,arr2})
     },
   },
   "925GZJHJZZD_5": {
     initContent(row = 27, col = 4) {
+      const self: any = this;
+      const arr = createArr(row, (j, k) => createObjV(col));
+      self.handleEditorChange(arr);
+    },
+  },
+  '925NDBRDJ_7': {
+    initContent(row = 12, col = 4) {
       const self: any = this;
       const arr = createArr(row, (j, k) => createObjV(col));
       self.handleEditorChange(arr);
@@ -204,7 +214,7 @@ export const tableConConfig = {
   },
   {
     title: "负责人",
-    width: "12%",
+    width: "15%",
    component: "Dead",
   },
   {
@@ -213,11 +223,11 @@ export const tableConConfig = {
   },
   {
     title: "护理教学查房",
-    width: "15%",
+    width: "10%",
   },
   {
         title: "负责人",
-        width: "12%",
+        width: "15%",
     component: "Dead",
  },
 ],
@@ -233,7 +243,7 @@ export const tableConConfig = {
       },
       {
         title: "负责人",
-        width: "12%",
+        width: "15%",
         component: "Dead",
       },
       {
@@ -247,7 +257,7 @@ export const tableConConfig = {
       },
       {
         title: "负责人",
-        width: "12%",
+        width: "15%",
         component: "Dead",
       },
     ],
@@ -257,17 +267,17 @@ export const tableConConfig = {
       component: "DataPicker",
     }, {
       title: "内容",
-      width: "32%",
+      width: "25%",
     }, {
       title: "负责人",
-      width: "12%",
+      width: "15%",
       component: "Dead",
     }, {
       title: "内容",
-      width: "32%",
+      width: "25%",
     }, {
       title: "负责人",
-      width: "12%",
+      width: "15%",
       component: "Dead",
     },],
     isAdd: true,
@@ -291,6 +301,34 @@ export const tableConConfig = {
       {
         title: "备注",
         width: "15%",
+      },
+    ],
+    rows: 27,
+    titleType: "title",
+    tip: ``
+  },
+  '925NDBRDJ_7': {
+    columns: [
+      {
+        title: "",
+        width: "4%",
+        // component: "DataPicker",
+      },
+      {
+        title: "重点工作",
+        width: "50%",
+        // component: "DataPicker",
+      },
+      {
+        title: "责任人",
+        width: "15%",
+      },
+      {
+        title: "完成",
+        width: "15%",
+      },
+      {
+        title: "备注",
       },
     ],
     rows: 27,

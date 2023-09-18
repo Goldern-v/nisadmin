@@ -13,6 +13,7 @@ import moment from 'moment'
 import { Obj } from "src/libs/types";
 import {tableConConfig} from "src/modules/nurseHandBookNew/views/detail-lyrm/config";
 import service from "src/services/api";
+import {FORM_MENU_CODE} from "src/modules/nurseHandBookNew/views/list-jew/utils/enums";
 const dateFormat = 'YYYY-MM-DD HH:mm:ss'
 
 class NurseHandBookRecordModel {
@@ -30,6 +31,8 @@ class NurseHandBookRecordModel {
   @observable public auditModal: any = null
   @observable public isPrint: boolean = false
   @observable public ctxRef: any = null
+  @observable public  yearPersonData:any ={}
+  @observable public  formListMenu:any =[]
 /**科室护士data**/
 @observable public  nurseList:any =[]
   constructor() {
@@ -51,7 +54,10 @@ class NurseHandBookRecordModel {
   public handleEditorChange = (data: any) => {
     this.editorData = data;
   };
+@action
+public  handleEditorAllChange =(data1:any,data2:any)=>{
 
+}
   addPageData(count:number){
     const arr2 = Array.from(Array(count), (j,k) => k)
     const arr = arr2.map((v, i) => {
@@ -91,10 +97,20 @@ class NurseHandBookRecordModel {
       .getNHRById({ id: this.id })
       .then((res: types.Obj) => {
         const {
-          record: { detail,deptCode, title = "", menuCode = '', time },
+          record: { detail,deptCode, title = "", menuCode = '', time,year,menuName},
         } = res.data;
+        /**获取当前科室护士**/
         this.getNurseList(deptCode)
+        /**获取年度病人数据**/
+        if(appStore.queryObj.menuCode ==='925NDBRDJ_7'){
+          this.getYearData({
+            wardCode:deptCode,
+            year,
+            type:FORM_MENU_CODE[menuName]
+          })
+        }
         this.detail = res.data;
+
         if (detail) {
           this.editorData = JSON.parse(detail);
         } else {
@@ -249,7 +265,9 @@ class NurseHandBookRecordModel {
         .date-con pre {
           white-space: nowrap;
         }
-        
+        .addButton{ 
+          display:none
+         }
         .title {
           border: none;
           padding: 0;
@@ -265,6 +283,18 @@ class NurseHandBookRecordModel {
 public getNurseList(deptCode:any){
   service.commonApiService.userDictInfo(deptCode).then((res) => {
     this.nurseList = res.data
+  })
+}
+public  getYearData(params:Obj){
+  nurseHandBookService.getYearData(params).then((res)=>{
+    this.yearPersonData =res.data
+    // let list = Array.from(Array(12)).map((item:any,key:number)=>{
+    //    res.data.list.map((i:any,i1:number)=>{
+    //        if(key === i.month){
+    //
+    //        }
+    //    })
+    // })
   })
 }
 }

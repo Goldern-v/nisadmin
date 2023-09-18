@@ -368,7 +368,7 @@ export default observer(function TopPart() {
         <div className="item">
           <Button onClick={handleReset}>重置排班</Button>
         </div>
-        {['wh', 'gzsrm', 'gxjb', 'lyyz', 'qhwy','whsl', "ytll", 'whhk', 'dglb', 'dghm','zjhj'].includes(appStore.HOSPITAL_ID) && (
+        {['wh', 'gzsrm', 'gxjb', 'lyyz', 'qhwy','whsl', "ytll", 'whhk', 'dglb', 'dghm','zjhj','925'].includes(appStore.HOSPITAL_ID) && (
           <div className="item">
             <Button
               onClick={exchange}
@@ -386,7 +386,7 @@ export default observer(function TopPart() {
             <span>{sheetViewModal.experNumber} </span>
           </div>}
         </div>
-        {['wh', 'gzsrm', 'gxjb', 'whyx', 'fssdy', 'lyyz', 'qhwy','whsl', 'ytll', 'whhk', 'dglb', 'dghm','zzwy','zjhj'].includes(appStore.HOSPITAL_ID) && (
+        {['wh', 'gzsrm', 'gxjb', 'whyx', 'fssdy', 'lyyz', 'qhwy','whsl', 'ytll', 'whhk', 'dglb', 'dghm','zzwy','zjhj','925'].includes(appStore.HOSPITAL_ID) && (
           <div className="item">
             <Button onClick={() => asClassModal.show()}>申请加减班</Button>
             {SHOW_POINT_IMG && <div className="number">
@@ -454,7 +454,7 @@ export default observer(function TopPart() {
             {appStore.HOSPITAL_ID == 'nys' ? '审核发布' : ' 发布'}
           </Button>
         </div>
-        {['wh', 'gzsrm', 'gxjb', 'fssdy', 'lyyz', 'qhwy','whsl', 'ytll', 'whhk', 'dglb', 'dghm','zjhj'].includes(appStore.HOSPITAL_ID) && (
+        {['wh', 'gzsrm', 'gxjb', 'fssdy', 'lyyz', 'qhwy','whsl', 'ytll', 'whhk', 'dglb', 'dghm','zjhj','925'].includes(appStore.HOSPITAL_ID) && (
           <div className="item">
             <Button
               className="statistics"

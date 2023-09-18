@@ -306,6 +306,21 @@ const ROUTE_LIST_925 = [
     name: '文章'
   }, 
   {
+    type: 'personWinning',
+    component: PersonWinning,
+    name: '个人获奖'
+  }, 
+  {
+    type: 'specializNurse',
+    component: SpecializNurse,
+    name: '专科护士'
+  }, 
+  {
+    type: 'onEducation',
+    component: OnEducation,
+    name: '外出进修'
+  }, 
+  {
     /** 方明处理 */
     type: 'hostingScientific',
     component: HostingScientific,
@@ -338,9 +353,19 @@ const ROUTE_LIST_925 = [
     name: '专著'
   },
   {
-    type: 'continuingEducation',
+    type: 'ContinuingEducation',
     component: ContinuingEducation,
     name: '举办继续教育培训班'
+  },
+  {
+    type: 'workHistory',
+    component: WorkHistory,
+    name: '工作经历'
+  },
+  {
+    type: 'educationalExperience',
+    component: EducationalExperience,
+    name: '医学学历教育'
   },
   {
     type: 'workRegistrationForm',
@@ -353,11 +378,20 @@ const ROUTE_LIST_925 = [
     name: '岗位变动'
   },
   {
+    type: 'PositionChange',
+    component: PositionChange,
+    name: '职称变动'
+  },
+  {
     type: 'RankChange',
     component: RankChange,
     name: '层级变动'
   },
- 
+  {
+    type: 'OrganizationChange',
+    component: OrganizationChange,
+    name: '编制变动'
+  },
   {
     type: 'WardInnovate',
     component: WardInnovate,

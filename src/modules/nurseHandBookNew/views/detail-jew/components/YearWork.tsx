@@ -1,7 +1,7 @@
 import React, {memo, useMemo} from 'react'
 import styled from 'styled-components'
 import {nurseHandbookRecordModel as model} from '../model'
-import {DatePicker, Input, Select} from 'antd'
+import {Button, DatePicker, Input, message, Select} from 'antd'
 import {observer} from 'mobx-react'
 import {DetailCtxCon} from 'src/modules/nurseHandBookNew/style'
 import {ChangeOrFocus, Obj} from 'src/libs/types'
@@ -9,6 +9,8 @@ import cloneDeep from 'lodash/cloneDeep'
 import {dateFormat, dateFormat3, tableConConfig} from '../config'
 import moment, {isMoment} from 'moment'
 import {isOfType} from 'src/utils/ts.utils'
+import {createArr} from "src/utils/array/array";
+import {createObjV} from "src/utils/object/object";
 const { Option } = Select
 export interface Props {
 }
@@ -19,7 +21,7 @@ const ChildCon = memo((props: any) => {
         case 'Dead':
             return (
                 <Select
-                    style={{width:80}}
+                    style={{width:'100%'}}
                     value={value||''}  {...other}>
                     {(model?.nurseList||[]).map((nurse: any) => <Option key={nurse.empNo}>{nurse.empName}</Option>)}
                 </Select>
@@ -27,7 +29,7 @@ const ChildCon = memo((props: any) => {
         case 'DataPicker':
             return (
                 <DatePicker className='cell-ipt'
-                            format={dateFormat3} value={value ? moment(value) : undefined}  />)
+                            format={dateFormat3} value={value ? moment(value) : undefined} {...other} />)
         default:
             return <Input className='cell-ipt ta-c' value={value} {...other} />
     }
@@ -41,7 +43,7 @@ export default observer(function (props: Props) {
     const otherColumns = useMemo(() => tableConConfig[model.detail?.record?.menuCode]?.otherColumns || [], [model.id])
     const operationColumns = useMemo(() => tableConConfig[model.detail?.record?.menuCode]?.operationColumns || [], [model.id])
    const config = useMemo(() => tableConConfig[model.detail?.record?.menuCode] || {}, [model.id])
-    const onChange = (e: any, config: Obj) => {
+    const onChange = (type:string,e: any, config: Obj) => {
         const {index, key} = config
         let value: any = e
         if (isMoment(e)) {
@@ -52,10 +54,27 @@ export default observer(function (props: Props) {
             value = e.join(',')
         }
         const newData = cloneDeep(model.editorData)
-        newData[index][key] = value
+        newData[type][index][key]=value
+        // newData[index][key] = value
         model.handleEditorChange(newData)
     }
+    const handleCopyItem =(type:string)=>{
+        const newData = cloneDeep(model.editorData)
+        const conData = createArr(5, (j, k) => createObjV(4));
+        newData[type] = [...newData[type],...conData]
+        model.handleEditorChange(newData)
+    }
+    const handleDeleteItem =(type:string)=>{
+        const newData = cloneDeep(model.editorData)
+        let startIndex = newData[type].length - 5;
+        if (startIndex >= 5) {
+            newData[type].splice(startIndex, 5);
+            model.handleEditorChange(newData)
+        }else{
+            return message.info('不能再删除了~')
+        }
 
+    }
     return (
         <Wrapper className='con--a4' ref={model.ctxRef}>
             <div className='title'>
@@ -85,7 +104,7 @@ export default observer(function (props: Props) {
                 </thead>
                 <tbody>
                 {
-                    (( model.editorData && model.editorData.slice(0,12 ) )|| []).map((v: Obj, i: number) => {
+                    (( model.editorData?.arr1)|| []).map((v: Obj, i: number) => {
                         return (
                             <tr key={i}>
                                 <td>{i +1 }月</td>
@@ -96,7 +115,7 @@ export default observer(function (props: Props) {
                                                 <ChildCon {...{
                                                     component: v1.component,
                                                     value: v[`v${i1}`],
-                                                    onChange: (e: any) => onChange(e, {index: i, key: `v${i1}`})
+                                                    onChange: (e: any) => onChange('arr1',e, {index: i, key: `v${i1}`})
                                                 }} />
                                             </td>
                                         )
@@ -135,18 +154,24 @@ export default observer(function (props: Props) {
                 </thead>
                 <tbody>
                 {
-                    (( model.editorData && model.editorData.slice(13,18 ) )|| []).map((v: Obj, i: number) => {
+                    (( model.editorData?.arr2 )|| []).map((v: Obj, i: number,all:any) => {
                         return (
                             <tr key={i}>
                                 {
-                                    operationColumns.map((v1: Obj, i1: number) => {
+                                    operationColumns.map((v1: Obj, i1: number,c1:any) => {
                                         return (
-                                            <td key={`${i}-${i1}`}>
+                                            <td key={`${i}-${i1}`} style={{position:"relative"}}>
                                                 <ChildCon {...{
                                                     component: v1.component,
                                                     value: v[`v${i1}`],
-                                                    onChange: (e: any) => onChange(e, {index: i + 13, key: `v${i1}`})
+                                                    onChange: (e: any) => onChange('arr2',e, {index: i, key: `v${i1}`})
                                                 }} />
+                                                {  (i === all.length -1) &&( i1 === c1.length - 2 ) &&
+                                                    <>
+                                                        <Button className='addButton' type='primary' onClick={()=>handleCopyItem('arr2')}>添加一页</Button>
+                                                        <Button className='deleteButton' type='danger' onClick={()=>handleDeleteItem('arr2')}>删除一页</Button>
+                                                    </>
+                                                }
                                             </td>
                                         )
                                     })
@@ -178,7 +203,7 @@ export default observer(function (props: Props) {
                 </thead>
                 <tbody>
                 {
-                    (( model.editorData && model.editorData.slice(19,24 ) )|| []).map((v: Obj, i: number) => {
+                    (( model.editorData?.arr3)|| []).map((v: Obj, i: number) => {
                         return (
                             <tr key={i}>
                                 {
@@ -188,7 +213,7 @@ export default observer(function (props: Props) {
                                                 <ChildCon {...{
                                                     component: v1.component,
                                                     value: v[`v${i1}`],
-                                                    onChange: (e: any) => onChange(e, {index: i + 19, key: `v${i1}`})
+                                                    onChange: (e: any) => onChange('arr3',e, {index: i, key: `v${i1}`})
                                                 }} />
                                             </td>
                                         )
@@ -214,5 +239,14 @@ const Wrapper = styled(DetailCtxCon)`
       border-bottom: none;
       text-align: center;
     }
-
+  .addButton{
+    position:absolute;
+    right:-220px;
+    height:35px
+  }
+  .deleteButton{
+    position:absolute;
+    right:-320px;
+    height:35px
+  }
 `
