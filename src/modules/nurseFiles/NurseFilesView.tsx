@@ -505,6 +505,12 @@ export default observer(function NurseFilesView(props: Props) {
                 component: StatisticsView,
               },
               {
+                title: "在院工作情况",
+                path: "/nurseFile/workRegistrationForm",
+                component: StatisticsView,
+                hidden:appStore.HOSPITAL_ID !=='925'
+              },
+              {
                 title: "岗位变动",
                 path: "/nurseFile/transferPost",
                 component: StatisticsView,
@@ -529,6 +535,12 @@ export default observer(function NurseFilesView(props: Props) {
                 path: "/nurseFile/科室创新",
                 hide: !appStore.isDev,
                 component: 科室创新,
+              },
+              {
+                title: "立功嘉奖",
+                path: "/nurseFile/MakeAwards",
+                component: StatisticsView,
+                hidden:appStore.HOSPITAL_ID !=='925'
               },
             ],
           },

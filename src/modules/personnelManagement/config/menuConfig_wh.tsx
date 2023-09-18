@@ -91,7 +91,8 @@ export const meunConfig: meunConfigItem[] = [
         component: StandardTime,
         // hide: !(authStore.user?.empNo == 'G6051' || authStore.user?.empNo == 'ADMIN')
         iSlimit: true,
-        special:appStore.HOSPITAL_ID !=='zjhj'
+        special: appStore.HOSPITAL_ID !=='925' && appStore.HOSPITAL_ID !=='zjhj',
+        
       },
       {
         title: "加减班列表查询",

@@ -286,6 +286,7 @@ export default observer(function PersonWinning() {
     case 'sdlj':
     case 'nfsd':
     case 'qzde':
+    case '925':
       columns = columnsSDLJ
       break;
     case 'zhzxy':

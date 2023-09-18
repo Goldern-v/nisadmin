@@ -20,10 +20,10 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
         case "nys":
             // return 'http://119.145.71.86:9801' // 南医三正式
             // return 'http://119.145.71.86:9098' // 南医三测试
-            // return 'https://info.cr-health.com:20205' //公司-南医三测试-外网
+            return 'https://info.cr-health.com:20203' //公司-南医三测试-外网
             // return "http://192.168.1.106:8080"; //伟贤本地
             // return "http://192.168.20.10:9091"; //伟贤本地
-            return "http://192.168.1.54:8062"; //公司-南医三测试-内网
+            // return "http://192.168.1.54:8062"; //公司-南医三测试-内网
         /** 武汉 */
         case "wh":
             // return 'http://nurse.cr-health.com:34021' // 武汉正式
@@ -143,14 +143,14 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
             return "http://192.168.1.54:9896";
         //漳州五院
         case "zzwy":
-            return "http://192.168.1.125:9900";//测试环境，标准版后端
+            return "https://info.cr-health.com:20203";//测试环境，标准版后端
         // 烟台玲珑医院
         case "ytll":
             // return "http://192.168.1.54:9893";
             return 'http://221.214.210.170:39094'
         // 925
         case "925":
-            return "http://192.168.1.54:9904";
+            return "https://info.cr-health.com:20203";
         // 东莞谢岗
         case "dgxg":
         return "http://183.234.1.124:9093"; //正式
@@ -174,9 +174,9 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
             return "http://59.36.17.191:9094"; //正式
         // 珠海中西医
         case "zhzxy":
-            return "http://192.168.1.54:9898"; //测试
+            return "https://info.cr-health.com:20203"; //测试
         case "zjhj":
-            return "http://192.168.1.54:9866"; //测试
+            return "https://info.cr-health.com:20203"; //测试
         default:
             // return "http://192.168.1.54:9866";
             return "http://183.234.20.149:19094";

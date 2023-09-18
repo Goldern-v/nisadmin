@@ -255,7 +255,7 @@ export default function StatisticView() {
     },
     ...appStore.hisMatch({
       map: {
-        'jmfy,lcey,hj,sdlj,nfsd,qzde,lyrm': [
+        'jmfy,lcey,hj,sdlj,nfsd,qzde,lyrm,925': [
           {
             name: "护士职称分布",
             path: "/statistic/护士职称分布",
