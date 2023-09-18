@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import EditPage from './editPage'
 import { nurseHandbookRecordModel as model } from '../model'
 import { observer } from 'mobx-react'
@@ -24,10 +24,9 @@ export interface Props {
 }
 export default observer(function (props: Props) {
   const { menuCode = '' } = model.detail?.record || {}
-
   if (['925NDXLJH_2','925NDGZJH_2', '925BNGZZJ_6'].includes(menuCode))
     return <EditPage />
-  
+
   else if ('GSYHZSC_2' === menuCode)  return <GSYHZSC_2 />
   else if ('925HLLWDJ_9_1' === menuCode) return <HLLWDJ_9_1 />
   else if ('925JSGXDJ_9_2' === menuCode) return <JSGXDJ_9_2 />
@@ -42,7 +41,7 @@ export default observer(function (props: Props) {
   else if('925GZJHJZZD_5' === menuCode)return  <MonthlyWork/>
   else if('925NDXLJH_3' ===menuCode)return  <YearWork/>
   else if('925JDGZJH_4' ===menuCode)return  <QuarterWork/>
-  else if(model.formListMenu.findIndex((item:any)=>item.menuCode === menuCode)) return <YearPatient/>
+  else if(model.formListMenu.findIndex((item:any)=>item.menuCode === menuCode) > -1) return <YearPatient/>
   else if ('925SCFM_1' === menuCode) return <PdfViewer file={ appStore.queryObj.url || model.editorData.url} width={780 - 2} />
   return <div></div>
 })
