@@ -45,7 +45,7 @@ export const CONFIG = {
       },
       {
         title: `二值护士`,
-        dataIndex: `creatorName`,
+        dataIndex: `onDutyNurseName`,
         width: 80,
         align: "center",
       },

@@ -25,7 +25,8 @@ export default observer(function (props: Props) {
 
   const getList = () => {
     setTableLoading(true)
-    api.getSummary(year,2).then(res => {
+    let {type} = props
+    api.getSummary(year,type).then(res => {
       setTableLoading(false)
       if (res.code === '200') {
         setTableData(res.data)
@@ -35,7 +36,8 @@ export default observer(function (props: Props) {
     })
   }
   const onExport = () => {
-    api.exportSummary(year,2).then(res => {
+    let {type} = props
+    api.exportSummary(year,type).then(res => {
       fileDownload(res)
     })
   }
