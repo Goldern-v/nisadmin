@@ -39,9 +39,9 @@ export default forwardRef(function (props: Props, ref: any) {
   }
   /**不同类型的表格显示 */
   const specialTrs = useMemo(() => {
-    switch (master.deptType) {
+    switch (+master.deptType) {
       /* 病区 */
-      case '1':
+      case 1:
         return (
           <>
             <tr>
@@ -67,7 +67,7 @@ export default forwardRef(function (props: Props, ref: any) {
           </>
         )
       /**产房 */
-      case '2':
+      case 2:
         return (
           <>
             <tr>
