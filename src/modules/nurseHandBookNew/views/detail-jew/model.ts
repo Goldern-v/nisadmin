@@ -155,6 +155,7 @@ public  handleEditorAllChange =(data1:any,data2:any)=>{
     this.editorData = "";
     this.editorTitle = null;
     this.editorTime = null;
+    this.yearPersonData =null
   }
 
   /**

@@ -13,10 +13,18 @@ import { useRef } from 'src/types/react'
 import { appStore } from 'src/stores'
 import { globalModal } from 'src/global/globalModal'
 import { qualityAnalysisReportService } from './services/QualityAnalysisReportService'
+import JmFyChart from "src/modules/quality/views/analysis/components/JmFyChart";
+import {Empty} from "antd";
+import BolaChart from "src/modules/quality/views/components/BolaChart";
+import QualityAnalysisService from "src/modules/quality/views/analysis/api/QualityAnalysisService";
 export interface Props extends RouteComponentProps {}
+const api = new QualityAnalysisService();
 
 export default observer(function QualityAnalysisReportView() {
   const pageRef: any = useRef<HTMLElement>()
+  const [mzData, setMzData] = useState([] as any)
+  const [zyData, setZyData] = useState([] as any)
+  const [specificDeductionList, setSpecificDeductionList] = useState<any>([]);
   // const searchParams = new URLSearchParams(location.search);
  
   // const url = window.location.href
@@ -24,10 +32,38 @@ export default observer(function QualityAnalysisReportView() {
 
   useEffect(() => {
     qualityAnalysisReportViewModal.init()
+    initChart()
     // console.log('hhhh',parameters)
     // console.log(qs.parse(parameters))
   }, [])
-
+  const initChart = async () => {
+    try {
+      // let year = query.year.format("YYYY")
+      // let params: any = {}
+      // if (query.indexInType) {
+      //   params = {
+      //     beginDate: `${year}-${query.indexInType}-01 00:00:00`,
+      //     endDate: `${year}-${query.indexInType}-${getMonthStartAndEnd()} 23:59:59`,
+      //   }
+      // }else{
+      //   params = {
+      //     beginDate: `${year}-01-01 00:00:00`,
+      //     endDate: `${year}-12-30 23:59:59`,
+      //   }
+      // }
+      //
+      // const res = await Promise.all([
+      //   getMZData({...params, flag: 'mz'}),
+      //   getZYData({...params, flag: 'zy'}),
+      //   getSpecificDeductionList(params)
+      // ])
+      // setMzData(res[0].data || [])
+      // setZyData(res[1].data || [])
+      // setSpecificDeductionList(res[2].data || [])
+    } catch (e) {
+      // return message.error('系统出小差~')
+    }
+  }
   const toBack = ()=>{
     if(appStore.queryObj.qcOne=='monthReport'){
       appStore.history.goBack()
@@ -118,6 +154,16 @@ export default observer(function QualityAnalysisReportView() {
       })
     })
   }
+  // const getMZData = async (params: any) => {
+  //   return await api.countDeptQc(params)
+  // }
+  //
+  // const getZYData = async (params: any) => {
+  //   return await api.countDeptQc(params)
+  // }
+  // const getSpecificDeductionList = async (params: any) => {
+  //   return await api.getSpecificDeductionList({...params, typeList: [1, 2, 3, 4, 5, 6]});
+  // };
   return (
     <Wrapper>
       <HeadCon>
@@ -158,6 +204,26 @@ export default observer(function QualityAnalysisReportView() {
               }
             }
           })}
+        {/*  江门妇幼 ---增加图表 */}
+          {/*门诊柱状图*/}
+          {
+            appStore.HOSPITAL_ID ==='jmfy' &&<div className='chartDiv'>
+                <div className='chartBox'>
+                  <h3>门诊质控分数</h3>
+                  {qualityAnalysisReportViewModal.mzData.length >= 1 ? <JmFyChart data={qualityAnalysisReportViewModal.mzData} /> : <Empty/>}
+                </div>
+                <div className='chartBox'>
+                  <h3>住院部质控分数</h3>
+                  {qualityAnalysisReportViewModal.zyData.length >= 1 ? <JmFyChart data={qualityAnalysisReportViewModal.zyData}/> : <Empty/>}
+                </div>
+                <div className='chartBox'>
+                  <h3>柏拉图</h3>
+                  <BolaChart list={qualityAnalysisReportViewModal.specificDeductionList?.dataList || []} xKey="deductionItem" barKey="deductionTimes"
+                             lineKey="cumulativePercentage"/>
+                </div>
+              </div>
+
+          }
         </Page>
         {qualityAnalysisReportViewModal.baseModal && <qualityAnalysisReportViewModal.baseModal.Component />}
       </ScrollCon>
@@ -203,6 +269,28 @@ const Page = styled.div`
   img {
     max-width: 200px;
     max-height: 200px;
+  }
+  .chartDiv {
+    display: flex;
+    width: 100%;
+    margin: 0 15px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: #FFFFFF;
+
+    .chartBox {
+      min-width: 600px;
+      //height: 400px;
+      border: 1px dashed #e9e9e9;
+      margin-bottom: 40px;
+      margin-top: 10px;
+
+      > h3 {
+        margin-top: 20px;
+        text-align: center;
+      }
+    }
   }
 `
 

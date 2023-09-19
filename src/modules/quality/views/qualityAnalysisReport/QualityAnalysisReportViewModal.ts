@@ -1,15 +1,14 @@
-import { observable, computed, action } from 'mobx'
-import React from 'react'
-
+import { observable, action } from 'mobx'
 import createModal from 'src/libs/createModal'
 import BaseModal from './components/base/BaseModal'
-
 import { sectionList,sectionListOne } from './config/sectionList'
-
 import { qualityAnalysisReportService } from './services/QualityAnalysisReportService'
-import { AllData, DeptItem, DetailItem } from './types'
+import { AllData, DeptItem } from './types'
 import { appStore } from './../../../../stores/index'
+import {Obj} from "src/libs/types";
+import QualityAnalysisService from "src/modules/quality/views/analysis/api/QualityAnalysisService";
 
+const api = new QualityAnalysisService();
 
 
 export interface SectionListItem {
@@ -45,6 +44,10 @@ class QualityAnalysisReportViewModal {
   @observable public allData: Partial<AllData> = {
     report: {}
   }
+@observable public  mzData:any =[]
+  @observable public  zyData:any =[]
+  @observable public specificDeductionList:any =[]
+
 
   /** 返回组件实例 */
   @action
@@ -148,11 +151,51 @@ class QualityAnalysisReportViewModal {
     this.getSectionData(`追踪督导`).report = data!.report || {}
     this.getSectionData(`检查重点`).report = data!.report || {}
     this.getSectionData(`问题及建议`).report = data!.report || {}
+  /****/
+    if(appStore.HOSPITAL_ID ==='jmfy'){
+     await  this.initChart( this.allData!.report || {})
+    }
   }
   async init() {
     this.sectionList = appStore.queryObj.qcOne=='monthReport'?sectionListOne:sectionList
     await this.initData()
     this.baseModal = createModal(BaseModal)
+  }
+  async  initChart(record:Obj){
+    try {
+      const {year,indexInType} =record
+      let params: any = {}
+      let str:any =this.getMonthStartAndEnd()
+      if (record?.indexInType) {
+        params = {
+          beginDate: `${year}-${indexInType}-01 00:00:00`,
+          endDate: `${year}-${indexInType}-${str} 23:59:59`,
+        }
+      }else{
+        params = {
+          beginDate: `${year}-01-01 00:00:00`,
+          endDate: `${year}-12-30 23:59:59`,
+        }
+      }
+
+      const res = await Promise.all([
+        api.countDeptQc({...params, flag: 'mz'}),
+        api.countDeptQc({...params, flag: 'zy'}),
+        api.getSpecificDeductionList({...params, typeList: [1, 2, 3, 4, 5, 6]})
+      ])
+      this.mzData =res[0].data || []
+      this.zyData =res[1].data || []
+      this.specificDeductionList =res[2].data || []
+    } catch (e) {
+      // return message.error('系统出小差~')
+    }
+  }
+   getMonthStartAndEnd(){
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1; // 月份从0开始计算，需要加1
+    const lastDay = new Date(year, month, 0).getDate();
+    return lastDay
   }
 }
 

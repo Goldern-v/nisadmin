@@ -118,7 +118,8 @@ export default observer(function WorkHistory() {
             width: 100,
             align: 'center'
           },
-        ]
+        ],
+        other:[],
       },
       vague: true
     }),

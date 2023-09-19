@@ -150,7 +150,9 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
             return 'http://221.214.210.170:39094'
         // 925
         case "925":
-            return "https://info.cr-health.com:20203";
+            return "http://192.168.1.54:9904";
+            // return "https://info.cr-health.com:20203";
+            // return 'http://192.168.1.37:9091'
         // 东莞谢岗
         case "dgxg":
         return "http://183.234.1.124:9093"; //正式
