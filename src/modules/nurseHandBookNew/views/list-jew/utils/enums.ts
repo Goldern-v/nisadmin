@@ -39,3 +39,19 @@ export  const FORM_MENU_CODE={
   '一级护理人数逐日登记表':5,
   '二级护理人数逐日登记表':6,
 }
+/**记录表数据   字段**/
+export const FORM_CODE_VALUE={
+  '925ZYCYDJ_7_1':'inHospital',
+  '925CYCYDJ_7_2':'outHospital',
+  '925TJBRDJ_3':'specialClass',
+  '925BWBRDJ_4':'critical',
+  '925YJHLRSDJ_5':'firstClass',
+  '925EJHLRSDJ_6':'secondClass'
+
+}
+/**年度**/
+export  const HALF_YEAR ={
+  '全年':2,
+  '上半年':0,
+  '下半年':1
+}

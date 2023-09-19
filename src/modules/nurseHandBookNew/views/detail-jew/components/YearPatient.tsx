@@ -1,4 +1,4 @@
-import React, {memo, useMemo} from 'react'
+import React, {memo, useEffect, useMemo, useState} from 'react'
 import styled from 'styled-components'
 import {nurseHandbookRecordModel as model} from '../model'
 import {DatePicker, Input, Select} from 'antd'
@@ -9,12 +9,17 @@ import cloneDeep from 'lodash/cloneDeep'
 import {dateFormat, dateFormat3, tableConConfig} from '../config'
 import moment, {isMoment} from 'moment'
 import {isOfType} from 'src/utils/ts.utils'
+import {FORM_CODE_VALUE} from "src/modules/nurseHandBookNew/views/list-jew/utils/enums";
 const { Option } = Select
 export interface Props {
 }
 /**表格类表单 */
 export default observer(function (props: Props) {
    const config = useMemo(() => tableConConfig[model.detail?.record?.menuCode] || {}, [model.id])
+    const [itemValue,setItemValue]=useState('')
+    useEffect(()=>{
+        setItemValue(FORM_CODE_VALUE[model.detail?.record?.menuCode])
+    },[])
     return (
         <Wrapper className='con--a4' ref={model.ctxRef}>
             <div className='title'>
@@ -29,6 +34,7 @@ export default observer(function (props: Props) {
                 <td key={i} >{ (i +1) <=9 ?`0${i+1}`:i+1 }</td>
             ))
         }
+        {/*<td>合计</td>*/}
     </tr>
     </thead>
     <tbody>
@@ -39,8 +45,13 @@ export default observer(function (props: Props) {
               <tr>
                   <td >{key + 1}月</td>
                   { item.map((val:any,valKey:number)=>{
+                      let value : any = undefined
+                      if(itemValue && val ){
+                          value =val[itemValue]
+                          console.log(val,itemValue,val[itemValue])
+                      }
                       return(
-                          <td style={{textAlign:'center'}}>{val?.day|| Number(0) }</td>
+                          <td style={{textAlign:'center'}}>{ value|| 0 }</td>
                       )
                   })}
               </tr>

@@ -1,21 +1,17 @@
 import LeftMenu from 'src/components/LeftMenu'
 import styled from 'styled-components'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { RouteComponentProps } from 'src/components/RouterView'
 import QualityControlRecord from './views/qualityControlRecord/QualityControlRecord'
-import QueryStatistics from './views/queryStatistics/QueryStatistics'
-import Analysis from './views/analysis/Analysis'
-import SummaryReport from './views/summaryReport/SummaryReport'
-import WorkSummaryReportList from './views/workSummaryReportList/WorkSummaryReportList'
-import ProblemSummary from './views/problemSummary/ProblemSummary'
-import { Provider, KeepAlive } from 'react-keep-alive'
+import { KeepAlive } from 'react-keep-alive'
+import { ReactComponent as JCTJ } from "./images/icon/JCTJ.svg";
+
 export interface Props extends RouteComponentProps<{ name?: string }> { }
 
 import { ReactComponent as EJZK } from './images/icon/EJZK.svg'
 import { ReactComponent as YDBG } from './images/icon/YDBG2.svg'
 import { ReactComponent as HZBG } from "./images/icon/HZBG.svg"
 import 护理质量巡查情况汇总表 from './views/qcFormHj/护理质量巡查情况汇总表'
-// import { appStore } from 'src/stores'
 import 护理质量检查小结 from './views/qcFormHj/护理质量检查小结'
 import 质控表单汇总 from './views/qcDghl/质控表单汇总'
 
@@ -28,7 +24,6 @@ import FollowUpRecord from './views/qcOne/page/followUpRecord/FollowUpRecord'
 import SafetyHazards from './views/qcOne/page/safetyHazards/SafetyHazards'
 import HumanResource from './views/qcOne/page/humanResource/HumanResource'
 import NursingReportList from './views/qcOne/report/NursingReportList/NursingReportList'
-// import NursingReportDetailView from './views/qcOne/report/NursingReportDetail/NursingReportDetailView'
 import NursingWorkPlainList from './views/qcOne/page/nursingWorkPlain/NursingWorkPlainList'
 import NursingQualityCheck from './views/qcOne/page/nursingQualityCheck/NursingQualityCheck'
 import NurseMeetingRecord from './views/qcOne/page/nurseMeetingRecord/NurseMeetingRecord'
@@ -48,11 +43,8 @@ import SatisfiedPatInvestigation from './views/qcOne/page/satisfiedPat/Satisfied
 import SatisfiedPatInvestigationDetail from './views/qcOne/page/satisfiedPat/SatisfiedPatInvestigationDetail'
 // 工作量统计
 import Workload from './views/workload/Workload'
-// import 护理质量巡查情况汇总表 from './views/qcFormHj/护理质量巡查情况汇总表'
-// import QualityControlRecord from './views/qualityControlRecord/QualityControlRecord'
+import 一级质控问题原因措施汇总 from "src/modules/quality/views/qcFormGzsrm/一级质控问题原因措施汇总";
 
-// import { ReactComponent as EJZK } from './images/icon/EJZK.svg'
-// import { ReactComponent as YDBG } from './images/icon/YDBG2.svg'
 
 export default function QcOneRouterHj(props: Props) {
 
@@ -232,6 +224,17 @@ export default function QcOneRouterHj(props: Props) {
       keepAlive: true,
       disabledKeepAlive: () => (appStore.history && appStore.history.action) !== 'POP'
     },
+      ...appStore.hisMatch({
+        map:{
+          '925':[ {
+            title: "一级质控问题原因措施汇总",
+            path: "/qcOneDghl/一级质控问题原因措施汇总?qcLevel=1",
+            icon: <JCTJ />,
+            component: 一级质控问题原因措施汇总
+          }],
+          default: [],
+        }
+      }),
     ...appStore.hisMatch({
       map: {
         wh: [

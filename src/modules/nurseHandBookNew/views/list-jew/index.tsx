@@ -13,7 +13,7 @@ import AddModal from './components/addModal'
 import createModal from 'src/libs/createModal'
 import useFirstDisEffect from 'src/hooks/useFirstDisEffect'
 import { message, Modal } from 'antd'
-import { STATUS_LIST } from './utils/enums'
+import {HALF_YEAR, STATUS_LIST} from './utils/enums'
 import { formatTitle } from '../detail-lyrm/config'
 import AuditModal from './components/auditModal'
 import { nurseHandbookRecordModel as model } from '../detail-jew/model'
@@ -313,6 +313,9 @@ export default observer(function (props: Props) {
           title: '年度',
           align: 'center',
           dataIndex: 'halfYear',
+          render:(text:any)=>{
+            return {'1':'下半年','0':'上半年','2':"全年"}[text]
+          }
         },
       ]
       setColumns(newColumns)
@@ -324,8 +327,7 @@ export default observer(function (props: Props) {
     const { menuCode } = options
     const title = formatTitle(params, options)
     if(params.hasOwnProperty('halfYear')){
-      console.log(params.halfYear);
-      params.halfYear = params.halfYear ==='上半年' ? 0 : 1
+      params.halfYear =HALF_YEAR[params.halfYear]
     }
     const data: Obj = { ...params,detail:params.url }
     if (!params.menuCode) {
