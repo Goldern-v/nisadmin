@@ -109,7 +109,7 @@ export default observer(function QualityControlRecord() {
       if(['ytll'].includes(appStore.HOSPITAL_ID) && level==2){
         Object.assign(sendData,{
           type:"",
-          groupRoleCode:qualityControlRecordVM.groupRoleCode
+          qcGroupRole:qualityControlRecordVM.groupRoleCode
         })
       }
       qualityControlRecordApi
