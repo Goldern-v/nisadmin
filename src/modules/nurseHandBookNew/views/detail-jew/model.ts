@@ -102,7 +102,7 @@ public  handleEditorAllChange =(data1:any,data2:any)=>{
         /**获取当前科室护士**/
         this.getNurseList(deptCode)
         /**获取年度病人数据**/
-        if(appStore.queryObj.menuCode ==='925NDBRDJ_7'){
+        if(this.formListMenu.findIndex((item:any)=>item.menuCode === menuCode) > -1){
           this.getYearData({
             wardCode:deptCode,
             year,
