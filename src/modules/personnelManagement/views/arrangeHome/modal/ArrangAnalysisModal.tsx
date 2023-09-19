@@ -33,6 +33,8 @@ const rules: Rules = {
 };
 
 export default function ArrangAnalysisModal(props: Props) {
+  const useHorizontalScroll = appStore.HOSPITAL_ID==="wh"
+
   const [title, setTitle] = useState("班次统计");
 
   let { visible, onCancel } = props;
@@ -232,6 +234,7 @@ export default function ArrangAnalysisModal(props: Props) {
         dataSource={dataSource}
         columns={columns}
         type={["index"]}
+        nohorizontalScroll={useHorizontalScroll}
         surplusWidth={10}
         surplusHeight={appStore.wih - (appStore.wih * 0.8 - 150)}
         wrapperStyle={{ padding: 0 }}
