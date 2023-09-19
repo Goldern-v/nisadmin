@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 import BaseLayout from '../components/BaseLayout'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
+import moment from 'moment'
 import { appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import { ColumnProps } from 'antd/lib/table'
@@ -24,6 +25,7 @@ export default observer(function scientificResearch() {
   const [tableData, setTableData] = useState([])
   const getTableData = () => {
     nurseFilesService.commonfindByEmpNoSubmit('nurseWHScienceResult', appStore.queryObj.empNo).then((res) => {
+      appStore.HOSPITAL_ID === "dghm" && res.data.sort((prev:any,next:any)=>moment(prev.grantDate).diff(moment(next.grantDate), 'months'))
       setTableData(res.data)
     })
   }

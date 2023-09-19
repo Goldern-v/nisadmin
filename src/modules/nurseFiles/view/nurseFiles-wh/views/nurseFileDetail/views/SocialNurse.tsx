@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
+import moment from 'moment'
 import BaseLayout from '../components/BaseLayout'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
 import { appStore } from 'src/stores'
@@ -27,6 +28,7 @@ export default observer(function SocialNurse() {
     // console.log('获取数据')
     // return false
     nurseFilesService.commonfindByEmpNoSubmit('nurseWHSocialJob', appStore.queryObj.empNo).then((res) => {
+      appStore.HOSPITAL_ID === "dghm" && res.data.sort((prev:any,next:any)=>moment(prev.startDate).diff(moment(next.startDate), 'months'))
       setTableData(res.data)
     })
   }

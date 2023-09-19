@@ -4,6 +4,7 @@ import { RouteComponentProps } from 'react-router'
 import BaseLayout from '../components/BaseLayout'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
 import { appStore } from 'src/stores'
+import moment from 'moment'
 import { observer } from 'mobx-react-lite'
 import { ColumnProps } from 'antd/lib/table'
 import createModal from 'src/libs/createModal'
@@ -24,6 +25,7 @@ export default observer(function PersonWinning() {
   const [tableData, setTableData] = useState([])
   const getTableData = () => {
     nurseFilesService.commonfindByEmpNoSubmit('nurseWHPersonWinning', appStore.queryObj.empNo).then((res) => {
+      appStore.HOSPITAL_ID === "dghm" && res.data.sort((prev:any,next:any)=>moment(prev.winningYear).diff(moment(next.winningYear), 'months'))
       setTableData(res.data)
     })
   }
