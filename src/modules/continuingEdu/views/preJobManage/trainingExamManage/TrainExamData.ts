@@ -130,9 +130,9 @@ class TrainExamData {
 	}
 	/**科室列表 */
 	getNursingAll(){
-		if(this.deptList.length>0){
-			return false
-		}
+		// if(this.deptList.length>0){
+		// 	return false
+		// }
 		// 查询有权限的科室
 		service.commonApiService.getNursingUnitSelf().then(res=>{
 			const { deptList } = res.data

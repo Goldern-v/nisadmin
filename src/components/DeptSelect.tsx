@@ -95,7 +95,7 @@ export default observer(function DeptSelect(props: Props) {
     <Wrapper>
       <Select
         value={defaultValue}
-        style={Object.assign({ width: 200 }, props.style)}
+        style={Object.assign({ width: 200 }, props.style,appStore.HOSPITAL_ID ==='gzsrm' && {width:220})}
         onChange={onChange}
         showSearch={props.showSearch !== undefined ? props.showSearch : true}
         filterOption={(input: any, option: any) =>

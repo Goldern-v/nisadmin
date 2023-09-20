@@ -187,12 +187,12 @@ export default observer(function ApplicationN1(props: Props) {
         style={{
           top:
             PromotionAppUtils.editStatus == "取消编辑" &&
-            Number(PromotionAppUtils.flowStatus) > 0
+            (appStore.HOSPITAL_ID ==='whyx' ? true : Number(PromotionAppUtils.flowStatus) > 0)
               ? "23px"
               : "1807px",
           height:
             PromotionAppUtils.editStatus == "取消编辑" &&
-            Number(PromotionAppUtils.flowStatus) > 0
+            (appStore.HOSPITAL_ID ==='whyx' ? true : Number(PromotionAppUtils.flowStatus) > 0)
               ? "1807px"
               : "1500px",
         }}
