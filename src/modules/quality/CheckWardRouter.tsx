@@ -103,7 +103,7 @@ const LEFT_MENU_CONFIG: any = appStore.hisMatch({
       {
         title: '夜查房汇总',
         icon: <CFJHBG />,
-        hide: !appStore.isDev,
+        hide: !appStore.isDev && appStore.HOSPITAL_ID !="jmfy",
         children: [
           {
             title: "每日夜查房汇总",
