@@ -69,6 +69,15 @@ const defaultStepData2: any = {
   //南医三单独
   /**  考试开始时间 */
   endTime: "",
+  // 烟台玲珑增加 二维码功能
+  /**  签到开始时间 */
+  signInStartTime: "",
+  /**  签到结束时间 */
+  signInEndTime: "",
+  /**二维码类型（1：静态码 2:动态码）*/
+  qrCodeType: 1,
+  /**刷新时间 单位：秒*/
+  refreshTime: "",
 };
 
 type DefaultStepData2 = typeof defaultStepData2;
@@ -159,6 +168,12 @@ class StepViewModal {
 
   /** 数据合并 */
   public decodeData = () => {
+    // let ytllQcObj:any ={
+    //   signInStartTime: this.stepData2.signInStartTime,
+    //   signInEndTime: this.stepData2.signInEndTime,
+    //   qrCodeType: this.stepData2.qrCodeType,
+    //   refreshTime: this.stepData2.refreshTime,
+    // }
     let result = {
       title: this.stepData2.title,
       startTime: this.stepData2.startTime,
@@ -244,7 +259,18 @@ class StepViewModal {
           },
           []
         ),
-        questionStatList:this.stepData2.questionStatList
+        questionStatList:this.stepData2.questionStatList,
+        ...appStore.hisMatch({
+          map:{
+            ytll:{
+              signInStartTime: this.stepData2.signInStartTime,
+              signInEndTime: this.stepData2.signInEndTime,
+              qrCodeType: this.stepData2.qrCodeType,
+              refreshTime: this.stepData2.refreshTime,
+            },
+            other:{}
+          }
+        })
           // appStore.HOSPITAL_ID == "hj"
           //   ? this.manyQuestionStatLists
           //   : this.stepData2.questionStatList

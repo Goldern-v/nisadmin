@@ -8,7 +8,7 @@ import {
   Select,
   Checkbox,
   InputNumber,
-  message
+  message, Radio
 } from "antd";
 import Form from "src/components/Form";
 import { to } from "src/libs/fns";
@@ -396,6 +396,25 @@ export default observer(function Step1() {
               </div>
             </Form.Field>
           </Col>
+          { appStore.HOSPITAL_ID==='ytll' && stepViewModal.stepData2.organizationWay == "2" && (
+              <Col span={24} className="rowDivF">
+                <Form.Field
+                    label={`二维码`}
+                    name="qrCodeType"
+                >
+                  <Radio.Group style={{ lineHeight: '30px' }}>
+                    <Radio value={1}>静态码</Radio>
+                    <Radio value={2}>动态码</Radio>
+                  </Radio.Group>
+                </Form.Field>
+
+                {stepViewModal.stepData2.qrCodeType == "2" && <div className="rowDiv">
+                  <Form.Field label={`刷新时间`} name="refreshTime">
+                    <Input style={{ width: '150px' }} addonAfter="秒"/>
+                  </Form.Field>
+                </div>}
+              </Col>
+          )}
         </Row>
       </Form>
       <selectNurseModal.Component />
