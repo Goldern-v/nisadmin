@@ -8,7 +8,7 @@ import DeptSelect from 'src/components/DeptSelect'
 import FlatManageProblemEdit from './../components/FlatManageProblemEdit'
 
 import FlatManageDetail from '../components/FlatManageDetail'
-import { authStore } from 'src/stores'
+import {appStore, authStore} from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import moment from 'moment'
 import { flatManageProblemService } from './../api/FlatManageProblemService'
@@ -376,7 +376,6 @@ export default observer(function FlatManageProblemList() {
       }
     })
   }
-
   return (
     <Wrapper>
       <div>
@@ -388,7 +387,7 @@ export default observer(function FlatManageProblemList() {
             <div className='item'>
               <div className='label'>科室：</div>
               <div className='content'>
-                <div className='dept-select'>
+                <div className={appStore.HOSPITAL_ID !=='gzsrm' ? 'dept-select':undefined}>
                   <DeptSelect onChange={(deptCode) => handleDeptChange(deptCode)} />
                 </div>
               </div>

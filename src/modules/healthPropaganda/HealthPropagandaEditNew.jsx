@@ -424,6 +424,7 @@ export default observer(function HealthPropagandaEditNew(props) {
           className='dept-select'
           value={params.deptCode}
           onChange={handleDeptSelect}
+          style={{width:200}}
           defaultValue={params.deptCode}
         >
           <Option value='000000'>公共</Option>

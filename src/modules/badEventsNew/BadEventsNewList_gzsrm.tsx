@@ -305,6 +305,7 @@ export default observer(function BadEventNewList() {
               <div className="item-content">
                 <Select
                   defaultValue=""
+                  style={{width:200}}
                   value={query.happenedDeptCode}
                   onChange={(happenedDeptCode: any) => setQuery({
                     ...query,

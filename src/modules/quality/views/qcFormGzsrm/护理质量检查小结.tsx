@@ -211,7 +211,7 @@ export default observer(function 护理质量检查小结() {
           <div className="content">
             <Select
               value={wardCode}
-              style={{ width: 180 }}
+              style={{ width: 200 }}
               showSearch
               onChange={(wardCode: string) => {
                 setWardCode(wardCode)

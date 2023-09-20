@@ -246,7 +246,7 @@ export default observer(function 三级问题原因措施汇总() {
         <span>科室：</span>
         <Select
           value={query.wardCode}
-          style={{ width: 180, marginRight: 15 }}
+          style={{ width: 200, marginRight: 15 }}
           showSearch
           onChange={(wardCode: string) => setQuery({ ...query, wardCode })}
           filterOption={(input: any, option: any) =>

@@ -166,7 +166,7 @@ export default observer(function 护理质量巡查情况汇总表(props: Props)
           <div className="content">
             <Select
               value={query.wardCode}
-              style={{ width: 180 }}
+              style={{ width: 200 }}
               showSearch
               onChange={(wardCode: string) => setQuery({ ...query, wardCode })}
               filterOption={(input: any, option: any) =>
