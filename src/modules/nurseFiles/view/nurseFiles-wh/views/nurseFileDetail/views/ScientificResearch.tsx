@@ -25,7 +25,7 @@ export default observer(function scientificResearch() {
   const [tableData, setTableData] = useState([])
   const getTableData = () => {
     nurseFilesService.commonfindByEmpNoSubmit('nurseWHScienceResult', appStore.queryObj.empNo).then((res) => {
-      appStore.HOSPITAL_ID === "dghm" && res.data.sort((prev:any,next:any)=>moment(prev.grantDate).diff(moment(next.grantDate), 'months'))
+      appStore.HOSPITAL_ID === "dghm" && res.data.sort((prev:any,next:any)=>moment(prev.grantDate).diff(moment(next.grantDate), 'days'))
       setTableData(res.data)
     })
   }

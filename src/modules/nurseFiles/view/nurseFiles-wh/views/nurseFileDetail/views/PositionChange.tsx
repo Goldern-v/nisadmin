@@ -20,7 +20,7 @@ export default observer(function PersonWinning() {
   const [tableData, setTableData] = useState([])
   const getTableData = () => {
     nurseFilesService.commonfindByEmpNoSubmit('nurseWHTitle', appStore.queryObj.empNo).then((res) => {
-      appStore.HOSPITAL_ID === "dghm" && res.data.sort((prev:any,next:any)=>moment(prev.winNewTiTleDate).diff(moment(next.winNewTiTleDate), 'months'))
+      appStore.HOSPITAL_ID === "dghm" && res.data.sort((prev:any,next:any)=>moment(prev.winNewTiTleDate).diff(moment(next.winNewTiTleDate), 'days'))
       setTableData(res.data)
     })
   }

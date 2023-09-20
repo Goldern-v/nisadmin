@@ -24,7 +24,7 @@ export default observer(function WorkHistory() {
   const [tableData, setTableData] = useState([])
   const getTableData = () => {
     nurseFilesService.commonfindByEmpNoSubmit('nurseWHWorkExperience', appStore.queryObj.empNo).then((res) => {
-      appStore.HOSPITAL_ID === "dghm" && res.data.sort((prev:any,next:any)=>moment(prev.startTime).diff(moment(next.startTime), 'months'))
+      appStore.HOSPITAL_ID === "dghm" && res.data.sort((prev:any,next:any)=>moment(prev.startTime).diff(moment(next.startTime), 'days'))
       setTableData(res.data)
       // setGetId(res.data)
     })

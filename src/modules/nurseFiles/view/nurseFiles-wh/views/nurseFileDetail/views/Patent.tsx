@@ -20,7 +20,7 @@ export default observer(function Patent() {
   const [tableData, setTableData] = useState([])
   const getTableData = () => {
     nurseFilesService.commonfindByEmpNoSubmit('nurseWHPatent', appStore.queryObj.empNo).then((res) => {
-      appStore.HOSPITAL_ID === "dghm" && res.data.sort((prev:any,next:any)=>moment(prev.cardDate).diff(moment(next.cardDate), 'months'))
+      appStore.HOSPITAL_ID === "dghm" && res.data.sort((prev:any,next:any)=>moment(prev.cardDate).diff(moment(next.cardDate), 'days'))
       setTableData(res.data)
     })
   }

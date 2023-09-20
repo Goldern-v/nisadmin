@@ -25,7 +25,7 @@ export default observer(function Monograph() {
   const [tableData, setTableData] = useState([])
   const getTableData = () => {
     nurseFilesService.commonfindByEmpNoSubmit('nurseWHMonograph', appStore.queryObj.empNo).then((res) => {
-      appStore.HOSPITAL_ID === "dghm" && res.data.sort((prev:any,next:any)=>moment(prev.pressDate).diff(moment(next.pressDate), 'months'))
+      appStore.HOSPITAL_ID === "dghm" && res.data.sort((prev:any,next:any)=>moment(prev.pressDate).diff(moment(next.pressDate), 'days'))
       setTableData(res.data)
     })
   }

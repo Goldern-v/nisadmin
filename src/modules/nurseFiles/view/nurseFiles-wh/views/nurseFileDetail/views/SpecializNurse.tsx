@@ -25,7 +25,7 @@ export default observer(function SpecializNurse() {
   const [tableData, setTableData] = useState([])
   const getTableData = () => {
     nurseFilesService.commonfindByEmpNoSubmit('nurseWHSpecializNurse', appStore.queryObj.empNo).then((res) => {
-      appStore.HOSPITAL_ID === "dghm" && res.data.sort((prev:any,next:any)=>moment(prev.cardNumberDate).diff(moment(next.cardNumberDate), 'months'))
+      appStore.HOSPITAL_ID === "dghm" && res.data.sort((prev:any,next:any)=>moment(prev.cardNumberDate).diff(moment(next.cardNumberDate), 'days'))
       setTableData(res.data)
       // console.log(res.data,'000000000000')
     })

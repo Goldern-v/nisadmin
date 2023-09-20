@@ -19,7 +19,7 @@ export default observer(function EducationalExperience() {
   const [tableData, setTableData] = useState([])
   const getTableData = () => {
     nurseFilesService.commonfindByEmpNoSubmit('nurseWHMedicalEducation', appStore.queryObj.empNo).then((res) => {
-      appStore.HOSPITAL_ID === "dghm" && res.data.sort((prev:any,next:any)=>moment(prev.readTime).diff(moment(next.readTime), 'months'))
+      appStore.HOSPITAL_ID === "dghm" && res.data.sort((prev:any,next:any)=>moment(prev.readTime).diff(moment(next.readTime), 'days'))
       setTableData(res.data)
     })
   }
