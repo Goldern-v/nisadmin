@@ -184,12 +184,13 @@ export default observer(function ApplicationN1(props: Props) {
             />
         )}
       </div>
+
       <div
         className="first-form"
         style={{
           top:
             PromotionAppUtils.editStatus == "取消编辑" &&
-            Number(PromotionAppUtils.flowStatus) > 0
+            (appStore.HOSPITAL_ID ==='whyx' ? true : Number(PromotionAppUtils.flowStatus) > 0)
               ? "23px"
               : "1118px",
         }}
