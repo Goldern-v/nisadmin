@@ -69,6 +69,7 @@ import 护士在职状态分析 from "./views/护士在职状态分析/护士在
 import 护士离职原因分析 from "./views/护士离职原因分析/护士离职原因分析";
 //继续教育一览表
 import 继续教育一览表 from "./views/继续教育一览表/继续教育一览表";
+import 护理人员在岗统计表 from "./views/护理人员在岗统计表/护理人员在岗统计表";
 // 发热患者统计
 // 病区设备统计
 // 全院护理人员一览表
@@ -360,7 +361,12 @@ export default function StatisticView() {
       name: "继续教育一览表",
       path: "/statistic/继续教育一览表",
       component: 继续教育一览表,
-    }
+    },
+    {
+      name: "护理人员在岗统计表",
+      path: "/statistic/护理人员在岗统计表",
+      component: 护理人员在岗统计表,
+    },
   ];
   // const leftNursingStatistics = [{ name: '护理人员一览表', path: '/statistic/护理人员一览表', component: NurseList }]
 

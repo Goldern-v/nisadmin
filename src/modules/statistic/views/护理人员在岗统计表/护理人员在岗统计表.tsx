@@ -11,6 +11,7 @@ import moment from 'src/vendors/moment'
 import printing from "printing";
 import { currentMonth, currentQuater, currentYear } from 'src/utils/date/rangeMethod'
 import {Con} from 'src/modules/statistic/common/css/CommonLayout.ts';
+import { colums } from "./utils"
 
 const RangePicker = DatePicker.RangePicker
 
@@ -18,16 +19,14 @@ const Option = Select.Option
 
 export interface Props { }
 
-export default observer(function 继续教育一览表() {
+export default observer(function 护理人员在岗统计表() {
   let _currentMonth = currentMonth()
 
   let _currentQuater = currentQuater()
 
   let _currentYear = currentYear()
 
-  const { deptList } = authStore
   const [query, setQuery] = useState({
-    deptCode:"",
     startTime: _currentMonth[0].format('YYYY-MM-DD'),
     endTime: _currentMonth[1].format('YYYY-MM-DD'),
   })
@@ -37,98 +36,16 @@ export default observer(function 继续教育一览表() {
   const [loading, setLoading] = useState(false)
   const tableRef = useRef<HTMLDivElement | null>(null);
 
-  const columns:ColumnProps<any>[] = [
-    {
-      title: '序号',
-      width: 80,
-      align: 'center',
-      render: (val: any, record: any, idx: number) => idx + 1
-    },
-    {
-      title: '科室',
-      width: 180,
-      dataIndex: 'deptName',
-      align: 'center',
-      render: (text: any, record: any) => ({
-        props: { rowSpan: record.rowSpan },
-        children: text
-      })
-    },
-    {
-      title: '姓名',
-      dataIndex: 'empName',
-      align: 'left',
-    },
-    {
-      title: '职称',
-      dataIndex: 'newTitle',
-      align: 'left',
-    },
-    {
-      title: '开始时间',
-      dataIndex: 'startTime',
-      align: 'left',
-    },
-    {
-      title: '结束时间',
-      dataIndex: 'endTime',
-      align: 'left',
-    },
-    {
-      title: '培训单位',
-      dataIndex: 'trainingUnit',
-      align: 'left',
-    },
-    {
-      title: '培训内容',
-      dataIndex: 'trainingContent',
-      align: 'left',
-    },
-    {
-      title: '学时',
-      dataIndex: 'hours',
-      align: 'left',
-    },
-    {
-      title: '状态',
-      dataIndex: 'auditedStatusName',
-      align: 'left',
-    },
-  ]
- 
+  const columns:ColumnProps<any>[] = colums
+
   const handleSearch = () => getData()
 
   const getData = () => {
     setLoading(true)
-
-    statisticsApi.findNurseContinuingEducation(query)
-      .then((res: any) => {
-        setLoading(false)
-        if (res.data.list) {
-          let { list } = res.data
-          let newData = []
-
-          for (let i = 0; i < list.length; i++) {
-            let item0 = list[i]
-            let deptName = item0.deptName
-
-            let countLength = (item0.countUsers || []).length || 0
-
-            if (item0.countUsers && countLength > 0)
-              for (let j = 0; j < countLength; j++) {
-                let item1 = item0.countUsers[j]
-                let rowSpan = 0
-                if (j == 0) rowSpan = countLength
-
-                newData.push({ ...item0, ...item1, deptName, rowSpan })
-              }
-            else {
-              newData.push({ ...item0, rowSpan: 1 })
-            }
-          }
-          setData(newData)
-        }
-      }, () => setLoading(false))
+    statisticsApi.countDutyNurse(query).then(res=>{
+      setLoading(false)
+      if(res.data) setData(res.data)
+    },()=>setLoading(false))
   }
 
   useEffect(() => {
@@ -141,6 +58,7 @@ export default observer(function 继续教育一览表() {
       scanStyles: false,
       css: `
         @page {
+          size:landscape;
           margin: 10px;
         }
         .ant-table-body{
@@ -148,7 +66,7 @@ export default observer(function 继续教育一览表() {
           height: auto !important;
         }
         .tableBox{
-          height:1100px;
+          height:770px;
           overflow:hidden;
           page-break-after: always;
         }
@@ -158,19 +76,6 @@ export default observer(function 继续教育一览表() {
 
   return <CommonLayout
     header={<div>
-      <Select
-        style={{ minWidth: 180 }}
-        className="content-item"
-        value={query.deptCode}
-        showSearch
-        filterOption={(input: any, option: any) =>
-          option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-        onChange={(deptCode: string) => setQuery({ ...query, deptCode })}>
-        <Option value={''}>全院</Option>
-        {deptList.map((dept: any, idx: number) =>
-          <Option key={idx} value={dept.code}>{dept.name}</Option>
-        )}
-      </Select>
       <RangePicker
         className="content-item"
         style={{ width: 220 }}
@@ -193,7 +98,7 @@ export default observer(function 继续教育一览表() {
     </div>}
       body={<Spin spinning={loading}>
         <Con ref={tableRef} className="tableBox">
-          <div className='main-title'>继续教育一览表</div>
+          <div className='main-title'>护理人员在岗统计表</div>
           <div className='sub-title'>统计日期：{query.startTime} 至 {query.endTime}</div>
           <BaseTable
             surplusWidth={500}

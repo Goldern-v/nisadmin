@@ -142,6 +142,7 @@ const LEFT_MENU_CONFIG = [
                 },
                 { title: "护理人员一览表", path: "/statistic/护理人员一览表" },
                 { title: "继续教育一览表", path: "/statistic/继续教育一览表" },
+                { title: "护理人员在岗统计表", path: "/statistic/护理人员在岗统计表" },
               ],
               default: [
                 {

@@ -354,6 +354,10 @@ class StatisticsApi extends BaseApiService {
     return this.post('/nurseContinuingEducation/findNurseContinuingEducation', query)
   }
 
+  public countDutyNurse(query: any) {
+    return this.post('/schedulingJm/countDutyNurse', query)
+  }
+
   /** 统计职务 */
   public countJob(query: any) {
     return this.post('/countInformation/countJob', query)
