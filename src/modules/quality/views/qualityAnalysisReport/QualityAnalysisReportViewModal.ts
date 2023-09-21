@@ -179,8 +179,8 @@ class QualityAnalysisReportViewModal {
       }
 
       const res = await Promise.all([
-        api.countDeptQc({...params, flag: 'mz'}),
-        api.countDeptQc({...params, flag: 'zy'}),
+        api.countDeptQc({...params,qcCode:record?.qcCode, flag: 'mz'}),
+        api.countDeptQc({...params,qcCode:record?.qcCode, flag: 'zy'}),
         api.getSpecificDeductionList({...params, typeList: [1, 2, 3, 4, 5, 6]})
       ])
       this.mzData =res[0].data || []
