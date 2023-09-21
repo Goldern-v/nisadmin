@@ -151,67 +151,67 @@ export default observer(function ApplicationN1(props: Props) {
 
   return (
     <Wrapper ref={props.printRef} id="formPrintPage">
-      {/*<div*/}
-      {/*  className="zindex-form"*/}
-      {/*  style={{*/}
-      {/*    display:*/}
-      {/*      PromotionAppUtils.edit == true &&*/}
-      {/*      PromotionAppUtils.editStatus == "取消编辑"*/}
-      {/*        ? "none"*/}
-      {/*        : "",*/}
-      {/*      backgroundColor: PromotionAppUtils.editStatus == "创建" ? "rgba(204, 204, 204, 0.5)" : ""*/}
-      {/*  }}*/}
-      {/*  onClick={() => {*/}
-      {/*    message.warning("当前不是编辑状态，如需修改请点击编辑按钮！");*/}
-      {/*  }}*/}
-      {/*>*/}
-      {/*   { isAduit.noPass == true && (*/}
-      {/*    <img*/}
-      {/*      src={require("../image/审批不通过.png")}*/}
-      {/*      className="form-status-img"*/}
-      {/*    />*/}
-      {/*  )}*/}
-      {/*  {isAduit.nodeCode == "withdraw" && (*/}
-      {/*    <img*/}
-      {/*      src={require("../image/已撤销.png")}*/}
-      {/*      className="form-status-img"*/}
-      {/*    />*/}
-      {/*  )}*/}
-      {/*  { isAduit.noPass == false && !DotPass && PromotionAppUtils.handlenodeDto.length &&  (*/}
-      {/*    <img*/}
-      {/*      src={require("../image/审批通过.png")}*/}
-      {/*      className="form-status-img"*/}
-      {/*    />*/}
-      {/*  )}*/}
-      {/*  {isAduit.nodeCode != "withdraw" &&*/}
-      {/*    isAduit.noPass != true &&*/}
-      {/*    DotPass &&*/}
-      {/*    Number(PromotionAppUtils.flowStatus) > 0 &&*/}
-      {/*    PromotionAppUtils.master.status != "" && (*/}
-      {/*      <img*/}
-      {/*        src={require("../image/待审批.png")}*/}
-      {/*        className="form-status-img"*/}
-      {/*      />*/}
-      {/*    )}*/}
-      {/*</div>*/}
-      {/*<div*/}
-      {/*  className="first-form"*/}
-      {/*  style={{*/}
-      {/*    top:*/}
-      {/*      PromotionAppUtils.editStatus == "取消编辑" &&*/}
-      {/*      Number(PromotionAppUtils.flowStatus) > 0  */}
-      {/*        ? "23px"*/}
-      {/*        : "1118px",*/}
-      {/*    height:*/}
-      {/*      PromotionAppUtils.editStatus == "取消编辑" &&*/}
-      {/*      Number(PromotionAppUtils.flowStatus) > 0*/}
-      {/*        ? "1080px"*/}
-      {/*        : "2213px",*/}
-      {/*  }}*/}
-      {/*  onClick={() => {*/}
-      {/*    message.warning("当前暂不可编辑，请根据流程进行修改！");*/}
-      {/*  }}*/}
-      {/*></div>*/}
+      <div
+        className="zindex-form"
+        style={{
+          display:
+            PromotionAppUtils.edit == true &&
+            PromotionAppUtils.editStatus == "取消编辑"
+              ? "none"
+              : "",
+            backgroundColor: PromotionAppUtils.editStatus == "创建" ? "rgba(204, 204, 204, 0.5)" : ""
+        }}
+        onClick={() => {
+          message.warning("当前不是编辑状态，如需修改请点击编辑按钮！");
+        }}
+      >
+         { isAduit.noPass == true && (
+          <img
+            src={require("../image/审批不通过.png")}
+            className="form-status-img"
+          />
+        )}
+        {isAduit.nodeCode == "withdraw" && (
+          <img
+            src={require("../image/已撤销.png")}
+            className="form-status-img"
+          />
+        )}
+        { isAduit.noPass == false && !DotPass && PromotionAppUtils.handlenodeDto.length &&  (
+          <img
+            src={require("../image/审批通过.png")}
+            className="form-status-img"
+          />
+        )}
+        {isAduit.nodeCode != "withdraw" &&
+          isAduit.noPass != true &&
+          DotPass &&
+          Number(PromotionAppUtils.flowStatus) > 0 &&
+          PromotionAppUtils.master.status != "" && (
+            <img
+              src={require("../image/待审批.png")}
+              className="form-status-img"
+            />
+          )}
+      </div>
+      <div
+        className="first-form"
+        style={{
+          top:
+            PromotionAppUtils.editStatus == "取消编辑" &&
+            (appStore.HOSPITAL_ID ==='whyx' ? true : Number(PromotionAppUtils.flowStatus) > 0)
+              ? "23px"
+              : "1118px",
+          height:
+            PromotionAppUtils.editStatus == "取消编辑" &&
+            (appStore.HOSPITAL_ID ==='whyx' ? true : Number(PromotionAppUtils.flowStatus) > 0)
+              ? "23px"
+              : "2213px",
+        }}
+        onClick={() => {
+          message.warning("当前暂不可编辑，请根据流程进行修改！");
+        }}
+      ></div>
      <div className="wrapper-pages-form">
         <div className="form-title">
           临床护理人员晋升申请表（N1→N2）（{moment().format("YYYY")}版）
