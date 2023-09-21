@@ -560,6 +560,7 @@ const SingleSignOnGzsrm = lazy(() => import("src/modules/SingleSignOn/gzsrm/Sing
 const PearsonHandbook = lazy(() => import("src/modules/continuingEdu/views/gaugePearson/handbook/index"))
 /**漳州五院--季度质量分析报告详情**/
 const QuarterlyAnalysisReportZzwyDetail =lazy(() => import("src/modules/quality/views/qcZzwy/qcQuarterlyAnalysisReport/Detail"))
+const NursingRoundsGzsrmDetail=lazy(()=>import('src/modules/quality/views/nursingRounds_gzsrm/component/detail'))
 // 移动端界面-患者随访问卷首页
 const routes: RouteItem[] = [
   setLayout("/demo", demo),
@@ -962,6 +963,7 @@ const routes: RouteItem[] = [
   setLayout('/checkWard/dailyNightRoundsSummary/detail', dailyNightRoundsSummaryDetail, layouts.MainLayout),
   setLayout("/PromotionAduit", PromotionAduit, layouts.MainLayout),
   setLayout("/checkWard/recordViewGZ", checkWardRecordViewGzsrm, layouts.MainLayout),
+  setLayout("/nursingRounds_gzsrm/detail", NursingRoundsGzsrmDetail, layouts.MainLayout),
   setLayout("/checkWard/QuarterViewGZ", checkWardQuarterViewGzsrm, layouts.MainLayout),
   setLayout("/checkWard/wardsView", checkWardwardsView, layouts.MainLayout),
   setLayout("/goodOrBadRouter", GoodOrBadRouter, layouts.MainLayout),

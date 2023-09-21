@@ -39,7 +39,7 @@ import RectificationSummary from './views/qcZzwy/qcRectificationSummary/Rectific
 import QcMonthCheckReportList from './views/qcZzwy/qcMonthCheckReport/QcMonthCheckReportList'
 import QuarterlyAnalysisReportZzwy from './views/qcZzwy/qcQuarterlyAnalysisReport/Index'
 import QqualityMWSummary from './views/qcZzwy/qqualityMWSummary/tableList' // 季度质量管理工作总结 Quarterly quality management work summary
-
+import NursingRoundsGzsrm from 'src/modules/quality/views/nursingRounds_gzsrm/index'
 // import Analysis from "./views/analysis/Analysis";
 export interface Props extends RouteComponentProps<{ name?: string }> {}
 export default observer(function QcTwoRouter(props: Props) {
@@ -93,6 +93,15 @@ export default observer(function QcTwoRouter(props: Props) {
     keepAlive: true,
     disabledKeepAlive:
       (appStore.history && appStore.history.action) !== "POP",
+  };
+  /**护理查房 Nursing rounds**/
+  const route_nursingRounds = {
+    title: "护理查房",
+    path: "/qcTwo/nursingRounds",
+    icon: <EJZK />,
+    component: NursingRoundsGzsrm,
+    keepAlive: true,
+    disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP",
   };
   const route_analysis = {
     title: "二级质控月度报告",
@@ -249,6 +258,7 @@ export default observer(function QcTwoRouter(props: Props) {
         route_QualityControlKey,
         route_administrativeWard,
         route_safetyChecklist,
+        route_nursingRounds
       ],
       dghl: [
         {

@@ -140,7 +140,8 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
             return "http://192.168.1.54:9896";
         //漳州五院
         case "zzwy":
-            return "https://info.cr-health.com:20203";//测试环境，标准版后端
+            return 'http://192.168.1.54:9897'
+            // return "https://info.cr-health.com:20203";//测试环境，标准版后端
         // 烟台玲珑医院
         case "ytll":
             // return "http://192.168.1.54:9893";

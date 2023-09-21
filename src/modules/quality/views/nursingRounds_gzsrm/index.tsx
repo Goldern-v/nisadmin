@@ -4,10 +4,10 @@ import styled from 'styled-components'
 import React, { useEffect, useState } from 'react'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
 import { observer } from 'mobx-react-lite'
-import {Button, Checkbox, DatePicker, Select, Tooltip} from 'antd'
+import {Button, Checkbox, DatePicker, Select} from 'antd'
 import { appStore, authStore } from 'src/stores'
 import { fileDownload } from "src/utils/file/file";
-import api from './api'
+import api from '../scoringRecord/api'
 interface Props {
 
 }
@@ -26,95 +26,11 @@ export default observer((props: Props) => {
   const [tableData, setTableData] = useState([])
   const [form, setForm]: any = useState(defaultForm)
   const setFormItem = (item = {}) => {
-    //(['gzsrm'].includes(appStore.HOSPITAL_ID)) && (item?.status===0) && (item.status='')
     setForm({ ...form, ...item })
   }
   const [total, setTotal] = useState(1)
-  const statusMap = ['提交', '保存', '待病区审核', '待护理部初审核', '待护理部复审核']
-  // const statusMap_gzsrm = ['待提交', '待病区审核', '待片区填写意见', '审核完成']
   const statusMap_gzsrm = ['待提交', '待病区整改', '待科护士长审核', '完成']
-  // const statusMapSelect_gzsrm = ['全部', '待病区审核', '待片区审核', '审核完成']
   const statusMapSelect_gzsrm = ['全部', '待病区整改', '待科护士长审核', '完成']
-
-  // 新建-modal
-  // const [isModalVisible, setIsModalVisible] = useState(false);
-
-  const columns: any[] = [
-    {
-      title: "序号",
-      dataIndex: "",
-      render: (text: any, record: any, index: number) => index + 1,
-      align: "center",
-      width: 30
-    },
-    {
-      title: "日期",
-      dataIndex: `createTime`,
-      width: 120,
-      align: "center",
-      render: (text: string) => {
-        return (
-          moment(text).format('YYYY-MM-DD HH:mm')
-        )
-      }
-    },
-    {
-      title: "检查病区",
-      dataIndex: "SR0001002",
-      width: 120,
-      align: "center"
-    },
-    {
-      title: "得分",
-      dataIndex: "SR0001019",
-      width: 80,
-      align: "center"
-    },
-    {
-      title: `检查人员`,
-      dataIndex: `creatorName`,
-      width: 80,
-      align: "center",
-    },
-    {
-      title: "值班护士",
-      dataIndex: "SR0001005",
-      width: 80,
-      align: "center"
-    },
-    {
-      title: `值班护长`,
-      dataIndex: "SR0001001",
-      width: 80,
-      align: "center"
-    },
-    {
-      title: "状态",
-      dataIndex: "status",
-      width: 100,
-      align: "center",
-      render: (text: string, row: any, c: any) => {
-        return (
-          isNaN(row.status) ? '' : statusMap[+row.status]
-        )
-      }
-
-    },
-    {
-      title: "操作",
-      width: 100,
-      align: "center",
-      render: (text: any, row: any, c: any) => {
-        return (
-          <DoCon>
-            <span onClick={() => handleView(row)}>
-              查看
-            </span>
-          </DoCon>
-        );
-      }
-    }
-  ]
   const columns_gzsrm: any[] = [
     {
       title: "序号",
@@ -125,7 +41,7 @@ export default observer((props: Props) => {
     },
     {
       title: "日期",
-      dataIndex: `itemDataMap.SR0004003`,
+      dataIndex: `itemDataMap.SR0005003`,
       width: 120,
       align: "center",
       render: (text: string) => {
@@ -136,62 +52,42 @@ export default observer((props: Props) => {
     },
     {
       title: "检查病区",
-      dataIndex: 'SR0004004',
+      dataIndex: 'SR0005004',
       width: 120,
       align: "center"
     },
     {
       title: "得分",
-      dataIndex: 'SR0004022',
+      dataIndex: 'SR0005022',
       width: 80,
       align: "center"
     },
-    ...appStore.hisMatch({
-      map: {
-        gzsrm: [    {
-          title: "查房问题",
-          dataIndex: 'problems',
-          width: 80,
-          align: "center",
-          onCell: () => {
-            return {
-              style: {
-                maxWidth: 80,
-                overflow: 'hidden',
-                whiteSpace: 'pre-line',
-                textOverflow: 'ellipsis',
-                cursor: 'pointer'
-              }
-            };
-          },
-          // render: (problems:any) =>{
-          //   return problems&&problems.length > 8 ?<Tooltip
-          //       overlayStyle={{
-          //         whiteSpace:'pre-line'
-          //       }}
-          //       placement='topLeft' title={problems}>{problems}</Tooltip>:<div>{problems}</div>
-          // }
-        },
-        ],
-        other: []
-      }
-    }),
-    // {
-    //   title: `检查人员`,
-    //   dataIndex: `creatorName`,
-    //   width: 80,
-    //   align: "center",
-    //   className: appStore.HOSPITAL_ID === 'gzsrm' ? 'itemHide' : ""
-    // },
+    {
+      title: "查房问题",
+      dataIndex: 'problems',
+      width: 80,
+      align: "center",
+      onCell: () => {
+        return {
+          style: {
+            maxWidth: 80,
+            overflow: 'hidden',
+            whiteSpace: 'pre-line',
+            textOverflow: 'ellipsis',
+            cursor: 'pointer'
+          }
+        };
+      },
+    },
     {
       title: "值班护士",
-      dataIndex: 'SR0004007',
+      dataIndex: 'SR0005007',
       width: 80,
       align: "center"
     },
     {
       title: `查房护士长`,
-      dataIndex: 'SR0004001',
+      dataIndex: 'SR0005001',
       width: 80,
       align: "center"
     },
@@ -222,12 +118,10 @@ export default observer((props: Props) => {
       }
     }
   ]
-
   const getList = async () => {
     setTableLoading(true)
-    const { data } = await api.getList({...form,formCodes:['SR0004']})
+    const { data } = await api.getList({...form,formCodes:['SR0005']})
     setTableLoading(false)
-    //setTotal(data.totalPage)
     setTotal(data.totalCount)
     setTableData(data.list.map((item: any) => {
       return {
@@ -237,17 +131,11 @@ export default observer((props: Props) => {
     }))
   }
   const addTable = () => {
-    // appStore.history.push(`/checkWard/wardsView`)
-    // setIsModalVisible(true)
-    appStore.history.push(`/checkWard/recordViewGZ`)
+    appStore.history.push(`/nursingRounds_gzsrm/detail`)
   }
 
   const handleView = (row: any) => {
-    if (appStore.HOSPITAL_ID === 'gzsrm') {
-      appStore.history.push(`/checkWard/recordViewGZ?id=${row.id}`)
-    } else {
-      appStore.history.push(`/checkWard/recordView?id=${row.id}`)
-    }
+    appStore.history.push(`/nursingRounds_gzsrm/detail?id=${row.id}`)
   }
   const onCheckboxChange = (e: { target: { checked: any; }; }) => {
     setTableLoading(true)
@@ -285,8 +173,8 @@ export default observer((props: Props) => {
   return (
     <Wrapper>
       <SearchBar>
-        <div className='page-title'>护{['gzsrm'].includes(appStore.HOSPITAL_ID) ? '士' : ''}长夜查房评分记录</div>
-        {appStore.HOSPITAL_ID === 'gzsrm' && <Checkbox style={{ marginLeft: '14px' }} onChange={onCheckboxChange}>我的创建</Checkbox>}
+        <div className='page-title'>护士长夜查房评分记录</div>
+      <Checkbox style={{ marginLeft: '14px' }} onChange={onCheckboxChange}>我的创建</Checkbox>
         <div className='button-group'>
           <span className='label'>科室：</span>
           <DeptSelect hasAllDept onChange={(deptCode) => setFormItem({ wardCode: deptCode === '全院' ? '' : deptCode })} />
@@ -301,18 +189,13 @@ export default observer((props: Props) => {
             style={{ width: '140px' }}
             onChange={(val: string) => setFormItem({ status: val })}>
             {
-              ['gzsrm'].includes(appStore.HOSPITAL_ID) ?
-                statusMapSelect_gzsrm.map((item, index) => {
-                  return <Select.Option key={index} value={'' + (index === 0 ? '' : index)}>{item}</Select.Option>
-                })
-                :
-                statusMap.map((item, index) => {
-                  return <Select.Option key={index} value={'' + index}>{item}</Select.Option>
-                })
+              statusMapSelect_gzsrm.map((item, index) => {
+                return <Select.Option key={index} value={'' + (index === 0 ? '' : index)}>{item}</Select.Option>
+              })
             }
           </Select>
           <Button onClick={() => getList()}> 查询</Button>
-          {(appStore.HOSPITAL_ID === 'gzsrm' && authStore.isRoleManage) && <Button onClick={() => addTable()}> 新增</Button>}
+          { authStore.isRoleManage && <Button onClick={() => addTable()}> 新增</Button>}
 
           {/* 需要重新写接口联调 */}
           <Button type='primary' onClick={exportFiles}>导出</Button>
@@ -322,7 +205,7 @@ export default observer((props: Props) => {
         <BaseTable
           type={'index'}
           loading={tableLoading}
-          columns={appStore.HOSPITAL_ID === 'gzsrm' ? columns_gzsrm : columns}
+          columns={ columns_gzsrm }
           dataSource={tableData}
           surplusHeight={200}
           wrapperStyle={{ borderRadius: '5px' }}
@@ -339,7 +222,6 @@ export default observer((props: Props) => {
           }}
         />
       </MainWrapper>
-      {/* { isModalVisible && <AddModal isModalVisible={isModalVisible} />} */}
     </Wrapper>
   )
 })
