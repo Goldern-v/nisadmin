@@ -89,11 +89,12 @@ export default withRouter(observer((props: Props) => {
         noPass: false
       },
       roundsRecordProblem,
-      antiepidemicSaveInfo: {
-        id,
-        problem: problems,
-        itemSelectedInfos: subFormItems?.map((v: Obj) => ({ id: v.id, value: v.value }))
-      }
+      antiepidemicSaveInfo:null
+      // antiepidemicSaveInfo: {
+      //   id,
+      //   problem: problems,
+      //   itemSelectedInfos: subFormItems?.map((v: Obj) => ({ id: v.id, value: v.value }))
+      // }
     },"")
     if (res.code == 200) {
       message.success('提交成功')
