@@ -449,7 +449,7 @@ export default observer(function QcItemGroup(props: Props) {
               })
             }
 
-            {['925', 'zjhj','zzwy','jmfy'].includes(appStore.HOSPITAL_ID) && <div style={{ marginTop: 5 }}>
+            {['925', 'zjhj','zzwy','jmfy','ytll'].includes(appStore.HOSPITAL_ID) && <div style={{ marginTop: 5 }}>
               <Input.TextArea
                 value={item.remark}
                 autosize={{ minRows: 2 }}
