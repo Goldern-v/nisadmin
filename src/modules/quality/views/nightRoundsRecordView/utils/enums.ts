@@ -55,6 +55,10 @@ export const CONFIG = {
 
 export const STATUS_LIST: SelectItem[] = [
   {
+    label: "全部",
+    value: "",
+  },
+  {
     label: "待提交",
     value: 1,
     color: "#e94033",
