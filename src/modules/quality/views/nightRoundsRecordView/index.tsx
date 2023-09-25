@@ -24,10 +24,10 @@ export default observer((props: Props) => {
   const defaultForm = () => {
     const [m1, m2] = currentMonth()
     return {
-      wardCode: authStore.selectedDeptCode,
-      status: undefined,
-      beginDate: m1,
-      endDate: m2,
+      deptCode: authStore.selectedDeptCode,
+      strStatus: "",
+      startTime: m1,
+      endTime: m2,
       formCodes: [],
       pageIndex: 1,
       pageSize: 20
@@ -67,7 +67,7 @@ export default observer((props: Props) => {
     ...CONFIG[type].customColumns,
     {
       title: "状态",
-      dataIndex: "status",
+      dataIndex: "strStatus",
       width: 100,
       align: "center",
       render: (text: string, row: Obj) => {
@@ -86,7 +86,7 @@ export default observer((props: Props) => {
             <span onClick={() => handleView(row)}>
               查看
             </span>
-            {!(row.status>2) && ['jmfy'].includes(appStore.HOSPITAL_ID) && 
+            {!(row.strStatus>2) && ['jmfy'].includes(appStore.HOSPITAL_ID) && 
               <span style={{color:'red'}} onClick={ ()=>toDelete(row) }>删除</span>
             }
           </DoCon>
@@ -97,7 +97,7 @@ export default observer((props: Props) => {
 
   const getList = async () => {
     setTableLoading(true)
-    const { data } = await api.getList({ ...form, type })
+    const { data } = await api.getList2({ ...form, type })
     setTableLoading(false)
     //setTotal(data.totalPage)
     setTotal(data.totalCount)
@@ -141,17 +141,17 @@ export default observer((props: Props) => {
         <PageTitle>{CONFIG[type].title}</PageTitle>
         <Place />
         <span className='label'>科室：</span>
-        <DeptSelect hasAllDept onChange={(deptCode) => setFormItem({ wardCode: deptCode === '全院' ? '' : deptCode })} />
+        <DeptSelect hasAllDept onChange={(deptCode) => setFormItem({ deptCode: deptCode === '全院' ? '' : deptCode })} />
         <span className='label'>日期：</span>
         <DatePicker.RangePicker
           style={{ width: 220 }}
-          value={[form.beginDate, form.endDate]}
-          onChange={(val) => setFormItem({ beginDate: val[0], endDate: val[1] })} />
+          value={[form.startTime, form.endTime]}
+          onChange={(val) => setFormItem({ startTime: val[0], endTime: val[1] })} />
         <span className='label'>状态：</span>
         <Select
-          value={form.status}
+          value={form.strStatus}
           style={{ width: '140px' }}
-          onChange={(val: string) => setFormItem({ status: val })}>
+          onChange={(val: string) => setFormItem({ strStatus: val })}>
           {
             STATUS_LIST.map((item, index) => {
               return <Select.Option key={item.value} value={item.value}>{item.label}</Select.Option>
