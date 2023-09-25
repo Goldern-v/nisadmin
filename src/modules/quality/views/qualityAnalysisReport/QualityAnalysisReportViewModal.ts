@@ -106,24 +106,36 @@ class QualityAnalysisReportViewModal {
   /** 数据初始化 */
   async initData() {
     let data = {} as any
+    let jmfyData = {} as any
     if(appStore.queryObj.qcOne=='monthReport'){
       data = await qualityAnalysisReportService.getReport_dgxg_one()
     }else{
       data = await qualityAnalysisReportService.getReport()
+      if(data && appStore.HOSPITAL_ID ==='jmfy') {
+        jmfyData = await qualityAnalysisReportService.getQcAnalysisJmfy({
+          beginDate: `${data.data?.report?.beginDate} 00:00:00`,
+          endDate:`${data.data?.report?.endDate} 23:59:59`,
+          qcCode: data.data?.report?.qcCode,
+        })
+      }
     }
     this.allData = data.data
     this.getSectionData(`报告名称`).text = this.allData.report!.reportName || {}
     this.getSectionData(`上月质量问题`).list = this.allData!.lastImproveItemList || []
     this.getSectionData(`2-1`).report = this.allData!.report || {}
     this.getSectionData(`本月质量检查扣分情况`).report = this.allData!.report || {}
-    this.getSectionData(`质量扣分比较`).list = (this.allData!.typeCompareList || []).map((item: any) => {
-      return Object.assign(item, {
-        currentDeductScore: Number((item.currentDeductScore || 0).toFixed(2)),
-        lastDeductScore: Number((item.lastDeductScore || 0).toFixed(2)),
-        compareScore: Number(item.compareScore.toFixed(2)),
-        compareScorePercent: Number(item.compareScorePercent.toFixed(2))
+    if(appStore.HOSPITAL_ID ==='jmfy' && jmfyData.data?.typeCompareList.length > 0){
+      this.jmfyTypeCompareList(jmfyData.data?.typeCompareList)
+    }else{
+      this.getSectionData(`质量扣分比较`).list = (this.allData!.typeCompareList || []).map((item: any) => {
+        return Object.assign(item, {
+          currentDeductScore: Number((item.currentDeductScore || 0).toFixed(2)),
+          lastDeductScore: Number((item.lastDeductScore || 0).toFixed(2)),
+          compareScore: Number(item.compareScore.toFixed(2)),
+          compareScorePercent: Number(item.compareScorePercent.toFixed(2))
+        })
       })
-    })
+    }
     if(appStore.queryObj.qcOne=='monthReport'){
       this.getSectionData(`本月质量扣分质控表排序`).list = (this.allData!.codeItemList || []).map((item: DeptItem) => {
         return Object.assign(item, {
@@ -132,14 +144,17 @@ class QualityAnalysisReportViewModal {
         })
       })
     }else{
-      this.getSectionData(`本月质量扣分科室排序`).list = (this.allData!.deptItemList || []).map((item: DeptItem) => {
-        return Object.assign(item, {
-          deductScore: Number(Number(item.deductScore).toFixed(2)),
-          convertDeductScore: Number(Number(item.convertDeductScore).toFixed(2)),
+      if(appStore.HOSPITAL_ID ==='jmfy' && jmfyData.data?.deptItemList.length > 0){
+        this.jmfyDeptItemList(jmfyData)
+      }else{
+        this.getSectionData(`本月质量扣分科室排序`).list = (this.allData!.deptItemList || []).map((item: DeptItem,key:number) => {
+          return Object.assign(item, {
+            deductScore: Number(Number(item.deductScore).toFixed(2)),
+            convertDeductScore: Number(Number(item.convertDeductScore).toFixed(2)),
+          })
         })
-      })
+      }
     }
-    
     this.getSectionData(`本月主要质量问题`).list = (this.allData!.detailItemList || []).map((item: any) => {
       return Object.assign(item, {
         totalDeductScore: Number(Number(item.totalDeductScore).toFixed(2))
@@ -151,7 +166,7 @@ class QualityAnalysisReportViewModal {
     this.getSectionData(`追踪督导`).report = data!.report || {}
     this.getSectionData(`检查重点`).report = data!.report || {}
     this.getSectionData(`问题及建议`).report = data!.report || {}
-  /****/
+  /**   **/
     if(appStore.HOSPITAL_ID ==='jmfy'){
      await  this.initChart( this.allData!.report || {})
     }
@@ -196,6 +211,26 @@ class QualityAnalysisReportViewModal {
     const month = date.getMonth() + 1; // 月份从0开始计算，需要加1
     const lastDay = new Date(year, month, 0).getDate();
     return lastDay
+  }
+/**江门妇幼数据--分科室排序**/
+  jmfyDeptItemList(data:any){
+  this.getSectionData(`本月质量扣分科室排序`).list = (this.allData!.deptItemList || []).map((item: DeptItem,key:number) => {
+    return Object.assign(item, {
+      deductScore: Number((data.data?.deptItemList[key])!.deductScore||0).toFixed(2),
+      convertDeductScore: Number((data.data?.deptItemList[key])!.convertDeductScore||0).toFixed(2),
+    })
+  })
+}
+  /**江门妇幼数据--质量扣分比较**/
+  jmfyTypeCompareList(data:any){
+    this.getSectionData(`质量扣分比较`).list = (this.allData!.typeCompareList || []).map((item: any,key:number) => {
+      return Object.assign(item, {
+        currentDeductScore: Number((data[key])?.currentDeductScore||0).toFixed(2),
+        lastDeductScore: Number((data[key])?.lastDeductScore||0).toFixed(2),
+        compareScore: Number(item.compareScore.toFixed(2)),
+        compareScorePercent: Number(item.compareScorePercent.toFixed(2))
+      })
+    })
   }
 }
 

@@ -188,6 +188,15 @@ export default class QualityAnalysisReportService extends BaseApiService {
     }
     return this.post(`/qcAnalysis/update/reportName`, obj)
   }
+/** 江门妇幼 质控内容月度分析--分数汇总 qcAnalysis/ReportJMFY
+ *
+ *     "beginDate":"2021-09-01 00:00:00",
+ *     "endDate":"2023-09-30 23:59:59",
+ *     "qcCode":"GSY_QCTP001"
+ * **/
+public getQcAnalysisJmfy(params:any){
+    return this.post(`/qcAnalysis/ReportJMFY`, params)
+}
 }
 
 export const qualityAnalysisReportService = new QualityAnalysisReportService()
