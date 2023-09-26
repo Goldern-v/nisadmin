@@ -240,7 +240,7 @@ export default withRouter(observer((props: Props) => {
       <HeadWrapper>
         <div>
           <div style={{ fontWeight: "bold" }}>{master.deptName}{isTwoNurse ? '二值护士夜查房记录表' : '中夜班查房记录表'}</div>
-          <div>状态：{getNextNode()?.nodeName}</div>
+          <div>状态：{getNextNode()?.nodeName || process[process.length-1]?.nodeName}</div>
         </div>
         <div className='right-bottom'>
           <Button className="con-item" onClick={() => history.goBack()}>返回</Button>

@@ -47,6 +47,8 @@ export default function Chart(props: Props) {
     measureList = [15, 30, 45, 60, 75, 90]
   } else if (largeNum <= 120) {
     measureList = [20, 40, 60, 80, 120, 160]
+  } else if (largeNum <= 800) {
+    measureList = [150, 300, 450, 600, 750, 900]
   }
 
   let MaxNum = measureList[measureList.length - 1]

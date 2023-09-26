@@ -193,7 +193,7 @@ export default observer(function ApplicationN1(props: Props) {
           height:
             PromotionAppUtils.editStatus == "取消编辑" &&
             (appStore.HOSPITAL_ID ==='whyx' ? true : Number(PromotionAppUtils.flowStatus) > 0)
-              ? "1807px"
+              ? "23px"
               : "1500px",
         }}
         onClick={() => {

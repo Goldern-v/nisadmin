@@ -126,11 +126,11 @@ function SelectReport(props: Props) {
               </Select>
             )}
         </Form.Item>
-        {codeList.map((it:any)=> <Form.Item {...formItemLayout} label='项目简称'
+        {codeList.map((it:any)=> <Form.Item {...formItemLayout} label='项目名称'
         extra={'二级项目：'+it.label}>
               {getFieldDecorator(it.key+'', {
                 initialValue: it.simpleName || '',
-                rules: [{ required: true, message: '项目简称不能为空' }]
+                rules: [{ required: true, message: '项目名称不能为空' }]
               })(<Input key={it.key} style={{ width: '100%' }} />)}
             </Form.Item>
         )}

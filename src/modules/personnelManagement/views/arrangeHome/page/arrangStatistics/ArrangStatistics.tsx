@@ -34,7 +34,16 @@ export default observer(function ArrangStatistics() {
     {
       code: "工时统计",
       name: "工时统计"
-    }
+    },
+   ...appStore.hisMatch({
+          map: {
+            '925':[{
+              code: "总天数",
+              name: "总天数"
+            }]
+          },
+
+        })
   ];
   const columns_1: ColumnProps<any>[] | any = [
     {

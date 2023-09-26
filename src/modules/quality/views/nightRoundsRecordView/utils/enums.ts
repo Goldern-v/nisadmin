@@ -55,18 +55,22 @@ export const CONFIG = {
 
 export const STATUS_LIST: SelectItem[] = [
   {
+    label: "全部",
+    value: "",
+  },
+  {
     label: "待提交",
-    value: 1,
+    value: "待提交",
     color: "#e94033",
   },
   {
     label: "待护理部审核",
-    value: 2,
+    value: "待护理部审核",
     color: "#f4bd4a",
   },
   {
     label: "护理部审核已通过",
-    value: 4,
+    value: "护理部审核已通过",
     color: "#60ad91",
   },
 ];

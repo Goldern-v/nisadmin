@@ -1,18 +1,19 @@
 import styled from "styled-components";
-import { Checkbox, Radio, Icon, Input, Row, Col, Spin } from "antd";
+import {Checkbox, Radio, Icon, Input, Select} from "antd";
 import React, { useState, useEffect } from "react";
 import Zimage from "src/components/Zimage";
 import { CheckboxChangeEvent } from "src/vendors/antd";
 import { cloneJson } from "src/utils/json/clone";
 import { numToChinese } from "src/utils/number/numToChinese";
 import { useRef } from "src/types/react";
-const { TextArea } = Input;
 import printing from "printing";
 import { appStore } from "src/stores";
 import { INodeAppoint } from '../../qualityControlRecordEdit/model/QualityControlRecordEditModel'
-// import { qualityControlRecordApi } from "../../api/QualityControlRecordApi";
+const { TextArea } = Input;
+const {Option } =Select
 export interface Props {
   detailData: any;
+  nurseList:any
 }
 export default function qualityControlRecordDetailMidLeft(props: Props) {
   const pageRef: any = useRef<HTMLElement>();
@@ -33,7 +34,7 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
 
   let zhuyuanhao = appStore.HOSPITAL_ID == 'wh' ? '诊疗号' : '住院号'
 
-  const { detailData } = props;
+  const { detailData,nurseList } = props;
   let deductMarksType = detailData.master?.useSubItemFixedScore ? '自定义扣分' : '问题总扣分'
   const qcCode = detailData?.master?.qcCode || ''
   let qcMatchCode = appStore.HOSPITAL_ID as string
@@ -478,7 +479,9 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
                   </div> : ''}
                {appStore.hisMatch({
                     map:{
-                      '925':!detailData.master?.useScore && <div className="sub-item-list">
+                      '925':!detailData.master?.useScore &&
+                          <>
+                          <div className="sub-item-list">
                       <div style={{ marginTop: 5 }}>
                         <Input.TextArea
                           value={item.remark}
@@ -486,7 +489,19 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
                           style={{ resize: 'none' }}
                           placeholder="备注" />
                       </div>
-                    </div>,
+                    </div>
+                            <div>责任人:
+                              <Select
+                                  showSearch
+                                  mode={'multiple'}
+                                  filterOption={(input: any, option: any) =>
+                                      option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                  }
+                                  style={{width:180,margin:'0 5px'}}>
+                                {nurseList.map((nurse: any) => <Option key={nurse?.empNo}>{nurse.empName}</Option>)}
+                              </Select>
+                            </div>
+                   </>,
                       other:''
                     },
                     vague:true

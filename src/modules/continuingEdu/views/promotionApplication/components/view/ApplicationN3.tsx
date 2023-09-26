@@ -202,7 +202,7 @@ export default observer(function ApplicationN1(props: Props) {
           height:
             PromotionAppUtils.editStatus == "取消编辑" &&
             (appStore.HOSPITAL_ID ==='whyx' ? true : Number(PromotionAppUtils.flowStatus) > 0)
-              ? "1538px"
+              ? "23px"
               : "1793px",
         }}
         onClick={() => {
@@ -1013,7 +1013,7 @@ export default observer(function ApplicationN1(props: Props) {
             <tr>
               <td colSpan={4}>
                 <div className="base-item">
-                  <span style={{ marginRight: 99 }} id="JS0000129">
+                  <span style={{ marginRight: 20 }} id="JS0000129">
                   1.护理服务投诉：
                   <DateModal
                     value={tableObjN3.JS0000129}
@@ -1053,7 +1053,7 @@ export default observer(function ApplicationN1(props: Props) {
                   <span>（标准：无）</span>
                 </div>
                 <div className="base-item">
-                  <span style={{ marginRight: 117 }} id="JS0000079">
+                  <span style={{ marginRight: 20 }} id="JS0000079">
                   2. 年度绩效考核结果：
                   <DateModal
                     value={tableObjN3.JS0000079}
@@ -1090,7 +1090,7 @@ export default observer(function ApplicationN1(props: Props) {
                     （标准:B级以上）
                 </div>
                 <div className="base-item">
-                  <span style={{ marginRight: 20 }} id="JS0000083">
+                  <span style={{ marginRight: 5 }} id="JS0000083">
                   3.无个人原因导致的III级护理不良事件：
                   <DateModal
                     value={tableObjN3.JS0000083}
@@ -1107,8 +1107,8 @@ export default observer(function ApplicationN1(props: Props) {
                         { label: "无", value: "A" },
                         { label: "有", value: "B" },
                       ]}
-                    />;
-                  </span>
+                    />
+                  </span>;
                   <span id="JS0000085">
                     <DateModal
                       value={tableObjN3.JS0000085}
@@ -1130,7 +1130,7 @@ export default observer(function ApplicationN1(props: Props) {
                   <span>（标准：无）</span>
                 </div>
                 <div className="base-item">
-                  <span style={{ marginRight: 125 }} id="JS0000087">
+                  <span style={{ marginRight: 25 }} id="JS0000087">
                   4.年度学分达标：
                   <DateModal
                     value={tableObjN3.JS0000087}
@@ -1165,8 +1165,8 @@ export default observer(function ApplicationN1(props: Props) {
                       { label: "达标", value: "A" },
                       { label: "不达标", value: "B" },
                     ]}
-                  />（标准:达标）
-                  </span>
+                  />
+                  </span>（标准:达标）
                 </div>
               </td>
             </tr>

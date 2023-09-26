@@ -29,6 +29,21 @@ class Api extends BaseApiService {
     return this.get(`${this.getPrefix(type)}list?${qs.stringify(params)}`);
   }
 
+  /** 获取列表 */
+  getList2(data: Obj) {
+    const { type, ...other } = data;
+    const params = {
+      ...other,
+      startTime: data.startTime
+        ? moment(data.startTime).format("YYYY-MM-DD")
+        : "",
+      endTime: data.endTime
+        ? moment(data.endTime).format("YYYY-MM-DD")
+        : "",
+    };
+    return this.get(`${this.getPrefix(type)}list?${qs.stringify(params)}`);
+  }
+
   /** 获取详情 */
   getItem(id: string, type: string) {
     return this.get(`${this.getPrefix(type)}pcDetail?id=${id}`);

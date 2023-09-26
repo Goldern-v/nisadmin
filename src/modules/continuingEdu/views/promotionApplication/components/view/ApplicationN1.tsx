@@ -193,6 +193,11 @@ export default observer(function ApplicationN1(props: Props) {
             (appStore.HOSPITAL_ID ==='whyx' ? true : Number(PromotionAppUtils.flowStatus) > 0)
               ? "23px"
               : "1118px",
+          height:
+              PromotionAppUtils.editStatus == "取消编辑" &&
+              (appStore.HOSPITAL_ID ==='whyx' ? true : Number(PromotionAppUtils.flowStatus) > 0)
+                  ? "23px"
+                  : "2213px",
         }}
         onClick={() => {
           message.warning("当前暂不可编辑，请根据流程进行修改！");
