@@ -985,7 +985,7 @@ export default observer(function 敏感指标登记本(props: Props) {
  }
  const canXiuDing = ()=>{
   if(appStore.HOSPITAL_ID === 'gzsrm') return true
-  return authStore.isAdmin
+  return authStore.isAdmin || authStore.isRoleManage
  }
 
   return (

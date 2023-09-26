@@ -88,8 +88,13 @@ export const navConfig = (appStore: any, authStore?: any): navConfigItem[] => {
     },
     {
       name: "敏感指标",
-      path: "/indicator",
-    },
+      // path: "/indicator",
+     onClick:()=>{
+       let [http, host, port] = location.origin.split(':');
+       let url = `192.168.254.92:9091/bcyNursingQuality/ssoLogin?token=${authStore.authToken}`
+       window.open(url)
+    }
+ },
     {
       name: "病区登记本",
       path: "/wardRegister",
