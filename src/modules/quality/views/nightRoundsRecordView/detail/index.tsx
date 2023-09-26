@@ -141,7 +141,7 @@ export default withRouter(observer((props: Props) => {
         recordId: master.id,
         handleNodeParam: {
           nodeCode: nextNode.nodeCode,
-          nopass: false,
+          nopass: true,
           handleContent: user.handleContent
         },
       }, queryObj.type)

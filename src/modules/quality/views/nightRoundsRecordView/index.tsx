@@ -131,7 +131,7 @@ export default observer((props: Props) => {
   }, [form])
   /*导出*/
   const exportFiles = () => {
-    api.getPageByUserDeptExport({ ...form }).then(res => {
+    api.getPageByUserDeptExport2({ ...form }).then(res => {
       fileDownload(res)
     })
   }

@@ -78,6 +78,25 @@ class Api extends BaseApiService {
       }
     );
   }
+
+  getPageByUserDeptExport2(data: any) {
+    const { type, ...other } = data;
+    const params = {
+      ...other,
+      startTime: data.startTime
+        ? moment(data.startTime).format("YYYY-MM-DD")
+        : "",
+      endTime: data.endTime
+        ? moment(data.endTime).format("YYYY-MM-DD")
+        : "",
+    };
+    return this.get(
+      `${this.getPrefix(type)}excel?${qs.stringify(params)}`,
+      {
+        responseType: "blob",
+      }
+    );
+  }
   /**表格列表查询 */
   getDailySummaryList(data: Obj) {
     const params = {
