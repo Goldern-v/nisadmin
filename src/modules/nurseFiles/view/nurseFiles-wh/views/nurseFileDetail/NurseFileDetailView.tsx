@@ -21,6 +21,7 @@ import JoinScientific from './views/JoinScientific'
 import LearnJob from './views/LearnJob'
 import MajorErrors from './views/MajorErrors'
 import MakeAwards from './views/MakeAwards'
+import LeaveRecord from './views/LeaveRecord'
 import Monograph from './views/Monograph'
 import OnEducation from './views/OnEducation'
 import OrganizationChange from './views/OrganizationChange'
@@ -401,7 +402,12 @@ const ROUTE_LIST_925 = [
     type: 'MakeAwards',
     component: MakeAwards,
     name: '立功嘉奖'
-  }
+  },
+  // ...['925'].includes(appStore.HOSPITAL_ID) ? [{
+  //   type: 'LeaveRecord',
+  //   component: LeaveRecord,
+  //   name: '请假记录'
+  // }] : []
 ]
 
 export default observer(function NurseFileDetail(props: Props, context: any) {

@@ -28,6 +28,7 @@ import TrainExamScore from 'src/modules/continuingEdu/views/preJobManage/trainin
 import BadEventStatisticalReportDetail from 'src/modules/badEventsNew/views/BadEventStatisticalReportDetail'
 import ForgetPasswordView from 'src/modules/login/ForgetPasswordView '
 import QcTempManage from 'src/modules/quality/views/qcTemplates/qcTemplatesManage/QcTempManage'
+import LeaveRecordDetail from 'src/modules/nurseFiles/view/nurseFiles-wh/views/nurseFileDetail/components/leaveRecordDetail/LeaveRecordDetail'
 
 const ScheduleHomeView = lazy(() =>
   import("src/modules/schedule/views/ScheduleHome/ScheduleHomeView")
@@ -575,6 +576,7 @@ const routes: RouteItem[] = [
   setLayout("/satisfiedPatSubmit", SatisfiedPatSubmit),
   setLayout("/followUpIndex", FollowUpIndex),
   setLayout("/followUpDetail", FollowUpDetail),
+  setLayout("/selfNurseFile/leaveRecordDetail/:id", LeaveRecordDetail, layouts.MainLayout),
 
   ...specialModule,
   setLayout("/autoLogin", appStore.hisMatch({

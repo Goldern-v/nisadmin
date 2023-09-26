@@ -83,14 +83,16 @@ export default function EditStandardTimeModal(props: Props) {
           startDate: props.oldData.startDate
             ? moment(props.oldData.startDate)
             : null,
-          initialHour: Number(props.oldData.initialHour)
+          initialHour: Number(props.oldData.initialHour),
+          bzts: Number(props.oldData.bzts),
         });
       } else {
         setTitle("新建标准工时");
         /** 表单数据初始化 */
         refForm!.current!.setFields({
           startDate: moment().startOf("week"),
-          initialHour: initialHourVal
+          initialHour: initialHourVal,
+          bzts:1,
         });
       }
     }
@@ -118,6 +120,13 @@ export default function EditStandardTimeModal(props: Props) {
               <InputNumber />
             </Form.Field>
           </Col>
+          {
+            appStore.HOSPITAL_ID==='925' && <Col span={24}>
+                <Form.Field label={`标准天数`} name="bzts" >
+                  <InputNumber />
+                </Form.Field>
+              </Col>
+          }
         </Row>
       </Form>
     </Modal>
