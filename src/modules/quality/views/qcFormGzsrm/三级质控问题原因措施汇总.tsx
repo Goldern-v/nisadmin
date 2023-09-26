@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import React, { useState, useEffect } from "react";
-import { Button, Select } from "antd";
+import {Button, Input, Select} from "antd";
 import { observer } from "src/vendors/mobx-react-lite";
 import { PageTitle, Place, PageHeader } from "src/components/common";
 import BaseTable from "src/components/BaseTable";
@@ -224,6 +224,8 @@ export default observer(function 三级问题原因措施汇总() {
           质控问题原因措施汇总
         </PageTitle>
         <Place />
+        <span>责任人:</span>
+        <Input style={{width:150}}/>
         <span>表单：</span>
         <Select
           value={query.qcCode}

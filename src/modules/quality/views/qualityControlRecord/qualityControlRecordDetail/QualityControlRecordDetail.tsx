@@ -10,9 +10,12 @@ import { appStore } from 'src/stores'
 // import QcrDetailNoRadio from '../qualityControlRecordDetailNoRadio/QualityControlRecordDetail'
 import qs from "qs";
 import QualityControlTempleteDetailHeader from './components/QualityControlTempleteDetailHeader'
+import service from "src/services/api";
 
 function QualityControlRecordDetail() {
   let [detailData, setDetailData]: any = useState([])
+  /**当前科室护士**/
+  const [nurseList,setNurseList]:any =useState([] as any)
   let [loading, setLoading] = useState(false)
 
   const formatItemGroupList = (itemGroupList: any) => {
@@ -69,9 +72,14 @@ function QualityControlRecordDetail() {
       }
 
       setDetailData(newData)
-
+      if(appStore.HOSPITAL_ID ==='925'){
+        service.commonApiService.userDictInfo(res.data?.master?.wardCode).then((res) => {
+          setNurseList(res.data||[])
+        })
+      }
       setLoading(false)
     })
+
   }
 
   useEffect(() => {
@@ -100,7 +108,7 @@ function QualityControlRecordDetail() {
           </SpinCon>
           <MidLeftCon>
             {/* <button onClick={testClick}>testClick</button> */}
-            <QualityControlRecordDetailMidLeft detailData={detailData} />
+            <QualityControlRecordDetailMidLeft detailData={detailData} nurseList={nurseList}/>
           </MidLeftCon>
           {/* zzwy 质控模板用到manageDetail */}
           {appStore.queryObj?.qcDetail!='manageDetail' && <MidRightCon>
