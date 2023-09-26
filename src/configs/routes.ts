@@ -986,6 +986,7 @@ const routes: RouteItem[] = [
       map: {
         gzsrm: detailGzsrm,
         925:detail925,
+        zjhj:detail925,
         other: detailLyrm
         // other: null
       }

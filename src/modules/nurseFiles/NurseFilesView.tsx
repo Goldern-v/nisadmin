@@ -119,6 +119,7 @@ export default observer(function NurseFilesView(props: Props) {
   const nursingEduFilesCon = {
     title: "护理进修生花名册",
     path: "/nurseFile/nursingEduFiles",
+    hide: () => ["ytll"].includes(appStore.HOSPITAL_ID),
     component: NursingEduFiles,
     icon: <TXHSCX />,
   };
@@ -133,8 +134,8 @@ export default observer(function NurseFilesView(props: Props) {
     icon: <TXHSCX />,
     hide: appStore.hisMatch({
       map: {
-        "hj,lyrm,qhwy,fsxt,ytll,whhk,925,dglb,stmz,zjhj": false,
-        'dghm': true,
+        "hj,lyrm,qhwy,fsxt,whhk,925,dglb,stmz,zjhj": false,
+        'dghm,ytll': true,
         other: !appStore.isDev,
       },
       vague: true,
