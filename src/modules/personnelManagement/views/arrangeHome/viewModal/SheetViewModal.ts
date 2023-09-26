@@ -314,7 +314,8 @@ class SheetViewModal {
           "lyyz",
           "qhwy",
           "whsl",
-          "zhzxy", 'dghm', 'fqfybjy','ytll'
+          "zhzxy", 'dghm', 'fqfybjy','ytll',
+          "925"
         ].includes(appStore.HOSPITAL_ID)
       ) {
         let { data: countObj } = await arrangeService.listRangeNameCode(
