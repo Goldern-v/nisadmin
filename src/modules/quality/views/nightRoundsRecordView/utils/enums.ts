@@ -14,7 +14,7 @@ export const CONFIG = {
       },
       {
         title: `检查人员`,
-        dataIndex: `creatorName`,
+        dataIndex: `createName`,
         width: 80,
         align: "center",
       },
@@ -26,7 +26,7 @@ export const CONFIG = {
       },
       {
         title: `值班护长`,
-        dataIndex: "SR0001001",
+        dataIndex: "submitNo",
         width: 80,
         align: "center",
       },
