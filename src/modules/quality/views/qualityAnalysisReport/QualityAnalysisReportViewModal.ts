@@ -178,21 +178,10 @@ class QualityAnalysisReportViewModal {
   }
   async  initChart(record:Obj){
     try {
-      const {year,indexInType} =record
-      let params: any = {}
-      let str:any =this.getMonthStartAndEnd()
-      if (record?.indexInType) {
-        params = {
-          beginDate: `${year}-${indexInType}-01 00:00:00`,
-          endDate: `${year}-${indexInType}-${str} 23:59:59`,
-        }
-      }else{
-        params = {
-          beginDate: `${year}-01-01 00:00:00`,
-          endDate: `${year}-12-30 23:59:59`,
-        }
+      let params: any = {
+        beginDate:`${appStore.queryObj.beginDate} 00:00:00`,
+        endDate:`${appStore.queryObj.endDate} 23:59:59`
       }
-
       const res = await Promise.all([
         api.countDeptQc({...params,qcCode:record?.qcCode, flag: 'mz'}),
         api.countDeptQc({...params,qcCode:record?.qcCode, flag: 'zy'}),
