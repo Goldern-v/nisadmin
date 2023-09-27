@@ -1,16 +1,13 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button, Radio, Icon, Input, InputNumber, Row, Col, Checkbox } from 'antd'
-import { qualityControlRecordEditModel as qcModel, Emp, BedNurse } from './../model/QualityControlRecordEditModel'
+import {Button, Radio, Icon, Input, InputNumber, Row, Col,  Select} from 'antd'
+import { qualityControlRecordEditModel as qcModel } from './../model/QualityControlRecordEditModel'
 import MultipleImageUploader from 'src/components/ImageUploader/MultipleImageUploader'
 const { TextArea } = Input
-// import Zimage from 'src/components/Zimage'
 import { observer } from 'mobx-react-lite'
 import { numToChinese } from 'src/utils/number/numToChinese'
 import { appStore } from 'src/stores'
-import {qualityControlRecordVM} from "src/modules/quality/views/qualityControlRecord/QualityControlRecordVM";
-import {qcFunTitle, qcOneTitle, qcThreeTitle} from "src/modules/quality/data/qcTitle";
-import {CONFIG_TITLE} from "src/modules/quality/utils/enums";
+const {Option } = Select
 
 export interface Props {
   itemGroup: any
@@ -460,6 +457,17 @@ export default observer(function QcItemGroup(props: Props) {
                   remark: e.target.value,
                 }, itemIndex)} />
             </div>}
+            { appStore.HOSPITAL_ID ==='925' && <>
+             <div>责任人: <Select
+                 showSearch
+                 mode={'multiple'}
+                 filterOption={(input: any, option: any) =>
+                     option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                 }
+                 style={{width:180,margin:'0 5px'}}>
+               {(qcModel.userNurseList||[]).map((nurse: any) => <Option key={nurse?.empNo}>{nurse.empName}</Option>)}
+             </Select></div>
+            </>}
           </div>}
           {appStore.hisMatch({
             map: {
