@@ -166,6 +166,7 @@ class PromotionApp {
  
 
   handelStep<T>(formList: any, formListTwo: any, rawForm: T) {
+    console.log(this.master.nextNodeCode);
     if (this.master.nextNodeCode == 'commit') {
 
       let isInfo = Object.keys(formList).some((item: string) => !rawForm[item])
@@ -186,6 +187,9 @@ class PromotionApp {
           itemDataMap: this.handleDifferent(),
           commitStep: this.master.nextNodeCode || '',
           carePatientList: this.carePatientList,
+        }
+        if(appStore.HOSPITAL_ID ==='whyx'  && obj.itemDataMap['JS0000126'] === 'A'){
+          return  message.info('是否免考内容为否，暂不可提交！')
         }
         this.loading = true;
         PromotionApplicationApi.getSaveOrCommit(obj).then((res) => {
@@ -209,6 +213,7 @@ class PromotionApp {
           commitStep: this.master.nextNodeCode || '',
           carePatientList: this.carePatientList,
         }
+
         this.loading = true;
         PromotionApplicationApi.getSaveOrCommit(obj).then((res) => {
           this.loading = false;
@@ -260,8 +265,9 @@ class PromotionApp {
           let dateCode = ["JS0000004", "JS0000008", "JS0000009", "JS0000038", "JS0000041", "JS0000054", "JS0000057", "JS0000060", "JS0000065", "JS0000066", "JS0000075", "JS0000077", "JS0000079", "JS0000081", "JS0000083", "JS0000085", "JS0000087", "JS0000089", "JS0000091", "JS0000097", "JS0000100", "JS0000129", "JS0000131", "JS0000136", "JS0000160", "JS0000162", "JS0000164", "JS0000166", "JS0000168", "JS0000170"]
           let checkCode = ["JS0000037", "JS0000068", "JS0000071", "JS0000056", "JS0000093", "JS0000109", "JS0000112", "JS0000115", "JS0000118", "JS0000120", "JS0000122", "JS0000125", "JS0000126", "JS0000135", "JS0000139", "JS0000140", "JS0000141", "JS0000151", "JS0000153", "JS0000154", "JS0000155", "JS0000157", "JS0000159"]
           this.setAssignment(res.data.itemDataMap, dateCode)
-          this.setAssignmentCheck(res.data.itemDataMap, checkCode)
-
+          if(appStore.HOSPITAL_ID  !=='whyx' ){
+            this.setAssignmentCheck(res.data.itemDataMap, checkCode)
+          }
           // 跟据不同表赋值
           if (this.master.formCode == 'HSJS_0001') {
             this.tableObjN1 = { ...res.data.itemDataMap }
@@ -313,6 +319,10 @@ class PromotionApp {
             ]
           } else if (this.master.formCode == 'HSJS_0003') {
             this.tableObjN3 = { ...res.data.itemDataMap }
+            console.log(typeof res.data.itemDataMap['JS0000126'],res.data.itemDataMap['JS0000126']);
+            console.log("this.tableObjN3.JS0000126===",typeof this.tableObjN3.JS0000126,this.tableObjN3.JS0000126);
+            console.log("this.tableObjN3.JS0000126===",typeof this.tableObjN3.JS0000127,this.tableObjN3.JS0000127);
+
             this.carePatientList = res.data.carePatientList.length ? res.data.carePatientList : [
               {
                 masterId: this.master.id,
