@@ -1,13 +1,15 @@
 import React, { useState, useEffect, useLayoutEffect, useRef } from 'react'
 import { Modal, message } from 'antd'
 import { ModalComponentProps } from 'src/libs/createModal'
+import { appStore } from "src/stores";
 import { observer } from 'src/vendors/mobx-react-lite'
 import { getModal } from '../../AnalysisDetailModal'
 
 export interface Props extends ModalComponentProps {
   /** 表单提交成功后的回调 */
   onOkCallBack?: () => {}
-  Component: any
+  Component: any,
+  handleList:any,
   sectionData: {
     sectionId: string
     sectionTitle?: string
@@ -18,7 +20,7 @@ export interface Props extends ModalComponentProps {
 }
 
 export default observer(function BaseModal(props: Props) {
-  let { visible, onCancel, Component, sectionData } = props
+  let { visible, onCancel, Component, sectionData,handleList } = props
   const [data, setData]: any = useState(null)
   const analysisDetailModal = useRef(getModal())
   const onSave = async () => {
@@ -37,6 +39,11 @@ export default observer(function BaseModal(props: Props) {
     }
   }, [visible])
 
+  const canEdit = ()=>{
+    if(appStore.HOSPITAL_ID != "whyx") return false
+    return !!handleList?.find((li:any)=>li.nodeName==="护理部审核" && li.state=="1")
+  }
+
   return (
     <Modal
       title={sectionData && sectionData.modalTitle}
@@ -48,7 +55,9 @@ export default observer(function BaseModal(props: Props) {
       width={(sectionData && sectionData.modalWidth) || 1000}
       centered
     >
-      {Component && <Component {...props.sectionData} data={data} setData={setData} />}
+      <div style={{ ...(canEdit() ? {pointerEvents:'none'} : {}) }}>
+        {Component && <Component {...props.sectionData} data={data} setData={setData} />}
+      </div>
     </Modal>
   )
 })

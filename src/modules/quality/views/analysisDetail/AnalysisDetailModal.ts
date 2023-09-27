@@ -95,7 +95,8 @@ export class AnalysisDetailModal {
       obj &&
       this.baseModal.show({
         Component: obj.modal,
-        sectionData: this.getSection(sectionId)
+        sectionData: this.getSection(sectionId),
+        handleList:this.configData?.handleList
       })
   }
 
