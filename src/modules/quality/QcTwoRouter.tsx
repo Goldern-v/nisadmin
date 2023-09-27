@@ -324,6 +324,7 @@ export default observer(function QcTwoRouter(props: Props) {
         },
       ],
       'whyx,whhk': [route_analysis],
+      '925': [],
       zzwy:[
         ...route_default,
         ...route_质控_ZZWY

@@ -76,6 +76,7 @@ export default function QcOneRouterHj(props: Props) {
       map: {
         dghl: [route_质控表单汇总],
         gzsrm: [route_一级质控问题原因措施汇总,],
+        925: [route_一级质控问题原因措施汇总,],
         fqfybjy: [route_福清一级质控问题原因措施汇总],
         other: []
       }
