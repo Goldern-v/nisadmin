@@ -13,6 +13,7 @@ import BaseTable, { DoCon } from 'src/components/BaseTable'
 import update from "immutability-helper";
 import { handbookModel as model } from '../model'
 import AddConfirmModal from './addConfirmModal'
+import {authStore} from "src/stores";
 const { Option } = Select
 const { TreeNode } = Tree
 /**
@@ -60,6 +61,8 @@ const defParams = {
 }
 export default observer(function AddModal(props: IProps) {
   const { visible, onOk, onCancel } = props
+  const { deptList } = authStore
+
   /**可选表单 */
   const [treeData, setTreeData] = useState<Obj[]>([])
   const [checkedKeys, setCheckedKeys] = useState<string[]>([])
@@ -156,9 +159,18 @@ export default observer(function AddModal(props: IProps) {
           <span className='label'>
             科室
           </span>
-          <DeptSelect hasAllDept deptCode={params.deptCode} onChange={(e: any) => {
-            setParams({ ...params, deptCode: e })
-          }} />
+          <Select
+              style={{ minWidth: 180 }}
+              value={params.deptCode}
+              filterOption={(input: any, option: any) =>
+                  option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+              onChange={(e: any) => {
+                setParams({ ...params, deptCode: e })}}>
+            <Option value={'全院'}>全院</Option>
+            {deptList.map((dept: any, idx: number) =>
+                <Option key={idx} value={dept.code}>{dept.name}</Option>
+            )}
+          </Select>
           <span className='label'>层级</span>
           <Select value={params.hierarchy} onChange={(e:any)=>{
             setParams({ ...params, hierarchy: e })

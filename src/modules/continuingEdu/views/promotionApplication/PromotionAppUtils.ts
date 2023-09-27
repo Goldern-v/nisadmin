@@ -188,9 +188,9 @@ class PromotionApp {
           commitStep: this.master.nextNodeCode || '',
           carePatientList: this.carePatientList,
         }
-        if(appStore.HOSPITAL_ID ==='whyx'  && obj.itemDataMap['JS0000126'] === 'A'){
-          return  message.info('是否免考内容为否，暂不可提交！')
-        }
+        // if(appStore.HOSPITAL_ID ==='whyx'  && obj.itemDataMap['JS0000126'] === 'A'){
+        //   return  message.info('是否免考内容为否，暂不可提交！')
+        // }
         this.loading = true;
         PromotionApplicationApi.getSaveOrCommit(obj).then((res) => {
           this.loading = false;
