@@ -945,7 +945,7 @@ export default observer(function ApplicationN1(props: Props) {
                 <div className="base-item" id="JS0000126">
                   <span>是否申请免考 </span>
                   <SelectBox
-                    type="checkbox"
+                    type={ appStore.HOSPITAL_ID  ==='whyx' ? "radio" : "checkbox"}
                     disabled={false}
                     values={tableObjN3.JS0000126}
                     inputKey={"JS0000126"}
