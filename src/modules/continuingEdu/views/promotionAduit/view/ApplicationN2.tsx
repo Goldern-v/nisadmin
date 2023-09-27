@@ -1007,7 +1007,8 @@ export default observer(function ApplicationN1(props: Props) {
              return <div  key={item.uid} >
                 <Spin spinning={upLoading} delay={500} >
                 <div className="upload-item">
-                  <span>{item.name}</span>
+                  {/* <span>{item.name}</span> */}
+                  <a href={item.path} target="_blank" rel="noopener noreferrer">{item.name}</a>
                   <Icon type="close-circle" theme="twoTone" twoToneColor="#f33838" onClick={()=>{handleRomve(item)} }/>
                 </div>
                 </Spin>
@@ -1120,10 +1121,11 @@ const Wrapper = styled.div`
     .error{
       background-color: #ee4646;
     }
-    span{
+    span,a{
       line-height: 30px;
       margin-right: 40px;
-      display: block;
+      position:relative;
+      z-index:100;
     }
   }
   .wrapper-pages-form {

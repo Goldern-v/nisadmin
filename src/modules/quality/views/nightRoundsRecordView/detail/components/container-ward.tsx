@@ -154,7 +154,7 @@ export default forwardRef(function (props: Props, ref: any) {
           <tbody>
             <tr>
               <td>值班护长：</td>
-              <td>{master.S1}</td>
+              <td>{master.submitNo}</td>
               <td>值班护士：</td>
               <td colSpan={3}>{master.onDutyNurseName}</td>
             </tr>
