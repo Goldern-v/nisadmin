@@ -197,6 +197,11 @@ export default observer(function CheckSummary() {
 				>
 					查询
 				</Button>
+		  <Button
+			  className="span" type='primary'
+			  onClick={() => checkSummaryData.importXls()}>
+			  导出
+		  </Button>
 			</PageHeader>
 			<ScrollCon>
 				<BaseTable

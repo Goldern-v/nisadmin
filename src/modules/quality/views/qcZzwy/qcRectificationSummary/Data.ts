@@ -4,6 +4,7 @@ import {quarterTimes} from "src/enums/date";
 import service from "src/services/api";
 import {qcZzwyApi} from "../qcZzwyApi";
 import {appStore} from "src/stores";
+import {fileDownload} from "src/utils/file/file";
 
 class RectificationSummaryData {
     @observable public tableLoading = false; //表格loading
@@ -103,8 +104,17 @@ class RectificationSummaryData {
 
         })
     }
-    //给我推荐一下适合react用的鱼骨图插件
-
+    /**导出**/
+    importXls(){
+        qcZzwyApi.rectificationSummary({
+            wardCode:this.deptCode,
+            beginDate:moment(this.filterDate[0]).format('YYYY-MM-DD'),
+            endDate:moment(this.filterDate[1]).format('YYYY-MM-DD'),
+            level:appStore.queryObj?.qcLevel || '1'
+        }).then((res:any)=>{
+            fileDownload(res)
+        })
+    }
 
 }
 

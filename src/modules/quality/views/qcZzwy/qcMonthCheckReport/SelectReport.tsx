@@ -18,10 +18,10 @@ export interface Props extends FormComponentProps {
 }
 const formItemLayout = {
   labelCol: {
-    sm: { span: 4 }
+    sm: { span: 6 }
   },
   wrapperCol: {
-    sm: { span: 20 }
+    sm: { span: 18 }
   }
 }
 
@@ -90,7 +90,8 @@ function SelectReport(props: Props) {
               initialValue: qcMonthCheckData.templateData.qcCode || '',
               rules: [{ required: true, message: '表模板不能为空' }]
             })(
-              <Select showSearch filterOption={(input:any, option:any) =>
+              <Select showSearch
+                      filterOption={(input:any, option:any) =>
                 option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
               }
                 style={{ width: '100%' }}
@@ -126,11 +127,11 @@ function SelectReport(props: Props) {
               </Select>
             )}
         </Form.Item>
-        {codeList.map((it:any)=> <Form.Item {...formItemLayout} label='项目名称'
+        {codeList.map((it:any)=> <Form.Item {...formItemLayout} label='改进项目名称'
         extra={'二级项目：'+it.label}>
               {getFieldDecorator(it.key+'', {
                 initialValue: it.simpleName || '',
-                rules: [{ required: true, message: '项目名称不能为空' }]
+                rules: [{ required: true, message: '改进项目名称不能为空' }]
               })(<Input key={it.key} style={{ width: '100%' }} />)}
             </Form.Item>
         )}

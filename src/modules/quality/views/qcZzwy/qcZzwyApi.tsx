@@ -140,7 +140,13 @@ export default class QcZzwyApi extends BaseApiService {
     *  "level": "1"
     * **/
    public inspectionSummary(params: any) {
-       return this.post(`/qcItem/inspectionSummary/export`, params)
+       return this.post(`/qcItem/inspectionSummary/export`, params,{ responseType: "blob" })
    }
+    public rectificationSummary(params: any) {
+        return this.post(`/qcItem/rectificationSummary/export`, params,{ responseType: "blob" })
+    }
+    public rectificationDeptSummary(params: any) {
+        return this.post(`/qcItem/rectificationdeptSummary/export`, params,{ responseType: "blob" })
+    }
 }
 export const qcZzwyApi = new QcZzwyApi();

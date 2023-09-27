@@ -15,6 +15,7 @@ import YearMonthRangePicker from 'src/components/YearMonthRangePicker';
 import { issueAnalysisData } from './issueAnalysisData';
 import {cloneJson} from 'src/utils/json/clone';
 import { appStore } from 'src/stores';
+import {RectificationData} from "src/modules/quality/views/qcZzwy/qcRectificationSummary/Data";
 const Option = Select.Option;
 
 export default observer(function IssueAnalysis() {
@@ -287,6 +288,12 @@ export default observer(function IssueAnalysis() {
 				>
 					查询
 				</Button>
+		  <Button
+			  className="span"
+			  type='primary'
+			  onClick={() => issueAnalysisData.importXls()}>
+			  导出
+		  </Button>
 			</PageHeader>
       <ScrollCon>
 				<BaseTable

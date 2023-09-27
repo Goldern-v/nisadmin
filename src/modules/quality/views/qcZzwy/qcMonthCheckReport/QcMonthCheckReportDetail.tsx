@@ -16,15 +16,11 @@ import { qcMonthCheckData } from './qcMonthCheckData'
 import { qcZzwyApi } from '../qcZzwyApi'
 import QcFishBoneMonth from './qcFishBoneMonth/fish-bone'
 import ChartCylindricalityMonth from './ChartCylindricalityMonth'
-// import MultipleImageUploader from 'src/components/ImageUploader/MultipleImageUploader'
-// import ImageUploader from 'src/components/ImageUploader'
-// import { OVERFLOW_WRAP } from 'html2canvas/dist/types/css/property-descriptors/overflow-wrap'
 
 
 export default observer(function QcMonthCheckReportDetail() {
   const pageRef: any = useRef<HTMLElement>()
   const [isPrint, setIsPrint] = useState(false)
-  const [text1, setText1] = useState('');
   const [selectTableModal, setSelectTableModal] = useState(false);
   const {id,qcLevel} = appStore.queryObj
   const [updateFish, setUpdateFish] = useState('');
@@ -33,8 +29,6 @@ export default observer(function QcMonthCheckReportDetail() {
 
   /**保存 */
   const onSave = ()=>{
-    // console.log(qcMonthCheckData.ZZWY_YDZKJCZJ_L1_003.fishValueArr)
-    // return false
     if(spinning){
       message.warning('努力加载中，请稍后操作')
       return false
@@ -49,10 +43,8 @@ export default observer(function QcMonthCheckReportDetail() {
         reportMasterId:qcMonthCheckData.reportMasterData.id || null,
         id:it.qcReportItemDataList?it.qcReportItemDataList[0].id:null,
       })
-      // console.log(it.qcReportItemDataList)
     })
-    // console.log(qcReportItemDataList)
-    // return false
+
     let paramter = {
       ...qcMonthCheckData.reportMasterData,
       hospitalCode:'zzwy',
@@ -67,7 +59,6 @@ export default observer(function QcMonthCheckReportDetail() {
     })
   }
   const onPrint = (isPrint: boolean) => {
-    // return false
     if(spinning){
       message.warning('努力加载中，请稍后操作')
       return false
@@ -187,12 +178,7 @@ export default observer(function QcMonthCheckReportDetail() {
 
 
 const handleFishItem =(obj:any,index:number)=>{
-  // console.log(obj);
-  // console.log(index)
-  // qcMonthCheckData.updateFishValueObj(obj)
-  // if(index===0){
     qcMonthCheckData.updateFishValueArray(obj,index)
-  // }
 }
 
   /**本月质量改进项目 */
@@ -215,7 +201,6 @@ const handleFishItem =(obj:any,index:number)=>{
       },
         {
           title: 'keshi2', dataIndex: 'actualCheckNum3', 
-          // align: 'center',
           render: (datas: any, record: any) => {
             return (<div>
             <span style={{width:'100px'}}>改进项目:</span>
@@ -225,13 +210,8 @@ const handleFishItem =(obj:any,index:number)=>{
                 {qcMonthCheckData.templateData.itemCodeObj.map((it:any)=>{
                   return <span style={{marginRight:'15px'}}>{it.simpleName}</span>
                 })
-
                 }
-                
               </div>
-            {/* <Input.TextArea 
-                defaultValue={datas} 
-            /> */}
             </div>)
           }
       },
@@ -245,11 +225,9 @@ const handleFishItem =(obj:any,index:number)=>{
       qcMonthCheckData.createModalData = appStore.queryObj
       console.log(appStore.queryObj)
       /**创建分析报告 */
-      
       createQcReport()
     }
-    // qcMonthCheckData.getInspectionSummary()
-    
+
   }, [])
 
   /**创建分析报告 */
@@ -276,7 +254,6 @@ const handleFishItem =(obj:any,index:number)=>{
       // 新建的时候需要
       qcMonthCheckData.getInspectionSummary()
       setUpdateFish(moment().valueOf()+'')//更新鱼骨图
-      // qcMonthCheckData.updateFish = moment().valueOf()+''
     }).catch(err=>{
 
     })
@@ -294,10 +271,6 @@ const handleFishItem =(obj:any,index:number)=>{
           JSON.parse(it.qcReportItemDataList[0].itemValue):
           qcMonthCheckData.sourceMap[it.itemCode]
       })
-      // debugger
-      // qcMonthCheckData.ZZWY_YDZKJCZJ_L1_003.fishValueArr.map((ii:any)=>{
-      //   console.log(ii)
-      // })
       // 更新鱼骨图
       setUpdateFish(moment().valueOf()+'')
     }).catch(err=>{
@@ -306,21 +279,7 @@ const handleFishItem =(obj:any,index:number)=>{
     
   }
 
-  const uploadCard = async (file: any) => {
-    let obj: any = {
-      file,
-    }
 
-    const [err, res] = await to(qcZzwyApi.upload(obj))
-    if (err) {
-      return ''
-    }
-    // console.log(res.data)
-    if (res.data) {
-      let pathImg = `${res.data.path}`
-      return pathImg
-    }
-  }
 
 
   useEffect(() => {
@@ -359,11 +318,6 @@ const handleFishItem =(obj:any,index:number)=>{
               qcMonthCheckData.ZZWY_YDZKJCZJ_L1_004.imgList = []
             }
             qcMonthCheckData.ZZWY_YDZKJCZJ_L1_004.imgList.push({path:res.data?.path || '',name:res.data?.name|| ''})
-						// console.log(qcMonthCheckData.ZZWY_YDZKJCZJ_L1_004.imgList)
-            // if (res.data.id) {
-						// 	// 附件列表
-						// 	(planDatas.attchList as any).push(res.data)
-						// }
 					}
 				}).catch(err => {
 				})
@@ -374,7 +328,6 @@ const handleFishItem =(obj:any,index:number)=>{
 
 	}
   const addFish = ()=>{
-    // qcMonthCheckData.ZZWY_YDZKJCZJ_L1_003.fishValueArr.push(fishValueSource)
     let obj: any = Array.from(Array(50)).reduce((prev, cur, i) => {
       prev[`v${i + 1}`] = '';
       return prev
@@ -389,8 +342,6 @@ const handleFishItem =(obj:any,index:number)=>{
         <BaseBreadcrumb data={[{ name: '月度质控检查总结报告', link: '/qcOneHj/月度质控检查总结报告?qcLevel='+qcLevel }, { name: '报告详情', link: '' }]} />
         <div className='title'>
         {qcMonthCheckData.reportMasterData?.reportName || ''}
-    
-        {/* {qcMonthCheckData.createModalData.deptCode.label}{moment(qcMonthCheckData.createModalData.month).month()+1}月{qcMonthCheckData.createModalData.name} */}
         {/* {'2023年消化内科5月护理质量检查总结'} */}
         </div>
         <div className='aside'>
@@ -415,10 +366,8 @@ const handleFishItem =(obj:any,index:number)=>{
           <Page ref={pageRef} className='print-page'>
             <div style={{ fontSize: '30px', fontWeight: 700, textAlign: 'center', lineHeight: '60px',marginTop:"20px" }}>
             {qcMonthCheckData.reportMasterData?.reportName || ''}
-            {/* {moment(qcMonthCheckData.createModalData.month).month()+1}月{qcMonthCheckData.createModalData.name} */}
               {/* {'5月护理质量检查总结'} */}
               </div>
-            {/* <PageContent deductionData={deductionData} quarterRate={quarterRate} isPrint={isPrint} pageData={pageData} currentPage={currentPage} text={text} setText={setText}></PageContent> */}
             <>
             <div className='first-content-box'>
               <div className='first-title'>{`一、检查情况`}</div>
@@ -480,8 +429,6 @@ const handleFishItem =(obj:any,index:number)=>{
                           if(qcMonthCheckData.ZZWY_YDZKJCZJ_L1_003.fishValueArr.length===1){
                             return message.warning('至少保留一张鱼骨图')
                           }
-                          // console.log(index)
-
                         qcMonthCheckData.ZZWY_YDZKJCZJ_L1_003.fishValueArr.splice(index,1)
                         console.log(qcMonthCheckData.ZZWY_YDZKJCZJ_L1_003.fishValueArr)
                       }} className='delete-hover' type="delete" style={{fontSize:'24px',color:'#f00'}} />
@@ -489,7 +436,6 @@ const handleFishItem =(obj:any,index:number)=>{
                         <QcFishBoneMonth key={`${fish.id}+fish`} value={fish} index={index} isPrint={isPrint} updateFish={updateFish+index} onChange={handleFishItem}/>
                       </div>)
                   })}
-                {/* <QcFishBoneMonth value={qcMonthCheckData.ZZWY_YDZKJCZJ_L1_003.fishValueObj} isPrint={isPrint} updateFish={updateFish} onChange={handleFishItem}/> */}
                 </div>
                 <h4 className='second-title' style={{marginTop:'40px'}}>执行阶段（D）</h4>
                 <p >整改措施：</p>
@@ -539,8 +485,6 @@ const handleFishItem =(obj:any,index:number)=>{
                   )
                   })}
                 </div>
-                {/* <h4 className='second-title'>请输入</h4> */}
-
                 {!isPrint&&<Input.TextArea placeholder='请输入……' key={id+'textArea'}
                 value={qcMonthCheckData.ZZWY_YDZKJCZJ_L1_004.textArea} autosize={{ minRows: 5}}
                 onChange={(e)=>qcMonthCheckData.ZZWY_YDZKJCZJ_L1_004.textArea = e.target.value} />}

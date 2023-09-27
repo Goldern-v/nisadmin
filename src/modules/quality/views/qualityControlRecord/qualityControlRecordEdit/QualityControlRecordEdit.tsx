@@ -11,8 +11,6 @@ import FormPannel from "./components/FormPannel";
 import FormPanelYx from "./components/FormPanelYx";
 import PreviewPannel from "./components/PreviewPannel";
 import { navTitle } from "src/modules/quality/data/qcTitle";
-// import QcrEditNoRadio from "../qualityControlRecordEditNoRadio/QualityControlRecordEdit";
-// import { qualityControlRecordApi } from "src/modules/quality/views/qualityControlRecord/api/QualityControlRecordApi";
 import PatientDialog from "src/modules/indicator/selfDeclaration/components/patientDialog";
 
 export interface Props {}

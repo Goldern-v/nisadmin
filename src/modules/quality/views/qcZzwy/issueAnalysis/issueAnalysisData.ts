@@ -6,6 +6,7 @@ import { quarterTimes } from "src/enums/date";
 import service from "src/services/api";
 import { qcZzwyApi } from "../qcZzwyApi";
 import { appStore } from "src/stores";
+import {fileDownload} from "src/utils/file/file";
 class IssueAnalysisData{
 
   @observable public qcLevel = appStore.queryObj?.qcLevel || '1'
@@ -135,5 +136,17 @@ class IssueAnalysisData{
 
 		})
 	}
+  /**导出**/
+  importXls(){
+    qcZzwyApi.rectificationDeptSummary({
+      wardCode:this.deptCode,
+      qcCode:this.qcCode,
+      beginDate:moment(this.filterDate[0]).format('YYYY-MM-DD'),
+      endDate:moment(this.filterDate[1]).format('YYYY-MM-DD'),
+      level:appStore.queryObj?.qcLevel || '1'
+    }).then((res:any)=>{
+      fileDownload(res)
+    })
+  }
 }
 export const issueAnalysisData = new IssueAnalysisData()

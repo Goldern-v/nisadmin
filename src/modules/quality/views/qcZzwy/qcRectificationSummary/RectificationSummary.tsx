@@ -236,6 +236,11 @@ export default observer(function RectificationSummary() {
                     onClick={() => RectificationData.getTableList()}>
                     查询
                 </Button>
+                <Button
+                    className="span"
+                    onClick={() => RectificationData.importXls()}>
+                    导出
+                </Button>
             </PageHeader>
             <ScrollCon>
                 <BaseTable
