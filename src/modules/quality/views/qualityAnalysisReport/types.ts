@@ -45,6 +45,7 @@ export interface TypeCompare {
   lastDeductScore: number | string
   compareScore: number | string
   compareScorePercent: number | string
+  comparePercent: number | string //江门妇幼字段
 }
 /** 扣分科室 */
 export interface DeptItem {

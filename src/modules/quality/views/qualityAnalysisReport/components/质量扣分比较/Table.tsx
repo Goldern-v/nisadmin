@@ -54,16 +54,28 @@ export default function Table(props: Props) {
               <td>
                 {item.compareScore == 0 ? (
                   '持平'
-                ) : (
-                    <React.Fragment>
-                      {item.compareScorePercent > 0 ? (
-                        <img src={require('./images/more.png')} alt='' className='lm-arrow' />
-                      ) : (
-                          <img src={require('./images/less.png')} alt='' className='lm-arrow' />
+                ) :{ ...appStore.hisMatch({
+                    map:{
+                      'jmfy': <React.Fragment>
+                        {item.comparePercent > 0 ? (
+                            <img src={require('./images/more.png')} alt='' className='lm-arrow' />
+                        ) : (
+                            <img src={require('./images/less.png')} alt='' className='lm-arrow' />
                         )}
-                      {Math.abs(Number(item.compareScorePercent))}%
-                  </React.Fragment>
-                  )}
+                        {Math.abs(Number(item.comparePercent))}%
+                      </React.Fragment>,
+                      other: <React.Fragment>
+                        {item.compareScorePercent > 0 ? (
+                            <img src={require('./images/more.png')} alt='' className='lm-arrow' />
+                        ) : (
+                            <img src={require('./images/less.png')} alt='' className='lm-arrow' />
+                        )}
+                        {Math.abs(Number(item.compareScorePercent))}%
+                      </React.Fragment>
+                    }
+                  }) }
+
+                 }
               </td>
             </tr>
           ))}

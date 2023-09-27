@@ -215,20 +215,25 @@ class QualityAnalysisReportViewModal {
 /**江门妇幼数据--分科室排序**/
   jmfyDeptItemList(data:any){
   this.getSectionData(`本月质量扣分科室排序`).list = (this.allData!.deptItemList || []).map((item: DeptItem,key:number) => {
-    return Object.assign(item, {
-      deductScore: Number((data.data?.deptItemList[key])!.deductScore||0).toFixed(2),
-      convertDeductScore: Number((data.data?.deptItemList[key])!.convertDeductScore||0).toFixed(2),
-    })
+    const matchingItemB = data.data?.deptItemList.find((itemB:any) => itemB.wardCode === item.wardCode);
+    return {
+      ...item,
+      deductScore: Number((matchingItemB?.deductScore||0).toFixed(2)),
+      convertDeductScore: Number((matchingItemB?.convertDeductScore||0).toFixed(2)),
+    };
+
   })
 }
   /**江门妇幼数据--质量扣分比较**/
   jmfyTypeCompareList(data:any){
     this.getSectionData(`质量扣分比较`).list = (this.allData!.typeCompareList || []).map((item: any,key:number) => {
+      const matchingItemB = data.find((itemB:any) => itemB.itemType === item.itemType);
       return Object.assign(item, {
-        currentDeductScore: Number((data[key])?.currentDeductScore||0).toFixed(2),
-        lastDeductScore: Number((data[key])?.lastDeductScore||0).toFixed(2),
-        compareScore: Number(item.compareScore.toFixed(2)),
-        compareScorePercent: Number(item.compareScorePercent.toFixed(2))
+        currentDeductScore: Number(matchingItemB?.currentDeductScore||0).toFixed(2),
+        lastDeductScore: Number(matchingItemB?.lastDeductScore||0).toFixed(2),
+        compareScore: Number(matchingItemB?.compareScore||0).toFixed(2),
+        comparePercent: Number(matchingItemB?.comparePercent||0).toFixed(2),
+        // compareScorePercent:Number(matchingItemB?.compareScorePercent||0).toFixed(2),
       })
     })
   }
