@@ -37,6 +37,7 @@ export interface IAudit extends Record<string, any> {
   required: boolean;//是否必填
   multiSelect: boolean;//是否多选
   codeList: Array<ICode> | [];//员工列表
+  selectList:any  //多选单选数据
 }
 
 export interface ICode {
@@ -98,7 +99,7 @@ class QualityControlRecordEditModel {
   needPatientModal: boolean = ['whsl'].includes(appStore.HOSPITAL_ID)
   // 是否添加患者弹窗
   @observable patientVisible: boolean = false
-
+@observable userNurseList : Array<any> = []
   //基本填写信息
   @observable master = {
     evalDate: '', //评估时间
@@ -207,8 +208,7 @@ class QualityControlRecordEditModel {
       })
 
       fn.call(qualityControlRecordApi, this.query.qcCode).then((res: any) => {
-        // console.log(res);//质控数据
-        // console.log("res质控数据");//质控数据
+
         if (res.data) {
           this.loading = false
 
@@ -244,6 +244,7 @@ class QualityControlRecordEditModel {
             this.nodeAppointList = res?.data?.nodeAppointList.map((item: IAudit) => {
               let newItem = JSON.parse(JSON.stringify(item))
               newItem.userList = []
+              newItem.selectList=[]
               return newItem
             })
           }
@@ -582,6 +583,7 @@ class QualityControlRecordEditModel {
   // 
   private checkSaveGZSRM(params: any) {
     if (['gzsrm'].includes(appStore.HOSPITAL_ID)) {
+
       if (params.nodeAppointList && params.nodeAppointList.length > 0) {
         let index = params.nodeAppointList.findIndex((v: any) => {
 

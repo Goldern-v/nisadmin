@@ -8,7 +8,7 @@ import { numToChinese } from "src/utils/number/numToChinese";
 import { useRef } from "src/types/react";
 import printing from "printing";
 import { appStore } from "src/stores";
-import { INodeAppoint } from '../../qualityControlRecordEdit/model/QualityControlRecordEditModel'
+import {INodeAppoint, IuserEmpNo} from '../../qualityControlRecordEdit/model/QualityControlRecordEditModel'
 const { TextArea } = Input;
 const {Option } =Select
 export interface Props {
@@ -165,7 +165,7 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
     if (appStore.HOSPITAL_ID === 'gzsrm' && detailData?.nodeAppointList && detailData?.nodeAppointList.length > 0 && detailData?.nodeAppointList[0].userList.length > 0) {
       return <div>
         {detailData?.nodeAppointList.map((item: INodeAppoint) => {
-          return item.userList.length > 0 ? <div key={item.appointUserCode}>{item.showItemName}：{item.userList[0].empName}</div> : ""
+          return item.userList.length > 0 ? <div key={item.appointUserCode}>{item.showItemName}：{(item.userList as Array<IuserEmpNo>).map((item:any)=>item.empName).join(',')}</div> : ""
         })}
       </div>
     }

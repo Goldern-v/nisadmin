@@ -2,7 +2,15 @@ import styled from 'styled-components'
 import React from 'react'
 import { DatePicker, Select, Input, Checkbox, message } from 'antd'
 import { authStore, appStore } from 'src/stores'
-import { qualityControlRecordEditModel as qcModel, Emp, BedNurse, IAudit, ICode, INodeAppoint } from './../model/QualityControlRecordEditModel'
+import {
+  qualityControlRecordEditModel as qcModel,
+  Emp,
+  BedNurse,
+  IAudit,
+  ICode,
+  INodeAppoint,
+  IuserEmpNo
+} from './../model/QualityControlRecordEditModel'
 import { observer } from 'mobx-react-lite'
 import moment from 'moment'
 import QcItemGroup from './QcItemGroup'
@@ -155,19 +163,33 @@ export default observer(function FormPannel() {
    * @param value 
    */
 
-  const setAuditSelect = (item: IAudit, value: string, codeList: Array<ICode>) => {
-    let newNodeAppointList = nodeAppointList.map((itemNodeAppoint: INodeAppoint) => {
+  const setAuditSelect = (item: IAudit, value: any, codeList: Array<ICode>,index:number) => {
+    let newNodeAppointList = nodeAppointList.map((itemNodeAppoint: INodeAppoint,itKey:number) => {
       let newItemNodeAppoint = { ...itemNodeAppoint };
-      if (newItemNodeAppoint.appointUserCode === item.appointUserCode) {
-        let codeItem = codeList.find(findItem => findItem.code == value);
-        (codeItem) && (newItemNodeAppoint.userList = [{ empNo: codeItem.code, empName: codeItem.name }])
-
+      if (index === itKey) {
+        /**多选**/
+        if(value && Array.isArray(value)){
+        let listCode:any =[]
+          listCode =codeList.map((codeItem: ICode) => {
+              if(value.includes(codeItem.code)){
+                return { empNo: codeItem.code, empName: codeItem.name }
+              }
+          }).filter((item:any)=>item)
+          newItemNodeAppoint.userList =[]
+              if(listCode){
+                (newItemNodeAppoint.userList as  Array<IuserEmpNo>) = listCode
+              }
+        }else{
+          let codeItem = codeList.find(findItem => findItem.code == value);
+          (codeItem) && (newItemNodeAppoint.userList = [{ empNo: codeItem.code, empName: codeItem.name }])
+        }
       }
       return newItemNodeAppoint
 
     })
     qcModel.setNodeAppointList(newNodeAppointList)
   }
+
 
   // 打开患者弹窗
   const openPatient = () => {
@@ -233,9 +255,20 @@ export default observer(function FormPannel() {
                         <li key={index} className="auditItem">
                           <div className="auditItemName">{index + 1}、{item.showItemName}</div>
                           <div onClick={() => { getAuditList(item) }}>
-                            <Select className="auditSelectList" placeholder={`请选择${item.showItemName}`}
-                              value={nodeAppointList && nodeAppointList.length>0 && nodeAppointList[index].userList &&  nodeAppointList[index].userList.length>0?nodeAppointList[index].userList[0].empNo:''}
-                              onSelect={(value: string) => { setAuditSelect(item, value, item.codeList) }}>
+                            <Select
+                                className="auditSelectList" placeholder={`请选择${item.showItemName}`}
+                                value={ item.selectList}
+                            //   value={nodeAppointList && nodeAppointList.length>0 && nodeAppointList[index].userList &&
+                            //      ( item.multiSelect ?
+                            //       (nodeAppointList[index].userList as Array<IuserEmpNo>).map((item: Emp) => item.empNo):
+                            //       (nodeAppointList[index].userList as Array<IuserEmpNo>).map((item: Emp) => item.empNo)[0])
+                            // }
+                             mode={item.multiSelect ? 'multiple' : 'default'}
+                             onChange={(e:any)=>{
+                               item['selectList'] = e
+                               setAuditSelect(item,e,item.codeList,index)
+                             }}
+                            >
                               {
                                 item?.codeList && item.codeList.length>0?(item.codeList as Array<ICode>).map((codeItem: ICode) =>
                                   <Option value={codeItem.code} key={codeItem.code} >{codeItem.name}</Option>
