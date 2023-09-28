@@ -12,6 +12,10 @@ import moment from "moment";
 import { numToChinese } from "src/utils/number/numToChinese";
 import TextAreaCom from "./TextAreaCom";
 import { qualityControlRecordApi } from "../qualityControlRecord/api/QualityControlRecordApi";
+import {
+  qualityControlRecordEditModel as qcModel
+} from "src/modules/quality/views/qualityControlRecord/qualityControlRecordEdit/model/QualityControlRecordEditModel";
+import service from "src/services/api";
 
 const Option = Select.Option;
 const RangePicker = DatePicker.RangePicker;
@@ -32,9 +36,10 @@ export default observer(function 三级问题原因措施汇总() {
         ? ""
         : authStore.defaultDeptCode,
     qcCode: "",
+    empNoList:[]
   });
   const [formList, setFormList] = useState([] as any);
-
+const [userNurseList,setUserNurseList] =useState([] as any)
   const [loading, setLoading] = useState(false);
   const [tableData, setTableData] = useState([] as any[]);
   const [formListLoading, setFormListLoaindg] = useState(false);
@@ -212,9 +217,14 @@ export default observer(function 三级问题原因措施汇总() {
         () => setFormListLoaindg(false)
       );
   };
-
+ const initNurseList =(wardCode:string) =>{
+    service.commonApiService.userDictInfo(wardCode||authStore.selectedDeptCode).then((res) => {
+   setUserNurseList(res.data||[])
+    })
+  }
   useEffect(() => {
     getFormList();
+    initNurseList('')
   }, []);
   return (
     <Wrapper>
@@ -224,8 +234,6 @@ export default observer(function 三级问题原因措施汇总() {
           质控问题原因措施汇总
         </PageTitle>
         <Place />
-        <span>责任人:</span>
-        <Input style={{width:150}}/>
         <span>表单：</span>
         <Select
           value={query.qcCode}
@@ -250,7 +258,10 @@ export default observer(function 三级问题原因措施汇总() {
           value={query.wardCode}
           style={{ width: 200, marginRight: 15 }}
           showSearch
-          onChange={(wardCode: string) => setQuery({ ...query, wardCode })}
+          onChange={(wardCode: string) =>{
+            setQuery({ ...query, wardCode,empNoList:[] })
+            initNurseList(wardCode)
+          }}
           filterOption={(input: any, option: any) =>
             option.props.children.toLowerCase().indexOf(input.toLowerCase()) >=
             0
@@ -264,6 +275,20 @@ export default observer(function 三级问题原因措施汇总() {
               {item.name}
             </Option>
           ))}
+        </Select>
+        <span>责任人:</span>
+        <Select
+            showSearch
+            value={query.empNoList}
+            onChange={(e:any)=>{
+              setQuery({ ...query, empNoList:e })
+            }}
+            mode={'multiple'}
+            filterOption={(input: any, option: any) =>
+                option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+            }
+            style={{width:180,margin:'0 5px'}}>
+          {(userNurseList||[]).map((nurse: any) => <Option key={nurse?.empNo}>{nurse.empName}</Option>)}
         </Select>
         <span>汇总时间：</span>
         <RangePicker

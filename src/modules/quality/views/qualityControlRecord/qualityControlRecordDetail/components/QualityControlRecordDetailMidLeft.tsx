@@ -480,7 +480,6 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
                {appStore.hisMatch({
                     map:{
                       '925':!detailData.master?.useScore &&
-                          <>
                           <div className="sub-item-list">
                       <div style={{ marginTop: 5 }}>
                         <Input.TextArea
@@ -489,23 +488,26 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
                           style={{ resize: 'none' }}
                           placeholder="备注" />
                       </div>
-                    </div>
-                            <div>责任人:
-                              <Select
-                                  showSearch
-                                  mode={'multiple'}
-                                  filterOption={(input: any, option: any) =>
-                                      option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                                  }
-                                  style={{width:180,margin:'0 5px'}}>
-                                {nurseList.map((nurse: any) => <Option key={nurse?.empNo}>{nurse.empName}</Option>)}
-                              </Select>
-                            </div>
-                   </>,
+                    </div>,
                       other:''
                     },
                     vague:true
                   })}
+                  { appStore.HOSPITAL_ID ==='925'&&<div>责任人:
+                    <Select
+                        value={item.liableNo ? item.liableNo.split(','):[]}
+                        onChange={(e:any)=>{
+                          item.liableNo = e.join(',')
+                        }}
+                        showSearch
+                        mode={'multiple'}
+                        filterOption={(input: any, option: any) =>
+                            option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                        }
+                        style={{width:180,margin:'0 5px'}}>
+                      {nurseList.map((nurse: any) => <Option key={nurse?.empNo}>{nurse.empName}</Option>)}
+                    </Select>
+                  </div> }
                   <div className="itemAttachmentCon">
                     {item.attachUrls && (
                       <Zimage

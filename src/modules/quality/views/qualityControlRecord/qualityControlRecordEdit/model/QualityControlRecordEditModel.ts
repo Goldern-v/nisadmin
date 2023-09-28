@@ -410,6 +410,12 @@ class QualityControlRecordEditModel {
           }
         })
   }
+  /**当前科室护士**/
+  initNurseList( wardCode:string) {
+    service.commonApiService.userDictInfo(wardCode||authStore.selectedDeptCode).then((res) => {
+      this.userNurseList = res.data ||[]
+    })
+  }
 
   //更新master对象信息
   @action public setMaster = (newMaster: any) => {

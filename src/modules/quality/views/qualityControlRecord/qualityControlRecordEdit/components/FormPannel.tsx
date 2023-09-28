@@ -63,6 +63,8 @@ export default observer(function FormPannel() {
     qcModel.setMaster({ ...master, wardCode, bedNurseList: [] })
 
     qcModel.getBedNurseList()
+  /**获取当前科室护士**/
+    qcModel.initNurseList(wardCode)
   }
 
   const handleBedNurseListChange = (empNameGroup: any) => {
