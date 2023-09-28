@@ -1,10 +1,10 @@
 import styled from 'styled-components'
-import React, { useState, useEffect, useMemo } from 'react'
+import React, { useState, useEffect, useMemo,useRef } from 'react'
 import { RouteComponentProps } from 'react-router'
 import SelectCon from './components/SelectCon'
 // import BaseTabs from 'src/components/BaseTabs'
 
-// import { authStore, appStore } from 'src/stores'
+import { appStore } from 'src/stores'
 import NurseAudit from './NurseAudit'
 import { getCurrentMonth } from 'src/utils/date/currentMonth'
 import service from 'src/services/api'
@@ -27,6 +27,9 @@ export default function AuditsManagementView() {
   const [needAudit, setNeedAudit] = useState(true)
   const [selectedDate, setSelectedDate] = useState(getCurrentMonth())
   const [keyword, setKeyword] = useState('')
+  const [deptList, setDeptList] = useState([]);
+  const prevShowTypeRef = useRef(showType);
+
   // 类型列表
   const [showTypeDict, setShowTypeDict] = useState<Obj[]>([]);
   
@@ -36,6 +39,24 @@ export default function AuditsManagementView() {
       setShowType(res.data[0] ? res.data[0].code : "");
     });
   }, []);
+
+  useEffect(() => {
+    if(appStore.HOSPITAL_ID !== "whyx") return
+    const prevShowType = prevShowTypeRef.current;
+    if(showType==="nursePromotion" && prevShowType!=="nursePromotion") getDeptList()
+    else if(showType !== "nursePromotion" && prevShowType =="nursePromotion") setDeptList([])
+    prevShowTypeRef.current = showType;
+  },[showType])
+
+  const getDeptList = ()=>{
+    service.commonApiService.getUserDept().then(res => {
+      let arr = res.data.map((li:any)=>({
+        code:li.deptCode,
+        name:li.deptName
+      }))
+      setDeptList(arr)
+    });
+  }
   // 类型key值对应的name
   const showTypeName = useMemo(() => showTypeDict.find((v: any) => v.code === showType)?.name || '', [showType])
 
@@ -43,6 +64,7 @@ export default function AuditsManagementView() {
     <Wrapper>
       <ContextCon.Provider value={{showTypeName, showTypeDict, keyword, showType, selectedDate}}>
         <SelectCon
+          deptList={deptList}
           showType={showType}
           setShowType={setShowType}
           keyword={keyword}

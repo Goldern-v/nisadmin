@@ -54,6 +54,10 @@ export default class CommonApiService extends BaseApiService {
   public getBigDeptListSelfList() {
     return this.get(`/qcItem/dict/bigDeptListSelf`);
   }
+
+  public getUserDept() {
+    return this.get(`/flow/task/getUserDept`);
+  }
   // 聊城二院-有分院-获取护理单元用户列表
   public groupByDeptInDeptListLcey(postData: any = {}) {
     return this.post(

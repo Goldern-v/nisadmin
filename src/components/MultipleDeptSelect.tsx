@@ -46,22 +46,29 @@ export default observer(function MultipleDeptSelect(props: Props) {
     statisticsViewModal.selectedDeptCode = value;
     props.onChange && props.onChange(value);
   };
-  useEffect(() => {
-    statisticsViewModal.init().then(res => {
-      if (props.deptList) {
-        setDeptList(props.deptList);
-      } else {
-        setDeptList(statisticsViewModal.getDict(props.deptKey || "全部科室"));
-      }
-      if (props.deptKey == "完整科室") {
-        if(props.deptCode)  statisticsViewModal.selectedDeptCode = [props.deptCode]
-        else statisticsViewModal.selectedDeptCode = ["全院"];
-      } else if (props.deptList) {
-        statisticsViewModal.selectedDeptCode = [props.deptList[0].code];
-      }
-    });
+  useEffect( () => {
+    statisticsViewModal.init().then(res=>{
+      init()
+    })
   }, []);
 
+  useEffect( () => {
+      init();
+  }, [props.deptList]);
+
+  const init = ()=>{
+    if (props.deptList && props.deptList.length) {
+      setDeptList(props.deptList);
+    } else {
+      setDeptList(statisticsViewModal.getDict(props.deptKey || "全部科室"));
+    }
+    if (props.deptKey == "完整科室") {
+      if(props.deptCode)  statisticsViewModal.selectedDeptCode = [props.deptCode]
+      else statisticsViewModal.selectedDeptCode = ["全院"];
+    } else if (props.deptList) {
+      statisticsViewModal.selectedDeptCode = [props.deptList[0].code];
+    }
+  }
   return (
     <Wrapper>
       <Select

@@ -20,12 +20,13 @@ interface Props extends Obj {
   setNeedAudit: any;
   selectedDate: any;
   setSelectedDate: any;
+  deptList:any;
 }
 export default function SelectCon(props: Props) {
   const { showTypeDict } = useContext(ContextCon)
   const [visible, setVisible] = useState(false);
   // const [showTypeDict, setShowTypeDict] = useState([]);
-  let { showType, setShowType, keyword, setKeyword } = props;
+  let { showType, setShowType, keyword, setKeyword,deptList} = props;
   // const handleOk = () => {
   //   setVisible(false);
   // };
@@ -101,8 +102,7 @@ export default function SelectCon(props: Props) {
         </Select>
 
         <span style={{ marginLeft: 20 }}>科室：</span>
-        <MultipleDeptSelect deptKey={deptKey} deptCode={deptCode}/>
-
+        <MultipleDeptSelect deptKey={deptKey} deptCode={deptCode} deptList={deptList} />
         <Input
           style={{ marginLeft: 20, width: 360 }}
           placeholder="输入要搜索的关键字，包括科室，提交人"
