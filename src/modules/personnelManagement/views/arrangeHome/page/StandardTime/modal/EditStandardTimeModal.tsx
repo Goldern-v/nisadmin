@@ -55,7 +55,9 @@ export default function EditStandardTimeModal(props: Props) {
     let [err, value] = await to(refForm.current.validateFields());
     if (err) return;
 
-    let data = { ...(props.oldData || {}), ...value };
+    let data = {
+      ...(props.oldData || {}), ...value,
+    };
     data.startDate = data.startDate
       ? data.startDate.format("YYYY-MM-DD")
       : null;
@@ -84,7 +86,7 @@ export default function EditStandardTimeModal(props: Props) {
             ? moment(props.oldData.startDate)
             : null,
           initialHour: Number(props.oldData.initialHour),
-          bzts: Number(props.oldData.bzts),
+          initialDays: Number(props.oldData.initialDays),
         });
       } else {
         setTitle("新建标准工时");
@@ -92,7 +94,7 @@ export default function EditStandardTimeModal(props: Props) {
         refForm!.current!.setFields({
           startDate: moment().startOf("week"),
           initialHour: initialHourVal,
-          bzts:1,
+          initialDays:1,
         });
       }
     }
@@ -122,7 +124,7 @@ export default function EditStandardTimeModal(props: Props) {
           </Col>
           {
             appStore.HOSPITAL_ID==='925' && <Col span={24}>
-                <Form.Field label={`标准天数`} name="bzts" >
+                <Form.Field label={`标准天数`} name="initialDays" >
                   <InputNumber />
                 </Form.Field>
               </Col>

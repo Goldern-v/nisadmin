@@ -228,7 +228,8 @@ switch (appStore.HOSPITAL_ID) {
               coefficient: props.editData.coefficient,
               backgroundColor: props.editData.backgroundColor,
               npProportion: props.editData.npProportion == 1 ? '1' : '0',
-              deductionDay: props.editData.deductionDay
+              deductionDay: props.editData.deductionDay,
+              days: props.editData.days,  /*925天数**/
             }, ['lcey', 'lyyz'].includes(appStore.HOSPITAL_ID) ? {
               ...winterTime(props.editData.winWorkTime),
               settingWinNightHour: props.editData.settingWinNightHour,
@@ -254,7 +255,7 @@ switch (appStore.HOSPITAL_ID) {
               backgroundColor: "#ffffff",
               npProportion: "0",
               deductionDay: "0",
-              tianshu:1,  /*925天数**/
+              days:1,  /*925天数**/
             }, ['lcey', 'lyyz'].includes(appStore.HOSPITAL_ID) ? {
               workTime5: moment("8:00", "HH:mm"),
               workTime6: moment("12:00", "HH:mm"),
@@ -389,7 +390,7 @@ switch (appStore.HOSPITAL_ID) {
               {/* 天数 */}
               {
                  appStore.HOSPITAL_ID ==='925'&& <Col span={24}>
-                    <Form.Field label={`天数`} name="tianshu" >
+                    <Form.Field label={`天数`} name="days" >
                       <InputNumber min={1} max={1000} step={0.5} precision={1} />
                     </Form.Field>
                   </Col>

@@ -696,7 +696,24 @@ if (appStore.HOSPITAL_ID == "nys") {
     ...nysHandleDel
   );
 }
-
+if(appStore.HOSPITAL_ID ==='925'){
+  columns.push({
+      title: '天数小计',
+    width: 70,
+    align: "center",
+    dataIndex: "thisWeekDays",
+  },{
+    title: '本周结余天数',
+    width: 70,
+    align: "center",
+    dataIndex: "thisWeekBalanceDays",
+  },{
+    title: '累计天数',
+    width: 70,
+    align: "center",
+    dataIndex: "cumulativeDays",
+  },)
+}
 /**南医三删除排班人员 */
 const handleDelete = (record: any) => {
   Modal.confirm({
@@ -1069,7 +1086,7 @@ useLayoutEffect(() => {
                 'qzde': 3,
                 fqfybjy: 5,
                 nys: (isEdit ? 6 : 5),
-                'wjgdszd,wh,gxjb,jmfy,dghl,gzsrm,fsxt,925,whyx,whhk,gdtj,lyyz,whsl,ytll,whhk,nfsd,dglb,dghm': 6,
+                'wjgdszd,wh,gxjb,jmfy,dghl,gzsrm,fsxt,whyx,whhk,gdtj,lyyz,whsl,ytll,whhk,nfsd,dglb,dghm': 6,
                 zhzxy: 9,
                 'zjhj':7,
                 'zzwy':5,
@@ -1078,6 +1095,7 @@ useLayoutEffect(() => {
                 'lyrm': 0,
                 'dghm': 5,
                 qhwy: 2,
+                '925':9,
                 other: 2
               },
               vague: true

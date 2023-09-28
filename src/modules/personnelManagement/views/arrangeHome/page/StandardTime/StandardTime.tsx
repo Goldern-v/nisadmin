@@ -40,7 +40,7 @@ export default observer(function StandardTime() {
       title: "科室",
       align: "center",
       width: 200,
-      render(text: any, record: any) {
+      render() {
         return authStore.selectedDeptName;
       }
     },
@@ -56,6 +56,17 @@ export default observer(function StandardTime() {
       align: "center",
       width: 150
     },
+     ...appStore.hisMatch({
+        map:{
+          '925':[{
+            title: "标准天数",
+            dataIndex: "initialDays",
+            align: "center",
+            width: 100
+          },],
+          other:[]
+        }
+      }),
     {
       title: "操作",
       dataIndex: "",

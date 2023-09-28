@@ -130,6 +130,17 @@ export default function MainBox() {
       key: "effectiveTime",
       width: 90
     },
+      ...appStore.hisMatch({
+        map:{
+          '925':[{
+              title: "天数",
+              dataIndex: "days",
+              key: "days",
+              width: 90
+          }],
+          other:[]
+        },
+      }),
     {
       title: "白小时数",
       dataIndex: "settingMorningHour",

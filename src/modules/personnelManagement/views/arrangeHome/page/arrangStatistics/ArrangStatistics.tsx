@@ -35,15 +35,6 @@ export default observer(function ArrangStatistics() {
       code: "工时统计",
       name: "工时统计"
     },
-   ...appStore.hisMatch({
-          map: {
-            '925':[{
-              code: "总天数",
-              name: "总天数"
-            }]
-          },
-
-        })
   ];
   const columns_1: ColumnProps<any>[] | any = [
     {
@@ -78,6 +69,7 @@ export default observer(function ArrangStatistics() {
           align: "center"
         };
       }),
+
     {
       title: "工时合计",
       dataIndex: "合计",
@@ -139,6 +131,13 @@ export default observer(function ArrangStatistics() {
           return text || 0;
         }
       })),
+    ...appStore.hisMatch({
+      map:{
+        '925':[{title:'总天数',align:'center',dataIndex:'总天数',width:80}],
+        other:[]
+
+      },
+    }),
     {
       title: "加班",
       dataIndex: "加班",
