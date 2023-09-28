@@ -958,7 +958,7 @@ export default observer(function ApplicationN1(props: Props) {
                     id="JS0000127"
                     className="border mar-btom acc-time"
                     type="text"
-                    defaultValue={tableObjN3.JS0000127}
+                    value={tableObjN3.JS0000127}
                     onChange={(e) => {
                       handleInput(e, "JS0000127");
                     }}
