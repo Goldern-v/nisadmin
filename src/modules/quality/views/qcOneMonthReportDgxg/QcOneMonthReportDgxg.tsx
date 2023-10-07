@@ -45,7 +45,7 @@ export default observer(function QcOneMonthReportDgxg() {
   useEffect(() => {
     if (location.search) {
       let obj = qs.parse(location.search.substring(1));
-      obj.level && setLevel(obj.level);
+      obj.qcLevel && setLevel(obj.qcLevel);
     }
     api.qcRoleCode().then((res) => {
       if (res.data instanceof Array) setGroupRolelist(res.data);
