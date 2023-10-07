@@ -446,7 +446,7 @@ export default observer(function QcItemGroup(props: Props) {
               })
             }
 
-            {['925', 'zjhj','zzwy','jmfy','ytll'].includes(appStore.HOSPITAL_ID) && <div style={{ marginTop: 5 }}>
+            {['925', 'zjhj','zzwy','jmfy','ytll','gzsrm'].includes(appStore.HOSPITAL_ID) && <div style={{ marginTop: 5 }}>
               <Input.TextArea
                 value={item.remark}
                 autosize={{ minRows: 2 }}
@@ -475,7 +475,7 @@ export default observer(function QcItemGroup(props: Props) {
           </div>}
           {appStore.hisMatch({
             map: {
-              '925,gzsrm': !qcModel.baseInfo.useScore && <div className="sub-item-list">
+              '925': !qcModel.baseInfo.useScore && <div className="sub-item-list">
                 <div style={{ marginTop: 5 }}>
                   <Input.TextArea
                     value={item.remark}
