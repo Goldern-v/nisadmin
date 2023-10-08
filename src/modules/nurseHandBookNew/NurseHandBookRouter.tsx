@@ -173,6 +173,18 @@ export default function NurseHandBookRouter() {
           {
             title: '工作计划',
             children: [
+              ...appStore.hisMatch({
+                map:{
+                  'qhwy':[{
+                    title: '周工作计划',
+                    path: '/nurseHandBookNew/planWeek',
+                    component: PlanMonth,
+                    disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+                  }],
+                  ohter:[]
+                }
+              }),
+
               {
                 title: '月度计划',
                 path: '/nurseHandBookNew/planmonth',
@@ -214,6 +226,18 @@ export default function NurseHandBookRouter() {
           {
             title: '工作总结',
             children: [
+                ...appStore.hisMatch({
+                  map:{
+                    'qhwy':[{
+                      title: '周总结',
+                      path: '/nurseHandBookNew/sumWeek',
+                      component: PlanMonth,
+                      disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+                    },],
+                    ohter:[]
+                  }
+                }),
+
               {
                 title: '月度总结',
                 path: '/nurseHandBookNew/summonth',
