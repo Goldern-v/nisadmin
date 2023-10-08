@@ -239,6 +239,7 @@ export default observer(function QcOneMonthReportDgxg() {
           // setCreateAnalysisVisible(true)
           setCreateClear(true);
           setCreateLoading("");
+          Object.assign(res.data.report,{qcOne:"monthReport"})
           appStore.history.push(
             `/qualityAnalysisReport?${qs.stringify(res.data.report)}`
           );

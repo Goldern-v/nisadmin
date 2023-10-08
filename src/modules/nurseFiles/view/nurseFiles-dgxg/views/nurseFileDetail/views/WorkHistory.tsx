@@ -45,7 +45,10 @@ export default observer(function WorkHistory() {
       title: '结束年月',
       dataIndex: 'endTime',
       width: 100,
-      align: 'center'
+      align: 'center',
+      render: (val)=>{
+        return val || '至今'
+      }
     },
     {
       title: '单位',
