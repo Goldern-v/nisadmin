@@ -217,7 +217,7 @@ export default observer(function FileList() {
           type: '7'
         },
         {
-          content: '厚街医院护理人员执业准入资格备案表',
+          content: '护理人员执业准入资格备案表',
           number: res.data.filter((item: any) => item.type === '8').length,
           status:
             res.data.filter((item: any) => item.type === '8')[0] &&
