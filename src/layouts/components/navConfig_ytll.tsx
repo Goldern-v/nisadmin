@@ -1,6 +1,7 @@
 import React from "react";
 import { navConfigItem } from "src/libs/types";
 
+
 export const navConfig = (appStore: any, authStore?: any): navConfigItem[] => {
 
   return [
@@ -54,6 +55,11 @@ export const navConfig = (appStore: any, authStore?: any): navConfigItem[] => {
           // path: "/qcOneHj",
           path:'/qcOneDghl',
           icon: require("../images/menu-icon/一级质控@2x.png"),
+        },
+        {
+          name: "质控模板",
+          path: "/qcTemplates",
+          icon: require("../images/menu-icon/三级质控@2x.png"),
         },
         // {
         //   name: '病区登记本',
