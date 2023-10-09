@@ -59,6 +59,7 @@ class planData {
     @observable public createYear = moment() as undefined | moment.Moment; //年份
     @observable public createQuarter = moment().quarter() as unknown; //季度
     @observable public createMonth = moment().month() + 1; //yue份
+    @observable public createWeek = 1; //周
     // YDJH(1, "月度工作计划"),
     // JDJH(2, "季度工作计划"),
     // NDJH(3, "年度工作计划"),
@@ -69,6 +70,8 @@ class planData {
     @observable public type=1;//月度工作计划
     @observable public typeObject={
       "planmonth":1,
+        "planWeek":8,
+        'sumWeek':9,
       "planquarter":2,
       "planyear":3,
       "managemonth":1,
@@ -100,6 +103,7 @@ class planData {
             type:this.typeObject[this.pathname],
             year: this.createYear?.year(),
             deptCode:this.createDeptCode,
+            week:this.createWeek
             // deptName:this.createDeptName,
         }
     }

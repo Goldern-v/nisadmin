@@ -46,7 +46,6 @@ export default observer(function (props: Props) {
     deptCode: authStore.defaultDeptCode
   })
   const [total, setTotal] = useState(0)
-  // const [deptList, setDeptList] = useState<Obj[]>([])
   const [tableData, setTableData] = useState([])
   const [columns, setColumns] = useState<any[]>([])
   const [selectedRowKeys, setSelectedRowKeys] = useState([])
@@ -76,22 +75,28 @@ export default observer(function (props: Props) {
       title: '序号',
       align: 'center',
       dataIndex: '',
-      render: (text: string, row: Obj, index: number) => index + 1
+      render: (text: string, row: Obj, index: number) => index + 1,
     },
     {
       title: '标题',
       align: 'center',
-      dataIndex: 'title'
+      dataIndex: 'title',
     },
-    {
-      title: '状态',
-      align: 'center',
-      dataIndex: 'status',
-      render(text: number, row: Obj) {
-        const cur = STATUS_LIST.find(v => v.value === text)
-        return <span style={{ color: cur?.color }}>{cur?.label || row.statusDesc}</span>
-      }
-    },
+      ...appStore.hisMatch({
+        map:{
+          'qhwy':[],
+          other:[{
+            title: '状态',
+            align: 'center',
+            dataIndex: 'status',
+            render(text: number, row: Obj) {
+              const cur = STATUS_LIST.find(v => v.value === text)
+              return <span style={{ color: cur?.color }}>{cur?.label || row.statusDesc}</span>
+            }
+          },]
+        }
+      }),
+
     {
       title: '科室',
       align: 'center',
@@ -320,7 +325,31 @@ export default observer(function (props: Props) {
       ]
       setColumns(newColumns)
       getFormList()
-    }
+    },
+    time_create_more:()=>{
+      const [startTime] = currentMonth()
+      setQuery({
+        ...query,
+        time:startTime
+      })
+      setAddQuery({
+        ...addQuery,
+        time:startTime
+      })
+      getFormList()
+    },
+    time_no_create_more:()=>{
+      const [startTime] = currentMonth()
+      setQuery({
+        ...query,
+        time:startTime
+      })
+      setAddQuery({
+        ...addQuery,
+        time:startTime
+      })
+      getFormList()
+    },
   }
 
   const onOkBAdd = (params: Obj) => {

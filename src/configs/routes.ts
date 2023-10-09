@@ -29,6 +29,7 @@ import BadEventStatisticalReportDetail from 'src/modules/badEventsNew/views/BadE
 import ForgetPasswordView from 'src/modules/login/ForgetPasswordView '
 import QcTempManage from 'src/modules/quality/views/qcTemplates/qcTemplatesManage/QcTempManage'
 import LeaveRecordDetail from 'src/modules/nurseFiles/view/nurseFiles-wh/views/nurseFileDetail/components/leaveRecordDetail/LeaveRecordDetail'
+import detailQhwy from 'src/modules/nurseHandBookNew/views/detail-qhwy'
 
 const ScheduleHomeView = lazy(() =>
   import("src/modules/schedule/views/ScheduleHome/ScheduleHomeView")
@@ -986,6 +987,7 @@ const routes: RouteItem[] = [
       map: {
         gzsrm: detailGzsrm,
         925:detail925,
+        qhwy:detailQhwy,
         zjhj:detail925,
         other: detailLyrm
         // other: null

@@ -1,20 +1,14 @@
-import React, {memo, useEffect, useMemo, useState} from 'react'
+import React, { useEffect, useMemo, useState} from 'react'
 import styled from 'styled-components'
 import {nurseHandbookRecordModel as model} from '../model'
-import {DatePicker, Input, Select} from 'antd'
 import {observer} from 'mobx-react'
 import {DetailCtxCon} from 'src/modules/nurseHandBookNew/style'
-import {ChangeOrFocus, Obj} from 'src/libs/types'
-import cloneDeep from 'lodash/cloneDeep'
-import {dateFormat, dateFormat3, tableConConfig} from '../config'
-import moment, {isMoment} from 'moment'
-import {isOfType} from 'src/utils/ts.utils'
+import { Obj} from 'src/libs/types'
+import {tableConConfig} from '../config'
 import {FORM_CODE_VALUE} from "src/modules/nurseHandBookNew/views/list-jew/utils/enums";
-const { Option } = Select
-export interface Props {
-}
+
 /**表格类表单 */
-export default observer(function (props: Props) {
+export default observer(function () {
    const config = useMemo(() => tableConConfig[model.detail?.record?.menuCode] || {}, [model.id])
     const [itemValue,setItemValue]=useState('')
     useEffect(()=>{
@@ -34,7 +28,6 @@ export default observer(function (props: Props) {
                 <td key={i} >{ (i +1) <=9 ?`0${i+1}`:i+1 }</td>
             ))
         }
-        {/*<td>合计</td>*/}
     </tr>
     </thead>
     <tbody>
@@ -44,7 +37,7 @@ export default observer(function (props: Props) {
           return(
               <tr>
                   <td >{key + 1}月</td>
-                  { item.map((val:any,valKey:number)=>{
+                  { item.map((val:any)=>{
                       let value : any = undefined
                       if(itemValue && val ){
                           value =val[itemValue]

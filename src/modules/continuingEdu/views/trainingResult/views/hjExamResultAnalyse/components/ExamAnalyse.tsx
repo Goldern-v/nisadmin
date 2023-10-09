@@ -3,6 +3,7 @@ import React, { useEffect } from 'react'
 import BaseTable from "src/components/BaseTable";
 import { observer } from 'mobx-react-lite'
 import { hjExamModal } from '../HjExamModal'
+import {appStore} from "src/stores";
 export interface Props { }
 
 export default observer(function HjExamResultAnalyse() {
@@ -31,18 +32,38 @@ export default observer(function HjExamResultAnalyse() {
       width: 100,
       align: "center"
     },
-    {
-      title: "最高分",
-      dataIndex: "maxScores",
-      width: 100,
-      align: "center"
-    },
-    {
-      title: "最低分",
-      dataIndex: "minScores",
-      width: 100,
-      align: "center"
-    },
+      ...appStore.hisMatch({
+        map:{
+          'dgxg':[
+            {
+              title: "优秀人数",
+              dataIndex: "maxScores",
+              width: 100,
+              align: "center"
+            },
+            {
+              title: "优秀率",
+              dataIndex: "minScores",
+              width: 100,
+              align: "center"
+            },
+          ],
+          other:[ {
+            title: "最高分",
+            dataIndex: "maxScores",
+            width: 100,
+            align: "center"
+          },
+            {
+              title: "最低分",
+              dataIndex: "minScores",
+              width: 100,
+              align: "center"
+            },]
+        },
+
+      }),
+
     {
       title: "及格人数",
       dataIndex: "passPersonCount",
