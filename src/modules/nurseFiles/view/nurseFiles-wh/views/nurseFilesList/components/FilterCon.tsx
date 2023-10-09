@@ -91,9 +91,11 @@ export default observer(function FilterCon() {
       nurseHierarchy: value.nurseHierarchy,
       membershipCardNumber: value.membershipCardNumber,
       job: value.job,
+      jobList: value.jobList,
       highestEducation: value.highestEducation,
       politicsLook: value.politicsLook,
       workAddress: value.workAddress,
+      initialEducation: value.initialEducation,
       shoeSize: value.shoeSize,
       address: value.address,
       workConversion: value.workConversion,
@@ -177,15 +179,27 @@ export default observer(function FilterCon() {
             </Col>
 
             <Col span={4} className="short">
-              <Form.Field label={"职务"} name={"job"}>
-                <Select allowClear={true}>
-                  {statisticsViewModal.getDict("职务").map((item, index) => (
-                    <Select.Option value={item.code} key={index}>
-                      {item.name}
-                    </Select.Option>
-                  ))}
-                </Select>
-              </Form.Field>
+              {
+                appStore.HOSPITAL_ID !== 'qhwy' ? 
+                <Form.Field label={"职务"} name={"job"}>
+                  <Select allowClear={true}>
+                    {statisticsViewModal.getDict("职务").map((item, index) => (
+                      <Select.Option value={item.code} key={index}>
+                        {item.name}
+                      </Select.Option>
+                    ))}
+                  </Select>
+                </Form.Field> :
+                <Form.Field label={"职务"} name={"jobList"}>
+                  <Select allowClear={true} mode="multiple">
+                    {statisticsViewModal.getDict("职务").map((item, index) => (
+                      <Select.Option value={item.code} key={index}>
+                        {item.name}
+                      </Select.Option>
+                    ))}
+                  </Select>
+                </Form.Field>
+              }
             </Col>
             <Col span={4}>
               <Form.Field label={"最高学历"} name={"highestEducation"}>
@@ -310,6 +324,19 @@ export default observer(function FilterCon() {
                   <Input />
                 </Form.Field>
               </Col>}
+              {['qhwy'].includes(appStore.HOSPITAL_ID) && <Col span={4} className="long">
+              <Form.Field label={"初始学历"} name={"initialEducation"}>
+                <Select allowClear={true}>
+                  {statisticsViewModal
+                    .getDict("初始学历")
+                    .map((item, index) => (
+                      <Select.Option value={item.code} key={index}>
+                        {item.name}
+                      </Select.Option>
+                    ))}
+                </Select>
+              </Form.Field>
+            </Col>}
             {['lyrm', 'stmz'].includes(appStore.HOSPITAL_ID) &&
               <Col span={4} className="short">
                 <Form.Field label={"性别"} name={"sex"}>
@@ -384,6 +411,10 @@ const Inner = styled.div`
   .ant-select-selection--multiple {
     padding-bottom: 1px;
     height: 26px;
+    // overflow: hidden;
+  }
+  .ant-select-selection__rendered{
+    height: 100%;
     overflow: hidden;
   }
   .short {
