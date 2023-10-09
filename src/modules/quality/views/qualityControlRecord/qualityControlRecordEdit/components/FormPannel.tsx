@@ -134,14 +134,15 @@ export default observer(function FormPannel() {
         map: {
           gzsrm: params={},
           other: params={
-            qcCode:baseInfo.qcCode, 
-            wardCode:master.wardCode, 
+            qcCode:baseInfo.qcCode,
+            wardCode:master.wardCode,
             appointUserCode:item.appointUserCode
           },
         }
-      }),
-      qualityControlRecordApi.getListByAppointUserCode(params).then(res => {
-      console.log(res);
+      })
+      const getApi = item.nodeCode == "big_dept_handle" ? qualityControlRecordApi.getDeptOfferUserList(params) :
+        qualityControlRecordApi.getListByAppointUserCode(params)
+      getApi.then(res => {
       if(res?.data && res?.data.length>0){
         //设置auditList
         qcModel.setAuditList(auditList.map((itemModel:IAudit)=>{
@@ -151,8 +152,6 @@ export default observer(function FormPannel() {
           return itemModel;
         }))
       }
-      
-      //(res?.data) && (setCodeList(res?.data));
     }).catch(error => {
       console.log(error)
       message.error(error)
@@ -161,8 +160,8 @@ export default observer(function FormPannel() {
 
   /**
    * 更新nodeAppointList
-   * @param item 
-   * @param value 
+   * @param item
+   * @param value
    */
 
   const setAuditSelect = (item: IAudit, value: any, codeList: Array<ICode>,index:number) => {

@@ -161,6 +161,12 @@ export default class QualityControlRecordApi extends BaseApiService {
     // return this.post(`/qcItem/dict/getListByAppointUserCode`, parmas)
   }
   /**
+   * 获取护士长审核列表
+   * **/
+  public async getDeptOfferUserList(parmas:IAppointUserCode) {
+    return this.get(`/qcItem/dict/getDeptOfferUserList`)
+  }
+  /**
    * 我创建的（贵州）
    * 待我处理的（贵州）
    * @param data 
