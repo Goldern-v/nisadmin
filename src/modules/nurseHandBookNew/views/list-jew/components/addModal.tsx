@@ -96,6 +96,8 @@ export default function (props: Props) {
             params.startTime = startTime ? startTime.format('YYYY-MM-DD') + ' 00:00:00' : ''
             params.endTime = endTime ? endTime.format('YYYY-MM-DD') + ' 23:59:59' : ''
           }
+          if (params.hasOwnProperty('time')) params.time = params.time ? params.time.format("YYYY-MM-DD HH:mm:ss") : ''
+
           if(pathUrl){
             params['url']=pathUrl?.path
           }
@@ -134,6 +136,22 @@ export default function (props: Props) {
       centered>
       <Wrapper>
         <Form ref={refForm} onChange={handleFormChange} rules={rules}>
+          <Row>
+            <Col span={8} className='label'>
+              科室：
+            </Col>
+            <Col span={16}>
+              <Form.Field name='deptCode'>
+                <Select>
+                  {
+                    deptList.map(v => (
+                        <Option key={v.code} value={v.code}>{v.name}</Option>
+                    ))
+                  }
+                </Select>
+              </Form.Field>
+            </Col>
+          </Row>
           {
             addQuery?.menuCode !== undefined &&
             <Row>
@@ -249,24 +267,19 @@ export default function (props: Props) {
                     </Form.Field>
                   </Col>
               </Row>
-            // quarterYear
           }
-          <Row>
-            <Col span={8} className='label'>
-              科室：
-            </Col>
-            <Col span={16}>
-              <Form.Field name='deptCode'>
-                <Select>
-                  {
-                    deptList.map(v => (
-                      <Option key={v.code} value={v.code}>{v.name}</Option>
-                    ))
-                  }
-                </Select>
-              </Form.Field>
-            </Col>
-          </Row>
+          {
+              addQuery?.time !== undefined &&
+              <Row>
+                <Col span={8} className='label'>
+                  日期：
+                </Col>
+                <Col span={16}>
+                  <Form.Field name='time'>
+                    <DatePicker format={dateFormat} />
+                  </Form.Field>
+                </Col>
+              </Row>}
         </Form>
       </Wrapper>
     </Modal>

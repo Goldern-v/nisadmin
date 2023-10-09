@@ -17,7 +17,7 @@ import ListGzsrm from './views/list-gzsrm'
 import List925 from './views/list-jew'
 
 /**是否拥有menuList */
-const IS_EXTRA_ROUTE = ['lyrm', 'gzsrm','925','zjhj'].includes(appStore.HOSPITAL_ID)
+const IS_EXTRA_ROUTE = ['lyrm', 'gzsrm','925','zjhj','qhwy'].includes(appStore.HOSPITAL_ID)
 /**初始需要重定向的字段 */
 const redirectRoute = '$init'
 export interface Props { }
@@ -311,6 +311,7 @@ export default function NurseHandBookRouter() {
             map: {
               gzsrm: <ListGzsrm options={v} />,
               925:<List925 options={v}/>,
+              qhwy:<List925 options={v}/>,
               zjhj:<List925 options={v}/>,
               other: <ListLyrm options={v} />
               // other: null

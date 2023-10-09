@@ -112,7 +112,14 @@ export const navConfig = (appStore:any,authStore?:any)=>{
     // },
     {
       name: "护士长手册",
-      path: "/nurseHandBookNew",
+      // path: "/nurseHandBookNew",
+        children:[
+            {
+                name: "护士长查房",
+                path: "/nurseHandBookNew",
+                icon: require("../images/menu-icon/护理查房@2x.png"),
+            },
+        ]
     },
     {
       name: "不良事件",

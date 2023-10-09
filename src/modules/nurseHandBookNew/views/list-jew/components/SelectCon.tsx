@@ -4,7 +4,7 @@ import React from 'react'
 import { PageHeader, PageTitle, Place } from 'src/components/common'
 import YearPicker from 'src/components/YearPicker'
 import { Obj } from 'src/libs/types'
-import { authStore } from 'src/stores'
+import {appStore, authStore} from 'src/stores'
 import styled from 'styled-components'
 import { STATUS_LIST } from '../utils/enums'
 import {quarterList, quarterYear} from "src/enums/date";
@@ -117,7 +117,9 @@ export default observer(function (props: Props) {
         }
       </Select>
       <Button type='primary' onClick={openCreate}>创建</Button>
-      <Button type='primary' onClick={openAudit}>批量审批</Button>
+        {/* 青海五院没有审核流程*/}
+        { appStore.HOSPITAL_ID !=='qhwy' && <Button type='primary' onClick={openAudit}>批量审批</Button>}
+
     </Wrapper>
   )
 })
