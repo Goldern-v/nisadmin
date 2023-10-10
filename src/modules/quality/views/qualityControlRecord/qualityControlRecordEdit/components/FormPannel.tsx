@@ -264,6 +264,9 @@ export default observer(function FormPannel() {
                             //       (nodeAppointList[index].userList as Array<IuserEmpNo>).map((item: Emp) => item.empNo):
                             //       (nodeAppointList[index].userList as Array<IuserEmpNo>).map((item: Emp) => item.empNo)[0])
                             // }
+                                filterOption={(input: any, option: any) =>
+                                    option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                             }
                              mode={item.multiSelect ? 'multiple' : 'default'}
                              onChange={(e:any)=>{
                                item['selectList'] = e
