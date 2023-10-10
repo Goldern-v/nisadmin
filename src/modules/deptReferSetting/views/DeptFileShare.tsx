@@ -14,6 +14,7 @@ import createModal from "src/libs/createModal";
 import DeptFielShareService from "./../api/DeptFielShareService";
 import PreviewModal from "src/utils/file/modal/PreviewModal";
 import moment from 'moment'
+import {appStore, authStore} from "src/stores";
 
 const api = new DeptFielShareService();
 
@@ -43,11 +44,11 @@ export default function DeptFileShare() {
   // useEffect(() => {
 
   // }, []);
-
   useEffect(() => {
-    if (query.deptCode) {
-      getTableData();
-    }
+    // if (query.deptCode) {
+    //
+    // }
+    getTableData();
   }, [query]);
 
   const [tableLoading, setTableLoading] = useState(false);
@@ -115,14 +116,23 @@ export default function DeptFileShare() {
       align: "center",
       width: 140,
       render: (text: string, record: any) => {
-        return (
-          <DoCon>
-            <span onClick={() => handlePreview(record)}>预览</span>
-            <span onClick={() => reUpload(record)}>修改</span>
-            <span onClick={() => handleDelete(record)}>删除</span>
-            <span onClick={() => handleDownload(record)}>下载</span>
-          </DoCon>
-        );
+        switch (appStore.HOSPITAL_ID){
+          /** 护理部角色外只允许预览，下载 **/
+          case 'qhwy':
+            return <DoCon>
+              <span onClick={() => handlePreview(record)}>预览</span>
+              {authStore.isDepartment && <span onClick={() => reUpload(record)}>修改</span>}
+              {authStore.isDepartment && <span onClick={() => handleDelete(record)}>删除</span>}
+              <span onClick={() => handleDownload(record)}>下载</span>
+            </DoCon>
+          default:
+            return <DoCon>
+              <span onClick={() => handlePreview(record)}>预览</span>
+              <span onClick={() => reUpload(record)}>修改</span>
+              <span onClick={() => handleDelete(record)}>删除</span>
+              <span onClick={() => handleDownload(record)}>下载</span>
+            </DoCon>
+        }
       }
     }
   ];
@@ -251,12 +261,12 @@ export default function DeptFileShare() {
           <div className="item title">病区文件</div>
         </div>
         <div className="float-right">
-          <div className="item">
+          { appStore.HOSPITAL_ID !=='qhwy' &&<div className="item">
             <div className="label">科室：</div>
             <div className="content">
               <DeptSelect onChange={handleDeptChange} />
             </div>
-          </div>
+          </div> }
           <div className="item">
             <div className="label">目录：</div>
             <div className="content">
@@ -281,7 +291,7 @@ export default function DeptFileShare() {
             <Button onClick={() => getTableData()}>查询</Button>
           </div>
           <div className="item">
-            <Button type="primary" onClick={() => setEditVisible(true)}>
+            <Button type="primary" disabled={ appStore.HOSPITAL_ID ==='qhwy' && !authStore.isDepartment } onClick={() => setEditVisible(true)}>
               添加
             </Button>
           </div>
