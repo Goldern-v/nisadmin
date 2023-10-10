@@ -115,7 +115,7 @@ export default observer(function QuarterlyAnalysisReportZzwyDetail(props: Props)
     ]
     const columnsTwo: ColumnProps<any>[] = [
         {
-            title: '项目',
+            title: '质控内容',
             dataIndex: "simpleName",
             align: 'center'
         },
@@ -188,7 +188,7 @@ export default observer(function QuarterlyAnalysisReportZzwyDetail(props: Props)
     const columnsThree: ColumnProps<any>[] = [
         {
             title: '质量内容',
-            dataIndex: "label",
+            dataIndex: "qcItemName",
             align: 'center'
         },
         {
@@ -283,8 +283,9 @@ export default observer(function QuarterlyAnalysisReportZzwyDetail(props: Props)
                     ]}
                 />
                 <div className="topHeaderTitle">
-                    <div
-                        className="title">{`${QuarterlyZzwyData.reportMasterData?.reportYear}年第${QuarterlyZzwyData.reportMasterData?.reportQuarter}${QuarterlyZzwyData.reportMasterData.summaryFormName}总结`}</div>
+                    <div className='title'>{QuarterlyZzwyData.reportMasterData?.reportName }</div>
+                    {/*<div*/}
+                    {/*    className="title">{`${QuarterlyZzwyData.reportMasterData?.reportYear}年第${QuarterlyZzwyData.reportMasterData?.reportQuarter}${QuarterlyZzwyData.reportMasterData.summaryFormName}总结`}</div>*/}
                     <div className="topHeaderButton">
                         <Button onClick={() => QuarterlyZzwyData.saveQcReport()}>保存</Button>
                         <Button onClick={() => onPrint(true)}>导出</Button>
@@ -297,7 +298,7 @@ export default observer(function QuarterlyAnalysisReportZzwyDetail(props: Props)
                     {QuarterlyZzwyData.reportMasterData?.status == '0' &&
                         <span style={{marginRight: '16px'}}>状态：已保存</span>}
                     <div> 创建人:<span>{QuarterlyZzwyData.reportMasterData?.creatorName}</span></div>
-                    <div> 创建时间:<span>{QuarterlyZzwyData.reportMasterData?.creatorTime}</span></div>
+                    <div> 创建时间:<span>{QuarterlyZzwyData.reportMasterData?.createTime}</span></div>
                 </div>
             </TopHeader>
             {/*内容*/}
@@ -305,14 +306,25 @@ export default observer(function QuarterlyAnalysisReportZzwyDetail(props: Props)
                 <MidCon ref={pageRef}>
                     <Content>
                         <>
-                            <h2 className='center-title'>{`${QuarterlyZzwyData.reportMasterData?.reportYear}年第${QuarterlyZzwyData.reportMasterData?.reportQuarter}${QuarterlyZzwyData.reportMasterData?.summaryFormName}总结`}</h2>
+                            <h2 className='center-title'>{QuarterlyZzwyData.reportMasterData?.reportName }</h2>
                             <TextArea placeholder='请输入总结内容'
                                       value={QuarterlyZzwyData.summarize}
                                       onChange={(e: any) => QuarterlyZzwyData.summarize = e.target.value}
                                       rows={10}/>
                         </>
                         <>
-                            <h5 className='title-sty'>检查情况表</h5>
+                            <h5 className='title-sty'> 一、检查总体情况(填写)</h5>
+                            <TextArea placeholder='请输入检查总体情况'
+                                      value={QuarterlyZzwyData.checkOverall}
+                                      onChange={(e: any) => QuarterlyZzwyData.checkOverall = e.target.value}
+                                      rows={10}/>
+                           </>
+                        <>
+                            <h5 className='title-sty'>
+                             <Input value={QuarterlyZzwyData.tableParams.one} placeholder='请输入'
+                                 onChange={(e:any)=>QuarterlyZzwyData.tableParams.one = e.target.value}
+                            />
+                            </h5>
                             <BaseTable
                                 dataSource={QuarterlyZzwyData.inspectTable}
                                 columns={columnsOne}
@@ -320,7 +332,12 @@ export default observer(function QuarterlyAnalysisReportZzwyDetail(props: Props)
                         </>
                         <>
                             <Summary>
-                                <h5 className='title-sty'>条目汇总表</h5>
+                                <h5 className='title-sty' style={{width:'70%'}}>
+                                    {/*<p>表2</p>*/}
+                                    <Input value={QuarterlyZzwyData.tableParams.two} placeholder='请输入'
+                                           onChange={(e:any)=>QuarterlyZzwyData.tableParams.two = e.target.value}
+                                    />
+                                </h5>
                                 {!isPrint &&
                                     <Button type='primary' onClick={() => setSelectTableModal(true)}>添加</Button>}
                             </Summary>

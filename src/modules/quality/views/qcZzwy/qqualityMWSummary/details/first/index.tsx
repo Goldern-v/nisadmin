@@ -144,7 +144,6 @@ const TableList: React.FC<Props> = observer(function(props: Props) {
             loading={firstData.tableLoading}
             dataSource={firstData.firstTableList_UD}
             columns={columns_UD.filter((item: any) => item)}
-            surplusWidth={780}
           />
         </ScrollCon>}
 

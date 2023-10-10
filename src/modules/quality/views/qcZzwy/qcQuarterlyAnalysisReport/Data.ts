@@ -23,7 +23,13 @@ class QuarterlyAnalysisReportZzwy {
     /**报告信息item-list**/
     @observable public qcReportItemDtoList: any = []
     /**  第一部分: 总结value**/
-    @observable public summarize: string = ''
+    @observable public summarize: string = '202x年第X季度护理部组织XXXXX质量检查小组对全院XXXXX质量情况进行全面检查，现将检查结果和主要问题报告如下: '
+    /**第一部分 检查总体情况内容 **/
+    @observable public checkOverall: string = '1、检查内容包括 Xx 项一级指标，合格率≥90%，详见表1：二级指标xX 项，其中得分率＜90%的条目有3项，具体详见表2。'
+    @observable public tableParams: any = {
+        one: '表1 202X年第X季度XXXXXXX护理质量检查一级指标检查情况表',
+        two: '表2 202X年第X季度XXXXXXX护理质量检查得分率较低条目汇总表'
+    }
     /** 第一部分: 情况检查表  inspectTable**/
     @observable public inspectTable: any = []
     /** 第一部分: 汇总内容**/
@@ -137,6 +143,8 @@ class QuarterlyAnalysisReportZzwy {
                 case 0 :
                     itemValue = {
                         summarize: this.summarize,
+                        checkOverall: this.checkOverall,
+                        tableParams: this.tableParams,
                         inspectTable: this.inspectTable,
                         summaryTable: this.summaryTable,
                         contentValue: this.contentValue
@@ -202,10 +210,10 @@ class QuarterlyAnalysisReportZzwy {
             wardCode: this.reportMasterData.wardCode,
             qcItemLevel: type,
             qcCode: this.reportMasterData.summaryFormCode,
-            level:appStore.queryObj?.qcLevel
+            level: appStore.queryObj?.qcLevel
         }
         qcZzwyApi.getQcItemDataList(params).then((res: any) => {
-            this.inspectTable =res.data
+            this.inspectTable = res.data
         })
     }
 
@@ -238,8 +246,10 @@ class QuarterlyAnalysisReportZzwy {
             if (item.qcReportItemDataList) {
                 let obj: any = JSON.parse(item.qcReportItemDataList[0].itemValue)
                 if (index == 0 && item.qcReportItemDataList[0].itemValue) {
-                    this.summarize = obj.summarize || ""
-                    this.contentValue = obj.contentValue || ''
+                    this.summarize = obj.summarize || this.summarize
+                    this.checkOverall = obj.checkOverall || this.checkOverall,
+                    this.tableParams = obj.tableParams || this.tableParams,
+                     this.contentValue = obj.contentValue || ''
                     this.summaryTable = obj.summaryTable || []
                     //     还有二级项目内容
                 }
@@ -249,7 +259,7 @@ class QuarterlyAnalysisReportZzwy {
                     //     this.fishValueObj = obj.fishValueObj
                     //     console.log("this.fishValueObj===", this.fishValueObj);
                     // }
-                    this.fishValueObj = obj.fishValueObj ||  Array.from(Array(50)).reduce((prev, cur, i) => {
+                    this.fishValueObj = obj.fishValueObj || Array.from(Array(50)).reduce((prev, cur, i) => {
                         prev[`v${i + 1}`] = '';
                         return prev
                     }, {})
@@ -337,11 +347,11 @@ class QuarterlyAnalysisReportZzwy {
         this.summaryTable = []
         this.referredTable = []
         data.map((item: any) => {
-            this.summaryTable.push({
-                label: item.label,
-                code: item.qcItemCode,
-                evalRate: undefined,
-            })
+            // this.summaryTable.push({
+            //     label: item.label,
+            //     code: item.qcItemCode,
+            //     evalRate: undefined,
+            // })
             this.referredTable.push({
                 simpleName: item.simpleName,
                 b: undefined,
@@ -379,6 +389,11 @@ class QuarterlyAnalysisReportZzwy {
                 newData.push(itemArry)
 
             })
+            this.summaryTable =data.map((item:any)=>{
+               /**保留一位小数**/
+               item.evalRate = Number(item.reportRatioDto.ratios[0]).toFixed(1)
+                return item
+            })
             this.analysisChartData.fields = fields
             this.analysisChartData.devData = newData
 
@@ -399,8 +414,8 @@ class QuarterlyAnalysisReportZzwy {
         })
     }
 
-    getReportTwoItem(qcCode: any) {
-        qcZzwyApi.getReportTwoItem(qcCode).then(res => {
+    getReportTwoItem() {
+        qcZzwyApi.getReportTwoItem(this.reportMasterData.summaryFormCode).then(res => {
             this.reportTwoItem = res.data || []
         }).catch(err => {
 
@@ -413,7 +428,7 @@ class QuarterlyAnalysisReportZzwy {
         this.reportMasterData = {}
         this.qcReportItemDtoList = []
         this.reportTwoItem = []
-        this.summarize = ''
+        // this.summarize = ''
         this.summaryTable = []
         this.analysisChartData = {
             textArea: '',

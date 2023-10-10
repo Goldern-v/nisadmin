@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useMemo} from 'react'
 import styled from "styled-components";
 import {Modal, Form, Input, Select, message} from 'antd'
 import {FormComponentProps} from 'antd/lib/form/Form'
@@ -11,6 +11,8 @@ import FormCreateModal from './CreateForm'
 import {qcZzwyApi} from "src/modules/quality/views/qcZzwy/qcZzwyApi";
 import YearPicker from 'src/components/YearPicker';
 import {qcMonthCheckData} from "src/modules/quality/views/qcZzwy/qcMonthCheckReport/qcMonthCheckData";
+import {DeptType} from "src/components/DeptSelect";
+import {Obj} from "src/libs/types";
 
 export interface Props extends FormComponentProps, ModalComponentProps {
     visible: boolean;
@@ -44,9 +46,9 @@ const qcMonthList = [
     "11",
     "12",
 ];
-
 function QcQuarterlyModal(props: Props) {
     const [formCreateVisible, setFormCreateVisible] = useState(false);
+    const deptList:Obj =[{name: '全院', code: '全院'}, ...authStore.deptList]
     /**表单可选内容*/
     const [summaryForm, setSummaryForm] = useState({} as any)
     let {
@@ -99,7 +101,13 @@ function QcQuarterlyModal(props: Props) {
     useEffect(() => {
         if (visible) resetFields()
     }, [visible])
-
+const reportNameMemo:string =useMemo(()=>{
+    console.log(getFieldValue('summaryFormName'));
+    let obj:any =deptList.find((item:DeptType)=>item.code ===  getFieldValue('wardCode'))
+    console.log("obj===",obj);
+    return moment(getFieldValue('reportYear')).format('YYYY') + getFieldValue('qcTime') +  obj?.name
+    + getFieldValue('summaryFormName')
+},[getFieldValue('reportYear'),getFieldValue('qcTime'),getFieldValue('wardCode'),getFieldValue('summaryFormName')])
     return (
         <Modal
             title={title} visible={visible} onOk={onSave} onCancel={onCancel} okText='确定' centered>
@@ -192,7 +200,7 @@ function QcQuarterlyModal(props: Props) {
                                 }
                                 style={{width: '100%'}}
                                 placeholder='选择所属科室'>
-                                {[{name: '全院', code: '全院'}, ...authStore.deptList].map((item: any) => {
+                                {deptList.map((item: any) => {
                                     return (
                                         <Select.Option value={item.code} key={item}>
                                             {item.name}
@@ -204,7 +212,7 @@ function QcQuarterlyModal(props: Props) {
                     </Form.Item>
                     <Form.Item label='报告名称' {...formItemLayout} >
                         {getFieldDecorator('reportName', {
-                            initialValue: record?.reportName || '',
+                            initialValue: record?.reportName || reportNameMemo,
                             rules: [{required: true, message: '报告名称不能为空'}]
                         })(<Input/>
                         )}
