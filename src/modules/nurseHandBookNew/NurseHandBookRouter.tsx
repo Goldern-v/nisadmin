@@ -181,7 +181,7 @@ export default function NurseHandBookRouter() {
                     component: PlanMonth,
                     disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
                   }],
-                  ohter:[]
+                  other:[]
                 }
               }),
 
@@ -234,7 +234,7 @@ export default function NurseHandBookRouter() {
                       component: PlanMonth,
                       disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
                     },],
-                    ohter:[]
+                    other:[]
                   }
                 }),
 
