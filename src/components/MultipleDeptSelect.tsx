@@ -66,7 +66,7 @@ export default observer(function MultipleDeptSelect(props: Props) {
       if(props.deptCode)  statisticsViewModal.selectedDeptCode = [props.deptCode]
       else statisticsViewModal.selectedDeptCode = ["全院"];
     } else if (props.deptList) {
-      statisticsViewModal.selectedDeptCode = [props.deptList[0].code];
+      statisticsViewModal.selectedDeptCode = [props.deptList[0]?.code];
     }
   }
   return (
