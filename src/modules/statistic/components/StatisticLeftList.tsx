@@ -164,7 +164,7 @@ const LEFT_MENU_CONFIG = [
                 {
                   title: '护理人员统计',
                   path: '/statistic/护理人员统计',
-                  hide: ['jmfy', 'nys', 'whyx','sdlj','whhk', 'qzde'].includes(appStore.HOSPITAL_ID),
+                  hide: ['jmfy', 'nys', 'whyx','sdlj','whhk', 'qzde','dghm'].includes(appStore.HOSPITAL_ID),
                 },
                 {
                   title: "护士层级分布", path: "/statistic/护士层级分布",
