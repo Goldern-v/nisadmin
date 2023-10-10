@@ -62,12 +62,19 @@ export default forwardRef(function (props: Props, ref: any) {
             <tr>
               <td colSpan={6}>
                 <div className='d-flex'>
-                  <span>存在问题:</span>
+                  <span>工作内容及建议:</span>
                   <pre className='flex-1'>{master.problems}</pre>
                 </div>
               </td>
             </tr>
-
+            <tr>
+              <td  colSpan={6}>
+                <div className='d-flex'>
+                  <span>特殊情况记录:</span>
+                  <pre className='flex-1'>{master.specialCaseRecord}</pre>
+                </div>
+              </td>
+            </tr>
           </tbody>
         </table>
       </div>

@@ -86,8 +86,8 @@ class StatisticsApi extends BaseApiService {
       startDate: data.startTime, // string 必须参数 开始时间
       endDate: data.endTime // string 必须参数 结束时间
     };
-    let trancePostData = this.stringify(postData);
-    return this.post(`/indexInfo/bedInfoJMFY`, trancePostData);
+    // let trancePostData = this.stringify(postData);
+    return this.get(`/indexInfo/getBedStatus`,{ params:postData });
   }
 
   // 1.今日任务

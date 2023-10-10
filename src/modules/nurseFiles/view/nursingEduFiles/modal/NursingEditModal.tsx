@@ -66,8 +66,8 @@ export default function NursingEditModal(props: Props) {
     });
   };
   const getWorkType = () => {
-    service.commonApiService.multiDictInfo(['nursingEduFiles_workType']).then(res=>{
-      setWorkTitle(res.data['nursingEduFiles_workType'])
+    service.commonApiService.multiDictInfo(['user_title']).then(res=>{
+      setWorkTitle(res.data['user_title'])
     })
   }
   useEffect(() => {

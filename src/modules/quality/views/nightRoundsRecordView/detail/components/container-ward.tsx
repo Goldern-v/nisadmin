@@ -53,17 +53,17 @@ export default forwardRef(function (props: Props, ref: any) {
               <td>{master.carersNum}</td>
             </tr>
             <tr>
-              <td>特殊病情人数：</td>
-              <td>{master.specialPatientNumber}</td>
+              {/* <td>特殊病情人数：</td>
+              <td>{master.specialPatientNumber}</td> */}
               <td>危重病人：</td>
-              <td>{master.criticalPatients}</td>
+              <td colSpan={1}>{master.criticalPatients}</td>
               <td>I级护理：</td>
-              <td>{master.levelOneCaregiver}</td>
+              <td colSpan={3}>{master.levelOneCaregiver}</td>
             </tr>
-            <tr>
+            {/* <tr>
               <td>咽拭子采集例数</td>
               <td colSpan={5}>{master.throatSwabsCollectedNumber}</td>
-            </tr>
+            </tr> */}
           </>
         )
       /**产房 */
@@ -197,8 +197,8 @@ export default forwardRef(function (props: Props, ref: any) {
               ))
             }
             <tr>
-              <td>存在问题</td>
-              <td colSpan={4}>
+              <td>工作内容及建议：</td>
+              <td colSpan={5}>
                 <TextArea
                   value={form1.problems}
                   onChange={(e: any) => changeForm1(e)} />

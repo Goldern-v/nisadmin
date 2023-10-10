@@ -10,8 +10,11 @@ import { getCurrentMonth } from 'src/utils/date/currentMonth'
 import { appStore } from 'src/stores'
 export interface Props extends RouteComponentProps { }
 
+const defaultShowType = (()=>{
+  return ['wjgdszd'].includes(appStore.HOSPITAL_ID) ? 'nurseFile' : 'nurseFileNys'
+})()
 export default function AuditsManagementView() {
-  const [showType, setShowType] = useState(appStore.HOSPITAL_ID === 'wjgdszd' ? 'nurseFile' : 'nurseFileNys')
+  const [showType, setShowType] = useState(defaultShowType)
   const [needAudit, setNeedAudit] = useState(true)
   const [selectedDate, setSelectedDate] = useState(getCurrentMonth())
   const [keyword, setKeyword] = useState('')

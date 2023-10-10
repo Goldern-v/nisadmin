@@ -259,7 +259,7 @@ export default withRouter(observer((props: Props) => {
           <ContainerTwo ref={printRef} className='main-ctx' {...{ master, hasSubmit }} />
           :
           <ContainerWard ref={printRef} className='main-ctx' {...{ master, form1, setForm1, hasSubmit }} />
-          }
+        }
         <div className='audit-wrapper'>
           <div className='audit-title'>审核流程</div>
           <div>

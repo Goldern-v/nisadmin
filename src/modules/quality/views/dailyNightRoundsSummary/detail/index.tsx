@@ -66,6 +66,7 @@ export default observer((props: Props) => {
 
   const hasSubmit = useMemo(() => {
     // return curNode?.nodeCode?.includes('SUBMIT')
+    return true
     return curNode?.canHandle && curNode?.nodeCode?.includes('SUBMIT')
   }, [curNode])
   /**
@@ -123,7 +124,10 @@ export default observer((props: Props) => {
     setUser(defaultUser)
     setProcessVisible(true)
   }
-
+  const canEidit = (()=>{
+    return detail?.summary?.status != 0 && detail?.summary?.status != 2
+  })()
+  
   const handleCheck = async () => {
     const nextNode = getNextNode()
     if (!nextNode) return
@@ -232,7 +236,7 @@ export default observer((props: Props) => {
         </div>
       </HeadWrapper>
       <MainWrapper>
-        <Container ref={printRef} className='main-ctx' {...{ detail, editList, setEditList, hasSubmit }} />
+        <Container ref={printRef} className='main-ctx' {...{ detail, editList, setEditList,setDetail, canEidit }} />
         <div className='audit-wrapper'>
           <div className='audit-title'>审核流程</div>
           <div>

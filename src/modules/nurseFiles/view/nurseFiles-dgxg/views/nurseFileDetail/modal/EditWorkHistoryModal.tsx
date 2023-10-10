@@ -26,7 +26,6 @@ export interface Props extends ModalComponentProps {
 const uploadCard = () => Promise.resolve('123')
 const rules: Rules = {
   startTime: (val) => !!val || '请选择开始时间',
-  endTime: (val) => !!val || '请选择结束时间',
   unit: (val) => !!val || '请填写工作单位',
   professionalWork: (val) => !!val || '请填写专业技术工作',
   professional: (val) => !!val || '请选择技术职称',
