@@ -787,6 +787,21 @@ export default function EditWorkHistoryModal(props: Props) {
             </>
           }
           {
+            'zjhj' === appStore.HOSPITAL_ID && 
+            <>
+              <Col span={12}>
+                <Form.Field label='鞋款式' name="maps.nurse_shoes_style">
+                  <Input />
+                </Form.Field>
+              </Col>
+              <Col span={12}>
+                <Form.Field label='鞋码' name="maps.nurse_shoes_size">
+                  <Input />
+                </Form.Field>
+              </Col>
+            </>
+          }
+          {
             'whhk' === appStore.HOSPITAL_ID && <>
               <Col span={12}>
                 <Form.Field label="现职称获得时间" name="maps.title_obtain_date">
