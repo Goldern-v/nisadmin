@@ -117,9 +117,7 @@ export default observer(function (props: Props) {
         }
       </Select>
       <Button type='primary' onClick={openCreate}>创建</Button>
-        {/* 青海五院没有审核流程*/}
-        { appStore.HOSPITAL_ID !=='qhwy' && <Button type='primary' onClick={openAudit}>批量审批</Button>}
-
+        <Button type='primary' onClick={openAudit}>批量审批</Button>
     </Wrapper>
   )
 })

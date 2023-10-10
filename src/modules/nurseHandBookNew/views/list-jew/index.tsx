@@ -82,20 +82,29 @@ export default observer(function (props: Props) {
       align: 'center',
       dataIndex: 'title',
     },
-      ...appStore.hisMatch({
-        map:{
-          'qhwy':[],
-          other:[{
-            title: '状态',
-            align: 'center',
-            dataIndex: 'status',
-            render(text: number, row: Obj) {
-              const cur = STATUS_LIST.find(v => v.value === text)
-              return <span style={{ color: cur?.color }}>{cur?.label || row.statusDesc}</span>
-            }
-          },]
-        }
-      }),
+    {
+      title: '状态',
+      align: 'center',
+      dataIndex: 'status',
+      render(text: number, row: Obj) {
+        const cur = STATUS_LIST.find(v => v.value === text)
+        return <span style={{ color: cur?.color }}>{cur?.label || row.statusDesc}</span>
+      }
+    },
+      // ...appStore.hisMatch({
+      //   map:{
+      //     'qhwy':[],
+      //     other:[{
+      //       title: '状态',
+      //       align: 'center',
+      //       dataIndex: 'status',
+      //       render(text: number, row: Obj) {
+      //         const cur = STATUS_LIST.find(v => v.value === text)
+      //         return <span style={{ color: cur?.color }}>{cur?.label || row.statusDesc}</span>
+      //       }
+      //     },]
+      //   }
+      // }),
 
     {
       title: '科室',

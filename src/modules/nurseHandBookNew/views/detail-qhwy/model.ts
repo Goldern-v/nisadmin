@@ -9,13 +9,21 @@ import {preview, print} from "printing";
 import moment from 'moment'
 import { Obj } from "src/libs/types";
 import service from "src/services/api";
+import {Modal} from "antd";
+import createModal from "src/libs/createModal";
+import auditModal from "../detail-jew/components/auditModal";
 const dateFormat = 'YYYY-MM-DD HH:mm:ss'
 
 class NurseHandBookRecordModel {
+  constructor() {
+    this.auditModal = createModal(auditModal)
+  }
   @observable public detail: useAuditStatus.Props = {
     record: {},
     nodeList: [],
+    audit:false
   };
+  @observable public auditModal: any = null
   @observable public id: string = "";
   @observable public editorData: any = "";
   @observable public editorTitle: any = null;
@@ -221,6 +229,35 @@ class NurseHandBookRecordModel {
       }).then(() => this.isPrint = false)
     })
   }
+  /**
+   * 撤回提交
+   */
+  public onCancel = () => {
+    Modal.confirm({
+      title: '撤回',
+      content: '是否撤回?',
+      onOk: () => {
+        this.onCommit('1')
+      }
+    })
+  };
+  public openAudit = () => {
+    this.auditModal.show({
+      onOkCb: (params: string) => {
+        this.onCommit(params)
+      }
+    })
+  }
+  /**
+   * 审核
+   * @param params
+   */
+
+  public handleNode = (params: types.Obj) => {
+    nurseHandBookService.handleNodeNHR(params).then((res) => {
+      this.getDetail();
+    });
+  };
 }
 
 export const nurseHandbookRecordModel = new NurseHandBookRecordModel();
