@@ -31,13 +31,11 @@ export default observer(function TableList(props: Props) {
 			title: "内容",
 			dataIndex: "qcName",
 			align: "center",
-      width: 200,
 		},
 		{
 			title: "合格率(%)",
 			dataIndex: "evalRate",
 			align: "center",
-      width: 100,
 		},
 	]
 
@@ -101,7 +99,6 @@ export default observer(function TableList(props: Props) {
 					loading={secondData.tableLoading}
 					dataSource={secondData.tableList}
 					columns={columns.filter((item: any) => item)}
-					surplusWidth={780}
 				/>
 			</ScrollCon>
       <AddTable />

@@ -643,7 +643,8 @@ export default observer((props: Props) => {
                   </td>
                 </tr>
               </tbody>
-              {appStore.queryObj.id && <tbody >
+             {/*   {appStore.queryObj.id &&   */}
+             <tbody >
                 <tr className={allowRectification ? '' : 'disable'}>
                   <td>病区整改</td>
                   <td colSpan={5}>
@@ -668,7 +669,7 @@ export default observer((props: Props) => {
                     />
                   </td>
                 </tr>
-              </tbody>}
+              </tbody>
             </table>
           </div>
           {(hasAudit() && master.status !== '0') && <div className='audit-wrapper'>

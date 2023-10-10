@@ -32,7 +32,7 @@ function AnalysisSelectReport(props: Props) {
     handleCancel,
     form: { getFieldDecorator, validateFields, setFieldsValue, resetFields }
   } = props
-  const [codeList, setCodeList] = useState([]);//二级项目list
+  // const [codeList, setCodeList] = useState([]);//二级项目list
   // 由于选择数据之后，之前的simpleName会丢失，记录旧数据用于对比,{}
   const [sourceCodeList, setSourceCodeList] = useState({});
 
@@ -52,8 +52,8 @@ function AnalysisSelectReport(props: Props) {
       console.log("tempArray===",tempArray);
       delete value.itemCode;
       delete value.qcCode
-      let keys = Object.keys(value)
-      QuarterlyZzwyData.templateData.itemCodeList = keys
+      // let keys = Object.keys(value)
+      QuarterlyZzwyData.templateData.itemCodeList = tempArray.map((item:any)=>item.key)
       QuarterlyZzwyData.handleSelectReport(tempArray)
       QuarterlyZzwyData.getRatioByItemCode()
       // console.log(keys,tempArray)
@@ -66,13 +66,14 @@ function AnalysisSelectReport(props: Props) {
   useEffect(() => {
     if (visible) {
       resetFields()
-      setCodeList(QuarterlyZzwyData.templateData.itemCodeObj || [])
+      // setCodeList(QuarterlyZzwyData.templateData.itemCodeObj || [])
       let newObj = {}
       for (const item of QuarterlyZzwyData.templateData.itemCodeObj || []) {
         newObj[item.key] = item;
       }
       setSourceCodeList(newObj || {})
       QuarterlyZzwyData.getTemplateList()
+      QuarterlyZzwyData.getReportTwoItem()
     }
   }, [visible])
   
@@ -85,23 +86,24 @@ function AnalysisSelectReport(props: Props) {
     >
       <Wrapper>
       <Form>
-        <Form.Item {...formItemLayout} label='表模板'>
-          {getFieldDecorator('qcCode', {
-              initialValue: QuarterlyZzwyData.templateData.qcCode || '',
-              rules: [{ required: true, message: '表模板不能为空' }]
-            })(
-              <Select showSearch filterOption={(input:any, option:any) =>
-                option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-              }
-                style={{ width: '100%' }}
-                onChange={(val:any)=>{
-                  QuarterlyZzwyData.getReportTwoItem(val)
-                }} >
-                {QuarterlyZzwyData.templateList.map((v:any) =>
-                      <Option value={v.qcCode} key={v.qcCode}>{v.qcName}</Option>)}
-              </Select>
-            )}
-        </Form.Item>
+        {/* 在创建的时候已经选择了表模板，所以不需要再次创建 */}
+        {/*<Form.Item {...formItemLayout} label='表模板'>*/}
+        {/*  {getFieldDecorator('qcCode', {*/}
+        {/*      initialValue: QuarterlyZzwyData.templateData.qcCode || '',*/}
+        {/*      rules: [{ required: true, message: '表模板不能为空' }]*/}
+        {/*    })(*/}
+        {/*      <Select showSearch filterOption={(input:any, option:any) =>*/}
+        {/*        option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0*/}
+        {/*      }*/}
+        {/*        style={{ width: '100%' }}*/}
+        {/*        onChange={(val:any)=>{*/}
+        {/*          QuarterlyZzwyData.getReportTwoItem(val)*/}
+        {/*        }} >*/}
+        {/*        {QuarterlyZzwyData.templateList.map((v:any) =>*/}
+        {/*              <Option value={v.qcCode} key={v.qcCode}>{v.qcName}</Option>)}*/}
+        {/*      </Select>*/}
+        {/*    )}*/}
+        {/*</Form.Item>*/}
         <Form.Item {...formItemLayout} label='二级项目'>
           {getFieldDecorator('itemCode', {
               initialValue: QuarterlyZzwyData.templateData.itemCodeObj || [],
@@ -113,27 +115,25 @@ function AnalysisSelectReport(props: Props) {
                   option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                 }
                 onChange={(val:any)=>{
-                  // console.log(sourceCodeList)
                   val.map((it:any)=>{
                     it.simpleName=sourceCodeList[it.key]?.simpleName || undefined
                   })
-                  setCodeList(val)
-
-                }} 
+                  // setCodeList(val)
+                }}
                > 
                 {QuarterlyZzwyData.reportTwoItem.map((v:any) =>
                       <Option value={v.qcItemCode} key={v.qcItemCode}>{v.qcItemName}</Option>)}
               </Select>
             )}
         </Form.Item>
-        {codeList.map((it:any)=> <Form.Item {...formItemLayout} label='项目简称'
-        extra={'二级项目：'+it.label}>
-              {getFieldDecorator(it.key+'', {
-                initialValue: it.simpleName || '',
-                rules: [{ required: true, message: '项目简称不能为空' }]
-              })(<Input key={it.key} style={{ width: '100%' }} />)}
-            </Form.Item>
-        )}
+        {/*{codeList.map((it:any)=> <Form.Item {...formItemLayout} label='项目简称'*/}
+        {/*extra={'二级项目：'+it.label}>*/}
+        {/*      {getFieldDecorator(it.key+'', {*/}
+        {/*        initialValue: it.simpleName || '',*/}
+        {/*        rules: [{ required: true, message: '项目简称不能为空' }]*/}
+        {/*      })(<Input key={it.key} style={{ width: '100%' }} />)}*/}
+        {/*    </Form.Item>*/}
+        {/*)}*/}
 
       </Form>
       </Wrapper>

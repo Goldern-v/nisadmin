@@ -30,7 +30,6 @@ export default observer(function TableList() {
     {
       title: '项目',
       dataIndex: 'project',
-      width: 120,
       align: 'center',
       render: (text: any, record: any, index: number) => {
         return thirdData.tableList.length >= 1 ? (
@@ -45,7 +44,6 @@ export default observer(function TableList() {
 		{
       title: '追踪前得分率',
       dataIndex: 'beforeScore',
-      width: 80,
       align: 'center',
       render: (text: any, record: any, index: number) => {
         return thirdData.tableList.length >= 1 ? (
@@ -60,7 +58,6 @@ export default observer(function TableList() {
     {
       title: '追踪者',
       dataIndex: 'trailer',
-      width: 80,
       align: 'center',
       render: (text: any, record: any, index: number) => {
         return thirdData.tableList.length >= 1 ? (
@@ -75,7 +72,6 @@ export default observer(function TableList() {
     {
       title: '追踪时间',
       dataIndex: 'time',
-      width: 80,
       align: 'center',
       render: (text: any, record: any, index: number) => {
         return thirdData.tableList.length >= 1 ? (
@@ -90,7 +86,6 @@ export default observer(function TableList() {
     {
       title: '追踪前后分率',
       dataIndex: 'afterScore',
-      width: 80,
       align: 'center',
       render: (text: any, record: any, index: number) => {
         return thirdData.tableList.length >= 1 ? (
@@ -105,7 +100,6 @@ export default observer(function TableList() {
     {
       title: '追踪结果',
       dataIndex: 'result',
-      width: 80,
       align: 'center',
       render: (text: any, record: any, index: number) => {
         return thirdData.tableList.length >= 1 ? (
@@ -119,7 +113,6 @@ export default observer(function TableList() {
     },
     {
       title: '操作',
-      width: 60,
       align: 'center',
       dataIndex: 'operation',
       render: (text:any, record: any, index: number) => 
@@ -176,7 +169,6 @@ export default observer(function TableList() {
 					loading={thirdData.tableLoading}
 					dataSource={thirdData.tableList}
 					columns={columns.filter((item: any) => item)}
-					surplusWidth={780}
 				/>
 			</ScrollCon>
       

@@ -60,6 +60,7 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
 
         /** 默认公司本地内网厚街测试环境 */
         case "gzsrm":
+            // return 'http://192.168.3.170:8080'
             return 'http://ydys.gz5055.com:9093'
             // return 'http://192.168.8.204:9091' // 贵州人民医院-内网
             // return 'https://info.cr-health.com:20203' // 公司厚街测试环境-和公司测试环境地址对接

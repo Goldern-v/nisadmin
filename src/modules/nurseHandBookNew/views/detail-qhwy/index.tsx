@@ -7,10 +7,36 @@ import { nurseHandbookRecordModel as model } from './model'
 import CtxConQhwy from './components/CtxConQhwy'
 
 import { Button, Spin } from 'antd'
+import useAuditStatus from "src/hooks/useAuditStatus";
+import AuditProcess from "src/components/audit-page/AuditProcess";
 export interface Props {
 }
 /** form29详情，by青海五院 */
 export default observer(function (props: Props) {
+  const { curNode } = useAuditStatus(model.detail)
+  const btnList = useMemo(() => {
+    const { canHandle, nodeCode, state } = curNode
+    if (canHandle && (nodeCode === 'commit' || nodeCode == undefined)) {
+      return (<>
+        <Button type='primary' onClick={() => model.onCommit('0')}>暂存</Button>
+        {/*提交*/}
+        <Button type='primary' onClick={() => model.onCommit('1')}>保存</Button>
+      </>)
+    }
+    if(model.detail?.audit){
+      // 已提交
+      if (nodeCode === 'commit' && state === '1') {
+        return (<>
+          <Button type='primary' onClick={() => model.onCancel()}>撤回</Button>
+          {authStore.isDepartment && <>
+            <Button type='primary' onClick={() => model.onCommit('0')}>暂存</Button>
+            <Button type='primary' onClick={() => model.openAudit()}>审核</Button>
+          </>}
+        </>)
+      }
+    }
+    return ''
+  }, [curNode])
   const ctxRef = useRef<any>(null)
   useEffect(() => {
     model.init()
@@ -21,6 +47,11 @@ export default observer(function (props: Props) {
       model.reset()
     }
   }, [])
+  useEffect(() => {
+    return () => {
+      model.auditModal.unMount()
+    }
+  }, [appStore.location.pathname])
   return (
     <Wrapper>
       <Spin style={{ height: '100%' }} spinning={model.loading}>
@@ -36,14 +67,17 @@ export default observer(function (props: Props) {
           btnCon={<>
             <Button onClick={() => appStore.history.goBack()}>返回</Button>
             <Button onClick={model.onPrint}>打印</Button>
-            <Button type='primary' onClick={() => model.onCommit('1')}>保存</Button>
+            {btnList}
+            {/*<Button type='primary' onClick={() => model.onCommit('1')}>保存</Button>*/}
           </>}
         />
         <MainWrapper>
+          { model.detail?.audit && <AuditProcess process={model.detail?.nodeList || []} /> }
           <div className='main-ctx'>
             <CtxConQhwy />
           </div>
         </MainWrapper>
+        {model.auditModal && <model.auditModal.Component />}
       </Spin>
     </Wrapper>
   )

@@ -15,7 +15,6 @@ import createModal from "src/libs/createModal";
 import {appStore} from "src/stores";
 import {globalModal} from "src/global/globalModal";
 
-const Option = Select.Option;
 export default observer(function QuarterlyAnalysisReportZzwy() {
     const {queryObj} = appStore
     const qcLevel = queryObj.qcLevel || '3'
@@ -32,11 +31,11 @@ export default observer(function QuarterlyAnalysisReportZzwy() {
             title: '报告名称',
             dataIndex: 'reportName',
             align: 'center',
-            render:(text:string,record:any)=>{
-                return(
-                    <div>{`${record.reportYear}-${record.qcTime}-${record.reportName}`}</div>
-                )
-            }
+            // render:(text:string,record:any)=>{
+            //     return(
+            //         <div>{`${record.reportYear}-${record.qcTime}-${record.reportName}`}</div>
+            //     )
+            // }
         },
         {
             title: '表单',
