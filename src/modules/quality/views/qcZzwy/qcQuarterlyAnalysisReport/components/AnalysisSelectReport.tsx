@@ -2,10 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Modal, Form, Input, Button, InputNumber, DatePicker, Select, message, Icon, Upload, } from 'antd'
 import { FormComponentProps } from 'antd/lib/form/Form'
 import { observer } from 'mobx-react-lite'
-import moment from "moment";
-import YearPicker from "src/components/YearPicker";
 import {QuarterlyZzwyData} from "src/modules/quality/views/qcZzwy/qcQuarterlyAnalysisReport/Data";
-import { appStore, authStore } from 'src/stores';
 const { Option } = Select
 import styled from 'styled-components'
 
@@ -14,6 +11,8 @@ export interface Props extends FormComponentProps {
   visible: boolean,
   handleOk: any,
   handleCancel: () => void,
+  /**判断是情况表还是汇总表 1情况表 2 汇总表**/
+  type:string
 }
 const formItemLayout = {
   labelCol: {
@@ -30,7 +29,7 @@ function AnalysisSelectReport(props: Props) {
     visible,
     handleOk,
     handleCancel,
-    form: { getFieldDecorator, validateFields, setFieldsValue, resetFields }
+    form: { getFieldDecorator, validateFields,resetFields }
   } = props
   // const [codeList, setCodeList] = useState([]);//二级项目list
   // 由于选择数据之后，之前的simpleName会丢失，记录旧数据用于对比,{}

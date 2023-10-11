@@ -428,8 +428,9 @@ class QuarterlyAnalysisReportZzwy {
         this.reportMasterData = {}
         this.qcReportItemDtoList = []
         this.reportTwoItem = []
-        // this.summarize = ''
+        this.summarize = '202x年第X季度护理部组织XXXXX质量检查小组对全院XXXXX质量情况进行全面检查，现将检查结果和主要问题报告如下:'
         this.summaryTable = []
+        this.checkOverall='1、检查内容包括 Xx 项一级指标，合格率≥90%，详见表1：二级指标xX 项，其中得分率＜90%的条目有3项，具体详见表2'
         this.analysisChartData = {
             textArea: '',
             fields: [],
@@ -443,6 +444,10 @@ class QuarterlyAnalysisReportZzwy {
         }
         this.referredTable = []
         this.rectification = ''
+        this.tableParams={
+            one: '表1 202X年第X季度XXXXXXX护理质量检查一级指标检查情况表',
+            two: '表2 202X年第X季度XXXXXXX护理质量检查得分率较低条目汇总表'
+        }
         // this.fishValueObj = [
         //     Array.from(Array(50)).reduce((prev, cur, i) => {
         //         prev[`v${i + 1}`] = '';

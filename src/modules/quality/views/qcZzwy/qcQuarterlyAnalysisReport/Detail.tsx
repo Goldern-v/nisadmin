@@ -26,10 +26,13 @@ export default observer(function QuarterlyAnalysisReportZzwyDetail(props: Props)
     const {queryObj} = appStore
     const pageRef: any = useRef<HTMLElement>()
     // const {creatorName, creatorTime, summaryFormName, reportYear, reportQuarter} = QuarterlyZzwyData.reportMasterData
-    const [selectTableModal, setSelectTableModal] = useState(false);
+    const [selectTableModal, setSelectTableModal] = useState({
+        visible:false,
+        type:1
+    });
     const [canvasImgArray, setCanvasImgArray] = useState([]);
     const [isPrint, setIsPrint] = useState(false)
-    const [updateFish,setUpdateFish] =useState(undefined as any)
+    const [updateFish, setUpdateFish] = useState(undefined as any)
     const topHeaderBack = () => {
         appStore.history.goBack()
     };
@@ -124,8 +127,8 @@ export default observer(function QuarterlyAnalysisReportZzwyDetail(props: Props)
             dataIndex: "b",
             align: 'center',
             render: (text: string, record: any, index: number) => {
-                if(isPrint){
-                    return  <span>{text}%</span>
+                if (isPrint) {
+                    return <span>{text}%</span>
                 }
                 return <Input defaultValue={text} onBlur={(e: any) => {
                     QuarterlyZzwyData.updateReferredTable(index, 'b', e.target.value)
@@ -137,8 +140,8 @@ export default observer(function QuarterlyAnalysisReportZzwyDetail(props: Props)
             dataIndex: "c",
             align: 'center',
             render: (text: string, record: any, index: number) => {
-                if(isPrint){
-                    return  <span>{text}</span>
+                if (isPrint) {
+                    return <span>{text}</span>
                 }
                 return <Input defaultValue={text} onBlur={(e: any) => {
                     QuarterlyZzwyData.updateReferredTable(index, 'c', e.target.value)
@@ -150,8 +153,8 @@ export default observer(function QuarterlyAnalysisReportZzwyDetail(props: Props)
             dataIndex: "d",
             align: 'center',
             render: (text: string, record: any, index: number) => {
-                if(isPrint){
-                    return  <span>{text}</span>
+                if (isPrint) {
+                    return <span>{text}</span>
                 }
                 return <Input defaultValue={text} onBlur={(e: any) => {
                     QuarterlyZzwyData.updateReferredTable(index, 'd', e.target.value)
@@ -163,8 +166,8 @@ export default observer(function QuarterlyAnalysisReportZzwyDetail(props: Props)
             dataIndex: "e",
             align: 'center',
             render: (text: string, record: any, index: number) => {
-                if(isPrint){
-                    return  <span>{text}%</span>
+                if (isPrint) {
+                    return <span>{text}%</span>
                 }
                 return <Input defaultValue={text} onBlur={(e: any) => {
                     QuarterlyZzwyData.updateReferredTable(index, 'e', e.target.value)
@@ -176,8 +179,8 @@ export default observer(function QuarterlyAnalysisReportZzwyDetail(props: Props)
             dataIndex: "g",
             align: 'center',
             render: (text: string, record: any, index: number) => {
-                if(isPrint){
-                    return  <span>{text}</span>
+                if (isPrint) {
+                    return <span>{text}</span>
                 }
                 return <Input defaultValue={text} onBlur={(e: any) => {
                     QuarterlyZzwyData.updateReferredTable(index, 'g', e.target.value)
@@ -197,8 +200,8 @@ export default observer(function QuarterlyAnalysisReportZzwyDetail(props: Props)
             width: 80,
             align: 'center',
             render: (text: string, record: any, index: number) => {
-                if(isPrint){
-                    return  <span>{text}%</span>
+                if (isPrint) {
+                    return <span>{text}%</span>
                 }
                 return <Input defaultValue={text} onBlur={(e: any) => {
                     QuarterlyZzwyData.updateSummaryTable(index, 'evalRate', e.target.value)
@@ -283,7 +286,7 @@ export default observer(function QuarterlyAnalysisReportZzwyDetail(props: Props)
                     ]}
                 />
                 <div className="topHeaderTitle">
-                    <div className='title'>{QuarterlyZzwyData.reportMasterData?.reportName }</div>
+                    <div className='title'>{QuarterlyZzwyData.reportMasterData?.reportName}</div>
                     {/*<div*/}
                     {/*    className="title">{`${QuarterlyZzwyData.reportMasterData?.reportYear}年第${QuarterlyZzwyData.reportMasterData?.reportQuarter}${QuarterlyZzwyData.reportMasterData.summaryFormName}总结`}</div>*/}
                     <div className="topHeaderButton">
@@ -306,7 +309,7 @@ export default observer(function QuarterlyAnalysisReportZzwyDetail(props: Props)
                 <MidCon ref={pageRef}>
                     <Content>
                         <>
-                            <h2 className='center-title'>{QuarterlyZzwyData.reportMasterData?.reportName }</h2>
+                            <h2 className='center-title'>{QuarterlyZzwyData.reportMasterData?.reportName}</h2>
                             <TextArea placeholder='请输入总结内容'
                                       value={QuarterlyZzwyData.summarize}
                                       onChange={(e: any) => QuarterlyZzwyData.summarize = e.target.value}
@@ -318,13 +321,21 @@ export default observer(function QuarterlyAnalysisReportZzwyDetail(props: Props)
                                       value={QuarterlyZzwyData.checkOverall}
                                       onChange={(e: any) => QuarterlyZzwyData.checkOverall = e.target.value}
                                       rows={10}/>
-                           </>
+                        </>
                         <>
-                            <h5 className='title-sty'>
-                             <Input value={QuarterlyZzwyData.tableParams.one} placeholder='请输入'
-                                 onChange={(e:any)=>QuarterlyZzwyData.tableParams.one = e.target.value}
-                            />
-                            </h5>
+                            <Summary>
+                                <h5 className='title-sty' style={{width: '70%'}}>
+                                    <Input value={QuarterlyZzwyData.tableParams.one} placeholder='请输入'
+                                           onChange={(e: any) => QuarterlyZzwyData.tableParams.one = e.target.value}
+                                    />
+                                </h5>
+                                {!isPrint &&
+                                    <Button type='primary' onClick={() =>{
+                                        selectTableModal.visible =true ;
+                                        selectTableModal.type  = 1 ;
+                                        setSelectTableModal(selectTableModal)
+                                    }}>添加</Button>}
+                            </Summary>
                             <BaseTable
                                 dataSource={QuarterlyZzwyData.inspectTable}
                                 columns={columnsOne}
@@ -332,14 +343,18 @@ export default observer(function QuarterlyAnalysisReportZzwyDetail(props: Props)
                         </>
                         <>
                             <Summary>
-                                <h5 className='title-sty' style={{width:'70%'}}>
+                                <h5 className='title-sty' style={{width: '70%'}}>
                                     {/*<p>表2</p>*/}
                                     <Input value={QuarterlyZzwyData.tableParams.two} placeholder='请输入'
-                                           onChange={(e:any)=>QuarterlyZzwyData.tableParams.two = e.target.value}
+                                           onChange={(e: any) => QuarterlyZzwyData.tableParams.two = e.target.value}
                                     />
                                 </h5>
                                 {!isPrint &&
-                                    <Button type='primary' onClick={() => setSelectTableModal(true)}>添加</Button>}
+                                    <Button type='primary' onClick={() =>{
+                                        selectTableModal.visible =true ;
+                                        selectTableModal.type  = 2 ;
+                                        setSelectTableModal(selectTableModal)
+                                    }}>添加</Button>}
                             </Summary>
                             <BaseTable
                                 style={{padding: 0}}
@@ -364,16 +379,20 @@ export default observer(function QuarterlyAnalysisReportZzwyDetail(props: Props)
                             {
                                 QuarterlyZzwyData.fishValueObj.map((item: any, index: number) => {
                                     return (
-                                      <>
-                                          <QcFishBone
-                                              key={`${index}+fish`}
-                                              value={item}
-                                              index={index}
-                                              isPrint={isPrint}
-                                              updateFish={updateFish+index}
-                                              onChange={(obj: any) => handleFishItem(obj, index)}/>
-                                          <div style={{height:'2px',background:"#ededed",borderBottom:"1px dashed"}}></div>
-                                      </>
+                                        <>
+                                            <QcFishBone
+                                                key={`${index}+fish`}
+                                                value={item}
+                                                index={index}
+                                                isPrint={isPrint}
+                                                updateFish={updateFish + index}
+                                                onChange={(obj: any) => handleFishItem(obj, index)}/>
+                                            <div style={{
+                                                height: '2px',
+                                                background: "#ededed",
+                                                borderBottom: "1px dashed"
+                                            }}></div>
+                                        </>
                                     )
                                 })
                             }
@@ -448,11 +467,16 @@ export default observer(function QuarterlyAnalysisReportZzwyDetail(props: Props)
 
             </Spin>
             <AnalysisSelectReport
-                visible={selectTableModal}
+                visible={selectTableModal.visible}
+                type={selectTableModal.type}
                 handleOk={(value: any) => {
-                    setSelectTableModal(false)
+                    selectTableModal.visible =false
+                    setSelectTableModal(selectTableModal)
                 }}
-                handleCancel={() => setSelectTableModal(false)}/>
+                handleCancel={() =>{
+                    selectTableModal.visible =false
+                    setSelectTableModal(selectTableModal)
+                }}/>
         </Con>
     )
 })
