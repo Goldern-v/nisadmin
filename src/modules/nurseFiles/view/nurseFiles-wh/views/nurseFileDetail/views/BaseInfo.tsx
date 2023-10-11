@@ -470,7 +470,7 @@ export default observer(function BaseInfo() {
         {
           // 现职务任职起始时间: data.jobStartDate,
           工作护理单元: data.deptName,
-          鞋码: data.shoeSize
+          '鞋码': ['zjhj'].includes(appStore.HOSPITAL_ID) ? data.maps.nurse_shoes_size : data.shoeSize
         },
         {
           新入职护士带教资质: data?.maps?.teaching_qualification,
