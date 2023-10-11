@@ -600,6 +600,11 @@ export default observer(function HjTable(props: Props) {
           total: mainPageModal.total,
           pageSize: mainPageModal.pageSize
         }}
+        onRow={(record: any) => {
+          return {
+            onDoubleClick: () => record.statusDesc!=="草稿" && checkMessage(record)
+          }
+        }}
         onChange={pagination => {
           mainPageModal.pageIndex = pagination.current;
           mainPageModal.total = pagination.total;

@@ -588,7 +588,10 @@ export default observer(function Table(props: Props) {
         }}
         onRow={record => {
           return {
-            onDoubleClick: () => checkResult(record)
+            onDoubleClick: () => {
+              if(appStore.HOSPITAL_ID === "hj") record.statusDesc!=="草稿" && checkMessage(record)
+              else checkResult(record)
+            }
           }
         }}
         onChange={pagination => {
