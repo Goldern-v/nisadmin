@@ -108,7 +108,7 @@ export default observer(function Analysis() {
       render: (name: string) => <div title={name}>{name}</div>,
     },
     {
-      title: "片区",
+      title: appStore.HOSPITAL_ID ==="dgxg" ? "科室" : "片区",
       key: "wardName",
       dataIndex: 'wardName',
       align: "left",

@@ -37,13 +37,13 @@ export default observer(function HjExamResultAnalyse() {
           'dgxg':[
             {
               title: "优秀人数",
-              dataIndex: "maxScores",
+              dataIndex: "excellentPersonCount",
               width: 100,
               align: "center"
             },
             {
               title: "优秀率",
-              dataIndex: "minScores",
+              dataIndex: "excellentRate",
               width: 100,
               align: "center"
             },
