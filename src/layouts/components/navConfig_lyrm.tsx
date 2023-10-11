@@ -52,6 +52,11 @@ export const navConfig: (appStore:any,authStore?:any) => navConfigItem[] = (appS
         path: "/nurseHandBookNew",
         icon: require("../images/menu-icon/护理查房@2x.png"),
       },
+      {
+        name: "质控模板",
+        path: "/qcTemplates",
+        icon: require("../images/menu-icon/三级质控@2x.png"),
+      },
     ]
   },
   {
