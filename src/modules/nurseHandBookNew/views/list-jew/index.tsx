@@ -140,6 +140,19 @@ export default observer(function (props: Props) {
    * year_can_create_more：按年度创建，可以创建多个记录；对应登记表  
    * year_no_create_more：按年度创建，不能创建多个记录；对应工作计划、工作总结、管理目标、计划表  
    * date：按时间创建；对应记录表
+   * validateField：
+   * （1）year_can_create_more：科室、年
+   * （2）year_no_create_more：科室、年
+   * （3）month_create_more：科室、年、月
+   * （4）month_no_create_more：科室、年、月
+   * （5）half_year_more：科室、年、上半年/下半年
+   * （6）half_year_not_more：科室、年、上半年/下半年
+   * （7）quarter_more：科室、年、季度
+   * （8）quarter_not_more：科室、年、季度
+   * （9）time_create_more：科室、日期（日）
+   * （10）time_no_create_more：科室、日期（日）
+   * （11）start_end_time_create_more：科室、开始时间、结束时间
+   * （12）no_validate_create_more：科室
    */
   const switchFn = {
     year_can_create_more: () => {

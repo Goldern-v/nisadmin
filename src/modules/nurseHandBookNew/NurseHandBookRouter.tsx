@@ -13,6 +13,8 @@ import ManageMonth from './bookGdrm/workPlan/planManage/ManageMonth'
 import { nurseHandBookService } from './services/NurseHandBookService'
 import { Obj } from 'src/libs/types'
 import ListLyrm from './views/list-lyrm'
+import ListLyrmNew from './views/list-lyrm/newIndex'
+
 import ListGzsrm from './views/list-gzsrm'
 import List925 from './views/list-jew'
 
@@ -313,6 +315,7 @@ export default function NurseHandBookRouter() {
               925:<List925 options={v}/>,
               qhwy:<List925 options={v}/>,
               zjhj:<List925 options={v}/>,
+              lyrm: <ListLyrmNew options={v} />,
               other: <ListLyrm options={v} />
               // other: null
             }

@@ -57,6 +57,11 @@ export const navConfig: (appStore:any,authStore?:any) => navConfigItem[] = (appS
         path: "/qcTemplates",
         icon: require("../images/menu-icon/三级质控@2x.png"),
       },
+      {
+        name: '病区登记本',
+        path: '/wardRegister',
+        icon: require('../images/menu-icon/病区登记本@2x.png')
+      },
     ]
   },
   {

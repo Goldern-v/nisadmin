@@ -43,7 +43,7 @@ export default observer(function (props: Props) {
         while (currentMonth--) {
             monthArr.push(currentMonth + 1)
         }
-        return monthArr
+        return ['全部',...monthArr]
     })()
   return (
     <Wrapper>
@@ -94,9 +94,11 @@ export default observer(function (props: Props) {
             <>
                 <span className='label'>月份:</span>
                 <Select
-                    value={query.month}
-                    onChange={(month: string) =>  changeQuery(month, 'month')}>
-                    {monthList.map((month: number) => <Option value={`${month}`} key={month}>{month}</Option>)}
+                    value={query.month||'全部'}
+                    onChange={(month: string) =>{
+                        changeQuery(month ==='全部'?'':month, 'month')
+                    }}>
+                    {monthList.map((month: any) => <Option value={`${month}`} key={month}>{month}</Option>)}
                 </Select>
             </>}
         {query.hasOwnProperty('halfYear') &&

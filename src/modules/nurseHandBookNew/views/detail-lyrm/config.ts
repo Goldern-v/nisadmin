@@ -24,6 +24,8 @@ import LYHZSC_4_12 from "./components/LYHZSC_4/LYHZSC_4_12";
 import LYHZSC_6_7 from "./components/LYHZSC_6/LYHZSC_6_7";
 import LYHZSC_6_6 from "./components/LYHZSC_6/LYHZSC_6_6";
 import LYHZSC_6_5 from "./components/LYHZSC_6/LYHZSC_6_5";
+import CKEditorFn from "src/modules/nurseHandBookNew/bookGdrm/workPlan/planing/Editor";
+import React from "react";
 export const LYHZSC_2_3_NAME = '护理质量检查分析及改进记录'
 /**不同表单的初始化操作 */
 export default function config(code: string) {
@@ -36,6 +38,7 @@ export default function config(code: string) {
             v1: "",
           });
         },
+        isEditor:true,
         Component: EditPage,
         editTitle: true,
       },
@@ -49,6 +52,7 @@ export default function config(code: string) {
             v4: "",
           });
         },
+        isEditor:false,
         Component: LYHZSC_1_2,
         editTitle: true,
       },
@@ -60,6 +64,7 @@ export default function config(code: string) {
             v2: "",
           });
         },
+        isEditor:false,
         Component: LYHZSC_2_3,
       },
       LYHZSC_4_1: {
@@ -73,6 +78,7 @@ export default function config(code: string) {
             v2: arr,
           });
         },
+        isEditor:false,
         Component: LYHZSC_4_1,
       },
       LYHZSC_4_2: {
@@ -91,6 +97,7 @@ export default function config(code: string) {
             v10: "",
           });
         },
+        isEditor:false,
         Component: LYHZSC_4_2,
         editTitle: true,
       },
@@ -111,6 +118,7 @@ export default function config(code: string) {
             v11: "",
           });
         },
+        isEditor:false,
         Component: LYHZSC_4_3,
         editTitle: true,
       },
@@ -134,6 +142,7 @@ export default function config(code: string) {
             v14: "",
           });
         },
+        isEditor:false,
         Component: LYHZSC_4_4,
       },
       LYHZSC_4_5: {
@@ -154,6 +163,7 @@ export default function config(code: string) {
             v12: "",
           });
         },
+        isEditor:false,
         Component: LYHZSC_4_5,
       },
       LYHZSC_4_6: {
@@ -165,6 +175,7 @@ export default function config(code: string) {
             v1: "",
           });
         },
+        isEditor:false,
         Component: LYHZSC_4_6,
       },
       LYHZSC_4_7: {
@@ -172,6 +183,7 @@ export default function config(code: string) {
           const self: any = this;
           self.handleEditorChange(createObjV(6));
         },
+        isEditor:false,
         Component: LYHZSC_4_7,
       },
       LYHZSC_4_8: {
@@ -179,6 +191,7 @@ export default function config(code: string) {
           const self: any = this;
           self.handleEditorChange(createObjV(4));
         },
+        isEditor:false,
         Component: LYHZSC_4_8,
       },
       LYHZSC_4_9: {
@@ -193,6 +206,7 @@ export default function config(code: string) {
             v4: arr2,
           });
         },
+        isEditor:false,
         Component: LYHZSC_4_9,
       },
       LYHZSC_4_10: {
@@ -201,6 +215,7 @@ export default function config(code: string) {
           const arr = createArr(15, (j, k) => createObjV(9));
           self.handleEditorChange(arr);
         },
+        isEditor:false,
         Component: LYHZSC_4_10,
       },
       LYHZSC_4_11: {
@@ -210,6 +225,7 @@ export default function config(code: string) {
             v1: "",
           });
         },
+        isEditor:false,
         Component: LYHZSC_4_11,
       },
       LYHZSC_4_12: {
@@ -217,6 +233,7 @@ export default function config(code: string) {
           const self: any = this;
           self.handleEditorChange(createObjV(6));
         },
+        isEditor:false,
         Component: LYHZSC_4_12,
       },
       "LYHZSC_5_1,LYHZSC_5_2,LYHZSC_6_1,LYHZSC_6_2,LYHZSC_6_3,LYHZSC_6_4,LYHZSC_6_8": {
@@ -225,6 +242,7 @@ export default function config(code: string) {
           const arr = createArr(row, (j, k) => createObjV(col));
           self.handleEditorChange(arr);
         },
+        isEditor:false,
         Component: tableCon,
       },
       LYHZSC_6_5: {
@@ -233,6 +251,7 @@ export default function config(code: string) {
           const arr = createArr(21, (j, k) => createObjV(4));
           self.handleEditorChange(arr);
         },
+        isEditor:false,
         Component: LYHZSC_6_5,
       },
       LYHZSC_6_6: {
@@ -240,6 +259,7 @@ export default function config(code: string) {
           const self: any = this;
           self.handleEditorChange(createObjV(27));
         },
+        isEditor:false,
         Component: LYHZSC_6_6,
       },
       LYHZSC_6_7: {
@@ -249,6 +269,7 @@ export default function config(code: string) {
             v1: "",
           });
         },
+        isEditor:false,
         Component: LYHZSC_6_7,
       },
     },
