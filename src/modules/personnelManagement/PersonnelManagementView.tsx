@@ -89,9 +89,13 @@ export default function PersonnelManagementView() {
   })();
   const list = ((array: any) => {
     return array.map((item: any) => {
-      if (item.iSlimit) {
-        if (!item.special) item['hide'] = !authStore.isRoleManage
-        else item['hide'] = !(authStore.user?.empNo == 'G6051' || authStore.user?.empNo == 'ADMIN')
+      if (item.onlyNursingDepartment) { 
+        item['hide'] = !authStore.isDepartment // 是护理部就显示
+      } else {
+        if (item.iSlimit) {
+          if (!item.special) item['hide'] = !authStore.isRoleManage
+          else item['hide'] = !(authStore.user?.empNo == 'G6051' || authStore.user?.empNo == 'ADMIN')
+        }
       }
       if (item.children?.length > 0) {
         list(item.children)

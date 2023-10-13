@@ -25,6 +25,7 @@ export interface meunConfigItem {
   style?: React.CSSProperties;
   iSlimit?: boolean | Function;
   special?: boolean | Function;
+  onlyNursingDepartment?: boolean // 仅仅护理部
 }
 
 export const meunConfig: meunConfigItem[] = [
@@ -72,6 +73,7 @@ export const meunConfig: meunConfigItem[] = [
         component: ShiftSettingViewNew,
         // hide: !authStore.isRoleManage
         iSlimit: true,
+        onlyNursingDepartment: appStore.HOSPITAL_ID === 'zjhj'
       },
       {
         title: "排班套餐设置",
@@ -92,7 +94,6 @@ export const meunConfig: meunConfigItem[] = [
         // hide: !(authStore.user?.empNo == 'G6051' || authStore.user?.empNo == 'ADMIN')
         iSlimit: true,
         special: appStore.HOSPITAL_ID !=='925' && appStore.HOSPITAL_ID !=='zjhj',
-        
       },
       {
         title: "加减班列表查询",

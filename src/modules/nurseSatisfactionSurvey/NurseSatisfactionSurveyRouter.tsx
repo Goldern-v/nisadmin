@@ -14,7 +14,7 @@ export interface Props { }
 export default function WardLog() {
   const leftMenuConfig = [
     {
-      title: ['ytll'].includes(appStore.HOSPITAL_ID)?'满意度调查表':'护士长满意度调查表',
+      title: ['ytll', 'zjhj'].includes(appStore.HOSPITAL_ID)?'满意度调查表':'护士长满意度调查表',
       path: '/nurseSatisfactionSurvey/questionnaire',
       icon: <WCJD />,
       component: NurseSatisfactionSurvey,
