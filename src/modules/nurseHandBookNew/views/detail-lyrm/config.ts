@@ -24,8 +24,7 @@ import LYHZSC_4_12 from "./components/LYHZSC_4/LYHZSC_4_12";
 import LYHZSC_6_7 from "./components/LYHZSC_6/LYHZSC_6_7";
 import LYHZSC_6_6 from "./components/LYHZSC_6/LYHZSC_6_6";
 import LYHZSC_6_5 from "./components/LYHZSC_6/LYHZSC_6_5";
-import CKEditorFn from "src/modules/nurseHandBookNew/bookGdrm/workPlan/planing/Editor";
-import React from "react";
+import  LYHZSC_7 from './components/LYHZSC_4/LYHZSC_7'
 export const LYHZSC_2_3_NAME = '护理质量检查分析及改进记录'
 /**不同表单的初始化操作 */
 export default function config(code: string) {
@@ -272,6 +271,16 @@ export default function config(code: string) {
         isEditor:false,
         Component: LYHZSC_6_7,
       },
+      LYHZSC_7:{
+        initContent() {
+          const self: any = this;
+          self.handleEditorChange({
+            v1: ""
+          });
+        },
+        isEditor:false,
+        Component: LYHZSC_7,
+      }
     },
     vague: true,
     currentHospitalId: code,
