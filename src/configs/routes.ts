@@ -882,9 +882,13 @@ const routes: RouteItem[] = [
   // 月度质控检查总结报告-zzwy
   setLayout(
     "/qcMonthCheckReportDetail",
-    lazy(() =>
-    import("src/modules/quality/views/qcZzwy/qcMonthCheckReport/QcMonthCheckReportDetail")
-  ),
+    appStore.hisMatch({
+      map: {
+        ytll: lazy(() =>import("src/modules/quality/views/qcYtll/qcMonthCheckReport/QcMonthCheckReportDetail")),
+        zzwy: lazy(() =>import("src/modules/quality/views/qcZzwy/qcMonthCheckReport/QcMonthCheckReportDetail")),
+      }
+    })
+    ,
     layouts.MainLayout
   ),
   setLayout(

@@ -53,6 +53,7 @@ import qcQSummary from './views/qcQSummary'
 import CheckSummary from './views/qcZzwy/qcCheckSummary/CheckSummary'
 import IssueAnalysis from './views/qcZzwy/issueAnalysis/IssueAnalysis'
 import RectificationSummary from './views/qcZzwy/qcRectificationSummary/RectificationSummary'
+import checkReport from 'src/modules/quality/views/qcYtll/qcMonthCheckReport/QcMonthCheckReportList'
 import QcMonthCheckReportList from './views/qcZzwy/qcMonthCheckReport/QcMonthCheckReportList'
 import QuarterlyAnalysisReportZzwy from './views/qcZzwy/qcQuarterlyAnalysisReport/Index'
 import QqualityMWSummary from './views/qcZzwy/qqualityMWSummary/tableList'
@@ -93,6 +94,13 @@ export default function QcThreeRouter(props: Props) {
     path: "/qcThree/queryStatistics",
     icon: <JCTJ />,
     component: QueryStatistics,
+  };
+
+  const route_三级质控汇总分析报告 = {
+    title: "三级质控汇总分析报告",
+    path: "/qcThree/checkReport?qcLevel=3",
+    icon: <JCTJ />,
+    component: checkReport,
   };
 
   const route_三级质控问题汇总 = {
@@ -396,6 +404,15 @@ export default function QcThreeRouter(props: Props) {
         route_检查表单统计表,
         route_三级质控问题原因措施汇总,
       ],
+      'ytll': [
+        route_护理质量巡查情况汇总表_nys,
+        route_护理质量检查小结,
+        route_三级质控月度报告,
+        route_三级质控汇总报告,
+        route_三级质控问题汇总,
+        route_检查表单统计表,
+        route_三级质控汇总分析报告
+      ],
       other: [
         route_护理质量巡查情况汇总表_nys,
         route_护理质量检查小结,
@@ -403,7 +420,7 @@ export default function QcThreeRouter(props: Props) {
         route_三级质控汇总报告,
         route_三级质控问题汇总,
         route_检查表单统计表,
-      ],
+      ]
     },
     vague: true,
   });
