@@ -41,6 +41,13 @@ export default class WardLogService extends BaseApiService {
   public exportDetailList(data: any) {
     return this.post(`/InpatientAreaLog/countExcel`, data, { responseType: 'blob' })
   }
+
+  /** 评论 */
+  public addComment(data: any) {
+    return this.post(`/InpatientAreaLog/addComment`, data)
+  }
+
+
 }
 
 export const wardLogService = new WardLogService()

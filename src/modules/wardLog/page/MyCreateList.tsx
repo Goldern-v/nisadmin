@@ -130,6 +130,7 @@ export default observer(function MyCreateList() {
   }
 
   const onDetail = (record: any) => {
+    sessionStorage.setItem('wardLogType', status)
     appStore.history.push(`/wardLogDetail?id=${record.id}`)
   }
 
