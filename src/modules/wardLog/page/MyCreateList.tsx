@@ -170,10 +170,10 @@ export default observer(function MyCreateList() {
       message.warn('导出日志不能为空')
       return
     }
-    if (!selectedTemplate) {
-      message.warn('请选择打印模板')
-      return
-    }
+    // if (appStore.HOSPITAL_ID !=='dgxg' &&  !selectedTemplate) {
+    //   message.warn('请选择打印模板')
+    //   return
+    // }
     if (selectedRowKeys.length <= 0) {
       let startDate = date[0] ? moment(date[0]).format('YYYY-MM-DD') : ''
       let endDate = date[0] ? moment(date[1]).format('YYYY-MM-DD') : ''
