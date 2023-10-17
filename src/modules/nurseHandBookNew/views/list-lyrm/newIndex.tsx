@@ -13,6 +13,7 @@ import useFirstDisEffect from 'src/hooks/useFirstDisEffect'
 import {message, Tabs, Spin, Button, Select, DatePicker} from 'antd'
 import {formatTitle} from '../detail-lyrm/config'
 import AuditModal from './components/auditModal'
+import IndicatorAddModal from './components/IndicatorAddModal'
 import {Badge, Empty} from "src/vendors/antd";
 import DetailNewIndex from '../detail-lyrm/newIndex'
 import {nurseHandbookRecordModel as model} from '../detail-lyrm/newModel'
@@ -20,6 +21,7 @@ import {HALF_YEAR} from "src/modules/nurseHandBookNew/views/list-jew/utils/enums
 import LYHZSC_7 from '../detail-lyrm/components/LYHZSC_4/LYHZSC_7'
 import {PageHeader, PageTitle} from "src/components/common";
 import LYHZSC_8 from "src/modules/nurseHandBookNew/views/detail-lyrm/components/LYHZSC_4/LYHZSC_8";
+import LYHZSC_9 from '../detail-lyrm/components/LYHZSC_4/LYHZSC_9'
 
 const Quarter = {'第一季度': 1, '第二季度': 2, '第三季度': 3, '第四季度': 4}
 const QuarterV = {1: '第一季度', 2: '第二季度', 3: '第三季度', 4: '第四季度'}
@@ -37,9 +39,11 @@ export default observer(function (props: Props) {
     const [currContent, setCurrContent] = useState({} as any);//点击的当前item
     /**创建弹窗 */
     const addModal = createModal(AddModal)
+    const indicatorAddModal = createModal(IndicatorAddModal)
     useEffect(() => {
         return () => {
             addModal.unMount()
+            indicatorAddModal.unMount()
         }
     }, [appStore.location.pathname])
 
@@ -54,7 +58,9 @@ export default observer(function (props: Props) {
     const [lyhzscQuery, setLyhzscQuery] = useState<Obj>({
         deptCode: authStore.defaultDeptCode,
         startTime,
-        endTime
+        endTime,
+        pageSize: 20,
+        pageNum: 1,
     })
     /** 创建弹窗参数
      */
@@ -211,7 +217,15 @@ export default observer(function (props: Props) {
             getFormList()
         },
     }
-
+const onOkLYHZSC_9Add =(params: Obj)=>{
+    nurseHandBookService.saveIndicatorsTItem(params).then((res:any) => {
+        if (res.code === '200') {
+            message.success('保存成功')
+            setLyhzscQuery({...lyhzscQuery,randonNum:Math.random()})
+            indicatorAddModal.hide()
+        }
+    })
+}
     const onOkBAdd = (params: Obj) => {
         const {menuCode} = options
         const title = formatTitle(params, options)
@@ -228,6 +242,12 @@ export default observer(function (props: Props) {
                 addModal.hide()
                 // appStore.history.push(`/nurseHandBookNewForm/detail?id=${id}`)
             }
+        })
+    }
+    const openLYHZSC_9Create = () => {
+        return indicatorAddModal.show({
+            onOkCb: onOkLYHZSC_9Add,
+            // addQuery:query,
         })
     }
     const openCreate = () => {
@@ -261,7 +281,7 @@ export default observer(function (props: Props) {
         nurseHandBookService.getTableDataList({
             ...params,
         }).then((res: Obj) => {
-            const { list } =res.data
+            const {list} = res.data
             setTableData(list)
             setCurrContent(list[0])
             // setTotal(res.data.totalCount)
@@ -328,13 +348,18 @@ export default observer(function (props: Props) {
                     startTime={lyhzscQuery.startTime}
                     endTime={lyhzscQuery.endTime}
                     deptCode={lyhzscQuery.deptCode}/>;
+            case 'LYHZSC_9':
+                return <LYHZSC_9
+                    setLyhzscQuery={setLyhzscQuery}
+                    {...lyhzscQuery}
+                  />;
             default :
                 return <div className="main-contain">
                     <div className="left">
                         {authStore.isDepartment && <Tabs defaultActiveKey="1" className='sticky' onChange={callback}>
-                            <TabPane tab={options.menuCode === 'LYHZSC_4_1' ? '我的指标'  : '我的计划'} key="1">
+                            <TabPane tab={options.menuCode === 'LYHZSC_4_1' ? '我的指标' : '我的计划'} key="1">
                             </TabPane>
-                            <TabPane tab={ options.menuCode === 'LYHZSC_4_1' ? '全院指标' : '全院计划'} key="2">
+                            <TabPane tab={options.menuCode === 'LYHZSC_4_1' ? '全院指标' : '全院计划'} key="2">
                             </TabPane>
                         </Tabs>}
 
@@ -385,7 +410,7 @@ export default observer(function (props: Props) {
                 </div>
         }
     }
-    const selectConElement =() => {
+    const selectConElement = () => {
         switch (options.menuCode) {
             case 'LYHZSC_7':
                 return <WrapperLYHZSC_7>
@@ -394,6 +419,7 @@ export default observer(function (props: Props) {
                     <Button type={'primary'} onClick={model.handleSaveNotice}>保存</Button>
                 </WrapperLYHZSC_7>;
             case 'LYHZSC_8':
+            case 'LYHZSC_9':
                 return <WrapperLYHZSC_7>
                     <PageTitle>{options.name || ''}</PageTitle>
                     <span className='label'>科室:</span>
@@ -421,6 +447,7 @@ export default observer(function (props: Props) {
                                             }}
                                             value={[lyhzscQuery.startTime, lyhzscQuery.endTime]}
                     />
+                    { options.menuCode === 'LYHZSC_9' &&  <Button type='primary' onClick={openLYHZSC_9Create}>创建</Button>}
                 </WrapperLYHZSC_7>;
             default:
                 return <SelectCon {...{
@@ -454,6 +481,7 @@ export default observer(function (props: Props) {
             </Spin>
             {/*  用925那边的弹窗，内容齐全 */}
             <addModal.Component/>
+            <indicatorAddModal.Component/>
             <AuditModal visible={auditVisible} onOkCb={handleAudit} selectedList={selectedRows}
                         onCancel={() => setAuditVisible(false)}/>
         </Wrapper>
@@ -466,15 +494,12 @@ const Wrapper = styled.div`
     width: 100%;
     display: flex;
     height: calc(100vh - 95px);
-    /* min-width: 1220px; */
 
     .left {
       width: 250px;
-      /* overflow: hidden; */
       overflow-y: auto;
       border: 1px solid #ddd;
       box-sizing: border-box;
-      /* padding: 5px; */
 
       .sticky {
         position: sticky;
@@ -545,19 +570,10 @@ const Wrapper = styled.div`
         &:hover, &.active {
           cursor: pointer;
           background-color: #ddd;
-          /* color: #fff; */
 
           .plan-left-time {
-            /* color: #fff; */
-          }
 
-          /* .plan-badge{
-              &.through{
-              .ant-badge-status-text{
-                  color: #fff;
-              }
-          } */
-          /* color: #fff !important; */
+          }
         }
       }
     }

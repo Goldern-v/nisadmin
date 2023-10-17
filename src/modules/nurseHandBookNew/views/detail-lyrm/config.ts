@@ -25,6 +25,7 @@ import LYHZSC_6_7 from "./components/LYHZSC_6/LYHZSC_6_7";
 import LYHZSC_6_6 from "./components/LYHZSC_6/LYHZSC_6_6";
 import LYHZSC_6_5 from "./components/LYHZSC_6/LYHZSC_6_5";
 import  LYHZSC_7 from './components/LYHZSC_4/LYHZSC_7'
+import LYHZSC_9 from "src/modules/nurseHandBookNew/views/detail-lyrm/components/LYHZSC_4/LYHZSC_9";
 export const LYHZSC_2_3_NAME = '护理质量检查分析及改进记录'
 /**不同表单的初始化操作 */
 export default function config(code: string) {
@@ -280,6 +281,16 @@ export default function config(code: string) {
         },
         isEditor:false,
         Component: LYHZSC_7,
+      },
+      LYHZSC_9:{
+        initContent() {
+          const self: any = this;
+          self.handleEditorChange({
+            v1: ""
+          });
+        },
+        isEditor:false,
+        Component: LYHZSC_9,
       }
     },
     vague: true,
