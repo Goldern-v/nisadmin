@@ -18,10 +18,11 @@ export interface Props extends Obj {
   title: string
   formList: Obj[]
   openAudit?: () => void
+    onResetQuery?:()=>void
 }
 /**搜索组件 */
 export default observer(function (props: Props) {
-  const { query, openCreate, setQuery, title, formList, openAudit } = props
+  const { query, openCreate, setQuery, title, formList, openAudit,onResetQuery } = props
   const changeQuery = (e: any, key: string) => {
     if (key === 'date') {
       const [d1, d2] = e
@@ -119,7 +120,8 @@ export default observer(function (props: Props) {
         }
       </Select>
       <Button type='primary' onClick={openCreate}>创建</Button>
-        <Button type='primary' onClick={openAudit}>批量审批</Button>
+        <Button type='primary' onClick={onResetQuery}>重置</Button>
+        { appStore.HOSPITAL_ID !== 'lyrm' && <Button type='primary' onClick={openAudit}>批量审批</Button> }
     </Wrapper>
   )
 })

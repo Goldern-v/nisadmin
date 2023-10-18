@@ -1,38 +1,50 @@
-import { observer } from 'mobx-react'
-import React, { useEffect, useState } from 'react'
-import { Obj } from 'src/libs/types'
+import {observer} from 'mobx-react'
+import React, {useEffect, useMemo, useState} from 'react'
+import {Obj} from 'src/libs/types'
 import styled from 'styled-components'
-import { appStore, authStore } from 'src/stores'
+import {appStore, authStore} from 'src/stores'
 import moment from 'moment'
-import { currentMonth } from 'src/utils/date/rangeMethod'
-import { nurseHandBookService } from '../../services/NurseHandBookService'
+import {currentMonth, currentYear} from 'src/utils/date/rangeMethod'
+import {nurseHandBookService} from '../../services/NurseHandBookService'
 import SelectCon from '../list-jew/components/SelectCon'
 import AddModal from '../list-jew/components/addModal'
 import createModal from 'src/libs/createModal'
 import useFirstDisEffect from 'src/hooks/useFirstDisEffect'
-import { message } from 'antd'
-import { formatTitle } from '../detail-lyrm/config'
+import {message, Tabs, Spin, Button, Select, DatePicker} from 'antd'
+import {formatTitle} from '../detail-lyrm/config'
 import AuditModal from './components/auditModal'
-import {planDatas} from "src/modules/nurseHandBookNew/bookGdrm/workPlan/planing/planData";
+import IndicatorAddModal from './components/IndicatorAddModal'
 import {Badge, Empty} from "src/vendors/antd";
-import  DetailNewIndex from '../detail-lyrm/newIndex'
-import { nurseHandbookRecordModel as model } from '../detail-lyrm/newModel'
-const Quarter ={'第一季度':1,'第二季度':2,'第三季度':3,'第四季度':4}
-const QuarterV ={1:'第一季度',2:'第二季度',3:'第三季度',4:'第四季度'}
+import DetailNewIndex from '../detail-lyrm/newIndex'
+import {nurseHandbookRecordModel as model} from '../detail-lyrm/newModel'
+import {HALF_YEAR} from "src/modules/nurseHandBookNew/views/list-jew/utils/enums";
+import LYHZSC_7 from '../detail-lyrm/components/LYHZSC_4/LYHZSC_7'
+import {PageHeader, PageTitle} from "src/components/common";
+import LYHZSC_8 from "src/modules/nurseHandBookNew/views/detail-lyrm/components/LYHZSC_4/LYHZSC_8";
+import LYHZSC_9 from '../detail-lyrm/components/LYHZSC_4/LYHZSC_9'
+import LYHZSC_10 from '../detail-lyrm/components/LYHZSC_4/LYHZSC_10'
+
+const Quarter = {'第一季度': 1, '第二季度': 2, '第三季度': 3, '第四季度': 4}
+const QuarterV = {1: '第一季度', 2: '第二季度', 3: '第三季度', 4: '第四季度'}
+const {TabPane} = Tabs
+const {Option} = Select
+
 export interface Props {
     options: Obj
 }
-
+const TimeType = {'LYHZSC_9':'调入','LYHZSC_10':'发证','LYHZSC_8':'调入'}
 /** 29张表的菜单页，by临邑 */
 export default observer(function (props: Props) {
-    const { options } = props
+    const {options} = props
+    const [startTime, endTime] = currentYear()
     const [currContent, setCurrContent] = useState({} as any);//点击的当前item
-
     /**创建弹窗 */
     const addModal = createModal(AddModal)
+    const indicatorAddModal = createModal(IndicatorAddModal)
     useEffect(() => {
         return () => {
             addModal.unMount()
+            indicatorAddModal.unMount()
         }
     }, [appStore.location.pathname])
 
@@ -41,25 +53,33 @@ export default observer(function (props: Props) {
         status: '',
         pageSize: 20,
         pageNum: 1,
+
+    })
+    // LYHZSC_8 登记表搜索参数
+    const [lyhzscQuery, setLyhzscQuery] = useState<Obj>({
+        deptCode: authStore.defaultDeptCode,
+        startTime,
+        endTime,
+        pageSize: 20,
+        pageNum: 1,
     })
     /** 创建弹窗参数
      */
     const [addQuery, setAddQuery] = useState<Obj>({
-        deptCode: authStore.defaultDeptCode
+        deptCode: authStore.defaultDeptCode,
     })
-    const [total, setTotal] = useState(0)
-    // const [deptList, setDeptList] = useState<Obj[]>([])
+    // const [total, setTotal] = useState(0)
     const [tableData, setTableData] = useState([])
-    const [columns, setColumns] = useState<any[]>([])
+    // const [columns, setColumns] = useState<any[]>([])
     const [selectedRowKeys, setSelectedRowKeys] = useState([])
     const [loading, setLoading] = useState(false)
     const [formList, setFormList] = useState<Obj[]>([])
     const [selectedRows, setSelectedRows] = useState<Obj[]>([])
     const [auditVisible, setAuditVisible] = useState(false)
-    const getHalfYear =()=>{
+    const getHalfYear = () => {
         let currentDate = new Date();
         let currentMonth = currentDate.getMonth() + 1; // JavaScript 中月份从 0 开始，所以需要加 1
-        return  currentMonth >= 1 && currentMonth <= 6 ? '上半年':'下半年'
+        return currentMonth >= 1 && currentMonth <= 6 ? '上半年' : '下半年'
     }
     /**
      * 初始化设置
@@ -92,45 +112,19 @@ export default observer(function (props: Props) {
                 year: moment(),
                 menuCode: '',
             })
-            const newColumns = [
-                {
-                    title: '年份',
-                    align: 'center',
-                    dataIndex: 'year'
-                },
-                {
-                    title: '类型',
-                    align: 'center',
-                    dataIndex: 'menuName'
-                }
-            ]
-            setColumns(newColumns)
             getFormList()
         },
         year_no_create_more: () => {
             setQuery({
                 ...query,
-                menuCode:options.menuCode === '925NDBRDJ_7' ? '':undefined,
+                menuCode: options.menuCode === '925NDBRDJ_7' ? '' : undefined,
                 year: moment()
             })
             setAddQuery({
                 ...addQuery,
-                menuCode:options.menuCode === '925NDBRDJ_7' ? '':undefined,
+                menuCode: options.menuCode === '925NDBRDJ_7' ? '' : undefined,
                 year: moment()
             })
-            const newColumns = [
-                {
-                    title: '年份',
-                    align: 'center',
-                    dataIndex: 'year'
-                },
-                {
-                    title: '标题',
-                    align: 'center',
-                    dataIndex: 'title'
-                }
-            ]
-            setColumns(newColumns)
             getFormList()
         },
         start_end_time_create_more: () => {
@@ -139,183 +133,122 @@ export default observer(function (props: Props) {
                 ...query,
                 startTime,
                 endTime,
-                menuCode: '',
+                // menuCode: '',
             })
             setAddQuery({
                 ...addQuery,
                 startTime,
                 endTime,
-                menuCode: '',
+                // menuCode: '',
             })
-            const newColumns = [
-                {
-                    title: '日期',
-                    align: 'center',
-                    dataIndex: 'startTime',
-                    render: (text: string, row: Obj) => {
-                        return `${row.startTime}-${row.endTime}`
-                    }
-                },
-                {
-                    title: '类型',
-                    align: 'center',
-                    dataIndex: 'menuName'
-                }
-            ]
-            setColumns(newColumns)
             getFormList()
         },
-        month_no_create_more:() => {
+        month_no_create_more: () => {
             setQuery({
                 ...query,
                 year: moment(),
-                month:'',
+                month: '',
             })
             setAddQuery({
                 ...addQuery,
                 year: moment(),
-                month:moment().format('M'),
+                month: moment().format('M'),
             })
-            const newColumns = [
-                {
-                    title: '年份',
-                    align: 'center',
-                    dataIndex: 'year',
-                    render: (text: string) => {
-                        return `${text}年`
-                    }
-                },
-                {
-                    title: '月份',
-                    align: 'center',
-                    dataIndex: 'month',
-                    render: (text: string) => {
-                        return `${text}月`
-                    }
-                }
-            ]
-            setColumns(newColumns)
+
             getFormList()
         },
-        quarter_not_more:()=>{
+        quarter_not_more: () => {
             setQuery({
                 ...query,
                 year: moment(),
-                quarter:QuarterV[moment().quarter()],
+                quarter: QuarterV[moment().quarter()],
             })
             setAddQuery({
                 ...addQuery,
                 year: moment(),
-                quarter:QuarterV[moment().quarter()],
+                quarter: QuarterV[moment().quarter()],
             })
-            const newColumns = [
-                {
-                    title: '年份',
-                    align: 'center',
-                    dataIndex: 'year',
-                    render: (text: string) => {
-                        return `${text}年`
-                    }
-                },
-                {
-                    title: '季度',
-                    align: 'center',
-                    dataIndex: 'quarter',
-                    render: (text: string) => {
-                        return `第${text}季度`
-                    }
-                }
-            ]
-            setColumns(newColumns)
             getFormList()
         },
-        no_validate_create_more:()=>{
+        no_validate_create_more: () => {
             setQuery({
                 ...query,
             })
             setAddQuery({
                 ...addQuery,
-                code:"no_validate_create_more",
+                code: "no_validate_create_more",
             })
-            const newColumns = [
-                {
-                    title: '封面名称',
-                    align: 'center',
-                    dataIndex: 'title',
-                    render: (text: string) => {
-                        return `${text}`
-                    }
-                },
-            ]
-            setColumns(newColumns)
             getFormList()
         },
-        half_year_not_more:()=>{
+        half_year_not_more: () => {
             setQuery({
                 ...query,
                 year: moment(),
-                halfYear:getHalfYear()
+                halfYear: getHalfYear()
             })
             setAddQuery({
                 ...addQuery,
                 year: moment(),
-                halfYear:getHalfYear()
+                halfYear: getHalfYear()
             })
-            const newColumns = [
-                {
-                    title: '年度',
-                    align: 'center',
-                    dataIndex: 'halfYear',
-                    render:(text:any)=>{
-                        return {'1':'下半年','0':'上半年','2':"全年"}[text]
-                    }
-                },
-            ]
-            setColumns(newColumns)
             getFormList()
         },
-        time_create_more:()=>{
+        time_create_more: () => {
             const [startTime] = currentMonth()
             setQuery({
                 ...query,
-                time:startTime
+                time: startTime
             })
             setAddQuery({
                 ...addQuery,
-                time:startTime
+                time: startTime
             })
             getFormList()
         },
-        time_no_create_more:()=>{
+        time_no_create_more: () => {
             const [startTime] = currentMonth()
             setQuery({
                 ...query,
-                time:startTime
+                time: startTime
             })
             setAddQuery({
                 ...addQuery,
-                time:startTime
+                time: startTime
             })
             getFormList()
         },
     }
-
+const onOkLYHZSC_9Add =(params: Obj)=>{
+    nurseHandBookService.saveIndicatorsTItem(params).then((res:any) => {
+        if (res.code === '200') {
+            message.success('保存成功')
+            setLyhzscQuery({...lyhzscQuery,randonNum:Math.random()})
+            indicatorAddModal.hide()
+        }
+    })
+}
     const onOkBAdd = (params: Obj) => {
-        const { menuCode } = options
+        const {menuCode} = options
         const title = formatTitle(params, options)
-        const data: Obj = { ...params }
+        const data: Obj = {...params}
         if (!params.menuCode) {
             data.menuCode = menuCode
         }
         title && (data.title = title)
         nurseHandBookService.createOrUpdate(data).then(res => {
             if (res.code === '200') {
-                const { id } = res.data
+                const {id} = res.data
                 getTableData()
                 model.init(id)
                 addModal.hide()
                 // appStore.history.push(`/nurseHandBookNewForm/detail?id=${id}`)
             }
+        })
+    }
+    const openLYHZSC_9Create = () => {
+        return indicatorAddModal.show({
+            onOkCb: onOkLYHZSC_9Add,
+            // addQuery:query,
         })
     }
     const openCreate = () => {
@@ -326,34 +259,40 @@ export default observer(function (props: Props) {
         })
     }
 
-    // const getDeptList = async () => {
-    //   return commonApi.getNursingUnitSelf().then((res: Obj) => {
-    //     setDeptList(res.data.deptList)
-    //     return { deptCode: res.data.defaultDept }
-    //   })
-    // }
-    const getTableData = () => {
-        const { menuCode } = options
+
+    const getTableData = (key: string = '1') => {
+        const {menuCode} = options
         setLoading(true)
-        const params = { ...query }
+        const params = {...query,}
         if (!params.menuCode) params.menuCode = menuCode
         if (params.hasOwnProperty('year')) params.year = params.year ? params.year.format('YYYY') : ''
         if (params.hasOwnProperty('startTime')) {
-            const { startTime, endTime } = params
+            const {startTime, endTime} = params
             params.startTime = startTime ? startTime.format('YYYY-MM-DD') + ' 00:00:00' : ''
             params.endTime = endTime ? endTime.format('YYYY-MM-DD') + ' 23:59:59' : ''
         }
-        nurseHandBookService.getTableDataList(params).then((res: Obj) => {
-            setTableData(res.data.list || [])
-            setCurrContent(res.data.list[0])
-            setTotal(res.data.totalCount)
+        if (params.hasOwnProperty('halfYear')) {
+            params.halfYear = HALF_YEAR[params.halfYear]
+        }
+        if (params.hasOwnProperty('quarter')) params.quarter = Quarter[params.quarter]
+        /**我的计划不用传工号**/
+        if (key == '1') {
+            params['createdBy'] = authStore.user?.empNo
+        }
+        nurseHandBookService.getTableDataList({
+            ...params,
+        }).then((res: Obj) => {
+            const {list} = res.data
+            setTableData(list)
+            setCurrContent(list[0])
+            // setTotal(res.data.totalCount)
             setLoading(false)
         }).catch(e => setLoading(false))
     }
     /**根据menuCode获取表单 */
     const getFormList = () => {
-        const { menuCode } = options
-        nurseHandBookService.getFormListNHR({ menuCode }).then(res => {
+        const {menuCode} = options
+        nurseHandBookService.getFormListNHR({menuCode}).then(res => {
             setFormList(res.data || [])
         })
     }
@@ -364,7 +303,7 @@ export default observer(function (props: Props) {
         setAuditVisible(true)
     }
     const handleAudit = (params: any) => {
-        const data = selectedRows.map((v: Obj) => ({ ...params, nodeCode: v.nextNode, id: v.id }))
+        const data = selectedRows.map((v: Obj) => ({...params, nodeCode: v.nextNode, id: v.id}))
         nurseHandBookService.multiHandleNodeNHR(data).then((res) => {
             setSelectedRowKeys([])
             setSelectedRows([])
@@ -379,69 +318,176 @@ export default observer(function (props: Props) {
         }
     }
 
+    const callback = (key: string) => {
+        getTableData(key)
+    }
+    const onResetQuery = () => {
+        const [startTime, endTime] = currentMonth()
+        if (query.year) query.year = moment()
+        if (query.startTime) query.startTime = startTime
+        if (query.endTime) query.endTime = endTime
+        if (query.month) query.month = ''
+        if (query.quarter) query.quarter = QuarterV[moment().quarter()]
+        if (query.halfYear) query.halfYear = getHalfYear()
+        if (query.time) query.time = startTime
+        if (query.menuCode) query.menuCode = ''
+        setQuery({
+            ...query,
+            deptCode: authStore.defaultDeptCode,
+            status: '',
+            pageSize: 20,
+            pageNum: 1,
+        })
+
+    }
+    const menuElement = () => {
+        switch (options.menuCode) {
+            case 'LYHZSC_7':
+                return <LYHZSC_7/>;
+            case 'LYHZSC_8':
+                return <LYHZSC_8
+                    {...lyhzscQuery}/>;
+            case 'LYHZSC_9':
+                return <LYHZSC_9
+                    setLyhzscQuery={setLyhzscQuery}
+                    {...lyhzscQuery}
+                  />;
+                case 'LYHZSC_10':
+                return <LYHZSC_10
+                    {...lyhzscQuery}
+                />
+            default :
+                return <div className="main-contain">
+                    <div className="left">
+                        {authStore.isDepartment && <Tabs defaultActiveKey="1" className='sticky' onChange={callback}>
+                            <TabPane tab={options.menuCode === 'LYHZSC_4_1' ? '我的指标' : '我的计划'} key="1">
+                            </TabPane>
+                            <TabPane tab={options.menuCode === 'LYHZSC_4_1' ? '全院指标' : '全院计划'} key="2">
+                            </TabPane>
+                        </Tabs>}
+
+                        {tableData.length < 1 &&
+                            <Empty style={{marginTop: '200px', width: "100%"}} image={Empty.PRESENTED_IMAGE_SIMPLE}
+                                   description={'创建一份' + (options.name || '')}/>}
+                        {
+                            tableData.map((it: any) => {
+                                return (
+                                    <div
+                                        className={it.id == currContent?.id ? 'left-item active' : 'left-item'}
+                                        key={it.id} onClick={() => {
+                                        setCurrContent(it);
+                                    }}>
+                                        <div className='plan-left-title'><span
+                                            className='fontsize-16 ellipsis'>{it.title}</span>
+                                            {/* 待提交 */}
+                                            {it.status === 0 && <Badge className='plan-badge ready' color='#108ee9'
+                                                                       text={it.statusDesc}/>}
+                                            {/* 待审批 */}
+                                            {it.status === 1 && <Badge className='plan-badge wait' color='#F0944B'
+                                                                       text={it.statusDesc}/>}
+                                            {/* 审批通过 */}
+                                            {it.status === 2 && <Badge className='plan-badge through' color='#87d068'
+                                                                       text={it.statusDesc}/>}
+                                            {/* 审批不通过 */}
+                                            {it.status == -1 &&
+                                                <Badge className='plan-badge fail' color='#f00' text={it.statusDesc}/>}
+                                        </div>
+                                        <div>
+                                            <span
+                                                className='fontsize-16'>{it.createName}</span><span>{it.deptName}</span>
+                                        </div>
+                                        <p className='plan-left-time'>{it.createdTime}</p>
+                                    </div>
+                                )
+                            })
+                        }
+                    </div>
+                    <div className='right'>
+                        {
+                            currContent?.id ? <DetailNewIndex id={currContent.id}/>
+                                :
+                                <Empty style={{marginTop: '200px', width: "100%"}} image={Empty.PRESENTED_IMAGE_SIMPLE}
+                                       description={'选择左侧' + (options.name || '') + '或创建一份' + (options.name || '')}/>
+                        }
+                    </div>
+                </div>
+        }
+    }
+    const selectConElement = () => {
+        switch (options.menuCode) {
+            case 'LYHZSC_7':
+                return <WrapperLYHZSC_7>
+                    <PageTitle>{options.name || ''}</PageTitle>
+                    <Button onClick={model.onPrint}>导出Pdf</Button>
+                    <Button type={'primary'} onClick={model.handleSaveNotice}>保存</Button>
+                </WrapperLYHZSC_7>;
+            case 'LYHZSC_8':
+            case 'LYHZSC_9':
+                case 'LYHZSC_10':
+                return <WrapperLYHZSC_7>
+                    <PageTitle>{options.name || ''}</PageTitle>
+                    <span className='label'>科室:</span>
+                    <Select value={lyhzscQuery.deptCode} onChange={(e: any) => {
+                        setLyhzscQuery({
+                            ...lyhzscQuery,
+                            ['deptCode']: e
+                        })
+                    }}>
+                        <Option key={0} value={''}>全部</Option>
+                        {
+                            authStore.deptList.map(v => (
+                                <Option key={v.code} value={v.code}>{v.name}</Option>
+                            ))
+                        }</Select>
+                    <span className='label'>{TimeType[options.menuCode]}时间:</span>
+                    <DatePicker.RangePicker format={'YYYY-MM-DD'}
+                                            onChange={(e: any) => {
+                                                const [d1, d2] = e
+                                                setLyhzscQuery({
+                                                    ...lyhzscQuery,
+                                                    startTime: d1 ? d1 : null,
+                                                    endTime: d2 ? d2 : null,
+                                                })
+                                            }}
+                                            value={[lyhzscQuery.startTime, lyhzscQuery.endTime]}
+                    />
+                    { options.menuCode === 'LYHZSC_9' &&  <Button type='primary' onClick={openLYHZSC_9Create}>创建</Button>}
+                </WrapperLYHZSC_7>;
+            default:
+                return <SelectCon {...{
+                    query,
+                    setQuery,
+                    onResetQuery,
+                    openCreate,
+                    title: options.name || '',
+                    formList,
+                    openAudit
+                }}/>
+
+        }
+    }
     useEffect(() => {
         init()
+        model.isNotice = options.menuCode === 'LYHZSC_4_1'
     }, [options])
 
     useFirstDisEffect(() => {
         getTableData()
-    }, [query,model.statusChange])
-
+    }, [query, model.statusChange])
     return (
         <Wrapper>
             {/*也是925版本，后边统一*/}
-            <SelectCon {...{ query, setQuery, openCreate, title: options.name || '', formList, openAudit }} />
-            <div className="main-contain">
-                <div className="left">
-                    {tableData.length < 1 &&
-                        <Empty style={{marginTop: '200px', width: "100%"}} image={Empty.PRESENTED_IMAGE_SIMPLE}
-                               description={'创建一份' + (options.name || '')}/>}
-                    {
-                        tableData.map((it: any) => {
-                            return (
-                                <div
-                                    className={it.id == planDatas.contentItem.id ? 'left-item active' : 'left-item'}
-                                    key={it.id} onClick={() => {
-                                    setCurrContent(it);
-                                    // planDatas.contentItem = it;
-                                    // planDatas.getDetail(it.id)
-                                }}>
-                                    <div className='plan-left-title'><span
-                                        className='fontsize-16 ellipsis'>{it.title}</span>
-                                        {/* 待提交 */}
-                                        {it.status === 0 && <Badge className='plan-badge ready' color='#108ee9'
-                                                                   text={it.statusDesc}/>}
-                                        {/* 待审批 */}
-                                        {it.status === 1 && <Badge className='plan-badge wait' color='#F0944B'
-                                                                   text={it.statusDesc}/>}
-                                        {/* 审批通过 */}
-                                        {it.status === 2 && <Badge className='plan-badge through' color='#87d068'
-                                                                   text={it.statusDesc}/>}
-                                        {/* 审批不通过 */}
-                                        {it.status == -1 &&
-                                            <Badge className='plan-badge fail' color='#f00' text={it.statusDesc}/>}
-                                    </div>
-                                    <div>
-                                        <span className='fontsize-16'>{it.createName}</span><span
-                                        style={{marginLeft: '8px'}}>{it.deptName}</span>
-                                    </div>
-                                    <p className='plan-left-time'>{it.createdTime}</p>
-                                </div>
-                            )
-                        })
-                    }
-                </div>
-                <div className='right'>
-                    {
-                        currContent?.id ?  <DetailNewIndex id={currContent.id}/>
-                            :<Empty style={{marginTop: '200px', width: "100%"}} image={Empty.PRESENTED_IMAGE_SIMPLE}
-                                    description={'选择左侧' + (options.name || '') + '或创建一份' + (options.name || '')}/>
-                    }
-                </div>
-            </div>
+            {/*  头部内容 */}
+            {selectConElement()}
+            {/*   护士长手册内容 */}
+            <Spin spinning={loading}>
+                {menuElement()}
+            </Spin>
             {/*  用925那边的弹窗，内容齐全 */}
-            <addModal.Component />
-            <AuditModal visible={auditVisible} onOkCb={handleAudit} selectedList={selectedRows} onCancel={() => setAuditVisible(false)} />
+            <addModal.Component/>
+            <indicatorAddModal.Component/>
+            <AuditModal visible={auditVisible} onOkCb={handleAudit} selectedList={selectedRows}
+                        onCancel={() => setAuditVisible(false)}/>
         </Wrapper>
     )
 })
@@ -452,15 +498,17 @@ const Wrapper = styled.div`
     width: 100%;
     display: flex;
     height: calc(100vh - 95px);
-    /* min-width: 1220px; */
 
     .left {
       width: 250px;
-      /* overflow: hidden; */
       overflow-y: auto;
       border: 1px solid #ddd;
       box-sizing: border-box;
-      /* padding: 5px; */
+
+      .sticky {
+        position: sticky;
+        top: 0;
+      }
 
       .left-item {
         border-bottom: 1px solid #ddd;
@@ -526,25 +574,19 @@ const Wrapper = styled.div`
         &:hover, &.active {
           cursor: pointer;
           background-color: #ddd;
-          /* color: #fff; */
 
           .plan-left-time {
-            /* color: #fff; */
-          }
 
-          /* .plan-badge{
-              &.through{
-              .ant-badge-status-text{
-                  color: #fff;
-              }
-          } */
-          /* color: #fff !important; */
+          }
         }
       }
     }
-  .right{
-    flex: 1;
-  }
+
+    .right {
+      flex: 1;
+    }
   }
 
+`
+const WrapperLYHZSC_7: any = styled(PageHeader)`
 `

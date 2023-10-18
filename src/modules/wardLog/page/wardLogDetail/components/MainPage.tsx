@@ -1,11 +1,14 @@
 import styled from 'styled-components'
 import React, { useState, useEffect, useRef } from 'react'
-import { Button } from 'antd'
 import TitleItem from './TitleItem'
 import FileCon from './FileCon'
 import MessageCon from './MessageCon'
+import { Input, Button } from 'antd';
+
+const { TextArea } = Input;
 export interface Props {
   pageData: any,
+  commentSubmit?: (content:any) => void,
 }
 
 interface logItem {
@@ -17,7 +20,14 @@ interface logItem {
 }
 
 export default React.forwardRef(function MainPage(props: Props, ref: any) {
+  const [content, setContent] = useState('')
   const listData = props.pageData.logDetail
+  let wardLogType =  sessionStorage.getItem('wardLogType')
+
+  const _commentSubmit = async() => {
+    props.commentSubmit && props.commentSubmit(content)
+    setContent('')
+  }
   return (
     <Wrapper ref={ref} id='wardLogPrintPage'>
       <PrintHead>
@@ -42,6 +52,13 @@ export default React.forwardRef(function MainPage(props: Props, ref: any) {
       <FileCon pageData={props.pageData} />
       <BlockLine />
       <MessageCon pageData={props.pageData} />
+      {wardLogType === '3' && <Line />}
+      { wardLogType === '3' && <Comment>
+        <TextArea value={content} onChange={(e: any) => {
+          setContent(e.target.value)
+        }} rows={3} />
+        <Button className='button' type="primary" onClick={_commentSubmit} disabled={content === ''}>发送</Button>
+      </Comment>}
     </Wrapper>
   )
 })
@@ -94,5 +111,12 @@ const PrintHead = styled.div`
   .aside {
     font-size: 14px;
     line-height: 22px;
+  }
+`
+
+const Comment = styled.div`
+  text-align: right;
+  .button{
+    margin-top: 10px;
   }
 `

@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button } from 'antd'
+import { Button, message } from 'antd'
 import BaseBreadcrumb from 'src/components/BaseBreadcrumb'
 import { appStore } from 'src/stores'
 import { ScrollBox } from 'src/components/common'
@@ -71,6 +71,15 @@ export default function WardLogDetail() {
         fileDownload(res)
       }, err => setPageLoading(false))
   }
+  
+  const commentSubmit = async (content:any) => {
+    let data = await wardLogService.addComment({
+      instanceId: appStore.queryObj?.id || '',
+      content
+    })
+    message.success(data.desc || '操作成功')
+    onLoad()
+  }
 
   useEffect(() => {
     onLoad()
@@ -90,7 +99,7 @@ export default function WardLogDetail() {
           </div>
         </HeadCon>
         <LeftPart>
-          <MainPage ref={printRef} pageData={pageData} />
+          <MainPage ref={printRef} pageData={pageData} commentSubmit={commentSubmit} />
         </LeftPart>
         <RightPart>
           <RightCon pageData={pageData} />
