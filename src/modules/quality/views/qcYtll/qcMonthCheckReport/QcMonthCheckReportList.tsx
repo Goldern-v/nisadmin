@@ -46,7 +46,12 @@ export default observer(function QcMonthCheckReportList() {
 			dataIndex: "wardName",
 			align: "center",
 			width: 100,
-     
+		},
+		{
+			title: "质控表单",
+			dataIndex: "summaryFormName",
+			align: "center",
+			width: 100,
 		},
 		{
 			title: "报告年份",
@@ -85,8 +90,7 @@ export default observer(function QcMonthCheckReportList() {
           return (<DoCon>
             <span onClick={() => { turnToDetail(record) }}>查看</span>
             <span onClick={() => {openModal('编辑',record)}}>编辑</span>
-            <span onClick={() => {deleteItem(record,index)}}>删除</span>
-            {/* <span key={row.id} onClick={() => handleSign(row, 'signName')}>{value || '签名'}</span> */}
+            <span style={{color:"red"}} onClick={() => {deleteItem(record,index)}}>删除</span>
         </DoCon>)
       }
 
@@ -132,11 +136,9 @@ export default observer(function QcMonthCheckReportList() {
 				reportName:qcMonthCheckData.createModalData.name
 			}).then(res=>{
 				qcMonthCheckData.getTableList()
-
 				message.success('修改成功')
 				qcMonthCheckData.addConfirmVisible = false
 				qcMonthCheckData.currentItem = qcMonthCheckData.currentItemSource
-			
 			}).catch(err=>{
 
 			})

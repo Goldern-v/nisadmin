@@ -1,27 +1,24 @@
 import { observer } from 'mobx-react'
 import React, { useEffect, useState } from 'react'
-import { Button, message, Spin,Table,InputNumber,Input,DatePicker,Icon } from 'src/vendors/antd'
+import { Button, message, Spin } from 'src/vendors/antd'
 import { useRef } from 'src/types/react'
 import printing from 'printing'
 import moment from 'moment'
-import service from 'src/services/api'
-import { to } from 'src/libs/fns'
-import MultiFileUploader from "src/components/MultiFileUploader";
 import styled from 'styled-components'
 import { ScrollBox } from 'src/components/common'
 import BaseBreadcrumb from 'src/components/BaseBreadcrumb'
 import { appStore } from 'src/stores'
 import { qcMonthCheckData } from './qcMonthCheckData'
+import QcMonthCheckThree from "./QcMonthCheckThree"
+import QcMonthCheckTwo from "./QcMonthCheckTwo"
+import QcMonthCheckOne from "./QcMonthCheckOne"
 import {qcYtllApi}  from '../qcYtllApi'
-import QcFishBoneMonth from './qcFishBoneMonth/fish-bone'
-import ChartCylindricalityMonth from './ChartCylindricalityMonth'
-
 
 export default observer(function QcMonthCheckReportDetail() {
   const pageRef: any = useRef<HTMLElement>()
   const [isPrint, setIsPrint] = useState(false)
   const {id,qcLevel} = appStore.queryObj
-  const [canvasImgArry, setCanvasImgArry] = useState([]);
+  const [chartsImg, setChartsImg] = useState<any[]>([])
   const [spinning, setSpinning] = useState(true);
 
   /**保存 */
@@ -32,36 +29,67 @@ export default observer(function QcMonthCheckReportDetail() {
     }
     let qcReportItemDtoList = qcMonthCheckData.qcReportItemDtoList || []
     let qcReportItemDataList:any = []
+    
     qcReportItemDtoList.map((it:any)=>{
       qcReportItemDataList.push({
         itemCode:it.itemCode,
         itemValue:JSON.stringify(qcMonthCheckData[it.itemCode]),
         reportItemId:it.id,
         reportMasterId:qcMonthCheckData.reportMasterData.id || null,
-        id:it.qcReportItemDataList?it.qcReportItemDataList[0].id:null,
+        id:it.qcReportItemDataListId?it.qcReportItemDataListId:null,
       })
     })
 
     let paramter = {
       ...qcMonthCheckData.reportMasterData,
-      hospitalCode:'zzwy',
-      templateName:'月度质控检查总结报告',
+      hospitalCode:'ytll',
+      templateName:'月度汇总分析报告',
       qcReportItemDataList
     }
+    
     qcYtllApi.saveQcReport(paramter).then(res=>{
+      console.log("保存");
+      
       message.success('保存成功')
       appStore.history.goBack()
     }).catch(err=>{
 
     })
   }
+
+  const setImg = () => {
+    let imgEl = document.querySelectorAll('.chart-img') as any
+    if (imgEl.length) {
+      for (let i = 0; i < imgEl.length; i++) {
+        chartsImg[i] && (imgEl[i].src = chartsImg[i])
+      }
+    }
+  }
+
+  const initCanvasImg = ()=>{
+    let timer: any = null
+    timer = setTimeout(() => {
+      let canvasEl = document.querySelectorAll('canvas') as any
+      if (canvasEl.length) {
+        let arr = []
+        for (let i = 0; i < canvasEl.length; i++) {
+          arr.push(canvasEl[i].toDataURL())
+        }
+        setChartsImg(arr)
+      }
+    }, 1000)
+  }
+
   const onPrint = (isPrint: boolean) => {
     if(spinning){
       message.warning('努力加载中，请稍后操作')
       return false
     }
     setIsPrint(isPrint)
-    let printFun = isPrint ? printing : printing.preview
+  }
+
+const toPrint = ()=>{
+  let printFun = printing
     setTimeout(() => {
       printFun(pageRef.current, {
         // 插入所有link和style标签到打印，默认是false
@@ -69,7 +97,12 @@ export default observer(function QcMonthCheckReportDetail() {
         // 指定扫描样式，默认是true（全部）
         scanStyles: false,
         css: `
-           .ant-btn {
+          .chart-img {
+            max-height: 260mm;
+            width: 100%;
+            object-fit: cover
+          }
+          .ant-btn {
              display: none;
            }
            .print-page__ptext{
@@ -107,8 +140,6 @@ export default observer(function QcMonthCheckReportDetail() {
              min-height: 0;
              margin-bottom: 0;
            }
-           table { page-break-inside:auto }
-           tr{ page-break-inside:avoid; page-break-after:auto }
           .chart-con>div{
             display: none;
           }
@@ -133,8 +164,16 @@ export default observer(function QcMonthCheckReportDetail() {
       /**创建分析报告 */
       createQcReport()
     }
-
+    initCanvasImg()
+    
   }, [])
+
+  useEffect(() => {
+    if(isPrint){
+      setImg()
+      toPrint()
+    }
+  }, [isPrint])
 
   /**创建分析报告 */
   const createQcReport = ()=>{
@@ -155,9 +194,9 @@ export default observer(function QcMonthCheckReportDetail() {
     qcYtllApi.createQcReport(paramter).then(res=>{
       setSpinning(false)
       qcMonthCheckData.reportMasterData = res.data.reportMasterData || {}
-      qcMonthCheckData.qcReportItemDtoList = res.data.qcReportItemDtoList || []
+      qcMonthCheckData.qcReportItemDtoList = res.data.qcReportItemList || []
       qcMonthCheckData.qcReportItemDtoList.map((it:any)=>{
-        qcMonthCheckData[it.itemCode] = qcMonthCheckData.sourceMap[it.itemCode]
+        qcMonthCheckData[it.itemCode] = {...qcMonthCheckData.sourceMap[it.itemCode]}
       })
       // 新建的时候需要
       qcMonthCheckData.getQcReportDetail()
@@ -166,61 +205,62 @@ export default observer(function QcMonthCheckReportDetail() {
     })
   }
 
+  const lastPewView = (()=>{
+    if(appStore?.queryObj?.qcLevel == 3) return { name: '三级质控报告', link: 'qcThree/checkReport?qcLevel='+qcLevel }
+    else if(appStore?.queryObj?.qcLevel == 2) return { name: '二级质控报告', link: 'qcTwo/checkReport?qcLevel='+qcLevel }
+    else return { name: '一级质控报告', link: 'qcOneDghl/checkReport?qcLevel='+qcLevel }
+  })()
   /**查看报告 */
   const getQcReportById = ()=>{
-    // console.log(id)
     qcYtllApi.getQcReportById(id).then(res=>{
       setSpinning(false)
       qcMonthCheckData.reportMasterData = res.data.reportMasterData || {}
-      qcMonthCheckData.qcReportItemDtoList = res.data.qcReportItemDtoList || []
-      qcMonthCheckData.qcReportItemDtoList.map((it:any)=>{
-        qcMonthCheckData[it.itemCode] = it.qcReportItemDataList[0].itemValue?
-          JSON.parse(it.qcReportItemDataList[0].itemValue):
-          qcMonthCheckData.sourceMap[it.itemCode]
+      qcMonthCheckData.qcReportItemDtoList = res.data.qcReportItemDataList.map((li:any)=>({
+        ...li,
+        qcReportItemDataListId:li.id
+      })) || []
+
+      qcMonthCheckData.qcReportItemDtoList.map((it:any,inde:any)=>{
+        qcMonthCheckData[it.itemCode] = it.itemValue ? JSON.parse(it.itemValue) : {...qcMonthCheckData.sourceMap[it.itemCode]}
       })
-      // 更新鱼骨图
     }).catch(err=>{
 
     })
-    
   }
 
+  const masterBody = ()=>{
+    return appStore?.queryObj?.qcLevel == 3 ? <QcMonthCheckThree isPrint={isPrint}></QcMonthCheckThree> :
+          appStore?.queryObj?.qcLevel == 2 ? <QcMonthCheckTwo isPrint={isPrint}></QcMonthCheckTwo> : 
+          <QcMonthCheckOne isPrint={isPrint}></QcMonthCheckOne> 
+  }
   return (
     <Wrapper>
       <HeadCon>
-        <BaseBreadcrumb data={[{ name: '三级质控报告', link: 'qcThree/checkReport?qcLevel='+qcLevel }, { name: '记录详情', link: '' }]} />
+        <BaseBreadcrumb data={[lastPewView, { name: '记录详情', link: '' }]} />
         <div className='title'>
-        {qcMonthCheckData.reportMasterData?.reportName || ''}
-        {/* {'2023年消化内科5月护理质量检查总结'} */}
+          {qcMonthCheckData.reportMasterData?.reportName || ''}
         </div>
         <div className='aside'>
           <span>
             {qcMonthCheckData.reportMasterData?.status=='-1' && <span style={{marginRight:'16px'}}>状态：待保存</span>}
             {qcMonthCheckData.reportMasterData?.status=='0' && <span style={{marginRight:'16px'}}>状态：已保存</span>}
-            
             <span style={{marginRight:'16px'}}>创建人：{qcMonthCheckData.reportMasterData?.creatorName || ''}</span>
             <span>创建时间：{qcMonthCheckData.reportMasterData?.createTime || ''}</span>
-            
           </span>
         </div>
         <div className='tool-con'>
           <Button onClick={() => onSave()} >保存</Button>
           <Button onClick={() => onPrint(true)} >导出</Button>
-          {/* <Button onClick={() => setIsPrint(true)} >导出222</Button> */}
           <Button onClick={() => appStore.history.goBack()}>返回</Button>
         </div>
       </HeadCon>
       <ScrollCon>
         <Spin spinning={spinning} > 
-          <Page ref={pageRef} className='print-page'>
+          <Page ref={pageRef} className='print-txt-indent-40'>
             <div style={{ fontSize: '30px', fontWeight: 700, textAlign: 'center', lineHeight: '60px',marginTop:"20px" }}>
             {qcMonthCheckData.reportMasterData?.reportName || ''}
-              {/* {'5月护理质量检查总结'} */}
               </div>
-            <div className='first-content-box'>
-              <div className='first-title'>{`一、质控人员`}</div>
-                <p className="p-txt">{qcMonthCheckData.YTLL_YDHZFX_L3_001.qcPersonName}</p>
-            </div>
+            { masterBody() }
           </Page>
         </Spin>
       </ScrollCon>
@@ -255,7 +295,8 @@ const HeadCon = styled.div`
 const Page = styled.div`
   width: 1000px;
   margin: 20px auto 20px;
-  padding-bottom: 10px;
+  // padding-bottom: 10px;
+  padding:0 40px 10px;
   background: #fff;
   box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
   overflow: hidden;
@@ -277,45 +318,53 @@ const Page = styled.div`
     /* width: calc(100% - 120px); */
 		line-height: 1.5;
   }
+  p{
+    margin-bottom:0px;
+  }
+  .first-title{
+    font-weight:bold;
+    line-height:30px;
+    // text-indent:40px;
+  }
+  .p-txt{
+    line-height: 20px;
+  }
+  .txt-indent-40{
+    text-indent: 40px;
+  }
+  .mg-bt-20{
+    margin-bottom:20px;
+  }
+  .no-data{
+    text-align:center;
+    cursor: default;
+    color: #999;
+    i{
+      font-size: 44px;
+      transform: scaleX(1.2);
+    }
+    span{
+      font-size:20px;
+    color: #aaa;
+    }
+  }
+  .ant-input-number{
+    vertical-align: middle;
+    .ant-input-number-input{
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+  }
+  .second-title{
+    font-size: 15px;
+    font-weight: bold;
+  }
+}
 `
 
 const ScrollCon = styled(ScrollBox)`
   height: calc(100vh - 150px);
-
-  .first-title{
-    font-size:20px;
-    font-weight:bold;
-    line-height:30px;
     font-family: STHeiti !important;
-    text-indent:20px;
-    margin-bottom:20px;
     font-size:16px;
-  }
-
-  /* 二级题目 */
-  .second-box{
-    /* border: 1px solid; */
-    /* margin-top: 20px; */
-    /* padding: 20px 14px; */
-    p,h4{
-      line-height: 1;
-      margin-bottom: 0;
-    }
-    p{
-      margin: 12px 0;
-    }
-  }
-  .second-title{
-    font-size: 14px;
-    font-weight: bold;
-  }
-  /* 输入框样式 */
-  .ant-input-number-handler-wrap {
-    display: none;
-  }
-
-  }
-
-  
-  
 `

@@ -11,6 +11,7 @@ import Analysis from './views/analysisWhyx/Analysis'
 import qcQSummary from './views/qcQSummary'
 import QualityControlKey from './views/qualityControlKey/QualityControlKey'
 import QualityControlRecord from './views/qualityControlRecord/QualityControlRecord'
+import checkReport from 'src/modules/quality/views/qcYtll/qcMonthCheckReport/QcMonthCheckReportList'
 import SafetyChecklist from './views/safetyChecklist'
 import WorkSummaryReportList from './views/workSummaryReportList/WorkSummaryReportList'
 import { ReactComponent as HZBG } from './images/icon/HZBG.svg'
@@ -141,6 +142,17 @@ export default observer(function QcTwoRouter(props: Props) {
       disabledKeepAlive:
         (appStore.history && appStore.history.action) !== "POP",
     },
+  ];
+  const route_YTLL = [
+    {
+      title: "二级质控月度报告",
+      icon: <YDBG />,
+      path: "/qcTwo/workSummaryReportList",
+      component: WorkSummaryReportList,
+      keepAlive: true,
+      disabledKeepAlive:
+        (appStore.history && appStore.history.action) !== "POP",
+    }
   ];
   const route_质控_ZZWY = [
     {
@@ -328,6 +340,17 @@ export default observer(function QcTwoRouter(props: Props) {
       zzwy:[
         ...route_default,
         ...route_质控_ZZWY
+      ],
+      ytll:[
+        ...route_YTLL,
+        {
+          title: "二级质控汇总分析报告",
+          icon: <HZBG />,
+          path: "/qcTwo/checkReport?qcLevel=2",
+          component: checkReport,
+          keepAlive: true,
+          disabledKeepAlive: (appStore.history && appStore.history.action) !== "POP",
+        },
       ],
       // whyx: [route_analysis, route_summaryReport, route_problemSummary],
       default: route_default,

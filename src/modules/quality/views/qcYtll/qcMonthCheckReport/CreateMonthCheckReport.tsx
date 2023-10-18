@@ -113,10 +113,10 @@ function CreateMonthCheckReport(props: Props) {
             rules: [{ required: true, message: '报告名称不能为空' }]
           })(<Input style={{ width: '100%' }} />)}
         </Form.Item>
-        <Form.Item label='模板名称' {...formItemLayout} >
+        <Form.Item label='质控表单' {...formItemLayout} >
           {getFieldDecorator('summaryFormName', {
               initialValue: qcMonthCheckData.currentItem?.summaryFormName || '',
-              rules: [{required: true, message: '模板名称不能为空'}]
+              rules: [{required: true, message: '质控表单不能为空'}]
           })(<Input
               disabled={qcMonthCheckData.currentItem?.id || false}
               suffix={
