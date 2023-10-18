@@ -41,15 +41,20 @@ export default function DeptFileShare() {
     pageSize: 20,
     pageIndex: 1
   } as any);
-  // useEffect(() => {
 
-  // }, []);
   useEffect(() => {
     // if (query.deptCode) {
     //
     // }
     getTableData();
   }, [query]);
+  useEffect(()=>{
+    if(appStore.HOSPITAL_ID ==='qhwy'){
+      api.getCatalog({ deptCode:'' }).then(res => {
+        if (res.data) setCatalogList(res.data);
+      });
+    }
+  },[])
 
   const [tableLoading, setTableLoading] = useState(false);
 

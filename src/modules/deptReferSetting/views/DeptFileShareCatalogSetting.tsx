@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 import { Button, Input, message as Message, Modal } from 'antd'
-import { appStore } from 'src/stores'
+import {appStore, authStore} from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import { ColumnProps } from 'antd/lib/table'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
@@ -122,7 +122,9 @@ export default observer(function NursingRulesTypeSetting() {
 
   const getCatalog = (_deptCode?: any) => {
     setTableLoading(true)
-    api.getCatalog({ deptCode: _deptCode || deptCode }).then(
+    /**青海五院不需要科室区分**/
+    let codeEntry:number =appStore.HOSPITAL_ID ==='qhwy'? '':(_deptCode || deptCode)
+    api.getCatalog({ deptCode: codeEntry }).then(
       (res) => {
         setTableLoading(false)
         if (res.data instanceof Array) {
@@ -165,9 +167,11 @@ export default observer(function NursingRulesTypeSetting() {
           <div className='item title'>目录设置</div>
         </div>
         <div className='float-right'>
-          <div className='item'>
-            <Button onClick={handleAdd}>添加</Button>
-          </div>
+          {
+            (appStore.HOSPITAL_ID ==='qhwy' ?  authStore.isDepartment : true) &&   <div className='item'>
+                <Button onClick={handleAdd}>添加</Button>
+              </div>
+          }
           <div className='item'>
             <Button onClick={() => history.goBack()}>返回</Button>
           </div>
