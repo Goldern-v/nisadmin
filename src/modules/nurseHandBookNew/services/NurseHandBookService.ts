@@ -229,6 +229,12 @@ export default class NurseHandBookService extends BaseApiService {
     public deleteIndicatorsItem(params: Obj) {
         return this.post('/nurseHandbook/linyi/deleteIndicatorsItem', params)
     }
+    /**
+     * 获取护理人员资质备案表列表
+     * **/
+    public getNurseFilingForm(params: Obj) {
+        return this.post('/nurseHandbook/linyi/getNurseFilingForm', params)
+    }
 }
 
 export const nurseHandBookService = new NurseHandBookService()

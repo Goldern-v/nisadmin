@@ -22,6 +22,7 @@ import LYHZSC_7 from '../detail-lyrm/components/LYHZSC_4/LYHZSC_7'
 import {PageHeader, PageTitle} from "src/components/common";
 import LYHZSC_8 from "src/modules/nurseHandBookNew/views/detail-lyrm/components/LYHZSC_4/LYHZSC_8";
 import LYHZSC_9 from '../detail-lyrm/components/LYHZSC_4/LYHZSC_9'
+import LYHZSC_10 from '../detail-lyrm/components/LYHZSC_4/LYHZSC_10'
 
 const Quarter = {'第一季度': 1, '第二季度': 2, '第三季度': 3, '第四季度': 4}
 const QuarterV = {1: '第一季度', 2: '第二季度', 3: '第三季度', 4: '第四季度'}
@@ -31,7 +32,7 @@ const {Option} = Select
 export interface Props {
     options: Obj
 }
-
+const TimeType = {'LYHZSC_9':'调入','LYHZSC_10':'发证','LYHZSC_8':'调入'}
 /** 29张表的菜单页，by临邑 */
 export default observer(function (props: Props) {
     const {options} = props
@@ -345,14 +346,16 @@ const onOkLYHZSC_9Add =(params: Obj)=>{
                 return <LYHZSC_7/>;
             case 'LYHZSC_8':
                 return <LYHZSC_8
-                    startTime={lyhzscQuery.startTime}
-                    endTime={lyhzscQuery.endTime}
-                    deptCode={lyhzscQuery.deptCode}/>;
+                    {...lyhzscQuery}/>;
             case 'LYHZSC_9':
                 return <LYHZSC_9
                     setLyhzscQuery={setLyhzscQuery}
                     {...lyhzscQuery}
                   />;
+                case 'LYHZSC_10':
+                return <LYHZSC_10
+                    {...lyhzscQuery}
+                />
             default :
                 return <div className="main-contain">
                     <div className="left">
@@ -420,6 +423,7 @@ const onOkLYHZSC_9Add =(params: Obj)=>{
                 </WrapperLYHZSC_7>;
             case 'LYHZSC_8':
             case 'LYHZSC_9':
+                case 'LYHZSC_10':
                 return <WrapperLYHZSC_7>
                     <PageTitle>{options.name || ''}</PageTitle>
                     <span className='label'>科室:</span>
@@ -435,7 +439,7 @@ const onOkLYHZSC_9Add =(params: Obj)=>{
                                 <Option key={v.code} value={v.code}>{v.name}</Option>
                             ))
                         }</Select>
-                    <span className='label'>调入时间:</span>
+                    <span className='label'>{TimeType[options.menuCode]}时间:</span>
                     <DatePicker.RangePicker format={'YYYY-MM-DD'}
                                             onChange={(e: any) => {
                                                 const [d1, d2] = e

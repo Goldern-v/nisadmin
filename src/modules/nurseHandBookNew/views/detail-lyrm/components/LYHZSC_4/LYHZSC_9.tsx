@@ -6,8 +6,6 @@ import {observer} from 'mobx-react'
 import {nurseHandBookService} from "src/modules/nurseHandBookNew/services/NurseHandBookService";
 import BaseTable, {DoCon} from "src/components/BaseTable";
 
-const {TextArea} = Input
-
 export interface Props {
 }
 
@@ -77,7 +75,8 @@ export default observer(function (props: any) {
                 return (
                     <DoCon>
                         <span onClick={() => handleSaveRow(record)}>保存</span>
-                        <span onClick={() => handleDeleteRow(record, index)}>删除</span>
+                        <span
+                            className={( record.use ? 'disabled':'')} onClick={() => handleDeleteRow(record, index)}>删除</span>
                     </DoCon>
                 );
             }
@@ -99,7 +98,6 @@ export default observer(function (props: any) {
     }
     const getData =()=>{
         setLoading(true)
-        console.log("props===",props);
         nurseHandBookService.getIndicatorsItem({
             deptCode: props?.deptCode,
             startTime: props?.startTime.format('YYYY-MM-DD') + ' 00:00:00',
