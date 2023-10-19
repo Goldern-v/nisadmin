@@ -2,10 +2,14 @@ import { appStore } from 'src/stores';
 import { fileDownload } from './../../../../utils/file/file'
 import { observable, computed, action } from 'mobx'
 import { retiredRetireesService } from './services/RetiredRetireesService'
-import { crrentMonth } from 'src/utils/moment/crrentMonth'
+import { getCurrentMonthNow,getCurrentMonth } from 'src/utils/date/currentMonth'
+
 import service from 'src/services/api'
 import * as types from 'src/libs/types'
 
+const currentMonth = ()=>{
+  return ['jmfy'].includes(appStore.HOSPITAL_ID) ? getCurrentMonth() : getCurrentMonthNow()
+}
 class RetiredRetireesViewModal {
   @observable public bigDeptList = []
   @observable public deptList = []
@@ -13,14 +17,14 @@ class RetiredRetireesViewModal {
 
   @observable public selectedBigDept = ''
   @observable public selectedDept = ['全部']
-  @observable public selectedDate: any = crrentMonth()
+  @observable public selectedDate: any = currentMonth()
   @observable public selectedStatus = '离职'
   @observable public tableList = []
   /**查询条件 by虎门 */
   @observable public query: types.Obj = {
     bigDept: '',
     deptCodes: ['全部'],
-    selectedDate: crrentMonth(),
+    selectedDate: currentMonth(),
     selectedStatus: '离职',
     nurseHierarchy: '', //层级：
     newTitle: '', //职称

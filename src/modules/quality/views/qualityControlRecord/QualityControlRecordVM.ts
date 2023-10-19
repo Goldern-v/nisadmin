@@ -3,7 +3,11 @@ import { observable, computed, action, reaction } from 'mobx'
 import { qualityControlRecordApi, NurseQuery, judgePowerYXIn } from './api/QualityControlRecordApi'
 import { authStore } from 'src/stores'
 import moment from 'moment'
+import { getCurrentMonthNow,getCurrentMonth } from 'src/utils/date/currentMonth'
 
+const currentMonth = ()=>{
+  return ['jmfy'].includes(appStore.HOSPITAL_ID) ? getCurrentMonth() : getCurrentMonthNow()
+}
 class QualityControlRecordVM {
   /** 筛选列表 */
   @observable public formSelectList: any = [] //质控小组列表
@@ -21,7 +25,7 @@ class QualityControlRecordVM {
     }
   ]
   /** 筛选条件 */
-  @observable public filterDate: any = [moment(moment().format('YYYY-MM') + '-01'), moment()]
+  @observable public filterDate: any = currentMonth()
   @observable public consultationDate: any = [moment(moment().subtract(1, 'month').format('YYYY-MM-DD')), moment()]
   @observable public filterForm: any = ''
   @observable public filterState: any = ''
@@ -46,7 +50,7 @@ class QualityControlRecordVM {
     this.filterDeptCode = ''
     this.readWay = 1
     this.level = Number(level)
-    this.filterDate = [moment(moment().format('YYYY-MM') + '-01'), moment()]
+    this.filterDate = currentMonth()
     this.allData = {}
     this.qcCode = ''
     this.creatorName= ''

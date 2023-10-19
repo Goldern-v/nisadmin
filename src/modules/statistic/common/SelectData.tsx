@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { DatePicker } from 'antd'
+import { appStore } from 'src/stores'
 import moment from 'moment'
 import statisticViewModel from 'src/modules/statistic/StatisticViewModel'
 
@@ -22,9 +23,13 @@ export default function SelectData(props: Props) {
     return statisticViewModel.startDate
   })
   const [endDate, setEndDate] = useState(() => {
-    let date = new Date()
-    let secondDay = date.setDate(7)
-    statisticViewModel.endDate = moment(secondDay).format(dateFormat)
+    let date :any
+    if(appStore.HOSPITAL_ID == "jmfy") date = moment().endOf('month').format(dateFormat)
+    else{
+      let _date = new Date()
+      date = moment(_date.setDate(7)).format(dateFormat)
+    }
+    statisticViewModel.endDate = date
     return statisticViewModel.endDate
   })
 

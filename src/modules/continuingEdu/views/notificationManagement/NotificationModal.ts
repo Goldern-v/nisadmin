@@ -1,6 +1,11 @@
 import { observable, computed } from "mobx";
 import { notificationApi } from "./api/NotificationApi";
-import { crrentMonth } from "src/utils/moment/crrentMonth";
+import { getCurrentMonthNow,getCurrentMonth } from 'src/utils/date/currentMonth'
+import { appStore } from 'src/stores'
+
+const currentMonth = (()=>{
+  return ['jmfy'].includes(appStore.HOSPITAL_ID) ? getCurrentMonth() : getCurrentMonthNow()
+})()
 
 class NotificationModal {
   @observable public keyWord = ""; //菜单名
@@ -9,7 +14,7 @@ class NotificationModal {
   @observable public pageIndex: any = 1; //页码
   @observable public pageSize: any = 20; //每页大小
   @observable public total: any = 0; //总条数
-  @observable public selectedDate: any = crrentMonth(); //日期
+  @observable public selectedDate: any = currentMonth; //日期
   @observable public tableList = []; //表格内容
   @observable public tableLoading = false; //表格loading
 

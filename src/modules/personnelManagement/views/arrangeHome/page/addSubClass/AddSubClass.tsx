@@ -16,12 +16,17 @@ import BaseTable, { DoCon } from "src/components/BaseTable";
 import { arrangeService } from "../../services/ArrangeService";
 import { observer } from "mobx-react-lite";
 import { DictItem } from "src/services/api/CommonApiService";
-import { getCurrentMonthNow } from "src/utils/date/currentMonth";
+import { getCurrentMonthNow,getCurrentMonth } from "src/utils/date/currentMonth";
 import moment from "moment";
 import AddSubClassModal from './modal/AddSubClassModal'
 import createModal from "src/libs/createModal";
 import { globalModal } from "src/global/globalModal";
 export interface Props { }
+
+const currentMonth = ()=>{
+  return ['jmfy'].includes(appStore.HOSPITAL_ID) ? getCurrentMonth() : getCurrentMonthNow()
+}
+
 export default observer(function AddSubClass() {
   const [searchWord, setSearchWord] = useState("");
   const [dataSource, setDataSource] = useState([]);
@@ -31,7 +36,7 @@ export default observer(function AddSubClass() {
   const [pageLoading, setPageLoading] = useState(false);
   const [selectedStatusType, setSelectedStatusType] = useState("");
   const [publishType, setPublishType]: any = useState(1); // 状态
-  const [date, setDate]: any = useState(getCurrentMonthNow());
+  const [date, setDate]: any = useState(currentMonth());
   const addSubClassModal = createModal(AddSubClassModal)
   const columns: ColumnProps<any>[] = [
     {

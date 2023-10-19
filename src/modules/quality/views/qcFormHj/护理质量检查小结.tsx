@@ -5,15 +5,20 @@ import BaseTable from 'src/components/BaseTable'
 import { observer } from 'mobx-react-lite'
 import { appStore } from 'src/stores'
 import { PageTitle } from 'src/components/common'
+import { getCurrentMonthNow,getCurrentMonth } from 'src/utils/date/currentMonth'
 import { qcFormHjService } from './api/QcFormHjService'
 import { Chart, Tooltip, Axis, Bar, Legend } from 'viser-react'
 import { fileDownload } from "src/utils/file/file";
 const DataSet = require('@antv/data-set')
 import moment from 'moment'
 
+const currentMonth = ()=>{
+  return ['jmfy'].includes(appStore.HOSPITAL_ID) ? getCurrentMonth() : getCurrentMonthNow()
+}
+
 export default observer(function 护理质量检查小结() {
   const { queryObj } = appStore
-  const [filterDate, setFilterDate] = useState([moment(moment().format('YYYY-MM') + '-01'), moment()])
+  const [filterDate, setFilterDate] = useState(currentMonth())
 
   const [loading, setLoading] = useState(false)
   const [tableData, setTableData] = useState([] as any[])

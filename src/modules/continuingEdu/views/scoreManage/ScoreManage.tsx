@@ -6,6 +6,7 @@ import BaseTable, { DoCon } from "src/components/BaseTable"
 import { scoreManageService } from './api/ScoreManageService'
 import { Place } from "src/components/common"
 import { appStore, authStore } from 'src/stores'
+import { getCurrentMonthNow,getCurrentMonth } from 'src/utils/date/currentMonth'
 import { observer } from 'mobx-react-lite'
 import moment from 'moment'
 import qs from 'qs'
@@ -15,8 +16,12 @@ const Option = Select.Option
 
 export interface Props { }
 
+const currentMonth = ()=>{
+  return ['jmfy'].includes(appStore.HOSPITAL_ID) ? getCurrentMonth() : []
+}
+
 export default observer(function ScoreManage(props: Props) {
-  const [date, setDate]: any = useState([])
+  const [date, setDate]: any = useState(currentMonth())
   const { queryObj } = appStore
   const [tableData, setTableData] = useState([] as any[])
   const [loading, setLoading] = useState(false)
