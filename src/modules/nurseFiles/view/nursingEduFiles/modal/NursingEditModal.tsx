@@ -286,9 +286,9 @@ export default function NursingEditModal(props: Props) {
             </Col>
             <Col span={16}>
               <Form.Field name="title">
-                <Select defaultValue={workTitle[0]}>
+                <Select defaultValue={workTitle[0].name}>
                   {
-                    workTitle.map((work:any)=>(<Select.Option value={work} >{work}</Select.Option>))
+                    workTitle.map((work:any)=>(<Select.Option value={work.name} >{work.name}</Select.Option>))
                   }
                   {/* <Select.Option value="护士">护士</Select.Option>
                   <Select.Option value="主管护师">主管护师</Select.Option>
