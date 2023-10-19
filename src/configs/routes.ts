@@ -30,6 +30,7 @@ import ForgetPasswordView from 'src/modules/login/ForgetPasswordView '
 import QcTempManage from 'src/modules/quality/views/qcTemplates/qcTemplatesManage/QcTempManage'
 import LeaveRecordDetail from 'src/modules/nurseFiles/view/nurseFiles-wh/views/nurseFileDetail/components/leaveRecordDetail/LeaveRecordDetail'
 import detailQhwy from 'src/modules/nurseHandBookNew/views/detail-qhwy'
+import JewDutyRecord from "src/modules/quality/views/jewDutyRecord";
 
 const ScheduleHomeView = lazy(() =>
   import("src/modules/schedule/views/ScheduleHome/ScheduleHomeView")
@@ -960,6 +961,7 @@ const routes: RouteItem[] = [
   ),
   setLayout("/qcThree", QcThreeRouter, layouts.MainLayout),
   setLayout("/qcFun", QcFunRouter, layouts.MainLayout),
+  setLayout("/checkWard/JewDutyRecord", JewDutyRecord, layouts.MainLayout),
   setLayout("/qcTemplates", QcTempManage, layouts.MainLayout),
   setLayout("/checkWard/recordView", appStore.hisMatch({
     map: {
