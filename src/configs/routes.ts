@@ -705,8 +705,8 @@ const routes: RouteItem[] = [
     "/badEventsNewDetail/:id/:orderNo",
     appStore.hisMatch({
       map: {
-        'nys,925': BadEventsNewDetailNys,
-        'gzsrm,qhwy': BadEventsNewDetailGzsrm,
+        'nys': BadEventsNewDetailNys,
+        'gzsrm,qhwy,925': BadEventsNewDetailGzsrm,
         hj: BadEventsNewDetail,
         'fsxt,zjhj': BadEventsNewDetailFsxt,
         other: BadEventsNewDetailCommon
@@ -721,12 +721,12 @@ const routes: RouteItem[] = [
     "/badEventsNewDetail/:id",
     appStore.hisMatch({
       map: {
-        'gzsrm,qhwy': BadEventsNewDetailGzsrm,
+        'gzsrm,qhwy,925': BadEventsNewDetailGzsrm,
         // fqfybjy: BadEventsNewDetailCommon,
         // yczyy: BadEventsNewDetailCommon,
         // other: BadEventsNewDetail
         'fsxt,zjhj': BadEventsNewDetailFsxt,
-        "nys,925": BadEventsNewDetail,
+        "nys": BadEventsNewDetail,
         hj: BadEventsNewDetail,
         other: BadEventsNewDetailCommon
       }

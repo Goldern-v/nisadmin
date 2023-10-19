@@ -560,6 +560,19 @@ export default observer(function NurseFilesListView() {
     setDeptModalVis(false)
     nurseFilesListViewModel.loadNursingList();
   }
+
+  const surplusHeight = () => {
+    // isOnly925 ? (nurseFilesListViewModel.isOpenFilter ?  600 : 430) : isOnlyzjhj ? 473 : 430
+    if (['925'].includes(appStore.HOSPITAL_ID)){
+      if (nurseFilesListViewModel.isOpenFilter) return 380
+      else return 500
+    }
+    else if (['zjhj'].includes(appStore.HOSPITAL_ID)) return 478
+    else return 430
+
+  }
+  const [ empNoSelected, setEmpNoSelected ] = useState('')
+
   return (
     <Wrapper>
       <SelectCon />
@@ -574,7 +587,7 @@ export default observer(function NurseFilesListView() {
         dataSource={nurseFilesListViewModel.nurseList}
         columns={appStore.HOSPITAL_ID === 'nfzxy' ? columns1 : columns}
         surplusWidth={80}
-        surplusHeight={is925 ? 478 : 430}
+        surplusHeight={surplusHeight()}
         type={['index', 'fixedIndex']}
         pagination={{
           total: nurseFilesListViewModel.totalCount,
@@ -584,7 +597,11 @@ export default observer(function NurseFilesListView() {
         }}
         onRow={(record: any) => {
           return {
-            onDoubleClick: () => record.empNo && onDoubleClick(record)
+            onDoubleClick: () => record.empNo && onDoubleClick(record),
+            onClick: () => {
+              setEmpNoSelected(record.empNo)
+            },
+            style: { backgroundColor: empNoSelected === record.empNo  ? '#CFE6DC' : '' },
           }
         }}
         onChange={(pagination) => {

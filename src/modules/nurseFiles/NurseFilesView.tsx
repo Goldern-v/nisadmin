@@ -229,6 +229,8 @@ export default observer(function NurseFilesView(props: Props) {
           path: "/nurseFile/socialJob",
           component: StatisticsView,
         },
+
+
         {
           title: "专著",
           path: "/nurseFile/monograph",
@@ -484,6 +486,18 @@ export default observer(function NurseFilesView(props: Props) {
                 title: "学会任职",
                 path: "/nurseFile/learnJob",
                 component: StatisticsView,
+              },
+              {
+                title: "资质管理（院内）",
+                path: "/nurseFile/innaiQualification",
+                component: StatisticsViewWHYX,
+                hidden:appStore.HOSPITAL_ID !=='925'
+              },
+              {
+                title: "资质管理（院外）",
+                path: "/nurseFile/outQualification",
+                component: StatisticsViewWHYX,
+                hidden:appStore.HOSPITAL_ID !=='925'
               },
               {
                 title: "专著",

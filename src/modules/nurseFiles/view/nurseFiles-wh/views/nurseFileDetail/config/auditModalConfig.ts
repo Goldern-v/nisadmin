@@ -1431,6 +1431,70 @@ export function openAuditModal(
         allData: row,
       });
       break;
+    case '资质管理（院外）':
+      globalModal.auditModal.show({
+        getTableData: callBack,
+        id: row.id,
+        empNo: row.empNo || row.commiterNo,
+        type: 'nurseWHQualificationOut', // todo
+        title: '审核工作情况登记',
+        tableFormat: [
+          {
+            证书名称: `certificateName`,
+            级别: `grade`
+          },
+          {
+            发证单位: `issueUnit`,
+            发证时间: `issueDate`
+          },
+          {
+            证书编号: `certificateNo`,
+            证书有效期: `validityDate`
+          }
+        ],
+        fileData: row.urlImageOne
+          ? row.urlImageOne.split(',').map((item: any, index: number) => {
+            return {
+              ['附件' + (index + 1)]: item
+            }
+          })
+          : [],
+        // fileData: [{}],
+        allData: row
+      })
+      break;
+    case '资质管理（院内）':
+      globalModal.auditModal.show({
+        getTableData: callBack,
+        id: row.id,
+        empNo: row.empNo || row.commiterNo,
+        type: 'nurseWHQualificationIn',
+        title: '审核工作情况登记',
+        tableFormat: [
+          {
+            准入及授权: `grantType`,
+            准入及授权名称: `grantName`
+          },
+          {
+            认证部门: `certificateUnit`,
+            认证时间: `certificateDate`
+          },
+          {
+            证书编号: `certificateNo`,
+            有效期: `validityDate`
+          }
+        ],
+        fileData: row.urlImageOne
+          ? row.urlImageOne.split(',').map((item: any, index: number) => {
+            return {
+              ['附件' + (index + 1)]: item
+            }
+          })
+          : [],
+        // fileData: [{}],
+        allData: row
+      })
+      break;
     default:
       return;
   }

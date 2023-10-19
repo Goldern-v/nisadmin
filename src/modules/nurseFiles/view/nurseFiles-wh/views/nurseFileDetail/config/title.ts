@@ -26,13 +26,18 @@ let titleEC: any = {
   nurseWHEduSanki: '继续教育及三基考试',
   nurseWHCarryOut: '新技术、新项目开展情况',
   nurseWHPunishment: '重大差错事故及惩罚',
-  nurseWHRewardExperience: '立功嘉奖'
+  nurseWHRewardExperience: '立功嘉奖',
+
+  NurseWHQualificationIn: '资质管理（院内）', // 审核的是开头大写
+  nurseWHQualificationIn: '资质管理（院内）', // 我的档案是小写（哭）
+  nurseWHQualificationOut: '资质管理（院外）',
+  NurseWHQualificationOut: '资质管理（院外）', // 同院内资质一样的问题
 }
 
 let titleCE: any = reverseKeyValue(titleEC)
 
 export const getTitle = (title: string) => {
-  // console.log(title, 889)
+  console.log(title, 889)
   if (titleCE[title] || titleEC[title]) {
     return titleCE[title] || titleEC[title]
   } else {

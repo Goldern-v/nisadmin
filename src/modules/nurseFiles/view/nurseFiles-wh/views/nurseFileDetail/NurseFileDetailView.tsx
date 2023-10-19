@@ -41,6 +41,9 @@ import WorkHistory from './views/WorkHistory'
 import WorkRegistrationForm from './views/WorkRegistrationForm'
 import { nurseFileDetailViewModal } from './NurseFileDetailViewModal'
 import { nurseFilesService } from '../../services/NurseFilesService'
+import InnaiQualification from './views/InnaiQualification'
+import outQualification from './views/outQualification'
+
 
 // import Leave from './views/Leave'
 // import PostChange from './views/PostChange'
@@ -347,6 +350,16 @@ const ROUTE_LIST_925 = [
     type: 'learnJob',
     component: LearnJob,
     name: '学会任职'
+  },
+  {
+    type: 'innaiQualification',
+    component: InnaiQualification,
+    name: '资质管理（院内）'
+  },
+  {
+    type: "outQualification",
+    component: outQualification,
+    name: '资质管理（院外）',
   },
   {
     type: 'monograph',

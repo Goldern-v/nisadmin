@@ -253,7 +253,6 @@ export default observer(function NurseFileDetail(props: Props, context: any) {
     }
     return chooseRoute;
   }
-
   useEffect(() => {
     if (appStore.match.url.indexOf('selfNurseFile') > -1 && !appStore.queryObj.empNo) {
       service.commonApiService.findByEmpNo(authStore!.user!.empNo).then((res) => {

@@ -16,6 +16,7 @@ class NurseFilesListViewModel {
   @observable public totalCount: number = 0
   @observable public listSpinning: boolean = false
   @observable public nurseList: any = []
+  @observable public isOpenFilter: boolean = true
 
   /** 搜索条件 */
   @observable public postObj: any = {}

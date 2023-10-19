@@ -13,13 +13,24 @@ import { appStore } from "src/stores";
 import emitter from "src/libs/ev";
 import { cleanObj } from "src/utils/object/cleanObj";
 import { Obj } from "src/libs/types";
-import { IDENTITY_TYPES } from "src/modules/nurseFiles/enums";
-import { DatePicker } from "antd";
+import { IDENTITY_TYPES, CLOTHS_SIZES } from "src/modules/nurseFiles/enums";
+import { DatePicker, Button } from "antd";
 import { dateFormat3 } from "src/modules/nurseHandBookNew/views/detail-lyrm/config";
 import HeightRangePicker from "src/components/HeightRangePicker";
+
 const is925 = ['925', 'zjhj'].includes(appStore.HOSPITAL_ID)
 
 export default observer(function FilterCon() {
+  const open = nurseFilesListViewModel.isOpenFilter;
+
+  const setOpen = (value: boolean) => {
+    if (!value && nurseFilesListViewModel.pageSize < 20) {
+      nurseFilesListViewModel.pageSize = 20;
+      nurseFilesListViewModel.loadNursingList();
+    }
+    nurseFilesListViewModel.isOpenFilter = value;
+  };
+
   let refForm = React.createRef<Form>();
   useLayoutEffect(() => {
     if (refForm.current) {
@@ -117,9 +128,19 @@ export default observer(function FilterCon() {
     if (['lyrm', 'stmz'].includes(appStore.HOSPITAL_ID)) {
       postObj.sex = value.sex
     }
+
+    const [t1, t2] = value.zyzsEffectiveUpDate || []
+
     if (is925) {
       if(appStore.HOSPITAL_ID === '925'){
         postObj.identityType =value.identityType && value.identityType.indexOf('类') > 0 ? value.identityType.slice(0,2) : value.identityType
+        postObj.nurseDressSize = value?.nurseDressSize || ''
+        postObj.zyzsEffectiveUpStartDate = t1 ? t1.format(dateFormat3) : ''
+        postObj.zyzsEffectiveUpEndDate = t2 ? t2.format(dateFormat3) : ''
+        postObj.sex = value?.sex
+        postObj.teachingTraineeQualification = value?.teachingTraineeQualification || ''
+        postObj.nursingInstructor = value?.nursingInstructor || ''
+
       }else{
         postObj.identityType = value.identityType
       }
@@ -127,6 +148,9 @@ export default observer(function FilterCon() {
       const [d1, d2] = value.goHospitalWorkDate || []
       postObj.goHospitalWorkDateStart = d1 ? d1.format(dateFormat3) : ''
       postObj.goHospitalWorkDateEnd = d2 ? d2.format(dateFormat3) : ''
+      
+      
+
       if(value.heightRange){
         if(Number(value.heightRange[0]) > 0 && Number(value.heightRange[1]) === 0){
           // 只有开始身高或者只有结束身高
@@ -147,7 +171,7 @@ export default observer(function FilterCon() {
 
   return (
     <Wrapper>
-      <Inner>
+      <Inner style={{'height': open && ['925'].includes(appStore.HOSPITAL_ID) ? '150px' : 'auto'}}>
         <Form ref={refForm} labelWidth={80} onChange={onFieldChange}>
           <Row gutter={0}>
             <Col span={5} style={{ marginBottom: -6 }}>
@@ -234,7 +258,7 @@ export default observer(function FilterCon() {
                 <AgeRangePicker />
               </Form.Field>
             </Col>
-            <Col span={4} className="short">
+            <Col span={4} className={open ? 'marginBottom short': 'short'}>
               <Form.Field label={"职称"} name={"newTitle"}>
                 <Select allowClear={true}>
                   {statisticsViewModal
@@ -247,7 +271,7 @@ export default observer(function FilterCon() {
                 </Select>
               </Form.Field>
             </Col>
-            <Col span={4}>
+            <Col span={4} className={open ? 'marginBottom': ''}>
               <Form.Field label={"政治面貌"} name={"politicsLook"}>
                 <Select allowClear={true}>
                   {statisticsViewModal
@@ -294,12 +318,14 @@ export default observer(function FilterCon() {
                 </Form.Field>
               </Col>}
 
+            { !['925'].includes(appStore.HOSPITAL_ID) && 
             <Col span={7} className="long">
               <Form.Field label={"执业证书有效期"} name={"zyzsEffectiveUp"}>
                 <MonthTimeRangePicker />
               </Form.Field>
             </Col>
-            {is925 ? <Col span={4} className="short">
+            }
+            {is925 ? <Col span={7} className="short">
                 <Form.Field label={"身高"} name={"heightRange"}>
                   <HeightRangePicker />
                 </Form.Field>
@@ -354,7 +380,7 @@ export default observer(function FilterCon() {
                 </Form.Field>
               </Col>}
             {is925 && <>
-              <Col span={4} className="short">
+              <Col span={4} >
                 <Form.Field label={"身份类别"} name={"identityType"}>
                   <Select>
                     {
@@ -382,26 +408,114 @@ export default observer(function FilterCon() {
                   </Select>
                 </Form.Field>
               </Col> */}
-              <Col span={6} className="long">
+              {appStore.HOSPITAL_ID !== '925' && <Col span={6} className="long">
                 <Form.Field label={"来院工作时间"} name={"goHospitalWorkDate"}>
                   <DatePicker.RangePicker />
                 </Form.Field>
               </Col>
+              }
+              </>}
+            
+              {['925'].includes(appStore.HOSPITAL_ID) && <>
+                <Col span={4}>
+                  <Form.Field label={"护士服尺码"} name={"nurseDressSize"}>
+                    <Select>
+                      {
+                        CLOTHS_SIZES.map(v => (
+                          <Select.Option value={v.code} key={v.code}>{v.name}</Select.Option>
+                        ))
+                      }
+                    </Select>
+                  </Form.Field>
+                </Col>
+                <Col span={4} >
+                  <Form.Field label={"性别"} name={"sex"}>
+                    <Select>
+                      {
+                        [
+                          {value: '', label: '全部' },
+                          {value: 1, label: '女' },
+                          {value: 0, label: '男' },
+                        ].map(v => (
+                          <Select.Option value={v.value} key={v.value}>{v.label}</Select.Option>
+                        ))
+                      }
+                    </Select>
+                  </Form.Field>
+                </Col>
+                <Col span={4} className="long">
+                  <Form.Field label={"实习生带教资质"} name={"teachingTraineeQualification"}>
+                    <Select>
+                      {
+                        [{code: '', name: '全部' }, { "code": "有", "name": "有" }, { "code": "无", "name": "无" }].map(v => (
+                          <Select.Option value={v.code} key={v.code}>{v.name}</Select.Option>
+                        ))
+                      }
+                    </Select>
+                  </Form.Field>
+                </Col>
+                <Col span={4} className="long">
+                  <Form.Field label={"护理教员"} name={"nursingInstructor"}>
+                    <Select>
+                      {
+                        [{code: '', name: '全部' }, { "code": "有", "name": "有" }, { "code": "无", "name": "无" }].map(v => (
+                          <Select.Option value={v.code} key={v.code}>{v.name}</Select.Option>
+                        ))
+                      }
+                    </Select>
+                  </Form.Field>
+                </Col>
+                <Col span={6} className="long">
+                  <Form.Field label={"来院工作时间"} name={"goHospitalWorkDate"}>
+                    <DatePicker.RangePicker />
+                  </Form.Field>
+                </Col>
+                <Col span={8} className="moreLong">
+                  <Form.Field label={"护士执业证书有效截止日期"} name={"zyzsEffectiveUpDate"}>
+                    <DatePicker.RangePicker />
+                  </Form.Field>
+                </Col>
               </>}
           </Row>
         </Form>
+        { ['925'].includes(appStore.HOSPITAL_ID) && 
+        <div className="showHiddenIcon">
+          <Button
+            icon={open ? "down" : "up"}
+            onClick={() => setOpen(!open)}
+            size="small"
+          >
+            {open ? "展开" : "隐藏"}
+          </Button>
+        </div>}
       </Inner>
     </Wrapper>
   );
 });
 
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+  
+`;
 const Inner = styled.div`
+  position: relative;
+  overflow: hidden;
   min-height: 100px;
   margin-top: 10px;
-  padding: 25px 20px 0 10px;
+  padding: 25px 20px 10px 10px;
   background: rgba(255, 255, 255, 1);
   box-shadow: ${p => p.theme.$shadow};
+  .marginBottom{
+    margin-bottom: 40px
+  }
+  .showHiddenIcon{
+    text-align: center;
+    position: absolute;
+    left: 50%;
+    bottom: 2px;
+    .ant-btn{
+      font-size: 12px;
+    }
+  }
   .label {
     margin-right: 6px;
   }
@@ -430,6 +544,11 @@ const Inner = styled.div`
   .long--static {
     .label {
       width: 120px;
+    }
+  }
+  .moreLong{
+    .label {
+      width: 180px;
     }
   }
 `;
