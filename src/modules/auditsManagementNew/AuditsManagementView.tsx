@@ -11,7 +11,7 @@ import { appStore } from 'src/stores'
 export interface Props extends RouteComponentProps { }
 
 const defaultShowType = (()=>{
-  return ['wjgdszd'].includes(appStore.HOSPITAL_ID) ? 'nurseFile' : 'nurseFileNys'
+  return ['wjgdszd','nfzxy'].includes(appStore.HOSPITAL_ID) ? 'nurseFile' : 'nurseFileNys'
 })()
 export default function AuditsManagementView() {
   const [showType, setShowType] = useState(defaultShowType)

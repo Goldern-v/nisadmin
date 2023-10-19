@@ -260,8 +260,8 @@ export default observer(function AuditsTableDHSZ(props: Props) {
     if (selectedRows.length == 0) {
       return message.warning("请至少勾选一条记录");
     }
-
-    if (showType == "nurseFileNys") {
+    //开放南方中西医的nurseFile 
+    if (showType == "nurseFileNys" || (appStore.HOSPITAL_ID === 'nfzxy' && showType == "nurseFile")) {
       groupsEmpNoAduitModal.show({
         selectedRows,
         getTableData: () => {
