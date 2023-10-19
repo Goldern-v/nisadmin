@@ -4,6 +4,7 @@ import TitleItem from './TitleItem'
 import FileCon from './FileCon'
 import MessageCon from './MessageCon'
 import { Input, Button } from 'antd';
+import { appStore } from "src/stores";
 
 const { TextArea } = Input;
 export interface Props {
@@ -52,8 +53,8 @@ export default React.forwardRef(function MainPage(props: Props, ref: any) {
       <FileCon pageData={props.pageData} />
       <BlockLine />
       <MessageCon pageData={props.pageData} />
-      {wardLogType === '3' && <Line />}
-      { wardLogType === '3' && <Comment>
+      { wardLogType === '3' && appStore.HOSPITAL_ID ==='qhwy'  && <Line />}
+      { wardLogType === '3' && appStore.HOSPITAL_ID ==='qhwy' && <Comment>
         <TextArea value={content} onChange={(e: any) => {
           setContent(e.target.value)
         }} rows={3} />

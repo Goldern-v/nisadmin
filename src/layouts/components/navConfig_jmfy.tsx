@@ -21,11 +21,11 @@ const baseConfig: navConfigItem[] = [
     path: "/auditsManagement",
     hidden: () => !authStore.isRoleManage
   },
-  // {
-  //   name: "病区日志",
-  //   path: "/wardLog"
-  //   // hidden: !appStore.isDev
-  // },
+  {
+    name: "病区日志",
+    path: "/wardLog"
+    // hidden: !appStore.isDev
+  },
   {
     name: "档案管理",
     path: "/nurseFile"
@@ -75,6 +75,11 @@ const baseConfig: navConfigItem[] = [
       {
         name: "护士长手册",
         path: "/nurseHandBookNew",
+        icon: require("../images/menu-icon/护理查房@2x.png"),
+      },
+      {
+        name: "护士对护理工作满意度调查表",
+        path: "/nurseSatisfactionSurvey",
         icon: require("../images/menu-icon/护理查房@2x.png"),
       },
     ]
