@@ -24,6 +24,7 @@ import FollowUpRecord from './views/qcOne/page/followUpRecord/FollowUpRecord'
 import SafetyHazards from './views/qcOne/page/safetyHazards/SafetyHazards'
 import HumanResource from './views/qcOne/page/humanResource/HumanResource'
 import NursingReportList from './views/qcOne/report/NursingReportList/NursingReportList'
+import checkReport from 'src/modules/quality/views/qcYtll/qcMonthCheckReport/QcMonthCheckReportList'
 import NursingWorkPlainList from './views/qcOne/page/nursingWorkPlain/NursingWorkPlainList'
 import NursingQualityCheck from './views/qcOne/page/nursingQualityCheck/NursingQualityCheck'
 import NurseMeetingRecord from './views/qcOne/page/nurseMeetingRecord/NurseMeetingRecord'
@@ -88,8 +89,20 @@ export default function QcOneRouterHj(props: Props) {
 
   const LEFT_MENU_CONFIG: any = [
     route_质控记录,
-    route_护理质量巡查情况汇总表,
-    route_护理质量检查小结,
+    ...appStore.hisMatch({
+      map: {
+        ytll: [],
+        default: [route_护理质量巡查情况汇总表]
+        // other: []
+      }
+    }),
+    ...appStore.hisMatch({
+      map: {
+        ytll: [],
+        default: [route_护理质量检查小结]
+        // other: []
+      }
+    }),
     ...appStore.hisMatch({
       map: {
         dghl: [route_质控表单汇总],
@@ -231,6 +244,12 @@ export default function QcOneRouterHj(props: Props) {
             path: "/qcOneDghl/一级质控问题原因措施汇总?qcLevel=1",
             icon: <JCTJ />,
             component: 一级质控问题原因措施汇总
+          }],
+          'ytll':[ {
+            title: "一级质控汇总分析报告",
+            path: "/qcOneDghl/checkReport?qcLevel=1",
+            icon: <JCTJ />,
+            component: checkReport
           }],
           default: [],
         }

@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react'
-import React, { forwardRef, useRef } from 'react'
+import React, { forwardRef, useEffect,useRef } from 'react'
 import { appStore } from 'src/stores'
 import styled from 'styled-components'
 import CKEditor from 'ckeditor4-react'
@@ -16,7 +16,9 @@ export default observer(function (props: Props, ref) {
   const onChange = (e: any) => {
     model.handleEditorChange({ v1: e.editor.getData() })
   }
-
+useEffect(()=>{
+  console.log("model.editorData.v1====",model.editorData);
+},[model.editorData])
   return (
     <Wrapper ref={model.ctxRef}  style={{ pointerEvents: model.allowEdit ? 'auto' : 'none' }}>
       <Input className='title' value={model.editorTitle} onChange={(e) => model.onChangeTitle(e)} />

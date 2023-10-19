@@ -1,24 +1,17 @@
 import React, {useEffect, useState} from 'react'
 import styled from 'styled-components'
 import {nurseHandbookRecordModel as model} from '../../newModel'
-import {Input} from 'antd'
 import {observer} from 'mobx-react'
-import {Empty} from "src/vendors/antd";
 import {nurseHandBookService} from "src/modules/nurseHandBookNew/services/NurseHandBookService";
-import {cloneDeep} from "lodash";
 import BaseTable from "src/components/BaseTable";
-import Column from "antd/lib/table/Column";
-import moment from "src/vendors/moment";
-
-const {TextArea} = Input
 
 export interface Props {
 }
 
 interface NurseParams {
-    deptCode: string,
-    startTime: any
-    endTime: any
+    deptCode?: string,
+    startTime?: any
+    endTime?: any
 }
 
 /**护士长基本情况登记*/

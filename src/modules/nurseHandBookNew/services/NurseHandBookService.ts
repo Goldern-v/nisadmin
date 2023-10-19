@@ -212,7 +212,29 @@ export default class NurseHandBookService extends BaseApiService {
     public linYiSave(params: Obj) {
         return this.post('/nurseHandbook/linyi/save', params)
     }
-//     /api/nurseHandbook/linyi/save
+
+    /**
+     * 获取监测指标维护（模板数据
+     * **/
+    public getIndicatorsItem(params: Obj) {
+        return this.post('/nurseHandbook/linyi/getIndicatorsItem', params)
+    }
+
+    /**保存或者修改检测指标**/
+    public saveIndicatorsTItem(params: Obj) {
+        return this.post('/nurseHandbook/linyi/saveIndicatorsTItem', params)
+    }
+
+    /**删除监测指标**/
+    public deleteIndicatorsItem(params: Obj) {
+        return this.post('/nurseHandbook/linyi/deleteIndicatorsItem', params)
+    }
+    /**
+     * 获取护理人员资质备案表列表
+     * **/
+    public getNurseFilingForm(params: Obj) {
+        return this.post('/nurseHandbook/linyi/getNurseFilingForm', params)
+    }
 }
 
 export const nurseHandBookService = new NurseHandBookService()

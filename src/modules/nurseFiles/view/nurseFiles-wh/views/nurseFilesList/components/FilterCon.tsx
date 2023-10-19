@@ -98,15 +98,11 @@ export default observer(function FilterCon() {
     let postObj: any = {
       deptCodes: deptCodes,
       name: value.name,
-      newTitle: value.newTitle,
-      nurseHierarchy: value.nurseHierarchy,
       membershipCardNumber: value.membershipCardNumber,
       job: value.job,
       jobList: value.jobList,
-      highestEducation: value.highestEducation,
       politicsLook: value.politicsLook,
       workAddress: value.workAddress,
-      initialEducation: value.initialEducation,
       shoeSize: value.shoeSize,
       address: value.address,
       workConversion: value.workConversion,
@@ -123,7 +119,19 @@ export default observer(function FilterCon() {
         : "",
       zyzsEffectiveUpEndDate: value.zyzsEffectiveUp
         ? value.zyzsEffectiveUp[1]
-        : ""
+        : "",
+      ...appStore.HOSPITAL_ID ==='qhwy' ?{
+        highestEducationList:value.highestEducationList,
+        initialEducationList:value.initialEducationList,
+        newTitleList:value.newTitleList,
+        nurseHierarchyList:value.nurseHierarchyList,
+      }:{
+        newTitle: value.newTitle,
+        nurseHierarchy: value.nurseHierarchy,
+        highestEducation: value.highestEducation,
+        initialEducation: value.initialEducation,
+
+      }
     };
     if (['lyrm', 'stmz'].includes(appStore.HOSPITAL_ID)) {
       postObj.sex = value.sex
@@ -226,8 +234,8 @@ export default observer(function FilterCon() {
               }
             </Col>
             <Col span={4}>
-              <Form.Field label={"最高学历"} name={"highestEducation"}>
-                <Select allowClear={true}>
+              <Form.Field label={"最高学历"} name={appStore.HOSPITAL_ID ==='qhwy'?'highestEducationList' : "highestEducation"}>
+                <Select allowClear={true} mode={appStore.HOSPITAL_ID ==='qhwy' ?'multiple':'tags'}>
                   {statisticsViewModal.getDict("学历").map((item, index) => (
                     <Select.Option value={item.code} key={index}>
                       {item.name}
@@ -243,8 +251,8 @@ export default observer(function FilterCon() {
             </Col>
 
             <Col span={5}>
-              <Form.Field label={"层级"} name={"nurseHierarchy"}>
-                <Select allowClear={true}>
+              <Form.Field label={"层级"} name={appStore.HOSPITAL_ID ==='qhwy'?'nurseHierarchyList': "nurseHierarchy"}>
+                <Select allowClear={true} mode={appStore.HOSPITAL_ID ==='qhwy' ?'multiple':'tags'}>
                   {statisticsViewModal.getDict("层级").map((item, index) => (
                     <Select.Option value={item.code} key={index}>
                       {item.name}
@@ -259,8 +267,8 @@ export default observer(function FilterCon() {
               </Form.Field>
             </Col>
             <Col span={4} className={open ? 'marginBottom short': 'short'}>
-              <Form.Field label={"职称"} name={"newTitle"}>
-                <Select allowClear={true}>
+              <Form.Field label={"职称"} name={appStore.HOSPITAL_ID ==='qhwy' ?'newTitleList': "newTitle"}>
+                <Select allowClear={true} mode={appStore.HOSPITAL_ID ==='qhwy' ?'multiple':'tags'} >
                   {statisticsViewModal
                     .getDict("技术职称")
                     .map((item, index) => (
@@ -351,8 +359,8 @@ export default observer(function FilterCon() {
                 </Form.Field>
               </Col>}
               {['qhwy'].includes(appStore.HOSPITAL_ID) && <Col span={4} className="long">
-              <Form.Field label={"初始学历"} name={"initialEducation"}>
-                <Select allowClear={true}>
+              <Form.Field label={"初始学历"} name={appStore.HOSPITAL_ID ==='qhwy' ?'initialEducationList': "initialEducation"}>
+                <Select allowClear={true} mode={appStore.HOSPITAL_ID ==='qhwy' ?'multiple':'tags'}>
                   {statisticsViewModal
                     .getDict("初始学历")
                     .map((item, index) => (
