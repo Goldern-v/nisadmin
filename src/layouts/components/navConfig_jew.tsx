@@ -1,6 +1,7 @@
 // 九二五医院
 import React from "react";
 import { appStore, authStore } from "src/stores";
+import JewDutyRecord from "src/modules/quality/views/jewDutyRecord";
 // import { authStore } from 'src/stores';
 
 export interface navConfigItem {
@@ -85,6 +86,11 @@ const baseConfig: navConfigItem[] = [
       //   icon: require("../images/menu-icon/护理查房@2x.png"),
       //   hidden:appStore.HOSPITAL_ID !=='925'
       // },
+      {
+        name: '夜查房排班表',
+        icon: require("../images/menu-icon/护理查房@2x.png"),
+        path: '/checkWard/JewDutyRecord',
+      },
     ],
   },
   {
