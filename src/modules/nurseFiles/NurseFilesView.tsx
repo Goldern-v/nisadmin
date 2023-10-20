@@ -59,7 +59,6 @@ export default observer(function NurseFilesView(props: Props) {
       case "gdsfy":
       case 'lyyz':
       case 'qhwy':
-      case 'zhzxy':
       case 'zzwy':
       case 'dglb':
       case "wjgdszd":
@@ -99,6 +98,7 @@ export default observer(function NurseFilesView(props: Props) {
         return NurseFilesListView_fqfybjy;
       case "whyx":
       case 'whhk':
+      case 'zhzxy':
         return NurseFilesListView_whyx;
       default:
         return NurseFilesListView_hj;
