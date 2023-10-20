@@ -13,6 +13,7 @@ import moment from "src/vendors/moment";
 import printing from "printing";
 import {Con} from 'src/modules/statistic/common/css/CommonLayout.ts';
 import {currentMonth, currentQuater, currentYear} from "src/utils/date/rangeMethod";
+import ByDeptCodeGetPeople from "src/modules/statistic/views/护士工作年限分布/ByDeptCodeGetPeople";
 const RangePicker = DatePicker.RangePicker
 
 const Option = Select.Option
@@ -29,6 +30,7 @@ export default observer(function 护士工作年限分布() {
     startDate: moment('1999-01-01').format('YYYY-MM-DD'),
     endDate: _currentMonth[1].format('YYYY-MM-DD'),
   })
+  const [visible,setVisible] =useState<boolean>(false)
   const [data, setData] = useState([] as any[])
   const tableRef = useRef<HTMLDivElement | null>(null);
   const [chartsImg, setChartsImg] = useState<any[]>([])
@@ -38,7 +40,6 @@ export default observer(function 护士工作年限分布() {
   const [chartVisible, setChartVisible] = useState(false)
 
   const [loading, setLoading] = useState(false)
-
   const [extraColumns, setExtraColumns] = useState([] as ColumnProps<any>[])
 
   const columns: ColumnProps<any>[] = [
@@ -81,8 +82,21 @@ export default observer(function 护士工作年限分布() {
           } = delWithResData({
             dataList
           })
-
-          setExtraColumns(newExtraColumns)
+    let newList:any =[]
+     if(appStore.HOSPITAL_ID ==='qhwy'){
+       newList = newExtraColumns.map((item:any)=>{
+         item.children[0]={
+           ...item.children[0],
+           render:()=>{
+             return <div onClick={()=>{
+               setVisible(true)
+             }}>{item.key}</div>
+           }
+         }
+         return item
+       })
+     }
+          setExtraColumns(appStore.HOSPITAL_ID =='qhwy'? newList:newExtraColumns)
           setChartData(newChartData)
           setData(newData)
         }
@@ -251,6 +265,8 @@ export default observer(function 护士工作年限分布() {
             <span>暂无数据</span>
           </div>}
         </ChartCon>}
+        <ByDeptCodeGetPeople deptCode={query.deptCode} visible={visible} onCancel={()=>setVisible(false)}/>
+        {/*<byDeptCodeGetPeople.Component />*/}
       </Con>
     </Spin>} />
 })
