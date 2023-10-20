@@ -19,7 +19,11 @@ const RangePicker = DatePicker.RangePicker
 const Option = Select.Option
 
 export interface Props { }
-
+interface QhwyPeopleModal{
+   visible:boolean
+  dept:number
+  workType:string
+}
 export default observer(function 护士工作年限分布() {
   let _currentMonth = currentMonth()
   let _currentQuater = currentQuater()
@@ -31,6 +35,7 @@ export default observer(function 护士工作年限分布() {
     endDate: _currentMonth[1].format('YYYY-MM-DD'),
   })
   const [visible,setVisible] =useState<boolean>(false)
+  const [paramsObj,setParamsObj]=useState({} as QhwyPeopleModal)
   const [dept,setDept]=useState<string>('')
   const [data, setData] = useState([] as any[])
   const tableRef = useRef<HTMLDivElement | null>(null);
@@ -61,14 +66,18 @@ export default observer(function 护士工作年限分布() {
       width: 60,
       dataIndex: 'NUM',
       align: 'center',
-      render:(text:any,record:any)=>{
-        return <div onClick={()=>{
-          if(appStore.HOSPITAL_ID =='qhwy'){
-            setVisible(true)
-            setDept(record.DEPTCODE)
-          }
-        }}>{text}</div>
-      }
+      // render:(text:any,record:any)=>{
+      //   return <div onClick={()=>{
+      //     if(appStore.HOSPITAL_ID =='qhwy'){
+      //       paramsObj.dept =record.DEPTCODE
+      //       paramsObj.visible = true
+      //       paramsObj.key =item.children[0]['dataIndex']
+      //       setParamsObj(paramsObj)
+      //       setVisible(true)
+      //       setDept(record.DEPTCODE)
+      //     }
+      //   }}>{text}</div>
+      // }
     },
     ...extraColumns,
   ]
@@ -96,11 +105,13 @@ export default observer(function 护士工作年限分布() {
        newList = newExtraColumns.map((item:any)=>{
          item.children[0]={
            ...item.children[0],
-           render:(e:any,a:any)=>{
+           render:(text:any,record:any)=>{
              return <div onClick={()=>{
-               setVisible(true)
-               setDept(a.DEPTCODE)
-             }}>{item.key}</div>
+               paramsObj.dept =record.DEPTCODE
+               paramsObj.visible = true
+               paramsObj.workType =item.children[0]['dataIndex']
+               setParamsObj({...paramsObj})
+             }}>{text}</div>
            }
          }
          return item
@@ -275,7 +286,10 @@ export default observer(function 护士工作年限分布() {
             <span>暂无数据</span>
           </div>}
         </ChartCon>}
-        <ByDeptCodeGetPeople deptCode={dept} visible={visible} onCancel={()=>setVisible(false)}/>
+        <ByDeptCodeGetPeople {...paramsObj} onCancel={()=>{
+          paramsObj.visible =false
+          setParamsObj({...paramsObj})
+        }}/>
       </Con>
     </Spin>} />
 })

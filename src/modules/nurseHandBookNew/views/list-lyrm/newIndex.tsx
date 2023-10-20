@@ -49,7 +49,7 @@ export default observer(function (props: Props) {
     }, [appStore.location.pathname])
 
     const [query, setQuery] = useState<Obj>({
-        deptCode: authStore.defaultDeptCode,
+        deptCode: '',
         status: '',
         pageSize: 20,
         pageNum: 1,
@@ -57,7 +57,7 @@ export default observer(function (props: Props) {
     })
     // LYHZSC_8 登记表搜索参数
     const [lyhzscQuery, setLyhzscQuery] = useState<Obj>({
-        deptCode: authStore.defaultDeptCode,
+        deptCode:'',
         startTime,
         endTime,
         pageSize: 20,
@@ -333,7 +333,7 @@ const onOkLYHZSC_9Add =(params: Obj)=>{
         if (query.menuCode) query.menuCode = ''
         setQuery({
             ...query,
-            deptCode: authStore.defaultDeptCode,
+            deptCode:'',
             status: '',
             pageSize: 20,
             pageNum: 1,
