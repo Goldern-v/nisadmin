@@ -24,7 +24,7 @@ import 质控表单汇总 from './views/qcDghl/质控表单汇总'
 import 一级质控问题原因措施汇总 from './views/qcFormGzsrm/一级质控问题原因措施汇总'
 import 福清一级质控问题原因措施汇总 from './views/qcFormFqfybjy/一级质控问题原因措施汇总'
 import qcThreeMQSummary from './views/qcThreeMQSummary'
-import QcOneMonthReportDgxg from 'src/modules/quality/views/analysisWhyx/Analysis.tsx'
+import QcOneMonthReportDgxg from './views/qcOneMonthReportDgxg/QcOneMonthReportDgxg'
 import CheckSummary from './views/qcZzwy/qcCheckSummary/CheckSummary'
 import IssueAnalysis from './views/qcZzwy/issueAnalysis/IssueAnalysis'
 import RectificationSummary from './views/qcZzwy/qcRectificationSummary/RectificationSummary'
@@ -135,7 +135,7 @@ export default function QcOneRouterHj(props: Props) {
   // 东莞谢岗-一级质控月度报告
   const route_dgxgMonthReportLevelOne = {
     title: "一级质控月度报告",
-    path: "/qcOneHj/qcFirstMQSummary?level=1",
+    path: "/qcOneHj/qcFirstMQSummary?qcLevel=1",
     icon: <JCTJ />,
     component: QcOneMonthReportDgxg,
     keepAlive: true,
