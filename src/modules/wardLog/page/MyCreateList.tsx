@@ -74,6 +74,21 @@ export default observer(function MyCreateList() {
       width: 80,
       align: 'center'
     },
+    ['qhwy'].includes(appStore.HOSPITAL_ID) ? 
+    {
+      title: '操作',
+      width:  120,
+      render(text: any, record: any, index: number) {
+        console.log(record, text, 9999)
+        return (
+          <DoCon>
+            <span onClick={() => onDetail(record)}>查看详情</span>
+            {record.status != '1' && <span onClick={() => onEdit(record)}>修改</span>}
+            <span onClick={() => onDelete(record)}>删除</span>
+          </DoCon>
+        )
+      }
+    } : 
     {
       title: '操作',
       width: status == '1' ? 120 : 80,

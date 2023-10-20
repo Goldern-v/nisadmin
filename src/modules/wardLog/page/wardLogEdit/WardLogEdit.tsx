@@ -65,7 +65,7 @@ export default observer(function WardLogEdit(props: any) {
         // }
     }
 
-    const saveEdit = (tempSave?: boolean) => {
+    const saveEdit = (tempSave: any = '1') => {
         if (!search.id && !search.templateId) {
             message.error('未知模板 或 未知病区日志ID', 1, () => history.goBack())
             return
@@ -82,23 +82,22 @@ export default observer(function WardLogEdit(props: any) {
             templateDto: {
                 ...info,
                 remark,
-                templateProgress: editList
+                templateProgress: editList,
+                status: tempSave
             },
             empNos: recievers.map((item: any) => item.empNo),
             wardCode,
             fileIds: attachmentList.map((item: any) => item.id.toString()),
-            // tempSave
         }
 
         if (search.id) params.inpatientAreaLog.id = search.id
         setLoading(true)
-        wardLogService
-            .saveRecord(params)
-            .then(res => {
-                setLoading(false)
+        let url = tempSave === '0' ?  wardLogService.tempSaveRecord(params) : wardLogService.saveRecord(params)
+        url.then(res => {
+              setLoading(false)
 
-                message.success('提交成功', 1, () => history.goBack())
-            }, err => setLoading(false))
+              message.success(tempSave === '0' ? '暂存成功' :'提交成功', 1, () => history.goBack())
+          }, err => setLoading(false))
     }
 
     const initEdit = () => {
@@ -489,6 +488,12 @@ export default observer(function WardLogEdit(props: any) {
         </div>
         <div className="bottom">
             <div className="float-right">
+                {['qhwy'].includes(appStore.HOSPITAL_ID) && <Button
+                  disabled={loading}
+                  onClick={() => saveEdit('0')}
+                  type='primary'>
+                  暂存
+                </Button>}
                 <Button
                     disabled={loading}
                     onClick={() => saveEdit()}
