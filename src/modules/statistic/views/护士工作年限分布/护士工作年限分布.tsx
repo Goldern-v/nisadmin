@@ -66,18 +66,16 @@ export default observer(function 护士工作年限分布() {
       width: 60,
       dataIndex: 'NUM',
       align: 'center',
-      // render:(text:any,record:any)=>{
-      //   return <div onClick={()=>{
-      //     if(appStore.HOSPITAL_ID =='qhwy'){
-      //       paramsObj.dept =record.DEPTCODE
-      //       paramsObj.visible = true
-      //       paramsObj.key =item.children[0]['dataIndex']
-      //       setParamsObj(paramsObj)
-      //       setVisible(true)
-      //       setDept(record.DEPTCODE)
-      //     }
-      //   }}>{text}</div>
-      // }
+      render:(text:any,record:any)=>{
+        return <div onClick={()=>{
+          if(appStore.HOSPITAL_ID =='qhwy'){
+            paramsObj.dept =record.DEPTCODE
+            paramsObj.visible = true
+            paramsObj.workType ='all'
+            setParamsObj({...paramsObj})
+          }
+        }}>{text}</div>
+      }
     },
     ...extraColumns,
   ]

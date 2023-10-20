@@ -1,6 +1,6 @@
 import React, { memo, useMemo } from 'react'
 import styled from 'styled-components'
-import { nurseHandbookRecordModel as model } from '../model'
+import { nurseHandbookRecordModel as model } from '../newModel'
 import { DatePicker, Input } from 'antd'
 import { observer } from 'mobx-react'
 import { DetailCtxCon } from 'src/modules/nurseHandBookNew/style'
@@ -28,9 +28,11 @@ const ChildCon = memo((props: any) => {
 })
 /**表格类表单 */
 export default observer(function (props: Props) {
-
   const columns = useMemo(() => tableConConfig[model.detail?.record?.menuCode]?.columns || [], [model.id])
   const config = useMemo(() => tableConConfig[model.detail?.record?.menuCode] || {}, [model.id])
+  console.log("model.id===",columns);
+  console.log(config);
+  console.log(model.editorData);
   const onChange = (e: any, config: Obj) => {
     const { index, key } = config
     let value: any = e

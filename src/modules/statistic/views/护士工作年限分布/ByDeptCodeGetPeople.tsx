@@ -36,7 +36,7 @@ export default function ByDeptCodeGetPeople(props: InfoProps) {
                 deptCode: dept
             }).then((res: any) => {
                 let newData: any = res.data.filter((item: any) => workType == item.workType)
-                setData(newData || [])
+                setData( workType =='all'? res.data : (newData || []))
             }).finally(() => {
                 setLoading(false)
             })

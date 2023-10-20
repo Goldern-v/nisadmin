@@ -3,7 +3,7 @@ import React, { forwardRef, useEffect, useRef } from 'react'
 import { appStore } from 'src/stores'
 import styled from 'styled-components'
 import CKEditor from 'ckeditor4-react'
-import { nurseHandbookRecordModel as model } from '../model'
+import { nurseHandbookRecordModel as model } from '../newModel'
 import { Input } from 'antd'
 import { DetailCtxCon } from 'src/modules/nurseHandBookNew/style'
 CKEditor.editorUrl = `ckeditor/ckeditor.js`
