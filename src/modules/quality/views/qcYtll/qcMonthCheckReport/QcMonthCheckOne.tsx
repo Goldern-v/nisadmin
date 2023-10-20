@@ -15,14 +15,13 @@ export default observer(function QcMonthCheckTwo(props) {
   
   const chartOptions = {
     title: {
-      text: qcMonthCheckData.reportMasterData?.reportName,
+      text: qcMonthCheckData.reportMasterData?.summaryFormName,
       left:"center"
     },
     xAxis: {
+        show:true,
         type: 'category',
-        data: ()=>{
-          return qcTreadData.monthList
-        },
+        data: qcTreadData.monthList
     },
     tooltip: {
       trigger: 'axis'
@@ -31,7 +30,7 @@ export default observer(function QcMonthCheckTwo(props) {
         type: 'value',
         axisLabel:{
           formatter:'{value}%'
-        }
+        },
     },
     series: [{
         type: 'bar',
@@ -49,18 +48,15 @@ export default observer(function QcMonthCheckTwo(props) {
     }],
   };
 
-  const wardQcProblemMapList = ()=>{
-    const { YTLL_YDHZFX_L1_004:{wardQcProblemMap}} = qcMonthCheckData
-    return wardQcProblemMap && Object.keys(wardQcProblemMap).length>0 ?
-    Object.keys(wardQcProblemMap).map((wardName:any)=>{
-      return <div className="txt-indent-40 mg-bt-20">
-        {wardName}:
-        {wardQcProblemMap[wardName].map((li:any,ind:any)=>{
-          return <p className="p-txt txt-indent-40" key={'qcItemName'+ind}>{`${ind+1}、${li.qcItemName}`}</p>
-        })}
+  const qcProblemSummaryList = ()=>{
+    const { YTLL_YDHZFX_L1_004:{qcProblemSummaryList}} = qcMonthCheckData
+    return qcProblemSummaryList && qcProblemSummaryList.length>0 ?
+    qcProblemSummaryList.map((prob:any,ind:any)=>{
+      return <div className="txt-indent-40">
+        {`${ind+1}、${prob.itemName} ${prob.count}次`}
         </div>
     }) :
-    <div className="no-data mg-bt-20">
+    <div className="no-data">
       <img
         style={{ width: '100px' }}
         src={require('src/modules/statistic/img/noData.png')} />
@@ -68,7 +64,6 @@ export default observer(function QcMonthCheckTwo(props) {
       <span>暂无数据</span>
     </div>
   }
-
   return (
     <>
       <div className='first-content-box'>
@@ -82,11 +77,11 @@ export default observer(function QcMonthCheckTwo(props) {
       <div className='first-content-box'>
         <div className='first-title mg-bt-20'>{`三、质控结果`}</div>
         <div className="txt-indent-40">
-          此次质控共质控
+          {/* 此次质控共质控
           <InputNumber  min={0}  size="small" value={qcMonthCheckData.YTLL_YDHZFX_L1_003.qcItemDepartCount} onChange={(val:any)=>qcMonthCheckData.YTLL_YDHZFX_L1_003.qcItemDepartCount = val} />
           个科室、
-          <InputNumber  min={0} size="small" value={qcMonthCheckData.YTLL_YDHZFX_L1_003.qcItemWardCount} onChange={(val:any)=>qcMonthCheckData.YTLL_YDHZFX_L1_003.qcItemWardCount = val} />
-          个病区，质控总条目数{qcItemTotalCount}个条目。
+          <InputNumber  min={0} size="small" value={qcMonthCheckData.YTLL_YDHZFX_L1_003.qcItemWardCount} onChange={(val:any)=>qcMonthCheckData.YTLL_YDHZFX_L1_003.qcItemWardCount = val} />个病区， */}
+          质控总条目数{qcItemTotalCount}个条目。
         </div>
         <p className="p-txt txt-indent-40">{`①完全达标${fullyCompliantItemCount}个条目，完全达标率=${fullyCompliantItemCount}/${qcItemTotalCount}*100%=${fullyCompliantRate}%`}</p>
         <p className="p-txt txt-indent-40">{`②部分达标${partiallyCompliantItemCount}个条目，部分达标率=${partiallyCompliantItemCount}/${qcItemTotalCount}*100%=${partiallyCompliantRate}%`}</p>
@@ -98,8 +93,9 @@ export default observer(function QcMonthCheckTwo(props) {
         }
       </div>
       <div className='first-content-box'>
-        <div className='first-title mg-bt-20'>{`四、本月质控问题`}</div>
-        {wardQcProblemMapList()}
+        <div className='first-title mg-bt-20'>{`四、本月质控问题汇总`}</div>
+        {qcProblemSummaryList()}
+        <div className="mg-bt-20"></div>
       </div>
       <div className='first-content-box mg-bt-20'>
         <div className='first-title mg-bt-20'>{`五、原因分析及整改措施`}</div>

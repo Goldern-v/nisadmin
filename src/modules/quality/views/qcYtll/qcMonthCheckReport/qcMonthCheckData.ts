@@ -129,8 +129,8 @@ class QcMonthCheckData{
         qcTemplateName:''
       },
       YTLL_YDHZFX_L1_003:{
-        qcItemDepartCount:0,
-        qcItemWardCount:0,
+        // qcItemDepartCount:0,
+        // qcItemWardCount:0,
         qcItemTotalCount:0,
         fullyCompliantItemCount:0,
         fullyCompliantRate:0,
@@ -228,8 +228,8 @@ class QcMonthCheckData{
         this.YTLL_YDHZFX_L1_001 = { qcPersonName:""}
         this.YTLL_YDHZFX_L1_002 = { qcTemplateName:''}
         this.YTLL_YDHZFX_L1_003 = {
-          qcItemDepartCount:0,
-          qcItemWardCount:0,
+          // qcItemDepartCount:0,
+          // qcItemWardCount:0,
           qcItemTotalCount:0,
           fullyCompliantItemCount:0,
           fullyCompliantRate:0,
@@ -580,7 +580,7 @@ class QcMonthCheckData{
         this.YTLL_YDHZFX_L1_001.qcPersonName = data.qcPersonName
         this.YTLL_YDHZFX_L1_002.qcTemplateName = data.qcTemplateName
         this.YTLL_YDHZFX_L1_003 = _.pick(data, Object.keys(this.YTLL_YDHZFX_L1_003));
-        this.YTLL_YDHZFX_L1_004.wardQcProblemMap = data.wardQcProblemMap
+        this.YTLL_YDHZFX_L1_004.qcProblemSummaryList = data.qcProblemSummaryList
       }
     }).catch(err=>{
   

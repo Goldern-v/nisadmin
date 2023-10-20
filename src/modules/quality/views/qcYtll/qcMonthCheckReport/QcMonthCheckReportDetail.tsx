@@ -20,6 +20,7 @@ export default observer(function QcMonthCheckReportDetail() {
   const {id,qcLevel} = appStore.queryObj
   const [chartsImg, setChartsImg] = useState<any[]>([])
   const [spinning, setSpinning] = useState(true);
+  const exatOne = qcLevel != "1"
 
   /**保存 */
   const onSave = ()=>{
@@ -186,8 +187,8 @@ const toPrint = ()=>{
       "reportMonth":moment(qcMonthCheckData.createModalData.month).month()+1,
       "startDate":moment(qcMonthCheckData.createModalData.month).startOf('month').format('YYYY-MM-DD'),
       "endDate":moment(qcMonthCheckData.createModalData.month).endOf('month').format('YYYY-MM-DD'),
-      "wardCode":qcMonthCheckData.createModalData.deptCode.key,
-      "wardName":qcMonthCheckData.createModalData.deptCode.label,
+      ...[exatOne ? {} : {"wardCode":qcMonthCheckData.createModalData.deptCode.key}],
+      ...[exatOne ? {} : {"wardName":qcMonthCheckData.createModalData.deptCode.label}],
       "summaryFormCode":qcMonthCheckData.createModalData.summaryFormCode,
       "summaryFormName":qcMonthCheckData.createModalData.summaryFormName,
     }
@@ -233,6 +234,11 @@ const toPrint = ()=>{
           appStore?.queryObj?.qcLevel == 2 ? <QcMonthCheckTwo isPrint={isPrint}></QcMonthCheckTwo> : 
           <QcMonthCheckOne isPrint={isPrint}></QcMonthCheckOne> 
   }
+
+  const is_creator = ()=>{
+		return JSON.parse(sessionStorage.getItem('user') || "")?.empName === qcMonthCheckData?.reportMasterData?.creatorName
+	}
+  
   return (
     <Wrapper>
       <HeadCon>
@@ -249,7 +255,7 @@ const toPrint = ()=>{
           </span>
         </div>
         <div className='tool-con'>
-          <Button onClick={() => onSave()} >保存</Button>
+          {is_creator() && <Button onClick={() => onSave()} >保存</Button>}
           <Button onClick={() => onPrint(true)} >导出</Button>
           <Button onClick={() => appStore.history.goBack()}>返回</Button>
         </div>
