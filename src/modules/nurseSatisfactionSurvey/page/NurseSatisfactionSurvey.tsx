@@ -92,12 +92,12 @@ export default observer(function MyCreateList() {
     {
       title: '操作',
       width: 60,
-      render(text: any, record: any, index: number) {
+      render(text: any, record: any) {
         return (
           <DoCon>
-            <span onClick={() => onDetail(record)}>查看</span>
-            {record.status==0 &&<span onClick={() => onEdit(record)}>修改</span>}
-            {record.status!=2 &&<span onClick={() => onDelete(record)}>删除</span>}
+          <span onClick={() => onDetail(record)}>查看</span>
+          <span className={record.status==0?'':'disabled' } onClick={() => onEdit(record)}>修改</span>
+           <span className={record.status!==2?'':'disabled' } onClick={() => onDelete(record)}>删除</span>
           </DoCon>
         )
       }
