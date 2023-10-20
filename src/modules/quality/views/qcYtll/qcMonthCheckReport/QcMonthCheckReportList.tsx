@@ -24,7 +24,7 @@ const Option = Select.Option;
 
 export default observer(function QcMonthCheckReportList() {
   const [mode, setMode] = useState(['month', 'month']);
-
+  const exatOne = appStore.queryObj.qcLevel != "1"
   const columns: any = [
     {
       title: "序号",
@@ -41,12 +41,12 @@ export default observer(function QcMonthCheckReportList() {
 			width: 220,
 			
 		},
-		{
+		...[!exatOne ? {
 			title: "科室",
 			dataIndex: "wardName",
 			align: "center",
 			width: 100,
-		},
+		} : ""],
 		{
 			title: "质控表单",
 			dataIndex: "summaryFormName",
@@ -89,8 +89,8 @@ export default observer(function QcMonthCheckReportList() {
       render: (value: any, record: any, index: number) => {
           return (<DoCon>
             <span onClick={() => { turnToDetail(record) }}>查看</span>
-            <span onClick={() => {openModal('编辑',record)}}>编辑</span>
-            <span style={{color:"red"}} onClick={() => {deleteItem(record,index)}}>删除</span>
+            {is_creator(record) && <span onClick={() => {openModal('编辑',record)}}>编辑</span>}
+            {is_creator(record) && <span style={{color:"red"}} onClick={() => {deleteItem(record,index)}}>删除</span>}
         </DoCon>)
       }
 
@@ -105,6 +105,10 @@ export default observer(function QcMonthCheckReportList() {
 
 		// trainExamData.passScore = record.passScore || 60 
 		appStore.history.push(`/qcMonthCheckReportDetail?${qs.stringify({ id,qcLevel:appStore.queryObj?.qcLevel })}`)
+	}
+
+	const is_creator = (row:any)=>{
+		return JSON.parse(sessionStorage.getItem('user') || "")?.empName === row.creatorName
 	}
 
 	/**删除 */
@@ -157,6 +161,7 @@ export default observer(function QcMonthCheckReportList() {
 	
 	useEffect(() => {
 		qcMonthCheckData.getTableList()
+		qcMonthCheckData.getNursingAll()
 	}, [])
 	
 		
@@ -177,7 +182,7 @@ export default observer(function QcMonthCheckReportList() {
 					}}
 				>
 					<Option value="">全院</Option>
-					{qcMonthCheckData.deptList.map((item: any) => {
+					{!exatOne && qcMonthCheckData.deptList.map((item: any) => {
 						return <Option value={item.code} key={item.code}>{item.name}</Option>
 					})}
 				</Select>

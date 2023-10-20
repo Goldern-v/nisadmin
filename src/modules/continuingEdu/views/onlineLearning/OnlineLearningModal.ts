@@ -1,9 +1,14 @@
 import { observable, computed } from "mobx";
 import { onlineLearningApi } from "./api/OnlineLearningApi";
 import { appStore } from "src/stores";
+import { getCurrentMonthNow,getCurrentMonth } from 'src/utils/date/currentMonth'
+
+const currentMonth = (()=>{
+  return ['jmfy'].includes(appStore.HOSPITAL_ID) ? getCurrentMonth() : []
+})()
 
 class OnlineLearningModal {
-  @observable public selectedDate: any = []; //日期
+  @observable public selectedDate: any = currentMonth; //日期
   @observable public taskStatus: any = ''; //状态
   @observable public taskStatus2: any = ''; //工作反思状态
   @observable public teachingMethod = null; //类型

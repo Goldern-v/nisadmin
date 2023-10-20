@@ -143,17 +143,6 @@ export default observer(function QcTwoRouter(props: Props) {
         (appStore.history && appStore.history.action) !== "POP",
     },
   ];
-  const route_YTLL = [
-    {
-      title: "二级质控月度报告",
-      icon: <YDBG />,
-      path: "/qcTwo/workSummaryReportList",
-      component: WorkSummaryReportList,
-      keepAlive: true,
-      disabledKeepAlive:
-        (appStore.history && appStore.history.action) !== "POP",
-    }
-  ];
   const route_质控_ZZWY = [
     {
       title: "护理部质量检查汇总表",
@@ -342,7 +331,6 @@ export default observer(function QcTwoRouter(props: Props) {
         ...route_质控_ZZWY
       ],
       ytll:[
-        ...route_YTLL,
         {
           title: "二级质控汇总分析报告",
           icon: <HZBG />,

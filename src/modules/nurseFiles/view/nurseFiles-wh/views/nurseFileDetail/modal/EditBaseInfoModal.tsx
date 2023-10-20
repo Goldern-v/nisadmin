@@ -113,14 +113,27 @@ export default function EditWorkHistoryModal(props: Props) {
         关闭
       </Button>
     ]
-    if (data?.needAudit) {
-      footerList.push(<Button key="submit" type="primary" onClick={() => onSave(true)}>
-        提交审核
-      </Button>)
-    } else {
-      footerList.push(<Button key="save" type="primary" onClick={() => onSave(false)}>
-        保存
-      </Button>)
+    /**zhzxy 需要增加保存 其他医院逻辑不变**/
+    if(appStore.HOSPITAL_ID ==='zhzxy'){
+      footerList.push(<>
+        <Button key="save" type="primary" onClick={() => onSave(false)}>
+          保存
+        </Button>
+        <Button key="submit" type="primary" onClick={() => onSave(true)}>
+          提交审核
+        </Button>
+          </>
+      )
+    }else{
+      if (data?.needAudit) {
+        footerList.push(<Button key="submit" type="primary" onClick={() => onSave(true)}>
+          提交审核
+        </Button>)
+      } else {
+        footerList.push(<Button key="save" type="primary" onClick={() => onSave(false)}>
+          保存
+        </Button>)
+      }
     }
     // }
     // else {

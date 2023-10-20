@@ -15,14 +15,13 @@ export default observer(function QcMonthCheckTwo(props) {
   
   const chartOptions = {
     title: {
-      text: qcMonthCheckData.reportMasterData?.reportName,
+      text: qcMonthCheckData.reportMasterData?.summaryFormName,
       left:"center"
     },
     xAxis: {
+        show:true,
         type: 'category',
-        data: ()=>{
-          return qcTreadData.monthList
-        },
+        data: qcTreadData.monthList
     },
     tooltip: {
       trigger: 'axis'

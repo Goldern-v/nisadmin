@@ -1,16 +1,21 @@
 import { observable, computed } from "mobx";
 import {trainingSettingApi} from "../api/TrainingSettingApi";
+import { getCurrentMonthNow,getCurrentMonth } from 'src/utils/date/currentMonth'
 import { crrentMonth } from "src/utils/moment/crrentMonth";
 import { fileDownload } from "src/utils/file/file";
 import { appStore } from "src/stores/index";
 import { Modal,message } from 'antd';
 import moment from 'moment'
 
+const currentMonth = (()=>{
+  return ['jmfy'].includes(appStore.HOSPITAL_ID) ? getCurrentMonth() : [moment().subtract(1, 'day'),moment()]
+})()
+
 class evaluateData {
   @observable public id = ""; //菜单id
   @observable public deptCode:string[] = []; // 科室
-  @observable public planTrainBeginTime = moment().subtract(1, 'day'); //规培时间开始时间
-  @observable public planTrainEndTime = moment(); //规培时间终止时间
+  @observable public planTrainBeginTime = currentMonth[0]; //规培时间开始时间
+  @observable public planTrainEndTime = currentMonth[1]; //规培时间终止时间
   @observable public deptCodeMultiple:string[] = ['全院']; //实习科室编码（多选）
   @observable public deptNameMultiple:string[] = ['全院']; //实习科室编码（多选）
   @observable public keyWord:string = ''; //查询关键字

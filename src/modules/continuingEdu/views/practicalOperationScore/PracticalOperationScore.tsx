@@ -9,6 +9,7 @@ import BaseTable, { DoCon } from "src/components/BaseTable";
 import { practicalOperationScore } from './PracticalOperationScoreModal'
 import  PracticalImportModal  from './components/PracticalImportModal'
 import { operationScoreApi } from './api/OperationScore'
+import moment from 'moment'
 import { param } from 'jquery'
 
 interface telist{
@@ -222,6 +223,7 @@ export default observer(function Notification() {
         <span style={{ marginLeft: 15 }}>提交时间：</span>
         <RangePicker 
         format="YYYY-MM-DD"
+        value={[moment(practicalOperationScore.subissionTimeBeginIndex),moment(practicalOperationScore.subissionTimeEndIndex)]}
         onChange={(e)=>{
           practicalOperationScore.subissionTimeBeginIndex = e[0]?.format('YYYY-MM-DD');
           practicalOperationScore.subissionTimeEndIndex = e[1]?.format('YYYY-MM-DD');

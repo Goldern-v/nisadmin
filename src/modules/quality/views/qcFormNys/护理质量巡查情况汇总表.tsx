@@ -6,6 +6,7 @@ import { observer } from 'mobx-react-lite'
 import { appStore, authStore } from 'src/stores'
 import { PageTitle } from 'src/components/common'
 import { qcFormNysService } from './api/QcFormNysService'
+import { getCurrentMonthNow,getCurrentMonth } from 'src/utils/date/currentMonth'
 import { fileDownload } from "src/utils/file/file";
 import moment from 'moment'
 import { qualityControlRecordApi } from '../qualityControlRecord/api/QualityControlRecordApi'
@@ -13,6 +14,10 @@ import { qualityControlRecordApi } from '../qualityControlRecord/api/QualityCont
 const Option = Select.Option
 
 export interface Props { }
+
+const currentMonth = (()=>{
+  return ['jmfy'].includes(appStore.HOSPITAL_ID) ? getCurrentMonth() : getCurrentMonthNow()
+})()
 
 export default observer(function 护理质量巡查情况汇总表(props: Props) {
   const { queryObj } = appStore
@@ -24,8 +29,8 @@ export default observer(function 护理质量巡查情况汇总表(props: Props)
   const [query, setQuery] = useState({
     wardCode: (authStore.isDepartment || authStore.isSupervisorNurse) ? '' : authStore.defaultDeptCode,
     qcCode: '',
-    beginDate: moment(moment().format('YYYY-MM') + '-01'),
-    endDate: moment()
+    beginDate: currentMonth[0],
+    endDate: currentMonth[1]
   })
 
   /**阳春中医 科室、表单的查询条件改为多选 */

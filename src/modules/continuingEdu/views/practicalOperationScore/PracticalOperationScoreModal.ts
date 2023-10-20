@@ -2,7 +2,13 @@ import { observable, computed, action } from "mobx";
 import { operationScoreApi } from './api/OperationScore'
 import { fileDownload } from "src/utils/file/file";
 import moment from 'moment'
+import { appStore } from 'src/stores'
+import { getCurrentMonthNow,getCurrentMonth } from 'src/utils/date/currentMonth'
 import { message } from "antd";
+
+const currentMonth = (()=>{
+  return ['jmfy'].includes(appStore.HOSPITAL_ID) ? getCurrentMonth() : getCurrentMonthNow()
+})()
 
 class PracticalOperationScore {
   @observable public keyWord = ""; //;请输入要搜索的标题或章节
@@ -11,8 +17,8 @@ class PracticalOperationScore {
   @observable public pageIndex:any = 1; //页码
   @observable public pageSize:any = 20; //每页大小
   @observable public total:any = 0; //总条数
-  @observable public subissionTimeBeginIndex:string | undefined = ''; //提交时间起始坐标
-  @observable public subissionTimeEndIndex:string | undefined = ''; //提交时间终止坐标
+  @observable public subissionTimeBeginIndex:string | undefined = currentMonth[0].format('YYYY-MM-DD'); //提交时间起始坐标
+  @observable public subissionTimeEndIndex:string | undefined = currentMonth[1].format('YYYY-MM-DD'); //提交时间终止坐标
   @observable public saveImportList:any = []; //导入模板数据
 
   @computed

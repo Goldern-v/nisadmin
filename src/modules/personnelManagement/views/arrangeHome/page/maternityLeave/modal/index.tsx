@@ -24,9 +24,10 @@ export class SearchForm implements iSearchForm {
 
   constructor() {
     if (['jmfy'].includes(appStore.HOSPITAL_ID)) {
+      let currentMonth = getCurrentMonth()
       this.date = [
-        moment(moment().format('YYYY-MM-DD')),
-        moment(moment().format('YYYY-MM-DD'))
+        currentMonth[0],
+        currentMonth[1]
       ]
     } else {      
       this.date = [
@@ -55,7 +56,15 @@ export class justiceSearchForm implements iSearchForm {
     //   moment(moment().format('YYYY-MM-01')),
     //   moment(moment().add(1, 'year').format('YYYY-MM-01'))
     // ]
-    this.date = [],
+    if (['jmfy'].includes(appStore.HOSPITAL_ID)) {
+      let currentMonth = getCurrentMonth()
+      this.date = [
+        currentMonth[0],
+        currentMonth[1]
+      ]
+    }else{
+      this.date = []
+    }
       this.status = ''
     this.deliveryMode = ''
     this.pageIndex = 1

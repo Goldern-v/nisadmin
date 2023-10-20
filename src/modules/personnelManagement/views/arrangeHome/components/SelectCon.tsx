@@ -6,6 +6,7 @@ import styled from 'styled-components'
 import React, { useEffect, useState } from 'react'
 import { observer } from 'mobx-react-lite'
 import { Button, Checkbox, DatePicker, Dropdown, Menu, message, Modal, Select, Upload } from 'src/vendors/antd'
+import { getCurrentMonthNow,getCurrentMonth } from 'src/utils/date/currentMonth'
 import { fileDownload } from 'src/utils/file/file'
 import { appStore, authStore } from 'src/stores'
 import { DictItem } from 'src/services/api/CommonApiService'
@@ -356,7 +357,18 @@ export default observer(function SelectCon() {
         "endTime",
         m2.format("YYYY-MM-DD")
       );
-    } else {
+    }else if('jmfy' === appStore.HOSPITAL_ID){
+      let currentMonth = getCurrentMonth()
+      setDate(currentMonth);
+      selectViewModal.setParams(
+        "startTime",
+        currentMonth[0].format("YYYY-MM-DD")
+      );
+      selectViewModal.setParams(
+        "endTime",
+        currentMonth[1].format("YYYY-MM-DD")
+      );
+    }else {
       setDate([
         moment(getMonday(), "YYYY-MM-DD"),
         moment(getSunday(), "YYYY-MM-DD")

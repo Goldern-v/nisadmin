@@ -11,7 +11,7 @@ import { useCallback } from 'src/types/react'
 import { DoCon } from 'src/components/BaseTable'
 import { observer } from 'mobx-react-lite'
 import { DictItem } from 'src/services/api/CommonApiService'
-import { getCurrentMonthNow } from 'src/utils/date/currentMonth'
+import { getCurrentMonthNow,getCurrentMonth } from 'src/utils/date/currentMonth'
 import moment from 'moment'
 import { useKeepAliveEffect } from 'src/vendors/keep-alive'
 import WardLogAddModal from './../components/WardLogAddModal'
@@ -20,8 +20,12 @@ import { fileDownload } from 'src/utils/file/file'
 import service from 'src/services/api'
 export interface Props { }
 
+const currentMonth = ()=>{
+  return ['jmfy'].includes(appStore.HOSPITAL_ID) ? getCurrentMonth() : getCurrentMonthNow()
+}
+
 export default observer(function MyCreateList() {
-  const [date, setDate]: any = useState(getCurrentMonthNow())
+  const [date, setDate]: any = useState(currentMonth())
   const [templateList, setTemplateList]: any = useState([])
   const [selectedTemplate, setSelectedTemplate]: any = useState('')
   const [dataSource, setDataSource] = useState([])

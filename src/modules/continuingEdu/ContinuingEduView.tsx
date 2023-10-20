@@ -1462,7 +1462,7 @@ const getIcon = (icon: any) => {
   ];
   const LEFT_MENU_CONFIG = appStore.hisMatch({
     map: {
-      'whyx,whhk,gdsfy': LEFT_MENU_CONFIG_WHYX,
+      'whyx,whhk,gdsfy,jmfy': LEFT_MENU_CONFIG_WHYX,
       default:LEFT_MENU_CONFIG_DEFAULT
     },
     vague: true,

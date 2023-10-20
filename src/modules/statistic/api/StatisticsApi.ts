@@ -420,6 +420,10 @@ class StatisticsApi extends BaseApiService {
   public changeIsCountDevice(query: any) {
     return this.post('/device/changeIsCount', query)
   }
+/**根据科室获取科室人员工作年限统计 **/
+public countEntryDateDetail(query: any) {
+  return this.post('/countInformation/countEntryDateDetail', query)
+}
 }
 
 let statisticsApi = new StatisticsApi()

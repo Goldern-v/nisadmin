@@ -25,10 +25,11 @@ const formItemLayout = {
   }
 }
 
-
 function CreateMonthCheckReport(props: Props) {
   const {queryObj} = appStore
   const qcLevel = queryObj.qcLevel || '1'
+  const exatOne = queryObj.qcLevel != "1"
+
   let {
     visible,
     handleOk,
@@ -36,7 +37,7 @@ function CreateMonthCheckReport(props: Props) {
     form: { getFieldDecorator, validateFields, setFieldsValue, resetFields }
   } = props
 
-  const [defaultName, setDefaultName] = useState(moment().year()+'年'+authStore.defaultDeptCodeName+(moment().month()+1)+'月护理质量检查总结');
+  const [defaultName, setDefaultName] = useState(moment().year()+'年'+(exatOne?"":authStore.defaultDeptCodeName)+(moment().month()+1)+'月护理质量检查总结');
   const [formCreateVisible, setFormCreateVisible] = useState(false);
   const [summaryForm, setSummaryForm] = useState({} as any)
 
@@ -81,12 +82,12 @@ function CreateMonthCheckReport(props: Props) {
             onChange={(date:any)=>{
               qcMonthCheckData.currentItem.startDate = date
               setDefaultName(moment(date).year()+'年'
-              +qcMonthCheckData.currentItem.wardName+(moment(date).month()+1)+'月护理质量检查总结')
+              +(exatOne?"":qcMonthCheckData.currentItem.wardName)+(moment(date).month()+1)+'月护理质量检查总结')
             }}
              />)}
         </Form.Item>
 
-        <Form.Item {...formItemLayout} label='质控科室'>
+        {!exatOne && <Form.Item {...formItemLayout} label='质控科室'>
           {getFieldDecorator('deptCode', {
             initialValue: {key:qcMonthCheckData.currentItem.wardCode,label:qcMonthCheckData.currentItem.wardName} || {key:authStore.defaultDeptCode,label:authStore.defaultDeptCodeName},
             rules: [{ required: true, message: '质控科室不能为空' }]
@@ -100,13 +101,13 @@ function CreateMonthCheckReport(props: Props) {
                 qcMonthCheckData.currentItem.wardCode = val.key
                 qcMonthCheckData.currentItem.wardName = val.label
                 setDefaultName(moment(qcMonthCheckData.currentItem.startDate).year()+'年'
-              +val.label+(moment(qcMonthCheckData.currentItem.startDate).month()+1)+'月护理质量检查总结')
+              +(exatOne?"":val.label)+(moment(qcMonthCheckData.currentItem.startDate).month()+1)+'月护理质量检查总结')
               }}>
               {authStore.deptList.map(v =>
                     <Option value={v.code} key={v.code}>{v.name}</Option>)}
             </Select>
           )}
-        </Form.Item>
+        </Form.Item>}
         <Form.Item {...formItemLayout} label='报告名称'>
           {getFieldDecorator('name', {
             initialValue: qcMonthCheckData.currentItem.reportName || defaultName,
