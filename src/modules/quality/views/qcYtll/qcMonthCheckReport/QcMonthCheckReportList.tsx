@@ -46,7 +46,7 @@ export default observer(function QcMonthCheckReportList() {
 			dataIndex: "wardName",
 			align: "center",
 			width: 100,
-		} : {}],
+		} : ""],
 		{
 			title: "质控表单",
 			dataIndex: "summaryFormName",
