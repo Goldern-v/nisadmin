@@ -205,7 +205,11 @@ export default observer(function ApplyTable(props: Props) {
         surplusWidth={100}
         onRow={(record) => {
           return {
-            onDoubleClick: () => onOpen(record)
+            onDoubleClick: () =>{
+              if(appStore.HOSPITAL_ID !=='jmfy'){
+                onOpen(record)
+              }
+            }
           }
         }}
         pagination={{
