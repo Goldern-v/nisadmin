@@ -154,7 +154,7 @@ export default function PersonelSecondModal(props: Props) {
               <React.Fragment>
                 <Row>
                   <Col span={6} className="label">
-                    <span className="mustWrite">*</span> 白班责护总数:
+                    <span style={{'color': 'red !important', 'marginTop': '2px' }}>*</span> 白班责护总数:
                   </Col>
                   <Col span={18}>
                     <Form.Field>
@@ -164,7 +164,7 @@ export default function PersonelSecondModal(props: Props) {
                 </Row>
                 <Row>
                   <Col span={6} className="label">
-                    <span className="mustWrite">*</span> 患者总数:
+                    <span style={{'color': 'red !important', 'marginTop': '2px' }}>*</span> 患者总数:
                   </Col>
                   <Col span={18}>
                     <Form.Field >
@@ -183,7 +183,7 @@ export default function PersonelSecondModal(props: Props) {
                       option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                     }
                   >
-                    {[{name: '11', code: '23'}].map((item: any, index: number) => (
+                    {deptList.map((item: any, index: number) => (
                       <Option value={item.code} key={index}>
                         {item.name}
                       </Option>
@@ -200,7 +200,7 @@ export default function PersonelSecondModal(props: Props) {
                       option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                     }
                   >
-                    {[{empName: '11', empNo: '23'}].map((item: any, index: number) => (
+                    {nurseList.map((item: any, index: number) => (
                       <Option value={item.empNo} key={item.empNo + index + item.empName + index}>
                         {item.empNo  + '-' + item.empName}
                       </Option>
@@ -233,8 +233,4 @@ export default function PersonelSecondModal(props: Props) {
   )
 }
 const Wrapper = styled.div`
-.mustWrite {
-  color: red !important;
-  margin-top: 2px;
-}
 `

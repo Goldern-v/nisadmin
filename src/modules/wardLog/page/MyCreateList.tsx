@@ -87,8 +87,8 @@ export default observer(function MyCreateList() {
         return (
           <DoCon>
             <span onClick={() => onDetail(record)}>查看详情</span>
-            {record.status != '1' && <span onClick={() => onEdit(record)}>修改</span>}
-            <span onClick={() => onDelete(record)}>删除</span>
+            {record.status == '0' && <span onClick={() => onEdit(record)}>修改</span>}
+            {(status == '1' || status == '0') && <span onClick={() => onDelete(record)}>删除</span>}
           </DoCon>
         )
       }

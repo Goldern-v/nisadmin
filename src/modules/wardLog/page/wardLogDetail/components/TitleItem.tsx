@@ -5,7 +5,7 @@ import {appStore} from "src/stores";
 export interface Props {
   title: string
   aside: string
-    type?:string
+  type?:string
 }
 
 export default function TitleItem(props: Props) {
@@ -14,7 +14,7 @@ export default function TitleItem(props: Props) {
     const [personContent,setPersonContent]=useState('')
     useEffect(()=>{
         if(appStore.HOSPITAL_ID ==='qhwy' && type == '8'){
-            let list: any =JSON.parse(aside).map((item: any) => item.empName).join(',')
+            let list: any = aside && JSON.parse(aside).map((item: any) => item.empName).join(',')
             setPersonContent(list)
         }
     },[])
