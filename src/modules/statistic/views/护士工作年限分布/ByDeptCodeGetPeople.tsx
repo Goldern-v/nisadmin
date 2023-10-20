@@ -34,7 +34,7 @@ export default function ByDeptCodeGetPeople(props: InfoProps) {
                 setData(res.data || [])
             })
         }
-    }, [visible])
+    }, [deptCode])
     return (
         <Modal
             title={'人员信息'}

@@ -31,6 +31,7 @@ export default observer(function 护士工作年限分布() {
     endDate: _currentMonth[1].format('YYYY-MM-DD'),
   })
   const [visible,setVisible] =useState<boolean>(false)
+  const [dept,setDept]=useState<string>('')
   const [data, setData] = useState([] as any[])
   const tableRef = useRef<HTMLDivElement | null>(null);
   const [chartsImg, setChartsImg] = useState<any[]>([])
@@ -60,6 +61,14 @@ export default observer(function 护士工作年限分布() {
       width: 60,
       dataIndex: 'NUM',
       align: 'center',
+      render:(text:any,record:any)=>{
+        return <div onClick={()=>{
+          if(appStore.HOSPITAL_ID =='qhwy'){
+            setVisible(true)
+            setDept(record.DEPTCODE)
+          }
+        }}>{text}</div>
+      }
     },
     ...extraColumns,
   ]
@@ -87,9 +96,10 @@ export default observer(function 护士工作年限分布() {
        newList = newExtraColumns.map((item:any)=>{
          item.children[0]={
            ...item.children[0],
-           render:()=>{
+           render:(e:any,a:any)=>{
              return <div onClick={()=>{
                setVisible(true)
+               setDept(a.DEPTCODE)
              }}>{item.key}</div>
            }
          }
@@ -265,8 +275,7 @@ export default observer(function 护士工作年限分布() {
             <span>暂无数据</span>
           </div>}
         </ChartCon>}
-        <ByDeptCodeGetPeople deptCode={query.deptCode} visible={visible} onCancel={()=>setVisible(false)}/>
-        {/*<byDeptCodeGetPeople.Component />*/}
+        <ByDeptCodeGetPeople deptCode={dept} visible={visible} onCancel={()=>setVisible(false)}/>
       </Con>
     </Spin>} />
 })
