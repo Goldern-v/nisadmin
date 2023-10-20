@@ -70,16 +70,13 @@ export default function TraineeAuditModal(props: Props) {
     delete params.createTime
 
     setLoading(true)
-    console.log(params,status, status === 'edit', 9999999)
     if (status === 'edit') {
       let current: any = formRef.current;
-      console.log(current, 'current')
       if (current) {
         current
           .validateFields()
           .then((res: any) => {
             let newParams = current.getFields();
-            console.log(newParams, 88888);
             newParams.internshipBegin = newParams.studyTime && newParams.studyTime[0]
               ? newParams.studyTime[0].format("YYYY-MM-DD")
               : "";
@@ -91,22 +88,21 @@ export default function TraineeAuditModal(props: Props) {
                 (item: any) => item.code === newParams.studyDeptCode
               ).name
               : "";
-              if (params.identifier){
-                newParams.id = params.id;
-                traineeFilesApi
-                  .saveOrUpdateInfo(newParams)
-                  .then(res => {
-                    message.success('保存成功')
-                    okCallback && okCallback()
-                    onCancel()
-                  })
-                  .catch((e: any) => {
-                    console.log(e);
-                    setLoading(false)
-                  });
-              } else {
-                message.error('实习编号为空，请联系管理员！')
-              }
+              
+            newParams.id = params.id;
+            newParams.status = params.status;
+            traineeFilesApi
+              .saveOrUpdateToAuditInfo(newParams)
+              .then(res => {
+                message.success('修改成功')
+                okCallback && okCallback()
+                onCancel()
+              })
+              .catch((e: any) => {
+                console.log(e);
+                setLoading(false)
+              });
+              
           })
           .catch((e: any) => {
             console.log(e);
@@ -144,62 +140,56 @@ export default function TraineeAuditModal(props: Props) {
   useEffect(() => {
     if (visible) {
       setTimeout(() => {
-        console.log(info.identifier, info, 'info 基本信息')
         let current: any = formRef.current;
         if (!current) return;
-        if (info.identifier) {
-          current.clear();
-          let data: any = { ...info };
-          const {
-            identifier,
-            name,
-            sex,
-            age,
-            schoolName,
-            major,
-            education,
-            idCardNo,
-            phone,
-            isResident,
-            dormitoryNumber,
-            internshipBegin,
-            internshipEnd,
-            studyDeptCode,
-            studyDeptName,
-            isGroupLeader,
-            address,
-            emergencyContactPerson,
-            emergencyContactPhone,
-            remark,
-            isCPCMember,
-            isOnJob
-          } = data;
-          console.log(education, '学历')
-          current.setFields({
-            identifier,
-            name,
-            sex: sex === "男" ? "0" : "1",
-            isOnJob: isOnJob === '在院' ? '1' : '0',
-            age,
-            schoolName,
-            major,
-            education,
-            idCardNo,
-            phone,
-            isResident: isResident === "否" ? "0" : "1",
-            isCPCMember: isCPCMember === "否" ? "0" : "1",
-            dormitoryNumber,
-            isGroupLeader: isGroupLeader === "否" ? "0" : "1",
-            address,
-            emergencyContactPerson,
-            emergencyContactPhone,
-            remark,
-            studyDeptCode,
-            studyTime: internshipBegin && internshipEnd ? [moment(internshipBegin), moment(internshipEnd)] : []
-          });
-        } else {
-          current.clear();
-        }
+        current.clear();
+        let data: any = { ...info };
+        const {
+          identifier,
+          name,
+          sex,
+          age,
+          schoolName,
+          major,
+          education,
+          idCardNo,
+          phone,
+          isResident,
+          dormitoryNumber,
+          internshipBegin,
+          internshipEnd,
+          studyDeptCode,
+          studyDeptName,
+          isGroupLeader,
+          address,
+          emergencyContactPerson,
+          emergencyContactPhone,
+          remark,
+          isCPCMember,
+          isOnJob
+        } = data;
+        current.setFields({
+          identifier,
+          name,
+          sex: sex === "男" ? "0" : "1",
+          isOnJob: isOnJob === '在院' ? '1' : '0',
+          age,
+          schoolName,
+          major,
+          education,
+          idCardNo,
+          phone,
+          isResident: isResident === "否" ? "0" : "1",
+          isCPCMember: isCPCMember === "否" ? "0" : "1",
+          dormitoryNumber,
+          isGroupLeader: isGroupLeader === "否" ? "0" : "1",
+          address,
+          emergencyContactPerson,
+          emergencyContactPhone,
+          remark,
+          studyDeptCode,
+          studyTime: internshipBegin && internshipEnd ? [moment(internshipBegin), moment(internshipEnd)] : []
+        });
       }, 100);
     }
   }, [visible, formRef]);
@@ -293,18 +283,6 @@ export default function TraineeAuditModal(props: Props) {
           </Row>
         </Spin> :
         <Form ref={formRef} rules={rules}>
-          {info.identifier && (
-            <Row>
-              <Col span={6} className="label">
-                <span className="mustWrite">*</span> 实习编号:
-              </Col>
-              <Col span={16}>
-                <Form.Field name="identifier">
-                  <Input disabled />
-                </Form.Field>
-              </Col>
-            </Row>
-          )}
           <Row>
             <Col span={6} className="label">
               <span className="mustWrite">*</span> 姓名:
@@ -328,21 +306,19 @@ export default function TraineeAuditModal(props: Props) {
               </Form.Field>
             </Col>
           </Row>
-          {appStore.HOSPITAL_ID == 'hj' &&
-            <Row>
-              <Col span={6} className="label">
-                在院状态:
-              </Col>
-              <Col span={16}>
-                <Form.Field name="isOnJob">
-                  <Radio.Group buttonStyle="solid">
-                    <Radio.Button value="0">离院</Radio.Button>
-                    <Radio.Button value="1">在院</Radio.Button>
-                  </Radio.Group>
-                </Form.Field>
-              </Col>
-            </Row>
-          }
+          <Row>
+            <Col span={6} className="label">
+              在院状态:
+            </Col>
+            <Col span={16}>
+              <Form.Field name="isOnJob">
+                <Radio.Group buttonStyle="solid">
+                  <Radio.Button value="0">离院</Radio.Button>
+                  <Radio.Button value="1">在院</Radio.Button>
+                </Radio.Group>
+              </Form.Field>
+            </Col>
+          </Row>
           <Row>
             <Col span={6} className="label">
               <span className="mustWrite">*</span> 院校:
@@ -379,21 +355,6 @@ export default function TraineeAuditModal(props: Props) {
               </Form.Field>
             </Col>
           </Row>
-          {appStore.HOSPITAL_ID == 'gzhd' &&
-            <Row>
-              <Col span={6} className="label">
-                <span className="mustWrite">*</span> 是否党员:
-              </Col>
-              <Col span={16}>
-                <Form.Field name="isCPCMember">
-                  <Radio.Group buttonStyle="solid">
-                    <Radio.Button value="1">是</Radio.Button>
-                    <Radio.Button value="0">否</Radio.Button>
-                  </Radio.Group>
-                </Form.Field>
-              </Col>
-            </Row>
-          }
           <Row>
             <Col span={6} className="label">
               <span className={"mustWrite"}>*</span> 身份证号码:
@@ -414,34 +375,29 @@ export default function TraineeAuditModal(props: Props) {
               </Form.Field>
             </Col>
           </Row>
-          {
-            appStore.HOSPITAL_ID !=='lyrm' &&
-              <Row>
-                <Col span={6} className="label">
-                  <span className={"mustWrite"}>*</span> 是否住宿:
-                </Col>
-                <Col span={16}>
-                  <Form.Field name="isResident">
-                    <Radio.Group buttonStyle="solid">
-                      <Radio.Button value="1">是</Radio.Button>
-                      <Radio.Button value="0">否</Radio.Button>
-                    </Radio.Group>
-                  </Form.Field>
-                </Col>
-              </Row>
-          }
-          {
-            appStore.HOSPITAL_ID !=='lyrm' && <Row>
-              <Col span={6} className="label">
-                宿舍编号:
-              </Col>
-              <Col span={16}>
-                <Form.Field name="dormitoryNumber">
-                  <Input />
-                </Form.Field>
-              </Col>
-            </Row>
-          }
+          <Row>
+            <Col span={6} className="label">
+              <span className={"mustWrite"}>*</span> 是否住宿:
+            </Col>
+            <Col span={16}>
+              <Form.Field name="isResident">
+                <Radio.Group buttonStyle="solid">
+                  <Radio.Button value="1">是</Radio.Button>
+                  <Radio.Button value="0">否</Radio.Button>
+                </Radio.Group>
+              </Form.Field>
+            </Col>
+          </Row>
+          <Row>
+            <Col span={6} className="label">
+              宿舍编号:
+            </Col>
+            <Col span={16}>
+              <Form.Field name="dormitoryNumber">
+                <Input />
+              </Form.Field>
+            </Col>
+          </Row>
           <Row>
             <Col span={6} className="label">
               <span className={"mustWrite"}>*</span> 实习时间:
