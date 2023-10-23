@@ -153,8 +153,9 @@ export default function PersonelSecondModal(props: Props) {
           {IS_QHWY && (
               <React.Fragment>
                 <Row>
-                  <Col span={6} className="label">
-                    <span style={{'color': 'red !important', 'marginTop': '2px' }}>*</span> 白班责护总数:
+                  <Col span={6} style={{textAlign: 'right'}}>
+                    <span style={{'color': 'red', 'marginTop': '2px' }}>*</span>
+                    白班责护总数 &nbsp;
                   </Col>
                   <Col span={18}>
                     <Form.Field>
@@ -163,8 +164,9 @@ export default function PersonelSecondModal(props: Props) {
                   </Col>
                 </Row>
                 <Row>
-                  <Col span={6} className="label">
-                    <span style={{'color': 'red !important', 'marginTop': '2px' }}>*</span> 患者总数:
+                  <Col span={6} style={{textAlign: 'right'}}>
+                    <span style={{'color': 'red', 'marginTop': '2px' }}>*</span>
+                    患者总数 &nbsp;
                   </Col>
                   <Col span={18}>
                     <Form.Field >
