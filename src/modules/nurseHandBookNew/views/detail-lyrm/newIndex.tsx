@@ -121,7 +121,9 @@ export default observer(function (props: Props) {
                                 filebrowserUploadUrl: appStore.uploadCKEUrl,
                                 filebrowserHtml5videoUploadUrl: appStore.uploadCKEUrl,
                                 height: 400,
-                                title: ''
+                                title: '',
+                                font_names: '黑体/黑体;楷体/楷体;宋体/宋体;仿宋/仿宋;Arial/Arial;Tahoma/Tahoma;Verdana/Verdana;',
+                                font_defaultLabel: '黑体',
                             }}
                         />
                         }

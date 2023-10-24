@@ -12,7 +12,7 @@ export const delWithResData = (options?: {
   let { dataList, baseColums, otherName } = options || {}
   if (!dataList) dataList = []
 
-  if (!baseColums) baseColums = ['NUM', 'DEPTNAME']
+  if (!baseColums) baseColums = ['NUM', 'DEPTNAME','DEPTCODE']
   let _otherName = otherName || '其他'
   let needOtherCol = true //是否需要额外的其他列（如果数据有返回就不需要添加其他列）
 

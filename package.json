@@ -119,7 +119,7 @@
     "dev:gdtj": "npm run start:gdtj",
     "dev:whfk": "npm run start:whfk",
     "dev:lyyz": "npm run start:lyyz",
-    "dev:qhwy": "npm run start:qhwy",
+    "dev:qhwy": "npm run start:qhwy --max_old_space_size=4096 build/dev-server.js",
     "dev:whsl": "npm run start:whsl",
     "dev:zzwy": "npm run start:zzwy",
     "dev:ytll": "npm run start:ytll",

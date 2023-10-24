@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { nurseHandbookRecordModel as model } from '../../model'
+import { nurseHandbookRecordModel as model } from '../../newModel'
 import { observer } from 'mobx-react'
 import { DetailCtxCon } from 'src/modules/nurseHandBookNew/style'
 import TextArea from 'antd/es/input/TextArea'

@@ -516,7 +516,7 @@ export default function EditWorkHistoryModal(props: Props) {
           </Col>
           {
             !['fsxt', '925', 'dghm', 'zjhj'].includes(appStore.HOSPITAL_ID) && <Col span={12}>
-              <Form.Field label={`初始学历`} name="initialEducation">
+              <Form.Field label={['zhzxy'].includes(appStore.HOSPITAL_ID) ? '第一学历' : `初始学历`} name="initialEducation">
                 <Select>
                   {nurseFileDetailViewModal.getDict("初始学历").map((item) => (
                     <Select.Option value={item.code} key={item.code}>
@@ -538,7 +538,7 @@ export default function EditWorkHistoryModal(props: Props) {
             (['zhzxy'].includes(appStore.HOSPITAL_ID)) &&
             <>
               <Col span={12}>
-                <Form.Field label={`毕业学校`} name="maps.school_name">
+                <Form.Field label={`第一学历毕业院校`} name="maps.school_name">
                   <Input />
                 </Form.Field>
               </Col>
@@ -562,7 +562,26 @@ export default function EditWorkHistoryModal(props: Props) {
               </Select>
             </Form.Field>
           </Col>
-
+          {
+            (['zhzxy'].includes(appStore.HOSPITAL_ID)) &&<>
+            <Col span={12}>
+              <Form.Field label={`最高学历毕业院校`} name="heighestGraduate">
+                <Input />
+              </Form.Field>
+            </Col>
+            <Col span={12}>
+              <Form.Field label={`是否中医院校`} name="tcmCollege">
+                <Select>
+                  {[{code: '是', name: '是'}, {code: '否', name: '否'}].map((item) => (
+                      <Select.Option value={item.code} key={item.code}>
+                        {item.name}
+                      </Select.Option>
+                    ))}
+                </Select>
+              </Form.Field>
+            </Col>
+          </>
+          }
           {
             appStore.HOSPITAL_ID !== 'fsxt' &&
             <>
@@ -582,6 +601,22 @@ export default function EditWorkHistoryModal(props: Props) {
               </Col>
             </>
           }
+          {
+          (['zhzxy'].includes(appStore.HOSPITAL_ID)) &&
+            <Col span={12}>
+              <Form.Field label={`是否完成西学中培训课程`} name="completeWsms">
+                <Select>
+                  {[{code: '是', name: '是'}, {code: '否', name: '否'}].map((item) => (
+                      <Select.Option value={item.code} key={item.code}>
+                        {item.name}
+                      </Select.Option>
+                    ))}
+                </Select>
+              </Form.Field>
+            </Col>
+          }
+
+
           <Col span={12} style={{ height: '52px' }}>
             <Form.Field label={`职务`} name="job">
               <SelectOrAutoInput dict="职务" />

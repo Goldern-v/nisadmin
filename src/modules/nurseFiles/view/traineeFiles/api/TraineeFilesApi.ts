@@ -18,6 +18,14 @@ export default class TraineeFilesApi extends BaseApiService {
     );
   }
 
+  // 待检测保存
+  public async saveOrUpdateToAuditInfo(obj: any) {
+    return this.post(
+      `/nursefile/otherPersonInfo/graduateIntern/saveOrUpdateToAuditInfo`,
+      obj
+    );
+  }
+
   // 修改回显
   public async queryInfoByIdentifier(identifier: any) {
     return this.post(

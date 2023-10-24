@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { nurseHandbookRecordModel as model } from '../../model'
+import { nurseHandbookRecordModel as model } from '../../newModel'
 import { DatePicker, Input } from 'antd'
 import { observer } from 'mobx-react'
 import { DetailCtxCon, MULTI_UNDERLINE } from 'src/modules/nurseHandBookNew/style'

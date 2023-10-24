@@ -4,7 +4,7 @@ import {
     Modal,
     Button,
     Row,
-    Col,
+    Col, Empty, Spin,
 } from "antd";
 import {ModalComponentProps} from "src/libs/createModal";
 import Form from "src/components/Form";
@@ -14,7 +14,8 @@ export interface Props extends ModalComponentProps {
 }
 
 interface InfoProps {
-    deptCode: any;
+    dept: number
+    workType: string
     onCancel: () => void
     visible: boolean
 }
@@ -23,15 +24,21 @@ export default function ByDeptCodeGetPeople(props: InfoProps) {
     let {
         visible,
         onCancel,
-        deptCode,
+        dept,
+        workType
     } = props;
     const [data, setData] = useState([] as any)
+    const [loading, setLoading] = useState<boolean>(false)
     useEffect(() => {
         if (visible) {
+            setLoading(true)
             statisticsApi.countEntryDateDetail({
-                deptCode
+                deptCode: dept
             }).then((res: any) => {
-                setData(res.data || [])
+                let newData: any = res.data.filter((item: any) => workType == item.workType)
+                setData( workType =='all'? res.data : (newData || []))
+            }).finally(() => {
+                setLoading(false)
             })
         }
     }, [visible])
@@ -46,23 +53,25 @@ export default function ByDeptCodeGetPeople(props: InfoProps) {
                 onCancel()
             }}>关闭</Button>}
             centered>
-            <Form>
-                {data.map((item: any) => {
-                    return (
-                        <Row style={{marginTop: '20px'}}>
-                            <Col span={8}>
-                                科室:{item.deptName}
-                            </Col>
-                            <Col span={8}>
-                                工号:{item.empNo}
-                            </Col>
-                            <Col span={8}>
-                                姓名:{item.empName}
-                            </Col>
-                        </Row>
-                    )
-                })}
-            </Form>
+            <Spin spinning={loading}>
+                <Form>
+                    {data.length > 0 ? data.map((item: any) => {
+                        return (
+                            <Row style={{marginTop: '20px'}}>
+                                <Col span={8}>
+                                    科室:{item.deptName}
+                                </Col>
+                                <Col span={8}>
+                                    工号:{item.empNo}
+                                </Col>
+                                <Col span={8}>
+                                    姓名:{item.empName}
+                                </Col>
+                            </Row>
+                        )
+                    }) : <Empty/>}
+                </Form>
+            </Spin>
         </Modal>
     );
 }

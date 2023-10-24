@@ -69,6 +69,12 @@ export default function PersonnelSecondment() {
             align: "center"
           },
           {
+            title: "护患比",
+            dataIndex: "percentage",
+            width: 100,
+            align: "center"
+          },
+          {
             title: "审核状态",
             dataIndex: "status",
             width: 100,
