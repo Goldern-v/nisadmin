@@ -11,6 +11,7 @@ import moment from 'src/vendors/moment'
 import printing from "printing";
 import { currentMonth, currentQuater, currentYear } from 'src/utils/date/rangeMethod'
 import {Con} from 'src/modules/statistic/common/css/CommonLayout.ts';
+import PrintTable from '../printTable/printTable'
 import { colums } from "./utils"
 
 const RangePicker = DatePicker.RangePicker
@@ -53,6 +54,7 @@ export default observer(function 护理人员在岗统计表() {
   }, [query])
 
   const exportPdf = ()=>{
+    tableRef.current!.style.display = 'block'
     printing(tableRef.current!, {
       injectGlobalCss: true,
       scanStyles: false,
@@ -65,13 +67,9 @@ export default observer(function 护理人员在岗统计表() {
           max-height: none !important;
           height: auto !important;
         }
-        .tableBox{
-          height:770px;
-          overflow:hidden;
-          page-break-after: always;
-        }
       `,
     });
+    tableRef.current!.style.display = 'none'
   }
 
   return <CommonLayout
@@ -97,7 +95,7 @@ export default observer(function 护理人员在岗统计表() {
       {['jmfy'].includes(appStore.HOSPITAL_ID) && <Button type="primary" onClick={exportPdf}>导出pdf</Button>}
     </div>}
       body={<Spin spinning={loading}>
-        <Con ref={tableRef} className="tableBox">
+        <Con>
           <div className='main-title'>护理人员在岗统计表</div>
           <div className='sub-title'>统计日期：{query.startTime} 至 {query.endTime}</div>
           <BaseTable
@@ -105,6 +103,9 @@ export default observer(function 护理人员在岗统计表() {
             surplusHeight={320}
             columns={columns}
             dataSource={data} />
+          <div ref={tableRef} style={{display:'none'}}>
+            <PrintTable dataSource={data} columns={columns} title={'护理人员在岗统计表'}></PrintTable>
+          </div>
         </Con>
       </Spin>} 
       />
