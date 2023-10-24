@@ -7,7 +7,7 @@ import { DetailCtxCon } from 'src/modules/nurseHandBookNew/style'
 import { ChangeOrFocus, Obj } from 'src/libs/types'
 import cloneDeep from 'lodash/cloneDeep'
 import { dateFormat, dateFormat3, tableConConfig } from '../../config'
-
+const {TextArea} =Input
 import moment, { isMoment } from 'moment'
 import { isOfType } from 'src/utils/ts.utils'
 
@@ -20,6 +20,10 @@ const ChildCon = memo((props: any) => {
       return (
         <DatePicker className='cell-ipt'
           format={dateFormat3} value={value ? moment(value) : undefined} {...other} />)
+    case 'TextArea':
+      return (
+          <TextArea className='cell-ipt'
+                    value={value} {...other} />)
     default:
       return <Input className='cell-ipt ta-c' value={value} {...other} />
   }
@@ -49,7 +53,7 @@ export default observer(function (props: Props) {
   return (
     <Wrapper className='con--a4' ref={model.ctxRef}>
       <div className='title'>
-        {model.detail?.record?.[config?.titleType || 'menuName']}
+        {model.detail?.record?.year}年{model.detail?.record?.[config?.titleType || 'menuName']}
       </div>
       <table>
         <colgroup>

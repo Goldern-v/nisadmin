@@ -13,7 +13,7 @@ import AddModal from './components/addModal'
 import createModal from 'src/libs/createModal'
 import useFirstDisEffect from 'src/hooks/useFirstDisEffect'
 import { message, Modal } from 'antd'
-import {HALF_YEAR, STATUS_LIST} from './utils/enums'
+import {HALF_YEAR, STATUS_LIST, QuarterV} from './utils/enums'
 import { formatTitle } from '../detail-lyrm/config'
 import AuditModal from './components/auditModal'
 import { nurseHandbookRecordModel as model } from '../detail-jew/model'
@@ -22,7 +22,6 @@ export interface Props {
   options: Obj
 }
 const Quarter ={'第一季度':1,'第二季度':2,'第三季度':3,'第四季度':4}
-const QuarterV ={1:'第一季度',2:'第二季度',3:'第三季度',4:'第四季度'}
 /** 13张表的菜单页，by925 */
 export default observer(function (props: Props) {
   const { options } = props
@@ -81,6 +80,9 @@ export default observer(function (props: Props) {
       title: '标题',
       align: 'center',
       dataIndex: 'title',
+      render:(text:string,record:any)=>{
+        return (record.year?record.year+'年':"")+(record.month?record.month+'月':"")+record.title
+      }
     },
     {
       title: '状态',
@@ -479,7 +481,15 @@ export default observer(function (props: Props) {
       switchFn[options.validateField]()
     }
   }
-
+  /****/
+  const openImport =()=>{
+    const nurseHandbookRecords:any =[]
+    const params ={
+      title:options.name,
+      nurseHandbookRecords
+    }
+    nurseHandBookService.nurseRecordExport({})
+  }
   useEffect(() => {
     init()
   }, [options])
@@ -487,7 +497,12 @@ export default observer(function (props: Props) {
   useFirstDisEffect(() => {
     getTableData()
   }, [query])
-
+  useEffect(() => {
+  /**增加提示语**/
+  if(['925HLLWDJ_9_1','925JSGXDJ_9_2','925JSGXDJ_9_3','925WCXXJXDJ_9_4','925JSJXJXDJ_9_5','925HLRYJDDJ_9_6','925HRHSDJ_9_7'].includes(options.menuCode)){
+   return  message.info('请您到护理管理系统档案管理的查询统计模块进行数据汇总统计及导出！')
+  }
+  }, [appStore.location.pathname])
   return (
     <Wrapper>
       <SelectCon {...{ query, setQuery, openCreate, title: options.name || '', formList, openAudit }} />

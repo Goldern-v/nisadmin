@@ -12,6 +12,7 @@ import {isOfType} from 'src/utils/ts.utils'
 import {createArr} from "src/utils/array/array";
 import {createObjV} from "src/utils/object/object";
 const { Option } = Select
+const { TextArea} =Input
 export interface Props {
 }
 
@@ -26,6 +27,10 @@ const ChildCon = memo((props: any) => {
                     {(model?.nurseList||[]).map((nurse: any) => <Option key={nurse.empNo}>{nurse.empName}</Option>)}
                 </Select>
             )
+        case 'TextArea':
+            return (
+                <TextArea className='cell-ipt'
+                          value={value} {...other} />)
         case 'DataPicker':
             return (
                 <DatePicker className='cell-ipt'
@@ -60,15 +65,16 @@ export default observer(function (props: Props) {
     }
     const handleCopyItem =(type:string)=>{
         const newData = cloneDeep(model.editorData)
-        const conData = createArr(5, (j, k) => createObjV(4));
+        /**改为默认1行**/
+        const conData = createArr(1, (j, k) => createObjV(4));
         newData[type] = [...newData[type],...conData]
         model.handleEditorChange(newData)
     }
     const handleDeleteItem =(type:string)=>{
         const newData = cloneDeep(model.editorData)
-        let startIndex = newData[type].length - 5;
+        let startIndex = newData[type].length - 1;
         if (startIndex >= 5) {
-            newData[type].splice(startIndex, 5);
+            newData[type].splice(startIndex, 1);
             model.handleEditorChange(newData)
         }else{
             return message.info('不能再删除了~')
@@ -78,7 +84,8 @@ export default observer(function (props: Props) {
     return (
         <Wrapper className='con--a4' ref={model.ctxRef}>
             <div className='title'>
-                {model.detail?.record?.[config?.titleType || 'menuName']}
+                {model.editorTitle||model.detail?.record?.[config?.titleType || 'menuName']}
+                {/*{model.detail?.record?.year}年{model.detail?.record?.[config?.titleType || 'menuName']}*/}
             </div>
             <table style={{marginBottom: '-1px'}}>
                 <colgroup>
@@ -168,8 +175,8 @@ export default observer(function (props: Props) {
                                                 }} />
                                                 {  (i === all.length -1) &&( i1 === c1.length - 2 ) &&
                                                     <>
-                                                        <Button className='addButton' type='primary' onClick={()=>handleCopyItem('arr2')}>添加一页</Button>
-                                                        <Button className='deleteButton' type='danger' onClick={()=>handleDeleteItem('arr2')}>删除一页</Button>
+                                                        <Button className='addButton' type='primary' onClick={()=>handleCopyItem('arr2')}>添加一行</Button>
+                                                        <Button className='deleteButton' type='danger' onClick={()=>handleDeleteItem('arr2')}>删除一行</Button>
                                                     </>
                                                 }
                                             </td>
@@ -203,18 +210,24 @@ export default observer(function (props: Props) {
                 </thead>
                 <tbody>
                 {
-                    (( model.editorData?.arr3)|| []).map((v: Obj, i: number) => {
+                    (( model.editorData?.arr3)|| []).map((v: Obj, i3: number,all:any) => {
                         return (
-                            <tr key={i}>
+                            <tr key={i3}>
                                 {
-                                    otherColumns.map((v1: Obj, i1: number) => {
+                                    otherColumns.map((v1: Obj, i1: number,c1:any) => {
                                         return (
-                                            <td key={`${i}-${i1}`}>
+                                            <td key={`${i3}-${i1}`} style={{position:"relative"}}>
                                                 <ChildCon {...{
                                                     component: v1.component,
                                                     value: v[`v${i1}`],
-                                                    onChange: (e: any) => onChange('arr3',e, {index: i, key: `v${i1}`})
+                                                    onChange: (e: any) => onChange('arr3',e, {index: i3, key: `v${i1}`})
                                                 }} />
+                                                {  (i3 == all.length -1)&&( i1 === c1.length - 2 ) &&
+                                                    <>
+                                                        <Button className='addButton' type='primary' onClick={()=>handleCopyItem('arr3')}>添加一行</Button>
+                                                        <Button className='deleteButton' type='danger' onClick={()=>handleDeleteItem('arr3')}>删除一行</Button>
+                                                    </>
+                                                }
                                             </td>
                                         )
                                     })

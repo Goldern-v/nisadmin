@@ -235,6 +235,10 @@ export default class NurseHandBookService extends BaseApiService {
     public getNurseFilingForm(params: Obj) {
         return this.post('/nurseHandbook/linyi/getNurseFilingForm', params)
     }
+    public nurseRecordExport(params: Obj) {
+        return this.post('/nurseHandbookRecord/export', params,{ responseType: 'blob' })
+    }
+
 }
 
 export const nurseHandBookService = new NurseHandBookService()

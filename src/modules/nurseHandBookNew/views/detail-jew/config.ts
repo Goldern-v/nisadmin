@@ -154,12 +154,12 @@ export const tableConConfig = {
       {
         title: "",
         width: "4%",
-        // component: "DataPicker",
+        component: "TextArea",
       },
       {
         title: "重点工作",
         width: "50%",
-        // component: "DataPicker",
+        component: "TextArea",
       },
       {
         title: "责任人",
@@ -168,29 +168,35 @@ export const tableConConfig = {
       {
         title: "完成",
         width: "15%",
+        component: "TextArea",
       },
       {
         title: "备注",
+        component: "TextArea",
       },
     ],
     columnsMonth:[
       {
         title: "",
         width: "4%",
+        component: "TextArea",
       },
       {
         title: "",
         width: "96%",
+        component: "TextArea",
       },
     ],
     columnsRemark:[
       {
         title: "",
         width: "4%",
+        component: "TextArea",
       },
       {
         title: "",
         width: "96%",
+        component: "TextArea",
       },
     ],
     rows: 27,
@@ -199,18 +205,15 @@ export const tableConConfig = {
   },
   '925NDXLJH_3':{
     columns: [
-  // {
-  //   title: "时间",
-  //   width: "8%",
-  //   // component: "DataPicker",
-  // },
   {
     title: "制度培训计划",
     width: "15%",
+    component: 'TextArea'
   },
   {
     title: "理论学习计划",
     width: "15%",
+    component: 'TextArea'
   },
   {
     title: "负责人",
@@ -220,14 +223,16 @@ export const tableConConfig = {
   {
     title: "护理疑难病例讨论",
     width: "25%",
+    component: 'TextArea'
   },
   {
     title: "护理教学查房",
     width: "10%",
+    component: 'TextArea'
   },
   {
         title: "负责人",
-        width: "15%",
+        width: "12%",
     component: "Dead",
  },
 ],
@@ -266,16 +271,19 @@ export const tableConConfig = {
       width: "15%",
       component: "DataPicker",
     }, {
-      title: "内容",
-      width: "25%",
-    }, {
-      title: "负责人",
-      width: "15%",
-      component: "Dead",
-    }, {
-      title: "内容",
-      width: "25%",
-    }, {
+      title: "训练计划内容",
+      width: "70%",
+      component: "TextArea",
+    },
+    // , {
+    //   title: "负责人",
+    //   width: "15%",
+    //   component: "Dead",
+    // }, {
+    //   title: "内容",
+    //   width: "25%",
+    // },
+      {
       title: "负责人",
       width: "15%",
       component: "Dead",
@@ -289,18 +297,25 @@ export const tableConConfig = {
       {
         title: "季度工作计划",
         width: "10%",
+        component:"TextArea"
       },
       {
         title: "内容",
         width: "50%",
+        component:"TextArea"
+
       },
       {
         title: "完成",
         width: "15%",
+        component:"TextArea"
+
       },
       {
         title: "备注",
         width: "15%",
+        component:"TextArea"
+
       },
     ],
     rows: 27,
@@ -370,12 +385,13 @@ export const tableConConfig = {
     columns: [
       {
         title: "日期",
-        width: "10%",
+        width: "15%",
         component: "DataPicker",
       },
       {
         title: "项目名称",
-        width: "15%",
+        width: "35%",
+        component: "TextArea",
       },
       {
         title: "负责人",
@@ -384,10 +400,13 @@ export const tableConConfig = {
       },
       {
         title: "职务",
+        width: '10%',
+        component: "TextArea",
       },
       {
         title: "进展与效果",
         width: "15%",
+        component: "TextArea",
       },
     ],
     isAdd: true,
@@ -456,10 +475,10 @@ export const tableConConfig = {
   },
   "925JSJXJXDJ_9_5": {
     columns: [
-      // {
-      //   title: "序号",
-      //   width: "10%",
-      // },
+      {
+        title: "序号",
+        width: "5%",
+      },
       {
         title: "姓名",
         width: "10%",
@@ -467,11 +486,15 @@ export const tableConConfig = {
       {
         title: "职 务",
         width: "10%",
+        component: "TextArea",
+
         // component: "DataPicker",
       },
       {
         title: "单   位",
         width: "25%",
+        component: "TextArea",
+
         // component: "DataPicker",
       },
       {
@@ -486,7 +509,9 @@ export const tableConConfig = {
       },
       {
         title:"总天数",
-        width: "15%"
+        width: "15%",
+        component: "TextArea",
+
       },
     ],
     isAdd: true,
@@ -529,38 +554,42 @@ export const tableConConfig = {
       {
         title: "内容摘要",
         width: "16%",
-        // component: "DataPicker",
+        component: 'TextArea'
       },
       {
         title: "满意度调查反馈",
         width: "16%",
-        // component: "DataPicker",
+        component: 'TextArea'
       },
       {
         title: "口头表扬",
         width: "6%",
-        // component: "DataPicker",
+        component: 'TextArea'
       },
       {
         title: "意见本",
         width: "10%",
-        // component: "DataPicker",
+        component: 'TextArea'
       },
       {
         title:"报刊媒体报道",
-        width: "10%"
+        width: "10%",
+        component: 'TextArea'
       },
       {
         title:"表扬",
-        width: "6%"
+        width: "6%",
+        component: 'TextArea'
       },
       {
         title:"锦旗",
-        width: "6%"
+        width: "6%",
+        component: 'TextArea'
       },
       {
         title:"匾",
-        width: "6%"
+        width: "6%",
+        component: 'TextArea'
       },
     ],
     isAdd: true,
