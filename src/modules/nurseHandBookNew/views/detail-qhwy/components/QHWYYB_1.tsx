@@ -50,7 +50,7 @@ export default observer(function (props: Props) {
                 value={model.editorData?.v1 ? moment(model.editorData.v1) : undefined} onChange={(e:any) => onChange1(e, 'v1')} />
             </td>
           </tr>
-          <tr>
+          {/* <tr>
             <td className='flex cell-ipt'>
               <div>科室：</div>
               <Select style={{width: '80%'}} value={model.editorData?.v2} onChange={(e:any) => onChange1(e, 'v2')}>
@@ -61,7 +61,7 @@ export default observer(function (props: Props) {
                 }
               </Select>
             </td>
-          </tr>
+          </tr> */}
           <tr>
             <td>
               <div className='label'>
