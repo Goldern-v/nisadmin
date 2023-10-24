@@ -26,7 +26,7 @@ export const CONFIG = {
       },
       {
         title: `值班护长`,
-        dataIndex: "submitNo",
+        dataIndex: "createName",
         width: 80,
         align: "center",
       },
