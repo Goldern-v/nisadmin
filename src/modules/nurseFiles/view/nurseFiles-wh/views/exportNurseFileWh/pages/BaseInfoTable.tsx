@@ -34,7 +34,7 @@ export default function BaseInfoTable(props: Props) {
       </tr>
       <tr>
         <td>出生年月</td>
-        <td>{baseInfo.nurseHierarchyDate}</td>
+        <td>{baseInfo.birthday}</td>
         <td>民族</td>
         <td>{baseInfo.nation}</td>
       </tr>

@@ -481,7 +481,7 @@ const Wrapper = styled.div`
 
 // @ts-ignore
 const LeftMenuCon = styled(ScrollBox)`
-  width: 160px;
+  width: 180px;
   position: relative;
   z-index: 1;
   background: rgba(248, 248, 248, 1);
@@ -491,7 +491,7 @@ const LeftMenuCon = styled(ScrollBox)`
 `
 const MainCon = styled.div`
   flex: 1;
-  height: calc(100vh - 135px);
+  height: calc(100vh - 155px);
   align-items: stretch;
   display: flex;
 `
