@@ -274,8 +274,8 @@ export function openAuditModal(
                   map: {
                     zhzxy: [
                       {
-                        最高学历毕业院校: "heighestGraduate",
-                        是否中医院校: "tcmCollege",
+                        最高学历毕业院校: "heighest_graduate",
+                        是否中医院校: "tcm_college",
                       },
                     ],
                     other: [],
@@ -290,7 +290,7 @@ export function openAuditModal(
                   map: {
                     zhzxy: [
                       {
-                        是否完成西学中培训课程: "completeWsms",
+                        是否完成西学中培训课程: "complete_wsms",
                       },
                     ],
                     other: [],
