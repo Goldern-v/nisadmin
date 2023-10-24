@@ -565,12 +565,12 @@ export default function EditWorkHistoryModal(props: Props) {
           {
             (['zhzxy'].includes(appStore.HOSPITAL_ID)) &&<>
             <Col span={12}>
-              <Form.Field label={`最高学历毕业院校`} name="heighestGraduate">
+              <Form.Field label={`最高学历毕业院校`} name="maps.heighest_graduate">
                 <Input />
               </Form.Field>
             </Col>
             <Col span={12}>
-              <Form.Field label={`是否中医院校`} name="tcmCollege">
+              <Form.Field label={`是否中医院校`} name="maps.tcm_college">
                 <Select>
                   {[{code: '是', name: '是'}, {code: '否', name: '否'}].map((item) => (
                       <Select.Option value={item.code} key={item.code}>
@@ -604,7 +604,7 @@ export default function EditWorkHistoryModal(props: Props) {
           {
           (['zhzxy'].includes(appStore.HOSPITAL_ID)) &&
             <Col span={12}>
-              <Form.Field label={`是否完成西学中培训课程`} name="completeWsms">
+              <Form.Field label={`是否完成西学中培训课程`} name="maps.complete_wsms">
                 <Select>
                   {[{code: '是', name: '是'}, {code: '否', name: '否'}].map((item) => (
                       <Select.Option value={item.code} key={item.code}>

@@ -267,8 +267,8 @@ export default observer(function BaseInfo() {
                 最高学历: data.highestEducation
               },
               {
-                最高学历毕业院校: data.heighestGraduate,
-                是否中医院校: data.tcmCollege
+                最高学历毕业院校: data?.maps?.heighest_graduate,
+                是否中医院校: data?.maps?.tcm_college
               },
             ],
             other: [{
@@ -295,7 +295,7 @@ export default observer(function BaseInfo() {
             zhzxy: 
             [
               {
-                是否完成西学中培训课程: maps.completeWsms,
+                是否完成西学中培训课程: data?.maps?.complete_wsms,
                 职务: data.job,
               },
               {
