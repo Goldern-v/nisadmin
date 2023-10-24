@@ -11,6 +11,7 @@ import moment from 'src/vendors/moment'
 import printing from "printing";
 import { currentMonth, currentQuater, currentYear } from 'src/utils/date/rangeMethod'
 import {Con} from 'src/modules/statistic/common/css/CommonLayout.ts';
+import PrintTable from '../printTable/printTable'
 import { fileDownload } from "src/utils/file/file"
 
 const RangePicker = DatePicker.RangePicker
@@ -192,6 +193,7 @@ export default observer(function 护士离职原因分析() {
   }, [query])
 
   const exportPdf = ()=>{
+    tableRef.current!.style.display = 'block'
     printing(tableRef.current!, {
       injectGlobalCss: true,
       scanStyles: false,
@@ -199,17 +201,9 @@ export default observer(function 护士离职原因分析() {
         @page {
           margin: 10px;
         }
-        .ant-table-body{
-          max-height: none !important;
-          height: auto !important;
-        }
-        .tableBox{
-          height:1100px;
-          overflow:hidden;
-          page-break-after: always;
-        }
       `,
     });
+    tableRef.current!.style.display = 'none'
   }
 
   const exportExcel = ()=>{
@@ -270,11 +264,11 @@ export default observer(function 护士离职原因分析() {
         }}
         allowClear={false} />
       <Button type="primary" onClick={handleSearch}>查询</Button>
-      {['jmfy'].includes(appStore.HOSPITAL_ID) && <Button type="primary" onClick={exportPdf}>导出pdf</Button>}
+      {['jmfy','hj'].includes(appStore.HOSPITAL_ID) && <Button type="primary" onClick={exportPdf}>导出pdf</Button>}
       {['jmfy'].includes(appStore.HOSPITAL_ID) && <Button type="primary" onClick={exportExcel} loading={loadingExcel}>导出</Button>}
     </div>}
       body={<Spin spinning={loading}>
-        <Con ref={tableRef} className="tableBox">
+        <Con className="tableBox">
           <div className='main-title'>护士离职原因分析</div>
           <div className='sub-title'>统计日期：{query.startDate} 至 {query.endDate}</div>
           <BaseTable
@@ -282,6 +276,9 @@ export default observer(function 护士离职原因分析() {
             surplusHeight={320}
             columns={columns}
             dataSource={data} />
+          <div ref={tableRef} style={{display:'none'}}>
+            <PrintTable dataSource={data} columns={columns} title={'护士离职原因分析'}></PrintTable>
+          </div>
         </Con>
       </Spin>} 
       />
