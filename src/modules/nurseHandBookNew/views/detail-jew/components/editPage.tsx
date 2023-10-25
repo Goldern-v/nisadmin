@@ -28,6 +28,7 @@ useEffect(()=>{
       <CKEditor
         ref={editorRef}
         data={model.editorData.v1}
+        name='editor1'
         onChange={onChange}
         config={{
           extraPlugins: 'stylesheetparser,colorbutton,colordialog,html5video',

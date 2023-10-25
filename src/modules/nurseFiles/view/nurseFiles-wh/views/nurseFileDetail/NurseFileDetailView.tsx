@@ -43,6 +43,8 @@ import { nurseFileDetailViewModal } from './NurseFileDetailViewModal'
 import { nurseFilesService } from '../../services/NurseFilesService'
 import InnaiQualification from './views/InnaiQualification'
 import outQualification from './views/outQualification'
+import SpecialistAdmission
+  from "src/modules/nurseFiles/view/nurseFiles-wh/views/nurseFileDetail/views/SpecialistAdmission";
 
 
 // import Leave from './views/Leave'
@@ -160,6 +162,16 @@ const ROUTE_LIST_DEFAULT = [
     component: BaseInfo,
     name: '基本信息'
   },
+    ...appStore.hisMatch({
+      map:{
+        lyrm:[{
+          type: 'specialistAdmission',
+          component: SpecialistAdmission,
+          name: '专科准入'
+        }],
+        other:[]
+      }
+    }),
   {
     type: 'article',
     component: Article,

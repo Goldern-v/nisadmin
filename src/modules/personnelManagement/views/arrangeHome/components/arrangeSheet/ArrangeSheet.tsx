@@ -746,7 +746,7 @@ const handleDelete = (record: any) => {
 };
 
 /** 武汉特殊字段*/
-if (["wh", "gzsrm", "gxjb", "fsxt", '925', "whyx", 'whhk', 'sdlj', 'fssdy', "gdtj", "lyyz", "qhwy", "whsl", "wjgdszd", 'ytll', 'zhzxy', 'nfsd', 'dglb', 'zzwy', 'qzde', 'dghm', 'zjhj'].includes(appStore.HOSPITAL_ID)) {
+if (["wh", "gzsrm", "gxjb", "fsxt", '925', "whyx", 'whhk', 'sdlj', 'fssdy', "gdtj", "lyyz", "qhwy", "whsl", "wjgdszd", 'ytll', 'zhzxy', 'nfsd', 'dglb', 'zzwy', 'qzde', 'dghm', 'zjhj','lcey'].includes(appStore.HOSPITAL_ID)) {
   columns.push(
     ...appStore.hisMatch({
       map: {
@@ -1086,7 +1086,7 @@ useLayoutEffect(() => {
                 'qzde': 3,
                 fqfybjy: 5,
                 nys: (isEdit ? 6 : 5),
-                'wjgdszd,wh,gxjb,jmfy,dghl,gzsrm,fsxt,whhk,gdtj,lyyz,whsl,ytll,whhk,nfsd,dglb,dghm': 6,
+                'wjgdszd,wh,gxjb,jmfy,dghl,gzsrm,fsxt,whhk,gdtj,lyyz,whsl,ytll,whhk,nfsd,dglb,dghm,lcey': 6,
                 zhzxy: 9,
                 whyx:5,
                 'zjhj':7,
@@ -1143,6 +1143,7 @@ const moveRow = (dragIndex: number, hoverIndex: number) => {
     case 'dglb':
     case '925':
     case 'zjhj':
+    case 'lcey':
     case 'dgxg':
       const dragRowWhyx = sheetViewModal.sheetTableData[dragIndex];
       if (!dragRowWhyx) return;
