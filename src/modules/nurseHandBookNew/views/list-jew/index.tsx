@@ -17,6 +17,7 @@ import {HALF_YEAR, STATUS_LIST, QuarterV} from './utils/enums'
 import { formatTitle } from '../detail-lyrm/config'
 import AuditModal from './components/auditModal'
 import { nurseHandbookRecordModel as model } from '../detail-jew/model'
+import {fileDownload} from "src/utils/file/file";
 
 export interface Props {
   options: Obj
@@ -483,12 +484,14 @@ export default observer(function (props: Props) {
   }
   /****/
   const openImport =()=>{
-    const nurseHandbookRecords:any =[]
+
     const params ={
       title:options.name,
-      nurseHandbookRecords
+      nurseHandbookRecords:selectedRowKeys.length === 0 ? tableData :  selectedRows
     }
-    nurseHandBookService.nurseRecordExport({})
+    nurseHandBookService.nurseRecordExport(params).then((res:any)=>{
+      fileDownload(res)
+    })
   }
   useEffect(() => {
     init()
@@ -499,13 +502,13 @@ export default observer(function (props: Props) {
   }, [query])
   useEffect(() => {
   /**增加提示语**/
-  if(['925HLLWDJ_9_1','925JSGXDJ_9_2','925JSGXDJ_9_3','925WCXXJXDJ_9_4','925JSJXJXDJ_9_5','925HLRYJDDJ_9_6','925HRHSDJ_9_7'].includes(options.menuCode)){
+  if(['925HLLWDJ_9_1','925JSGXDJ_9_2','925JSGXDJ_9_3','925WCXXJXDJ_9_4','925JSJXJXDJ_9_5','925HLRYJDDJ_9_6','925HRHSDJ_9_7'].includes(options.menuCode) && appStore.HOSPITAL_ID ==='925'){
    return  message.info('请您到护理管理系统档案管理的查询统计模块进行数据汇总统计及导出！')
   }
   }, [appStore.location.pathname])
   return (
     <Wrapper>
-      <SelectCon {...{ query, setQuery, openCreate, title: options.name || '', formList, openAudit }} />
+      <SelectCon {...{ query, setQuery, openCreate, title: options.name || '', formList, openAudit,openImport }} />
       <PageContainer>
         <BaseTable
           surplusHeight={250}

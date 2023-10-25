@@ -140,7 +140,7 @@ export default observer(function (props: Props) {
             {appStore.HOSPITAL_ID === 'zjhj' &&
                 <>
                     <Button onClick={openImport}>导出</Button>
-                    <Button>打印</Button>
+                    {/*<Button>打印</Button>*/}
                 </>
             }
             <Button type='primary' onClick={openCreate}>创建</Button>
