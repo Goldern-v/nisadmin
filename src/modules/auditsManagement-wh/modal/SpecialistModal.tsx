@@ -1,10 +1,7 @@
-import styled from 'styled-components'
 import React, {useState, useEffect, useLayoutEffect, useMemo} from 'react'
 import {Modal, Input, Button, Radio, DatePicker, Select, Row, Col, message, InputNumber} from 'antd'
 import {ModalComponentProps} from 'src/libs/createModal'
 import Form from 'src/components/Form'
-import {nurseFilesService} from '../../../services/NurseFilesService'
-import {nurseFileDetailViewModal} from '../NurseFileDetailViewModal'
 import {to} from 'src/libs/fns'
 import {Rules} from 'src/components/Form/interfaces'
 import moment from 'moment'
@@ -12,6 +9,7 @@ import moment from 'moment'
 import emitter from 'src/libs/ev'
 import {dictInfo} from "src/modules/statistic/views/professional-tec/enums";
 import {appStore} from "src/stores";
+import { nurseFilesService } from 'src/modules/nurseFiles/view/nurseFiles-wh/services/NurseFilesService'
 
 const Option = Select.Option
 const {TextArea} = Input
@@ -21,7 +19,6 @@ export interface Props extends ModalComponentProps {
     data?: any
     signShow?: string
     getTableData?: () => {}
-    isAudit:boolean  //是否编辑
 }
 
 const rules: Rules = {
@@ -31,8 +28,8 @@ const rules: Rules = {
     nightShifts: (val) => !!val || '请输入完成次数',
 
 }
-export default function SpecialistAdmissionModal(props: Props) {
-    let {visible, onCancel, onOk, data, signShow,isAudit} = props
+export default function SpecialistModal(props: Props) {
+    let {visible, onCancel, onOk, data, signShow} = props
     const [title, setTitle] = useState('')
     const [admittedItem, setAdmittedItem] = useState([] as any)
     const [content, setContent] = useState([] as any)
@@ -88,21 +85,13 @@ export default function SpecialistAdmissionModal(props: Props) {
 
     }, [visible])
     const footer = () => {
-        /**已审核，待审核不可编辑**/
         return <>
             <Button key='back' onClick={onCancel}>
                 关闭
             </Button>
-            {
-                !isAudit && <>
-                    <Button key='save' type='primary' onClick={() => onSave(false)}>
-                        保存
-                    </Button>
-                    <Button key='submit' type='primary' onClick={() => onSave(true)}>
-                        提交审核
-                    </Button>
-                </>
-            }
+            <Button key='submit' type='primary' onClick={() => onSave(true)}>
+                提交审核
+            </Button>
         </>
     }
 
@@ -120,15 +109,14 @@ export default function SpecialistAdmissionModal(props: Props) {
                     <Col span={24}>
                         <Form.Field label={`准入项目`} name='admittedItem' required>
                             <Select
-                                disabled={isAudit}
+                                disabled={true}
                                 showSearch
                                 mode='multiple'
                                 filterOption={(input: any, option: any) =>
                                     option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                                 }
                                 style={{width: '100%'}}
-                                placeholder='选择准入项目'
-                            >
+                                placeholder='选择准入项目'>
                                 {admittedItem.map((item: any) => {
                                     return (
                                         <Select.Option value={item.code} key={item}>
@@ -141,13 +129,13 @@ export default function SpecialistAdmissionModal(props: Props) {
                     </Col>
                     <Col span={24}>
                         <Form.Field label={`申请理由`} name='reason' required>
-                            <TextArea disabled={isAudit} maxLength={30}/>
+                            <TextArea disabled={true} maxLength={30}/>
                         </Form.Field>
                     </Col>
                     <Col span={24}>
                         <Form.Field label={`完成内容`} name='content' required>
                             <Select
-                                disabled={isAudit}
+                                disabled={true}
                                 mode='multiple'
                                 showSearch
                                 filterOption={(input: any, option: any) =>
@@ -166,8 +154,42 @@ export default function SpecialistAdmissionModal(props: Props) {
                         </Form.Field>
                     </Col>
                     <Col span={24}>
-                        <Form.Field label='在高年资护士或带教老师指导下完成夜班次数' name='nightShifts' required>
-                            <InputNumber disabled={isAudit}/>
+                        <Form.Field label='完成次数' name='nightShifts' required>
+                            <InputNumber disabled={true}/>
+                        </Form.Field>
+                    </Col>
+                    <Col span={24}>
+                        <Form.Field label='理论考核(分数)' name='nightShifts' required>
+                            <Input/>
+                        </Form.Field>
+                    </Col>
+                    <Col span={24}>
+                        <Form.Field label='操作考核(考核项目及分数)' name='nightShifts' required>
+                            <Input/>
+                        </Form.Field>
+                    </Col>
+                    <Col span={24}>
+                        <Form.Field label='科室评议' name='nightShifts' required>
+                            <Input/>
+                        </Form.Field>
+                    </Col>
+                    <Col span={24}>
+                        <Form.Field label='有无护理差错事故' name='nightShifts' required>
+                            <Input/>
+                        </Form.Field>
+                    </Col>
+                    <Col span={24}>
+                        <Form.Field label={`审核结果`} name="noPass">
+                            <Radio.Group buttonStyle="solid">
+                                <Radio.Button value={false}>通过</Radio.Button>
+                                <Radio.Button value={true}>退回</Radio.Button>
+                            </Radio.Group>
+                        </Form.Field>
+                    </Col>
+
+                    <Col span={24}>
+                        <Form.Field label={`审核意见`} name="handleContent">
+                            <Input.TextArea />
                         </Form.Field>
                     </Col>
                 </Row>
