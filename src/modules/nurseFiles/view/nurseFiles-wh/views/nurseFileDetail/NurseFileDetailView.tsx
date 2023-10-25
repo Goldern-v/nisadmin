@@ -164,12 +164,12 @@ const ROUTE_LIST_DEFAULT = [
   },
     ...appStore.hisMatch({
       map:{
-        lyrm: {
+        lyrm:[{
           type: 'specialistAdmission',
           component: SpecialistAdmission,
           name: '专科准入'
-        },
-        other:{}
+        }],
+        other:[]
       }
     }),
   {
