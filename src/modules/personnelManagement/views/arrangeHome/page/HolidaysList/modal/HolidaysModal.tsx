@@ -23,7 +23,7 @@ const rules: Rules = {
   startDate: (val) => !!val || '请填写开始日期',
   endDate: (val) => !!val || '请填写结束日期'
 }
-
+export const HOLIDAY_LIST = ['元旦', '春节', '清明节', '劳动节', '端午节', '中秋节', '国庆节']
 export default function HolidaysModal(props: Props) {
   const [title, setTitle] = useState('假期设置')
 
@@ -87,7 +87,16 @@ export default function HolidaysModal(props: Props) {
           </Col>
           <Col span={24}>
             <Form.Field label={`节假日名称`} name='name' required>
-              <Input />
+              <Select
+            style={{ width: '100%' }}
+            placeholder='选择节日'
+          >
+            {HOLIDAY_LIST.map((item: string) => (
+              <Select.Option value={item} key={item}>
+                {item}
+              </Select.Option>
+            ))}
+          </Select>
             </Form.Field>
           </Col>
           <Col span={24}>

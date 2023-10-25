@@ -386,7 +386,7 @@ export default observer(function TopPart() {
             <span>{sheetViewModal.experNumber} </span>
           </div>}
         </div>
-        {['wh', 'gzsrm', 'gxjb', 'whyx', 'fssdy', 'lyyz', 'qhwy','whsl', 'ytll', 'whhk', 'dglb', 'dghm','zzwy','zjhj','925'].includes(appStore.HOSPITAL_ID) && (
+        {['wh', 'gzsrm', 'gxjb', 'whyx', 'fssdy', 'lyyz', 'qhwy','whsl', 'ytll', 'whhk', 'dglb', 'dghm','zzwy','zjhj','925','lcey','dgxg'].includes(appStore.HOSPITAL_ID) && (
           <div className="item">
             <Button onClick={() => asClassModal.show()}>申请加减班</Button>
             {SHOW_POINT_IMG && <div className="number">
@@ -400,7 +400,7 @@ export default observer(function TopPart() {
           <Button onClick={appStore.HOSPITAL_ID! == 'gzsrm' ? gzsrmhandleCopy : handleCopy}>{appStore.HOSPITAL_ID == 'nys' ? '复制上周排班' : "复制排班"}</Button>
         </div>
 
-        {['whyx','whhk'].includes(appStore.HOSPITAL_ID) && <div className="item">
+        {['whyx','whhk','dgxg'].includes(appStore.HOSPITAL_ID) && <div className="item">
           <Button
             className="statistics"
             onClick={() => {
