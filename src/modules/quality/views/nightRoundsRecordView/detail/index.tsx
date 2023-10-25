@@ -32,6 +32,7 @@ export default withRouter(observer((props: Props) => {
   const defaultUser = {
     nopass: false,
     handleContent: '',
+    expand:"",
     empNo: '',
     password: '',
   }
@@ -86,6 +87,7 @@ export default withRouter(observer((props: Props) => {
       handleNodeParam: {
         nodeCode: nextNode.nodeCode,
         handleContent: '',
+        ...nextNode.nodeCode === "JMFY_RECORD_1_nursing_minister_dept_handle" ? {expand:user.expand} : {},
         noPass: false
       },
       roundsRecordProblem,
@@ -121,7 +123,8 @@ export default withRouter(observer((props: Props) => {
         handleNodeParam: {
           nodeCode: nextNode.nodeCode,
           nopass: user.nopass,
-          handleContent: user.handleContent
+          handleContent: user.handleContent,
+          ...nextNode.nodeCode === "JMFY_RECORD_1_nursing_minister_dept_handle" ? {expand:user.expand} : {}
         },
       },"")
       if (res.code == 200) {
@@ -142,7 +145,8 @@ export default withRouter(observer((props: Props) => {
         handleNodeParam: {
           nodeCode: nextNode.nodeCode,
           nopass: true,
-          handleContent: user.handleContent
+          handleContent: user.handleContent,
+          ...nextNode.nodeCode === "JMFY_RECORD_1_nursing_minister_dept_handle" ? {expand:user.expand} : {}
         },
       }, queryObj.type)
       if (res.code == 200) {
@@ -176,11 +180,11 @@ export default withRouter(observer((props: Props) => {
 
   const toConfirm = ()=>{
     setProcessVisible(false)
-    globalModal.signModal.show({
-      onCallBack: (empNo: string, password: string) => {
+    // globalModal.signModal.show({
+    //   onCallBack: (empNo: string, password: string) => {
         handleCheck()
-      }
-    })
+    //   }
+    // })
   }
 
   const showBohui =()=>{
@@ -270,14 +274,26 @@ export default withRouter(observer((props: Props) => {
                     <div className='timeline-item'>{item.nodeName}</div>
                     <div className='timeline-item'>{item.handlerName}</div>
                     <div className='timeline-item'>{item.handleTime}</div>
-                    <div className='timeline-item'
-                      style={{
-                        background: 'rgb(238,238,238)',
-                        borderRadius: '5px',
-                        padding: '0 5px'
-                      }}>
-                        <span>{item.handleContent}</span>
-                    </div>
+                    {item.handleContent && 
+                      <div className='timeline-item'
+                        style={{
+                          background: 'rgb(238,238,238)',
+                          borderRadius: '5px',
+                          padding: '0 5px'
+                        }}>
+                          原因分析：<span>{item.handleContent}</span>
+                      </div>
+                    }
+                    {item.expand && 
+                      <div className='timeline-item'
+                        style={{
+                          background: 'rgb(238,238,238)',
+                          borderRadius: '5px',
+                          padding: '0 5px'
+                        }}>
+                          整改措施：<span>{item.expand}</span>
+                      </div>
+                    }
                   </Timeline.Item>
                 })
               }
@@ -331,6 +347,20 @@ export default withRouter(observer((props: Props) => {
                 } />
             </Col>
           </Row>
+          {
+            getNextNode()?.nodeCode === "JMFY_RECORD_1_nursing_minister_dept_handle" && 
+            <Row style={{ marginBottom: '10px' }}>
+              <Col span={4}>整改措施:</Col>
+              <Col span={20}>
+                <Input.TextArea
+                  value={user.expand}
+                  rows={4}
+                  onChange={(e) =>
+                    setUser({ ...user, 'expand': e.target.value })
+                  } />
+              </Col>
+            </Row>
+          }
           <Row>
             <Col span={4}>审核时间:</Col>
             <Col span={20}>{moment().format("YYYY-MM-DD HH:mm")}</Col>
