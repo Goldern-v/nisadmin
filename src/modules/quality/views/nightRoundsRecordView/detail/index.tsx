@@ -189,7 +189,7 @@ export default withRouter(observer((props: Props) => {
 
   const showBohui =()=>{
     if(appStore.HOSPITAL_ID==="jmfy"){
-      return (master.status == 1 || master.status ==3)
+      return (master.status == 1 || master.status ==3 || master.status ==4)
     }
     return false
   }
