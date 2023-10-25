@@ -4,10 +4,11 @@ import styled from 'styled-components'
 import {appStore, authStore} from 'src/stores'
 import AuditProcess from 'src/components/audit-page/AuditProcess'
 import {nurseHandbookRecordModel as model} from './newModel'
-import {Button, Spin} from 'antd'
+import {Button, Input, Spin} from 'antd'
 import useAuditStatus from 'src/hooks/useAuditStatus'
 import {tableConConfig} from './config'
 import CKEditor from "ckeditor4-react";
+import {DetailCtxCon} from "src/modules/nurseHandBookNew/style";
 
 export interface Props {
     id?: any
@@ -87,8 +88,8 @@ export default observer(function (props: Props) {
     useEffect(() => {
         if (props.id) {
             model.init(props.id)
-            model.ctxRef = ctxRef
         }
+        model.ctxRef = ctxRef
     }, [props.id])
     useEffect(() => {
         return () => {
@@ -110,22 +111,30 @@ export default observer(function (props: Props) {
                     <AuditProcess process={model.detail?.nodeList || []}/>
                     <div className={(model.allowEdit ? '' : 'con--disabled ') + 'main-ctx'}>
                         {/* 如果是编辑器内容*/}
-                        {model.configFn && !model.configFn.isEditor ? <model.configFn.Component/> : <CKEditor
-                            ref={editorRef}
-                            name={`editor${Math.random().toFixed(2)}`}
-                            data={model.editorData.v1}
-                            onChange={onChange}
-                            config={{
-                                extraPlugins: 'stylesheetparser,colorbutton,colordialog,html5video',
-                                removePlugins: 'easyimage,cloudservices',
-                                filebrowserUploadUrl: appStore.uploadCKEUrl,
-                                filebrowserHtml5videoUploadUrl: appStore.uploadCKEUrl,
-                                height: 400,
-                                title: '',
-                                font_names: '黑体/黑体;楷体/楷体;宋体/宋体;仿宋/仿宋;Arial/Arial;Tahoma/Tahoma;Verdana/Verdana;',
-                                font_defaultLabel: '黑体',
-                            }}
-                        />
+                        {model.configFn && !model.configFn.isEditor ? <model.configFn.Component/> :
+                            <EditWrapper ref={model.ctxRef} style={{ pointerEvents: model.allowEdit ? 'auto' : 'none' }}>
+                                <Input className='title' value={model.editorTitle} onChange={(e) => model.onChangeTitle(e)} />
+                                {model.isPrint ?
+                                    <div dangerouslySetInnerHTML={{ __html: model.editorData.v1 }}></div>:
+                                    <CKEditor
+                                        ref={editorRef}
+                                        name={`editor${Math.random().toFixed(2)}`}
+                                        data={model.editorData.v1}
+                                        onChange={onChange}
+                                        config={{
+                                            extraPlugins: 'stylesheetparser,colorbutton,colordialog,html5video',
+                                            removePlugins: 'easyimage,cloudservices',
+                                            filebrowserUploadUrl: appStore.uploadCKEUrl,
+                                            filebrowserHtml5videoUploadUrl: appStore.uploadCKEUrl,
+                                            height: 400,
+                                            title: '',
+                                            font_names: '黑体/黑体;楷体/楷体;宋体/宋体;仿宋/仿宋;Arial/Arial;Tahoma/Tahoma;Verdana/Verdana;',
+                                            font_defaultLabel: '黑体',
+                                        }}
+                                    />
+
+                                }
+                            </EditWrapper>
                         }
                     </div>
                 </MainWrapper>
@@ -160,3 +169,4 @@ const MainWrapper = styled.div`
     }
   }
 `
+const EditWrapper = styled(DetailCtxCon)``

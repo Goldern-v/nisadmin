@@ -2,6 +2,7 @@ import BaseApiService from 'src/services/api/BaseApiService'
 import { appStore, authStore } from 'src/stores'
 import { nurseFileDetailViewModal } from '../views/nurseFileDetail/NurseFileDetailViewModal'
 import { isSelf } from '../views/nurseFileDetail/views/BaseInfo'
+import qs from "qs";
 export interface NurseQuery {
   deptCode?: string /** 部门编码 */
   empNo?: string /** 员工工号 */
@@ -174,6 +175,26 @@ export default class NurseFilesService extends BaseApiService {
   public getSyncDateInfo(empId:string){
     return this.post(`/manageSyncDate/getUserInfos?emplId=${empId}`,)
   }
+  /**根据工号找到专科准入列表**/
+  public findByEmpNoByLyrm(empNo:any){
+    return this.get(`/nurseWHInSpecializ/findByEmpNo/${empNo}`,)
+  }
+/**获取专科准入类型**/
+public getLyrmDict(code:any){
+  return this.post(`dept/dictInfo`,qs.stringify({ code }))
+}
+/**新增修改签名同一个**/
+public saveLyrmOrUpdate(params:any){
+  return this.post('nurseWHInSpecializ/saveOrUpdate',params)
+}
+  /**查看详情**/
+  public getLyrmById(id:number){
+    return this.get(`/nurseWHInSpecializ/getById/${id}`,)
+  }
+/**删除专科准入**/
+public deleteLyrmById(id:number){
+  return this.get(`/nurseWHInSpecializ/delById/${id}`,)
+}
 }
 
 export const nurseFilesService = new NurseFilesService()
