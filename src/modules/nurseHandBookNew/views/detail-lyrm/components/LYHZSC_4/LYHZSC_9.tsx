@@ -102,6 +102,7 @@ export default observer(function (props: any) {
             deptCode: props?.deptCode,
             startTime: props?.startTime.format('YYYY-MM-DD') + ' 00:00:00',
             endTime: props?.endTime.format('YYYY-MM-DD') + ' 23:59:59',
+            isAll:props.deptCode ? '0' : '1'
         }).then((res: any) => {
             setTableData(res.data.list || [])
             setTotal(res.data.totalCount)

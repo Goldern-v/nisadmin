@@ -14,6 +14,7 @@ import StarRatingReportList from "../views/arrangeHome/page/nightChargingReport/
 import ArrangStatistics from "../views/arrangeHome/page/arrangStatistics/ArrangStatistics";
 import ExpectedRecord from "../views/arrangeHome/page/expectedRecord/ExpectedRecord";
 import ExpectedRecordSelf from "../views/arrangeHome/page/expectedRecordSelf/ExpectedRecordSelf";
+import ExpectAddOrSub from "../views/arrangeHome/page/ExpectAddOrSub/ExpectAddOrSub";
 import StandardTime from "../views/arrangeHome/page/StandardTime/StandardTime";
 
 export interface meunConfigItem {
@@ -39,19 +40,25 @@ export const meunConfig: meunConfigItem[] = [
         style: { background: "#fff" },
         iSlimit: false,
       },
-      // {
-      //   title: "我的期望排班",
-      //   path: "/personnelManagement/expectedRecordSelf",
-      //   component: ExpectedRecordSelf,
-      //   iSlimit: false,
-      // },
-      // {
-      //   title: "临时人员借调",
-      //   path: "/personnelManagement/personnelSecondment",
-      //   component: PersonnelSecondment,
-      //   style: { background: "#fff" },
-      //   iSlimit: true,
-      // },
+      {
+        title: "我的期望排班",
+        path: "/personnelManagement/expectedRecordSelf",
+        component: ExpectedRecordSelf,
+        iSlimit: false,
+      },
+      {
+        title: "我的加减班",
+        path: "/personnelManagement/expectAddOrSub",
+        component: ExpectAddOrSub,
+        iSlimit: false,
+      },
+      {
+        title: "临时人员借调",
+        path: "/personnelManagement/personnelSecondment",
+        component: PersonnelSecondment,
+        style: { background: "#fff" },
+        iSlimit: true,
+      },
       {
         title: "人员分组",
         path: "/personnelManagement/PersonnelSettingViewNew",
@@ -79,34 +86,34 @@ export const meunConfig: meunConfigItem[] = [
         component: MealSettingViewNew,
         iSlimit: false,
       },
-      // {
-      //   title: "结余设置",
-      //   path: "/personnelManagement/balanceInit",
-      //   component: BalanceInit,
-      //   iSlimit: false,
-      // },
+      {
+        title: "结余设置",
+        path: "/personnelManagement/balanceInit",
+        component: BalanceInit,
+        iSlimit: false,
+      },
       {
         title: "标准工时设置",
         path: "/personnelManagement/standardTime",
         component: StandardTime,
         // hide: !(authStore.user?.empNo == 'G6051' || authStore.user?.empNo == 'ADMIN')
         iSlimit: true,
-        special: true
+        // special: true
       },
-      // {
-      //   title: "加减班列表查询",
-      //   path: "/personnelManagement/addSubClass",
-      //   component: AddSubClass,
-      //   // hide: !authStore.isRoleManage
-      //   iSlimit: true,
-      // },
-      // {
-      //   title: "节假日查询",
-      //   path: "/personnelManagement/holidaysList",
-      //   component: HolidaysList,
-      //   // hide: !authStore.isRoleManage
-      //   iSlimit: true,
-      // },
+      {
+        title: "加减班列表查询",
+        path: "/personnelManagement/addSubClass",
+        component: AddSubClass,
+        // hide: !authStore.isRoleManage
+        iSlimit: true,
+      },
+      {
+        title: "节假日查询",
+        path: "/personnelManagement/holidaysList",
+        component: HolidaysList,
+        // hide: !authStore.isRoleManage
+        iSlimit: true,
+      },
       {
         title: "休假记录查询",
         path: "/personnelManagement/leaveRecord",
@@ -114,13 +121,13 @@ export const meunConfig: meunConfigItem[] = [
         // hide: !authStore.isRoleManage
         iSlimit: true,
       },
-      // {
-      //   title: "夜班费统计",
-      //   path: "/personnelManagement/nightChargingReport",
-      //   component: StarRatingReportList,
-      //   // hide: !authStore.isRoleManage
-      //   iSlimit: true,
-      // },
+      {
+        title: "夜班费统计",
+        path: "/personnelManagement/nightChargingReport",
+        component: StarRatingReportList,
+        // hide: !authStore.isRoleManage
+        iSlimit: true,
+      },
       {
         title: "排班统计",
         path: "/personnelManagement/arrangStatistics",

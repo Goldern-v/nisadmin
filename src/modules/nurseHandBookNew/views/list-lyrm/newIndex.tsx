@@ -433,6 +433,7 @@ const onOkLYHZSC_9Add =(params: Obj)=>{
                             ['deptCode']: e
                         })
                     }}>
+                        {options.menuCode === 'LYHZSC_9' &&<Option key={0} value={'common'}>通用</Option>}
                         <Option key={0} value={''}>全部</Option>
                         {
                             authStore.deptList.map(v => (

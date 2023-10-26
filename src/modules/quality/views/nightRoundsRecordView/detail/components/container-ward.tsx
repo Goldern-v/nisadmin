@@ -131,11 +131,12 @@ export default forwardRef(function (props: Props, ref: any) {
   }, [master])
   /**总分 */
   const totalScore: number = useMemo(() => {
-    if (!master?.formItems?.length || !form1?.subFormItems?.length) return 0
-    const formScore = master?.formItems.reduce((prev: any, cur: any) => prev + cur.realScore, 0)
-    const subScore = form1.subFormItems.reduce((prev: any, cur: any) => prev + cur.realScore, 0)
-    return formScore + subScore
-  }, [master, form1])
+    //疫情总分去掉
+    // if (!master?.formItems?.length || !form1?.subFormItems?.length) return 0
+    const formScore = master?.formItems?.reduce((prev: any, cur: any) => prev + cur.realScore, 0)
+    // const subScore = form1.subFormItems.reduce((prev: any, cur: any) => prev + cur.realScore, 0)
+    return formScore 
+  }, [master])
   return (
     <Wrapper className='ctx' ref={ref}>
       <div className='table-wrapper' style={{ pointerEvents: hasSubmit() ? 'auto' : 'none' }}>
@@ -154,7 +155,7 @@ export default forwardRef(function (props: Props, ref: any) {
           <tbody>
             <tr>
               <td>值班护长：</td>
-              <td>{master.submitNo}</td>
+              <td>{master.createName}</td>
               <td>值班护士：</td>
               <td colSpan={3}>{master.onDutyNurseName}</td>
             </tr>

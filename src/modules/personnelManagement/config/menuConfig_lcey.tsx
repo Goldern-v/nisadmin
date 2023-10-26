@@ -10,11 +10,13 @@ import PersonnelSettingViewNew
 import PersonnelSecondment
   from "src/modules/personnelManagement/views/arrangeHome/page/personnelSecondment/PersonnelSecondment";
 import AddSubClass from "src/modules/personnelManagement/views/arrangeHome/page/addSubClass/AddSubClass";
+import HolidaysList from "../views/arrangeHome/page/HolidaysList/HolidaysList";
 import LeaveRecord from "src/modules/personnelManagement/views/arrangeHome/page/leaveRecord/LeaveRecord";
 import ArrangStatistics from "src/modules/personnelManagement/views/arrangeHome/page/arrangStatistics/ArrangStatistics";
 import ExpectedRecord from "src/modules/personnelManagement/views/arrangeHome/page/expectedRecord/ExpectedRecord";
 import 节假日设置 from "src/modules/setting/view/节假日设置";
 import notReleaseView from "../views/arrangeHome/page/notRelease";
+import StandardTime from "../views/arrangeHome/page/StandardTime/StandardTime";
 
 export interface meunConfigItem {
   title?: string;
@@ -74,9 +76,15 @@ export const meunConfig: meunConfigItem[] = [
         iSlimit: true,
       },
       {
+        title: "标准工时设置",
+        path: "/personnelManagement/standardTime",
+        component: StandardTime,
+        iSlimit: true,
+      },
+      {
         title: "节假日设置",
-        path: "/personnelManagement/节假日设置",
-        component: 节假日设置,
+        path: "/personnelManagement/holidaysList",
+        component: HolidaysList,
         // hide: !authStore.isRoleManage
         iSlimit: true,
       },

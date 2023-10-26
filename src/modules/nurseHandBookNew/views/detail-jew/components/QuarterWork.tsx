@@ -11,7 +11,9 @@ import moment, {isMoment} from 'moment'
 import {isOfType} from 'src/utils/ts.utils'
 import {createArr} from "src/utils/array/array";
 import {createObjV} from "src/utils/object/object";
+import {QuarterV} from "src/modules/nurseHandBookNew/views/list-jew/utils/enums";
 const {Option} = Select
+const {TextArea} =Input
 export interface Props {
 }
 
@@ -26,6 +28,10 @@ const ChildCon = memo((props: any) => {
                     {(model?.nurseList||[]).map((nurse: any) => <Option key={nurse.empNo}>{nurse.empName}</Option>)}
                 </Select>
             )
+        case 'TextArea':
+            return (
+                <TextArea className='cell-ipt'
+                          value={value} {...other} />)
         case 'DataPicker':
             return (
                 <DatePicker className='cell-ipt'
@@ -58,31 +64,26 @@ export default observer(function (props: Props) {
     }
  const handleCopyItem =(type:string)=>{
      const newData = cloneDeep(model.editorData)
-     const conData = createArr(12, (j, k) => createObjV(4));
+     const conData = createArr(1, (j, k) => createObjV(4));
      newData[type] = [...newData[type],...conData]
      model.handleEditorChange(newData)
  }
  const handleDeleteItem =(type:string)=>{
      const newData = cloneDeep(model.editorData)
-     let startIndex = newData[type].length - 12;
+     let startIndex = newData[type].length - 1;
      if (startIndex >= 12) {
-         newData[type].splice(startIndex, 12);
+         newData[type].splice(startIndex, 1);
          model.handleEditorChange(newData)
      }else{
          return message.info('不能再删除了~')
      }
 
  }
-const BtnList =useMemo(()=>{
-    return <>
-        <Button className='addButton' type='primary' onClick={()=>handleCopyItem('arr1')}>添加一行</Button>
-        <Button className='deleteButton' type='danger' onClick={()=>handleDeleteItem('arr1')}>删除一行</Button>
-    </>
-},[])
+
     return (
         <Wrapper className='con--a4' ref={model.ctxRef}>
             <div className='title'>
-                {model.detail?.record?.[config?.titleType || 'menuName']}
+                {model.detail?.record?.year}年{QuarterV[model.detail?.record?.quarter]}{model.detail?.record?.[config?.titleType || 'menuName']}
             </div>
             <table >
                 <colgroup>
@@ -124,8 +125,8 @@ const BtnList =useMemo(()=>{
                                                  }} />
                                                  {  (i === all.length -1) &&( i1 === c1.length - 2 ) &&
                                                      <>
-                                                         <Button className='addButton' type='primary' onClick={()=>handleCopyItem('arr1')}>添加一页</Button>
-                                                         <Button className='deleteButton' type='danger' onClick={()=>handleDeleteItem('arr1')}>删除一页</Button>
+                                                         <Button className='addButton' type='primary' onClick={()=>handleCopyItem('arr1')}>添加一行</Button>
+                                                         <Button className='deleteButton' type='danger' onClick={()=>handleDeleteItem('arr1')}>删除一行</Button>
                                                      </>
                                                  }
                                              </td>
@@ -153,8 +154,8 @@ const BtnList =useMemo(()=>{
                                                    }} />
                                                    {  (i === all.length -1) &&( i1 === c1.length - 2 ) &&
                                                        <>
-                                                           <Button className='addButton' type='primary' onClick={()=>handleCopyItem('arr2')}>添加一页</Button>
-                                                           <Button className='deleteButton' type='danger' onClick={()=>handleDeleteItem('arr2')}>删除一页</Button>
+                                                           <Button className='addButton' type='primary' onClick={()=>handleCopyItem('arr2')}>添加一行</Button>
+                                                           <Button className='deleteButton' type='danger' onClick={()=>handleDeleteItem('arr2')}>删除一行</Button>
                                                        </>
                                                    }
                                                </td>

@@ -23,7 +23,7 @@ import BadEventSummaryTotal from "./views/BadEventSummary_yczyy/index";
 import BadEventReportExport_gzsrm from "./views/BadEventReportExport_gzsrm";
 import BadEventStatisticalReport from "./views/BadEventStatisticalReport";
 export interface Props extends RouteComponentProps<{ name?: string }> { };
-const isGzsrmText = 'gzsrm,925,zjhj,qhwy'
+const isGzsrmText = 'gzsrm,925,zjhj,qhwy,lcey'
 
 export default function BadEventsRouters(props: Props) {
   useEffect(() => { }, [props.history.location.pathname]);
@@ -223,14 +223,14 @@ export default function BadEventsRouters(props: Props) {
   }
   let autoLoginInfo: any = {
     blank: true,
-    redictUri: '/crNursing/badEvent',
-    loginUri: '/crNursing/login'
+    redictUrl: '/crNursing/badEvent',
+    loginUrl: '/crNursing/login'
   }
   if (['gxjb','yczyy', 'fqfybjy'].includes(appStore.HOSPITAL_ID)) { //跳转单独的上报系统
     autoLoginInfo = {
       blank: true,
-      redictUri: '/crNursing/badevents/index',
-      loginUri: '/crNursing/badevents/login'
+      redictUrl: '/crNursing/badevents/index',
+      loginUrl: '/crNursing/badevents/login'
     }
   }
   return (
