@@ -724,7 +724,7 @@ const handleDelete = (record: any) => {
     centered: true,
     maskClosable: true,
     onOk: () => {
-      if (['sdlj', 'hj'].includes(appStore.HOSPITAL_ID)) {
+      if (['sdlj', 'hj', 'nys'].includes(appStore.HOSPITAL_ID)) {
         let data = {
           startTime: moment(selectViewModal.params.startTime).format("YYYY-MM-DD"),
           endTime: moment(selectViewModal.params.endTime).format("YYYY-MM-DD"),
