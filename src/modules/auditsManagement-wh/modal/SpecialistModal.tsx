@@ -10,6 +10,7 @@ import emitter from 'src/libs/ev'
 import {dictInfo} from "src/modules/statistic/views/professional-tec/enums";
 import {appStore} from "src/stores";
 import { nurseFilesService } from 'src/modules/nurseFiles/view/nurseFiles-wh/services/NurseFilesService'
+import AuditEducationProcess from "src/components/audit-page/AuditEducationProcess";
 
 const Option = Select.Option
 const {TextArea} = Input
@@ -18,15 +19,19 @@ export interface Props extends ModalComponentProps {
     id?: number
     data?: any
     signShow?: string
-    getTableData?: () => {}
+    getTableData?: any;
 }
 
 const rules: Rules = {
-    admittedItem: (val) => !!val || '请选择准入项目',
-    reason: (val) => !!val || '请输入申请理由',
-    content: (val) => !!val || '请选择完成内容',
-    nightShifts: (val) => !!val || '请输入完成次数',
-
+    // admittedItem: (val) => !!val || '请选择准入项目',
+    // reason: (val) => !!val || '请输入申请理由',
+    // content: (val) => !!val || '请选择完成内容',
+    // nightShifts: (val) => !!val || '请输入完成次数',
+    theoreticalScore:(val) => !!val || '请输入内容',
+    operational:(val) => !!val || '请输入内容',
+    errorAccident:(val) => !!val || '请输入内容',
+    deptEvaluation:(val) => !!val || '请输入内容',
+    noPass:(val) => !!val || '请选择',
 }
 export default function SpecialistModal(props: Props) {
     let {visible, onCancel, onOk, data, signShow} = props
@@ -159,25 +164,27 @@ export default function SpecialistModal(props: Props) {
                         </Form.Field>
                     </Col>
                     <Col span={24}>
-                        <Form.Field label='理论考核(分数)' name='nightShifts' required>
+                        <Form.Field label='理论考核(分数)' name='theoreticalScore' required>
                             <Input/>
                         </Form.Field>
                     </Col>
                     <Col span={24}>
-                        <Form.Field label='操作考核(考核项目及分数)' name='nightShifts' required>
+                        <Form.Field label='操作考核(考核项目及分数)' name='operational' required>
                             <Input/>
                         </Form.Field>
                     </Col>
                     <Col span={24}>
-                        <Form.Field label='科室评议' name='nightShifts' required>
+                        <Form.Field label='科室评议' name='deptEvaluation' required>
                             <Input/>
                         </Form.Field>
                     </Col>
                     <Col span={24}>
-                        <Form.Field label='有无护理差错事故' name='nightShifts' required>
+                        <Form.Field label='有无护理差错事故' name='errorAccident' required>
                             <Input/>
                         </Form.Field>
                     </Col>
+                    {/* 审核信息 */}
+                    <AuditEducationProcess process={data?.auditeListDtos||[]}/>
                     <Col span={24}>
                         <Form.Field label={`审核结果`} name="noPass">
                             <Radio.Group buttonStyle="solid">
@@ -188,7 +195,7 @@ export default function SpecialistModal(props: Props) {
                     </Col>
 
                     <Col span={24}>
-                        <Form.Field label={`审核意见`} name="handleContent">
+                        <Form.Field label={`审核意见`} name="reviewOpinions">
                             <Input.TextArea />
                         </Form.Field>
                     </Col>

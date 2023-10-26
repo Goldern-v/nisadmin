@@ -97,7 +97,7 @@ export default observer(function SpecialistAdmission() {
     nurseFilesService.getLyrmById(id).then((res:any)=>{
       if(res.code =='200'){
         specialistAdmissionModal.show({ signShow: res.data.auditedStatusName,data:res.data,
-        isAudit:['待审核', '已审核'].includes(res.data.auditedStatusName)
+        isAudit:['待护士长审核', '待护理部审核'].includes(res.data.auditedStatusName)
         })
       }
     })

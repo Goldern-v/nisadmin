@@ -12,6 +12,7 @@ import moment from 'moment'
 import emitter from 'src/libs/ev'
 import {dictInfo} from "src/modules/statistic/views/professional-tec/enums";
 import {appStore} from "src/stores";
+import AuditEducationProcess from "src/components/audit-page/AuditEducationProcess";
 
 const Option = Select.Option
 const {TextArea} = Input
@@ -171,6 +172,7 @@ export default function SpecialistAdmissionModal(props: Props) {
                         </Form.Field>
                     </Col>
                 </Row>
+                <AuditEducationProcess process={data?.auditeListDtos||[]}/>
             </Form>
         </Modal>
     )

@@ -19,6 +19,7 @@ import GroupsSrAduitModal from "../modal/GroupsSrAduitModal";
 import GroupsqhwyAduitModal from "../modal/GroupsqhwyAduitModal";
 import {ContextCon} from "../AuditsManagementView";
 import SpecialistModal from "../modal/SpecialistModal";
+import {nurseFilesService} from "src/modules/nurseFiles/view/nurseFiles-wh/services/NurseFilesService";
 
 export interface Props {
     needAudit: boolean;
@@ -100,8 +101,17 @@ export default observer(function AuditsTableDHSZ(props: Props) {
                     });
                 })
             /**临邑--专科准入类型审核**/
-            case "all":
-                specialistModal.show({})
+            case "nurseWHInSpecializ":
+                nurseFilesService.getLyrmById(row.id).then((res:any)=>{
+                    if(res.data == '200'){
+                        specialistModal.show({
+                            data:res.data,
+                            getTableData: () => {
+                                emitter.emit("refreshNurseAuditTable");
+                            },
+                        })
+                    }
+                })
                 return
             default :
                 specialistModal.show({})
