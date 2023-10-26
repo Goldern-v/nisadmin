@@ -1325,10 +1325,10 @@ return (
                           <div className="remark-label">期望排班：</div>
                           <Input.TextArea
                             readOnly
-                            defaultValue={sheetViewModal.remark}
+                            defaultValue={sheetViewModal.remark1}
                             autosize={!isEdit}
                             onBlur={(e) => {
-                              sheetViewModal.remark = e.target.value;
+                              sheetViewModal.remark1 = e.target.value;
                             }}
                             style={{ minHeight: 60, textAlign: "left" }}
                           />
@@ -1337,10 +1337,10 @@ return (
                           <div className="remark-label">人力资源调配：</div>
                           <Input.TextArea
                             readOnly={!isEdit}
-                            defaultValue={sheetViewModal.remark}
+                            defaultValue={sheetViewModal.remark2}
                             autosize={!isEdit}
                             onBlur={(e) => {
-                              sheetViewModal.remark = e.target.value;
+                              sheetViewModal.remark2 = e.target.value;
                             }}
                             style={{ minHeight: 60, textAlign: "left" }}
                           />
@@ -1359,7 +1359,7 @@ return (
                         <div className="remark-item">
                           <div className="remark-label">期望排班：</div>
                           <Input.TextArea
-                            value={sheetViewModal.remark}
+                            value={sheetViewModal.remark1}
                             autosize={!isEdit}
                             style={{ minHeight: 40, textAlign: "left" }}
                           />
@@ -1367,7 +1367,7 @@ return (
                         <div className="remark-item">
                           <div className="remark-label">人力资源调配：</div>
                           <Input.TextArea
-                            value={sheetViewModal.remark}
+                            value={sheetViewModal.remark2}
                             autosize={!isEdit}
                             style={{ minHeight: 40, textAlign: "left" }}
                           />
