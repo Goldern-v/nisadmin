@@ -118,7 +118,7 @@ export default observer(function (props: Props) {
                                     <div dangerouslySetInnerHTML={{ __html: model.editorData.v1 }}></div>:
                                     <CKEditor
                                         ref={editorRef}
-                                        name={`editor${Math.random().toFixed(2)}`}
+                                        name='editor1'
                                         data={model.editorData.v1}
                                         onChange={onChange}
                                         config={{

@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react'
-import React, { useEffect, useState } from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import { PageContainer } from 'src/components/common'
 import { Obj } from 'src/libs/types'
 import styled from 'styled-components'
@@ -18,6 +18,8 @@ import { formatTitle } from '../detail-lyrm/config'
 import AuditModal from './components/auditModal'
 import { nurseHandbookRecordModel as model } from '../detail-jew/model'
 import {fileDownload} from "src/utils/file/file";
+import {print} from "printing";
+import ZjhjImportTable from './components/zjhjImportTable'
 
 export interface Props {
   options: Obj
@@ -26,6 +28,7 @@ const Quarter ={'第一季度':1,'第二季度':2,'第三季度':3,'第四季度
 /** 13张表的菜单页，by925 */
 export default observer(function (props: Props) {
   const { options } = props
+  const tableRef = useRef<any>(null)
   /**创建弹窗 */
   const addModal = createModal(AddModal)
   useEffect(() => {
@@ -53,7 +56,8 @@ export default observer(function (props: Props) {
   const [formList, setFormList] = useState<Obj[]>([])
   const [selectedRows, setSelectedRows] = useState<Obj[]>([])
   const [auditVisible, setAuditVisible] = useState(false)
-
+const [exportVisible,setExportVisible]=useState<boolean>(false)
+  const [renderCfg,setRenderCfg]=useState([] as any)
   const rowSelection = {
     selectedRowKeys,
     getCheckboxProps: (record: Obj) => ({
@@ -61,6 +65,14 @@ export default observer(function (props: Props) {
       name: record.name,
     }),
     onChange: (keys: any, rows: any) => {
+      setRenderCfg([
+        {
+          mainTitle: options.name,
+          data: rows.length > 0 ?rows:tableData,
+          minRow: 3,
+          columns:defColumns
+        },
+      ])
       setSelectedRows(rows)
       setSelectedRowKeys(keys)
     }
@@ -434,6 +446,14 @@ export default observer(function (props: Props) {
       setTableData(res.data.list || [])
       setTotal(res.data.totalCount)
       setLoading(false)
+      setRenderCfg([
+        {
+          mainTitle: options.name,
+          data: res.data.list,
+          minRow: 3,
+          columns:defColumns
+        },
+      ])
     }).catch(e => setLoading(false))
   }
   const onDel = (id: string) => {
@@ -484,7 +504,6 @@ export default observer(function (props: Props) {
   }
   /****/
   const openImport =()=>{
-
     const params ={
       title:options.name,
       nurseHandbookRecords:selectedRowKeys.length === 0 ? tableData :  selectedRows
@@ -493,6 +512,9 @@ export default observer(function (props: Props) {
       fileDownload(res)
     })
   }
+  const printTable=()=>{
+    setExportVisible(true)
+   }
   useEffect(() => {
     init()
   }, [options])
@@ -508,8 +530,8 @@ export default observer(function (props: Props) {
   }, [appStore.location.pathname])
   return (
     <Wrapper>
-      <SelectCon {...{ query, setQuery, openCreate, title: options.name || '', formList, openAudit,openImport }} />
-      <PageContainer>
+      <SelectCon {...{ query, setQuery, openCreate, title: options.name || '', formList, openAudit,openImport,printTable }} />
+      <PageContainer ref={tableRef}>
         <BaseTable
           surplusHeight={250}
           dataSource={tableData}
@@ -530,6 +552,11 @@ export default observer(function (props: Props) {
           }}
         />
       </PageContainer>
+      {
+        exportVisible && <ZjhjImportTable renderCfg={renderCfg}
+                                          callback={() => { setExportVisible(false) }}
+          />
+      }
       <addModal.Component />
       <AuditModal visible={auditVisible} onOkCb={handleAudit} selectedList={selectedRows} onCancel={() => setAuditVisible(false)} />
     </Wrapper>
