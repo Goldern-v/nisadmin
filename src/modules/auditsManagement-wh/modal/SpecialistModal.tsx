@@ -8,7 +8,7 @@ import moment from 'moment'
 // 加附件
 import emitter from 'src/libs/ev'
 import {dictInfo} from "src/modules/statistic/views/professional-tec/enums";
-import {appStore} from "src/stores";
+import {appStore, authStore} from "src/stores";
 import { nurseFilesService } from 'src/modules/nurseFiles/view/nurseFiles-wh/services/NurseFilesService'
 import AuditEducationProcess from "src/components/audit-page/AuditEducationProcess";
 
@@ -31,7 +31,7 @@ const rules: Rules = {
     operational:(val) => !!val || '请输入内容',
     errorAccident:(val) => !!val || '请输入内容',
     deptEvaluation:(val) => !!val || '请输入内容',
-    noPass:(val) => !!val || '请选择',
+    auditedStatus:(val) => !!val || '请选择',
 }
 export default function SpecialistModal(props: Props) {
     let {visible, onCancel, onOk, data, signShow} = props
@@ -54,7 +54,7 @@ export default function SpecialistModal(props: Props) {
         }
         value.year && (value.year = value.year.format('YYYY'))
         nurseFilesService.saveLyrmOrUpdate({...value,
-            sign, empNo: appStore.queryObj.empNo,
+            sign,
             content:value.content.join(','),
             admittedItem:value.admittedItem.join(',')
         }).then((res: any) => {
@@ -74,7 +74,7 @@ export default function SpecialistModal(props: Props) {
                 admittedItem:data.admittedItem.split(',')
             })
         }
-        setTitle(signShow || '添加')
+        setTitle(signShow || '审核')
         /**其他用状态代替**/
     }, [visible])
 
@@ -163,33 +163,40 @@ export default function SpecialistModal(props: Props) {
                             <InputNumber disabled={true}/>
                         </Form.Field>
                     </Col>
-                    <Col span={24}>
-                        <Form.Field label='理论考核(分数)' name='theoreticalScore' required>
-                            <Input/>
-                        </Form.Field>
-                    </Col>
-                    <Col span={24}>
-                        <Form.Field label='操作考核(考核项目及分数)' name='operational' required>
-                            <Input/>
-                        </Form.Field>
-                    </Col>
-                    <Col span={24}>
-                        <Form.Field label='科室评议' name='deptEvaluation' required>
-                            <Input/>
-                        </Form.Field>
-                    </Col>
-                    <Col span={24}>
-                        <Form.Field label='有无护理差错事故' name='errorAccident' required>
-                            <Input/>
-                        </Form.Field>
-                    </Col>
+                    {/* 审核流程  */}
+                    <AuditEducationProcess  process={data}/>
+                    {/* 护士长才能填写 */}
+                    {
+                        authStore.isHeadNurse && <>
+
+                            <Col span={24}>
+                                <Form.Field label='理论考核(分数)' name='theoreticalScore' required>
+                                    <Input/>
+                                </Form.Field>
+                            </Col>
+                            <Col span={24}>
+                                <Form.Field label='操作考核(考核项目及分数)' name='operational' required>
+                                    <Input/>
+                                </Form.Field>
+                            </Col>
+                            <Col span={24}>
+                                <Form.Field label='科室评议' name='deptEvaluation' required>
+                                    <Input/>
+                                </Form.Field>
+                            </Col>
+                            <Col span={24}>
+                                <Form.Field label='有无护理差错事故' name='errorAccident' required>
+                                    <Input/>
+                                </Form.Field>
+                            </Col>
+                        </>
+                    }
                     {/* 审核信息 */}
-                    <AuditEducationProcess process={data?.auditeListDtos||[]}/>
                     <Col span={24}>
-                        <Form.Field label={`审核结果`} name="noPass">
+                        <Form.Field label={`审核结果`} name="auditedStatus">
                             <Radio.Group buttonStyle="solid">
-                                <Radio.Button value={false}>通过</Radio.Button>
-                                <Radio.Button value={true}>退回</Radio.Button>
+                                <Radio.Button value={'success'}>通过</Radio.Button>
+                                <Radio.Button value={'fail'}>退回</Radio.Button>
                             </Radio.Group>
                         </Form.Field>
                     </Col>

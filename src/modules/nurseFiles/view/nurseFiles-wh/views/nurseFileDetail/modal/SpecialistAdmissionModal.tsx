@@ -172,7 +172,9 @@ export default function SpecialistAdmissionModal(props: Props) {
                         </Form.Field>
                     </Col>
                 </Row>
-                <AuditEducationProcess process={data?.auditeListDtos||[]}/>
+                {
+                    data?.auditeListDtos.length > 0 &&   <AuditEducationProcess process={data}/>
+                }
             </Form>
         </Modal>
     )

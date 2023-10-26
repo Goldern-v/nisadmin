@@ -1,61 +1,27 @@
 import styled from 'styled-components'
-import React, { useEffect } from 'react'
-import { Obj } from 'src/libs/types'
-import { Timeline } from 'antd'
-import {authStore} from "src/stores";
-
+import React from 'react'
 export interface Props {
-  process: Obj[]
+  process: any
 }
 const defaultHead = require('../../assets/images/护士默认头像.png')
 const aduitSuccessIcon = require('../../global/images/审核通过.png')
 /**临邑--专科准入审核 */
 export default function AuditEducationProcess(props: Props) {
   const { process } = props
-  return (
+    console.log(process?.auditeListDtos);
+    return (
     <Wrapper>
       <div className='audit-title'>审核流程</div>
-        {(process || []).map((item: any, index: any, arr: any) => (
+        {(process?.auditeListDtos || []).map((item: any, index: any, arr: any) => (
             <TimeLineItem data={item} index={index} key={index} arr={arr} />
         ))}
-        <div>
-            <div>理论考核(分数):<span>90</span></div>
-            <div>理论考核(分数):<span>90</span></div>
-            <div>理论考核(分数):<span>90</span></div>
-            <div>理论考核(分数):<span>90</span></div>
+        <div className='box'>
+            <div className='box-left'>理论考核(分数):<span>{process?.theoreticalScore}</span></div>
+            <div className='box-left'>操作考核(考核项目及分数):<span>{process?.operational}</span></div>
+            <div className='box-left'>科室评议:<span>{process?.deptEvaluation}</span></div>
+            <div className='box-left'>有无护理差错事故:<span>{process?.errorAccident}</span></div>
+            <div className='box-left'>审核意见:<span>{process?.reviewOpinions}</span></div>
         </div>
-        {/*<React.Fragment>*/}
-        {/*    <div className='row'>*/}
-        {/*        <div className='key'>审核结果：</div>*/}
-        {/*        <div className='vale'>*/}
-        {/*            <ResultBox className={agree == 'agree' ? 'agree' : ''} onClick={() => setAgree('agree')}>*/}
-        {/*                通过*/}
-        {/*                <AgreeIcon />*/}
-        {/*            </ResultBox>*/}
-        {/*            <ResultBox className={agree == 'disagree' ? 'disagree' : ''} onClick={() => setAgree('disagree')}>*/}
-        {/*                退回*/}
-        {/*                <AgreeIcon />*/}
-        {/*            </ResultBox>*/}
-        {/*        </div>*/}
-        {/*    </div>*/}
-        {/*    <div className='row'>*/}
-        {/*        <div className='key'>审核意见：</div>*/}
-        {/*        <div className='vale'>*/}
-        {/*            <TextArea*/}
-        {/*                rows={3}*/}
-        {/*                style={{ width: 554 }}*/}
-        {/*                value={opinion}*/}
-        {/*                onChange={(e: any) => setOpinion(e.target.value)}*/}
-        {/*            />*/}
-        {/*        </div>*/}
-        {/*    </div>*/}
-        {/*    <div className='row' style={{ paddingTop: '2px' }}>*/}
-        {/*        <div className='key'>审核人：</div>*/}
-        {/*        <div className='vale'>*/}
-        {/*            <div className='block'>{authStore.user && authStore.user.empName}</div>*/}
-        {/*        </div>*/}
-        {/*    </div>*/}
-        {/*</React.Fragment>*/}
     </Wrapper>
   )
 }
@@ -140,13 +106,30 @@ const Wrapper = styled.div`
   //right: 0;
   padding: 20px 20px;
   overflow: auto;
-  
-  .audit-title{
+
+  .audit-title {
     font-weight: bold;
     font-size: 20px;
     margin-bottom: 10px;
   }
-  .timeline-item{
+
+  .box {
+    background: rgba(242, 242, 242, 1);
+    padding: 15px;
+    margin-top: 20px;
+  }
+
+  .box-left {
+    color: #AAA4A4;
+    margin-top: 10px;
+
+    > span {
+      color: #333333;
+      margin-left: 10px;
+    }
+  }
+
+  .timeline-item {
     line-height: 22px;
   }
 `
