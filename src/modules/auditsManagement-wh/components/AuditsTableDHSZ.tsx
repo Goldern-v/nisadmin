@@ -102,10 +102,11 @@ export default observer(function AuditsTableDHSZ(props: Props) {
                 })
             /**临邑--专科准入类型审核**/
             case "nurseWHInSpecializ":
-                nurseFilesService.getLyrmById(row.id).then((res:any)=>{
-                    if(res.data == '200'){
+                nurseFilesService.getLyrmById(row.othersMessage.fileId).then((res:any)=>{
+                    if(res.code == '200'){
                         specialistModal.show({
                             data:res.data,
+                            signShow:res.data.auditedStatusName,
                             getTableData: () => {
                                 emitter.emit("refreshNurseAuditTable");
                             },
