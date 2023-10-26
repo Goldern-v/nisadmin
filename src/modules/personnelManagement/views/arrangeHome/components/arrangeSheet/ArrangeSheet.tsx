@@ -1301,32 +1301,117 @@ return (
                 vague: true
               })
             }
-            <div className={"remark-con real"}>
-              <div className="remark-title">
-                {appStore.HOSPITAL_ID == "nys" ? "备注：" : "排班备注："}
-              </div>
-              <Input.TextArea
-                readOnly={!isEdit}
-                defaultValue={sheetViewModal.remark}
-                autosize={!isEdit}
-                onBlur={(e) => {
-                  sheetViewModal.remark = e.target.value;
-                }}
-                style={{ minHeight: 100, textAlign: "left" }}
-                className={appStore.HOSPITAL_ID == "nys" ? "nysCss" : ""}
-              />
-            </div>
-            <div className={"remark-con space"}>
-              <div className="remark-title">
-                {appStore.HOSPITAL_ID == "nys" ? "备注：" : "排班备注："}
-              </div>
-              <Input.TextArea
-                value={sheetViewModal.remark}
-                autosize={!isEdit}
-                style={{ minHeight: 100, textAlign: "left" }}
-                className={appStore.HOSPITAL_ID == "nys" ? "nysCss" : ""}
-              />
-            </div>
+            {
+              appStore.hisMatch({
+                map: {
+                  'lcey':
+                    <>
+                      <div className={"remark-con real"}>
+                        <div className="remark-title">排班备注：</div>
+                        <div className="remark-item">
+                          <div className="remark-label">班次说明：</div>
+                          <Input.TextArea
+                            readOnly={!isEdit}
+                            defaultValue={sheetViewModal.remark}
+                            autosize={!isEdit}
+                            onBlur={(e) => {
+                              sheetViewModal.remark = e.target.value;
+                            }}
+                            style={{ textAlign: "left", minHeight: 60, }}
+                          />
+                        </div>
+                        <div className="remark-item">
+                          <div className="remark-label">期望排班：</div>
+                          <Input.TextArea
+                            readOnly
+                            defaultValue={sheetViewModal.remark}
+                            autosize={!isEdit}
+                            onBlur={(e) => {
+                              sheetViewModal.remark = e.target.value;
+                            }}
+                            style={{ minHeight: 60, textAlign: "left" }}
+                          />
+                        </div>
+                        <div className="remark-item">
+                          <div className="remark-label">人力资源调配：</div>
+                          <Input.TextArea
+                            readOnly={!isEdit}
+                            defaultValue={sheetViewModal.remark}
+                            autosize={!isEdit}
+                            onBlur={(e) => {
+                              sheetViewModal.remark = e.target.value;
+                            }}
+                            style={{ minHeight: 60, textAlign: "left" }}
+                          />
+                        </div>
+                      </div>
+                      <div className={"remark-con space"}>
+                        <div className="remark-title">排班备注：</div>
+                        <div className="remark-item">
+                          <div className="remark-label">班次说明：</div>
+                          <Input.TextArea
+                            value={sheetViewModal.remark}
+                            autosize={!isEdit}
+                            style={{ minHeight: 40, textAlign: "left" }}
+                          />
+                        </div>
+                        <div className="remark-item">
+                          <div className="remark-label">期望排班：</div>
+                          <Input.TextArea
+                            value={sheetViewModal.remark}
+                            autosize={!isEdit}
+                            style={{ minHeight: 40, textAlign: "left" }}
+                          />
+                        </div>
+                        <div className="remark-item">
+                          <div className="remark-label">人力资源调配：</div>
+                          <Input.TextArea
+                            value={sheetViewModal.remark}
+                            autosize={!isEdit}
+                            style={{ minHeight: 40, textAlign: "left" }}
+                          />
+                        </div>
+                        {/* <Input.TextArea
+                          value={sheetViewModal.remark}
+                          autosize={!isEdit}
+                          style={{ minHeight: 100, textAlign: "left" }}
+                        /> */}
+                      </div>
+                    </>,
+                  default: 
+                    <>
+                      <div className={"remark-con real"}>
+                        <div className="remark-title">
+                          {appStore.HOSPITAL_ID == "nys" ? "备注：" : "排班备注："}
+                        </div>
+                        <Input.TextArea
+                          readOnly={!isEdit}
+                          defaultValue={sheetViewModal.remark}
+                          autosize={!isEdit}
+                          onBlur={(e) => {
+                            sheetViewModal.remark = e.target.value;
+                          }}
+                          style={{ minHeight: 100, textAlign: "left" }}
+                          className={appStore.HOSPITAL_ID == "nys" ? "nysCss" : ""}
+                        />
+                      </div>
+                      <div className={"remark-con space"}>
+                        <div className="remark-title">
+                          {appStore.HOSPITAL_ID == "nys" ? "备注：" : "排班备注："}
+                        </div>
+                        <Input.TextArea
+                          value={sheetViewModal.remark}
+                          autosize={!isEdit}
+                          style={{ minHeight: 100, textAlign: "left" }}
+                          className={appStore.HOSPITAL_ID == "nys" ? "nysCss" : ""}
+                        />
+                      </div>
+                    </>
+                },
+                vague: true
+              })
+            }
+            
           </React.Fragment>
         );
       }}
@@ -1415,6 +1500,15 @@ const Wrapper = styled.div`
   .remark-con {
     margin-top: -10px;
     width: 100%;
+    .remark-item{
+      display: flex;
+      margin-bottom: 7px;
+      .remark-label{
+        width: 77px;
+        margin-right: 6px;
+        font-size: 12px;
+      }
+    }
     textarea {
       resize: none;
     }

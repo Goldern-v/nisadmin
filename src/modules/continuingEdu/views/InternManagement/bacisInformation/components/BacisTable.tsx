@@ -44,12 +44,32 @@ export default observer(function ApplyTable(props: Props) {
       align: "center",
       width: 60
     },
-    {
-      title: "学历",
-      dataIndex: "education",
-      align: "center",
-      width: 100
-    },
+    ...appStore.hisMatch({
+      map: {
+        fssdy: [
+          {
+            title: "初始学历",
+            dataIndex: "beginEducation",
+            align: "center",
+            width: 100
+          },
+          {
+            title: "最高学历",
+            dataIndex: "education",
+            align: "center",
+            width: 100
+          }
+        ],
+        other: [
+          {
+            title: "学历",
+            dataIndex: "education",
+            align: "center",
+            width: 100
+          }
+        ],
+      },
+    }),
     {
       title: "毕业学校",
       dataIndex: "graduatedUniversity",
