@@ -722,7 +722,8 @@ const routes: RouteItem[] = [
     "/badEventsNewDetail/:id",
     appStore.hisMatch({
       map: {
-        'gzsrm,qhwy,925': BadEventsNewDetailGzsrm,
+        'gzsrm': BadEventsNewDetailGzsrm,
+        'qhwy,925': BadEventsNewDetailGzsrm,
         // fqfybjy: BadEventsNewDetailCommon,
         // yczyy: BadEventsNewDetailCommon,
         // other: BadEventsNewDetail

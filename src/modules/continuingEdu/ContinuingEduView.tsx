@@ -103,6 +103,7 @@ import TrainingExamManage from "./views/preJobManage/trainingExamManage/Training
 import TrainingPlanManage from "./views/preJobManage/trainingPlanManage/TrainingPlanManage";
 import fixedTable from "./views/gaugePearson/fixed-table";
 import attachment from "./views/gaugePearson/attachment";
+
 /**厚街学习资源 */
 //学习的网站链接
 const 学习的网站链接 = lazy(() =>
@@ -1402,6 +1403,12 @@ const getIcon = (icon: any) => {
           hide: () =>
             queyMenuAuthInfo("nm_lat_questionbankmanage") ||
             authStore.isOnlyInternsManage,
+        },
+        {
+          title: "上传新题库",
+          hide: true,
+          path: "/continuingEdu/uploadQuestionBank",
+          component: UploadQuestionBank,
         },
         {
           title: "类型管理",
