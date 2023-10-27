@@ -1405,12 +1405,6 @@ const getIcon = (icon: any) => {
             authStore.isOnlyInternsManage,
         },
         {
-          title: "上传新题库",
-          hide: true,
-          path: "/continuingEdu/uploadQuestionBank",
-          component: UploadQuestionBank,
-        },
-        {
           title: "类型管理",
           path: "/continuingEdu/TypeManagement",
           component: 类型管理,
@@ -1423,6 +1417,24 @@ const getIcon = (icon: any) => {
           hide: true,
           path: "/continuingEdu/choiceQuestionEdit",
           component: ChoiceQustionEdit,
+        },
+        {
+          title: "上传新题库",
+          hide: true,
+          path: "/continuingEdu/uploadQuestionBank",
+          component: UploadQuestionBank,
+        },
+        {
+          title: "填空题新建和编辑",
+          hide: true,
+          path: "/continuingEdu/fillingQuestionEdit",
+          component: FillingQuestionEdit,
+        },
+        {
+          title: "问答题新建和编辑",
+          hide: true,
+          path: "/continuingEdu/shortQuestionEdit",
+          component: ShortQuestionEdit,
         },
         {
           title: "菜单设置",
