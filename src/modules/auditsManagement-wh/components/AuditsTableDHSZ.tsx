@@ -106,7 +106,8 @@ export default observer(function AuditsTableDHSZ(props: Props) {
                     if(res.code == '200'){
                         specialistModal.show({
                             data:res.data,
-                            signShow:res.data.auditedStatusName,
+                            signShow: needAudit ?res.data.auditedStatusName : '查看' ,
+                            needAudit:needAudit,
                             getTableData: () => {
                                 emitter.emit("refreshNurseAuditTable");
                             },
