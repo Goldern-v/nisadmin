@@ -6,6 +6,7 @@ import { observer } from 'src/vendors/mobx-react-lite'
 import OneLevelTitle from '../common/OneLevelTitle'
 import EditButton from '../common/EditButton'
 import { LastImproveItem, Report } from '../../types'
+import {appStore} from "src/stores";
 export interface Props {
   sectionId: string
   sectionTitle?: string | undefined
@@ -20,7 +21,7 @@ export default observer(function 检查重点模块(props: Props) {
 
   return (
     <Wrapper>
-      <OneLevelTitle text={`五、${report.indexInType == 12 ? 1 : report.indexInType + 1}月检查重点`} />
+      <OneLevelTitle text={appStore.HOSPITAL_ID ==='jmfy'?`五、下月检查重点`: `五、${report.indexInType == 12 ? 1 : report.indexInType + 1}月检查重点`} />
       <TextCon>{report.keyCheckItemDesc}</TextCon>
       <EditButton onClick={() => qualityAnalysisReportViewModal!.openEditModal(sectionId)}>编辑</EditButton>
     </Wrapper>

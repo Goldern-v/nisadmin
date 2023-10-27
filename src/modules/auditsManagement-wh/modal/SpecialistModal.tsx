@@ -32,6 +32,7 @@ const rules: Rules = {
     errorAccident:(val) => !!val || '请输入内容',
     deptEvaluation:(val) => !!val || '请输入内容',
     auditedStatus:(val) => !!val || '请选择',
+    reviewOpinions:(val)=>!!val ||'请输入内容'
 }
 export default function SpecialistModal(props: Props) {
     let {visible, onCancel, onOk, data, signShow} = props
@@ -42,26 +43,42 @@ export default function SpecialistModal(props: Props) {
 
     const onFieldChange = () => {
     }
-
+    /**默认为false 进行数据保存，再调另外的接口走审核流程**/
     const onSave = async (sign: boolean) => {
-
         if (!refForm.current) return
-
         let [err, value] = await to(refForm.current.validateFields())
         if (err) return
         if (signShow === '修改') {
             Object.assign(value, {id: data.id})
         }
-        value.year && (value.year = value.year.format('YYYY'))
-        nurseFilesService.saveLyrmOrUpdate({...value,
-            sign,
-            content:value.content.join(','),
-            admittedItem:value.admittedItem.join(',')
-        }).then((res: any) => {
+        // auditeLyrmStatusNurse
+        Promise.all([
+            nurseFilesService.saveLyrmOrUpdate({...value,
+                sign,
+                content:value.content.join(','),
+                admittedItem:value.admittedItem.join(',')
+            }),
+            nurseFilesService.auditeLyrmStatusNurse({
+                detail:value.reviewOpinions,
+                id:data.id,
+                empNo:data.empNo,
+                saveStatus:data.saveStatus,
+                flag:value.auditedStatus ==='success'
+            })
+        ]).then((res:any)=>{
             message.success('保存成功')
             props.getTableData && props.getTableData()
             onCancel()
         })
+        // nurseFilesService.saveLyrmOrUpdate({...value,
+        //     sign,
+        //     content:value.content.join(','),
+        //     admittedItem:value.admittedItem.join(',')
+        // }).then((res: any) => {
+        //     message.success('保存成功')
+        //     props.getTableData && props.getTableData()
+        //     onCancel()
+        // })
     }
 
     useLayoutEffect(() => {
@@ -94,9 +111,10 @@ export default function SpecialistModal(props: Props) {
             <Button key='back' onClick={onCancel}>
                 关闭
             </Button>
-            <Button key='submit' type='primary' onClick={() => onSave(true)}>
+            { authStore.isHeadNurse && <Button key='submit' type='primary' onClick={() => onSave(false)}>
                 提交审核
-            </Button>
+            </Button> }
+
         </>
     }
 
@@ -167,7 +185,7 @@ export default function SpecialistModal(props: Props) {
                     <AuditEducationProcess  process={data}/>
                     {/* 护士长才能填写 */}
                     {
-                        authStore.isHeadNurse && <>
+                        authStore.isRoleManage && <>
 
                             <Col span={24}>
                                 <Form.Field label='理论考核(分数)' name='theoreticalScore' required>
@@ -193,7 +211,7 @@ export default function SpecialistModal(props: Props) {
                     }
                     {/* 审核信息 */}
                     <Col span={24}>
-                        <Form.Field label={`审核结果`} name="auditedStatus">
+                        <Form.Field label={`审核结果`} name="auditedStatus" required>
                             <Radio.Group buttonStyle="solid">
                                 <Radio.Button value={'success'}>通过</Radio.Button>
                                 <Radio.Button value={'fail'}>退回</Radio.Button>
@@ -202,7 +220,7 @@ export default function SpecialistModal(props: Props) {
                     </Col>
 
                     <Col span={24}>
-                        <Form.Field label={`审核意见`} name="reviewOpinions">
+                        <Form.Field label={`审核意见`} name="reviewOpinions" required>
                             <Input.TextArea />
                         </Form.Field>
                     </Col>

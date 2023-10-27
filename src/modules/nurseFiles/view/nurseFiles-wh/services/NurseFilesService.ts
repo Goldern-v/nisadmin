@@ -195,6 +195,14 @@ public saveLyrmOrUpdate(params:any){
 public deleteLyrmById(id:number){
   return this.get(`/nurseWHInSpecializ/delById/${id}`,)
 }
+  public auditeLyrmStatusNurse(params:any){
+  let formData =new FormData()
+    for(let i in params){
+      formData.append(i,params[i])
+    }
+    return this.post(`/nurseWHInSpecializ/auditeStatusNurse`,formData)
+  }
+// nurseWHInSpecializ/auditeStatusNurse
 }
 
 export const nurseFilesService = new NurseFilesService()
