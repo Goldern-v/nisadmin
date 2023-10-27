@@ -20,6 +20,7 @@ export interface Props extends ModalComponentProps {
     data?: any
     signShow?: string
     getTableData?: any;
+    needAudit?:boolean
 }
 
 const rules: Rules = {
@@ -35,7 +36,7 @@ const rules: Rules = {
     reviewOpinions:(val)=>!!val ||'请输入内容'
 }
 export default function SpecialistModal(props: Props) {
-    let {visible, onCancel, onOk, data, signShow} = props
+    let {visible, onCancel, onOk, data, signShow,needAudit} = props
     const [title, setTitle] = useState('')
     const [admittedItem, setAdmittedItem] = useState([] as any)
     const [content, setContent] = useState([] as any)
@@ -88,7 +89,10 @@ export default function SpecialistModal(props: Props) {
             refForm!.current!.setFields({
                 ...data,
                 content:data.content.split(','),
-                admittedItem:data.admittedItem.split(',')
+                admittedItem:data.admittedItem.split(','),
+                auditedStatus:'',
+                reviewOpinions:'',
+
             })
         }
         setTitle(signShow || '审核')
@@ -107,11 +111,12 @@ export default function SpecialistModal(props: Props) {
 
     }, [visible])
     const footer = () => {
+        console.log("needAudit===",needAudit);
         return <>
             <Button key='back' onClick={onCancel}>
                 关闭
             </Button>
-            { authStore.isHeadNurse && <Button key='submit' type='primary' onClick={() => onSave(false)}>
+            { (authStore.isHeadNurse && needAudit) && <Button key='submit' type='primary' onClick={() => onSave(false)}>
                 提交审核
             </Button> }
 
@@ -185,7 +190,7 @@ export default function SpecialistModal(props: Props) {
                     <AuditEducationProcess  process={data}/>
                     {/* 护士长才能填写 */}
                     {
-                        authStore.isRoleManage && <>
+                        (authStore.isRoleManage && needAudit) && <>
 
                             <Col span={24}>
                                 <Form.Field label='理论考核(分数)' name='theoreticalScore' required>
@@ -210,20 +215,24 @@ export default function SpecialistModal(props: Props) {
                         </>
                     }
                     {/* 审核信息 */}
-                    <Col span={24}>
-                        <Form.Field label={`审核结果`} name="auditedStatus" required>
-                            <Radio.Group buttonStyle="solid">
-                                <Radio.Button value={'success'}>通过</Radio.Button>
-                                <Radio.Button value={'fail'}>退回</Radio.Button>
-                            </Radio.Group>
-                        </Form.Field>
-                    </Col>
+                    {
+                        needAudit &&<>
+                            <Col span={24}>
+                                <Form.Field label={`审核结果`} name="auditedStatus" required>
+                                    <Radio.Group buttonStyle="solid">
+                                        <Radio.Button value={'success'}>通过</Radio.Button>
+                                        <Radio.Button value={'fail'}>退回</Radio.Button>
+                                    </Radio.Group>
+                                </Form.Field>
+                            </Col>
 
-                    <Col span={24}>
-                        <Form.Field label={`审核意见`} name="reviewOpinions" required>
-                            <Input.TextArea />
-                        </Form.Field>
-                    </Col>
+                            <Col span={24}>
+                                <Form.Field label={`审核意见`} name="reviewOpinions" required>
+                                    <Input.TextArea />
+                                </Form.Field>
+                            </Col>
+                        </>
+                    }
                 </Row>
             </Form>
         </Modal>
