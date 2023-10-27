@@ -28,14 +28,14 @@ export default observer(function (props: Props) {
             return (<>
                 <Button type='primary' onClick={() => {
                     if (model.detail?.record?.menuCode === 'LYHZSC_4_1') {
-                        model.onLinYiSave()
+                        model.onLinYiSave('0')
                     } else {
                         model.onCommit('0')
                     }
                 }}>暂存</Button>
                 <Button type='primary' onClick={() => {
                     if (model.detail?.record?.menuCode === 'LYHZSC_4_1') {
-                        model.onLinYiSave()
+                        model.onLinYiSave('1')
                     } else {
                         model.onCommit('1')
                     }
@@ -50,7 +50,7 @@ export default observer(function (props: Props) {
                 {authStore.isDepartment && <>
                     <Button type='primary' onClick={() => {
                         if (model.detail?.record?.menuCode === 'LYHZSC_4_1') {
-                            model.onLinYiSave()
+                            model.onLinYiSave('0')
                         } else {
                             model.onCommit('0')
                         }
