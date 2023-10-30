@@ -428,11 +428,11 @@ const ROUTE_LIST_925 = [
     component: MakeAwards,
     name: '立功嘉奖'
   },
-  // ...['925'].includes(appStore.HOSPITAL_ID) ? [{
-  //   type: 'LeaveRecord',
-  //   component: LeaveRecord,
-  //   name: '请假记录'
-  // }] : []
+  ...['925'].includes(appStore.HOSPITAL_ID) ? [{
+    type: 'LeaveRecord',
+    component: LeaveRecord,
+    name: '请假记录'
+  }] : []
 ]
 
 export default observer(function NurseFileDetail(props: Props, context: any) {

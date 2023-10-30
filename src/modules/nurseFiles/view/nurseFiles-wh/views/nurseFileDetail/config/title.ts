@@ -37,7 +37,7 @@ let titleEC: any = {
 let titleCE: any = reverseKeyValue(titleEC)
 
 export const getTitle = (title: string) => {
-  console.log(title, 889)
+  // console.log(title, 889)
   if (titleCE[title] || titleEC[title]) {
     return titleCE[title] || titleEC[title]
   } else {

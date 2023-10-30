@@ -1,41 +1,59 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Spin } from 'antd'
+import { Spin,message,Timeline } from 'antd'
 import { ScrollBox } from 'src/components/common'
 import { appStore } from 'src/stores'
 import qs from 'qs'
 import DetailHeader from './DetailHeader'
 import EmployeeLeaveApplyForm from './EmployeeLeaveApplyForm'
+import { nurseFilesService } from 'src/modules/nurseFiles/view/nurseFiles-wh/services/NurseFilesService'
+import { leaveRecordModal } from './modal';
 import MilitaryLeaveApplyForm from './MilitaryLeaveApplyForm'
 
 export default function LeaveRecordDetailLayout() {
   let [loading, setLoading] = useState(false)
-
-  const [type, setType] = useState('');
-
   const whichFormPage = () => {
+    const { employeePager } = leaveRecordModal
+    console.log(employeePager,'whichFormPage');
+    
     const formMap = {
-      test: <EmployeeLeaveApplyForm/>,
-      other: <MilitaryLeaveApplyForm/>,
+      "0": <EmployeeLeaveApplyForm/>,
+      "1": <MilitaryLeaveApplyForm/>,
     }
-    return type && formMap[type] ? formMap[type] : formMap.other;
-  }
-
-  const onload = () => {
-    setLoading(true)
-    setLoading(false)
+    return String(employeePager.recordType) ? formMap[employeePager.recordType] : formMap["1"];
   }
 
   useEffect(() => {
-    const search = qs.parse(appStore.location.search.replace("?", ""));
-    setType(search.type);
-    onload()
+    initDetail()
   }, [])
+
+  const initDetail = ()=>{
+    setLoading(true)
+    const search = qs.parse(appStore.location.search.replace("?", ""));
+    if(!search.id && search.recordType){
+      nurseFilesService.leaveApplicationCreate({recordType:search.recordType}).then((res:any)=>{
+        if(res.data){
+          leaveRecordModal.employeePager = res.data
+          message.success('创建成功')
+        }
+        setLoading(false)
+      })
+    }else if(search.id){
+      nurseFilesService.leaveApplicationDetail(search.id).then((res:any)=>{
+        console.log(res,"leaveApplicationDetail");
+        if(res.data){
+          let leaveDetail = JSON.parse(res.data.leaveDetail)
+          leaveRecordModal.employeePager = {...res.data,...leaveDetail}
+        }
+        setLoading(false)
+      })
+    }
+  }
 
   return (
     <Con>
       <HeaderCon>
-        <DetailHeader type={type}></DetailHeader>
+        <DetailHeader initDetail={initDetail}></DetailHeader>
       </HeaderCon>
       <MidCon>
         <MidConScrollCon>
@@ -53,6 +71,46 @@ export default function LeaveRecordDetailLayout() {
             { whichFormPage() }
           </MidLeftCon>
           <MidRightCon>
+            { leaveRecordModal?.employeePager?.nodeList?.length>0 &&
+              <>
+                <div className='audit-title'>审核流程</div>
+                <div>
+                  <Timeline>
+                    {
+                      leaveRecordModal.employeePager.nodeList.map((item: any, index: number) => {
+                        console.log(item,'item');
+                        
+                        return <Timeline.Item key={index} color={item.state === '1' ? 'green' : 'rgba(0,0,0,.25)'}>
+                          <div className='timeline-item'>{item.nodeName}</div>
+                          { item.empName && <div className='timeline-item'>{`${item.empName}${item.nodeCode==="commit" ? "" : item.pass?'通过':'驳回'}`}</div>}
+                          <div className='timeline-item'>{item.handleTime}</div>
+                          {item.content && 
+                            <div className='timeline-item'
+                              style={{
+                                background: 'rgb(238,238,238)',
+                                borderRadius: '5px',
+                                padding: '0 5px'
+                              }}>
+                                原因分析：<span>{item.content}</span>
+                            </div>
+                          }
+                          {item.expand && 
+                            <div className='timeline-item'
+                              style={{
+                                background: 'rgb(238,238,238)',
+                                borderRadius: '5px',
+                                padding: '0 5px'
+                              }}>
+                                整改措施：<span>{item.expand}</span>
+                            </div>
+                          }
+                        </Timeline.Item>
+                      })
+                    }
+                  </Timeline>
+                </div>
+              </>
+            }
           </MidRightCon>
         </MidConScrollCon>
       </MidCon>
@@ -97,7 +155,8 @@ const MidLeftCon = styled(ScrollBox)`
   
 `
 const MidRightCon = styled.div`
-  width: 317px;
+  width: 317px; 
+  padding: 20px;
   height: 100%;
   /* background-color: gray; */
   align-items: stretch;
@@ -120,6 +179,14 @@ const MidRightCon = styled.div`
     box-shadow: inset 0 0 5px #ffffff;
     border-radius: 5px;
     background-color: #ffffff;
+  }
+  .audit-title{
+    font-weight: bold;
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+  .timeline-item{
+    line-height:22px;
   }
 `
 const SpinCon = styled.div`

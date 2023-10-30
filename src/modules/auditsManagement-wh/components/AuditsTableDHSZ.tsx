@@ -95,6 +95,8 @@ export default observer(function AuditsTableDHSZ(props: Props) {
     }else if(showType === 'nursePromotion'){
       row.needAudit = needAudit;
       appStore.history.push(`/PromotionAduit?${qs.stringify(row)}`);
+    }else if(showType === 'leaveApplication'){
+      appStore.history.push(`/selfNurseFile/leaveRecordDetail?id=${row.othersMessage.id}`);
     }else if(showType == 'nurseSecond'){
       aMServices.getDetail(row.othersMessage.id).then((res)=>{
         goupsqhwyAduitModal.show({

@@ -578,7 +578,7 @@ const routes: RouteItem[] = [
   setLayout("/satisfiedPatSubmit", SatisfiedPatSubmit),
   setLayout("/followUpIndex", FollowUpIndex),
   setLayout("/followUpDetail", FollowUpDetail),
-  setLayout("/selfNurseFile/leaveRecordDetail/:id", LeaveRecordDetail, layouts.MainLayout),
+  setLayout("/selfNurseFile/leaveRecordDetail", LeaveRecordDetail, layouts.MainLayout),
 
   ...specialModule,
   setLayout("/autoLogin", appStore.hisMatch({
