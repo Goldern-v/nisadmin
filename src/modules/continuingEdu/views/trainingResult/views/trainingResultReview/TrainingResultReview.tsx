@@ -558,7 +558,7 @@ export default observer(function TrainingResultReview() {
               }
             </TabPane>
           )}
-          {["whyx", "whhk",'dgxg'].includes(appStore.HOSPITAL_ID) &&
+          {["whyx", "whhk", 'fssdy','dgxg'].includes(appStore.HOSPITAL_ID) &&
             <TabPane tab="培训实施记录" key="2">
               { whichTrainingTable() }
             </TabPane>}

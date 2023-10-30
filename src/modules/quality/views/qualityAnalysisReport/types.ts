@@ -22,6 +22,7 @@ export interface Report {
   keyCheckItemDesc: string
   followUpDeptDesc: string
   suggestions: string
+  preFollowUpDeptDesc:string
 }
 /** 追踪科室 */
 interface FollowUpDept {

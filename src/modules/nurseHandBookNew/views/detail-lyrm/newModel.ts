@@ -279,10 +279,11 @@ class NurseNewHandBookRecordModel {
             }
         })
     }
-    public onLinYiSave = () => {
+    public onLinYiSave = (status:string) => {
         nurseHandBookService.linYiSave({
             id: this.detail?.record?.id,
-            status: this.detail?.record?.status,
+            // status: this.detail?.record?.status,
+            status,
             nurseHandbookItemDtoList: this.nurseHandbookItemDtoList
         }).then((res: any) => {
             message.success('操作成功')

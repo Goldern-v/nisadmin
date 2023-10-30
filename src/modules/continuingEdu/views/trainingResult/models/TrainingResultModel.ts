@@ -271,6 +271,9 @@ class TrainingResultModel {
       this.summary = res.data.latTrainImplementationResult?.summary;
 
       let empNameList = res.data.personList.map((item:any) => {
+        if (["fssdy"].includes(appStore.HOSPITAL_ID)) 
+          return item.empName + ":" + item.totalScores
+        else 
           return item.empName
       });
       // console.log(empNameList);

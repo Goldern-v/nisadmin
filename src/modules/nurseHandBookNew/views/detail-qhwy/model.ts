@@ -153,7 +153,7 @@ class NurseHandBookRecordModel {
       status,
       detail,
     };
-    this.configFn?.editTitle && (params.title = this.editorTitle);
+    params.title = this.editorTitle;
     this.configFn?.editTime && (params.time = this.editorTime ? this.editorTime.format(dateFormat) : '');
     nurseHandBookService.saveNHRDetail(params).then((res) => {
       if (res.code === "200") {

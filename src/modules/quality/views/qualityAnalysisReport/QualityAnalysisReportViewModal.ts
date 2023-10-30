@@ -163,9 +163,9 @@ class QualityAnalysisReportViewModal {
     this.getSectionData(`本月质量检查亮点`).list = this.allData!.highlightItemList || []
     this.getSectionData(`重点问题`).list = this.allData!.keyItemList || []
     this.getSectionData(`持续改进`).list = this.allData!.currentImproveItemList || []
-    this.getSectionData(`追踪督导`).report = data!.report || {}
-    this.getSectionData(`检查重点`).report = data!.report || {}
-    this.getSectionData(`问题及建议`).report = data!.report || {}
+    this.getSectionData(`追踪督导`).report =this.allData!.report || {}
+    this.getSectionData(`检查重点`).report =this.allData!.report || {}
+    this.getSectionData(`问题及建议`).report = this.allData!.report || {}
   /**   **/
     if(appStore.HOSPITAL_ID ==='jmfy'){
      await  this.initChart( this.allData!.report || {})
@@ -187,8 +187,8 @@ class QualityAnalysisReportViewModal {
         api.countDeptQc({...params,qcCode:record?.qcCode, flag: 'zy'}),
         api.getSpecificDeductionList({...params, typeList: [1, 2, 3, 4, 5, 6]})
       ])
-      this.mzData =res[0].data || []
-      this.zyData =res[1].data || []
+      this.mzData =(res[0].data||[]).sort((a:any,b:any)=>b.score - a.score)
+      this.zyData =(res[1].data||[]).sort((a:any,b:any)=>b.score - a.score)
       this.specificDeductionList =res[2].data || []
     } catch (e) {
       // return message.error('系统出小差~')

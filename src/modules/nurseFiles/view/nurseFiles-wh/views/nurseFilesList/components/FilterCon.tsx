@@ -181,7 +181,7 @@ export default observer(function FilterCon() {
     <Wrapper>
       <Inner style={{'height': open && ['925'].includes(appStore.HOSPITAL_ID) ? '150px' : 'auto'}}>
         <Form ref={refForm} labelWidth={80} onChange={onFieldChange}>
-          <Row gutter={0}>
+          <Row gutter={0} style={{ display: 'flex', flexWrap: 'wrap'}}>
             <Col span={5} style={{ marginBottom: -6 }}>
               <Form.Field label={"科室"} name={"deptCode"}>
                 <Select
@@ -266,7 +266,7 @@ export default observer(function FilterCon() {
                 <AgeRangePicker />
               </Form.Field>
             </Col>
-            <Col span={4} className={open ? 'marginBottom short': 'short'}>
+            <Col span={4} className={open && ['925'].includes(appStore.HOSPITAL_ID) ? 'marginBottom short': 'short'}>
               <Form.Field label={"职称"} name={appStore.HOSPITAL_ID ==='qhwy' ?'newTitleList': "newTitle"}>
                 <Select allowClear={true} mode={appStore.HOSPITAL_ID ==='qhwy' ?'multiple':'tags'} >
                   {statisticsViewModal
@@ -279,7 +279,7 @@ export default observer(function FilterCon() {
                 </Select>
               </Form.Field>
             </Col>
-            <Col span={4} className={open ? 'marginBottom': ''}>
+            <Col span={4} className={open && ['925'].includes(appStore.HOSPITAL_ID) ? 'marginBottom': ''}>
               <Form.Field label={"政治面貌"} name={"politicsLook"}>
                 <Select allowClear={true}>
                   {statisticsViewModal

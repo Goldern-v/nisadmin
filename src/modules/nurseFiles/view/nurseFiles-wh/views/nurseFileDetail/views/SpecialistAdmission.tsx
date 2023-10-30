@@ -79,7 +79,7 @@ export default observer(function SpecialistAdmission() {
       title: '操作',
       dataIndex: 'volumeNumber',
       key: 'volumeNumber',
-      width: 150,
+      width: 100,
       align: 'center',
       render: (text: any, row: any, c: any) => {
         return (
@@ -97,7 +97,7 @@ export default observer(function SpecialistAdmission() {
     nurseFilesService.getLyrmById(id).then((res:any)=>{
       if(res.code =='200'){
         specialistAdmissionModal.show({ signShow: res.data.auditedStatusName,data:res.data,
-        isAudit:['待审核', '已审核'].includes(res.data.auditedStatusName)
+        isAudit:['待护士长审核', '待护理部审核','护理部审核通过','护士长审核通过'].includes(res.data.auditedStatusName)
         })
       }
     })

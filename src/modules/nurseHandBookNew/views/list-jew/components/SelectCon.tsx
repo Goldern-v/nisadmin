@@ -22,11 +22,12 @@ export interface Props extends Obj {
     openAudit?: () => void
     onResetQuery?: () => void
     openImport?:()=>void
+    printTable?:()=>void
 }
 
 /**搜索组件 */
 export default observer(function (props: Props) {
-    const {query, openCreate, setQuery, title, formList, openAudit, onResetQuery,openImport} = props
+    const {query, openCreate, setQuery, title, formList, openAudit, onResetQuery,openImport,printTable} = props
     const changeQuery = (e: any, key: string) => {
         if (key === 'date') {
             const [d1, d2] = e
@@ -140,7 +141,7 @@ export default observer(function (props: Props) {
             {appStore.HOSPITAL_ID === 'zjhj' &&
                 <>
                     <Button onClick={openImport}>导出</Button>
-                    <Button>打印</Button>
+                    <Button onClick={printTable}>打印</Button>
                 </>
             }
             <Button type='primary' onClick={openCreate}>创建</Button>

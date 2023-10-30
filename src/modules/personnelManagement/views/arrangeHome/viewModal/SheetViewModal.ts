@@ -79,6 +79,9 @@ class SheetViewModal {
   @observable public groupName: any;
   @observable public countObj: any = {}
 
+  @observable public remark1: string = "";
+  @observable public remark2: string = "";
+
   getAllDeptList() {
     arrangeService.getAllDeptList().then((res: any) => {
       this.deptList = res.data.deptList || [];
