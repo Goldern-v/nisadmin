@@ -40,10 +40,10 @@ export default function LeaveRecordDetailLayout() {
       })
     }else if(search.id){
       nurseFilesService.leaveApplicationDetail(search.id).then((res:any)=>{
-        console.log(res,"leaveApplicationDetail");
         if(res.data){
           let leaveDetail = JSON.parse(res.data.leaveDetail)
-          leaveRecordModal.employeePager = {...res.data,...leaveDetail}
+          let travelRoute = res.data?.travelRoute ? JSON.parse(res.data.travelRoute) : null
+          leaveRecordModal.employeePager = {...res.data,...leaveDetail,...travelRoute}
         }
         setLoading(false)
       })

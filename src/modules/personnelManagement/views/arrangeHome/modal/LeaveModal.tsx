@@ -16,12 +16,11 @@ let OBJ = {
   pageSize:5,
   total:0,
 }
-export default observer(function AsClassModal(props: Props) {
-  let {visible} = props
+export default observer(function LeaveModal(props: Props) {
+  let {visible,onCancel} = props
   const [loadingTable, setLoadingTable] = useState(false);
   const [creatorStr, setCreatorStr] = useState("");
   const [tableData, setTableData] = useState([])
-  const [filterData, setFilterData] = useState([])
 
   const toDetail = (row: any) => {
     appStore.history.push(`/selfNurseFile/leaveRecordDetail?id=${row.id}`);
@@ -124,7 +123,8 @@ export default observer(function AsClassModal(props: Props) {
     }
     nurseFilesService.leaveApplication(params).then((res) => {
       if(res.data){
-        let data = res.data.list.filter((item:any)=>item.creatorName.includes(creatorStr))
+        let data = res.data.list
+        if(creatorStr) data = res.data.list.filter((item:any)=>item.creatorName.includes(creatorStr))
         setTableData(data)
       } 
     })
@@ -137,6 +137,8 @@ export default observer(function AsClassModal(props: Props) {
         title="请假记录"
         width="1200px"
         visible={visible}
+        onCancel={onCancel}
+        footer={null}
         forceRender
         centered
       >
@@ -154,7 +156,7 @@ export default observer(function AsClassModal(props: Props) {
             </Button>
         </TopPart>
         <BaseTable
-          dataSource={filterData}
+          dataSource={tableData}
           columns={columns}
           wrapperStyle={{ padding: 0 }}
           pagination={{

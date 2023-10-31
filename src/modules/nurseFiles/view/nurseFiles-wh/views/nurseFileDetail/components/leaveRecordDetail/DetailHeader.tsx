@@ -6,7 +6,7 @@ import BreadcrumbBox from "src/layouts/components/BreadcrumbBox";
 import { nurseFilesService } from 'src/modules/nurseFiles/view/nurseFiles-wh/services/NurseFilesService'
 import _ from 'lodash'
 import printing from "printing";
-import { leaveRecordModal,Alldays } from './modal';
+import { leaveRecordModal,Alldays,travelRoute } from './modal';
 interface Props {
   status?: string;
   initDetail:any
@@ -35,23 +35,30 @@ export default function QualityControlTempleteDetailHeader(props: Props) {
       return false 
     }
     const showChexiao = ()=>{
-      return JSON.parse(sessionStorage.getItem('user') || "")?.empNo === creatorNo && status !==-1
+      return JSON.parse(sessionStorage.getItem('user') || "")?.empNo === creatorNo && status !==-1 && status !==0 && status !==-2
+    }
+    const showZancun = ()=>{
+      return JSON.parse(sessionStorage.getItem('user') || "")?.empNo === creatorNo && status===0
     }
     const showTijiao = ()=>{
-      return JSON.parse(sessionStorage.getItem('user') || "")?.empNo === creatorNo && nextNode==="commit" && status ===-1 || status ===0
+      return JSON.parse(sessionStorage.getItem('user') || "")?.empNo === creatorNo && (nextNode==="commit" || !nextNode) && (status ===-1 || status ===0)
     }
     return (
       <>
         { showTijiao()&& <Button type="primary" onClick={()=>onSubmit(1)}>提交</Button>}
-        { status===0 && <Button onClick={()=>onSubmit(0)}>暂存</Button>}
+        { showZancun() && <Button onClick={()=>onSubmit(0)}>暂存</Button>}
         { showShenhe() && <Button type="primary" onClick={()=>handleAudit()}>审核</Button>}
         { showChexiao() && <Button type="primary" onClick={()=>toCancel()}>撤销</Button>}
       </>
     )
   }
 
-  const JsonStringFy = ()=>{
-    return JSON.stringify(_.pick(leaveRecordModal.employeePager, _.keys(Alldays)));
+  const JsonStringFy = (key:any)=>{
+    let stringFyArr = {
+      "Alldays":Alldays,
+      "travelRoute":travelRoute
+    }
+    return JSON.stringify(_.pick(leaveRecordModal.employeePager, _.keys(stringFyArr[key])));
   }
 
   const toCancel = ()=>{
@@ -73,8 +80,9 @@ export default function QualityControlTempleteDetailHeader(props: Props) {
     let params = {
       ...leaveRecordModal.employeePager,
       status,
-      leaveDetail:JsonStringFy()
+      leaveDetail:JsonStringFy('Alldays'),
     }
+    leaveRecordModal.employeePager.recordType===1 && (params.travelRoute = JsonStringFy('travelRoute'))
     nurseFilesService.leaveApplicationSave(params).then((res:any)=>{
       if(res.code==="200"){
         let successStr = status == 0 ? '暂存成功' : "提交成功"

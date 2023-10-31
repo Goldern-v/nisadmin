@@ -26,11 +26,19 @@ export let Alldays = {
   otherDays: '',
 }
 
+export let travelRoute = {
+  province:"",
+  shi:"",
+  qu:"",
+  route:""
+}
+
 const employeePagerDefault = {
   nodeList:[],
   recordName:"",
   recordType:0,
   creatorName: '',
+  leaveReason:"",
   goHospitalWorkDate:"",
   nextNode:"",
   id:"",
@@ -40,8 +48,8 @@ const employeePagerDefault = {
   birthday: '',
   deptName: '',
   position: '',
+  cancellationDateDesc:"",
   enlistmentDate:"",
-  workDate: '',
   departmentAndPosition:"",
   preLeaveTime: '',
   personType:"",
@@ -56,7 +64,8 @@ const employeePagerDefault = {
   emergencyContact: '',
   relationshipToEmployee: '',
   leaveDetail:"",
-  ...Alldays
+  ...Alldays,
+  ...travelRoute
 }
 
 
