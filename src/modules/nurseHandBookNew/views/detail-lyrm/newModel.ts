@@ -287,6 +287,7 @@ class NurseNewHandBookRecordModel {
             nurseHandbookItemDtoList: this.nurseHandbookItemDtoList
         }).then((res: any) => {
             message.success('操作成功')
+            this.statusChange = Math.random()
             this.getDetail();
         })
     }

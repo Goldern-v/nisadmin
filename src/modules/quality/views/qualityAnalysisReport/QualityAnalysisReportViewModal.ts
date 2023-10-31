@@ -122,6 +122,7 @@ class QualityAnalysisReportViewModal {
     this.allData = data.data
     this.getSectionData(`报告名称`).text = this.allData.report!.reportName || {}
     this.getSectionData(`上月质量问题`).list = this.allData!.lastImproveItemList || []
+    this.getSectionData(`上月质量问题`).report =this.allData!.report || {}
     this.getSectionData(`2-1`).report = this.allData!.report || {}
     this.getSectionData(`本月质量检查扣分情况`).report = this.allData!.report || {}
     if(appStore.HOSPITAL_ID ==='jmfy' && jmfyData.data?.typeCompareList.length > 0){

@@ -475,7 +475,7 @@ export default observer(function QcItemGroup(props: Props) {
           </div>}
           {appStore.hisMatch({
             map: {
-              '925': !qcModel.baseInfo.useScore && <div className="sub-item-list">
+              '925,yczyy': !qcModel.baseInfo.useScore && <div className="sub-item-list">
                 <div style={{ marginTop: 5 }}>
                   <Input.TextArea
                     value={item.remark}
