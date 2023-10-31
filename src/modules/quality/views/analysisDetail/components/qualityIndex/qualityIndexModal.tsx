@@ -1,9 +1,9 @@
 import styled from 'styled-components'
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
 import { ColumnProps } from 'antd/lib/table'
 import { cloneJson } from 'src/utils/json/clone'
-import { Input, Select } from 'src/vendors/antd'
+import { Input, Select, Popconfirm, Button } from 'src/vendors/antd'
 
 const { Option } = Select;
 export interface Props {
@@ -15,9 +15,9 @@ export default function qualityIndexModal(props: Props) {
   let { sectionId, setData, data } = props
   const flag = useRef(0)
 
-  const cloneData = cloneJson(data || { value: {},list: [] })
+  const cloneData = cloneJson(data || { value: {}, list: [] })
   // 初始四舍五入保留2位小数
-  if (flag.current == 0 && cloneData.list.length) {
+  if (flag.current == 0 && cloneData?.list.length) {
     cloneData.list = cloneData?.list.map((v: any) => {
       let copy = { ...v }
       if (v.averageScore !=null) copy.averageScore = Number(v.averageScore).toFixed(2)
@@ -257,10 +257,50 @@ export default function qualityIndexModal(props: Props) {
         }
       ]
     },
+    {
+      title: '操作',
+      dataIndex: 'operation',
+      align: 'center',
+      width: 80,
+      render: (text, record, index) =>
+        (cloneData?.list || []).length >= 1 ? (
+          <Popconfirm title="确定删除吗?" onConfirm={() => onDelete(record, index)}>
+            <a>删除</a>
+          </Popconfirm>
+        ) : null,
+    },
   ]
+
+  const onDelete = (record: any, index: any) => {
+    let list = (cloneData?.list || []).filter((item:any, idx: any) => idx !== index)
+    setData({ ...cloneData, list })
+  }
+
+  const onAdd = () => {
+    setData({
+      ...cloneData, 
+      list: [
+        ...cloneData.list,
+        {
+          type: '',
+          item: '',
+          qualityPassScore: '',
+          standardPassRate: '',
+          qualifiedCount: '',
+          checkCount: '',
+          averageScore: '',
+          passRate: '',
+          standardStatus: ''
+        }
+      ]
+    })
+  }
 
   return (
     <Wrapper>
+      <div className="add">
+        <Button size="small" type="primary" onClick={onAdd}>增加</Button>
+      </div>
       <BaseTable columns={columns} dataSource={(cloneData && cloneData.list || [])}
       />
       <div className='table_Bottom'>
@@ -279,6 +319,11 @@ export default function qualityIndexModal(props: Props) {
   )
 }
 const Wrapper = styled.div`
+  .add{
+    width: 100%;
+    text-align: right;
+    padding: 0 20px;
+  }
   text {
     min-height: 200px !important;
     resize: none;
