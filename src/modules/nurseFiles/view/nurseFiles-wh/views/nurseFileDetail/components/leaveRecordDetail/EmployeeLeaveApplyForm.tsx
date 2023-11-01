@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { Input,DatePicker } from "antd";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useMemo } from "react";
 const { TextArea } = Input;
 import { appStore } from "src/stores";
 import moment from "moment";
@@ -52,11 +52,21 @@ export default observer(function EmployeeLeaveApplyForm(props: Props) {
     return moment(time).isValid();
   }
   
-  const showHeadNurseAudit = (key:any)=>{
-    let obj:any = leaveRecordModal?.employeePager?.nodeList?.reverse().find((item:any) => item.nodeCode === key)
-    let content = obj && obj.content || ""
-    return content || ""
-  }
+  // const showHeadNurseAudit = (key:any)=>{
+  //   let obj:any = leaveRecordModal?.employeePager?.nodeList?.reverse().find((item:any) => item.nodeCode === key)
+  //   let content = obj && obj.content || ""
+  //   return content || ""
+  // }
+
+  const _showHeadNurseAudit = useMemo(() => {
+    let obj:any = leaveRecordModal?.employeePager?.nodeList?.reverse().find((item:any) => item.nodeCode === "head_nurse_audit")
+    return obj
+  }, [employeePager])
+
+  const _ministerNurseAudit = useMemo(() => {
+    let obj:any = leaveRecordModal?.employeePager?.nodeList?.reverse().find((item:any) => item.nodeCode === "minister_nurse_audit")
+    return obj
+  }, [employeePager])
 
   return (
     <Pager className="leave-page">
@@ -293,29 +303,30 @@ export default observer(function EmployeeLeaveApplyForm(props: Props) {
                 onChange={(e) => onChange('otherName', e)} 
               ></Input.TextArea> */}
               <div className="h-60">{
-                showHeadNurseAudit("head_nurse_audit")
+                _showHeadNurseAudit?.content
+                // showHeadNurseAudit("head_nurse_audit")
               }</div>
               <div className="flex-wrap justify-right">
-                {/* <Input 
+                <Input 
+                  readOnly
+                  value={_showHeadNurseAudit?.handleTime ? moment(_showHeadNurseAudit?.handleTime).get('year') : ""}
                   className="w-40"
                   size="small"
-                  value={employeePager.total} 
-                  onChange={(e) => onChange('total', e)} 
-                /> */}
+                />
                 <span>年</span>
-                {/* <Input 
+                <Input 
+                  readOnly
+                  value={_showHeadNurseAudit?.handleTime ? moment(_showHeadNurseAudit?.handleTime).get('month') : ""}
+                  className="w-20"
                   size="small"
-                  value={employeePager.total} 
-                  onChange={(e) => onChange('total', e)} 
-                /> */}
-                <span className="w-30"></span>
+                />
                 <span>月</span>
-                {/* <Input 
+                <Input 
+                  readOnly
+                  value={_showHeadNurseAudit?.handleTime ? moment(_showHeadNurseAudit?.handleTime).get('date') : ""}
+                  className="w-20"
                   size="small"
-                  value={employeePager.total} 
-                  onChange={(e) => onChange('total', e)} 
-                /> */}
-                <span className="w-30"></span>
+                />
                 <span>日</span>
               </div>
             </td>
@@ -330,13 +341,30 @@ export default observer(function EmployeeLeaveApplyForm(props: Props) {
                 onChange={(e) => onChange('otherName', e)} 
               ></Input.TextArea> */}
               <div className="h-60">
-                {showHeadNurseAudit("minister_nurse_audit")}
+                {_ministerNurseAudit?.content}
+                {/* {showHeadNurseAudit("minister_nurse_audit")} */}
               </div>
               <div className="flex-wrap justify-right">
+                <Input 
+                  readOnly
+                  value={_ministerNurseAudit?.handleTime ? moment(_ministerNurseAudit?.handleTime).get('year') : ""}
+                  className="w-40"
+                  size="small"
+                />
                 <span>年</span>
-                <span className="w-30"></span>
+                <Input 
+                  readOnly
+                  value={_ministerNurseAudit?.handleTime ? moment(_ministerNurseAudit?.handleTime).get('month') : ""}
+                  className="w-20"
+                  size="small"
+                />
                 <span>月</span>
-                <span className="w-30"></span>
+                <Input 
+                  readOnly
+                  className="w-20"
+                  value={_ministerNurseAudit?.handleTime ? moment(_ministerNurseAudit?.handleTime).get('date') : ""}
+                  size="small"
+                />
                 <span>日</span>
               </div>
             </td>
@@ -448,6 +476,9 @@ const Pager = styled.div`
     }
     .w-30 {
       width: 30px;
+    }
+    .w-20 {
+      width: 20px;
     }
     .other-name-input {
       width: 80px;

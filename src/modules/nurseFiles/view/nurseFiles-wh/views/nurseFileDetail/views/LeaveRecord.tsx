@@ -73,7 +73,28 @@ export default observer(function MakeAwards() {
       dataIndex: 'status',
       key: '',
       align: 'center',
-      width: 100
+      width: 100,
+      render: (text: any, row: any, index: number) => {
+        let statuStr = ""
+        switch(Number(text)){
+          case -2:
+            statuStr = "已撤销"
+            break;
+          case -1:
+            statuStr = "已驳回"
+            break;
+          case 0:
+            statuStr = "暂存"
+            break;
+          case 1:
+            statuStr = "待审核"
+            break;
+          case 2:
+            statuStr = "已通过"
+            break;
+        }
+        return statuStr
+      }
     },
     {
       title: '操作',

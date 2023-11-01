@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { AutoComplete, Input, Select,DatePicker } from "antd";
-import React, { useEffect } from "react";
+import React, { useEffect,useMemo } from "react";
 import { leaveRecordModal } from './modal';
 import moment from "moment";
 import { observer } from "mobx-react-lite";
@@ -26,11 +26,11 @@ export default observer(function MilitaryLeaveApplyForm(props: Props) {
     employeePager.leaveDuration = moment(employeePager.leaveEndTime).add(1,'days').diff(moment(employeePager.leaveStartTime),"days") || 0
   },[employeePager])
 
-  const showHeadNurseAudit = (key:any)=>{
-    let obj:any = leaveRecordModal?.employeePager?.nodeList?.reverse().find((item:any) => item.nodeCode === key)
-    let content = obj && obj.content || ""
-    return content || ""
-  }
+  // const showHeadNurseAudit = (key:any)=>{
+  //   let obj:any = leaveRecordModal?.employeePager?.nodeList?.reverse().find((item:any) => item.nodeCode === key)
+  //   let content = obj && obj.content || ""
+  //   return content || ""
+  // }
 
   const isValidDate = (time:any)=>{
     return moment(time).isValid();
@@ -44,6 +44,16 @@ export default observer(function MilitaryLeaveApplyForm(props: Props) {
     }
     leaveRecordModal.updateEmployeePager(newData);
   }
+
+  const _showHeadNurseAudit = useMemo(() => {
+    let obj:any = leaveRecordModal?.employeePager?.nodeList?.reverse().find((item:any) => item.nodeCode === "head_nurse_audit")
+    return obj
+  }, [employeePager])
+
+  const _ministerNurseAudit = useMemo(() => {
+    let obj:any = leaveRecordModal?.employeePager?.nodeList?.reverse().find((item:any) => item.nodeCode === "minister_nurse_audit")
+    return obj
+  }, [employeePager])
 
   return (
     <Pager className="leave-page">
@@ -173,22 +183,22 @@ export default observer(function MilitaryLeaveApplyForm(props: Props) {
                 <Input 
                   size="small"
                   className="flex-1"
-                  value={employeePager.chanjia} 
-                  onChange={(e) => onChange('chanjia', e)}
+                  value={employeePager.province} 
+                  onChange={(e) => onChange('province', e)}
                 />
                 <span>省</span>
                 <Input 
                   size="small"
                   className="flex-1"
-                  value={employeePager.sangjia} 
-                  onChange={(e) => onChange('sangjia', e)}
+                  value={employeePager.shi} 
+                  onChange={(e) => onChange('shi', e)}
                 />
                 <span>市（县）</span>
                 <Input 
                   size="small"
                   className="flex-1"
-                  value={employeePager.bingjia} 
-                  onChange={(e) => onChange('bingjia', e)}
+                  value={employeePager.qu} 
+                  onChange={(e) => onChange('qu', e)}
                 />
                 <span>区（乡镇）</span>
               </div>
@@ -197,8 +207,8 @@ export default observer(function MilitaryLeaveApplyForm(props: Props) {
                 <Input 
                   size="small"
                   className="flex-1 align-left"
-                  value={employeePager.hunjia} 
-                  onChange={(e) => onChange('hunjia', e)}
+                  value={employeePager.route} 
+                  onChange={(e) => onChange('route', e)}
                 />
               </div>
             </td>
@@ -209,16 +219,17 @@ export default observer(function MilitaryLeaveApplyForm(props: Props) {
               <Input.TextArea
                 className="align-left"
                 rows={3}
-                value={employeePager.buxiu}
-                onChange={(e) => onChange('buxiu', e)}
+                value={employeePager.leaveReason}
+                onChange={(e) => onChange('leaveReason', e)}
               ></Input.TextArea>
             </td>
           </tr>
           <tr>
             <td>科室（部门）意见</td>
             <td colSpan={5}>
-              <div className="h-60">
-                {showHeadNurseAudit("head_nurse_audit")}
+              <div className="h-60 align-left">
+                {_showHeadNurseAudit?.content }
+                {/* {showHeadNurseAudit("head_nurse_audit")} */}
               </div>
               <div className="flex-wrap justify-center">
                 <span>签字：</span>
@@ -226,18 +237,21 @@ export default observer(function MilitaryLeaveApplyForm(props: Props) {
                 <div className="flex-wrap">
                   <Input 
                     readOnly
+                    value={_showHeadNurseAudit?.handleTime ? moment(_showHeadNurseAudit?.handleTime).get('year') : ""}
                     className="w-40"
                     size="small"
                   />
                   <span>年</span>
                   <Input 
                     readOnly
+                    value={_showHeadNurseAudit?.handleTime ? moment(_showHeadNurseAudit?.handleTime).get('month') : ""}
                     className="w-20"
                     size="small"
                   />
                   <span>月</span>
                   <Input 
                     readOnly
+                    value={_showHeadNurseAudit?.handleTime ? moment(_showHeadNurseAudit?.handleTime).get('date') : ""}
                     className="w-20"
                     size="small"
                   />
@@ -284,12 +298,13 @@ export default observer(function MilitaryLeaveApplyForm(props: Props) {
           <tr>
             <td>值班、备勤等<br/>工作交接</td>
             <td colSpan={2}>
-              <Input.TextArea
+              <div className="h-60"></div>
+              {/* <Input.TextArea
                 className="align-left"
                 rows={3}
                 value={employeePager.outDays}
                 onChange={(e) => onChange('outDays', e)}
-              ></Input.TextArea>
+              ></Input.TextArea> */}
               <div className="flex-wrap justify-right">
                 <Input 
                   readOnly
@@ -313,18 +328,21 @@ export default observer(function MilitaryLeaveApplyForm(props: Props) {
             </td>
             <td>分管领导意见</td>
             <td colSpan={2}>
-              <div className="h-60">
-                {showHeadNurseAudit("minister_nurse_audit")}
+              <div className="h-60 align-left">
+                {_ministerNurseAudit?.content}
+                {/* {showHeadNurseAudit("minister_nurse_audit")} */}
               </div>
               <div className="flex-wrap justify-right">
                 <Input 
                   readOnly
+                  value={_ministerNurseAudit?.handleTime ? moment(_ministerNurseAudit?.handleTime).get('year') : ""}
                   className="w-40"
                   size="small"
                 />
                 <span>年</span>
                 <Input 
                   readOnly
+                  value={_ministerNurseAudit?.handleTime ? moment(_ministerNurseAudit?.handleTime).get('month') : ""}
                   className="w-20"
                   size="small"
                 />
@@ -332,6 +350,7 @@ export default observer(function MilitaryLeaveApplyForm(props: Props) {
                 <Input 
                   readOnly
                   className="w-20"
+                  value={_ministerNurseAudit?.handleTime ? moment(_ministerNurseAudit?.handleTime).get('date') : ""}
                   size="small"
                 />
                 <span>日</span>
@@ -375,8 +394,8 @@ export default observer(function MilitaryLeaveApplyForm(props: Props) {
             <td colSpan={5}>
               <Input
                 className="align-left"
-                value={employeePager.legal}
-                onChange={(e) => onChange('legal', e)}
+                value={employeePager.cancellationDateDesc}
+                onChange={(e) => onChange('cancellationDateDesc', e)}
               ></Input>
             </td>
           </tr>
