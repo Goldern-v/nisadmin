@@ -19,6 +19,7 @@ import QuarterWork from "src/modules/nurseHandBookNew/views/detail-jew/component
 import PdfViewer from "src/modules/nursingRulesNew-wh/components/PdfViewer";
 import {appStore} from "src/stores";
 import YearPatient from "src/modules/nurseHandBookNew/views/detail-jew/components/YearPatient";
+import CoverIndex from "src/modules/nurseHandBookNew/views/detail-jew/components/cover/CoverIndex";
 
 export interface Props {
 }
@@ -42,6 +43,8 @@ export default observer(function (props: Props) {
   else if('925NDXLJH_3' ===menuCode)return  <YearWork/>
   else if('925JDGZJH_4' ===menuCode)return  <QuarterWork/>
   else if(model.formListMenu.findIndex((item:any)=>item.menuCode === menuCode) > -1) return <YearPatient/>
-  else if ('925SCFM_1' === menuCode) return <PdfViewer file={ appStore.queryObj.url || model.editorData.url} width={780 - 2} />
-  return <div></div>
+  else if(menuCode ==='925SCFM_1') return  <CoverIndex/>
+  // else if ('' === menuCode) return <PdfViewer file={ appStore.queryObj.url || model.editorData.url} width={780 - 2} />
+  // return <CoverIndex/>
+  return  <div></div>
 })

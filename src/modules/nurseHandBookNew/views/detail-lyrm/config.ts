@@ -355,7 +355,7 @@ export const formatTitle = (params: Obj, options: Obj) => {
   )
     return `${year}年${deptName}${name}`;
   if('925SCFM_1' === menuCode){
-    return  title||name
+    return  `${name}-${params.type}`
   }
   return name;
 };
