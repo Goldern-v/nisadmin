@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
-import { Button, Input, message as Message, Modal } from 'antd'
+import { Button, Input, message as Message, Modal, Tooltip  } from 'antd'
 import {appStore, authStore} from 'src/stores'
 import { observer } from 'mobx-react-lite'
 import { ColumnProps } from 'antd/lib/table'
@@ -105,7 +105,17 @@ export default observer(function NursingRulesTypeSetting() {
       align: 'center',
       render: (text: string, record: any) => {
         return (
-          <DoCon className='operation'>
+          (appStore.HOSPITAL_ID === 'qhwy' && !authStore.isDepartment) ? 
+          <DoCon>
+            <Tooltip title="您没有权限编辑!">
+              <span style={{'cursor': 'default'}}>编辑</span>
+            </Tooltip>
+            <Tooltip title="您没有权限删除!">
+              <span style={{'cursor': 'default'}}>删除</span>
+            </Tooltip>
+          </DoCon>
+          :
+          <DoCon>
             <span onClick={() => handleOpenEdit(record)}>编辑</span>
             <span
               onClick={() => {
@@ -200,7 +210,6 @@ const Wrapper = styled.div`
   height: 100%;
   width: 100%;
   background: #fff;
-
   div.topbar {
     position: absolute;
     top: 0;
