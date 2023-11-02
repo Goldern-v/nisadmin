@@ -1119,9 +1119,11 @@ useLayoutEffect(() => {
   } catch (error) { }
   try {
     // let remark = sheetViewModal.remark;
-    (document as any).querySelector(
-      ".remark-con.real textarea"
-    ).value = sheetViewModal.remark;
+    if (appStore.HOSPITAL_ID !== 'lcey') {
+      (document as any).querySelector(
+        ".remark-con.real textarea"
+      ).value = sheetViewModal.remark
+    }
   } catch (error) { }
 }, [sheetViewModal.sheetTableData, surplusWidth, sheetViewModal.remark]);
 
@@ -1313,10 +1315,10 @@ return (
                           <div className="remark-label">班次说明：</div>
                           <Input.TextArea
                             readOnly={!isEdit}
-                            defaultValue={sheetViewModal.remark}
+                            defaultValue={sheetViewModal.shiftDescription}
                             autosize={!isEdit}
                             onBlur={(e) => {
-                              sheetViewModal.remark = e.target.value;
+                              sheetViewModal.shiftDescription = e.target.value;
                             }}
                             style={{ textAlign: "left", minHeight: 60, }}
                           />
@@ -1325,10 +1327,10 @@ return (
                           <div className="remark-label">期望排班：</div>
                           <Input.TextArea
                             readOnly
-                            defaultValue={sheetViewModal.remark1}
+                            defaultValue={sheetViewModal.exportContext}
                             autosize={!isEdit}
                             onBlur={(e) => {
-                              sheetViewModal.remark1 = e.target.value;
+                              sheetViewModal.exportContext = e.target.value;
                             }}
                             style={{ minHeight: 60, textAlign: "left" }}
                           />
@@ -1337,10 +1339,10 @@ return (
                           <div className="remark-label">人力资源调配：</div>
                           <Input.TextArea
                             readOnly={!isEdit}
-                            defaultValue={sheetViewModal.remark2}
+                            defaultValue={sheetViewModal.remark}
                             autosize={!isEdit}
                             onBlur={(e) => {
-                              sheetViewModal.remark2 = e.target.value;
+                              sheetViewModal.remark = e.target.value;
                             }}
                             style={{ minHeight: 60, textAlign: "left" }}
                           />
@@ -1351,7 +1353,7 @@ return (
                         <div className="remark-item">
                           <div className="remark-label">班次说明：</div>
                           <Input.TextArea
-                            value={sheetViewModal.remark}
+                            value={sheetViewModal.shiftDescription}
                             autosize={!isEdit}
                             style={{ minHeight: 40, textAlign: "left" }}
                           />
@@ -1359,7 +1361,7 @@ return (
                         <div className="remark-item">
                           <div className="remark-label">期望排班：</div>
                           <Input.TextArea
-                            value={sheetViewModal.remark1}
+                            value={sheetViewModal.exportContext}
                             autosize={!isEdit}
                             style={{ minHeight: 40, textAlign: "left" }}
                           />
@@ -1367,7 +1369,7 @@ return (
                         <div className="remark-item">
                           <div className="remark-label">人力资源调配：</div>
                           <Input.TextArea
-                            value={sheetViewModal.remark2}
+                            value={sheetViewModal.remark}
                             autosize={!isEdit}
                             style={{ minHeight: 40, textAlign: "left" }}
                           />
@@ -1408,8 +1410,7 @@ return (
                         />
                       </div>
                     </>
-                },
-                vague: true
+                }
               })
             }
             
