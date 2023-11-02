@@ -18,7 +18,6 @@ import { formatTitle } from '../detail-lyrm/config'
 import AuditModal from './components/auditModal'
 import { nurseHandbookRecordModel as model } from '../detail-jew/model'
 import {fileDownload} from "src/utils/file/file";
-import {print} from "printing";
 import ZjhjImportTable from './components/zjhjImportTable'
 
 export interface Props {
@@ -97,15 +96,16 @@ const [exportVisible,setExportVisible]=useState<boolean>(false)
         return (record.year?record.year+'年':"")+(record.month?record.month+'月':"")+record.title
       }
     },
-    {
-      title: '状态',
-      align: 'center',
-      dataIndex: 'status',
-      render(text: number, row: Obj) {
-        const cur = STATUS_LIST.find(v => v.value === text)
-        return <span style={{ color: cur?.color }}>{cur?.label || row.statusDesc}</span>
-      }
-    },
+
+    options.isAudit ? {
+        title: '状态',
+        align: 'center',
+        dataIndex: 'status',
+        render(text: number, row: Obj) {
+          const cur = STATUS_LIST.find(v => v.value === text)
+          return <span style={{ color: cur?.color }}>{cur?.label || row.statusDesc}</span>
+        }
+      }:{},
       // ...appStore.hisMatch({
       //   map:{
       //     'qhwy':[],
@@ -143,13 +143,14 @@ const [exportVisible,setExportVisible]=useState<boolean>(false)
       render: (text: string, row: Obj) => {
         return (
           <DoCon>
-            <span onClick={() => appStore.history.push(`/nurseHandBookNewForm/detail?id=${row.id}&menuCode=${row.menuCode}`)}>查看</span>
+            <span onClick={() => appStore.history.push(`/nurseHandBookNewForm/detail?id=${row.id}&menuCode=${row.menuCode}&type=${row?.type}`)}>查看</span>
             <span onClick={() => { onDel(row.id) }}>删除</span>
           </DoCon>
         )
       }
     },
   ]
+  console.log("defColumns===",defColumns);
   /**
    * 初始化设置  
    * year_can_create_more：按年度创建，可以创建多个记录；对应登记表  
@@ -324,19 +325,19 @@ const [exportVisible,setExportVisible]=useState<boolean>(false)
       })
       setAddQuery({
         ...addQuery,
-        code:"no_validate_create_more",
+        coverCode:"925SCFM_1",
       })
-      const newColumns = [
-        {
-          title: '封面名称',
-          align: 'center',
-          dataIndex: 'title',
-          render: (text: string) => {
-            return `${text}`
-          }
-        },
-      ]
-      setColumns(newColumns)
+      // const newColumns = [
+      //   {
+      //     title: '',
+      //     align: 'center',
+      //     dataIndex: 'title',
+      //     render: (text: string) => {
+      //       return `${text}`
+      //     }
+      //   },
+      // ]
+      // setColumns(newColumns)
       getFormList()
     },
     half_year_not_more:()=>{
@@ -395,7 +396,7 @@ const [exportVisible,setExportVisible]=useState<boolean>(false)
     if(params.hasOwnProperty('halfYear')){
       params.halfYear =HALF_YEAR[params.halfYear]
     }
-    const data: Obj = { ...params,detail:params.url }
+    const data: Obj = { ...params}
     if (!params.menuCode) {
       data.menuCode = menuCode
     }
@@ -404,8 +405,8 @@ const [exportVisible,setExportVisible]=useState<boolean>(false)
     nurseHandBookService.createOrUpdate(data).then(res => {
       if (res.code === '200') {
         const { id } = res.data
-        let link =params.url?`/nurseHandBookNewForm/detail?id=${id}&url=${params.url}&menuCode=${options.menuCode}`:`/nurseHandBookNewForm/detail?id=${id}&menuCode=${options.menuCode}`
-        appStore.history.push(link)
+        // let link =params.url?`/nurseHandBookNewForm/detail?id=${id}&url=${params.url}&menuCode=${options.menuCode}`:`/nurseHandBookNewForm/detail?id=${id}&menuCode=${options.menuCode}`
+        appStore.history.push(`/nurseHandBookNewForm/detail?id=${id}&menuCode=${options.menuCode}&type=${params?.type}`)
       }
     })
   }
@@ -530,13 +531,15 @@ const [exportVisible,setExportVisible]=useState<boolean>(false)
   }, [appStore.location.pathname])
   return (
     <Wrapper>
-      <SelectCon {...{ query, setQuery, openCreate, title: options.name || '', formList, openAudit,openImport,printTable }} />
+      <SelectCon {...{ query, setQuery, openCreate, title: options.name || '', formList, openAudit,openImport,printTable,
+
+      }}  isAudit ={options.isAudit} />
       <PageContainer ref={tableRef}>
         <BaseTable
           surplusHeight={250}
           dataSource={tableData}
-          columns={defColumns}
-          rowSelection={rowSelection}
+          columns={defColumns.filter((item:any)=>item.title)}
+          rowSelection={options.isAudit ? rowSelection :undefined}
           loading={loading}
           pagination={{
             current: query.pageNum,

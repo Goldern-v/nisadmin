@@ -23,11 +23,12 @@ export interface Props extends Obj {
     onResetQuery?: () => void
     openImport?:()=>void
     printTable?:()=>void
+    isAudit?:boolean //是否拥有审核
 }
 
 /**搜索组件 */
 export default observer(function (props: Props) {
-    const {query, openCreate, setQuery, title, formList, openAudit, onResetQuery,openImport,printTable} = props
+    const {query, openCreate, setQuery, title, formList, openAudit, onResetQuery,openImport,printTable,isAudit} = props
     const changeQuery = (e: any, key: string) => {
         if (key === 'date') {
             const [d1, d2] = e
@@ -127,16 +128,20 @@ export default observer(function (props: Props) {
                                                                        key={halfYear}>{halfYear}</Option>)}
                     </Select>
                 </>}
-            <span className='label'>状态:</span>
-            <Select value={query.status} onChange={(e: any) => {
-                changeQuery(e, 'status')
-            }}>
-                {
-                    STATUS_LIST.map(v => (
-                        <Option key={v.value} value={v.value}>{v.label}</Option>
-                    ))
-                }
-            </Select>
+            {
+                isAudit && <>
+                    <span className='label'>状态:</span>
+                    <Select value={query.status} onChange={(e: any) => {
+                        changeQuery(e, 'status')
+                    }}>
+                        {
+                            STATUS_LIST.map(v => (
+                                <Option key={v.value} value={v.value}>{v.label}</Option>
+                            ))
+                        }
+                    </Select>
+                </>
+            }
             {/*  湛江海军需要增加 导出跟打印，批量导出，批量打印 */}
             {appStore.HOSPITAL_ID === 'zjhj' &&
                 <>
@@ -146,7 +151,7 @@ export default observer(function (props: Props) {
             }
             <Button type='primary' onClick={openCreate}>创建</Button>
             <Button type='primary' onClick={onResetQuery}>重置</Button>
-            {appStore.HOSPITAL_ID !== 'lyrm' && <Button type='primary' onClick={openAudit}>批量审批</Button>}
+            {isAudit && <Button type='primary' onClick={openAudit}>批量审批</Button>}
         </Wrapper>
     )
 })
