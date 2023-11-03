@@ -150,7 +150,6 @@ const [exportVisible,setExportVisible]=useState<boolean>(false)
       }
     },
   ]
-  console.log("defColumns===",defColumns);
   /**
    * 初始化设置  
    * year_can_create_more：按年度创建，可以创建多个记录；对应登记表  
@@ -214,11 +213,11 @@ const [exportVisible,setExportVisible]=useState<boolean>(false)
           align: 'center',
           dataIndex: 'year'
         },
-        {
-          title: '标题',
-          align: 'center',
-          dataIndex: 'title'
-        }
+        // {
+        //   title: '标题',
+        //   align: 'center',
+        //   dataIndex: 'title'
+        // }
       ]
       setColumns(newColumns)
       getFormList()

@@ -25,7 +25,7 @@ export interface Props {
 }
 export default observer(function (props: Props) {
   const { menuCode = '' } = model.detail?.record || {}
-  if (['925NDXLJH_2','925NDGZJH_2', '925BNGZZJ_6'].includes(menuCode))
+  if (['925NDXLJH_2','925NDGZJH_2', '925BNGZZJ_6'].includes(menuCode) && model.result)
     return <EditPage />
 
   else if ('GSYHZSC_2' === menuCode)  return <GSYHZSC_2 />

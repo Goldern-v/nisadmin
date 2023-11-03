@@ -33,6 +33,7 @@ class NurseHandBookRecordModel {
   @observable public ctxRef: any = null
   @observable public  yearPersonData:any ={}
   @observable public  formListMenu:any =[]
+  @observable public result:boolean =false
 /**科室护士data**/
 @observable public  nurseList:any =[]
   constructor() {
@@ -135,10 +136,12 @@ public  handleEditorAllChange =(data1:any,data2:any)=>{
         }
 
         this.loading = false;
+        this.result =true
       })
       .catch((e) => {
         console.log("test-e", e);
         this.loading = false;
+        this.result =true
       });
   };
   @action
@@ -156,6 +159,7 @@ public  handleEditorAllChange =(data1:any,data2:any)=>{
     this.editorTitle = null;
     this.editorTime = null;
     this.yearPersonData =null
+    this.result =false
   }
 
   /**
