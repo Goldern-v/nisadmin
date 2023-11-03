@@ -77,7 +77,6 @@ export default observer(function TableList() {
             loading={fourData.tableLoading}
             dataSource={fourData.tableList}
             columns={columns.filter((item: any) => item)}
-            surplusWidth={780}
           />
         </ScrollCon>
         {/* table添加数据 */}

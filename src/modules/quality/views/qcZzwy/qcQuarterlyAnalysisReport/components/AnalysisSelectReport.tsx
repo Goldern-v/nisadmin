@@ -47,8 +47,8 @@ function AnalysisSelectReport(props: Props) {
       })
       QuarterlyZzwyData.templateData.qcCode = value.qcCode
       QuarterlyZzwyData.templateData.itemCodeObj = tempArray || []
-      console.log("value===",value);
-      console.log("tempArray===",tempArray);
+      // console.log("value===",value);
+      // console.log("tempArray===",tempArray);
       delete value.itemCode;
       delete value.qcCode
       // let keys = Object.keys(value)

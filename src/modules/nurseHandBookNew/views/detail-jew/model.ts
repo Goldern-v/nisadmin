@@ -121,7 +121,7 @@ public  handleEditorAllChange =(data1:any,data2:any)=>{
           this.configFn =
             config[menuCode]
           this.editorTime = time ? moment(time) : '';
-          this.editorTitle = (year? year +'年':"") + title ;
+          this.editorTitle = title ;
         } else {
           this.configFn = null
         }
