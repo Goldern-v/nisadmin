@@ -20,23 +20,6 @@ export default observer(function (props: Props, ref) {
         console.log(e.editor.getData());
         model.handleEditorChange({v1: e.editor.getData()})
     }
-    // useEffect(() => {
-    //     console.log("model.editorData.v1===", model.editorData.v1);
-    //     if(model.editorData.v1){
-    //         model.handleEditorChange({v1:model.editorData.v1})
-    //     }
-    //     // setLoading(true)
-    //     // setTimeout(() => {
-    //     //     setLoading(false)
-    //     // }, 800)
-    //     // 销毁 CKEditor 实例
-    //     return () => {
-    //         if (editorInstance) {
-    //             editorInstance.destroy();
-    //         }
-    //     };
-    // }, [model.editorData.v1]);
-
     return (
         <Wrapper ref={model.ctxRef} style={{pointerEvents: model.allowEdit ? 'auto' : 'none'}}>
             <Input className='title' value={model.editorTitle} onChange={(e) => model.onChangeTitle(e)}/>

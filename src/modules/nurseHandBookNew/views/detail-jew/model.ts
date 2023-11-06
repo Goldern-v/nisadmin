@@ -100,6 +100,7 @@ public  handleEditorAllChange =(data1:any,data2:any)=>{
         const {
           record: { detail,deptCode, title = "", menuCode = '', time,year,menuName},
         } = res.data;
+        const currentYear:number =new Date().getFullYear()
         /**获取当前科室护士**/
         this.getNurseList(deptCode)
         /**获取年度病人数据**/
@@ -122,7 +123,7 @@ public  handleEditorAllChange =(data1:any,data2:any)=>{
           this.configFn =
             config[menuCode]
           this.editorTime = time ? moment(time) : '';
-          this.editorTitle = title ;
+          this.editorTitle = title.includes(currentYear)?title:`${currentYear}${title}`
         } else {
           this.configFn = null
         }
