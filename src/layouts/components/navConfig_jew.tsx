@@ -91,6 +91,11 @@ const baseConfig: navConfigItem[] = [
         icon: require("../images/menu-icon/护理查房@2x.png"),
         path: '/checkWard/JewDutyRecord',
       },
+      {
+        name: '质量检查汇总',
+        icon: require("../images/menu-icon/护理查房@2x.png"),
+        path: '/qualitySummary/Summary',
+      },
     ],
   },
   {

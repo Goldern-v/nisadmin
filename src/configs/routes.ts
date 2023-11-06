@@ -306,6 +306,10 @@ const CheckWardRouter = lazy(() =>
   import("src/modules/quality/CheckWardRouter")
 );
 
+const qualitySummary = lazy(() =>
+  import("src/modules/quality/qualitySummary")
+);
+
 const GoodOrBadRouter = lazy(()=> import("src/modules/quality/goodOrBadEvent/GoodOrBadRouter"));
 const SpecialNurseRouter = lazy(()=> import("src/modules/quality/specialNurseQuality/SpecialNurseRouter"));
 const WholePrint = lazy(()=> import("src/modules/quality/goodOrBadEvent/WholePrint"));
@@ -989,6 +993,7 @@ const routes: RouteItem[] = [
   setLayout("/administrative/qcThree/recordView", administrativeqcThree, layouts.MainLayout),
   setLayout("/checkWard/月护长查房反馈表详情", 月护长查房反馈表详情, layouts.MainLayout),
   setLayout("/checkWard", CheckWardRouter, layouts.MainLayout),
+  setLayout("/qualitySummary", qualitySummary, layouts.MainLayout),
   setLayout("/queryStatistics", QueryStatisticsRouter, layouts.MainLayout),
   setLayout("/nurseHandBook", NurseHandBookRouter, layouts.MainLayout),
   setLayout("/nurseHandBookNew", NurseHandBookRouterNew, layouts.MainLayout),
