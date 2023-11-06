@@ -35,6 +35,14 @@ const baseConfig: navConfigItem[] = [
     name: "我的档案",
     path: "/selfNurseFile",
   },
+  {
+    name: "护士长手册",
+    path: "/nurseHandBookNew",
+  },
+  {
+    name: "护理工作满意度",
+    path: "/nurseSatisfactionSurvey",
+  },
   // 不良事件功能暂时屏蔽
   // {
   //   name: "不良事件",
@@ -71,11 +79,11 @@ const baseConfig: navConfigItem[] = [
         path: "/queryStatistics",
         icon: require("../images/menu-icon/护理查房@2x.png"),
       },
-      {
-        name: "护理查房",
-        path: "/checkWard",
-        icon: require("../images/menu-icon/护理查房@2x.png"),
-      },
+      // {
+      //   name: "护理查房",
+      //   path: "/checkWard",
+      //   icon: require("../images/menu-icon/护理查房@2x.png"),
+      // },
       {
         name: "护理质量指标",
         path: "/goodOrBadRouter",
@@ -87,16 +95,7 @@ const baseConfig: navConfigItem[] = [
         icon: require("../images/menu-icon/病区登记本@2x.png"),
         hidden:!authStore.isSpecialMenu,
       },
-      {
-        name: "护士长手册",
-        path: "/nurseHandBookNew",
-        icon: require("../images/menu-icon/护理查房@2x.png"),
-      },
-      {
-        name: "护理工作满意度调查表",
-        path: "/nurseSatisfactionSurvey",
-        icon: require("../images/menu-icon/护理查房@2x.png"),
-      }
+      
 
     ],
   },

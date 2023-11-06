@@ -66,7 +66,7 @@ export default observer(function (props: Props) {
     return (
         <Wrapper className='con--a4' ref={model.ctxRef}>
             <div className='title'>
-                {model.detail?.record?.year}年{model.detail?.record?.month}月{model.detail?.record?.[config?.titleType || 'menuName']}
+                {model.detail?.record?.year}年{model.detail?.record?.month}{model.detail?.record?.[config?.titleType || 'menuName']}
             </div>
             <table style={{marginBottom: '-1px'}}>
                 <colgroup>
