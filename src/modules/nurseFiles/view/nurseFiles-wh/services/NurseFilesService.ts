@@ -35,6 +35,7 @@ export default class NurseFilesService extends BaseApiService {
         map: {
           'gxjb': 'countExcelForJB',
           'nfzxy': 'countExcelForNFZXY',
+          '925': 'countExcelFor925',
           other: 'countExcel'
         },
       })
