@@ -343,6 +343,7 @@ export const tableConConfig = {
             {
                 title: "重点工作",
                 width: "50%",
+                component: "TextArea",
                 // component: "DataPicker",
             },
             {
@@ -355,6 +356,7 @@ export const tableConConfig = {
             },
             {
                 title: "备注",
+                component: "TextArea",
             },
         ],
         rows: 27,
@@ -379,6 +381,7 @@ export const tableConConfig = {
             {
                 title: "发表杂志名称",
                 width: "20%",
+                component: "TextArea",
             },
             {
                 title: "期刊号",
@@ -386,6 +389,7 @@ export const tableConConfig = {
             {
                 title: "会议名称",
                 width: "10%",
+                component: "TextArea",
             },
         ],
         titleType: true,
@@ -438,10 +442,12 @@ export const tableConConfig = {
                 title: "项目名称",
                 width: "15%",
                 // component: "DataPicker",
+                component: "TextArea",
             },
             {
                 title: "协助单位",
                 width: "25%",
+                component: "TextArea",
             },
             {
                 title: "获奖等级",
@@ -464,6 +470,7 @@ export const tableConConfig = {
             {
                 title: "进修及参观学习单位",
                 width: "40%",
+                component: "TextArea",
                 // component: "DataPicker",
             },
             {
@@ -478,7 +485,8 @@ export const tableConConfig = {
             },
             {
                 title: "总天数",
-                width: "15%"
+                width: "15%",
+                component: "TextArea",
             },
         ],
         isAdd: true,
@@ -533,19 +541,23 @@ export const tableConConfig = {
             {
                 title: "嘉奖",
                 width: "15%",
+                component: "TextArea",
             },
             {
                 title: "立功",
                 width: "10%",
+                component: "TextArea",
             },
             {
                 title: "荣誉称号",
                 width: "10%",
+                component: "TextArea",
                 // component: "DataPicker",
             },
             {
                 title: "其他",
                 width: "30%",
+                component: "TextArea",
             },
         ],
         isAdd: true,
