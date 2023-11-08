@@ -1,20 +1,16 @@
 import React from 'react'
 import styled from 'styled-components'
 import { nurseHandbookRecordModel as model } from '../model'
-import { Input, DatePicker, Select } from 'antd'
+import { Input} from 'antd'
 import { observer } from 'mobx-react'
 import { DetailCtxCon } from 'src/modules/nurseHandBookNew/style'
 import moment from 'moment'
-import { authStore } from 'src/stores'
+import classNames from "classnames";
 const { TextArea } = Input
-const { Option } = Select
 
-export interface Props {
-}
+
 /**护士长季度工作计划 */
-export default observer(function (props: Props) {
-
-  const { deptList } = authStore
+export default observer(function () {
 
   const onChange = (e: any, key: string) => {
 
@@ -26,17 +22,18 @@ export default observer(function (props: Props) {
     model.handleEditorChange(data)
   }
 
-  const onChange1 = (e: any, key: string) => {
-    const data = {
-      ...model.editorData,
-      [key]: e
-    }
-    model.handleEditorChange(data)
-  }
+
 
   return (
     <Wrapper className='con--a4' ref={model.ctxRef}>
-      <Input className='title' value={model.editorTitle} onChange={(e) => model.onChangeTitle(e)} />
+      <div className='title-box'>
+        <Input className={classNames(['title', 'title-box-input'])} value={model.editorData?.vYear}
+               onChange={(e: any) => onChange(e, 'vYear')}/>年
+        <Input
+            className={classNames(['title', 'title-box-input'])}
+            value={model.editorData?.vMonth} onChange={(e: any) => onChange(e, 'vMonth')}/>月{model.editorTitle}
+      </div>
+      {/*<Input className='title' value={model.editorTitle} onChange={(e) => model.onChangeTitle(e)} />*/}
       <table>
         <colgroup>
           <col width='100%' />
@@ -44,10 +41,10 @@ export default observer(function (props: Props) {
         <tbody>
           <tr>
             <td className='flex cell-ipt'>
-              <div>日期：</div>
-              <DatePicker
-                style={{ width: 180 }}
-                value={model.editorData?.v1 ? moment(model.editorData.v1) : undefined} onChange={(e:any) => onChange1(e, 'v1')} />
+              <div>日期：{moment().format('YYYY-MM-DD')}</div>
+              {/*<DatePicker*/}
+              {/*  style={{ width: 180 }}*/}
+              {/*  value={model.editorData?.v1 ? moment(model.editorData.v1) : undefined} onChange={(e:any) => onChange1(e, 'v1')} />*/}
             </td>
           </tr>
           {/* <tr>
@@ -101,6 +98,17 @@ export default observer(function (props: Props) {
 })
 
 const Wrapper = styled(DetailCtxCon)`
+  .title-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+
+  .title-box-input {
+    width: 70px !important;
+    margin-bottom: 0 !important;
+  }
 .label{
   text-align: left;
 }
@@ -111,7 +119,7 @@ const Wrapper = styled(DetailCtxCon)`
   display: none;
 }
 .ant-input{
-  border: 'none'
+  border: none
 }
 
 `

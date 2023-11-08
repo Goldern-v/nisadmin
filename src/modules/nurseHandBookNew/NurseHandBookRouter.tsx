@@ -313,10 +313,10 @@ export default function NurseHandBookRouter() {
           component: () => appStore.hisMatch({
             map: {
               gzsrm: <ListGzsrm options={v} />,
-              '925,qhwy,zjhj':<List925 options={v}/>,
+              925:<List925 options={v}/>,
               jmfy:<List925 options={v}/>,
-              // qhwy:<List925 options={v}/>,
-              // zjhj:<List925 options={v}/>,
+              qhwy:<List925 options={v}/>,
+              zjhj:<List925 options={v}/>,
               lyrm: <ListLyrmNew options={v} />,
               other: <ListLyrm options={v} />
               // other: null

@@ -235,9 +235,10 @@ const [exportVisible,setExportVisible]=useState<boolean>(false)
         startTime,
         endTime,
         menuCode: '',
+        'isQHWYZB': !(options.menuCode =='QHWYZB')
       })
       const newColumns = [
-        {
+        options.menuCode !== 'QHWYZB' && {
           title: '日期',
           align: 'center',
           dataIndex: 'startTime',
