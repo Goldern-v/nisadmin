@@ -141,6 +141,7 @@ export default {
             self.handleEditorChange(arr);
         },
     },
+    /**护士长手册**/
     '925SCFM_1': {
         initContent() {
             const self: any = this;
@@ -149,6 +150,13 @@ export default {
                 v2: "", /*科室*/
                 v3: "",/*名称*/
             });
+        },
+    },
+    'JMFYRLTJB': {
+        initContent(row = 10, col = 10) {
+            const self: any = this;
+            const arr = createArr(row, (j, k) => createObjV(col));
+            self.handleEditorChange(arr);
         },
     },
 };
@@ -616,6 +624,76 @@ export const tableConConfig = {
             },
         ],
         isAdd: true,
+        rows: 20,
+    },
+    "JMFYRLTJB": {
+        columns: [
+            {
+                title: "序号",
+                isEdit:false,
+            },
+            {
+                title: "统计单位",
+                isEdit:false,
+                keyType: 'deptName'
+            },
+            {
+                title: "实际开放床位",
+                isEdit:true,
+                keyType:'v1'
+            },
+            {
+                title: "配置标准",
+                isEdit:true,
+                keyType:'v2'
+            },
+            {
+                title: "应配护士",
+                isEdit:true,
+                keyType:'v3'
+            },
+            {
+                title: "现有执业护士总人数",
+                isEdit:false,
+                keyType:'practicingNurses',
+            },
+            {
+                title: "床位使用率",
+                isEdit:true,
+                keyType:'v4'
+            },
+            {
+                title: "实际床护比",
+                isEdit:true,
+                keyType:'v5'
+            },
+            {
+                title: "休假人次",
+                isEdit:true,
+                keyType:'v6'
+            },
+            {
+                title: "实际在岗人次",
+                isEdit:true,
+                keyType:'v7'
+            },
+            {
+                title: "实际应配护士",
+                isEdit:true,
+                keyType:'v8'
+            },
+            {
+                title: "培训生",
+                isEdit:false,
+                keyType:'trainee',
+            },
+            {
+                title: "本月人力分析",  //实际在岗人次-实际应配护士
+                isEdit:true,
+                keyType:'v9'
+            },
+        ],
+        // isAdd: true,
         rows: 20,
     }
 };

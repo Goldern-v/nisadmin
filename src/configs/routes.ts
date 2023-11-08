@@ -1004,6 +1004,7 @@ const routes: RouteItem[] = [
         925:detail925,
         qhwy:detailQhwy,
         zjhj:detail925,
+        jmfy:detail925,
         other: detailLyrm
         // other: null
       }
