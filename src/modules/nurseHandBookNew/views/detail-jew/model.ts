@@ -209,8 +209,8 @@ public  handleEditorAllChange =(data1:any,data2:any)=>{
   };
   public openAudit = () => {
     this.auditModal.show({
-      onOkCb: (params: string) => {
-        this.onCommit(params)
+      onOkCb: (params: any) => {
+        this.handleNode(params)
       }
     })
   }
@@ -220,7 +220,12 @@ public  handleEditorAllChange =(data1:any,data2:any)=>{
    */
 
   public handleNode = (params: types.Obj) => {
-    nurseHandBookService.handleNodeNHR(params).then((res) => {
+    nurseHandBookService.handleNodeNHR({
+      ...params,
+      id: this.id,
+      nodeCode:this.detail?.record?.nextNode
+    }).then((res) => {
+      message.success('审核成功')
       this.getDetail();
     });
   };
