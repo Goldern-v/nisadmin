@@ -381,10 +381,12 @@ export const tableConConfig = {
             {
                 title: "作 者",
                 width: "15%",
+                component: "TextArea",
             },
             {
                 title: "题   目",
                 width: "15%",
+                component: "TextArea",
             },
             {
                 title: "发表杂志名称",
