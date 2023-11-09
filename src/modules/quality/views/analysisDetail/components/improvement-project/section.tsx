@@ -14,7 +14,7 @@ export interface Props {
   modalTitle?: string | undefined,
   keyName: string
 }
-// 
+//
 export default observer(function ImprovementProjectSection(props: Props) {
   let { sectionId, sectionTitle, keyName } = props
   const analysisDetailModal = useRef(getModal())
@@ -73,7 +73,7 @@ export default observer(function ImprovementProjectSection(props: Props) {
         </div>
         <div className='title_left'>改善方案</div>
         <div>问题<div>What</div></div>
-        <div>主要原因<div>Why</div></div>
+        <div style={{width:'90px'}}>主要原因Why</div>
         <div>对策方案<div>How</div></div>
         <div>实施时间<div>When</div></div>
         <div>实施地点<div>Where</div></div>

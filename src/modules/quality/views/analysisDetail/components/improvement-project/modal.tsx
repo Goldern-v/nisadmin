@@ -12,7 +12,7 @@ export interface Props {
   data: any
   setData: any
 }
-// 
+//
 export default observer(function ImprovementProjectModal(props: Props) {
   let { sectionId, setData, data } = props
   const analysisDetailModal = useRef(getModal())
