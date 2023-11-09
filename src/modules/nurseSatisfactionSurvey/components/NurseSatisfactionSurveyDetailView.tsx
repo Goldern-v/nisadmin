@@ -8,6 +8,8 @@ import NurseSatisfactionSurveyService from '../services/NurseSatisfactionSurveyS
 import BaseTable from 'src/components/BaseTable'
 import { fileDownload } from 'src/utils/file/file'
 import FormPageBody from '../components/FormPageBody'
+import FormPageBodyzjhj from '../components/FormPageBodyzjhj'
+// hidden:appStore.HOSPITAL_ID !=='925'
 
 const api = new NurseSatisfactionSurveyService();
 import { DoCon } from 'src/components/BaseTable'
@@ -41,7 +43,7 @@ export default observer(function followUpDetailView() {
   }, [])
 
   const onDetail = (record: any) => {
-    api.getAppPaper(record.fillRecordId)
+    api.getAppPage(record.fillRecordId)
     .then((res) => {
       setEditVisible(true)
       setPreviewPaperData(res.data)
@@ -174,6 +176,14 @@ export default observer(function followUpDetailView() {
         previewPaperData={previewPaperData}
         onOk={() => setEditVisible(false)}
         onCancel={() => setEditVisible(false)} />
+        {['zjhj'].includes(appStore.HOSPITAL_ID) && (
+         <FormPageBodyzjhj
+        visible={editVisible}
+        previewPaperData={previewPaperData}
+        onOk={() => setEditVisible(false)}
+        onCancel={() => setEditVisible(false)} />
+         )}
+        
   </Wrapper>
 })
 
