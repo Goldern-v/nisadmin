@@ -198,6 +198,11 @@ const CourseLibrary = lazy(() => import("./views/courseLibrary/CourseLibrary"));
 
 export interface Props extends RouteComponentProps {}
 
+const peixunWHYX = ()=>{
+  const user = JSON.parse(sessionStorage.getItem('user') || '{}')
+  return !user.roleManageCodeList.find((code:any)=>['WHYX_QCR5001','WHYX_QCR5002','WHYX_QCR5003','QCR0004'].includes(code))
+}
+
 export default function ContinuingEdu(props: Props) {
   // const [dataList, setDataList] = useState([] as any); // 动态菜单树
   const [authList, setAuthList] = useState<any>([]); // 固定菜单权限
@@ -1209,6 +1214,81 @@ const getIcon = (icon: any) => {
     // })
   ];
 
+  const 新护士管理岗前培训 = appStore.hisMatch({
+    map: {
+      whyx:[
+        {
+          title: "新护士管理-岗前培训",
+          path: "/continuingEdu",
+          icon: <YNXXB />,
+          hide: peixunWHYX(),
+          children: [
+            {
+              title: "人员名单",
+              path: "/continuingEdu/preJobList",
+              component: PreJobList,
+            },
+            {
+              title: "培训计划",
+              path: "/continuingEdu/preJobTrainingPlan",
+              component: PreJobTrainingPlan,
+            },
+            {
+              title: "岗前理论考核",
+              path: "/continuingEdu/preJobTheory",
+              component: TheoryExam,
+            },
+            {
+              title: "岗前实操考核",
+              path: "/continuingEdu/preJobPractice",
+              component: TheoryExam,
+            },
+            {
+              title: "实施记录",
+              path: "/continuingEdu/preJobRecord",
+              component: ImplementRecord,
+            },
+          ],
+        },
+      ],
+      default:[
+        {
+          title: "新护士管理-岗前培训",
+          path: "/continuingEdu",
+          icon: <YNXXB />,
+          hide: ['whhk'].includes(appStore.HOSPITAL_ID),
+          children: [
+            {
+              title: "人员名单",
+              path: "/continuingEdu/preJobList",
+              component: PreJobList,
+            },
+            {
+              title: "培训计划",
+              path: "/continuingEdu/preJobTrainingPlan",
+              component: PreJobTrainingPlan,
+            },
+            {
+              title: "岗前理论考核",
+              path: "/continuingEdu/preJobTheory",
+              component: TheoryExam,
+            },
+            {
+              title: "岗前实操考核",
+              path: "/continuingEdu/preJobPractice",
+              component: TheoryExam,
+            },
+            {
+              title: "实施记录",
+              path: "/continuingEdu/preJobRecord",
+              component: ImplementRecord,
+            },
+          ],
+        },
+      ]
+    }
+  })
+  
   const LEFT_MENU_CONFIG_WHYX = [
     {
       title: "人员管理",
@@ -1242,39 +1322,7 @@ const getIcon = (icon: any) => {
         
       ],
     },
-    {
-      title: "新护士管理-岗前培训",
-      path: "/continuingEdu",
-      icon: <YNXXB />,
-      hide: ['whhk'].includes(appStore.HOSPITAL_ID),
-      children: [
-        {
-          title: "人员名单",
-          path: "/continuingEdu/preJobList",
-          component: PreJobList,
-        },
-        {
-          title: "培训计划",
-          path: "/continuingEdu/preJobTrainingPlan",
-          component: PreJobTrainingPlan,
-        },
-        {
-          title: "岗前理论考核",
-          path: "/continuingEdu/preJobTheory",
-          component: TheoryExam,
-        },
-        {
-          title: "岗前实操考核",
-          path: "/continuingEdu/preJobPractice",
-          component: TheoryExam,
-        },
-        {
-          title: "实施记录",
-          path: "/continuingEdu/preJobRecord",
-          component: ImplementRecord,
-        },
-      ],
-    },
+    ...新护士管理岗前培训,
     {
       title: "新护士管理-临床培训",
       path: "/continuingEdu",
