@@ -193,7 +193,12 @@ export default class NurseFilesService extends BaseApiService {
 
   /** 籍贯搜索 */
   public nurseNativePlaceFindByName(nativePlaceName: any) {
-    return this.post(`/nurseNativePlace/findByName`, { nativePlaceName: nativePlaceName, pageSize: 20, pageIndex: 1 })
+    switch(appStore.HOSPITAL_ID){
+      case "925":
+        return this.post(`/nurseNativePlace/findByNameForJew`, { nativePlaceName: nativePlaceName, pageSize: 20, pageIndex: 1 })
+      default:
+        return this.post(`/nurseNativePlace/findByName`, { nativePlaceName: nativePlaceName, pageSize: 20, pageIndex: 1 })
+    }
   }
 
   /* nfzxy 护理管理添加人员时获取信息 */
