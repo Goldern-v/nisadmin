@@ -51,7 +51,18 @@ const rules: Rules = {
   // 基本数据
   ...appStore.hisMatch({
     map: {
-      'wh,dghm': {
+      'wh': {
+        sex: (val: any) => !!val || '性别不能为空',
+        nation: (val: any) => !!val || '民族不能为空',
+        nativePlace: (val: any) => !!val || '籍贯不能为空',
+        age: (val: any) => !!val || '年龄不能为空',
+        phone: (val: any) => !!val || '手机号不能为空',
+        zyzsNumber: (val: any) => !!val || '护士执业证书编号不能为空',
+        zyzsDate: (val: any) => !!val || '取得护士执业证书时间不能为空',
+        zyzsNursingPostDate: (val: any) => !!val || '取得执业证书并从事护理岗位时间不能为空',
+        zyzsEffectiveUpDate: (val: any) => !!val || '护士执业证书有效截止日期不能为空',
+      },
+      'dghm': {
         sex: (val: any) => !!val || '性别不能为空',
         nation: (val: any) => !!val || '民族不能为空',
         nativePlace: (val: any) => !!val || '籍贯不能为空',
@@ -516,7 +527,7 @@ export default function EditWorkHistoryModal(props: Props) {
           </Col>
           {
             !['fsxt', '925', 'dghm', 'zjhj'].includes(appStore.HOSPITAL_ID) && <Col span={12}>
-              <Form.Field label={`初始学历`} name="initialEducation">
+              <Form.Field label={['zhzxy'].includes(appStore.HOSPITAL_ID) ? '第一学历' : `初始学历`} name="initialEducation">
                 <Select>
                   {nurseFileDetailViewModal.getDict("初始学历").map((item) => (
                     <Select.Option value={item.code} key={item.code}>
@@ -538,7 +549,7 @@ export default function EditWorkHistoryModal(props: Props) {
             (['zhzxy'].includes(appStore.HOSPITAL_ID)) &&
             <>
               <Col span={12}>
-                <Form.Field label={`毕业学校`} name="maps.school_name">
+                <Form.Field label={`第一学历毕业院校`} name="maps.school_name">
                   <Input />
                 </Form.Field>
               </Col>
@@ -562,7 +573,26 @@ export default function EditWorkHistoryModal(props: Props) {
               </Select>
             </Form.Field>
           </Col>
-
+          {
+            (['zhzxy'].includes(appStore.HOSPITAL_ID)) &&<>
+            <Col span={12}>
+              <Form.Field label={`最高学历毕业院校`} name="maps.heighest_graduate">
+                <Input />
+              </Form.Field>
+            </Col>
+            <Col span={12}>
+              <Form.Field label={`是否中医院校`} name="maps.tcm_college">
+                <Select>
+                  {[{code: '是', name: '是'}, {code: '否', name: '否'}].map((item) => (
+                      <Select.Option value={item.code} key={item.code}>
+                        {item.name}
+                      </Select.Option>
+                    ))}
+                </Select>
+              </Form.Field>
+            </Col>
+          </>
+          }
           {
             appStore.HOSPITAL_ID !== 'fsxt' &&
             <>
@@ -582,6 +612,22 @@ export default function EditWorkHistoryModal(props: Props) {
               </Col>
             </>
           }
+          {
+          (['zhzxy'].includes(appStore.HOSPITAL_ID)) &&
+            <Col span={12}>
+              <Form.Field label={`是否完成西学中培训课程`} name="maps.complete_wsms">
+                <Select>
+                  {[{code: '是', name: '是'}, {code: '否', name: '否'}].map((item) => (
+                      <Select.Option value={item.code} key={item.code}>
+                        {item.name}
+                      </Select.Option>
+                    ))}
+                </Select>
+              </Form.Field>
+            </Col>
+          }
+
+
           <Col span={12} style={{ height: '52px' }}>
             <Form.Field label={`职务`} name="job">
               <SelectOrAutoInput dict="职务" />

@@ -96,7 +96,7 @@ class QualityControlRecordEditModel {
   //指定人员类型及名单
   @observable nodeAppointList: Array<INodeAppoint> = [];
   // 是否需要添加患者弹窗
-  needPatientModal: boolean = ['whsl'].includes(appStore.HOSPITAL_ID)
+  needPatientModal: boolean = ['whsl','zjhj'].includes(appStore.HOSPITAL_ID)
   // 是否添加患者弹窗
   @observable patientVisible: boolean = false
 @observable userNurseList : Array<any> = []

@@ -13,7 +13,9 @@ import { preJobApi } from '../PreJobApi';
 import { globalModal } from "src/global/globalModal"
 const Option = Select.Option;
 const TextArea = Input.TextArea;
-export default observer(function PreJobList() {
+export default observer(function PreJobList(props) {
+	//菜单传值过来 判别是否有配置canEdit 没配置的默认为true
+	let canEdit = typeof(props.canEdit)==="boolean" ? props.canEdit : true;
 	let history = store.appStore.history
 	//选中的行下标
 	const [selectedRowKeys, setSelectedRowKeys] = useState([] as any[]);
@@ -214,9 +216,9 @@ export default observer(function PreJobList() {
 				return (
 					<DoCon>
 						<span onClick={() => history.push(`/nurseFileDetail/baseInfo?empNo=${record.empNo}`)}>查看</span>
-						<span onClick={() => { openDeptModal(index) }}>分配科室</span>
-						<span onClick={() => { saveTableItem(record) }}>保存</span>
-						<span onClick={() => { removeTableItem(record, index) }}>移出</span>
+						{canEdit && <span onClick={() => { openDeptModal(index) }}>分配科室</span>}
+						{canEdit && <span onClick={() => { saveTableItem(record) }}>保存</span>}
+						{canEdit && <span onClick={() => { removeTableItem(record, index) }}>移出</span>}
 					</DoCon>
 				);
 			}
@@ -370,9 +372,9 @@ export default observer(function PreJobList() {
 					>
 						查询
 					</Button>
-					<Button className="span" onClick={removeList}>移出</Button>
+					{canEdit &&  <Button className="span" onClick={removeList}>移出</Button>}
 					<Button className="span" onClick={() => preJobListData.exportExcel()}>导出</Button>
-					<Button className="span" onClick={() => { clickAdd() }}>新增</Button>
+					{canEdit && <Button className="span" onClick={() => { clickAdd() }}>新增</Button>}
 				</RightIcon>
 			</Headerr>
 			<ScrollCon>

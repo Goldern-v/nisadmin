@@ -92,6 +92,11 @@ export default class AMServices extends BaseApiService {
   public batchAudited(obj: any) {
     return this.post(`/schDeptTransferWH/batchAudited`, obj)
   }
+/** 临邑人民  **/
+public getLyrmByIdAudite(id: number) {
+  return this.post(`/nurseWHInSpecializ/getByIdAudite?${id}`)
+}
+
 }
 
 export const aMServices = new AMServices();

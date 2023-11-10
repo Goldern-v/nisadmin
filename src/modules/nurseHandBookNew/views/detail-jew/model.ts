@@ -33,6 +33,7 @@ class NurseHandBookRecordModel {
   @observable public ctxRef: any = null
   @observable public  yearPersonData:any ={}
   @observable public  formListMenu:any =[]
+  @observable public result:boolean =false
 /**科室护士data**/
 @observable public  nurseList:any =[]
   constructor() {
@@ -99,6 +100,7 @@ public  handleEditorAllChange =(data1:any,data2:any)=>{
         const {
           record: { detail,deptCode, title = "", menuCode = '', time,year,menuName},
         } = res.data;
+        const currentYear:number =new Date().getFullYear()
         /**获取当前科室护士**/
         this.getNurseList(deptCode)
         /**获取年度病人数据**/
@@ -121,7 +123,7 @@ public  handleEditorAllChange =(data1:any,data2:any)=>{
           this.configFn =
             config[menuCode]
           this.editorTime = time ? moment(time) : '';
-          this.editorTitle = title;
+          this.editorTitle = title.includes(currentYear)?title:`${currentYear}${title}`
         } else {
           this.configFn = null
         }
@@ -135,10 +137,12 @@ public  handleEditorAllChange =(data1:any,data2:any)=>{
         }
 
         this.loading = false;
+        this.result =true
       })
       .catch((e) => {
         console.log("test-e", e);
         this.loading = false;
+        this.result =true
       });
   };
   @action
@@ -156,6 +160,7 @@ public  handleEditorAllChange =(data1:any,data2:any)=>{
     this.editorTitle = null;
     this.editorTime = null;
     this.yearPersonData =null
+    this.result =false
   }
 
   /**
@@ -204,8 +209,8 @@ public  handleEditorAllChange =(data1:any,data2:any)=>{
   };
   public openAudit = () => {
     this.auditModal.show({
-      onOkCb: (params: string) => {
-        this.onCommit(params)
+      onOkCb: (params: any) => {
+        this.handleNode(params)
       }
     })
   }
@@ -215,7 +220,12 @@ public  handleEditorAllChange =(data1:any,data2:any)=>{
    */
 
   public handleNode = (params: types.Obj) => {
-    nurseHandBookService.handleNodeNHR(params).then((res) => {
+    nurseHandBookService.handleNodeNHR({
+      ...params,
+      id: this.id,
+      nodeCode:this.detail?.record?.nextNode
+    }).then((res) => {
+      message.success('审核成功')
       this.getDetail();
     });
   };

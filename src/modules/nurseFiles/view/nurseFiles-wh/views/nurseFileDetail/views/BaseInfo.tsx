@@ -255,22 +255,32 @@ export default observer(function BaseInfo() {
           },
           vague: true
         }),
-        appStore.hisMatch({
+        ...appStore.hisMatch({
           map: {
-            dghm: {
+            dghm: [{
               家庭住址: data.address,
               最高学历: data.highestEducation
-            },
-            other: {
+            }],
+            zhzxy: [
+              {
+                第一学历: data.initialEducation,
+                最高学历: data.highestEducation
+              },
+              {
+                最高学历毕业院校: data?.maps?.heighest_graduate,
+                是否中医院校: data?.maps?.tcm_college
+              },
+            ],
+            other: [{
               初始学历: data.initialEducation,
               最高学历: data.highestEducation
-            }
+            }]
           }
         }),
         ...appStore.hisMatch({
           map: {
             zhzxy: [{
-              毕业学校: maps.school_name,
+              第一学历毕业院校: maps.school_name,
               所学专业: maps.major
             }],
             other: []
@@ -280,14 +290,31 @@ export default observer(function BaseInfo() {
           取得最高学历时间: data.highestEducationDate,
           最高学历学位: data.highestEducationDegree,
         },
-        {
-          职务: data.job,
-          现职务任职起始时间: data.jobStartDate,
-        },
-        {
-          ...['wjgdszd'].includes(appStore.HOSPITAL_ID) ? { 编制科室: data.workAddress } : { 院内工作地点: data.workAddress },
-          工作护理单元: data.deptName,
-        },
+        ...appStore.hisMatch({
+          map: {
+            zhzxy: 
+            [
+              {
+                是否完成西学中培训课程: data?.maps?.complete_wsms,
+                职务: data.job,
+              },
+              {
+                现职务任职起始时间: data.jobStartDate,
+                院内工作地点: data.workAddress
+              }
+            ],
+            other: [
+              {
+                职务: data.job,
+                现职务任职起始时间: data.jobStartDate,
+              },
+              {
+                ...['wjgdszd'].includes(appStore.HOSPITAL_ID) ? { 编制科室: data.workAddress } : { 院内工作地点: data.workAddress },
+                工作护理单元: data.deptName,
+              },
+            ]
+          }
+        }),
         (() => {
           switch (appStore.HOSPITAL_ID) {
             case "gxjb":
@@ -334,7 +361,11 @@ export default observer(function BaseInfo() {
                 鞋码大小: data.shoeSize,
                 带教老师: data.maps?.tutor,
               }
-
+            case 'zhzxy':
+              return {
+                工作护理单元: data.deptName,
+                鞋码大小: data.shoeSize,
+              }
             default:
               return {
                 鞋码大小: data.shoeSize,

@@ -24,6 +24,8 @@ const getLastSixMonths = () => {
   const preSixMonthDate = moment(moment().subtract(6, 'month').format('YYYY-MM-DD'))
   return [preSixMonthDate, currentDate]
 }
+const surplusWidth = appStore.HOSPITAL_ID === 'zjhj' ? 0 : 20
+
 export default observer((props: Props) => {
   const { location } = appStore
   /**是否病区登记本及武汉 by wh */
@@ -260,7 +262,7 @@ export default observer((props: Props) => {
       <Wrapper>
         <TableWrapper>
           <BaseTable
-            surplusWidth={20}
+            surplusWidth={surplusWidth}
             loading={loading}
             columns={isWR ? columns1 : columns}
             dataSource={tableData}

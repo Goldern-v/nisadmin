@@ -881,7 +881,7 @@ export default observer(function 重点患者评估登记本(props: Props) {
               children = <DisableSpan />
             }
           }
-          if (item.itemCode == '药品名称' || item.itemCode == '名称') {
+          if (item.itemCode == '药品名称' || item.itemCode == '名称' || item.itemCode == '仪器设备：名称') {
             children = <InputColumnRender
               {...{
                 cellDisabled,
@@ -1435,6 +1435,18 @@ export default observer(function 重点患者评估登记本(props: Props) {
       let param = {
         name: "",
         type: "急救车药品"
+      }
+      wardRegisterService.getPharmacy(param).then((res) => {
+        let arr: Array<string> = []
+        res.data.map((item: any) => {
+          arr.push(item.name)
+        })
+        setPharmacyList(arr)
+      })
+    } else if (registerCode === 'QCRG_11_2') {
+      let param = {
+        name: "",
+        type: "仪器设备名称"
       }
       wardRegisterService.getPharmacy(param).then((res) => {
         let arr: Array<string> = []

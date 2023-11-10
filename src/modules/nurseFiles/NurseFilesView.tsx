@@ -16,15 +16,10 @@ import NurseFilesListView_dghl from "./view/nurseFiles-dghl/views/nurseFilesList
 import NurseFilesListView_dgxg from "./view/nurseFiles-dgxg/views/nurseFilesList/NurseFilesListView";
 import NurseFilesListView_yczyy from "./view/nurseFiles-yczyy/views/nurseFilesList/NurseFilesListView";
 import NurseFilesListView_fqfybjy from "./view/nurseFiles-fqfybjy/views/nurseFilesList/NurseFilesListView";
-// import NurseFilesListView_wjgdszd from "./view/nurseFiles-wjgdszd/views/nurseFilesList/NurseFilesListView";
-
 import RetiredRetirees from "./view/retiredRetirees/RetiredRetireesView";
 import RetiredRetireesNys from "./view/retiredRetirees-nys/RetiredRetireesView";
 import StatisticsView from "./view/statistics/StatisticsView";
 import StatisticsViewWHYX from "./view/statistics-whyx/StatisticsView";
-
-// import StatisticsViews from "./view/statistics-hj/StatisticsView";
-// import StatisticsViewsNys from "./view/statistics-nys/StatisticsView";
 //护士调动
 import HumanResource from "./view/nurseFiles-nys/views/humanResource/HumanResource";
 //院级小组
@@ -845,6 +840,7 @@ export default observer(function NurseFilesView(props: Props) {
         return LEFT_MENU_CONFIG_NYS;
       case "whyx":
       case 'whhk':
+      case 'jmfy':
         return LEFT_MENU_CONFIG_WHYX;
       case "lyrm":
       case "stmz":

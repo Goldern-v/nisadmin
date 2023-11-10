@@ -311,6 +311,10 @@ const CheckWardRouter = lazy(() =>
   import("src/modules/quality/CheckWardRouter")
 );
 
+const qualitySummary = lazy(() =>
+  import("src/modules/quality/qualitySummary")
+);
+
 const GoodOrBadRouter = lazy(()=> import("src/modules/quality/goodOrBadEvent/GoodOrBadRouter"));
 const SpecialNurseRouter = lazy(()=> import("src/modules/quality/specialNurseQuality/SpecialNurseRouter"));
 const WholePrint = lazy(()=> import("src/modules/quality/goodOrBadEvent/WholePrint"));
@@ -583,7 +587,7 @@ const routes: RouteItem[] = [
   setLayout("/satisfiedPatSubmit", SatisfiedPatSubmit),
   setLayout("/followUpIndex", FollowUpIndex),
   setLayout("/followUpDetail", FollowUpDetail),
-  setLayout("/selfNurseFile/leaveRecordDetail/:id", LeaveRecordDetail, layouts.MainLayout),
+  setLayout("/selfNurseFile/leaveRecordDetail", LeaveRecordDetail, layouts.MainLayout),
 
   ...specialModule,
   setLayout("/autoLogin", appStore.hisMatch({
@@ -712,7 +716,9 @@ const routes: RouteItem[] = [
     appStore.hisMatch({
       map: {
         'nys': BadEventsNewDetailNys,
-        'gzsrm,qhwy,925': BadEventsNewDetailGzsrm,
+        'gzsrm': BadEventsNewDetailGzsrm,
+        'qhwy': BadEventsNewDetailGzsrm,
+        '925': BadEventsNewDetailGzsrm,
         hj: BadEventsNewDetail,
         'fsxt,zjhj': BadEventsNewDetailFsxt,
         other: BadEventsNewDetailCommon
@@ -727,7 +733,9 @@ const routes: RouteItem[] = [
     "/badEventsNewDetail/:id",
     appStore.hisMatch({
       map: {
-        'gzsrm,qhwy,925': BadEventsNewDetailGzsrm,
+        'gzsrm': BadEventsNewDetailGzsrm,
+        'qhwy': BadEventsNewDetailGzsrm,
+        '925':BadEventsNewDetailGzsrm,
         // fqfybjy: BadEventsNewDetailCommon,
         // yczyy: BadEventsNewDetailCommon,
         // other: BadEventsNewDetail
@@ -995,6 +1003,7 @@ const routes: RouteItem[] = [
   setLayout("/administrative/qcThree/recordView", administrativeqcThree, layouts.MainLayout),
   setLayout("/checkWard/月护长查房反馈表详情", 月护长查房反馈表详情, layouts.MainLayout),
   setLayout("/checkWard", CheckWardRouter, layouts.MainLayout),
+  setLayout("/qualitySummary", qualitySummary, layouts.MainLayout),
   setLayout("/queryStatistics", QueryStatisticsRouter, layouts.MainLayout),
   setLayout("/nurseHandBook", NurseHandBookRouter, layouts.MainLayout),
   setLayout("/nurseHandBookNew", NurseHandBookRouterNew, layouts.MainLayout),
@@ -1005,6 +1014,7 @@ const routes: RouteItem[] = [
         925:detail925,
         qhwy:detailQhwy,
         zjhj:detail925,
+        jmfy:detail925,
         other: detailLyrm
         // other: null
       }

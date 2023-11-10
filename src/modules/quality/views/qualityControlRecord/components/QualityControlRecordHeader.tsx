@@ -360,7 +360,7 @@ export default observer(function TopCon(props: any) {
       {exportCon()}
       {appStore.hisMatch({
         map: {
-          'gzsrm,whsl': (
+          'gzsrm,whsl,zjhj': (
             <FormCreateByTagModal
               onCancel={() => setFormCreateVisible(false)}
               onOk={() => setFormCreateVisible(false)}

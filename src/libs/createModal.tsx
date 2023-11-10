@@ -63,6 +63,7 @@ export default function createModal<
 
   return {
     show(props?: ModalOwnProps<I>, callback?: ModalCallback<O>) {
+      console.log('show', instance)
       if (instance) instance.show(props, callback);
     },
     hide() {

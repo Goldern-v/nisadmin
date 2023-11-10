@@ -8,6 +8,8 @@ import createModal, { ModalComponentProps } from 'src/libs/createModal'
 import TraineeAuditModal from './TraineeAuditModal'
 
 import { traineeFilesApi } from '../api/TraineeFilesApi'
+import { appStore } from 'src/stores'
+import TraineeFilesEditModal from "./TraineeFilesEditModal"; // 添加修改弹窗
 
 const Option = Select.Option
 
@@ -29,6 +31,8 @@ export default function TraineeCheckModal(props: Props) {
   const [selectedRows, setSelectedRows] = useState([] as any[])
 
   const traineeAuditModal = createModal(TraineeAuditModal)
+
+  
 
   useLayoutEffect(() => {
     if (visible) {
@@ -143,10 +147,19 @@ export default function TraineeCheckModal(props: Props) {
             <span
               onClick={() => traineeAuditModal.show({
                 id: record.id,
+                status: 'check',
                 okCallback: () => getTableData()
               })}>
               检查
             </span>
+            {['hj'].includes(appStore.HOSPITAL_ID) && <span
+              onClick={() => traineeAuditModal.show({
+                id: record.id,
+                status: 'edit',
+                okCallback: () => getTableData()
+              })}>
+              编辑
+            </span>}
             <span onClick={() => handleDelete([record.id])}>删除</span>
           </DoCon>
         )
@@ -160,6 +173,20 @@ export default function TraineeCheckModal(props: Props) {
     onCancel()
     closeCallback && closeCallback()
   }
+
+  // const [editVisible, setEditVisible] = useState(false); //弹窗开关
+  // const [editParams, setEditParams] = useState({} as any); //修改弹窗回显数据
+  // // 弹窗
+  // const handleEditCancel = () => {
+  //   setEditVisible(false);
+  //   setEditParams({});
+  // };
+  // const handleEditOk = () => {
+  //   // traineeFilesModal.onload();
+  //   getTableData()
+  //   handleEditCancel();
+  // };
+
 
   return (
     <React.Fragment>
@@ -210,6 +237,12 @@ export default function TraineeCheckModal(props: Props) {
           <traineeAuditModal.Component />
         </Wrapper>
       </Modal>
+      {/* <TraineeFilesEditModal
+        visible={editVisible}
+        params={editParams}
+        onCancel={handleEditCancel}
+        onOk={handleEditOk}
+      /> */}
     </React.Fragment>
   )
 }

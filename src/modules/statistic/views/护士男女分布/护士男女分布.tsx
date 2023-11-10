@@ -13,6 +13,8 @@ import {currentMonth, currentQuater, currentYear} from "src/utils/date/rangeMeth
 import printing from "printing";
 import {Con} from 'src/modules/statistic/common/css/CommonLayout.ts';
 import moment from "src/vendors/moment";
+import PrintTable from '../printTable/printTable'
+
 const RangePicker = DatePicker.RangePicker
 const Option = Select.Option
 
@@ -34,6 +36,7 @@ export default observer(function 护士男女分布() {
   const [chartHeight, setChartHeight] = useState(chartHeightCol())
   const [chartVisible, setChartVisible] = useState(false)
   const [isPrint, setIsPrint] = useState(false)
+  const tablePrintRef = useRef<HTMLDivElement | null>(null);
   const tableRef = useRef<HTMLDivElement | null>(null);
   const [loading, setLoading] = useState(false)
 
@@ -111,42 +114,28 @@ export default observer(function 护士男女分布() {
   useEffect(() => {
     if(isPrint){
       setImg()
-      printing(tableRef.current!, {
+      let current = chartVisible ? tableRef.current! : tablePrintRef.current!
+      !chartVisible && (current.style.display = 'block')
+      printing(current, {
         injectGlobalCss: true,
         scanStyles: false,
         css: `
           @page {
             margin: 10px;
           }
-          #baseTable{
-            position: absolute;
-            left: 0;
-            top: 30px;
-          }
-          .ant-table-body{
-            max-height: none !important;
-            height: auto !important;
-          }
-          .tableBox{
-            height:1100px;
-            overflow:hidden;
-            page-break-after: always;
-          }
           .right-group{
             display:none
           }
           .chart-img {
-            max-height: 260mm;
             width: 100%;
-            object-fit: cover
-          }
-          .tableBox #baseTable .ant-table-wrapper td{
-            height: 40px !important;
+            object-fit: contain;
+            height: 100%;
           }
         `,
       }).then(()=>{
         setIsPrint(false)
       });
+      tablePrintRef.current!.style.display = 'none'
     }
   }, [isPrint])
 
@@ -214,7 +203,7 @@ export default observer(function 护士男女分布() {
           }}
           allowClear={false} />}
       <Button type="primary" onClick={handleSearch}>查询</Button>
-      {['jmfy'].includes(appStore.HOSPITAL_ID) && <Button type="primary" onClick={exportPdf}>导出pdf</Button>}
+      {['jmfy','hj'].includes(appStore.HOSPITAL_ID) && <Button type="primary" onClick={exportPdf}>导出pdf</Button>}
     </div>}
     body={<Spin spinning={loading}>
       <Con ref={tableRef} className="tableBox">
@@ -251,6 +240,9 @@ export default observer(function 护士男女分布() {
           <span>暂无数据</span>
         </div>}
       </ChartCon>}
+      <div ref={tablePrintRef} style={{display:'none'}}>
+        <PrintTable dataSource={data} columns={columns} title={'护士男女分布'}></PrintTable>
+      </div>
       </Con>
     </Spin>} />
 })

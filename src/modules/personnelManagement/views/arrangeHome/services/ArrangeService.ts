@@ -44,7 +44,7 @@ export default class ArrangeService extends BaseApiService {
 
   /** 保存排班信息 */
   public saveOrUpdate(status: "0" | "1" | undefined, urlName: string) {
-    let obj = {
+    let obj:any = {
       startTime: selectViewModal.params.startTime,
       endTime: selectViewModal.params.endTime,
       setting: appStore.hisMatch({
@@ -75,6 +75,10 @@ export default class ArrangeService extends BaseApiService {
         .weekday(6)
         .format("YYYY-MM-DD")
     };
+    if (['lcey'].includes(appStore.HOSPITAL_ID)) {
+      obj['exportContext'] = sheetViewModal.exportContext,
+      obj['shiftDescription'] = sheetViewModal.shiftDescription
+    }
     return this.post(`/${urlName}/saveOrUpdate`, obj);
   }
 
@@ -273,6 +277,10 @@ export default class ArrangeService extends BaseApiService {
       deptCode: selectViewModal.params.deptCode,
       status: "1"
     };
+    if (['lcey'].includes(appStore.HOSPITAL_ID)) {
+      obj['exportContext'] = sheetViewModal.exportContext,
+      obj['shiftDescription'] = sheetViewModal.shiftDescription
+    }
     return this.post(`/scheduling/saveOrUpdate`, obj);
   }
 

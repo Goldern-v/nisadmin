@@ -30,7 +30,7 @@ export default forwardRef(function (props: Props, ref: any) {
           <tbody>
             <tr>
               <td>科室：{master.deptName}</td>
-              <td>二值护士：{master.submitName}</td>
+              <td>二值护士：{master.onDutyNurseName}</td>
               <td colSpan={4}>值班日期：{moment(master.submitTime).format('YYYY年MM月DD日')}</td>
             </tr>
             <tr>

@@ -1,11 +1,10 @@
 import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
-import { Button } from 'src/vendors/antd'
 import { ColumnProps } from 'antd/lib/table'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
 import { cloneJson } from 'src/utils/json/clone'
 import { tableCon } from '../../style/modal'
-import { Input, Select } from 'src/vendors/antd'
+import { Input, Select, Popconfirm, Button } from 'src/vendors/antd'
 const { Option } = Select;
 
 export interface Props {
@@ -32,7 +31,7 @@ export default function qualityIndexModal(props: Props) {
     {
       title: '项目',
       align: 'center',
-      width:160,
+      width:150,
       render(text:string, record:any, index:number) {
         return (
           <div className='inp_textArea'>
@@ -105,7 +104,7 @@ export default function qualityIndexModal(props: Props) {
         {
           title: '合格数/抽查数',
           align: 'center',
-          width:100,
+          width:120,
           render(text: string, record: any, index: number) {
             return (
               <div className='inp_textArea double' >
@@ -199,12 +198,53 @@ export default function qualityIndexModal(props: Props) {
               </div>
             )
           },
-        }
+        },
+        {
+          title: '操作',
+          dataIndex: 'operation',
+          align: 'center',
+          width: 60,
+          render: (text, record, index) =>
+            (cloneData?.list || []).length >= 1 ? (
+              <Popconfirm title="确定删除吗?" onConfirm={() => onDelete(record, index)}>
+                <a>删除</a>
+              </Popconfirm>
+            ) : null,
+        },
       ]
     },
   ]
+
+  const onDelete = (record: any, index: any) => {
+    let list = (cloneData?.list || []).filter((item:any, idx: any) => idx !== index)
+    setData({ ...cloneData, list })
+  }
+  
+  const onAdd = () => {
+    setData({
+      ...cloneData, 
+      list: [
+        ...cloneData.list,
+        {
+          item: '',
+          qualityPassScore: '',
+          standardPassRate: '',
+          qualifiedCount: '',
+          checkCount: '',
+          averageScore: '',
+          passRate: '',
+          standardStatus: ''
+        }
+      ]
+    })
+  }
+
+
   return (
     <Wrapper>
+      <div className="add">
+        <Button size="small" type="primary" onClick={onAdd}>增加</Button>
+      </div>
       <BaseTable columns={columns} dataSource={(cloneData.list && cloneData.list || [])}
       />
 
@@ -213,6 +253,11 @@ export default function qualityIndexModal(props: Props) {
   )
 }
 const Wrapper = styled(tableCon)`
+.add{
+  width: 100%;
+  text-align: right;
+  padding: 0 20px;
+}
 .inp_textArea input {
     width: 100%;
     height: 100%;

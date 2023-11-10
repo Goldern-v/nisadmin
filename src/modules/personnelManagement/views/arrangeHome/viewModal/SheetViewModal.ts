@@ -79,6 +79,9 @@ class SheetViewModal {
   @observable public groupName: any;
   @observable public countObj: any = {}
 
+  @observable public exportContext: string = "";  // 期望排班
+  @observable public shiftDescription: string = ""; // 班次说明
+
   getAllDeptList() {
     arrangeService.getAllDeptList().then((res: any) => {
       this.deptList = res.data.deptList || [];
@@ -357,6 +360,8 @@ class SheetViewModal {
         this.searchNurseId();
       }
       this.remark = res.data.remark;
+      this.exportContext = res.data.exportContext || '';
+      this.shiftDescription = res.data.shiftDescription || '';
       this.allCell = this.getAllCell(true);
     });
   }
@@ -392,6 +397,8 @@ class SheetViewModal {
       this.tableLoading = false;
       this.sheetTableData = this.handleSheetTableData(res.data.setting);
       this.remark = res.data.remark;
+      this.exportContext = res.data.exportContext || '';
+      this.shiftDescription = res.data.shiftDescription || '';
       this.allCell = this.getAllCell(true);
     });
   }
@@ -419,6 +426,8 @@ class SheetViewModal {
         countObj
       );
       this.remark = res.data.remark;
+      this.exportContext = res.data.exportContext || '';
+      this.shiftDescription = res.data.shiftDescription || '';
       this.allCell = this.getAllCell(true);
     });
   }

@@ -78,6 +78,7 @@ export default function (props: Props) {
             <Col span={16}>
               <Form.Field name='deptCode'>
                 <Select>
+                  <Option key={''} value={'common'}>通用</Option>
                   {
                     deptList.map(v => (
                         <Option key={v.code} value={v.code}>{v.name}</Option>

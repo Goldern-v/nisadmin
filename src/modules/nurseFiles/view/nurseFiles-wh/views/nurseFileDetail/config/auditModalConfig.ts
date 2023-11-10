@@ -235,17 +235,30 @@ export function openAuditModal(
                     ? "从事护理岗位时间"
                     : "取得执业证书并从事护理岗位时间"]: "zyzsNursingPostDate",
                 },
-                {
-                  护士执业证书有效截止日期: "zyzsEffectiveUpDate",
-                  ...("dghm" === appStore.HOSPITAL_ID
-                    ? { 家庭住址: "address" }
-                    : { 初始学历: "initialEducation" }),
-                },
                 ...appStore.hisMatch({
                   map: {
                     zhzxy: [
                       {
-                        毕业学校: "school_name",
+                        护士执业证书有效截止日期: "zyzsEffectiveUpDate",
+                        第一学历: "initialEducation"
+                      },
+                    ],
+                    other: [
+                      {
+                        护士执业证书有效截止日期: "zyzsEffectiveUpDate",
+                        ...("dghm" === appStore.HOSPITAL_ID
+                          ? { 家庭住址: "address" }
+                          : { 初始学历: "initialEducation" }),
+                      },
+                    ],
+                  },
+                  vague: true,
+                }),
+                ...appStore.hisMatch({
+                  map: {
+                    zhzxy: [
+                      {
+                        第一学历毕业院校: "school_name",
                         所学专业: "major",
                       },
                     ],
@@ -257,10 +270,33 @@ export function openAuditModal(
                   最高学历: "highestEducation",
                   取得最高学历时间: "highestEducationDate",
                 },
+                ...appStore.hisMatch({
+                  map: {
+                    zhzxy: [
+                      {
+                        最高学历毕业院校: "heighest_graduate",
+                        是否中医院校: "tcm_college",
+                      },
+                    ],
+                    other: [],
+                  },
+                  vague: true,
+                }),
                 {
                   最高学历学位: "highestEducationDegree",
                   职务: "job",
                 },
+                ...appStore.hisMatch({
+                  map: {
+                    zhzxy: [
+                      {
+                        是否完成西学中培训课程: "complete_wsms",
+                      },
+                    ],
+                    other: [],
+                  },
+                  vague: true,
+                }),
                 {
                   现职务任职起始时间: "jobStartDate",
                   ...(["wjgdszd"].includes(appStore.HOSPITAL_ID)

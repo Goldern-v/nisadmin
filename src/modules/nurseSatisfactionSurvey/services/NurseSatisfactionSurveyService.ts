@@ -51,6 +51,15 @@ export default class NurseSatisfactionSurveyService extends BaseApiService {
     return this.get(`/satisfaction/fill/getAppPaper?fillRecordId=${id}`)
   }
 
+ /*问卷填写*/
+ public commitPaper(obj: PageOptions | any) {
+  return this.post(`/satisfaction/fill/commitPaper`,obj)
+}
+
+ /*问卷填写提交*/
+ public getAppPage(id: string) {
+  return this.get(`/satisfaction/fill/getAppPaper?fillRecordId=${id}`)
+}
   /*满意度调查结果汇总导出*/
   public exportReport(obj: PageOptions | any) {
     return this.post(`/satisfaction/survey/exportReport`, obj ,{ responseType: 'blob' })

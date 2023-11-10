@@ -6,6 +6,7 @@ import { observer } from 'src/vendors/mobx-react-lite'
 import OneLevelTitle from '../common/OneLevelTitle'
 import EditButton from '../common/EditButton'
 import { LastImproveItem, Report } from '../../types'
+import {appStore} from "src/stores";
 export interface Props {
   sectionId: string
   sectionTitle?: string | undefined
@@ -18,7 +19,7 @@ export default observer(function 问题及建议模块(props: Props) {
   let report: Report = (data ? data.report : {}) || {}
   return (
     <Wrapper>
-      <OneLevelTitle text={`六、需提交护理部质量与安全组讨论的问题及建议`} />
+      <OneLevelTitle text={appStore.HOSPITAL_ID ==='jmfy'?`六、科室质控分数汇总统计`: `六、需提交护理部质量与安全组讨论的问题及建议`} />
       <TextCon className='footer-title'>{report.suggestions}</TextCon>
       <EditButton onClick={() => qualityAnalysisReportViewModal!.openEditModal(sectionId)}>编辑</EditButton>
     </Wrapper>

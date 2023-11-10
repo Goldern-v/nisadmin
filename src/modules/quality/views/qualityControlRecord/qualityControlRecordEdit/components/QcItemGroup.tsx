@@ -457,25 +457,10 @@ export default observer(function QcItemGroup(props: Props) {
                   remark: e.target.value,
                 }, itemIndex)} />
             </div>}
-            { appStore.HOSPITAL_ID ==='925' && <>
-             <div>责任人: <Select
-                 showSearch
-                 value={item.liableNo ? item.liableNo.split(','):[]}
-                 onChange={(e:any)=>{
-                   item.liableNo = e.join(',')
-                 }}
-                 mode={'multiple'}
-                 filterOption={(input: any, option: any) =>
-                     option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                 }
-                 style={{width:180,margin:'0 5px'}}>
-               {(qcModel.userNurseList||[]).map((nurse: any) => <Option key={nurse?.empNo}>{nurse.empName}</Option>)}
-             </Select></div>
-            </>}
           </div>}
           {appStore.hisMatch({
             map: {
-              '925': !qcModel.baseInfo.useScore && <div className="sub-item-list">
+              '925,yczyy': !qcModel.baseInfo.useScore && <div className="sub-item-list">
                 <div style={{ marginTop: 5 }}>
                   <Input.TextArea
                     value={item.remark}
@@ -491,6 +476,21 @@ export default observer(function QcItemGroup(props: Props) {
             },
             vague: true
           })}
+          { appStore.HOSPITAL_ID ==='925' && <>
+            <div>责任人: <Select
+                showSearch
+                value={item.liableNo ? item.liableNo.split(','):[]}
+                onChange={(e:any)=>{
+                  item.liableNo = e.join(',')
+                }}
+                mode={'multiple'}
+                filterOption={(input: any, option: any) =>
+                    option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                }
+                style={{width:180,margin:'0 5px'}}>
+              {(qcModel.userNurseList||[]).map((nurse: any) => <Option key={nurse?.empNo}>{nurse.empName}</Option>)}
+            </Select></div>
+          </>}
           {appStore.hisMatch({
             map: {
               "whyx,whhk": '',

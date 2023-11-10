@@ -49,7 +49,7 @@ export default observer(function (props: Props) {
     }, [appStore.location.pathname])
 
     const [query, setQuery] = useState<Obj>({
-        deptCode: authStore.defaultDeptCode,
+        deptCode: '',
         status: '',
         pageSize: 20,
         pageNum: 1,
@@ -57,7 +57,7 @@ export default observer(function (props: Props) {
     })
     // LYHZSC_8 登记表搜索参数
     const [lyhzscQuery, setLyhzscQuery] = useState<Obj>({
-        deptCode: authStore.defaultDeptCode,
+        deptCode:'',
         startTime,
         endTime,
         pageSize: 20,
@@ -333,7 +333,7 @@ const onOkLYHZSC_9Add =(params: Obj)=>{
         if (query.menuCode) query.menuCode = ''
         setQuery({
             ...query,
-            deptCode: authStore.defaultDeptCode,
+            deptCode:'',
             status: '',
             pageSize: 20,
             pageNum: 1,
@@ -369,38 +369,40 @@ const onOkLYHZSC_9Add =(params: Obj)=>{
                         {tableData.length < 1 &&
                             <Empty style={{marginTop: '200px', width: "100%"}} image={Empty.PRESENTED_IMAGE_SIMPLE}
                                    description={'创建一份' + (options.name || '')}/>}
-                        {
-                            tableData.map((it: any) => {
-                                return (
-                                    <div
-                                        className={it.id == currContent?.id ? 'left-item active' : 'left-item'}
-                                        key={it.id} onClick={() => {
-                                        setCurrContent(it);
-                                    }}>
-                                        <div className='plan-left-title'><span
-                                            className='fontsize-16 ellipsis'>{it.title}</span>
-                                            {/* 待提交 */}
-                                            {it.status === 0 && <Badge className='plan-badge ready' color='#108ee9'
-                                                                       text={it.statusDesc}/>}
-                                            {/* 待审批 */}
-                                            {it.status === 1 && <Badge className='plan-badge wait' color='#F0944B'
-                                                                       text={it.statusDesc}/>}
-                                            {/* 审批通过 */}
-                                            {it.status === 2 && <Badge className='plan-badge through' color='#87d068'
-                                                                       text={it.statusDesc}/>}
-                                            {/* 审批不通过 */}
-                                            {it.status == -1 &&
-                                                <Badge className='plan-badge fail' color='#f00' text={it.statusDesc}/>}
-                                        </div>
-                                        <div>
+                        <div style={{ overflowY: 'auto',height:"100vh"}}>
+                            {
+                                tableData.map((it: any) => {
+                                    return (
+                                        <div
+                                            className={it.id == currContent?.id ? 'left-item active' : 'left-item'}
+                                            key={it.id} onClick={() => {
+                                            setCurrContent(it);
+                                        }}>
+                                            <div className='plan-left-title'><span
+                                                className='fontsize-16 ellipsis'>{it.title}</span>
+                                                {/* 待提交 */}
+                                                {it.status === 0 && <Badge className='plan-badge ready' color='#108ee9'
+                                                                           text={it.statusDesc}/>}
+                                                {/* 待审批 */}
+                                                {it.status === 1 && <Badge className='plan-badge wait' color='#F0944B'
+                                                                           text={it.statusDesc}/>}
+                                                {/* 审批通过 */}
+                                                {it.status === 2 && <Badge className='plan-badge through' color='#87d068'
+                                                                           text={it.statusDesc}/>}
+                                                {/* 审批不通过 */}
+                                                {it.status == -1 &&
+                                                    <Badge className='plan-badge fail' color='#f00' text={it.statusDesc}/>}
+                                            </div>
+                                            <div>
                                             <span
                                                 className='fontsize-16'>{it.createName}</span><span>{it.deptName}</span>
+                                            </div>
+                                            <p className='plan-left-time'>{it.createdTime}</p>
                                         </div>
-                                        <p className='plan-left-time'>{it.createdTime}</p>
-                                    </div>
-                                )
-                            })
-                        }
+                                    )
+                                })
+                            }
+                        </div>
                     </div>
                     <div className='right'>
                         {
@@ -433,6 +435,7 @@ const onOkLYHZSC_9Add =(params: Obj)=>{
                             ['deptCode']: e
                         })
                     }}>
+                        {options.menuCode === 'LYHZSC_9' &&<Option key={0} value={'common'}>通用</Option>}
                         <Option key={0} value={''}>全部</Option>
                         {
                             authStore.deptList.map(v => (
@@ -501,7 +504,6 @@ const Wrapper = styled.div`
 
     .left {
       width: 250px;
-      overflow-y: auto;
       border: 1px solid #ddd;
       box-sizing: border-box;
 

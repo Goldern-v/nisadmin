@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import React, { useState, useLayoutEffect } from 'react'
+import React, { useState, useLayoutEffect, useEffect } from 'react'
 import { Modal, Input, DatePicker, Select, Row, Col, message, Spin,InputNumber } from 'antd'
 import { ModalComponentProps } from 'src/libs/createModal'
 import Form from 'src/components/Form'
@@ -36,20 +36,32 @@ export default function PersonelSecondModal(props: Props) {
   const [nurseList, setNurseList] = useState([])
   const [modalLoading, setModalLoading] = useState(false)
 
+  const [patientNum, setPatientNum]:any = useState(null)
+  const [nurseNum, setNurseNum]:any = useState(null)
+
+  const [percentage, setPercentage]:any = useState(null)
+
   let { visible, onCancel, recordData} = props
   let refForm = React.createRef<Form>()
 
   const onSave = async () => {
     if (!refForm.current) return
     let [err, value] = await to(refForm.current.validateFields())
+    if (IS_QHWY && (!patientNum && String(patientNum) !== '0') && (!nurseNum && String(nurseNum) !== '0')) return
     if (err) return
     let data: any = { ...value }
-    data.empNo = authStore!.user!.empNo
+    data.empNo = authStore?.user?.empNo
     data.deptCode = authStore.selectedDeptCode || authStore.defaultDeptCode
     data.deptName = authStore.selectedDeptCode ? authStore.selectedDeptName : authStore.defaultDeptName
-    data.empNameTransferTo = (nurseList.find((item: any) => item.empNo == data.empNoTransferTo) as any)!.empName
-    data.deptNameTransferTo = (deptList.find((item: any) => item.code == data.deptCodeTransferTo) as any)!.name
+    data.empNameTransferTo = (nurseList.find((item: any) => item.empNo == data.empNoTransferTo) as any)?.empName
+    data.deptNameTransferTo = (deptList.find((item: any) => item.code == data.deptCodeTransferTo) as any)?.name
     data.startDate = moment(data.startDate).format('YYYY-MM-DD')
+    if (IS_QHWY) {
+      data.nurseNum = nurseNum
+      data.patientNum = patientNum
+      data.percentage = percentage
+    }
+    
     /** 保存接口 */
     globalModal.confirm('确定要保存吗？', '保存后，该护士会在指定日期自动借出。').then((res) => {
      if(IS_QHWY){
@@ -83,10 +95,15 @@ export default function PersonelSecondModal(props: Props) {
       })
       if(recordData){
         /** 编辑 */
-        refForm!.current!.setFields({
+        if (IS_QHWY) {
+          setNurseNum(recordData['nurseNum'] || null)
+          setPatientNum(recordData['patientNum'] || null)
+          setPercentage(recordData['percentage'] || null)
+        }
+        refForm?.current?.setFields({
           id:recordData['id'],
-          nurseNum: recordData['nurseNum'],
-          patientNum: recordData['patientNum'],
+          // nurseNum: recordData['nurseNum'],
+          // patientNum: recordData['patientNum'],
           deptCodeTransferTo: recordData['deptCodeTransferTo'],
           empNoTransferTo: recordData['empNoTransferTo'],
           startDate: moment(recordData['startDate']),
@@ -94,9 +111,14 @@ export default function PersonelSecondModal(props: Props) {
         })
       }else{
         /** 表单数据初始化 */
-        refForm!.current!.setFields({
-          nurseNum: null,
-          patientNum: null,
+        if (IS_QHWY) {
+          setNurseNum(null)
+          setPatientNum(null)
+          setPercentage(null)
+        }
+        refForm?.current?.setFields({
+          // nurseNum: null,
+          // patientNum: null,
           deptCodeTransferTo: '',
           empNoTransferTo: null,
           startDate: moment(),
@@ -106,72 +128,111 @@ export default function PersonelSecondModal(props: Props) {
     }
   }, [visible])
 
+  
+
+  function calculateRatio(nurseNum: number, patientNum: number) {
+    return (patientNum / nurseNum) ? (patientNum / nurseNum).toFixed(2) : 0;
+  }
+
+  const nurseNumChange = (value: any) => {
+    setNurseNum(value)
+    setPercentage(calculateRatio(value, patientNum))
+  };
+
+  const patientNumChange = (value: any) => {
+    setPatientNum(value)
+    setPercentage(calculateRatio(nurseNum, value))
+  };
+
   return (
-    <Modal title={title} visible={visible} onCancel={onCancel} onOk={onSave} okText='保存' forceRender>
-      <Spin spinning={modalLoading}>
-        <Form ref={refForm} rules={rules} labelWidth={80}>
-          <Row>
+    <Wrapper>
+      <Modal title={title} visible={visible} onCancel={onCancel} onOk={onSave} okText='保存' forceRender>
+        <Spin spinning={modalLoading}>
+          <Form ref={refForm} rules={rules} labelWidth={100}
+          >
           {IS_QHWY && (
               <React.Fragment>
-                <Col span={24}>
-                  <Form.Field label={`护士总数`} name="nurseNum" required>
-                    <InputNumber />
-                  </Form.Field>
-                </Col>
-                <Col span={24}>
-                  <Form.Field label={`患者总数`} name="patientNum" required>
-                    <InputNumber />
-                  </Form.Field>
-                </Col>
+                <Row>
+                  <Col span={6} style={{textAlign: 'right'}}>
+                    <span style={{'color': 'red', 'marginTop': '2px' }}>*</span>
+                    白班责护总数 &nbsp;
+                  </Col>
+                  <Col span={18}>
+                    <Form.Field>
+                      <InputNumber value={nurseNum} onChange={(value) => nurseNumChange(value)} />
+                    </Form.Field>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col span={6} style={{textAlign: 'right'}}>
+                    <span style={{'color': 'red', 'marginTop': '2px' }}>*</span>
+                    患者总数 &nbsp;
+                  </Col>
+                  <Col span={18}>
+                    <Form.Field >
+                      <InputNumber value={patientNum} onChange={(value) => patientNumChange(value)} />
+                    </Form.Field>
+                  </Col>
+                </Row>
               </React.Fragment>
             )}
-            <Col span={24}>
-              <Form.Field label={`接收科室`} name='deptCodeTransferTo' required>
-                <Select
-                  showSearch
-                  filterOption={(input: any, option: any) =>
-                    option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                  }
-                >
-                  {deptList.map((item: any, index: number) => (
-                    <Option value={item.code} key={index}>
-                      {item.name}
-                    </Option>
-                  ))}
-                </Select>
-              </Form.Field>
-            </Col>
+            <Row>
+              <Col span={24}>
+                <Form.Field label={`接收科室`} name='deptCodeTransferTo' required>
+                  <Select
+                    showSearch
+                    filterOption={(input: any, option: any) =>
+                      option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                    }
+                  >
+                    {deptList.map((item: any, index: number) => (
+                      <Option value={item.code} key={index}>
+                        {item.name}
+                      </Option>
+                    ))}
+                  </Select>
+                </Form.Field>
+              </Col>
 
-            <Col span={24}>
-              <Form.Field label={`借出护士`} name='empNoTransferTo' required>
-                <Select
-                  showSearch
-                  filterOption={(input: any, option: any) =>
-                    option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                  }
-                >
-                  {nurseList.map((item: any, index: number) => (
-                    <Option value={item.empNo} key={item.empNo + index + item.empName + index}>
-                      {item.empNo  + '-' + item.empName}
-                    </Option>
-                  ))}
-                </Select>
-              </Form.Field>
-            </Col>
-            <Col span={24}>
-              <Form.Field label={`借出日期`} name='startDate' required>
-                <DatePicker />
-              </Form.Field>
-            </Col>
-            <Col span={24}>
-              <Form.Field label={`借出说明`} name='detailTransferTo'>
-                <Input.TextArea />
-              </Form.Field>
-            </Col>
-          </Row>
-        </Form>
-      </Spin>
-    </Modal>
+              <Col span={24}>
+                <Form.Field label={`借出护士`} name='empNoTransferTo' required>
+                  <Select
+                    showSearch
+                    filterOption={(input: any, option: any) =>
+                      option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                    }
+                  >
+                    {nurseList.map((item: any, index: number) => (
+                      <Option value={item.empNo} key={item.empNo + index + item.empName + index}>
+                        {item.empNo  + '-' + item.empName}
+                      </Option>
+                    ))}
+                  </Select>
+                </Form.Field>
+              </Col>
+              <Col span={24}>
+                <Form.Field label={`借出日期`} name='startDate' required>
+                  <DatePicker />
+                </Form.Field>
+              </Col>
+              <Col span={24}>
+                <Form.Field label={`借出说明`} name='detailTransferTo'>
+                  <Input.TextArea />
+                </Form.Field>
+              </Col>
+              { IS_QHWY && 
+              <Col span={24}>
+                <Form.Field label={`护患比`}>
+                  <InputNumber value={percentage} />
+                </Form.Field>
+              </Col>
+              }
+            </Row>
+          </Form>
+        </Spin>
+      </Modal>
+    </Wrapper>
   )
 }
-const Wrapper = styled.div``
+const Wrapper = styled.div`
+`

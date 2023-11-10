@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react'
-import React, { useEffect, useState } from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import { PageContainer } from 'src/components/common'
 import { Obj } from 'src/libs/types'
 import styled from 'styled-components'
@@ -13,19 +13,21 @@ import AddModal from './components/addModal'
 import createModal from 'src/libs/createModal'
 import useFirstDisEffect from 'src/hooks/useFirstDisEffect'
 import { message, Modal } from 'antd'
-import {HALF_YEAR, STATUS_LIST} from './utils/enums'
+import {HALF_YEAR, STATUS_LIST, QuarterV} from './utils/enums'
 import { formatTitle } from '../detail-lyrm/config'
 import AuditModal from './components/auditModal'
 import { nurseHandbookRecordModel as model } from '../detail-jew/model'
+import {fileDownload} from "src/utils/file/file";
+import ZjhjImportTable from './components/zjhjImportTable'
 
 export interface Props {
   options: Obj
 }
 const Quarter ={'第一季度':1,'第二季度':2,'第三季度':3,'第四季度':4}
-const QuarterV ={1:'第一季度',2:'第二季度',3:'第三季度',4:'第四季度'}
 /** 13张表的菜单页，by925 */
 export default observer(function (props: Props) {
   const { options } = props
+  const tableRef = useRef<any>(null)
   /**创建弹窗 */
   const addModal = createModal(AddModal)
   useEffect(() => {
@@ -53,7 +55,8 @@ export default observer(function (props: Props) {
   const [formList, setFormList] = useState<Obj[]>([])
   const [selectedRows, setSelectedRows] = useState<Obj[]>([])
   const [auditVisible, setAuditVisible] = useState(false)
-
+const [exportVisible,setExportVisible]=useState<boolean>(false)
+  const [renderCfg,setRenderCfg]=useState([] as any)
   const rowSelection = {
     selectedRowKeys,
     getCheckboxProps: (record: Obj) => ({
@@ -61,6 +64,14 @@ export default observer(function (props: Props) {
       name: record.name,
     }),
     onChange: (keys: any, rows: any) => {
+      setRenderCfg([
+        {
+          mainTitle: options.name,
+          data: rows.length > 0 ?rows:tableData,
+          minRow: 3,
+          columns:defColumns
+        },
+      ])
       setSelectedRows(rows)
       setSelectedRowKeys(keys)
     }
@@ -81,16 +92,20 @@ export default observer(function (props: Props) {
       title: '标题',
       align: 'center',
       dataIndex: 'title',
-    },
-    {
-      title: '状态',
-      align: 'center',
-      dataIndex: 'status',
-      render(text: number, row: Obj) {
-        const cur = STATUS_LIST.find(v => v.value === text)
-        return <span style={{ color: cur?.color }}>{cur?.label || row.statusDesc}</span>
+      render:(text:string,record:any)=>{
+        return (record.year?record.year+'年':"")+(record.month?record.month+'月':"")+record.title
       }
     },
+
+    options.isAudit ? {
+        title: '状态',
+        align: 'center',
+        dataIndex: 'status',
+        render(text: number, row: Obj) {
+          const cur = STATUS_LIST.find(v => v.value === text)
+          return <span style={{ color: cur?.color }}>{cur?.label || row.statusDesc}</span>
+        }
+      }:{},
       // ...appStore.hisMatch({
       //   map:{
       //     'qhwy':[],
@@ -128,7 +143,7 @@ export default observer(function (props: Props) {
       render: (text: string, row: Obj) => {
         return (
           <DoCon>
-            <span onClick={() => appStore.history.push(`/nurseHandBookNewForm/detail?id=${row.id}&menuCode=${row.menuCode}`)}>查看</span>
+            <span onClick={() => appStore.history.push(`/nurseHandBookNewForm/detail?id=${row.id}&menuCode=${row.menuCode}&type=${row?.type}`)}>查看</span>
             <span onClick={() => { onDel(row.id) }}>删除</span>
           </DoCon>
         )
@@ -198,11 +213,11 @@ export default observer(function (props: Props) {
           align: 'center',
           dataIndex: 'year'
         },
-        {
-          title: '标题',
-          align: 'center',
-          dataIndex: 'title'
-        }
+        // {
+        //   title: '标题',
+        //   align: 'center',
+        //   dataIndex: 'title'
+        // }
       ]
       setColumns(newColumns)
       getFormList()
@@ -220,9 +235,10 @@ export default observer(function (props: Props) {
         startTime,
         endTime,
         menuCode: '',
+        'isQHWYZB': !(options.menuCode =='QHWYZB')
       })
       const newColumns = [
-        {
+        options.menuCode !== 'QHWYZB' && {
           title: '日期',
           align: 'center',
           dataIndex: 'startTime',
@@ -309,19 +325,19 @@ export default observer(function (props: Props) {
       })
       setAddQuery({
         ...addQuery,
-        code:"no_validate_create_more",
+        coverCode:"925SCFM_1",
       })
-      const newColumns = [
-        {
-          title: '封面名称',
-          align: 'center',
-          dataIndex: 'title',
-          render: (text: string) => {
-            return `${text}`
-          }
-        },
-      ]
-      setColumns(newColumns)
+      // const newColumns = [
+      //   {
+      //     title: '',
+      //     align: 'center',
+      //     dataIndex: 'title',
+      //     render: (text: string) => {
+      //       return `${text}`
+      //     }
+      //   },
+      // ]
+      // setColumns(newColumns)
       getFormList()
     },
     half_year_not_more:()=>{
@@ -380,7 +396,7 @@ export default observer(function (props: Props) {
     if(params.hasOwnProperty('halfYear')){
       params.halfYear =HALF_YEAR[params.halfYear]
     }
-    const data: Obj = { ...params,detail:params.url }
+    const data: Obj = { ...params}
     if (!params.menuCode) {
       data.menuCode = menuCode
     }
@@ -389,8 +405,8 @@ export default observer(function (props: Props) {
     nurseHandBookService.createOrUpdate(data).then(res => {
       if (res.code === '200') {
         const { id } = res.data
-        let link =params.url?`/nurseHandBookNewForm/detail?id=${id}&url=${params.url}&menuCode=${options.menuCode}`:`/nurseHandBookNewForm/detail?id=${id}&menuCode=${options.menuCode}`
-        appStore.history.push(link)
+        // let link =params.url?`/nurseHandBookNewForm/detail?id=${id}&url=${params.url}&menuCode=${options.menuCode}`:`/nurseHandBookNewForm/detail?id=${id}&menuCode=${options.menuCode}`
+        appStore.history.push(`/nurseHandBookNewForm/detail?id=${id}&menuCode=${options.menuCode}&type=${params?.type}`)
       }
     })
   }
@@ -431,6 +447,14 @@ export default observer(function (props: Props) {
       setTableData(res.data.list || [])
       setTotal(res.data.totalCount)
       setLoading(false)
+      setRenderCfg([
+        {
+          mainTitle: options.name,
+          data: res.data.list,
+          minRow: 3,
+          columns:defColumns
+        },
+      ])
     }).catch(e => setLoading(false))
   }
   const onDel = (id: string) => {
@@ -479,7 +503,19 @@ export default observer(function (props: Props) {
       switchFn[options.validateField]()
     }
   }
-
+  /****/
+  const openImport =()=>{
+    const params ={
+      title:options.name,
+      nurseHandbookRecords:selectedRowKeys.length === 0 ? tableData :  selectedRows
+    }
+    nurseHandBookService.nurseRecordExport(params).then((res:any)=>{
+      fileDownload(res)
+    })
+  }
+  const printTable=()=>{
+    setExportVisible(true)
+   }
   useEffect(() => {
     init()
   }, [options])
@@ -487,16 +523,23 @@ export default observer(function (props: Props) {
   useFirstDisEffect(() => {
     getTableData()
   }, [query])
-
+  useEffect(() => {
+  /**增加提示语**/
+  if(['925HLLWDJ_9_1','925JSGXDJ_9_2','925JSGXDJ_9_3','925WCXXJXDJ_9_4','925JSJXJXDJ_9_5','925HLRYJDDJ_9_6','925HRHSDJ_9_7'].includes(options.menuCode) && appStore.HOSPITAL_ID ==='925'){
+   return  message.info('请您到护理管理系统档案管理的查询统计模块进行数据汇总统计及导出！')
+  }
+  }, [appStore.location.pathname])
   return (
     <Wrapper>
-      <SelectCon {...{ query, setQuery, openCreate, title: options.name || '', formList, openAudit }} />
-      <PageContainer>
+      <SelectCon {...{ query, setQuery, openCreate, title: options.name || '', formList, openAudit,openImport,printTable,
+
+      }}  isAudit ={options.isAudit} />
+      <PageContainer ref={tableRef}>
         <BaseTable
           surplusHeight={250}
           dataSource={tableData}
-          columns={defColumns}
-          rowSelection={rowSelection}
+          columns={defColumns.filter((item:any)=>item.title)}
+          rowSelection={options.isAudit ? rowSelection :undefined}
           loading={loading}
           pagination={{
             current: query.pageNum,
@@ -512,6 +555,11 @@ export default observer(function (props: Props) {
           }}
         />
       </PageContainer>
+      {
+        exportVisible && <ZjhjImportTable renderCfg={renderCfg}
+                                          callback={() => { setExportVisible(false) }}
+          />
+      }
       <addModal.Component />
       <AuditModal visible={auditVisible} onOkCb={handleAudit} selectedList={selectedRows} onCancel={() => setAuditVisible(false)} />
     </Wrapper>

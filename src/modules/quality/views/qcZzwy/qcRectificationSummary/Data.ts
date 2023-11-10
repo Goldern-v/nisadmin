@@ -76,7 +76,7 @@ class RectificationSummaryData {
             }
         }
         this.tableLoading = true
-        console.log("this.postObj===",this.postObj);
+        // console.log("this.postObj===",this.postObj);
         qcZzwyApi.getRectificationSummary({...this.postObj, ...times}).then(res => {
             this.tableLoading = false
             this.tableList =res.data

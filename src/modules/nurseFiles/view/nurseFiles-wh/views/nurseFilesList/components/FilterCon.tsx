@@ -181,7 +181,7 @@ export default observer(function FilterCon() {
     <Wrapper>
       <Inner style={{'height': open && ['925'].includes(appStore.HOSPITAL_ID) ? '150px' : 'auto'}}>
         <Form ref={refForm} labelWidth={80} onChange={onFieldChange}>
-          <Row gutter={0}>
+          <Row gutter={0} style={{ display: 'flex', flexWrap: 'wrap'}}>
             <Col span={5} style={{ marginBottom: -6 }}>
               <Form.Field label={"科室"} name={"deptCode"}>
                 <Select
@@ -234,8 +234,8 @@ export default observer(function FilterCon() {
               }
             </Col>
             <Col span={4}>
-              <Form.Field label={"最高学历"} name={appStore.HOSPITAL_ID ==='qhwy'?'highestEducationList' : "highestEducation"}>
-                <Select allowClear={true} mode={appStore.HOSPITAL_ID ==='qhwy' ?'multiple':'tags'}>
+              <Form.Field label={"最高学历"} name={appStore.HOSPITAL_ID =='qhwy'?'highestEducationList' : "highestEducation"}>
+                <Select allowClear={true} mode={appStore.HOSPITAL_ID =='qhwy' ?'multiple':'default'}>
                   {statisticsViewModal.getDict("学历").map((item, index) => (
                     <Select.Option value={item.code} key={index}>
                       {item.name}
@@ -252,7 +252,7 @@ export default observer(function FilterCon() {
 
             <Col span={5}>
               <Form.Field label={"层级"} name={appStore.HOSPITAL_ID ==='qhwy'?'nurseHierarchyList': "nurseHierarchy"}>
-                <Select allowClear={true} mode={appStore.HOSPITAL_ID ==='qhwy' ?'multiple':'tags'}>
+                <Select allowClear={true} mode={appStore.HOSPITAL_ID ==='qhwy' ?'multiple':'default'}>
                   {statisticsViewModal.getDict("层级").map((item, index) => (
                     <Select.Option value={item.code} key={index}>
                       {item.name}
@@ -266,9 +266,9 @@ export default observer(function FilterCon() {
                 <AgeRangePicker />
               </Form.Field>
             </Col>
-            <Col span={4} className={open ? 'marginBottom short': 'short'}>
+            <Col span={4} className={open && ['925'].includes(appStore.HOSPITAL_ID) ? 'marginBottom short': 'short'}>
               <Form.Field label={"职称"} name={appStore.HOSPITAL_ID ==='qhwy' ?'newTitleList': "newTitle"}>
-                <Select allowClear={true} mode={appStore.HOSPITAL_ID ==='qhwy' ?'multiple':'tags'} >
+                <Select allowClear={true} mode={appStore.HOSPITAL_ID ==='qhwy' ?'multiple':'default'} >
                   {statisticsViewModal
                     .getDict("技术职称")
                     .map((item, index) => (
@@ -279,7 +279,7 @@ export default observer(function FilterCon() {
                 </Select>
               </Form.Field>
             </Col>
-            <Col span={4} className={open ? 'marginBottom': ''}>
+            <Col span={4} className={open && ['925'].includes(appStore.HOSPITAL_ID) ? 'marginBottom': ''}>
               <Form.Field label={"政治面貌"} name={"politicsLook"}>
                 <Select allowClear={true}>
                   {statisticsViewModal
@@ -360,7 +360,7 @@ export default observer(function FilterCon() {
               </Col>}
               {['qhwy'].includes(appStore.HOSPITAL_ID) && <Col span={4} className="long">
               <Form.Field label={"初始学历"} name={appStore.HOSPITAL_ID ==='qhwy' ?'initialEducationList': "initialEducation"}>
-                <Select allowClear={true} mode={appStore.HOSPITAL_ID ==='qhwy' ?'multiple':'tags'}>
+                <Select allowClear={true} mode={appStore.HOSPITAL_ID ==='qhwy' ?'multiple':'default'}>
                   {statisticsViewModal
                     .getDict("初始学历")
                     .map((item, index) => (

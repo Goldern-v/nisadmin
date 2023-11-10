@@ -479,7 +479,7 @@ export default function qualityControlRecordDetailMidLeft(props: Props) {
                   </div> : ''}
                {appStore.hisMatch({
                     map:{
-                      '925':!detailData.master?.useScore &&
+                      '925,yczyy':!detailData.master?.useScore &&
                           <div className="sub-item-list">
                       <div style={{ marginTop: 5 }}>
                         <Input.TextArea

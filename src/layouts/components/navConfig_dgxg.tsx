@@ -29,6 +29,10 @@ const baseConfig: navConfigItem[] = [
     name: "档案管理",
     path: "/nurseFile",
   },
+  {
+    name: "我的档案",
+    path: "/selfNurseFile"
+  },
   // {
   //   name: '不良事件',
   //   path: '/badEventsNewList',
@@ -106,7 +110,7 @@ const baseConfig: navConfigItem[] = [
     path: "/setting",
   },
   {
-    name: "护理人员管理",
+    name: "护理排班",
     path: "/personnelManagement",
   },
 ];

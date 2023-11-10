@@ -103,6 +103,7 @@ import TrainingExamManage from "./views/preJobManage/trainingExamManage/Training
 import TrainingPlanManage from "./views/preJobManage/trainingPlanManage/TrainingPlanManage";
 import fixedTable from "./views/gaugePearson/fixed-table";
 import attachment from "./views/gaugePearson/attachment";
+
 /**厚街学习资源 */
 //学习的网站链接
 const 学习的网站链接 = lazy(() =>
@@ -197,6 +198,15 @@ const CourseLibrary = lazy(() => import("./views/courseLibrary/CourseLibrary"));
 
 export interface Props extends RouteComponentProps {}
 
+const peixunWHYX = ()=>{
+  const user = JSON.parse(sessionStorage.getItem('user') || '{}')
+  return !user.roleManageCodeList.find((code:any)=>['WHYX_QCR5001','WHYX_QCR5002','WHYX_QCR5003','QCR0004'].includes(code))
+}
+const canEdit = ()=>{
+  const user = JSON.parse(sessionStorage.getItem('user') || '{}')
+  return user.empNo === "353"
+}
+
 export default function ContinuingEdu(props: Props) {
   // const [dataList, setDataList] = useState([] as any); // 动态菜单树
   const [authList, setAuthList] = useState<any>([]); // 固定菜单权限
@@ -265,7 +275,7 @@ export default function ContinuingEdu(props: Props) {
   //题库管理 根据医院切换
   const QuestionBankManagementCon = appStore.hisMatch({
     map: {
-      'hj,lyyz,qhwy,nfsd,dglb,qzde,dghm': [
+      'hj,lyyz,qhwy,nfsd,dglb,qzde,dghm,fssdy': [
         {
           title: "学习资源",
           icon: <TKGL />,
@@ -1208,6 +1218,86 @@ const getIcon = (icon: any) => {
     // })
   ];
 
+  const 新护士管理岗前培训 = appStore.hisMatch({
+    map: {
+      whyx:[
+        {
+          title: "新护士管理-岗前培训",
+          path: "/continuingEdu",
+          icon: <YNXXB />,
+          hide: peixunWHYX(),
+          children: [
+            {
+              title: "人员名单",
+              path: "/continuingEdu/preJobList",
+              component: PreJobList,
+              canEdit:canEdit()
+            },
+            {
+              title: "培训计划",
+              path: "/continuingEdu/preJobTrainingPlan",
+              canEdit:canEdit(),
+              component: PreJobTrainingPlan,
+            },
+            {
+              title: "岗前理论考核",
+              path: "/continuingEdu/preJobTheory",
+              canEdit:canEdit(),
+              component: TheoryExam,
+            },
+            {
+              title: "岗前实操考核",
+              path: "/continuingEdu/preJobPractice",
+              canEdit:canEdit(),
+              component: TheoryExam,
+            },
+            {
+              title: "实施记录",
+              path: "/continuingEdu/preJobRecord",
+              canEdit:canEdit(),
+              component: ImplementRecord,
+            },
+          ],
+        },
+      ],
+      default:[
+        {
+          title: "新护士管理-岗前培训",
+          path: "/continuingEdu",
+          icon: <YNXXB />,
+          hide: ['whhk'].includes(appStore.HOSPITAL_ID),
+          children: [
+            {
+              title: "人员名单",
+              path: "/continuingEdu/preJobList",
+              component: PreJobList,
+            },
+            {
+              title: "培训计划",
+              path: "/continuingEdu/preJobTrainingPlan",
+              component: PreJobTrainingPlan,
+            },
+            {
+              title: "岗前理论考核",
+              path: "/continuingEdu/preJobTheory",
+              component: TheoryExam,
+            },
+            {
+              title: "岗前实操考核",
+              path: "/continuingEdu/preJobPractice",
+              component: TheoryExam,
+            },
+            {
+              title: "实施记录",
+              path: "/continuingEdu/preJobRecord",
+              component: ImplementRecord,
+            },
+          ],
+        },
+      ]
+    }
+  })
+  
   const LEFT_MENU_CONFIG_WHYX = [
     {
       title: "人员管理",
@@ -1241,39 +1331,7 @@ const getIcon = (icon: any) => {
         
       ],
     },
-    {
-      title: "新护士管理-岗前培训",
-      path: "/continuingEdu",
-      icon: <YNXXB />,
-      hide: ['whhk'].includes(appStore.HOSPITAL_ID),
-      children: [
-        {
-          title: "人员名单",
-          path: "/continuingEdu/preJobList",
-          component: PreJobList,
-        },
-        {
-          title: "培训计划",
-          path: "/continuingEdu/preJobTrainingPlan",
-          component: PreJobTrainingPlan,
-        },
-        {
-          title: "岗前理论考核",
-          path: "/continuingEdu/preJobTheory",
-          component: TheoryExam,
-        },
-        {
-          title: "岗前实操考核",
-          path: "/continuingEdu/preJobPractice",
-          component: TheoryExam,
-        },
-        {
-          title: "实施记录",
-          path: "/continuingEdu/preJobRecord",
-          component: ImplementRecord,
-        },
-      ],
-    },
+    ...新护士管理岗前培训,
     {
       title: "新护士管理-临床培训",
       path: "/continuingEdu",
@@ -1418,6 +1476,24 @@ const getIcon = (icon: any) => {
           component: ChoiceQustionEdit,
         },
         {
+          title: "上传新题库",
+          hide: true,
+          path: "/continuingEdu/uploadQuestionBank",
+          component: UploadQuestionBank,
+        },
+        {
+          title: "填空题新建和编辑",
+          hide: true,
+          path: "/continuingEdu/fillingQuestionEdit",
+          component: FillingQuestionEdit,
+        },
+        {
+          title: "问答题新建和编辑",
+          hide: true,
+          path: "/continuingEdu/shortQuestionEdit",
+          component: ShortQuestionEdit,
+        },
+        {
           title: "菜单设置",
           path: "/continuingEdu/菜单设置",
           component: 菜单设置,
@@ -1460,9 +1536,216 @@ const getIcon = (icon: any) => {
     },
     ...initDynamicRouting,
   ];
+
+  const LEFT_MENU_CONFIG_FSSDY = [
+    {
+      title: "人员管理",
+      icon: <RYGL />,
+      path: "/continuingEdu/人员管理",
+      component: 人员管理,
+      hide: () =>
+        queyMenuAuthInfo("nm_lat_personelManage") ||
+        authStore.isOnlyInternsManage,
+    },
+    {
+      title: "在职护士管理",
+      path: "/continuingEdu",
+      icon: <JSGL />,
+      children: [
+        {
+          title: "培训日历",
+          path: "/continuingEdu/TariningCalendars",
+          component: TariningCalendars,
+        },
+        {
+          title: "晋升申请",
+          path: "/continuingEdu/PromotionApplication",
+          component: PromotionApplication,
+        },
+        {
+          title: "晋升管理",
+          path: "/continuingEdu/PromotionManagement",
+          component: PromotionManagement,
+        }
+        
+      ],
+    },
+    {
+      title: "新护士管理-岗前培训",
+      path: "/continuingEdu",
+      icon: <YNXXB />,
+      children: [
+        {
+          title: "人员名单",
+          path: "/continuingEdu/preJobList",
+          component: PreJobList,
+        },
+        {
+          title: "培训计划",
+          path: "/continuingEdu/preJobTrainingPlan",
+          component: PreJobTrainingPlan,
+        },
+        {
+          title: "岗前理论考核",
+          path: "/continuingEdu/preJobTheory",
+          component: TheoryExam,
+        },
+        {
+          title: "岗前实操考核",
+          path: "/continuingEdu/preJobPractice",
+          component: TheoryExam,
+        },
+        {
+          title: "实施记录",
+          path: "/continuingEdu/preJobRecord",
+          component: ImplementRecord,
+        },
+      ],
+    },
+    {
+      title: "新护士管理-临床培训",
+      path: "/continuingEdu",
+      icon: <YNXXB />,
+      children: [
+        {
+          title: "培训计划",
+          path: "/continuingEdu/trainingPlanManage",
+          component: TrainingPlanManage,
+        },
+        {
+          title: "临床培训考核",
+          path: "/continuingEdu/trainingExamManage",
+          component: TrainingExamManage,
+        },
+        {
+          title: "临床实操考核",
+          path: "/continuingEdu/practiceExamManage",
+          component: TrainingExamManage,
+        },
+      ],
+    },
+    {
+      title: "在线学习",
+      icon: <JSGL />,
+      path: "/continuingEdu/在线学习",
+      component: 在线学习,
+    },
+    {
+      title: "审核发布",
+      icon: <YNXXB />,
+      path: "/continuingEdu/审核发布",
+      component: 审核发布,
+      hide: () =>
+        queyMenuAuthInfo("nm_lat_auditmanage") ||
+        authStore.isOnlyInternsManage,
+    },
+    {
+      title: "评分管理",
+      icon: <LXGL />,
+      path: "/continuingEdu/评分管理",
+      component: 评分管理,
+      hide: () => queyMenuAuthInfo("nm_lat_scoremanage") || authStore.isOnlyInternsManage,
+    },
+    ...[AllMenusCon, TrainingChartAnalysisCon],
+    ...initDynamicRouting,
+    {
+      title: "实习生管理",
+      path: "/continuingEdu",
+      icon: <JXJH />,
+      children: [
+        {
+          title: "实习人员基本信息汇总表",
+          path: "/continuingEdu/实习人员基本信息汇总表",
+          component: BacisManagement,
+        },
+        {
+          title: "实习生教学计划",
+          path: "/continuingEdu/实习生教学计划",
+          component: TeachingProgramme,
+          hide: () => !authStore.isTeachingNurse,
+        },
+        {
+          title: "实习生轮转计划",
+          path: "/continuingEdu/实习生轮转计划",
+          component: InterntraineeRound,
+        },
+        {
+          title: "实习生临床评定",
+          path: "/continuingEdu/实习生临床评定",
+          component: ClinicalEvaluation,
+        },
+      ],
+    },
+    {
+      title: "规培生管理",
+      path: "/continuingEdu",
+      icon: <JXJH />,
+      children: [
+        {
+          title: "规培生基本信息汇总表",
+          path: "/continuingEdu/规培生基本信息汇总表",
+          component: gaugePearson_BacisManagement,
+        },
+        {
+          title: "规培生轮转计划",
+          path: "/continuingEdu/规培生轮转计划",
+          component: gaugePearson_TraineeShift,
+        },
+        {
+          title: "规培生出科评价",
+          path: "/continuingEdu/规培生出科评价",
+          component: gaugePearson_evaluate,
+        },
+      ],
+    },
+    {
+      title: "进修生管理",
+      path: "/continuingEdu",
+      icon: <JXJH />,
+      children: [
+        {
+          title: "进修生基本信息汇总表",
+          path: "/continuingEdu/进修生基本信息汇总表",
+          component: BaciPostgraduate,
+        },
+        {
+          title: "进修生教学计划",
+          path: "/continuingEdu/进修生教学计划",
+          component: TeachingPostgraduate,
+          hide: () => !authStore.isTeachingNurse,
+        },
+      ],
+    },
+    ...PracticalOperation,
+    ...[
+      teachingCon,
+      noticeCon,
+      ...PromotionSettingCons,
+      ...QuestionBankManagementCon,
+    ],
+    {
+      title: "类型管理",
+      icon: <TKGL />,
+      path: "/continuingEdu/TypeManagement",
+      component: 类型管理,
+      hide: () =>
+        queyMenuAuthInfo("nm_lat_typemanage") || authStore.isOnlyInternsManage,
+    },
+
+    {
+      title: "菜单设置",
+      icon: <KSGL />,
+      path: "/continuingEdu/菜单设置",
+      component: 菜单设置,
+      hide: () =>
+        queyMenuAuthInfo("nm_lat_menusetting") || authStore.isOnlyInternsManage,
+    },
+  ];
+
   const LEFT_MENU_CONFIG = appStore.hisMatch({
     map: {
       'whyx,whhk,gdsfy,jmfy': LEFT_MENU_CONFIG_WHYX,
+      'fssdy': LEFT_MENU_CONFIG_FSSDY,
       default:LEFT_MENU_CONFIG_DEFAULT
     },
     vague: true,
@@ -1609,6 +1892,7 @@ const getIcon = (icon: any) => {
               getFormName={currentRoute && currentRoute.formName} //表单code值
               getList={getList} // 动态菜单树
               getParentsName={currentRoute && currentRoute.parentsName}
+              canEdit={currentRoute && currentRoute?.canEdit}
             />
           </Suspense>
         )}

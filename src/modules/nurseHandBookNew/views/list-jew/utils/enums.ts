@@ -55,3 +55,15 @@ export  const HALF_YEAR ={
   '上半年':0,
   '下半年':1
 }
+export  const QuarterV ={1:'第一季度',2:'第二季度',3:'第三季度',4:'第四季度'}
+/**925 护士长手册封面**/
+export  const CoverArr =[
+  {type:1,url:"./assets/护士长手册封面1.jpg",name:"护士长手册封面1"},
+  {type:2,url:"./assets/护士长手册封面2.jpg",name:"护士长手册封面2"},
+  {type:3,url:"./assets/护士长手册封面3.jpg",name:"护士长手册封面3"},
+  {type:4,url:"./assets/护士长手册封面4.jpg",name:"护士长手册封面4"},
+  {type:5,url:"./assets/护士长手册封面5.jpg",name:"护士长手册封面5"},
+  {type:6,url:"./assets/护士长手册封面6.jpg",name:"护士长手册封面6"},
+  {type:7,url:"./assets/护士长手册封面7.jpg",name:"护士长手册封面7"},
+  {type:8,url:"./assets/护士长手册封面8.jpg",name:"护士长手册封面8"},
+]

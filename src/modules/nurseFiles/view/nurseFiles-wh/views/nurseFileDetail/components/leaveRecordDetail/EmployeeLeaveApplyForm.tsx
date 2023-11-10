@@ -1,10 +1,14 @@
 import styled from "styled-components";
-import { Input } from "antd";
-import React, { useState, useEffect } from "react";
+import { Input,DatePicker } from "antd";
+import React, { useState, useEffect,useMemo } from "react";
 const { TextArea } = Input;
 import { appStore } from "src/stores";
-import { leaveRecordModal } from './modal';
+import moment from "moment";
+import { leaveRecordModal,Alldays } from './modal';
 import { observer } from "mobx-react-lite";
+
+const { RangePicker } = DatePicker
+
 interface Props {
 
 }
@@ -22,6 +26,48 @@ export default observer(function EmployeeLeaveApplyForm(props: Props) {
     }
     leaveRecordModal.updateEmployeePager(newData);
   }
+
+  const antOnChange = (key: string, e: any) => {
+    const value = e;
+    const newData = {
+      ...employeePager,
+      [key]: value
+    }
+    leaveRecordModal.updateEmployeePager(newData);
+  }
+
+  const canEditTime = () =>{
+    return leaveRecordModal.employeePager.leaveStartTime && leaveRecordModal.employeePager.leaveEndTime
+  }
+
+  useEffect(()=>{
+    let _Alldays = {...Alldays}
+    delete _Alldays.otherName
+    leaveRecordModal.employeePager.leaveDuration = Object.keys(leaveRecordModal.employeePager).reduce((prev:any,next:any)=>{
+      return prev + Number(_Alldays.hasOwnProperty(next) && leaveRecordModal.employeePager[next])
+    },0)
+  },[employeePager])
+
+  const isValidDate = (time:any)=>{
+    return moment(time).isValid();
+  }
+  
+  // const showHeadNurseAudit = (key:any)=>{
+  //   let obj:any = leaveRecordModal?.employeePager?.nodeList?.reverse().find((item:any) => item.nodeCode === key)
+  //   let content = obj && obj.content || ""
+  //   return content || ""
+  // }
+
+  const _showHeadNurseAudit = useMemo(() => {
+    let obj:any = leaveRecordModal?.employeePager?.nodeList?.reverse().find((item:any) => item.nodeCode === "head_nurse_audit")
+    return obj
+  }, [employeePager])
+
+  const _ministerNurseAudit = useMemo(() => {
+    let obj:any = leaveRecordModal?.employeePager?.nodeList?.reverse().find((item:any) => item.nodeCode === "minister_nurse_audit")
+    return obj
+  }, [employeePager])
+
   return (
     <Pager className="leave-page">
       <div className="form-title">聘用人员请（休）假审批报告表</div>
@@ -33,7 +79,7 @@ export default observer(function EmployeeLeaveApplyForm(props: Props) {
           <tr>
             <td>姓名</td>
             <td>
-              <Input readOnly value={employeePager.name} />
+              <Input readOnly value={employeePager.creatorName} />
             </td>
             <td>出生年月</td>
             <td>
@@ -48,35 +94,46 @@ export default observer(function EmployeeLeaveApplyForm(props: Props) {
             <td>休假地点</td>
             <td>
               <Input 
-                value={employeePager.leaveLocation} 
-                onChange={(e) => onChange('leaveLocation', e)}
+                value={employeePager.position} 
+                onChange={(e) => onChange('position', e)}
               />
             </td>
             <td>来院工作时间</td>
             <td>
-              <Input readOnly value={employeePager.workDate}/>
+              <Input readOnly value={employeePager.goHospitalWorkDate}/>
             </td>
             <td>上次休假时间</td>
             <td>
-              <Input 
-                value={employeePager.lastLeaveTime} 
-                onChange={(e) => onChange('lastLeaveTime', e)}
-              />
+              <DatePicker placeholder="" size="small" value={isValidDate(employeePager.preLeaveTime) ? moment(employeePager.preLeaveTime) : undefined} onChange={(date) => antOnChange('preLeaveTime', moment(date).format('YYYY-MM-DD'))} />
             </td>
           </tr>
           <tr>
             <td colSpan={2}>请（休）假起止时间</td>
             <td colSpan={2}>
-              <Input 
-                value={employeePager.leaveRange} 
-                onChange={(e) => onChange('leaveRange', e)}
-              />
+              <DatePicker.RangePicker placeholder={['','']} size="small" 
+                value={employeePager.leaveStartTime && employeePager.leaveEndTime
+                  ? [
+                      moment(employeePager.leaveStartTime),
+                      moment(employeePager.leaveEndTime)
+                    ]
+                  : []}
+                  onChange = {(e)=>{
+                    let leaveStartTime = moment(e[0]).format('YYYY-MM-DD')
+                    let leaveEndTime = moment(e[1]).format('YYYY-MM-DD')
+                    const newData = {
+                      ...employeePager,
+                      leaveStartTime,
+                      leaveEndTime
+                    }
+                    leaveRecordModal.updateEmployeePager(newData);
+                  }}
+                />
             </td>
             <td>本人联系电话</td>
             <td>
               <Input 
-                value={employeePager.phone} 
-                onChange={(e) => onChange('phone', e)}
+                value={employeePager.personalPhoneNumber} 
+                onChange={(e) => onChange('personalPhoneNumber', e)}
               />
             </td>
           </tr>
@@ -84,15 +141,15 @@ export default observer(function EmployeeLeaveApplyForm(props: Props) {
             <td colSpan={2}>本年已请（休）假天数</td>
             <td colSpan={2}>
               <Input 
-                value={employeePager.leaveDays} 
-                onChange={(e) => onChange('leaveDays', e)}
+                value={employeePager.annualLeaveTakenDays} 
+                onChange={(e) => onChange('annualLeaveTakenDays', e)}
               />
             </td>
             <td>本年公休假剩余天数</td>
             <td>
               <Input 
-                value={employeePager.restDays} 
-                onChange={(e) => onChange('restDays', e)}
+                value={employeePager.remainingPublicHolidays} 
+                onChange={(e) => onChange('remainingPublicHolidays', e)}
               />
             </td>
           </tr>
@@ -100,8 +157,8 @@ export default observer(function EmployeeLeaveApplyForm(props: Props) {
             <td colSpan={2}>行动路线</td>
             <td colSpan={2}>
               <Input 
-                value={employeePager.route} 
-                onChange={(e) => onChange('route', e)}
+                value={employeePager.travelRoute} 
+                onChange={(e) => onChange('travelRoute', e)}
               />
             </td>
             <td>交通工具</td>
@@ -116,28 +173,28 @@ export default observer(function EmployeeLeaveApplyForm(props: Props) {
             <td>家庭联系人</td>
             <td>
               <Input 
-                value={employeePager.familyName} 
-                onChange={(e) => onChange('familyName', e)}
+                value={employeePager.emergencyContact} 
+                onChange={(e) => onChange('emergencyContact', e)}
               />
             </td>
             <td>与本人关系</td>
             <td>
               <Input 
-                value={employeePager.relationship} 
-                onChange={(e) => onChange('relationship', e)}
+                value={employeePager.relationshipToEmployee} 
+                onChange={(e) => onChange('relationshipToEmployee', e)}
               />
             </td>
             <td>联系人电话</td>
             <td>
               <Input 
-                value={employeePager.relationPhone} 
-                onChange={(e) => onChange('relationPhone', e)}
+                value={employeePager.contactPhoneNumber} 
+                onChange={(e) => onChange('contactPhoneNumber', e)}
               />
             </td>
           </tr>
           <tr>
-            <td>必须填写<br/>请假（外出）天数</td>
-            <td colSpan={5}>
+            <td><span style={{color:'red'}}>*</span>填写请假（外出）天数</td>
+            <td colSpan={5} style={{pointerEvents:canEditTime() ? 'auto' : 'none'}}>
               <div className="flex-wrap">
                 <span>公休假（</span>
                 <Input 
@@ -229,8 +286,8 @@ export default observer(function EmployeeLeaveApplyForm(props: Props) {
                 <span>）天；合计请假</span>
                 <Input 
                   size="small"
-                  value={employeePager.total} 
-                  onChange={(e) => onChange('total', e)} 
+                  value={employeePager.leaveDuration} 
+                  onChange={(e) => onChange('leaveDuration', e)} 
                 />
                 <span>天</span>
               </div>
@@ -239,30 +296,36 @@ export default observer(function EmployeeLeaveApplyForm(props: Props) {
           <tr>
             <td>科室（部门）支部<br/>呈报意见</td>
             <td colSpan={5}>
-              <Input.TextArea
+              {/* <Input.TextArea
                 className="align-left"
                 rows={3}
                 value={employeePager.otherName}
                 onChange={(e) => onChange('otherName', e)} 
-              ></Input.TextArea>
+              ></Input.TextArea> */}
+              <div className="h-60">{
+                _showHeadNurseAudit?.content
+                // showHeadNurseAudit("head_nurse_audit")
+              }</div>
               <div className="flex-wrap justify-right">
                 <Input 
+                  readOnly
+                  value={_showHeadNurseAudit?.handleTime ? moment(_showHeadNurseAudit?.handleTime).get('year') : ""}
                   className="w-40"
                   size="small"
-                  value={employeePager.total} 
-                  onChange={(e) => onChange('total', e)} 
                 />
                 <span>年</span>
                 <Input 
+                  readOnly
+                  value={_showHeadNurseAudit?.handleTime ? moment(_showHeadNurseAudit?.handleTime).get('month') : ""}
+                  className="w-20"
                   size="small"
-                  value={employeePager.total} 
-                  onChange={(e) => onChange('total', e)} 
                 />
                 <span>月</span>
                 <Input 
+                  readOnly
+                  value={_showHeadNurseAudit?.handleTime ? moment(_showHeadNurseAudit?.handleTime).get('date') : ""}
+                  className="w-20"
                   size="small"
-                  value={employeePager.total} 
-                  onChange={(e) => onChange('total', e)} 
                 />
                 <span>日</span>
               </div>
@@ -271,30 +334,36 @@ export default observer(function EmployeeLeaveApplyForm(props: Props) {
           <tr>
             <td>分管领导<br/>审核意见</td>
             <td colSpan={5}>
-              <Input.TextArea
+              {/* <Input.TextArea
                 className="align-left"
                 rows={3}
                 value={employeePager.otherName}
                 onChange={(e) => onChange('otherName', e)} 
-              ></Input.TextArea>
+              ></Input.TextArea> */}
+              <div className="h-60">
+                {_ministerNurseAudit?.content}
+                {/* {showHeadNurseAudit("minister_nurse_audit")} */}
+              </div>
               <div className="flex-wrap justify-right">
                 <Input 
+                  readOnly
+                  value={_ministerNurseAudit?.handleTime ? moment(_ministerNurseAudit?.handleTime).get('year') : ""}
                   className="w-40"
                   size="small"
-                  value={employeePager.total} 
-                  onChange={(e) => onChange('total', e)} 
                 />
                 <span>年</span>
                 <Input 
+                  readOnly
+                  value={_ministerNurseAudit?.handleTime ? moment(_ministerNurseAudit?.handleTime).get('month') : ""}
+                  className="w-20"
                   size="small"
-                  value={employeePager.total} 
-                  onChange={(e) => onChange('total', e)} 
                 />
                 <span>月</span>
                 <Input 
+                  readOnly
+                  className="w-20"
+                  value={_ministerNurseAudit?.handleTime ? moment(_ministerNurseAudit?.handleTime).get('date') : ""}
                   size="small"
-                  value={employeePager.total} 
-                  onChange={(e) => onChange('total', e)} 
                 />
                 <span>日</span>
               </div>
@@ -303,31 +372,12 @@ export default observer(function EmployeeLeaveApplyForm(props: Props) {
           <tr>
             <td>政治工作处<br/>审核意见</td>
             <td colSpan={5}>
-              <Input.TextArea
-                readOnly
-                className="align-left"
-                rows={3}
-                value={employeePager.otherName}
-              ></Input.TextArea>
+            <div className="h-60"></div>
               <div className="flex-wrap justify-right">
-                <Input 
-                  readOnly
-                  className="w-40"
-                  size="small"
-                  value={employeePager.total} 
-                />
                 <span>年</span>
-                <Input 
-                  readOnly
-                  size="small"
-                  value={employeePager.total} 
-                />
+                <span className="w-30"></span>
                 <span>月</span>
-                <Input 
-                  readOnly
-                  size="small"
-                  value={employeePager.total} 
-                />
+                <span className="w-30"></span>
                 <span>日</span>
               </div>
             </td>
@@ -335,31 +385,12 @@ export default observer(function EmployeeLeaveApplyForm(props: Props) {
           <tr>
             <td>院领导审核意见</td>
             <td colSpan={5}>
-              <Input.TextArea
-                readOnly
-                className="align-left"
-                rows={3}
-                value={employeePager.otherName}
-              ></Input.TextArea>
+              <div className="h-60"></div>
               <div className="flex-wrap justify-right">
-                <Input 
-                  readOnly
-                  className="w-40"
-                  size="small"
-                  value={employeePager.total} 
-                />
                 <span>年</span>
-                <Input 
-                  readOnly
-                  size="small"
-                  value={employeePager.total} 
-                />
+                <span className="w-30"></span>
                 <span>月</span>
-                <Input 
-                  readOnly
-                  size="small"
-                  value={employeePager.total} 
-                />
+                <span className="w-30"></span>
                 <span>日</span>
               </div>
             </td>
@@ -410,6 +441,12 @@ const Pager = styled.div`
         .align-left {
           text-align: left;
         }
+        .h-60{
+          height:60px;
+        }
+        .ant-calendar-picker-icon{
+          display:none;
+        }
         textarea {
           text-align: left;
           resize: none;
@@ -436,6 +473,12 @@ const Pager = styled.div`
     }
     .w-40 {
       width: 40px;
+    }
+    .w-30 {
+      width: 30px;
+    }
+    .w-20 {
+      width: 20px;
     }
     .other-name-input {
       width: 80px;

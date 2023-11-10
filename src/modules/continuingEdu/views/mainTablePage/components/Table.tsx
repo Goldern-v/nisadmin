@@ -32,6 +32,14 @@ export default observer(function Table(props: Props) {
           { name: "N4-2", code: "nurse4_2" },
           { name: "其他", code: "nurseOther" }
         ],
+        whhk: [
+          { name: "N0", code: "nurse0" },
+          { name: "N1", code: "nurse1" },
+          { name: "N2", code: "nurse2" },
+          { name: "N3", code: "nurse3" },
+          { name: "N4", code: "nurse4" },
+          { name: "其他", code: "nurseOther" }
+        ],
         other: [
           { name: "N0", code: "nurse0" },
           { name: "N1", code: "nurse1" },

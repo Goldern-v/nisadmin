@@ -17,6 +17,7 @@ import ArrangAnalysisModal from "../../../modal/ArrangAnalysisModal";
 import { copyRowClick } from "../../../components/arrangeSheet/cellClickEvent";
 import { cloneJson } from "src/utils/json/clone";
 import AsClassModal from "../../../modal/AsClassModal";
+import LeaveModal from "../../../modal/LeaveModal";
 import AddScheduleNursingModal from "../../NurseSetting/modal/AddScheduleNursingModal";
 import CopyScheduling from './modal'
 
@@ -32,6 +33,7 @@ export default observer(function TopPart() {
   const [showLock, setShowLock] = useState(true)
   let expectSettingModal = createModal(ExpectSettingModal);
   let asClassModal = createModal(AsClassModal);
+  let leaveModal = createModal(LeaveModal);
   let arrangAnalysisModal = createModal(ArrangAnalysisModal);
   const addScheduleNursingModal = createModal(AddScheduleNursingModal);
   let [visible, setVisible] = useState(false)
@@ -368,6 +370,15 @@ export default observer(function TopPart() {
         <div className="item">
           <Button onClick={handleReset}>重置排班</Button>
         </div>
+        {['925'].includes(appStore.HOSPITAL_ID) && (
+          <div className="item">
+            <Button
+              onClick={() => leaveModal.show()}
+            >
+              请假管理
+            </Button>
+          </div>
+        )}
         {['wh', 'gzsrm', 'gxjb', 'lyyz', 'qhwy','whsl', "ytll", 'whhk', 'dglb', 'dghm','zjhj','925'].includes(appStore.HOSPITAL_ID) && (
           <div className="item">
             <Button
@@ -386,7 +397,7 @@ export default observer(function TopPart() {
             <span>{sheetViewModal.experNumber} </span>
           </div>}
         </div>
-        {['wh', 'gzsrm', 'gxjb', 'whyx', 'fssdy', 'lyyz', 'qhwy','whsl', 'ytll', 'whhk', 'dglb', 'dghm','zzwy','zjhj','925'].includes(appStore.HOSPITAL_ID) && (
+        {['wh', 'gzsrm', 'gxjb', 'whyx', 'fssdy', 'lyyz', 'qhwy','whsl', 'ytll', 'whhk', 'dglb', 'dghm','zzwy','zjhj','925','lcey','dgxg'].includes(appStore.HOSPITAL_ID) && (
           <div className="item">
             <Button onClick={() => asClassModal.show()}>申请加减班</Button>
             {SHOW_POINT_IMG && <div className="number">
@@ -400,7 +411,7 @@ export default observer(function TopPart() {
           <Button onClick={appStore.HOSPITAL_ID! == 'gzsrm' ? gzsrmhandleCopy : handleCopy}>{appStore.HOSPITAL_ID == 'nys' ? '复制上周排班' : "复制排班"}</Button>
         </div>
 
-        {['whyx','whhk'].includes(appStore.HOSPITAL_ID) && <div className="item">
+        {['whyx','whhk','dgxg'].includes(appStore.HOSPITAL_ID) && <div className="item">
           <Button
             className="statistics"
             onClick={() => {
@@ -496,6 +507,7 @@ export default observer(function TopPart() {
       </div>
       <expectSettingModal.Component />
       <asClassModal.Component />
+      <leaveModal.Component />
       <arrangAnalysisModal.Component />
       <addScheduleNursingModal.Component />
       <CopyScheduling

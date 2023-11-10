@@ -6,6 +6,7 @@ import Form from "src/components/Form/Form";
 import { Rules } from "src/components/Form/interfaces";
 import {trainingSettingApi} from '../../api/TrainingSettingApi'
 import moment from 'moment'
+import { appStore } from "src/stores";
 
 export interface Props {
   visible: boolean
@@ -26,12 +27,12 @@ export default observer(function AddInternModal(props: Props){
   }
 
   // 必填项
-  const rules: Rules = {
+  let defaultRules: Rules = {
     year: val => !!val || "年份不能为空",
     name: val => !!val || "姓名不能为空",
     sex: val => !!val || "性别不能为空",
     age: val => !!val || "年龄不能为空",
-    education: val => !!val || "学历不能为空",
+    // education: val => !!val || "学历不能为空",
     graduatedUniversity: val => !!val || "毕业学校不能为空",
     phone: val => !!val || "联系电话不能为空",
     address: val => !!val || "家庭地址不能为空",
@@ -45,7 +46,22 @@ export default observer(function AddInternModal(props: Props){
     // teachTeacher: val => !!val || "带教老师不能为空",
     // operationScore: val => !!val || "操作成绩不能为空",
     // theoryScore: val => !!val || "理论成绩不能为空"
-  };
+  }
+
+  let fssdyObj: Rules = {
+    beginEducation: val => !!val || "初始学历不能为空",
+    education: val => !!val || "最高学历不能为空",
+  }
+  let _Obj: Rules = {
+    education: val => !!val || "学历不能为空",
+  }
+
+  const rules = () => {
+    if (['fssdy'].includes(appStore.HOSPITAL_ID)) 
+      return { ...defaultRules, ...fssdyObj }
+    else 
+      return { ...defaultRules, ..._Obj }
+  }
   // 学历
   const nurseHierarchyArr = [
     { name: "博士", code: "9" },
@@ -68,6 +84,7 @@ export default observer(function AddInternModal(props: Props){
           sex, 
           age, 
           education,
+          beginEducation,
           graduatedUniversity ,
           phone,
           address,
@@ -88,12 +105,18 @@ export default observer(function AddInternModal(props: Props){
             education = item.code
           }
         })
+        nurseHierarchyArr.map((item:any)=>{
+          if(item.name == beginEducation){
+            beginEducation = item.code
+          }
+        })
         current.setFields({
           year:year?moment(year.toString()):null,
           name,
           sex:sex=='男'? '0' : '1', 
           age, 
           education,
+          beginEducation,
           graduatedUniversity ,
           phone,
           address,
@@ -178,7 +201,7 @@ export default observer(function AddInternModal(props: Props){
 
   return(
     <Modal title={params ? "修改实习生":"添加实习生"} visible={visible} onOk={handleOk} onCancel={handleCancel}  confirmLoading={editLoading}>
-        <Form ref={formRef} rules={rules} onChange={onFormChange}>
+        <Form ref={formRef} rules={rules()} onChange={onFormChange}>
           <Row>
             <Col span={24}>
             <Form.Field label={`年份：`} name='year' required>
@@ -210,15 +233,38 @@ export default observer(function AddInternModal(props: Props){
                 <Input placeholder="请输入" />
               </Form.Field>
             </Col>
-            <Col span={24}>
-             <Form.Field label={`学历：`}  name="education" required>
-               <Select>
-                {nurseHierarchyArr.map(item => {
-                  return <Select.Option value={item.code} key={item.code}>{item.name}</Select.Option>
-                })}
-               </Select>
-             </Form.Field>
-            </Col>
+            {
+              ['fssdy'].includes(appStore.HOSPITAL_ID) ? 
+              <>
+                <Col span={24}>
+                  <Form.Field label={`初始学历：`}  name="beginEducation" required>
+                    <Select>
+                    {nurseHierarchyArr.map(item => {
+                      return <Select.Option value={item.code} key={item.code}>{item.name}</Select.Option>
+                    })}
+                    </Select>
+                  </Form.Field>
+                </Col>
+                <Col span={24}>
+                  <Form.Field label={`最高学历：`}  name="education" required>
+                    <Select>
+                    {nurseHierarchyArr.map(item => {
+                      return <Select.Option value={item.code} key={item.code}>{item.name}</Select.Option>
+                    })}
+                    </Select>
+                  </Form.Field>
+                </Col>
+              </> : 
+              <Col span={24}>
+                <Form.Field label={`学历：`}  name="education" required>
+                  <Select>
+                  {nurseHierarchyArr.map(item => {
+                    return <Select.Option value={item.code} key={item.code}>{item.name}</Select.Option>
+                  })}
+                  </Select>
+                </Form.Field>
+              </Col>
+            }
             <Col span={24}>
               <Form.Field label={`毕业学校：`} name="graduatedUniversity" required>
                 <Input placeholder="请输入" />

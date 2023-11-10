@@ -10,7 +10,7 @@ import { dateFormat, dateFormat3, tableConConfig } from '../../config'
 
 import moment, { isMoment } from 'moment'
 import { isOfType } from 'src/utils/ts.utils'
-
+const {TextArea} = Input
 export interface Props {
 }
 const ChildCon = memo((props: any) => {
@@ -20,6 +20,9 @@ const ChildCon = memo((props: any) => {
       return (
         <DatePicker className='cell-ipt'
           format={dateFormat3} value={value ? moment(value) : undefined} {...other} />)
+          case 'TextArea':
+            return (
+              <TextArea className='cell-ipt'value={value} {...other} />)      
     default:
       return <Input className='cell-ipt ta-c' value={value} {...other} />
   }

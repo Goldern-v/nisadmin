@@ -10,6 +10,7 @@ import {dateFormat, dateFormat3, tableConConfig} from '../config'
 
 import moment, {isMoment} from 'moment'
 import {isOfType} from 'src/utils/ts.utils'
+const { TextArea} =Input
 const { Option } = Select
 export interface Props {
 }
@@ -26,6 +27,10 @@ const ChildCon = memo((props: any) => {
                     {(model?.nurseList||[]).map((nurse: any) => <Option key={nurse.empNo}>{nurse.empName}</Option>)}
                 </Select>
             )
+        case 'TextArea':
+            return (
+                <TextArea className='cell-ipt'
+                          value={value} {...other} />)
         case 'DataPicker':
             return (
                 <DatePicker className='cell-ipt'
@@ -61,7 +66,7 @@ export default observer(function (props: Props) {
     return (
         <Wrapper className='con--a4' ref={model.ctxRef}>
             <div className='title'>
-                {model.detail?.record?.[config?.titleType || 'menuName']}
+                {model.detail?.record?.year}年{model.detail?.record?.month}{model.detail?.record?.[config?.titleType || 'menuName']}
             </div>
             <table style={{marginBottom: '-1px'}}>
                 <colgroup>
@@ -159,6 +164,7 @@ export default observer(function (props: Props) {
                                {i == 0 && <td rowSpan={2}>备注</td>}
                                {
                                    columnsRemark.map((v1: Obj, i1: number) => {
+                                       console.log("v1.component===",v1.component);
                                        return (
                                            i1 !== (columnsRemark.length - 1) && <td key={`${i}-${i1}`}  rowSpan={2}>
                                                <ChildCon {...{

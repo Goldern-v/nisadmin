@@ -173,7 +173,6 @@ class QuarterlyAnalysisReportZzwy {
                 id: it.qcReportItemDataList ? it.qcReportItemDataList[0].id : null,
             })
         })
-        console.log("this.qcReportItemDtoList===", qcReportItemDataList);
         let params = {
             hospitalCode: "zzwy",
             templateName: "季度质量分析报告",
@@ -353,7 +352,8 @@ class QuarterlyAnalysisReportZzwy {
             //     evalRate: undefined,
             // })
             this.referredTable.push({
-                simpleName: item.simpleName,
+                // simpleName: item.simpleName,
+                simpleName:item.label,
                 b: undefined,
                 c: undefined,
                 d: undefined,

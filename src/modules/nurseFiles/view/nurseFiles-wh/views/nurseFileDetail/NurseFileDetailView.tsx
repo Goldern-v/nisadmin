@@ -43,6 +43,8 @@ import { nurseFileDetailViewModal } from './NurseFileDetailViewModal'
 import { nurseFilesService } from '../../services/NurseFilesService'
 import InnaiQualification from './views/InnaiQualification'
 import outQualification from './views/outQualification'
+import SpecialistAdmission
+  from "src/modules/nurseFiles/view/nurseFiles-wh/views/nurseFileDetail/views/SpecialistAdmission";
 
 
 // import Leave from './views/Leave'
@@ -160,6 +162,16 @@ const ROUTE_LIST_DEFAULT = [
     component: BaseInfo,
     name: '基本信息'
   },
+    ...appStore.hisMatch({
+      map:{
+        lyrm:[{
+          type: 'specialistAdmission',
+          component: SpecialistAdmission,
+          name: '专科准入'
+        }],
+        other:[]
+      }
+    }),
   {
     type: 'article',
     component: Article,
@@ -416,11 +428,11 @@ const ROUTE_LIST_925 = [
     component: MakeAwards,
     name: '立功嘉奖'
   },
-  // ...['925'].includes(appStore.HOSPITAL_ID) ? [{
-  //   type: 'LeaveRecord',
-  //   component: LeaveRecord,
-  //   name: '请假记录'
-  // }] : []
+  ...['925'].includes(appStore.HOSPITAL_ID) ? [{
+    type: 'LeaveRecord',
+    component: LeaveRecord,
+    name: '请假记录'
+  }] : []
 ]
 
 export default observer(function NurseFileDetail(props: Props, context: any) {
@@ -481,7 +493,7 @@ const Wrapper = styled.div`
 
 // @ts-ignore
 const LeftMenuCon = styled(ScrollBox)`
-  width: 160px;
+  width: 180px;
   position: relative;
   z-index: 1;
   background: rgba(248, 248, 248, 1);
@@ -491,7 +503,7 @@ const LeftMenuCon = styled(ScrollBox)`
 `
 const MainCon = styled.div`
   flex: 1;
-  height: calc(100vh - 135px);
+  height: calc(100vh - 155px);
   align-items: stretch;
   display: flex;
 `

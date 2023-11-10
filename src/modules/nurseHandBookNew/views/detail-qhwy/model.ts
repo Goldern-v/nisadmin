@@ -38,8 +38,11 @@ class NurseHandBookRecordModel {
 
   @action
   public handleEditorChange = (data: any) => {
-    console.log(data.length);
     this.editorData = data;
+  };
+  /**编辑标题 */
+  public onChangeTitle = (e: any) => {
+    this.editorTitle = e.target.value;
   };
 
   addPageData(count:number){
@@ -150,7 +153,7 @@ class NurseHandBookRecordModel {
       status,
       detail,
     };
-    this.configFn?.editTitle && (params.title = this.editorTitle);
+    params.title = this.editorTitle;
     this.configFn?.editTime && (params.time = this.editorTime ? this.editorTime.format(dateFormat) : '');
     nurseHandBookService.saveNHRDetail(params).then((res) => {
       if (res.code === "200") {
@@ -241,20 +244,24 @@ class NurseHandBookRecordModel {
       }
     })
   };
+
+
   public openAudit = () => {
     this.auditModal.show({
-      onOkCb: (params: string) => {
-        this.onCommit(params)
+      onOkCb: (params: types.Obj) => {
+        this.handleNode(params)
       }
     })
   }
   /**
    * 审核
-   * @param params
+   * @param params 
    */
 
   public handleNode = (params: types.Obj) => {
-    nurseHandBookService.handleNodeNHR(params).then((res) => {
+    const { nextNode: nodeCode, id } = this.detail.record || {}
+    const data = { ...params, nodeCode, id }
+    nurseHandBookService.handleNodeNHR(data).then((res) => {
       this.getDetail();
     });
   };

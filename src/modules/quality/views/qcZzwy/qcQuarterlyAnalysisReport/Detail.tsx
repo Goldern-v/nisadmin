@@ -40,12 +40,32 @@ export default observer(function QuarterlyAnalysisReportZzwyDetail(props: Props)
         setIsPrint(isPrint)
         let printFun = isPrint ? printing : printing.preview
         setTimeout(() => {
-            printFun(pageRef.current, {
+            printing.preview(pageRef.current, {
                 // 插入所有link和style标签到打印，默认是false
                 injectGlobalCss: true,
                 // 指定扫描样式，默认是true（全部）
                 scanStyles: false,
                 css: `
+                   @page{
+                   transform:scale(0.9)
+       size: A4 portrait;
+      margin: 0mm;
+    } 
+ @media print {
+  body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+}
+        #midCon{
+              min-width:1100px !important
+   }
+                #importContainer{
+                padding:0 !important
+                }
            .ant-btn {
              display: none;
            }
@@ -112,7 +132,7 @@ export default observer(function QuarterlyAnalysisReportZzwyDetail(props: Props)
             width: 100,
             align: 'center',
             render: (text: string) => {
-                return `${text}%`
+                return `${text||0}%`
             }
         }
     ]
@@ -306,8 +326,8 @@ export default observer(function QuarterlyAnalysisReportZzwyDetail(props: Props)
             </TopHeader>
             {/*内容*/}
             <Spin spinning={QuarterlyZzwyData.contentLoading}>
-                <MidCon ref={pageRef}>
-                    <Content>
+                <MidCon ref={pageRef} id='midCon'>
+                    <Content id='importContainer'>
                         <>
                             <h2 className='center-title'>{QuarterlyZzwyData.reportMasterData?.reportName}</h2>
                             <TextArea placeholder='请输入总结内容'
@@ -329,12 +349,13 @@ export default observer(function QuarterlyAnalysisReportZzwyDetail(props: Props)
                                            onChange={(e: any) => QuarterlyZzwyData.tableParams.one = e.target.value}
                                     />
                                 </h5>
-                                {!isPrint &&
-                                    <Button type='primary' onClick={() =>{
-                                        selectTableModal.visible =true ;
-                                        selectTableModal.type  = 1 ;
-                                        setSelectTableModal(selectTableModal)
-                                    }}>添加</Button>}
+                                {/*todo  暂时屏蔽*/}
+                                {/*{!isPrint &&*/}
+                                {/*    <Button type='primary' onClick={() =>{*/}
+                                {/*        selectTableModal.visible =true ;*/}
+                                {/*        selectTableModal.type  = 1 ;*/}
+                                {/*        setSelectTableModal({...selectTableModal})*/}
+                                {/*    }}>添加</Button>}*/}
                             </Summary>
                             <BaseTable
                                 dataSource={QuarterlyZzwyData.inspectTable}
@@ -353,7 +374,7 @@ export default observer(function QuarterlyAnalysisReportZzwyDetail(props: Props)
                                     <Button type='primary' onClick={() =>{
                                         selectTableModal.visible =true ;
                                         selectTableModal.type  = 2 ;
-                                        setSelectTableModal(selectTableModal)
+                                        setSelectTableModal({...selectTableModal})
                                     }}>添加</Button>}
                             </Summary>
                             <BaseTable
@@ -363,14 +384,14 @@ export default observer(function QuarterlyAnalysisReportZzwyDetail(props: Props)
                             />
                         </>
                         <>
-                            <h6 className='title-sty'>检查中发现存在主要内容</h6>
+                            <h6 className='title-sty'>2、检查中发现存在主要内容</h6>
                             <TextArea placeholder='请输入检查中发现存在主要内容'
                                       value={QuarterlyZzwyData.contentValue}
                                       onChange={(e: any) => QuarterlyZzwyData.contentValue = e.target.value}
                                       rows={7}/>
                         </>
                         <Summary>
-                            <h5 className='title-sty'>原因分析</h5>
+                            <h5 className='title-sty'>二、原因分析</h5>
                             {!isPrint && <Button type={'primary'}
                                                  onClick={() => QuarterlyZzwyData.handleAddFishValue()}>添加鱼骨图</Button>}
                         </Summary>
@@ -392,6 +413,9 @@ export default observer(function QuarterlyAnalysisReportZzwyDetail(props: Props)
                                                 background: "#ededed",
                                                 borderBottom: "1px dashed"
                                             }}></div>
+                                            <div style={{
+                                                pageBreakAfter:"always"
+                                            }}/>
                                         </>
                                     )
                                 })
@@ -471,11 +495,11 @@ export default observer(function QuarterlyAnalysisReportZzwyDetail(props: Props)
                 type={selectTableModal.type}
                 handleOk={(value: any) => {
                     selectTableModal.visible =false
-                    setSelectTableModal(selectTableModal)
+                    setSelectTableModal({...selectTableModal})
                 }}
                 handleCancel={() =>{
                     selectTableModal.visible =false
-                    setSelectTableModal(selectTableModal)
+                    setSelectTableModal({...selectTableModal})
                 }}/>
         </Con>
     )

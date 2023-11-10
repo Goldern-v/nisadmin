@@ -19,7 +19,7 @@ import ListGzsrm from './views/list-gzsrm'
 import List925 from './views/list-jew'
 
 /**是否拥有menuList */
-const IS_EXTRA_ROUTE = ['lyrm', 'gzsrm','925','zjhj','qhwy'].includes(appStore.HOSPITAL_ID)
+const IS_EXTRA_ROUTE = ['lyrm', 'gzsrm','925','zjhj','qhwy','jmfy'].includes(appStore.HOSPITAL_ID)
 /**初始需要重定向的字段 */
 const redirectRoute = '$init'
 export interface Props { }
@@ -30,71 +30,72 @@ export default function NurseHandBookRouter() {
   const leftMenuConfig: any = [
     ...appStore.hisMatch({
       map: {
-        jmfy: [
-          {
-            title: '护士长工作计划',
-            path: '/nurseHandBookNew/jmPlan',
-            icon: <WCJD />,
-            component: { ...NurseHandBook_jmfy },
-            disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
-          },
-          {
-            title: '护士长工作总结',
-            path: '/nurseHandBookNew/jmconclusion',
-            icon: <WCJD />,
-            component: { ...NurseHandBook_jmfy },
-            disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
-          },
-          {
-            title: '月度人力、基础质量、专科质量指标分析',
-            path: '/nurseHandBookNew/jmAnalyse',
-            icon: <WCJD />,
-            component: { ...NurseHandBook_jmfy },
-            disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
-          },
-          // {
-          //   title: '月度质控分析与改进',
-          //   path: '/nurseHandBookNew/jmQc',
-          //   icon: <WCJD />,
-          //   component: { ...NurseHandBook_jmfy },
-          //   disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
-          // },
-          {
-            title: '护理人员季度考核成绩表',
-            path: '/nurseHandBookNew/jmQuarterlyAudit',
-            icon: <WCJD />,
-            component: { ...NurseHandBook_jmfy },
-            disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
-          },
-          {
-            title: '护理人员月度培训实施记录表',
-            path: '/nurseHandBookNew/jmMonthTrain',
-            icon: <WCJD />,
-            component: { ...NurseHandBook_jmfy },
-            disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
-          },
-          {
-            title: '科室护理人员月度动态出勤表',
-            path: '/nurseHandBookNew/jmDeptDuty',
-            icon: <WCJD />,
-            component: { ...NurseHandBook_jmfy },
-            disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
-          },
-          {
-            title: '论文、科研、创新登记表',
-            path: '/nurseHandBookNew/jmRegisterForm1',
-            icon: <WCJD />,
-            component: { ...NurseHandBook_jmfy },
-            disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
-          },
-          {
-            title: '教学、培训登记表',
-            path: '/nurseHandBookNew/jmRegisterForm2',
-            icon: <WCJD />,
-            component: { ...NurseHandBook_jmfy },
-            disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
-          },
-        ],
+        /**todo 江门妇幼原本的护士长手册 ，可能每年变动较大，现在采用通用配置护士长手册内容 **/
+        // jmfy: [
+        //   {
+        //     title: '护士长工作计划',
+        //     path: '/nurseHandBookNew/jmPlan',
+        //     icon: <WCJD />,
+        //     component: { ...NurseHandBook_jmfy },
+        //     disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+        //   },
+        //   {
+        //     title: '护士长工作总结',
+        //     path: '/nurseHandBookNew/jmconclusion',
+        //     icon: <WCJD />,
+        //     component: { ...NurseHandBook_jmfy },
+        //     disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+        //   },
+        //   {
+        //     title: '月度人力、基础质量、专科质量指标分析',
+        //     path: '/nurseHandBookNew/jmAnalyse',
+        //     icon: <WCJD />,
+        //     component: { ...NurseHandBook_jmfy },
+        //     disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+        //   },
+        //   // {
+        //   //   title: '月度质控分析与改进',
+        //   //   path: '/nurseHandBookNew/jmQc',
+        //   //   icon: <WCJD />,
+        //   //   component: { ...NurseHandBook_jmfy },
+        //   //   disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+        //   // },
+        //   {
+        //     title: '护理人员季度考核成绩表',
+        //     path: '/nurseHandBookNew/jmQuarterlyAudit',
+        //     icon: <WCJD />,
+        //     component: { ...NurseHandBook_jmfy },
+        //     disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+        //   },
+        //   {
+        //     title: '护理人员月度培训实施记录表',
+        //     path: '/nurseHandBookNew/jmMonthTrain',
+        //     icon: <WCJD />,
+        //     component: { ...NurseHandBook_jmfy },
+        //     disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+        //   },
+        //   {
+        //     title: '科室护理人员月度动态出勤表',
+        //     path: '/nurseHandBookNew/jmDeptDuty',
+        //     icon: <WCJD />,
+        //     component: { ...NurseHandBook_jmfy },
+        //     disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+        //   },
+        //   {
+        //     title: '论文、科研、创新登记表',
+        //     path: '/nurseHandBookNew/jmRegisterForm1',
+        //     icon: <WCJD />,
+        //     component: { ...NurseHandBook_jmfy },
+        //     disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+        //   },
+        //   {
+        //     title: '教学、培训登记表',
+        //     path: '/nurseHandBookNew/jmRegisterForm2',
+        //     icon: <WCJD />,
+        //     component: { ...NurseHandBook_jmfy },
+        //     disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+        //   },
+        // ],
         'lcey,stmz': [
           {
             title: '护士基本情况',
@@ -313,6 +314,7 @@ export default function NurseHandBookRouter() {
             map: {
               gzsrm: <ListGzsrm options={v} />,
               925:<List925 options={v}/>,
+              jmfy:<List925 options={v}/>,
               qhwy:<List925 options={v}/>,
               zjhj:<List925 options={v}/>,
               lyrm: <ListLyrmNew options={v} />,

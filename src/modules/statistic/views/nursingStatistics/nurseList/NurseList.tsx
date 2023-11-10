@@ -2,12 +2,14 @@ import styled from 'styled-components'
 import StatisticHeader from './StatisticHeader'
 import CardItem from './CardItem'
 import { statisticsApi } from 'src/modules/statistic/api/StatisticsApi'
-import React, { useState, useEffect } from 'react'
-import { Spin } from 'antd'
+import React, { useState, useEffect,useRef } from 'react'
+import { Spin,Button } from 'antd'
 import store, { appStore, authStore } from 'src/stores'
+import printing from "printing";
 import MidHeader from './MidHeader'
 export default function BedSituation() {
   const [leftList, setLeftList] = useState([])
+  const tableRef = useRef<HTMLDivElement | null>(null);
   const [infoList, setInfoList] = useState([])
   const [total,setTotal] =useState(0)
   const [midList, setMidList] = useState([])
@@ -80,14 +82,60 @@ export default function BedSituation() {
       setInfoList(list)
     })
   }, [])
+
+  const exportPdf = ()=>{
+    const NurseList__SpinCon = document.querySelectorAll('[class*="NurseList__SpinCon"]')[0] as HTMLElement;
+    NurseList__SpinCon.style.overflow = "hidden"
+    printing(tableRef.current!, {
+      injectGlobalCss: true,
+      scanStyles: false,
+      css: `
+        @page {
+          size:landscape;
+          margin: 10px;
+        }
+        .tableBox{
+          box-shadow: none;
+          padding: 0;
+          height:auto;
+        }
+        .InfoPrint{
+          font-size: 14px;
+        }
+        .Info{
+          margin-top: -10px;
+        }
+        .Info>div{
+          font-size: 12px;
+          margin-right: 0;
+        }
+        .SpinCon{
+          position: absolute;
+          left: 0px;
+          top: 85px;
+          width: auto;
+          height: auto;
+          transform: scaleX(0.7) translateX(-210px);
+        }
+        .Footer{
+          display:none;
+        }
+      `,
+    });
+    NurseList__SpinCon.style.overflow = "auto"
+  }
+
   return (
     <Wrapper>
+      <HeaderCon>
+        {['hj'].includes(appStore.HOSPITAL_ID) && <Button type="primary" onClick={exportPdf}>导出pdf</Button>}
+      </HeaderCon>
       <ScrollCon>
-        <Container>
+        <Container ref={tableRef} className="tableBox">
           {/* <HisName>东莞市厚街医院</HisName>
           <Title>东莞市厚街医院</Title> */}
           <MidHeader />
-          <Info>
+          <Info className="InfoPrint">
             {infoList.map((item: any,index:number) => (
               <InfoItem>
                 {item.key}:{item.value}人{index === 0 ? null :`(${((item.value/total)*100).toFixed(1)}%)`}
@@ -115,7 +163,7 @@ export default function BedSituation() {
               </MainPart>
             </Spin>
           </SpinCon>
-          <Footer>
+          <Footer className="Footer">
             <span>图例：</span>
             <span>主任护师：</span>
             <div className='block color-1' />
@@ -139,7 +187,20 @@ export default function BedSituation() {
     </Wrapper>
   )
 }
-
+const HeaderCon = styled.div`
+  align-items: center;
+  height: 45px;
+  line-height: 45px;
+  padding-left: 14px;
+  background: rgba(248,248,248,1);
+  box-shadow: 3px 3px 6px 0px rgba(0,0,0,0.15);
+  .content-item{
+    margin-right: 15px;
+  }
+  .lable-item{
+    margin-right: 10px;
+  }
+`
 const Container = styled.div`
   height: 100%;
   width: auto;

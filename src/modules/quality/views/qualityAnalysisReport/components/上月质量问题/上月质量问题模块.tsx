@@ -5,7 +5,8 @@ import { qualityAnalysisReportViewModal } from '../../QualityAnalysisReportViewM
 import { observer } from 'src/vendors/mobx-react-lite'
 import OneLevelTitle from '../common/OneLevelTitle'
 import EditButton from '../common/EditButton'
-import { LastImproveItem } from '../../types'
+import {LastImproveItem, Report} from '../../types'
+import {appStore} from "src/stores";
 export interface Props {
   sectionId: string
   sectionTitle?: string | undefined
@@ -15,20 +16,21 @@ export interface Props {
 export default observer(function 上月质量问题模块(props: Props) {
   let { sectionId, sectionTitle } = props
   let data = qualityAnalysisReportViewModal.getSectionData(sectionId)
-  let list: Partial<LastImproveItem>[] = data.list || []
-
+    let list: Partial<LastImproveItem>[] = data.list || []
+    let report: Report = (data ? data.report : {}) || {}
   return (
     <Wrapper>
       <OneLevelTitle text={sectionTitle} />
       <div className='aside'>（A:落实效果好 B:部分落实 C:未落实 评价B或C应进入下一阶段持续改进）</div>
-      {list.map((item, index: number) => (
-        <div className='text-box' key={index}>
-          {index + 1 + '.'}
-          {item.itemImproveDesc || item.itemName} {item.result}
-        </div>
-      ))}
-
-      {/* <TextCon>{textarea}</TextCon> */}
+        {
+            appStore.HOSPITAL_ID ==='jmfy'?<TextCon>{report.preFollowUpDeptDesc}</TextCon>:
+                list.map((item, index: number) => (
+                        <div className='text-box' key={index}>
+                            {index + 1 + '.'}
+                            {item.itemImproveDesc || item.itemName} {item.result}
+                        </div>
+                    ))}
+        }
       <EditButton onClick={() => qualityAnalysisReportViewModal!.openEditModal(sectionId)}>编辑</EditButton>
     </Wrapper>
   )

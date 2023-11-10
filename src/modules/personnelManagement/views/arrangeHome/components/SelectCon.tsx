@@ -905,6 +905,14 @@ export default observer(function SelectCon() {
                   导出科室
                 </Button>
             </div>
+            <div className="item">
+            <Button
+              className="item"
+              onClick={() => showStandardTimeModal.show()}
+            >
+              标准工时
+            </Button>
+            </div>
             <ImportModal
                 visible={modalVisible}
                 modalData={modalData}

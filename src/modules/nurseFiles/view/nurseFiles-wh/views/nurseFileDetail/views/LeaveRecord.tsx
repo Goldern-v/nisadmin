@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { RouteComponentProps } from 'react-router'
 import BaseLayout from '../components/BaseLayout'
+import { message } from 'antd'
 import BaseTable, { DoCon } from 'src/components/BaseTable'
 import { authStore, appStore } from 'src/stores'
 import { observer } from 'mobx-react-lite'
@@ -14,17 +15,22 @@ import EditLeaveRecordModal from '../modal/EditLeaveRecordModal'
 export interface Props extends RouteComponentProps {}
 
 export default observer(function MakeAwards() {
-  const editLeaveRecordModal = createModal(EditLeaveRecordModal)
+  const { history } = appStore
+
+  const [showEditModal, setShowEditModal] = useState(false)
   const [tableData, setTableData] = useState([])
   const getTableData = () => {
-    nurseFilesService.commonfindByEmpNoSubmit('nurseWHRewardExperience', appStore.queryObj.empNo).then((res) => {
-      setTableData(res.data)
+    let params = {
+      type:0
+    }
+    nurseFilesService.leaveApplication(params).then((res) => {
+      if(res.data) setTableData(res.data.list)
     })
   }
   const btnList = [
     {
       label: '添加',
-      onClick: () => editLeaveRecordModal.show()
+      onClick: () => setShowEditModal(true)
     }
   ]
   const columns: ColumnProps<any>[] = [
@@ -38,7 +44,7 @@ export default observer(function MakeAwards() {
     },
     {
       title: '请假单',
-      dataIndex: 'leaveForm',
+      dataIndex: 'recordName',
       key: '2',
       width: 200,
       align: 'center'
@@ -49,12 +55,15 @@ export default observer(function MakeAwards() {
       dataIndex: 'leaveTime',
       key: '4',
       width: 120,
-      align: 'center'
+      align: 'center',
+      render: (text: any, row: any, index: number) => {
+        return (row.leaveStartTime || "") + "-" + (row.leaveEndTime || "")
+      }
     },
     
     {
       title: '申请时间',
-      dataIndex: 'applyTime',
+      dataIndex: 'createTime',
       key: '',
       align: 'center',
       width: 120
@@ -64,7 +73,28 @@ export default observer(function MakeAwards() {
       dataIndex: 'status',
       key: '',
       align: 'center',
-      width: 100
+      width: 100,
+      render: (text: any, row: any, index: number) => {
+        let statuStr = ""
+        switch(Number(text)){
+          case -2:
+            statuStr = "已撤销"
+            break;
+          case -1:
+            statuStr = "已驳回"
+            break;
+          case 0:
+            statuStr = "暂存"
+            break;
+          case 1:
+            statuStr = "待审核"
+            break;
+          case 2:
+            statuStr = "已通过"
+            break;
+        }
+        return statuStr
+      }
     },
     {
       title: '操作',
@@ -85,7 +115,12 @@ export default observer(function MakeAwards() {
   ]
 
   const toDetail = (row: any) => {
-    appStore.history.push(`/selfNurseFile/leaveRecordDetail/${row.id}?type=military`);
+    history.push(`/selfNurseFile/leaveRecordDetail?id=${row.id}`);
+  }
+
+  const createReport = (params:any)=>{
+    setShowEditModal(false)
+    history.push(`/selfNurseFile/leaveRecordDetail?recordType=${params.recordType}`)
   }
 
   useEffect(() => {
@@ -105,7 +140,7 @@ export default observer(function MakeAwards() {
           };
         }}
       />
-      <editLeaveRecordModal.Component />
+      <EditLeaveRecordModal visible={showEditModal}  onOk={createReport} onCancel={()=>setShowEditModal(false)}/>
     </BaseLayout>
   )
 })

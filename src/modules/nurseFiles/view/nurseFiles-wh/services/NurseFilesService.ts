@@ -2,6 +2,7 @@ import BaseApiService from 'src/services/api/BaseApiService'
 import { appStore, authStore } from 'src/stores'
 import { nurseFileDetailViewModal } from '../views/nurseFileDetail/NurseFileDetailViewModal'
 import { isSelf } from '../views/nurseFileDetail/views/BaseInfo'
+import qs from "qs";
 export interface NurseQuery {
   deptCode?: string /** 部门编码 */
   empNo?: string /** 员工工号 */
@@ -34,6 +35,7 @@ export default class NurseFilesService extends BaseApiService {
         map: {
           'gxjb': 'countExcelForJB',
           'nfzxy': 'countExcelForNFZXY',
+          '925': 'countExcelFor925',
           other: 'countExcel'
         },
       })
@@ -78,6 +80,10 @@ export default class NurseFilesService extends BaseApiService {
   // 1-1护士基本信息信息更新
   public async saveOrUpdate(obj: any) {
     return this.post(`/nurseWHInformation/saveOrUpdate`, obj)
+  }
+
+  public async leaveApplicationCreate(obj: any) {
+    return this.post(`/leaveApplication/create`, obj)
   }
 
   /** 审核列表 */
@@ -139,14 +145,34 @@ export default class NurseFilesService extends BaseApiService {
   public async commonDelById(type: string, id: any) {
     return this.get(`/${type}/delById/${id}`)
   }
+  
+  public async leaveApplicationDetail(recordId: any) {
+    return this.get(`/leaveApplication/detail/${recordId}`)
+  }
+  
+  public async leaveApplication(obj:any) {
+    return this.get(`/leaveApplication/list?${qs.stringify(obj)}`,)
+  }
   /** 待我审核 */
   public findNurseFilePendingFlow(empNo: any, pageIndex: any, pageSize: any) {
     return this.post(`/auditeNurseFileIndexWH/findNurseFilePendingFlow`, this.stringify({ empNo, pageIndex, pageSize }))
   }
-    // 3-1护士特殊资格证 新增 //护长
-    public async nurseSpecialQualificationAdd(obj: any) {
-      return this.post(`/nurseSpecialQualification/saveOrUpdatePC`, obj);
-    }
+
+  public leaveApplicationCancel(obj:any) {
+    return this.post(`/leaveApplication/cancel`, obj)
+  }
+
+  public leaveApplicationSave(obj:any) {
+    return this.post(`/leaveApplication/save`, obj)
+  }
+
+  public leaveApplicationHandNode(obj:any) {
+    return this.post(`/leaveApplication/handNode`, obj)
+  }
+  // 3-1护士特殊资格证 新增 //护长
+  public async nurseSpecialQualificationAdd(obj: any) {
+    return this.post(`/nurseSpecialQualification/saveOrUpdatePC`, obj);
+  }
       // 3// 查找护士特殊资格证 //护长
   public async nurseSpecialQualification(empNo: any) {
     nurseFileDetailViewModal.pageSpinning = true;
@@ -167,13 +193,46 @@ export default class NurseFilesService extends BaseApiService {
 
   /** 籍贯搜索 */
   public nurseNativePlaceFindByName(nativePlaceName: any) {
-    return this.post(`/nurseNativePlace/findByName`, { nativePlaceName: nativePlaceName, pageSize: 20, pageIndex: 1 })
+    switch(appStore.HOSPITAL_ID){
+      case "925":
+        return this.post(`/nurseNativePlace/findByNameForJew`, { nativePlaceName: nativePlaceName, pageSize: 20, pageIndex: 1 })
+      default:
+        return this.post(`/nurseNativePlace/findByName`, { nativePlaceName: nativePlaceName, pageSize: 20, pageIndex: 1 })
+    }
   }
 
   /* nfzxy 护理管理添加人员时获取信息 */
   public getSyncDateInfo(empId:string){
     return this.post(`/manageSyncDate/getUserInfos?emplId=${empId}`,)
   }
+  /**根据工号找到专科准入列表**/
+  public findByEmpNoByLyrm(empNo:any){
+    return this.get(`/nurseWHInSpecializ/findByEmpNo/${empNo}`,)
+  }
+/**获取专科准入类型**/
+public getLyrmDict(code:any){
+  return this.post(`dept/dictInfo`,qs.stringify({ code }))
+}
+/**新增修改签名同一个**/
+public saveLyrmOrUpdate(params:any){
+  return this.post('nurseWHInSpecializ/saveOrUpdate',params)
+}
+  /**查看详情**/
+  public getLyrmById(id:number){
+    return this.get(`/nurseWHInSpecializ/getById/${id}`,)
+  }
+/**删除专科准入**/
+public deleteLyrmById(id:number){
+  return this.get(`/nurseWHInSpecializ/delById/${id}`,)
+}
+  public auditeLyrmStatusNurse(params:any){
+  let formData =new FormData()
+    for(let i in params){
+      formData.append(i,params[i])
+    }
+    return this.post(`/nurseWHInSpecializ/auditeStatusNurse`,formData)
+  }
+// nurseWHInSpecializ/auditeStatusNurse
 }
 
 export const nurseFilesService = new NurseFilesService()

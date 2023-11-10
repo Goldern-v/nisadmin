@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect,useRef } from 'react'
 import { Button, Radio, Select, Spin } from 'antd'
 import CommonLayout, { ChartCon } from './../../common/CommonLayout'
 import { observer } from 'mobx-react'
@@ -9,6 +9,9 @@ import BaseTable from 'src/components/BaseTable'
 import { statisticsApi } from './../../api/StatisticsApi'
 import { ColumnProps } from 'antd/lib/table'
 import { chartHeightCol } from '../../utils/chartHeightCol'
+import printing from "printing";
+import PrintTable from '../printTable/printTable'
+import {Con} from 'src/modules/statistic/common/css/CommonLayout.ts';
 import { delWithResData } from '../../utils/dealWithData'
 
 const Option = Select.Option
@@ -24,10 +27,14 @@ export default observer(function 护士层级分布() {
   const [chartData, setChartData] = useState([] as { type: string, value: number }[])
   const [chartHeight, setChartHeight] = useState(chartHeightCol())
   const [chartVisible, setChartVisible] = useState(false)
+  const [chartsImg, setChartsImg] = useState<any[]>([])
+  const [isPrint, setIsPrint] = useState(false)
 
   const [loading, setLoading] = useState(false)
 
   const [extraColumns, setExtraColumns] = useState([] as ColumnProps<any>[])
+  const tableRef = useRef<HTMLDivElement | null>(null);
+  const tablePrintRef = useRef<HTMLDivElement | null>(null);
 
   const columns: ColumnProps<any>[] = [
     {
@@ -81,6 +88,64 @@ export default observer(function 护士层级分布() {
     getData()
   }, [query])
 
+  const exportPdf = ()=>{
+    setIsPrint(true)
+  }
+
+  useEffect(() => {
+    let timer: any = null
+    if (chartVisible) {
+      timer = setTimeout(() => {
+        let canvasEl = document.querySelectorAll('canvas') as any
+        if (canvasEl.length) {
+          let arr = []
+          for (let i = 0; i < canvasEl.length; i++) {
+            arr.push(canvasEl[i].toDataURL())
+          }
+          setChartsImg(arr)
+        }
+      }, 1000)
+    }
+    return () => clearTimeout(timer)
+  }, [chartVisible])
+
+  const setImg = () => {
+    let imgEl = document.querySelectorAll('.chart-img') as any
+    if (imgEl.length) {
+      for (let i = 0; i < imgEl.length; i++) {
+        chartsImg[i] && (imgEl[i].src = chartsImg[i])
+      }
+    }
+  }
+
+  useEffect(() => {
+    if(isPrint){
+      setImg()
+      let current = chartVisible ? tableRef.current! : tablePrintRef.current!
+      !chartVisible && (current.style.display = 'block')
+        printing(current, {
+          injectGlobalCss: true,
+          scanStyles: false,
+          css: `
+            @page {
+              size:landscape;
+              margin: 20px 10px 20px;
+            }
+            .right-group{
+              display:none
+            }
+            .chart-img {
+              width: 100%;
+              object-fit: contain;
+              height: 100%;
+            }
+          `,
+        }).then(()=>{
+          setIsPrint(false)
+        });
+        tablePrintRef.current!.style.display = 'none'
+    }
+  }, [isPrint])
 
   useEffect(() => {
     let resizeCallBack = () => setChartHeight(chartHeightCol())
@@ -114,35 +179,45 @@ export default observer(function 护士层级分布() {
         )}
       </Select>
       <Button type="primary" onClick={handleSearch}>查询</Button>
+      {['jmfy','hj'].includes(appStore.HOSPITAL_ID) && <Button type="primary" onClick={exportPdf}>导出pdf</Button>}
     </div>}
     body={<Spin spinning={loading}>
-      <div className="main-title">护士层级分布</div>
-      <div className="right-group">
-        <Radio.Group
-          size="small"
-          buttonStyle="solid"
-          value={chartVisible}
-          onChange={(e) => setChartVisible(e.target.value)}>
-          <Radio.Button value={false} >表格</Radio.Button>
-          <Radio.Button value={true}>图表</Radio.Button>
-        </Radio.Group>
-      </div>
-      {!chartVisible && <BaseTable
-        surplusHeight={300}
-        surplusWidth={500}
-        columns={columns}
-        dataSource={data} />}
-      {chartVisible && <ChartCon style={{ height: `${chartHeight || 0}px` }}>
-        {chartData.length > 0 && <CircleChart
-          chartHeight={chartHeight}
-          sourceData={chartData} />}
-        {chartData.length <= 0 && <div className="no-data">
-          <img
-            style={{ width: '100px' }}
-            src={require('src/modules/statistic/img/noData.png')} />
-          <br />
-          <span>暂无数据</span>
-        </div>}
-      </ChartCon>}
+      <Con ref={tableRef} className="tableBox">
+        <div className="main-title">护士层级分布</div>
+        <div className="right-group">
+          <Radio.Group
+            size="small"
+            buttonStyle="solid"
+            value={chartVisible}
+            onChange={(e) => setChartVisible(e.target.value)}>
+            <Radio.Button value={false} >表格</Radio.Button>
+            <Radio.Button value={true}>图表</Radio.Button>
+          </Radio.Group>
+        </div>
+        {!chartVisible && <BaseTable
+          surplusHeight={300}
+          surplusWidth={500}
+          columns={columns}
+          dataSource={data} />}
+        {chartVisible && <ChartCon style={{ height: `${chartHeight || 0}px` }}>
+          {chartData.length > 0 && 
+          !isPrint ?
+          <CircleChart
+            chartHeight={chartHeight}
+            sourceData={chartData} />
+            : <img className="chart-img" src={''} />
+          }
+          {chartData.length <= 0 && <div className="no-data">
+            <img
+              style={{ width: '100px' }}
+              src={require('src/modules/statistic/img/noData.png')} />
+            <br />
+            <span>暂无数据</span>
+          </div>}
+        </ChartCon>}
+        <div ref={tablePrintRef} style={{display:'none'}}>
+          <PrintTable dataSource={data} columns={columns} title={'护士层级分布'}></PrintTable>
+        </div>
+      </Con>
     </Spin>} />
 })

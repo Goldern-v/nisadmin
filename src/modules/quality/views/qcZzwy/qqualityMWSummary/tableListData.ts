@@ -71,7 +71,7 @@ class QqualityMWSummaryData{
   getTableList(){
     // 季度
     let times = {}
-    console.log(this.selectQuarter, 666666666, this.selectQuarter !== '全部')
+    // console.log(this.selectQuarter, 666666666, this.selectQuarter !== '全部')
     if (this.selectQuarter !== '全部') {
       times = {
         startDate: quarterTimes(this.year?.format('YYYY'),this.selectQuarter)[0],

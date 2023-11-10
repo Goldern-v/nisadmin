@@ -133,7 +133,7 @@
     "dev:zjhj": "npm run start:zjhj",
     "dev:gdsfy": "npm run start:gdsfy",
     "dev:xyzy": "npm run start:xyzy",
-    "start": "env-cmd  -e hj react-app-rewired start",
+    "start": "env-cmd -e hj react-app-rewired start",
     "start:wh": "env-cmd -e wh react-app-rewired start",
     "start:hj": "env-cmd -e hj react-app-rewired start",
     "start:hj-be": "env-cmd -e hj-be react-app-rewired start",
