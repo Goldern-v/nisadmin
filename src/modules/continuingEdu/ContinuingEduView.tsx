@@ -202,6 +202,10 @@ const peixunWHYX = ()=>{
   const user = JSON.parse(sessionStorage.getItem('user') || '{}')
   return !user.roleManageCodeList.find((code:any)=>['WHYX_QCR5001','WHYX_QCR5002','WHYX_QCR5003','QCR0004'].includes(code))
 }
+const canEdit = ()=>{
+  const user = JSON.parse(sessionStorage.getItem('user') || '{}')
+  return user.empNo === "353"
+}
 
 export default function ContinuingEdu(props: Props) {
   // const [dataList, setDataList] = useState([] as any); // 动态菜单树
@@ -1227,25 +1231,30 @@ const getIcon = (icon: any) => {
               title: "人员名单",
               path: "/continuingEdu/preJobList",
               component: PreJobList,
+              canEdit:canEdit()
             },
             {
               title: "培训计划",
               path: "/continuingEdu/preJobTrainingPlan",
+              canEdit:canEdit(),
               component: PreJobTrainingPlan,
             },
             {
               title: "岗前理论考核",
               path: "/continuingEdu/preJobTheory",
+              canEdit:canEdit(),
               component: TheoryExam,
             },
             {
               title: "岗前实操考核",
               path: "/continuingEdu/preJobPractice",
+              canEdit:canEdit(),
               component: TheoryExam,
             },
             {
               title: "实施记录",
               path: "/continuingEdu/preJobRecord",
+              canEdit:canEdit(),
               component: ImplementRecord,
             },
           ],
@@ -1883,6 +1892,7 @@ const getIcon = (icon: any) => {
               getFormName={currentRoute && currentRoute.formName} //表单code值
               getList={getList} // 动态菜单树
               getParentsName={currentRoute && currentRoute.parentsName}
+              canEdit={currentRoute && currentRoute?.canEdit}
             />
           </Suspense>
         )}

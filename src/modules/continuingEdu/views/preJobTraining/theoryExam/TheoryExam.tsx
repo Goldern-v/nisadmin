@@ -17,9 +17,12 @@ const Option = Select.Option;
 export interface Props {
 	payload: any;
 	getTitle: any;
+	canEdit:boolean | undefined
 }
 
 export default observer(function TheoryExam(props: Props) {
+	//菜单传值过来 判别是否有配置canEdit 没配置的默认为true
+	let canEdit = typeof(props.canEdit)==="boolean" ? props.canEdit : true;
 	const columns: any = [
 		{
 			title: "批次",
@@ -78,8 +81,8 @@ export default observer(function TheoryExam(props: Props) {
 				return (
 					<DoCon>
 						<span onClick={() => { turnToDetail(record) }}>查看</span>
-						<span onClick={() => { turnToEdit(record) }}>修改</span>
-						<span onClick={() => { removeTableItem(record, index) }}>删除</span>
+						{canEdit && <span onClick={() => { turnToEdit(record) }}>修改</span>}
+						{canEdit && <span onClick={() => { removeTableItem(record, index) }}>删除</span>}
 					</DoCon>
 				);
 			}
@@ -221,7 +224,7 @@ export default observer(function TheoryExam(props: Props) {
 					</Button>
 					{/* <Button className="span" onClick={addTableItem}>新增一行</Button> */}
 					<Button className="span" onClick={turnToScore} >全部成绩</Button>
-					<Button className="span" onClick={clickAdd}>新增</Button>
+					{canEdit && <Button className="span" onClick={clickAdd}>新增</Button>}
 					<Button className="span" onClick={() => onExport()} >导出</Button>
 				</RightIcon>
 			</Headerr>
