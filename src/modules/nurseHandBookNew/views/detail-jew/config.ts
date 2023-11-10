@@ -223,6 +223,38 @@ export const tableConConfig = {
         tip: ``
     },
     '925NDXLJH_3': {
+        zjhjColumns:[
+            {
+                title: "业务学习",
+                width: "20%",
+                component: 'TextArea'
+            },
+            {
+                title: "负责人",
+                width: "12%",
+                component: "Dead",
+            },
+            {
+                title: "业务学习",
+                width: "20%",
+                component: 'TextArea'
+            },
+            {
+                title: "负责人",
+                width: "12%",
+                component: "Dead",
+            },
+            {
+                title: "教学查房",
+                width: "20%",
+                component: 'TextArea'
+            },
+            {
+                title: "负责人",
+                width: "12%",
+                component: "Dead",
+            },
+        ],
         columns: [
             {
                 title: "制度培训计划",

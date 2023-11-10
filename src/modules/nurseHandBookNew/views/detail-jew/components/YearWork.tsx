@@ -11,6 +11,8 @@ import moment, {isMoment} from 'moment'
 import {isOfType} from 'src/utils/ts.utils'
 import {createArr} from "src/utils/array/array";
 import {createObjV} from "src/utils/object/object";
+import app from "src/App";
+import {appStore} from "src/stores";
 const { Option } = Select
 const { TextArea} =Input
 export interface Props {
@@ -43,7 +45,7 @@ const ChildCon = memo((props: any) => {
 })
 /**表格类表单 */
 export default observer(function (props: Props) {
-
+    const zjhjColumns = useMemo(() => tableConConfig[model.detail?.record?.menuCode]?.zjhjColumns || [], [model.id])
     const columns = useMemo(() => tableConConfig[model.detail?.record?.menuCode]?.columns || [], [model.id])
     const otherColumns = useMemo(() => tableConConfig[model.detail?.record?.menuCode]?.otherColumns || [], [model.id])
     const operationColumns = useMemo(() => tableConConfig[model.detail?.record?.menuCode]?.operationColumns || [], [model.id])
@@ -87,54 +89,107 @@ export default observer(function (props: Props) {
                 {model.editorTitle||model.detail?.record?.[config?.titleType || 'menuName']}
                 {/*{model.detail?.record?.year}年{model.detail?.record?.[config?.titleType || 'menuName']}*/}
             </div>
-            <table style={{marginBottom: '-1px'}}>
-                <colgroup>
-                    <col width='8%'/>
-                    {
-                        columns.map((v: Obj, i: number) => (
-                            <col key={i} {...(v.width ? {width: v.width} : {})} />
-                        ))
-                    }
-                </colgroup>
-                <thead>
-                <tr>
-                    <td rowSpan={2}>时间</td>
-                    <td  colSpan={6}>理论学习</td>
-                </tr>
-                <tr>
-                    {
-                        columns.map((v: Obj, i: number) =>(
-                            <td key={i}>{v.title}</td>
-                        ))
-                    }
-                </tr>
-                </thead>
-                <tbody>
-                {
-                    (( model.editorData?.arr1)|| []).map((v: Obj, i: number) => {
-                        return (
-                            <tr key={i}>
-                                <td>{i +1 }月</td>
-                                {
-                                    columns.map((v1: Obj, i1: number) => {
-                                        return (
-                                          <td key={`${i}-${i1}`}>
-                                                <ChildCon {...{
-                                                    component: v1.component,
-                                                    value: v[`v${i1}`],
-                                                    onChange: (e: any) => onChange('arr1',e, {index: i, key: `v${i1}`})
-                                                }} />
-                                            </td>
-                                        )
-                                    })
-                                }
-                            </tr>
+            {/* 湛江海军训练计划单独改一份 */}
+            {
+                appStore.HOSPITAL_ID ==='zjhj'?
+                    <table style={{marginBottom: '-1px'}}>
+                        <colgroup>
+                            <col width='8%'/>
+                            {
+                                zjhjColumns.map((v: Obj, i: number) => (
+                                    <col key={i} {...(v.width ? {width: v.width} : {})} />
+                                ))
+                            }
+                        </colgroup>
+                        <thead>
+                        <tr>
+                            <td rowSpan={2}>时间</td>
+                            <td  colSpan={6}>理论学习</td>
+                        </tr>
+                        <tr>
+                            {
+                                zjhjColumns.map((v: Obj, i: number) =>(
+                                    <td key={i}>{v.title}</td>
+                                ))
+                            }
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {
+                            (( model.editorData?.arr1)|| []).map((v: Obj, i: number) => {
+                                return (
+                                    <tr key={i}>
+                                        <td>{i +1 }月</td>
+                                        {
+                                            zjhjColumns.map((v1: Obj, i1: number) => {
+                                                return (
+                                                    <td key={`${i}-${i1}`}>
+                                                        <ChildCon {...{
+                                                            component: v1.component,
+                                                            value: v[`v${i1}`],
+                                                            onChange: (e: any) => onChange('arr1',e, {index: i, key: `v${i1}`})
+                                                        }} />
+                                                    </td>
+                                                )
+                                            })
+                                        }
+                                    </tr>
 
-                        )
-                    })
-                }
-                </tbody>
-            </table>
+                                )
+                            })
+                        }
+                        </tbody>
+                    </table>:
+                    <table style={{marginBottom: '-1px'}}>
+                        <colgroup>
+                            <col width='8%'/>
+                            {
+                                columns.map((v: Obj, i: number) => (
+                                    <col key={i} {...(v.width ? {width: v.width} : {})} />
+                                ))
+                            }
+                        </colgroup>
+                        <thead>
+                        <tr>
+                            <td rowSpan={2}>时间</td>
+                            <td  colSpan={6}>理论学习</td>
+                        </tr>
+                        <tr>
+                            {
+                                columns.map((v: Obj, i: number) =>(
+                                    <td key={i}>{v.title}</td>
+                                ))
+                            }
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {
+                            (( model.editorData?.arr1)|| []).map((v: Obj, i: number) => {
+                                return (
+                                    <tr key={i}>
+                                        <td>{i +1 }月</td>
+                                        {
+                                            columns.map((v1: Obj, i1: number) => {
+                                                return (
+                                                    <td key={`${i}-${i1}`}>
+                                                        <ChildCon {...{
+                                                            component: v1.component,
+                                                            value: v[`v${i1}`],
+                                                            onChange: (e: any) => onChange('arr1',e, {index: i, key: `v${i1}`})
+                                                        }} />
+                                                    </td>
+                                                )
+                                            })
+                                        }
+                                    </tr>
+
+                                )
+                            })
+                        }
+                        </tbody>
+                    </table>
+
+            }
             {/* 操作训练计划 */}
             <div className='titleName'>操作训练计划</div>
             <table style={{marginBottom: '-1px'}}>
