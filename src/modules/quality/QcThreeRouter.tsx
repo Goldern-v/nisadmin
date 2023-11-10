@@ -47,6 +47,9 @@ import 福清三级质控问题原因措施汇总 from "./views/qcFormFqfybjy/�
 
 import 质控表单汇总 from "./views/qcDghl/质控表单汇总";
 import 三级质控护理质量统计汇总 from "./views/qcFormGzsrm/三级质控护理质量统计汇总";
+
+import qcThreeNQreport from "./views/qcThreeNQreport/index"; //护理质量分析报告
+
 import qcThreeMQSummary from './views/qcThreeMQSummary/index'
 import { CONFIG_TITLE } from './utils/enums'
 import qcQSummary from './views/qcQSummary'
@@ -121,6 +124,12 @@ export default function QcThreeRouter(props: Props) {
     path: "/qcThree/三级质控问题原因措施汇总?qcLevel=3",
     icon: <JCTJ />,
     component: 三级质控问题原因措施汇总,
+  };
+  const route_护理质量分析报告 = {
+    title: "护理质量分析报告",
+    path: "/qcThree/护理质量分析报告?qcLevel=3",
+    icon: <JCTJ />,
+    component: qcThreeNQreport,
   };
   const route_福清三级质控问题原因措施汇总 = {
     title: CONFIG_TITLE[3] + "原因措施汇总",
@@ -403,6 +412,7 @@ export default function QcThreeRouter(props: Props) {
         route_三级质控问题汇总,
         route_检查表单统计表,
         route_三级质控问题原因措施汇总,
+        route_护理质量分析报告,
       ],
       'ytll': [
         route_三级质控汇总分析报告
