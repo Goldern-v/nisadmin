@@ -5,12 +5,16 @@ import DeptSelect from "src/components/DeptSelect";
 import SelectData from "src/modules/statistic/common/SelectData";
 import StatisticsApi from "src/modules/statistic/api/StatisticsApi";
 import statisticViewModel from "src/modules/statistic/StatisticViewModel";
-import { Button, message } from "antd";
+import { Button, message,Select } from "antd";
 import emitter from "src/libs/ev";
 // import { observer } from 'mobx-react-lite'
-export default function BedSituation() {
-  useEffect(() => {});
 
+const typeList = [
+  {code:"班次",name:"班次"},
+  {code:"工时",name:"工时"},
+]
+export default function BedSituation() {
+  const [statisticType, setStatisticType] = useState(statisticViewModel.statisticType)
   const onChange = (value: string) => {
     // nurseFilesListViewModel.loadNursingList()
   };
@@ -66,6 +70,23 @@ export default function BedSituation() {
       {/* <SelectDepartment /> */}
       <Spacing />
       <SelectData />
+      {statisticViewModel.useStatisticTypeList && 
+        <div style={{marginLeft:"20px"}}>
+          统计类型：
+          <Select
+					style={{ width: 160 }}
+					value={statisticType}
+					onChange={(val: string) => {
+            setStatisticType(val)
+            statisticViewModel.setStatisticType(val)
+					}}
+					>
+					{typeList.map((item:any,index:number)=>{
+						return <Select.Option value={item.code} key={index}>{item.name}</Select.Option>
+					})}
+					</Select>
+        </div>
+      }
       <Button
         type="primary"
         style={{ margin: "0 0 0 60px", width: "90px" }}
