@@ -50,11 +50,15 @@ export default observer(function TheoryExamDetail(props: Props) {
 			render: (text: any, record: any, index: number) => {
 				return (
 					<InputNumber className='cell-ipt'
-						defaultValue={text}
+						value={text}
 						key={record.id}
 						step={1} min={1} max={150} style={{ width: '100%' }}
-						onBlur={(e: any) => {
-							theoryExamData.tableDetailList[index].examScore = e.target.value
+						// onBlur={(e: any) => {
+						// 	theoryExamData.tableDetailList[index].examScore = e.target.value
+						// 	theoryExamData.tableDetailList = [...theoryExamData.tableDetailList]
+						// }}
+						onChange={(e: any) => {
+							theoryExamData.tableDetailList[index].examScore = e
 							theoryExamData.tableDetailList = [...theoryExamData.tableDetailList]
 						}}
 					/>

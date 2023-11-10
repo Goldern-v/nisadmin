@@ -85,7 +85,7 @@ class TheoryExamData {
 		preJobApi.getTheoryExamListAll({
 			id:id
 		}).then(res=>{
-		this.tableDetailLoading = false
+			this.tableDetailLoading = false
 			this.tableDetailList = res.data || []
 		}).catch(err=>{
 			this.tableDetailLoading = false
