@@ -157,7 +157,7 @@ export default observer(function TheoryExam(props: Props) {
 		const { id, batch } = record
 		theoryExamData.currerntDetail = record
 		theoryExamData.passScore = record.passScore || 60
-		appStore.history.push(`/theoryExamDetail?${qs.stringify({ id, batch, year: theoryExamData.year?.format('YYYY') })}`)
+		appStore.history.push(`/theoryExamDetail?${qs.stringify({ id, batch, year: theoryExamData.year?.format('YYYY'),canEdit })}`)
 	}
 
 	const turnToScore = () => {

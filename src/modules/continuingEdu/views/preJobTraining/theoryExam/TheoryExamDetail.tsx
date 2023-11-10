@@ -13,6 +13,8 @@ export interface Props {
 	payload: any;
 }
 export default observer(function TheoryExamDetail(props: Props) {
+	let canEdit = appStore.queryObj.canEdit === "true"
+	
 	const columns: any = [
 		{
 			title: "序号",
@@ -162,7 +164,7 @@ export default observer(function TheoryExamDetail(props: Props) {
 				</div>
 				<div className='tool-con'>
 					<Button onClick={() => appStore.history.goBack()}>返回</Button>
-					<Button type='primary' onClick={() => { saveDetailList() }}>保存</Button>
+					{canEdit && <Button type='primary' onClick={() => { saveDetailList() }}>保存</Button>}
 					<Button className="span" onClick={() => onExport()} >导出</Button>
 				</div>
 			</HeadCon>
