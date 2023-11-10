@@ -72,7 +72,6 @@ export default observer(function BedSituation () {
           if (res) {
             let totalBed: any = res.data.totalBed
             let useBed: any = res.data.useBed
-            console.log(totalBed, useBed, 88888888)
             setTotalBed(totalBed)
             setUseBed(useBed)
             // setSourceData([

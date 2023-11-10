@@ -93,7 +93,6 @@ export default withRouter(function LoginView(props: Props) {
     let regexpDghm = new RegExp(
       "(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[~!@#$%^&*._?+-])^.{10,}$"
     );
-    console.log(regexpDghm.test(_password),'ddddd');
     
     if(['dghm'].includes(appStore.HOSPITAL_ID) && !regexpDghm.test(_password)){
       message.warning("当前登录密码强度较弱，请修改密码后登录!");

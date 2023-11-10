@@ -254,6 +254,11 @@ const QualityAnalysisReportPoolView = lazy(() =>
     "src/modules/quality/views/qualityAnalysisReportPool/QualityAnalysisReportPoolView"
   )
 );
+const NQreportDetailsPoolView = lazy(() =>
+  import(
+    "src/modules/quality/views/NQreportDetails/NQreportDetails"
+  )
+);
 const WorkSummaryReportView = lazy(() =>
   import("src/modules/quality/views/workSummaryReport/WorkSummaryReportView")
 );
@@ -900,6 +905,11 @@ const routes: RouteItem[] = [
   setLayout(
     "/qualityAnalysisReportPool",
     QualityAnalysisReportPoolView,
+    layouts.MainLayout
+  ),
+  setLayout(
+    "/NQreportDetails",
+    NQreportDetailsPoolView,
     layouts.MainLayout
   ),
   setLayout(
