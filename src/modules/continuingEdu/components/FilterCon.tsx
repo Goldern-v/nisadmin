@@ -85,12 +85,11 @@ export default observer(function FilterCon(props: Props) {
     }),
     层级: appStore.hisMatch({
       map: {
-        wh: ['全部', 'N0', 'N1', 'N2', 'N3', 'N4'],
-        gxjb: ['全部', 'N0', 'N1', 'N2', 'N3', 'N4'],
+        "wh,gxjb,whhk,ytll": ['全部', 'N0', 'N1', 'N2', 'N3', 'N4'],
         lcey: ['全部', ...CURRENTLEVEL_LIST_lcey],
-        ytll: ['全部', 'N0', 'N1', 'N2', 'N3', 'N4'],
         default: ['全部', 'N0', 'N1', 'N2', 'N3', 'N4', 'N5', 'N6']
-      }
+      },
+      vague:true
     }),
     职务: appStore.hisMatch({
       map: {
