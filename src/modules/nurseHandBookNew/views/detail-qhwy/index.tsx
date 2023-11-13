@@ -93,7 +93,7 @@ const MainWrapper = styled.div`
   height: calc(100% - 76px);
   position: relative;
   .main-ctx {
-    /* width: calc(100% - 250px); */
+    width: calc(100% - 250px);
     height: 100%;
     padding: 15px 120px 15px;
     overflow-y: auto;

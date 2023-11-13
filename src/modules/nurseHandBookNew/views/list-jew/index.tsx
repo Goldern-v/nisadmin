@@ -37,7 +37,7 @@ export default observer(function (props: Props) {
   }, [appStore.location.pathname])
 
   const [query, setQuery] = useState<Obj>({
-    deptCode: authStore.defaultDeptCode,
+    deptCode:appStore.HOSPITAL_ID ==='qhwy'?'': authStore.defaultDeptCode,
     status: '',
     pageSize: 20,
     pageNum: 1,
