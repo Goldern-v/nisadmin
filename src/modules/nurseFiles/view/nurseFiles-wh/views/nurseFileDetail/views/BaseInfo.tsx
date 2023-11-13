@@ -17,6 +17,8 @@ import { openAuditModal } from '../config/auditModalConfig'
 const isFsxt = ['fsxt', '925', 'zjhj'].includes(appStore.HOSPITAL_ID)
 const is925Text = '925,zjhj'
 
+export const isdghm = "dghm" === appStore.HOSPITAL_ID
+
 export interface Props extends RouteComponentProps { }
 /* 判断是否本人 */
 export const isSelf = () => {
