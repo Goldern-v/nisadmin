@@ -1,4 +1,3 @@
-import { appStore } from "src/stores";
 import { observable, computed, action } from 'mobx'
 
 class StatisticViewModel {
@@ -15,11 +14,9 @@ class StatisticViewModel {
   // 时数/次数
   @observable public hourTime: any = ''
 
-  public useStatisticTypeList:boolean = false
+  @observable public useStatisticTypeList:boolean = false
   public constructor(){
-    setTimeout(() => {
-      this.useStatisticTypeList = appStore?.match?.url === "/statistic/护士排班统计（按班次）"
-    }, 0);
+    
   }
   @computed
   public get getTitle () {

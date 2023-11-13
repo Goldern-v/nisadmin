@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { appStore } from "src/stores";
 import React, { useState, useEffect } from "react";
 // import SelectDepartment from '../common/SelectDepartment'
 import DeptSelect from "src/components/DeptSelect";
@@ -15,6 +16,7 @@ const typeList = [
 ]
 export default function BedSituation() {
   const [statisticType, setStatisticType] = useState(statisticViewModel.statisticType)
+  const [useStatisticTypeList, setUseStatisticTypeList] = useState(false)
   const onChange = (value: string) => {
     // nurseFilesListViewModel.loadNursingList()
   };
@@ -64,13 +66,19 @@ export default function BedSituation() {
     });
   };
 
+  useEffect(()=>{
+      let useStatisticTypeList = appStore.location.pathname==="/statistic/护士排班统计（按班次）" && appStore.HOSPITAL_ID === "925"
+      statisticViewModel.useStatisticTypeList = useStatisticTypeList
+      setUseStatisticTypeList(useStatisticTypeList)
+  },[])
+
   return (
     <Con>
       <DeptSelect onChange={onChange} hasAllDept />
       {/* <SelectDepartment /> */}
       <Spacing />
       <SelectData />
-      {statisticViewModel.useStatisticTypeList && 
+      {useStatisticTypeList && 
         <div style={{marginLeft:"20px"}}>
           统计类型：
           <Select
