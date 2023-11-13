@@ -115,7 +115,7 @@ export default observer(function () {
                                     <td colSpan={4}  className='left-text'>1.一般资料收集完整，包括家庭、社会、心理等方面。</td>
                                     <td colSpan={5}>
                                         <ChildCon {...{
-                                            height:'100px',
+                                            height:'60px',
                                             component:'TextArea',
                                             value: v[`v${1}`],
                                             onChange: (e: any) => onChange(e, {index: i, key: `v${1}`})
@@ -127,7 +127,7 @@ export default observer(function () {
                                     <td colSpan={4}  className='left-text'>2.对患者的健康状态客观准确，包括检查、化验。</td>
                                     <td colSpan={5}>
                                         <ChildCon {...{
-                                            height:'100px',
+                                            height:'60px',
                                             component:'TextArea',
                                             value: v[`v${1}`],
                                             onChange: (e: any) => onChange(e, {index: i, key: `v${1}`})
@@ -139,7 +139,7 @@ export default observer(function () {
                                     <td colSpan={4}  className='left-text'>3.对患者的治疗及护理清楚。</td>
                                     <td colSpan={5}>
                                         <ChildCon {...{
-                                            height:'100px',
+                                            height:'60px',
                                             component:'TextArea',
                                             value: v[`v${1}`],
                                             onChange: (e: any) => onChange(e, {index: i, key: `v${1}`})
@@ -153,7 +153,7 @@ export default observer(function () {
                                     <td colSpan={3}  className='left-text'>1.与疾病有关的护理问题全面准确</td>
                                     <td colSpan={5}>
                                         <ChildCon {...{
-                                            height:'100px',
+                                            height:'60px',
                                             component:'TextArea',
                                             value: v[`v${1}`],
                                             onChange: (e: any) => onChange(e, {index: i, key: `v${1}`})
@@ -165,7 +165,7 @@ export default observer(function () {
                                     <td colSpan={3}  className='left-text'>2.存在的心理问题</td>
                                     <td colSpan={5}>
                                         <ChildCon {...{
-                                            height:'100px',
+                                            height:'60px',
                                             component:'TextArea',
                                             value: v[`v${1}`],
                                             onChange: (e: any) => onChange(e, {index: i, key: `v${1}`})
@@ -177,7 +177,7 @@ export default observer(function () {
                                     <td colSpan={3}  className='left-text'>3.合作性问题</td>
                                     <td colSpan={5}>
                                         <ChildCon {...{
-                                            height:'100px',
+                                            height:'60px',
                                             component:'TextArea',
                                             value: v[`v${1}`],
                                             onChange: (e: any) => onChange(e, {index: i, key: `v${1}`})
@@ -190,7 +190,7 @@ export default observer(function () {
                                     <td colSpan={3}  className='left-text'>1.护理措施详细具体可有可行性，体现专科特点</td>
                                     <td colSpan={5}>
                                         <ChildCon {...{
-                                            height:'100px',
+                                            height:'60px',
                                             component:'TextArea',
                                             value: v[`v${1}`],
                                             onChange: (e: any) => onChange(e, {index: i, key: `v${1}`})
@@ -202,7 +202,7 @@ export default observer(function () {
                                     <td colSpan={3}  className='left-text'>2.记事准确实施于患者</td>
                                     <td colSpan={5}>
                                         <ChildCon {...{
-                                            height:'100px',
+                                            height:'60px',
                                             component:'TextArea',
                                             value: v[`v${1}`],
                                             onChange: (e: any) => onChange(e, {index: i, key: `v${1}`})
@@ -215,7 +215,7 @@ export default observer(function () {
                                     <td colSpan={3}  className='left-text'>1.护理效果达到预期目标</td>
                                     <td colSpan={5}>
                                         <ChildCon {...{
-                                            height:'100px',
+                                            height:'60px',
                                             component:'TextArea',
                                             value: v[`v${1}`],
                                             onChange: (e: any) => onChange(e, {index: i, key: `v${1}`})
@@ -227,7 +227,7 @@ export default observer(function () {
                                     <td colSpan={3}  className='left-text'>2.患者及家属满意</td>
                                     <td colSpan={5}>
                                         <ChildCon {...{
-                                            height:'100px',
+                                            height:'60px',
                                             component:'TextArea',
                                             value: v[`v${1}`],
                                             onChange: (e: any) => onChange(e, {index: i, key: `v${1}`})
@@ -239,7 +239,7 @@ export default observer(function () {
                                     <td colSpan={3}  className='left-text'>能提出预见性护理问题，指定预防措施</td>
                                     <td colSpan={5}>
                                         <ChildCon {...{
-                                            height:'100px',
+                                            height:'60px',
                                             component:'TextArea',
                                             value: v[`v${1}`],
                                             onChange: (e: any) => onChange(e, {index: i, key: `v${1}`})
@@ -252,7 +252,7 @@ export default observer(function () {
                                     <td colSpan={4}  className='left-text'>1.指定健康教育计划，评估患者对教育内容了解情况</td>
                                     <td colSpan={5}>
                                         <ChildCon {...{
-                                            height:'100px',
+                                            height:'60px',
                                             component:'TextArea',
                                             value: v[`v${1}`],
                                             onChange: (e: any) => onChange(e, {index: i, key: `v${1}`})
@@ -264,7 +264,7 @@ export default observer(function () {
                                     <td colSpan={4} className='left-text'>2.患者能复述、回示所接受的教育内容。</td>
                                     <td colSpan={5}>
                                         <ChildCon {...{
-                                            height:'100px',
+                                            height:'60px',
                                             component:'TextArea',
                                             value: v[`v${1}`],
                                             onChange: (e: any) => onChange(e, {index: i, key: `v${1}`})

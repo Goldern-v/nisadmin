@@ -63,6 +63,7 @@ export default observer(function () {
                                         return (
                                             <td key={`${i}-${i1}`}>
                                                 <ChildCon {...{
+                                                    height:'60px',
                                                     component: v1.component,
                                                     value: v[`v${i1}`],
                                                     onChange: (e: any) => onChange(e, {index: i, key: `v${i1}`})
