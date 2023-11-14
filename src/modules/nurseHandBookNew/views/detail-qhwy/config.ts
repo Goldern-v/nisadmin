@@ -1,6 +1,7 @@
 import {createArr} from "src/utils/array/array";
 import {createObjV} from "src/utils/object/object";
 import QHWYZB_1 from "./components/QHWYZB_1"
+import moment from "moment";
 
 const arr2 = Array.from(Array(12), (j,k) => k)
 /**提个不同表单的初始化操作 */
@@ -36,6 +37,8 @@ export default {
   },
   QHWYZB_1: {
     initContent() {
+      let day =new Date().getDate()
+      let week=new Date().getDay()
       const self: any = this;
       self.handleEditorChange({
         v1: null,
@@ -44,7 +47,11 @@ export default {
         v4: "",
         v5: '',
         v6: '',
-        v7: ''
+        v7: '',
+
+        vYear:new Date().getFullYear(),
+        vMonth:new Date().getMonth() + 1,
+        vWeek:Math.ceil( ((day + 6) - week)/7)
       });
     },
   },
@@ -58,9 +65,27 @@ export default {
         v4: "",
         v5: '',
         v6: '',
+        vYear:self.detail?.record?.year,
+        vMonth:self.detail?.record?.month,
+        // vYear:new Date().getFullYear(),
+        // vMonth:new Date().getMonth() + 1,
       });
     },
   },
+  'QHWYHDDJ_1':{
+    initContent(row=20,col=6) {
+      const self: any = this;
+      const arr = createArr(row, (j, k) => createObjV(col));
+      self.handleEditorChange(arr);
+    },
+  },
+  'QHWYHDDJ_2':{
+    initContent(row=20,col=6) {
+      const self: any = this;
+      const arr = createArr(row, (j, k) => createObjV(col));
+      self.handleEditorChange(arr);
+    },
+  }
 };
 export const tableConConfig = {
   'QHWYHYHSQK': {
@@ -83,6 +108,7 @@ export const tableConConfig = {
       {
         title: "胎次",
         width: "25%",
+        component: 'TextArea'
       },
     ],
     rows: 20,
@@ -160,7 +186,77 @@ export const tableConConfig = {
     titleType: "title",
     tip: ``
   },
+  'QHWYHDDJ_1':{
+    columns: [
+      {
+        title: "日期",
+        width: "15%",
+        component: 'DataPicker'
+      },
+      {
+        title: "活动名称",
+        width: "23%",
+        component: 'TextArea'
+      },
+      {
+        title: "活动地点",
+        width: "23%",
+        component: 'TextArea'
+      },
+      {
+        title: "参加人数",
+        width: "12%",
+        component: 'TextArea'
+      },
+      {
+        title: "受众人群",
+        width: "12%",
+        component: 'TextArea'
+      },
+      {
+        title: "备注",
+        width: "15%",
+        component: 'TextArea'
+      },
+    ],
+    rows: 20,
+    titleType: "title",
+    tip: ``
+  },
+  'QHWYHDDJ_2':{
+    columns: [
+      {
+        title: "日期",
+        width: "15%",
+        component: 'DataPicker'
+      },
+      {
+        title: "活动名称",
+        width: "15%",
+      },
+      {
+        title: "活动地点",
+        width: "15%",
+      },
+      {
+        title: "参加人数",
+        width: "15%",
+      },
+      {
+        title: "受众人群",
+        width: "15%",
+      },
+      {
+        title: "备注",
+        width: "25%",
+      },
+    ],
+    rows: 20,
+    titleType: "title",
+    tip: ``
+  },
+
 };
 
-
+export const dateFormat = "YYYY-MM-DD HH:mm";
 /**不同表单的初始化操作 */

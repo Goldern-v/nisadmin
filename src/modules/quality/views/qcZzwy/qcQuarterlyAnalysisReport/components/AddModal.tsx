@@ -102,9 +102,7 @@ function QcQuarterlyModal(props: Props) {
         if (visible) resetFields()
     }, [visible])
 const reportNameMemo:string =useMemo(()=>{
-    console.log(getFieldValue('summaryFormName'));
     let obj:any =deptList.find((item:DeptType)=>item.code ===  getFieldValue('wardCode'))
-    console.log("obj===",obj);
     return moment(getFieldValue('reportYear')).format('YYYY') + getFieldValue('qcTime') +  obj?.name
     + getFieldValue('summaryFormName')
 },[getFieldValue('reportYear'),getFieldValue('qcTime'),getFieldValue('wardCode'),getFieldValue('summaryFormName')])

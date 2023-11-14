@@ -1,16 +1,22 @@
 import styled from "styled-components";
+import { appStore } from "src/stores";
 import React, { useState, useEffect } from "react";
 // import SelectDepartment from '../common/SelectDepartment'
 import DeptSelect from "src/components/DeptSelect";
 import SelectData from "src/modules/statistic/common/SelectData";
 import StatisticsApi from "src/modules/statistic/api/StatisticsApi";
 import statisticViewModel from "src/modules/statistic/StatisticViewModel";
-import { Button, message } from "antd";
+import { Button, message,Select } from "antd";
 import emitter from "src/libs/ev";
 // import { observer } from 'mobx-react-lite'
-export default function BedSituation() {
-  useEffect(() => {});
 
+const typeList = [
+  {code:"班次",name:"班次"},
+  {code:"工时",name:"工时"},
+]
+export default function BedSituation() {
+  const [statisticType, setStatisticType] = useState(statisticViewModel.statisticType)
+  const [useStatisticTypeList, setUseStatisticTypeList] = useState(false)
   const onChange = (value: string) => {
     // nurseFilesListViewModel.loadNursingList()
   };
@@ -60,12 +66,35 @@ export default function BedSituation() {
     });
   };
 
+  useEffect(()=>{
+      let useStatisticTypeList = appStore.location.pathname==="/statistic/护士排班统计（按班次）" && appStore.HOSPITAL_ID === "925"
+      statisticViewModel.useStatisticTypeList = useStatisticTypeList
+      setUseStatisticTypeList(useStatisticTypeList)
+  },[])
+
   return (
     <Con>
       <DeptSelect onChange={onChange} hasAllDept />
       {/* <SelectDepartment /> */}
       <Spacing />
       <SelectData />
+      {useStatisticTypeList && 
+        <div style={{marginLeft:"20px"}}>
+          统计类型：
+          <Select
+					style={{ width: 160 }}
+					value={statisticType}
+					onChange={(val: string) => {
+            setStatisticType(val)
+            statisticViewModel.setStatisticType(val)
+					}}
+					>
+					{typeList.map((item:any,index:number)=>{
+						return <Select.Option value={item.code} key={index}>{item.name}</Select.Option>
+					})}
+					</Select>
+        </div>
+      }
       <Button
         type="primary"
         style={{ margin: "0 0 0 60px", width: "90px" }}

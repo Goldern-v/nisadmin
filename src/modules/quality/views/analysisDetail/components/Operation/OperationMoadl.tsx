@@ -103,7 +103,7 @@ export default function OperationMoadl(props: Props) {
           setData(cloneData)
         }} /></div>
         <div className='context context-title'>
-          (3)(<div style={{width:'30px',color:'blue',textAlign:'center'}}>{pageInfo&&pageInfo.reportMonth}</div>月)科室DRGS情况:RW ＞2:<div><Input type='number' value={value && value.rw1} onChange={(e) => {
+          (3)(<div style={{width:'30px',color:'blue',textAlign:'center'}}>{pageInfo && Number(pageInfo.reportMonth) - 1 != 0 ? Number(pageInfo.reportMonth) - 1 : 12}</div>月)科室DRGS情况:RW ＞2:<div><Input type='number' value={value && value.rw1} onChange={(e) => {
           value.rw1 = e.target.value;
           setData(cloneData)
         }} /></div>;

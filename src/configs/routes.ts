@@ -254,6 +254,11 @@ const QualityAnalysisReportPoolView = lazy(() =>
     "src/modules/quality/views/qualityAnalysisReportPool/QualityAnalysisReportPoolView"
   )
 );
+const NQreportDetailsPoolView = lazy(() =>
+  import(
+    "src/modules/quality/views/NQreportDetails/NQreportDetails"
+  )
+);
 const WorkSummaryReportView = lazy(() =>
   import("src/modules/quality/views/workSummaryReport/WorkSummaryReportView")
 );
@@ -304,6 +309,10 @@ const QcFunRouter = lazy(() => import("src/modules/quality/QcFunRouter"));
 // 社区查房
 const CheckWardRouter = lazy(() =>
   import("src/modules/quality/CheckWardRouter")
+);
+
+const qualitySummary = lazy(() =>
+  import("src/modules/quality/qualitySummary")
 );
 
 const GoodOrBadRouter = lazy(()=> import("src/modules/quality/goodOrBadEvent/GoodOrBadRouter"));
@@ -907,6 +916,11 @@ const routes: RouteItem[] = [
     layouts.MainLayout
   ),
   setLayout(
+    "/NQreportDetails",
+    NQreportDetailsPoolView,
+    layouts.MainLayout
+  ),
+  setLayout(
     "/workSummaryReportView",
     WorkSummaryReportView,
     layouts.MainLayout
@@ -989,6 +1003,7 @@ const routes: RouteItem[] = [
   setLayout("/administrative/qcThree/recordView", administrativeqcThree, layouts.MainLayout),
   setLayout("/checkWard/月护长查房反馈表详情", 月护长查房反馈表详情, layouts.MainLayout),
   setLayout("/checkWard", CheckWardRouter, layouts.MainLayout),
+  setLayout("/qualitySummary", qualitySummary, layouts.MainLayout),
   setLayout("/queryStatistics", QueryStatisticsRouter, layouts.MainLayout),
   setLayout("/nurseHandBook", NurseHandBookRouter, layouts.MainLayout),
   setLayout("/nurseHandBookNew", NurseHandBookRouterNew, layouts.MainLayout),
@@ -999,6 +1014,7 @@ const routes: RouteItem[] = [
         925:detail925,
         qhwy:detailQhwy,
         zjhj:detail925,
+        jmfy:detail925,
         other: detailLyrm
         // other: null
       }

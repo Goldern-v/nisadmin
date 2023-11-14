@@ -163,16 +163,14 @@ export default function EditWorkHistoryModal(props: Props) {
     return footerList
   }
 
-  const onFieldChange = (name: any, value: any, form: Form<any>) => {
+  const onFieldChange = async (name: any, value: any, form: Form<any>) => {
     if (name == "nativePlace") {
       if (value) {
-        nurseFilesService.nurseNativePlaceFindByName(value).then((res) => {
-          setNativePlaceList(
-            res.data.list
-              .filter((item: any, index: number) => index < 100)
-              .map((item: any) => item.nativePlaceName)
-          );
-        });
+        let list:any =  await nurseFilesService.nurseNativePlaceFindByName(value)
+        setNativePlaceList(
+          list.filter((item: any, index: number) => index < 100)
+            .map((item: any) => item.nativePlaceName)
+        );
       } else {
         setNativePlaceList([]);
       }

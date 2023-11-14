@@ -4,9 +4,6 @@ import { Button, message, Spin,Table,InputNumber,Input,DatePicker,Icon } from 's
 import { useRef } from 'src/types/react'
 import printing from 'printing'
 import moment from 'moment'
-import service from 'src/services/api'
-import { to } from 'src/libs/fns'
-import MultiFileUploader from "src/components/MultiFileUploader";
 import styled from 'styled-components'
 import { ScrollBox } from 'src/components/common'
 import BaseBreadcrumb from 'src/components/BaseBreadcrumb'
@@ -16,6 +13,7 @@ import { qcMonthCheckData } from './qcMonthCheckData'
 import { qcZzwyApi } from '../qcZzwyApi'
 import QcFishBoneMonth from './qcFishBoneMonth/fish-bone'
 import ChartCylindricalityMonth from './ChartCylindricalityMonth'
+import QcFishBone from "src/modules/quality/views/qcZzwy/qcQuarterlyAnalysisReport/qcFishBone/fish-bone";
 
 
 export default observer(function QcMonthCheckReportDetail() {
@@ -223,7 +221,7 @@ const handleFishItem =(obj:any,index:number)=>{
       getQcReportById()
     }else{
       qcMonthCheckData.createModalData = appStore.queryObj
-      console.log(appStore.queryObj)
+      // console.log(appStore.queryObj)
       /**创建分析报告 */
       createQcReport()
     }
@@ -333,7 +331,7 @@ const handleFishItem =(obj:any,index:number)=>{
       return prev
   }, {id:Math.floor(1000 + Math.random() * 9000)})
   qcMonthCheckData.ZZWY_YDZKJCZJ_L1_003.fishValueArr.push(obj)
-  console.log(qcMonthCheckData.ZZWY_YDZKJCZJ_L1_003.fishValueArr)
+  // console.log(qcMonthCheckData.ZZWY_YDZKJCZJ_L1_003.fishValueArr)
   }
   
   return (
@@ -430,10 +428,12 @@ const handleFishItem =(obj:any,index:number)=>{
                             return message.warning('至少保留一张鱼骨图')
                           }
                         qcMonthCheckData.ZZWY_YDZKJCZJ_L1_003.fishValueArr.splice(index,1)
-                        console.log(qcMonthCheckData.ZZWY_YDZKJCZJ_L1_003.fishValueArr)
                       }} className='delete-hover' type="delete" style={{fontSize:'24px',color:'#f00'}} />
                     </div>
                         <QcFishBoneMonth key={`${fish.id}+fish`} value={fish} index={index} isPrint={isPrint} updateFish={updateFish+index} onChange={handleFishItem}/>
+                        <div style={{
+                          pageBreakAfter:"always"
+                        }}/>
                       </div>)
                   })}
                 </div>
@@ -461,7 +461,6 @@ const handleFishItem =(obj:any,index:number)=>{
                         {/* 删除附件 */}
                         {!isPrint &&<Icon onClick={()=>{
                         qcMonthCheckData.ZZWY_YDZKJCZJ_L1_004.imgList.splice(inx,1)
-                        console.log(qcMonthCheckData.ZZWY_YDZKJCZJ_L1_004.devData)
                       }} className='delete-hover' type="delete" style={{fontSize:'24px',color:'#f00'}} />}
                     </div>
                       <img alt="example" style={{ width: '100%',height:'300px',border:'1px solid #000',borderRadius:'8px' }} src={ii.path} />

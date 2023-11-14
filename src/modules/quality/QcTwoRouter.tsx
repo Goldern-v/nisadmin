@@ -27,7 +27,7 @@ import 护理质量巡查情况汇总表 from "./views/qcFormHj/护理质量巡�
 import 防疫专项检查片区汇总 from "./views/防疫专项检查片区汇总列表/防疫专项检查片区汇总列表";
 import 防疫专项检查汇总 from "./views/防疫专项检查汇总列表/防疫专项检查汇总列表";
 
-
+import qcThreeNQreport from "./views/qcThreeNQreport/index"; //护理质量分析报告
 import 护理质量检查小结 from "./views/qcFormHj/护理质量检查小结";
 import Gzsrm_护理质量检查小结 from "./views/qcFormGzsrm/护理质量检查小结";
 import 质控表单汇总 from "./views/qcDghl/质控表单汇总";
@@ -109,6 +109,14 @@ export default observer(function QcTwoRouter(props: Props) {
     icon: <YDBG />,
     path: "/qcTwo/analysis?level=2",
     component:Analysis,
+    hide: !authStore.level2Watch,
+    disabledKeepAlive: true,
+  };
+  const route_qcThreeNQreport = {
+    title: "护理质量分析报告",
+    icon: <YDBG />,
+    path: "/qcTwo/qcThreeNQreport?qcLevel=2",
+    component:qcThreeNQreport,
     hide: !authStore.level2Watch,
     disabledKeepAlive: true,
   };
@@ -325,7 +333,9 @@ export default observer(function QcTwoRouter(props: Props) {
         },
       ],
       'whyx,whhk': [route_analysis],
-      '925': [],
+      '925': [
+        route_qcThreeNQreport
+      ],
       zzwy:[
         ...route_default,
         ...route_质控_ZZWY

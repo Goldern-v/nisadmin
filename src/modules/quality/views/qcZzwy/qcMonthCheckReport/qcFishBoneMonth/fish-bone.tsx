@@ -3,64 +3,61 @@ import {Obj} from "src/libs/types"
 import styled from "styled-components"
 import React from 'react'
 import {Button, Input, Icon} from "antd"
-// import {QuarterlyZzwyData} from "src/modules/quality/views/qcZzwy/qcQuarterlyAnalysisReport/Data";
-
 import debounce from "lodash/debounce";
-import { qcMonthCheckData } from "../qcMonthCheckData"
 const {TextArea} = Input
-const list = [
+let list = [
     {
         title: "",
         idx: 1,
-        style: {top: '0', left: '126px'},
-        buttonStyle: {top: '0', left: '276px'},
+        style: {top: '7px', left: '79px'},
+        // buttonStyle: {top: '0', left: '276px'},
         key: 'v0',
         child: [
-            {
-                key: "v1",
-                style: {top: '276px', left: '172px'},
-                hide: false,
-                value: '',
-            },
-            {
-                key: "v2",
-                style: {top: '240px', left: '324px'},
-                hide: false,
-                value: '',
-            },
-            {
-                key: "v3",
-                style: {top: '96px', left: '257px'},
-                hide: false,
-                value: '',
-            },
+            // {
+            //     key: "v1",
+            //     style: {top: '276px', left: '172px'},
+            //     hide: false,
+            //     value: '',
+            // },
+            // {
+            //     key: "v2",
+            //     style: {top: '240px', left: '324px'},
+            //     hide: false,
+            //     value: '',
+            // },
+            // {
+            //     key: "v3",
+            //     style: {top: '96px', left: '257px'},
+            //     hide: false,
+            //     value: '',
+            // },
             {
                 key: "v4",
-                style: {top: '205px', left: '139px'},
+                style: {top: '212px', left: '54px'},
                 hide: false,
                 value: '',
             },
             {
                 key: "v5",
-                style: {top: '168px', left: '290px'},
+                style: {top: '144px', left: '258px'},
                 hide: false,
                 value: '',
             },
-            {
-                key: "v6",
-                style: {top: '127px', left: '105px'},
-                hide: false,
-                value: '',
-            },
-            {
-                key: "v7",
-                style: {top: '35px', left: '227px'},
-                hide: false,
-                value: '',
-            },
+            // {
+            //     key: "v6",
+            //     style: {top: '127px', left: '105px'},
+            //     hide: false,
+            //     value: '',
+            // },
+            // {
+            //     key: "v7",
+            //     style: {top: '35px', left: '227px'},
+            //     hide: false,
+            //     value: '',
+            // },
             {
                 key: "v8",
-                style: {top: '62px', left: '73px'},
+                style: {top: '102px', left: '41px'},
                 hide: false,
                 value: '',
             },
@@ -70,53 +67,53 @@ const list = [
         title: "",
         idx: 2,
         key: 'v17',
-        style: {top: '0', left: '409px'},
+        style: {top: '0', left: '367px'},
         buttonStyle: {top: '-24px', left: '560px'},
         child: [
-            {
-                key: "v9",
-                style: {top: '281px', left: '429px'},
-                hide: false,
-                value: '',
-            },
-            {
-                key: "v10",
-                style: {top: '248px', left: '581px'},
-                hide: false,
-                value: '',
-            },
-            {
-                key: "v11",
-                style: {top: '175px', left: '555px'},
-                hide: false,
-            },
+            // {
+            //     key: "v9",
+            //     style: {top: '281px', left: '429px'},
+            //     hide: false,
+            //     value: '',
+            // },
+            // {
+            //     key: "v10",
+            //     style: {top: '248px', left: '581px'},
+            //     hide: false,
+            //     value: '',
+            // },
+            // {
+            //     key: "v11",
+            //     style: {top: '175px', left: '555px'},
+            //     hide: false,
+            // },
             {
                 key: "v12",
-                style: {top: '205px', left: '397px'},
+                style: {top: '232px', left: '377px'},
                 hide: false,
                 value: '',
             },
-            {
-                key: "v13",
-                style: {top: '100px', left: '525px'},
-                hide: false,
-                value: '',
-            },
-            {
-                key: "v14",
-                style: {top: '132px', left: '368px'},
-                hide: false,
-                value: '',
-            },
+            // {
+            //     key: "v13",
+            //     style: {top: '100px', left: '525px'},
+            //     hide: false,
+            //     value: '',
+            // },
+            // {
+            //     key: "v14",
+            //     style: {top: '132px', left: '368px'},
+            //     hide: false,
+            //     value: '',
+            // },
             {
                 key: "v15",
-                style: {top: '34px', left: '497px'},
+                style: {top: '110px', left: '555px'},
                 hide: false,
                 value: '',
             },
             {
                 key: "v16",
-                style: {top: '69px', left: '344px'},
+                style: {top: '59px', left: '307px'},
                 hide: false,
                 value: '',
             },
@@ -126,53 +123,53 @@ const list = [
         title: "",
         idx: 3,
         key: 'v18',
-        style: {top: '598px', left: '21px'},
+        style: {top: '565px', left: '75px'},
         buttonStyle: {top: '551px', left: '174px'},
         child: [
             {
                 key: "v19",
-                style: {top: '327px', left: '74px'},
+                style: {top: '336px', left: '87px'},
                 hide: false,
                 value: '',
             },
             {
                 key: "v20",
-                style: {top: '355px', left: '225px'},
+                style: {top: '402px', left: '275px'},
                 hide: false,
                 value: '',
             },
-            {
-                key: "v21",
-                style: {top: '382px', left: '46px'},
-                hide: false,
-            },
-            {
-                key: "v22",
-                style: {top: '432px', left: '192px'},
-                hide: false,
-                value: '',
-            },
-            {
-                key: "v23",
-                style: {top: '451px', left: '12px'},
-                hide: false,
-                value: '',
-            },
-            {
-                key: "v24",
-                style: {top: '500px', left: '158px'},
-                hide: false,
-                value: '',
-            },
-            {
-                key: "v25",
-                style: {top: '520px', left: '-22px'},
-                hide: false,
-                value: '',
-            },
+            // {
+            //     key: "v21",
+            //     style: {top: '382px', left: '46px'},
+            //     hide: false,
+            // },
+            // {
+            //     key: "v22",
+            //     style: {top: '432px', left: '192px'},
+            //     hide: false,
+            //     value: '',
+            // },
+            // {
+            //     key: "v23",
+            //     style: {top: '451px', left: '12px'},
+            //     hide: false,
+            //     value: '',
+            // },
+            // {
+            //     key: "v24",
+            //     style: {top: '500px', left: '158px'},
+            //     hide: false,
+            //     value: '',
+            // },
+            // {
+            //     key: "v25",
+            //     style: {top: '520px', left: '-22px'},
+            //     hide: false,
+            //     value: '',
+            // },
             {
                 key: "v26",
-                style: {top: '562px', left: '127px'},
+                style: {top: '458px', left: '38px'},
                 hide: false,
                 value: '',
             },
@@ -182,116 +179,116 @@ const list = [
         title: "",
         idx: 5,
         key: 'v28',
-        style: {top: '602px', left: '300px'},
+        style: {top: '567px', left: '394px'},
         buttonStyle: {top: '530px', left: '452px'},
         child: [
             {
                 key: "v29",
-                style: {top: '327px', left: '300px'},
+                style: {top: '331px', left: '400px'},
                 hide: false,
                 value: '',
             },
             {
                 key: "v30",
-                style: {top: '355px', left: '466px'},
+                style: {top: '398px', left: '592px'},
                 hide: false,
                 value: '',
             },
-            {
-                key: "v31",
-                style: {top: '391px', left: '292px'},
-                hide: false,
-            },
-            {
-                key: "v32",
-                style: {top: '432px', left: '439px'},
-                hide: false,
-                value: '',
-            },
-            {
-                key: "v33",
-                style: {top: '469px', left: '272px'},
-                hide: false,
-                value: '',
-            },
-            {
-                key: "v34",
-                style: {top: '500px', left: '418px'},
-                hide: false,
-                value: '',
-            },
-            {
-                key: "v35",
-                style: {top: '535px', left: '244px'},
-                hide: false,
-                value: '',
-            },
+            // {
+            //     key: "v31",
+            //     style: {top: '391px', left: '292px'},
+            //     hide: false,
+            // },
+            // {
+            //     key: "v32",
+            //     style: {top: '432px', left: '439px'},
+            //     hide: false,
+            //     value: '',
+            // },
+            // {
+            //     key: "v33",
+            //     style: {top: '469px', left: '272px'},
+            //     hide: false,
+            //     value: '',
+            // },
+            // {
+            //     key: "v34",
+            //     style: {top: '500px', left: '418px'},
+            //     hide: false,
+            //     value: '',
+            // },
+            // {
+            //     key: "v35",
+            //     style: {top: '535px', left: '244px'},
+            //     hide: false,
+            //     value: '',
+            // },
             {
                 key: "v36",
-                style: {top: '562px', left: '400px'},
+                style: {top: '494px', left: '305px'},
                 hide: false,
                 value: '',
             },
         ],
     },
-    {
-        title: "",
-        idx: 6,
-        key: 'v37',
-        style: {top: '602px', left: '500px'},
-        buttonStyle: {top: '506px', left: '652px'},
-        child: [
-            {
-                key: "v38",
-                style: {top: '327px', left: '520px'},
-                hide: false,
-                value: '',
-            },
-            {
-                key: "v39",
-                style: {top: '355px', left: '686px'},
-                hide: false,
-                value: '',
-            },
-            {
-                key: "v40",
-                style: {top: '391px', left: '512px'},
-                hide: false,
-            },
-            {
-                key: "v41",
-                style: {top: '432px', left: '649px'},
-                hide: false,
-                value: '',
-            },
-            {
-                key: "v42",
-                style: {top: '469px', left: '492px'},
-                hide: false,
-                value: '',
-            },
-            {
-                key: "v43",
-                style: {top: '500px', left: '638px'},
-                hide: false,
-                value: '',
-            },
-            {
-                key: "v44",
-                style: {top: '535px', left: '464px'},
-                hide: false,
-                value: '',
-            },
-            {
-                key: "v45",
-                style: {top: '562px', left: '620px'},
-                hide: false,
-                value: '',
-            },
-        ],
-    },
+    // {
+    //     title: "",
+    //     idx: 6,
+    //     key: 'v37',
+    //     style: {top: '602px', left: '500px'},
+    //     buttonStyle: {top: '506px', left: '652px'},
+    //     child: [
+    //         {
+    //             key: "v38",
+    //             style: {top: '327px', left: '520px'},
+    //             hide: false,
+    //             value: '',
+    //         },
+    //         {
+    //             key: "v39",
+    //             style: {top: '355px', left: '686px'},
+    //             hide: false,
+    //             value: '',
+    //         },
+    //         {
+    //             key: "v40",
+    //             style: {top: '391px', left: '512px'},
+    //             hide: false,
+    //         },
+    //         {
+    //             key: "v41",
+    //             style: {top: '432px', left: '649px'},
+    //             hide: false,
+    //             value: '',
+    //         },
+    //         {
+    //             key: "v42",
+    //             style: {top: '469px', left: '492px'},
+    //             hide: false,
+    //             value: '',
+    //         },
+    //         {
+    //             key: "v43",
+    //             style: {top: '500px', left: '638px'},
+    //             hide: false,
+    //             value: '',
+    //         },
+    //         {
+    //             key: "v44",
+    //             style: {top: '535px', left: '464px'},
+    //             hide: false,
+    //             value: '',
+    //         },
+    //         {
+    //             key: "v45",
+    //             style: {top: '562px', left: '620px'},
+    //             hide: false,
+    //             value: '',
+    //         },
+    //     ],
+    // },
 ]
-const fishBoneSvg = require('./fish-bone.svg')
+const fishBoneSvg = require('../../qcQuarterlyAnalysisReport/qcFishBone/method-draw-image.svg')
 
 /**
  * reflect 映射
@@ -385,8 +382,8 @@ export default function QcFishBoneMonth(props: any) {
                                maxLength={25}
                                onChange={(e) => onIpt(e, v.key)}
                                value={editVal ? editVal[v.key] : ''}  style={v.style}/>}
-                        <Button className='fb-ctx-add' size={'small'} style={v.buttonStyle}
-                                onClick={() => handleAddElement(k)}>+</Button>
+                        {/*<Button className='fb-ctx-add' size={'small'} style={v.buttonStyle}*/}
+                        {/*        onClick={() => handleAddElement(k)}>+</Button>*/}
                     </>
                     {
                         v.child.map((v1: any, vKey: number) => {
@@ -492,14 +489,22 @@ p{
       //}
     }
 
+    //.fb-header__ipt {
+    //  position: absolute;
+    //  right: 20px;
+    //  top: 50%;
+    //  width: 100px !important;
+    //  background: transparent;
+    //}
+
     .fb-header__ipt {
       position: absolute;
-      right: 20px;
-      top: 50%;
-      width: 100px !important;
+      right: 44px;
+      top: 25%;
+      width: 80px !important;
       background: transparent;
+      height: 300px !important;
     }
-
     .delete-icon {
       visibility: hidden;
     }

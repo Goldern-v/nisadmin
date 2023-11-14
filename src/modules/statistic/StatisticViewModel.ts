@@ -4,6 +4,7 @@ class StatisticViewModel {
   @observable public title = ''
   @observable public deptName = ''
   @observable public deptCode = ''
+  @observable public statisticType = '班次'
   @observable public startDate = ''
   @observable public endDate = ''
   @observable public classDiff: any = ''
@@ -13,10 +14,15 @@ class StatisticViewModel {
   // 时数/次数
   @observable public hourTime: any = ''
 
+  @observable public useStatisticTypeList:boolean = false
+  public constructor(){
+    
+  }
   @computed
   public get getTitle () {
     return this.deptName + this.title
   }
+  
   @computed
   public get getDeptName () {
     return this.deptName
@@ -71,6 +77,10 @@ class StatisticViewModel {
   }
   public setDeptCode = (newDeptCode: any) => {
     this.deptCode = newDeptCode
+  }
+  @action
+  public setStatisticType = (statisticType: string) => {
+    this.statisticType = statisticType
   }
 }
 

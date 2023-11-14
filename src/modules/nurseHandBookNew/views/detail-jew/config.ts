@@ -1,7 +1,5 @@
-import {Obj} from "src/libs/types";
 import {createArr} from "src/utils/array/array";
 import {createObjV} from "src/utils/object/object";
-import MonthlyWork from "src/modules/nurseHandBookNew/views/detail-jew/components/MonthlyWork";
 
 const arr2 = Array.from(Array(12), (j, k) => k)
 /**提个不同表单的初始化操作 */
@@ -112,11 +110,16 @@ export default {
     },
     "925NDXLJH_3": {
         initContent(row = 36, col = 4) {
+            // 排版顺序理论学习第一，制度培训第二，教学查房第三，操作训练计划第四，护理疑难病例讨论第五，其他训练计划第六
             const self: any = this;
             const arr1 = createArr(12, (j, k) => createObjV(col));
-            const arr2 = createArr(5, (j, k) => createObjV(col));
-            const arr3 = createArr(5, (j, k) => createObjV(col));
-            self.handleEditorChange({arr1, arr2, arr3});
+            const arr2 = createArr(12, (j, k) => createObjV(col));
+            const arr3 = createArr(12, (j, k) => createObjV(col));
+            const arr4 = createArr(5, (j, k) => createObjV(col));
+            const arr5 = createArr(5, (j, k) => createObjV(col));
+            const arr6 = createArr(5, (j, k) => createObjV(col));
+            // const arr3 = createArr(5, (j, k) => createObjV(col));
+            self.handleEditorChange({arr1, arr2, arr3, arr4, arr5, arr6});
         },
     },
     "925JDGZJH_4": {
@@ -141,6 +144,7 @@ export default {
             self.handleEditorChange(arr);
         },
     },
+    /**护士长手册**/
     '925SCFM_1': {
         initContent() {
             const self: any = this;
@@ -149,6 +153,13 @@ export default {
                 v2: "", /*科室*/
                 v3: "",/*名称*/
             });
+        },
+    },
+    'JMFYRLTJB': {
+        initContent(row = 10, col = 10) {
+            const self: any = this;
+            const arr = createArr(row, (j, k) => createObjV(col));
+            self.handleEditorChange(arr);
         },
     },
 };
@@ -215,30 +226,78 @@ export const tableConConfig = {
         tip: ``
     },
     '925NDXLJH_3': {
-        columns: [
+        zjhjColumns: [
             {
-                title: "制度培训计划",
-                width: "15%",
-                component: 'TextArea'
-            },
-            {
-                title: "理论学习计划",
-                width: "15%",
+                title: "业务学习",
+                width: "20%",
                 component: 'TextArea'
             },
             {
                 title: "负责人",
-                width: "15%",
+                width: "12%",
                 component: "Dead",
             },
             {
-                title: "护理疑难病例讨论",
-                width: "25%",
+                title: "业务学习",
+                width: "20%",
                 component: 'TextArea'
             },
             {
-                title: "护理教学查房",
-                width: "10%",
+                title: "负责人",
+                width: "12%",
+                component: "Dead",
+            },
+            {
+                title: "教学查房",
+                width: "20%",
+                component: 'TextArea'
+            },
+            {
+                title: "负责人",
+                width: "12%",
+                component: "Dead",
+            },
+        ],
+        columns: [
+            {
+                title: "时间",
+                width: "8%",
+            },
+            {
+                title: "理论学习计划",
+                width: "80%",
+                component: 'TextArea'
+            },
+            {
+                title: "负责人",
+                width: "12%",
+                component: "Dead",
+            },
+        ],
+        columns2: [
+            {
+                title: "时间",
+                width: "8%",
+            },
+            {
+                title: "制度培训内容",
+                width: "80%",
+                component: 'TextArea'
+            },
+            {
+                title: "负责人",
+                width: "12%",
+                component: "Dead",
+            },
+        ],
+        columns3: [
+            {
+                title: "时间",
+                width: "8%",
+            },
+            {
+                title: "护理教学查房内容",
+                width: "80%",
                 component: 'TextArea'
             },
             {
@@ -277,6 +336,20 @@ export const tableConConfig = {
                 component: "Dead",
             },
         ],
+        difficult: [{
+            title: "时间",
+            width: "15%",
+            component: "DataPicker",
+        }, {
+            title: "护理疑难病例讨论内容",
+            width: "70%",
+            component: "TextArea",
+        },
+            {
+                title: "负责人",
+                width: "15%",
+                component: "Dead",
+            }],
         otherColumns: [{
             title: "时间",
             width: "15%",
@@ -286,19 +359,11 @@ export const tableConConfig = {
             width: "70%",
             component: "TextArea",
         },
-            // , {
-            //   title: "负责人",
-            //   width: "15%",
-            //   component: "Dead",
-            // }, {
-            //   title: "内容",
-            //   width: "25%",
-            // },
             {
                 title: "负责人",
                 width: "15%",
                 component: "Dead",
-            },],
+            }],
         isAdd: true,
         rows: 12,
         titleType: "title",
@@ -343,6 +408,7 @@ export const tableConConfig = {
             {
                 title: "重点工作",
                 width: "50%",
+                component: "TextArea",
                 // component: "DataPicker",
             },
             {
@@ -355,6 +421,7 @@ export const tableConConfig = {
             },
             {
                 title: "备注",
+                component: "TextArea",
             },
         ],
         rows: 27,
@@ -371,14 +438,17 @@ export const tableConConfig = {
             {
                 title: "作 者",
                 width: "15%",
+                component: "TextArea",
             },
             {
                 title: "题   目",
                 width: "15%",
+                component: "TextArea",
             },
             {
                 title: "发表杂志名称",
                 width: "20%",
+                component: "TextArea",
             },
             {
                 title: "期刊号",
@@ -386,6 +456,7 @@ export const tableConConfig = {
             {
                 title: "会议名称",
                 width: "10%",
+                component: "TextArea",
             },
         ],
         titleType: true,
@@ -438,10 +509,12 @@ export const tableConConfig = {
                 title: "项目名称",
                 width: "15%",
                 // component: "DataPicker",
+                component: "TextArea",
             },
             {
                 title: "协助单位",
                 width: "25%",
+                component: "TextArea",
             },
             {
                 title: "获奖等级",
@@ -464,6 +537,7 @@ export const tableConConfig = {
             {
                 title: "进修及参观学习单位",
                 width: "40%",
+                component: "TextArea",
                 // component: "DataPicker",
             },
             {
@@ -478,7 +552,8 @@ export const tableConConfig = {
             },
             {
                 title: "总天数",
-                width: "15%"
+                width: "15%",
+                component: "TextArea",
             },
         ],
         isAdd: true,
@@ -533,19 +608,23 @@ export const tableConConfig = {
             {
                 title: "嘉奖",
                 width: "15%",
+                component: "TextArea",
             },
             {
                 title: "立功",
                 width: "10%",
+                component: "TextArea",
             },
             {
                 title: "荣誉称号",
                 width: "10%",
+                component: "TextArea",
                 // component: "DataPicker",
             },
             {
                 title: "其他",
                 width: "30%",
+                component: "TextArea",
             },
         ],
         isAdd: true,
@@ -604,6 +683,76 @@ export const tableConConfig = {
             },
         ],
         isAdd: true,
+        rows: 20,
+    },
+    "JMFYRLTJB": {
+        columns: [
+            {
+                title: "序号",
+                isEdit: false,
+            },
+            {
+                title: "统计单位",
+                isEdit: false,
+                keyType: 'deptName'
+            },
+            {
+                title: "实际开放床位",
+                isEdit: true,
+                keyType: 'v1'
+            },
+            {
+                title: "配置标准",
+                isEdit: true,
+                keyType: 'v2'
+            },
+            {
+                title: "应配护士",
+                isEdit: true,
+                keyType: 'v3'
+            },
+            {
+                title: "现有执业护士总人数",
+                isEdit: false,
+                keyType: 'practicingNurses',
+            },
+            {
+                title: "床位使用率",
+                isEdit: true,
+                keyType: 'v4'
+            },
+            {
+                title: "实际床护比",
+                isEdit: true,
+                keyType: 'v5'
+            },
+            {
+                title: "休假人次",
+                isEdit: true,
+                keyType: 'v6'
+            },
+            {
+                title: "实际在岗人次",
+                isEdit: true,
+                keyType: 'v7'
+            },
+            {
+                title: "实际应配护士",
+                isEdit: true,
+                keyType: 'v8'
+            },
+            {
+                title: "培训生",
+                isEdit: false,
+                keyType: 'trainee',
+            },
+            {
+                title: "本月人力分析",  //实际在岗人次-实际应配护士
+                isEdit: true,
+                keyType: 'v9'
+            },
+        ],
+        // isAdd: true,
         rows: 20,
     }
 };

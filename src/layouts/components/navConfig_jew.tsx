@@ -91,11 +91,21 @@ const baseConfig: navConfigItem[] = [
         icon: require("../images/menu-icon/护理查房@2x.png"),
         path: '/checkWard/JewDutyRecord',
       },
+      {
+        name: '质量检查汇总',
+        icon: require("../images/menu-icon/护理查房@2x.png"),
+        path: '/qualitySummary/Summary',
+      },
     ],
   },
   {
     name: "护士长手册",
     path: "/nurseHandBookNew",
+  },
+  {
+    name: "敏感指标登记本",
+    path: "/sensitiveRegister",
+    // hidden: !appStore.isDev
   },
   {
     name: "学习培训",
@@ -143,14 +153,17 @@ const baseConfig: navConfigItem[] = [
     name: "病区登记本",
     path: "/wardRegister",
   },
- 
-  
-  
   {
     name: "系统设置",
     path: "/setting",
   },
-  
+  {
+    name:"敏感指标",
+    onClick:()=>{
+      let token = sessionStorage.getItem("authToken") || ""
+      window.open(`http://192.168.1.37:9093/bcyNursingQuality/ssoLogin?token=${token}`)
+    }
+  }
 ];
 
 const beConfig: navConfigItem[] = [];

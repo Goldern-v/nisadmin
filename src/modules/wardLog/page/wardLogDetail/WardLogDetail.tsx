@@ -49,8 +49,9 @@ export default function WardLogDetail() {
     }, 500)
   }
 
-  const onLoad = () => {
+  const onLoad = async() => {
     setPageLoading(true)
+    if(['whyx'].includes(appStore.HOSPITAL_ID)) await wardLogService.receiveRead(appStore.queryObj.id)
     wardLogService.getDetail(appStore.queryObj.id).then((res) => {
       setPageLoading(false)
       res.data.logDetail.forEach((item:any)=>{

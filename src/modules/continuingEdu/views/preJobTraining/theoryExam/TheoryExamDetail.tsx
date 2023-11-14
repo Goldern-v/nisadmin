@@ -13,6 +13,8 @@ export interface Props {
 	payload: any;
 }
 export default observer(function TheoryExamDetail(props: Props) {
+	let canEdit = appStore.queryObj.canEdit === "true"
+	
 	const columns: any = [
 		{
 			title: "序号",
@@ -48,11 +50,15 @@ export default observer(function TheoryExamDetail(props: Props) {
 			render: (text: any, record: any, index: number) => {
 				return (
 					<InputNumber className='cell-ipt'
-						defaultValue={text}
+						value={text}
 						key={record.id}
 						step={1} min={1} max={150} style={{ width: '100%' }}
-						onBlur={(e: any) => {
-							theoryExamData.tableDetailList[index].examScore = e.target.value
+						// onBlur={(e: any) => {
+						// 	theoryExamData.tableDetailList[index].examScore = e.target.value
+						// 	theoryExamData.tableDetailList = [...theoryExamData.tableDetailList]
+						// }}
+						onChange={(e: any) => {
+							theoryExamData.tableDetailList[index].examScore = e
 							theoryExamData.tableDetailList = [...theoryExamData.tableDetailList]
 						}}
 					/>
@@ -162,7 +168,7 @@ export default observer(function TheoryExamDetail(props: Props) {
 				</div>
 				<div className='tool-con'>
 					<Button onClick={() => appStore.history.goBack()}>返回</Button>
-					<Button type='primary' onClick={() => { saveDetailList() }}>保存</Button>
+					{canEdit && <Button type='primary' onClick={() => { saveDetailList() }}>保存</Button>}
 					<Button className="span" onClick={() => onExport()} >导出</Button>
 				</div>
 			</HeadCon>

@@ -37,7 +37,7 @@ export default observer(function (props: Props) {
   }, [appStore.location.pathname])
 
   const [query, setQuery] = useState<Obj>({
-    deptCode: authStore.defaultDeptCode,
+    deptCode:appStore.HOSPITAL_ID ==='qhwy'?'': authStore.defaultDeptCode,
     status: '',
     pageSize: 20,
     pageNum: 1,
@@ -150,7 +150,6 @@ const [exportVisible,setExportVisible]=useState<boolean>(false)
       }
     },
   ]
-  console.log("defColumns===",defColumns);
   /**
    * 初始化设置  
    * year_can_create_more：按年度创建，可以创建多个记录；对应登记表  
@@ -175,12 +174,12 @@ const [exportVisible,setExportVisible]=useState<boolean>(false)
       setQuery({
         ...query,
         year: moment(),
-        menuCode: '',
+        menuCode:''
       })
       setAddQuery({
         ...addQuery,
         year: moment(),
-        menuCode: '',
+        menuCode:''
       })
       const newColumns = [
         {
@@ -214,11 +213,11 @@ const [exportVisible,setExportVisible]=useState<boolean>(false)
           align: 'center',
           dataIndex: 'year'
         },
-        {
-          title: '标题',
-          align: 'center',
-          dataIndex: 'title'
-        }
+        // {
+        //   title: '标题',
+        //   align: 'center',
+        //   dataIndex: 'title'
+        // }
       ]
       setColumns(newColumns)
       getFormList()
@@ -236,9 +235,10 @@ const [exportVisible,setExportVisible]=useState<boolean>(false)
         startTime,
         endTime,
         menuCode: '',
+        'isQHWYZB': !(options.menuCode =='QHWYZB')
       })
       const newColumns = [
-        {
+        options.menuCode !== 'QHWYZB' && {
           title: '日期',
           align: 'center',
           dataIndex: 'startTime',
@@ -260,11 +260,14 @@ const [exportVisible,setExportVisible]=useState<boolean>(false)
         ...query,
         year: moment(),
         month:moment().format('M'),
+        menuCode:options.showType =='childList'?'':undefined,  //针对925月报配置显示配置表
       })
       setAddQuery({
         ...addQuery,
         year: moment(),
         month:moment().format('M'),
+        menuCode:options.showType =='childList'?'':undefined,//针对925月报配置显示配置表
+
       })
       const newColumns = [
         {

@@ -14,8 +14,11 @@ const Option = Select.Option;
 const TextArea = Input.TextArea;
 export interface Props {
 	payload: any;
+	canEdit: boolean | undefined
 }
 export default observer(function ImplementRecord(props: Props) {
+	//菜单传值过来 判别是否有配置canEdit 没配置的默认为true
+	let canEdit = typeof(props.canEdit)==="boolean" ? props.canEdit : true;
 	const [isPrint, setIsPrint] = useState(false)
 	const pageRef: any = useRef<HTMLElement>()
 	const [text1, setText1] = useState('实施记录实施记录实施记录');
@@ -159,7 +162,7 @@ export default observer(function ImplementRecord(props: Props) {
 					<div className="top-right">
 					{implementRecordData.isEdit&&<Button type="primary" onClick={()=>{implementRecordData.saveImplement()}} >保存</Button>}
 					{implementRecordData.isEdit&&<Button style={{marginLeft:'15px'}} onClick={()=>{implementRecordData.isEdit=false}} >取消</Button>}
-					{!implementRecordData.isEdit&&<Button type="primary" onClick={()=>{implementRecordData.isEdit = true}} >编辑</Button>}
+					{!implementRecordData.isEdit && canEdit && <Button type="primary" onClick={()=>{implementRecordData.isEdit = true}} >编辑</Button>}
 					<Button style={{marginLeft:'15px'}} disabled={implementRecordData.isEdit} onClick={() => onPrint(true)} >打印</Button>
 					</div>
 				</div>

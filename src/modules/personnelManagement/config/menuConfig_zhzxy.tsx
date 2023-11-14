@@ -91,7 +91,7 @@ export const meunConfig: meunConfigItem[] = [
         component: StandardTime,
         // hide: !(authStore.user?.empNo == 'G6051' || authStore.user?.empNo == 'ADMIN')
         iSlimit: true,
-        special: true
+        // special: true
       },
       {
         title: "加减班列表查询",

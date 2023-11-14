@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { Button } from 'antd'
 import { DoCon } from 'src/components/BaseTable'
-import { isSelf } from '../views/BaseInfo'
+import { isSelf,isdghm } from '../views/BaseInfo'
 import { openAuditModal } from '../config/auditModalConfig'
 
 import { globalModal } from 'src/global/globalModal'
@@ -51,13 +51,38 @@ export default function(type: string, modal: any, getTableData: () => void): any
               </span>
             </React.Fragment>
           ) : (
-            <span
-              onClick={() => {
-                openAuditModal(getTitle(type), row, getTableData)
-              }}
-            >
-              {limitUtils(row) ? '审核' : '查看'}
-            </span>
+            <>
+              <span
+                onClick={() => {
+                  openAuditModal(getTitle(type), row, getTableData)
+                }}
+              >
+                {limitUtils(row) ? '审核' : '查看'}
+              </span>
+              {
+                isdghm && 
+                <>
+                  <span
+                    onClick={() => {
+                      modal.show({ data: row, signShow: '修改' })
+                    }}
+                  >
+                    修改
+                  </span>
+                  <span
+                    onClick={() => {
+                      globalModal.confirm('删除确定', '你确定要删除该记录吗?').then((res) => {
+                        nurseFilesService.commonDelById(type, row.id).then((res) => {
+                          getTableData()
+                        })
+                      })
+                    }}
+                  >
+                    删除
+                  </span>
+                </>
+              }
+            </>
           )}
         </DoCon>
       )

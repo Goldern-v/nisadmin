@@ -266,7 +266,7 @@ class TrainingResultModel {
       this.trainingDepartment = res.data.latTrainImplementationResult?.trainingDepartment || ''
       this.trainingPhotos = res.data.latTrainImplementationResult?.trainingPhotos || '' //培训照片
       this.comments = res.data.latTrainImplementationResult?.comments || '' //效果评价/培训考核
-      this.title = res.data.latTrainImplementationResult?.title;
+      this.title = ["whyx"].includes(appStore.HOSPITAL_ID) ? res.data.baseInfo?.title : res.data.latTrainImplementationResult?.title;
       this.statistics = res.data.latTrainImplementationResult?.statistics;
       this.summary = res.data.latTrainImplementationResult?.summary;
 

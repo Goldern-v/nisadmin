@@ -6,10 +6,10 @@ import {Rules} from 'src/components/Form/interfaces'
 import {Obj} from 'src/libs/types'
 import YearPicker from 'src/components/YearPicker'
 import {ModalComponentProps} from 'src/libs/createModal'
-import {authStore} from 'src/stores'
+import {appStore, authStore} from 'src/stores'
 import SelectFilter from 'src/components/SelectFilter'
 import {quarterList, quarterYear} from "src/enums/date";
-import {CoverArr} from "src/modules/nurseHandBookNew/views/list-jew/utils/enums";
+import {jewCoverArr,zjhjCoverArr} from "src/modules/nurseHandBookNew/views/list-jew/utils/enums";
 
 const {Option} = Select
 
@@ -26,7 +26,7 @@ const ALL_RULE: Rules = {
     year: (val) => !!val || '请选择年份',
     deptCode: (val) => !!val || '请选择科室',
     date: (val) => val?.length == 2 || '请选择日期',
-    type:(val) => !!val || '请选择护士长封面',
+    type: (val) => !!val || '请选择护士长封面',
     // menuCode: (val) => !!val || '请选择记录表',
 }
 const Quarter = {'第一季度': 1, '第二季度': 2, '第三季度': 3, '第四季度': 4}
@@ -39,7 +39,6 @@ export default function (props: Props) {
     const {deptList} = authStore
     useLayoutEffect(() => {
         if (visible) {
-            console.log(addQuery);
             if (addQuery) {
                 setRules(Object.keys(addQuery).reduce((prev, cur) => {
                     if (ALL_RULE[cur]) {
@@ -59,11 +58,14 @@ export default function (props: Props) {
                         delete newObj.endTime
                         newObj.date = [startTime, endTime]
                         refForm.current.setFields(newObj)
-                        return
                     }
-                    refForm.current.setFields(
-                        addQuery
-                    )
+                    /**如果是记录表，并且只有一个选项直接赋值**/
+                    refForm.current.setFields(addQuery)
+                    if (formList && formList.length == 1) {
+                        refForm.current.setField(
+                            'menuCode',formList[0].menuCode)
+                    }
+                    console.log(refForm.current.getFields());
                 }
             }, 300)
         }
@@ -169,7 +171,7 @@ export default function (props: Props) {
                             </Col>
                         </Row>}
                     {
-                        addQuery?.startTime !== undefined &&
+                        addQuery?.startTime !== undefined && addQuery?.isQHWYZB &&
                         <Row>
                             <Col span={8} className='label'>
                                 日期：
@@ -232,7 +234,7 @@ export default function (props: Props) {
                             <Col span={16}>
                                 <Form.Field name='type'>
                                     <Select>
-                                        {CoverArr.map((item) => <Option value={item.type}
+                                        {(appStore.HOSPITAL_ID ==='925'?  jewCoverArr:zjhjCoverArr).map((item:any) => <Option value={item.type}
                                                                         key={item.type + 'a'}>{item.name}</Option>)}
                                     </Select>
                                 </Form.Field>

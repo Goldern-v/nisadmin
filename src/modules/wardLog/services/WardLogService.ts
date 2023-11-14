@@ -28,6 +28,11 @@ export default class WardLogService extends BaseApiService {
   public deleteRecord(instanceId: any) {
     return this.get(`/InpatientAreaLog/deleteRecord/${instanceId}`)
   }
+
+  public receiveRead(instanceId: any) {
+    return this.get(`InpatientAreaLog/receiveRead/${instanceId}`)
+  }
+  
   /** 导出详情excel */
   public exportDetail(data: any) {
     return this.post(`/InpatientAreaLog/info/export`, data, { responseType: 'blob' })

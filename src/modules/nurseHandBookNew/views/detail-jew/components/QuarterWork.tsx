@@ -113,7 +113,7 @@ export default observer(function (props: Props) {
                     ((model.editorData?.arr1)|| []).map((v: Obj, i: number,all:any) => {
                         return (
                              <tr key={i}>
-                                 {[0,all.length].includes(i) && <td rowSpan={all.length}>季度工作计划</td>}
+                                 {[0,all.length].includes(i) && <td rowSpan={all.length}>工作计划</td>}
                                  {
                                      columns.map((v1: Obj, i1: number,c1:any) => {
                                          return (

@@ -16,8 +16,9 @@ import { fileDownload } from 'src/utils/file/file';
 const Option = Select.Option;
 const TextArea = Input.TextArea;
 
-export default observer(function PreJobTrainingPlan() {
-
+export default observer(function PreJobTrainingPlan(props) {
+	//菜单传值过来 判别是否有配置canEdit 没配置的默认为true
+	let canEdit = typeof(props.canEdit)==="boolean" ? props.canEdit : true;
 
 	const columns: any = [
 		{
@@ -156,9 +157,8 @@ export default observer(function PreJobTrainingPlan() {
 			render: (text: any, record: any, index: number) => {
 				return (
 					<DoCon>
-
-						<span onClick={() => { saveTableItem(index) }}>保存</span>
-						<span onClick={() => { removeTableItem(record, index) }}>删除</span>
+						{canEdit && <span onClick={() => { saveTableItem(index) }}>保存</span>}
+						{canEdit && <span onClick={() => { removeTableItem(record, index) }}>删除</span>}
 					</DoCon>
 				);
 			}
@@ -285,8 +285,8 @@ export default observer(function PreJobTrainingPlan() {
 					>
 						查询
 					</Button>
-					<Button className="span" onClick={addTableItem}>新增一行</Button>
-					<Button className="span" onClick={() => { preJobTrainingPlanData.copyBatchModal = true }} >复制计划</Button>
+					{canEdit && <Button className="span" onClick={addTableItem}>新增一行</Button>}
+					{canEdit && <Button className="span" onClick={() => { preJobTrainingPlanData.copyBatchModal = true }} >复制计划</Button>}
 					<Button className="span" onClick={() => onExport()} >导出</Button>
 				</RightIcon>
 			</Headerr>
