@@ -56,6 +56,7 @@ export default observer(function Head() {
 
         <span>质控级别：</span>
         <Select
+          mode="multiple"
           value={summaryModal.qcLevel}
           placeholder='请选择质控级别'
           onChange={handleChange}

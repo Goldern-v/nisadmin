@@ -7,7 +7,7 @@ import qs from 'qs';
 export default class QualityService extends BaseApiService {
   
   public async getTemplateList(qcLevel: any) {
-    return this.get(`/qcTemplateManage/templateList/${qcLevel}`);
+    return this.post(`/qcTemplateManage/templateListCheck`,{qcLevel});
   }
 
   public getPage(obj: any){
