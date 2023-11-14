@@ -73,7 +73,6 @@ export default observer(function Head() {
             summaryModal.onload()
           }}
         >
-          <Select.Option value=''>全部</Select.Option>
           {summaryModal.qcCodeList.map((item: any, index: number) => (
             <Select.Option value={item.qcCode} key={index}>
               {item.qcName}
