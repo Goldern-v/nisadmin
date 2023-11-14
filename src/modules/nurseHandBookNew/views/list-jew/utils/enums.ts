@@ -57,7 +57,7 @@ export  const HALF_YEAR ={
 }
 export  const QuarterV ={1:'第一',2:'第二',3:'第三',4:'第四'}
 /**925 护士长手册封面**/
-export  const CoverArr =[
+export  const jewCoverArr =[
   {type:1,url:"./assets/护士长手册封面1.jpg",name:"护士长手册封面1"},
   {type:2,url:"./assets/护士长手册封面2.jpg",name:"护士长手册封面2"},
   {type:3,url:"./assets/护士长手册封面3.jpg",name:"护士长手册封面3"},
@@ -66,4 +66,8 @@ export  const CoverArr =[
   {type:6,url:"./assets/护士长手册封面6.jpg",name:"护士长手册封面6"},
   {type:7,url:"./assets/护士长手册封面7.jpg",name:"护士长手册封面7"},
   {type:8,url:"./assets/护士长手册封面8.jpg",name:"护士长手册封面8"},
+]
+/**湛江海军封面**/
+export  const zjhjCoverArr =[
+  {type:9,url:"./assets/zjhj-1.png",name:"护士长手册封面"},
 ]
