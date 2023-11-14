@@ -113,6 +113,7 @@ export const navConfig = (appStore:any,authStore?:any)=>{
     {
       name: "护士长手册",
       path: "/nurseHandBookNew",
+        hidden:!authStore.isHeadNurse
         // children:[
         //     {
         //         name: "护士长查房",
