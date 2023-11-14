@@ -174,12 +174,12 @@ const [exportVisible,setExportVisible]=useState<boolean>(false)
       setQuery({
         ...query,
         year: moment(),
-        menuCode: '',
+        menuCode:''
       })
       setAddQuery({
         ...addQuery,
         year: moment(),
-        menuCode: '',
+        menuCode:''
       })
       const newColumns = [
         {
@@ -260,11 +260,14 @@ const [exportVisible,setExportVisible]=useState<boolean>(false)
         ...query,
         year: moment(),
         month:moment().format('M'),
+        menuCode:options.showType =='childList'?'':undefined,  //针对925月报配置显示配置表
       })
       setAddQuery({
         ...addQuery,
         year: moment(),
         month:moment().format('M'),
+        menuCode:options.showType =='childList'?'':undefined,//针对925月报配置显示配置表
+
       })
       const newColumns = [
         {

@@ -48,6 +48,7 @@ export default {
         v5: '',
         v6: '',
         v7: '',
+
         vYear:new Date().getFullYear(),
         vMonth:new Date().getMonth() + 1,
         vWeek:Math.ceil( ((day + 6) - week)/7)
@@ -64,8 +65,10 @@ export default {
         v4: "",
         v5: '',
         v6: '',
-        vYear:new Date().getFullYear(),
-        vMonth:new Date().getMonth() + 1,
+        vYear:self.detail?.record?.year,
+        vMonth:self.detail?.record?.month,
+        // vYear:new Date().getFullYear(),
+        // vMonth:new Date().getMonth() + 1,
       });
     },
   },
