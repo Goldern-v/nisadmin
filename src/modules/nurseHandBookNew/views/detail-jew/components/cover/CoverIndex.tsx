@@ -71,12 +71,17 @@ export default observer(function () {
                     <Input className='coverEmpName7' value={model.editorData.v3} onChange={e => onChange(e, 'v3')}/>
                 </div>
             case 8:
-            case 8:
                 return <div className='coverContainer'>
                     <img className='imgBg' src={require('./assets/护士长手册封面8.jpg')} alt=''/>
                     <Input className='coverYear' value={model.editorData.v1} onChange={e => onChange(e, 'v1')}/>
                     <Input className='coverDept' value={model.editorData.v2} onChange={e => onChange(e, 'v2')}/>
                     <Input className='coverEmpName' value={model.editorData.v3} onChange={e => onChange(e, 'v3')}/>
+                </div>
+            case 9:
+                return <div className='coverContainer'>
+                    <img className='imgBg' src={require('./assets/zjhj-1.png')} alt=''/>
+                    <Input className='zjhjCoverYear' style={{fontSize:'30px'}} value={model.editorData.v1} onChange={e => onChange(e, 'v1')}/>
+                    <Input className='zjhjCoverDept' style={{fontSize:'30px'}} value={model.editorData.v2} onChange={e => onChange(e, 'v2')}/>
                 </div>
             default :
                 return <div></div>
@@ -101,7 +106,18 @@ const Wrapper = styled.div`
     width: 100%;
     height: 95vh;
   }
-
+  .zjhjCoverDept {
+    position: absolute;
+    bottom: 21%;
+    left:29%;
+    width:320px;
+  }
+.zjhjCoverYear{
+  position: absolute;
+  bottom: 30%;
+  left: 29%;
+  width: 320px;
+}
   .coverYear {
     position: absolute;
     bottom: 37%;

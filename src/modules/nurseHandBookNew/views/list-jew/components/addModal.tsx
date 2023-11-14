@@ -6,10 +6,10 @@ import {Rules} from 'src/components/Form/interfaces'
 import {Obj} from 'src/libs/types'
 import YearPicker from 'src/components/YearPicker'
 import {ModalComponentProps} from 'src/libs/createModal'
-import {authStore} from 'src/stores'
+import {appStore, authStore} from 'src/stores'
 import SelectFilter from 'src/components/SelectFilter'
 import {quarterList, quarterYear} from "src/enums/date";
-import {CoverArr} from "src/modules/nurseHandBookNew/views/list-jew/utils/enums";
+import {jewCoverArr,zjhjCoverArr} from "src/modules/nurseHandBookNew/views/list-jew/utils/enums";
 
 const {Option} = Select
 
@@ -234,7 +234,7 @@ export default function (props: Props) {
                             <Col span={16}>
                                 <Form.Field name='type'>
                                     <Select>
-                                        {CoverArr.map((item) => <Option value={item.type}
+                                        {(appStore.HOSPITAL_ID ==='925'?  jewCoverArr:zjhjCoverArr).map((item:any) => <Option value={item.type}
                                                                         key={item.type + 'a'}>{item.name}</Option>)}
                                     </Select>
                                 </Form.Field>
