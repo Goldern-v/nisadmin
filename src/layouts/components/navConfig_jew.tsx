@@ -103,6 +103,11 @@ const baseConfig: navConfigItem[] = [
     path: "/nurseHandBookNew",
   },
   {
+    name: "敏感指标登记本",
+    path: "/sensitiveRegister",
+    // hidden: !appStore.isDev
+  },
+  {
     name: "学习培训",
     path: "/continuingEdu",
     // hidden: !appStore.isDev
