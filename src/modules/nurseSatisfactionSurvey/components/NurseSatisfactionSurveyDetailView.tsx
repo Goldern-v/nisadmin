@@ -23,6 +23,7 @@ export default observer(function followUpDetailView() {
   const [total, setTotal]: any = useState(0)
   const [data, setData]: any = useState([])
   const [surveyTitle, setSurveyTitle]: any = useState("")
+  const [fillRecordId, setFillRecordId]: any = useState("")
   const [editVisible, setEditVisible] = useState(false)
   const [previewPaperData, setPreviewPaperData]: any = useState([])
 
@@ -45,6 +46,7 @@ export default observer(function followUpDetailView() {
   const onDetail = (record: any) => {
     api.getAppPage(record.fillRecordId)
     .then((res) => {
+      setFillRecordId(record.fillRecordId)
       setEditVisible(true)
       setPreviewPaperData(res.data)
     }, err => setPageLoading(false))
@@ -59,6 +61,11 @@ export default observer(function followUpDetailView() {
       setPageLoading(false)
       fileDownload(res)
     }, err => setPageLoading(false))
+  }
+
+  const handleOk = () => {
+    onload();
+    setEditVisible(false);
   }
   let columns: ColumnProps<any>[] = []
     columns = 
@@ -179,8 +186,10 @@ export default observer(function followUpDetailView() {
         {['zjhj'].includes(appStore.HOSPITAL_ID) && (
          <FormPageBodyzjhj
         visible={editVisible}
+        setPreviewPaperData={setPreviewPaperData}
         previewPaperData={previewPaperData}
-        onOk={() => setEditVisible(false)}
+        fillRecordId={fillRecordId}
+        onOk={handleOk}
         onCancel={() => setEditVisible(false)} />
          )}
         

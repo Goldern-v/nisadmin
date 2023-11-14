@@ -528,9 +528,9 @@ const [exportVisible,setExportVisible]=useState<boolean>(false)
   }, [query])
   useEffect(() => {
   /**增加提示语**/
-  if(['925HLLWDJ_9_1','925JSGXDJ_9_2','925JSGXDJ_9_3','925WCXXJXDJ_9_4','925JSJXJXDJ_9_5','925HLRYJDDJ_9_6','925HRHSDJ_9_7'].includes(options.menuCode) && appStore.HOSPITAL_ID ==='925'){
-   return  message.info('请您到护理管理系统档案管理的查询统计模块进行数据汇总统计及导出！')
-  }
+  // if(['925HLLWDJ_9_1','925JSGXDJ_9_2','925JSGXDJ_9_3','925WCXXJXDJ_9_4','925JSJXJXDJ_9_5','925HLRYJDDJ_9_6','925HRHSDJ_9_7'].includes(options.menuCode) && appStore.HOSPITAL_ID ==='925'){
+  //  return  message.info('请您到护理管理系统档案管理的查询统计模块进行数据汇总统计及导出！')
+  // }
   }, [appStore.location.pathname])
   return (
     <Wrapper>

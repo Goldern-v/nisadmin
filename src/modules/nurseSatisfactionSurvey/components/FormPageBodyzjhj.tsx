@@ -1,41 +1,75 @@
 import styled from 'styled-components'
-import React from 'react'
+import React, { useState } from 'react'
 import { Modal, Icon,Input,Radio } from 'antd'
 import NurseHandBookService from '../services/NurseSatisfactionSurveyService'
+import { appStore }from 'src/stores'
 import { message } from 'antd/es'
+import { Item } from 'antd-mobile/lib/tab-bar'
 const { TextArea } = Input
+const RadioGroup = Radio.Group;
 const api = new NurseHandBookService();
 export interface Props {
   visible: boolean,
   onOk: Function,
   onCancel: Function,
+  setPreviewPaperData?:any,
   params?: any,
   isOtherEmp?: boolean,
   isAdd?: boolean,
   previewPaperData?: any,
+  fillRecordId?: string
 }
 export default function editModal(props: Props) {
-  const { visible, onOk, onCancel, isAdd, params, isOtherEmp, previewPaperData } = props
+  const { queryObj } = appStore
+  const { visible, onOk, onCancel, isAdd,setPreviewPaperData, params, isOtherEmp, previewPaperData, fillRecordId } = props
   const bdstyle: React.CSSProperties = {maxHeight: "88vh"}
   const afterClose = () => {}
-  const handleOk = (record: any) => {
-    if (record.questionOption=="") {
-      message.error('填写不能为空！')
-      return
-    }
-      api.commitPaper( {
-        
-        questionOption:record.questionOption,
-        optionContent:record.optionContent,
-        optionScore:record.optionScore,
-        choiceId:record.questionOption,
-      })
+  const handleSave = () => {
+    const previewPaperDataNew = {paperDto: {...previewPaperData}, fillRecordId: fillRecordId};
+    debugger
+    api.commitPaper(previewPaperDataNew)
       .then((res) => {
+        if (res.code === "200") {
         message.success('保存成功')
+      }
         onOk && onOk()
     }, )
   }
+
+  const choseChange = (item:any,e:any,index:any)=>{
+    item.choiceList.forEach((choi:any)=>choi.isSelected=0)
+    let selectC = item.choiceList.find((choi:any)=>choi.questionOption===e.target.value)
+    let _item = item
+    if(selectC) selectC.isSelected = 1
+    let _previewPaperData = JSON.parse(JSON.stringify(previewPaperData))
+    _previewPaperData.questionList.splice(index,1,_item)
+    setPreviewPaperData(_previewPaperData);
+    
+  }
+  // const choseText = (item:any,e:any,index:any)=>{
+  //   item.shortQuestionAnswer = e.target.value;
+  // }
+
+  const choseText = (item:any,e:any,index:any) => {
+    const updatedQuestionList = previewPaperData.questionList.map((q:any, i:any) => {
+      if (i === index) {
+        return { ...q, shortQuestionAnswer: e.target.value }
+      } else {
+        return q
+      }
+    })
+
+    setPreviewPaperData({ ...previewPaperData, questionList: updatedQuestionList })
+  }
+
+  const getABCD = (item:any)=>{
+   let obj = item.choiceList.find((choice:any)=>choice.isSelected == 1);
+   
+   if(obj) return obj.questionOption
+  }
+
   
+
   return <Modal
     title={"满意度调查表详情"}
     width={1000}
@@ -44,9 +78,7 @@ export default function editModal(props: Props) {
     okText={"保存"}
     centered
     visible={visible}
-    onOk={() => {
-      onOk()
-    }}
+    onOk={ handleSave }
     onCancel={() => onCancel()}>
       
     <Wrapper>
@@ -56,26 +88,34 @@ export default function editModal(props: Props) {
         <div className="body" key={idx}>
           <div className="title">
             {item.sortNum}、<span className={item.questionType==1?"questionType":"questionType"}>{item.questionType==1?"[单选题]":"[问答题]"}</span>
-          <p>{item.questionContent}{item.questionType==1?<span> （<input value={item.questionOption} style={{ width: 20 }}/>）</span>:""} </p>
+            <p>
+              {item.questionContent}{item.questionType==1?
+              // <span>（<input value={item.questionOption} style={{ width: 20 }}/>）</span>
+              <span>({
+                getABCD(item)
+                })</span>
+              :""
+              } 
+            </p>
           </div>
-          {item.questionType==1&&previewPaperData?.questionList[idx]?.choiceList.map((e: any, i: any) =>
-          // {e.questionOption}、{e.optionContent}({e.optionScore}分)
-          <div className="options" key={`${idx}_${i}`}><span className={e.isSelected==1?"check":"dis"}><Icon type="check" style={{fontSize:"20px"}}/></span>
-              <Radio
-              className="options"
-                value={item.questionOption}
-              >
-               {e.questionOption}、{e.optionContent}({e.optionScore}分)
-              </Radio>
-          </div>
+          <RadioGroup onChange={(e)=>choseChange(item,e,idx)}>
+            {item.questionType==1&&previewPaperData?.questionList[idx]?.choiceList.map((e: any, i: any) =>
+            <div className="options" key={`${idx}_${i}`}><span className={e.isSelected==1?"check":"dis"}><Icon type="check" style={{fontSize:"20px"}}/></span>
+                <Radio key={'radio' + i} value={e.questionOption}>
+                {e.questionOption}、{e.optionContent}({e.optionScore}分)
+                </Radio>
+            </div>
+            
+            )}
+          </RadioGroup>
           
-          )}
           {item.questionType==2&&<div className="essayQuestion">
-          <TextArea
+            
+          <TextArea  onChange={(e)=>choseText(item,e,idx)} value={item.shortQuestionAnswer}
                   rows={3}
                   style={{ width: 554 }}
-                />&nbsp;&nbsp;{item.shortQuestionAnswer}</div>}
-        </div>)}
+                /> 
+                &nbsp;&nbsp;{}</div>}</div>)}
       </div>
     </Wrapper>
   </Modal>
