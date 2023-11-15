@@ -183,6 +183,9 @@ export default observer(function followUpDetailView() {
         previewPaperData={previewPaperData}
         onOk={() => setEditVisible(false)}
         onCancel={() => setEditVisible(false)} />
+
+
+        
         {['zjhj'].includes(appStore.HOSPITAL_ID) && (
          <FormPageBodyzjhj
         visible={editVisible}

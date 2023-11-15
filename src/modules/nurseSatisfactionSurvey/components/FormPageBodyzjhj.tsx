@@ -26,7 +26,6 @@ export default function editModal(props: Props) {
   const afterClose = () => {}
   const handleSave = () => {
     const previewPaperDataNew = {paperDto: {...previewPaperData}, fillRecordId: fillRecordId};
-    debugger
     api.commitPaper(previewPaperDataNew)
       .then((res) => {
         if (res.code === "200") {
@@ -98,7 +97,7 @@ export default function editModal(props: Props) {
               } 
             </p>
           </div>
-          <RadioGroup onChange={(e)=>choseChange(item,e,idx)}>
+          <RadioGroup value={item.choiceList.find((cho:any)=>cho.isSelected==1)?item.choiceList.find((cho:any)=>cho.isSelected==1).questionOption : ""} onChange={(e)=>choseChange(item,e,idx)}>
             {item.questionType==1&&previewPaperData?.questionList[idx]?.choiceList.map((e: any, i: any) =>
             <div className="options" key={`${idx}_${i}`}><span className={e.isSelected==1?"check":"dis"}><Icon type="check" style={{fontSize:"20px"}}/></span>
                 <Radio key={'radio' + i} value={e.questionOption}>
