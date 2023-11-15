@@ -1,5 +1,5 @@
 import React, {memo} from "react";
-import {DatePicker, Input} from "antd";
+import {DatePicker, Input, InputNumber} from "antd";
 import {dateFormat3} from "src/modules/nurseHandBookNew/views/detail-jew/config";
 import moment from "moment";
 const {TextArea}=Input
@@ -15,6 +15,8 @@ export default memo((props: any) => {
                 <TextArea className='cell-ipt'
                           style={{height:height||'600px'}}
                          value={value} {...other} />)
+        case 'InputNumber':
+            return <InputNumber  className='cell-ipt ta-c' value={value} {...other}/>
         default:
             return <Input className='cell-ipt ta-c' value={value} {...other} />
     }
