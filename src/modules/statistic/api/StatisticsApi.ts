@@ -28,14 +28,14 @@ class StatisticsApi extends BaseApiService {
   }
   // 获取按班次自定义的名称
   public async postName() {
-    let postDataQHWY = {
-      shiftType: "休假"
-    }
     let postData = {
       deptCode: authStore.selectedDeptCode
     }
-    let data = 'qhwy' === appStore.HOSPITAL_ID ? postDataQHWY : postData
-    let trancePostData = this.stringify(data)
+    if('qhwy' === appStore.HOSPITAL_ID){
+      postData['shiftType'] = "休假"
+      authStore.selectedDeptCode === "全院" && (delete postData.deptCode)
+    }
+    let trancePostData = this.stringify(postData)
     return this.post(`/schShiftSetting/getByDeptCode`, trancePostData)
   }
   // 班次大类接口的数据
