@@ -91,6 +91,8 @@ export default function PersonnelManagementView() {
     return array.map((item: any) => {
       if(!item.hide){
         if (item.onlyNursingDepartment) { 
+          item['hide'] = !authStore.isDepartmentZJHJ // 是护理部就显示
+        }else if (item.onlyNursingaduit) { 
           item['hide'] = !authStore.isDepartment // 是护理部就显示
         }else {
           if (item.iSlimit) {

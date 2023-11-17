@@ -225,7 +225,6 @@ export default function CreateAnalysisModal(props: Props) {
       let { year, quarter, groupRoleCode } = current.getFields()
       if (!year || !quarter || !groupRoleCode) return
       let yearStr = year.format('YYYY')
-      console.log('dddddddddddddddddddd')
 
       let reportName = `${yearStr}年护长第一季度查房报告分析`
 

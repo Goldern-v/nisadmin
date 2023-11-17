@@ -5,7 +5,7 @@ import { ModalComponentProps } from "src/libs/createModal";
 import Form from "src/components/Form";
 import { to } from "src/libs/fns";
 import service from "src/services/api";
-import { authStore, appStore } from "src/stores";
+import { Rules } from "src/components/Form/interfaces";
 
 export interface Props extends ModalComponentProps {
   /** 表单提交成功后的回调 */
@@ -21,6 +21,14 @@ export default function AduitModal(props: Props) {
   const [newAduitData, setNewAduitData] = useState<any[]>([]);
 
   let refForm = React.createRef<Form>();
+  let rules: Rules;
+  rules = {
+    handleContent: (val, list) => { 
+      if(!list.isPass){
+        return(!!val || "请填写班次名称") 
+      }
+    },
+  };
 
   useEffect(() => {
     setNewAduitData(aduitData);
@@ -77,7 +85,7 @@ export default function AduitModal(props: Props) {
       maskClosable={true}
     >
       <Wrapper>
-        <Form ref={refForm}>
+        <Form ref={refForm} rules={rules}>
           <Row>
             <Col span={24}>
               <Form.Field label={`审核内容`} name="ids">

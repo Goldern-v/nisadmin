@@ -37,7 +37,8 @@ export default function PageContent(props: Props) {
     return () => clearTimeout(timer);
   }, [pageData]);
   useEffect(() => {
-    if(currentPage) {
+    if(Object.keys(currentPage).length > 0) {
+      console.log(currentPage, 'qqqqqqqqqqqqq');
       setItemData(currentPage);
     }
     return () => {
@@ -45,7 +46,7 @@ export default function PageContent(props: Props) {
     };
   }, [currentPage]);
   useEffect(() => {
-    if(queryData) {
+    if(Object.keys(queryData).length) {
       setquery(queryData);
     }
     return () => {
@@ -527,7 +528,7 @@ export default function PageContent(props: Props) {
             {/* 伯拉图  三、各护理单元质控合格率与护患比对比*/}
             {index == 2 && (
               <div className="second-content-bolatu-bolatu">
-                {itemData.evalRateAndNurseToPatientRatioList && <div>
+                {itemData.evalRateAndNurseToPatientRatioList?.length && <div>
                   {!isPrint && (
                     <ReactEcharts
                       style={{ height: 400 }}

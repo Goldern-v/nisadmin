@@ -130,7 +130,6 @@ class planData {
             this.deptList = res.data.treeDept || []
             this.createDeptCode = ['dgxg'].includes(appStore.HOSPITAL_ID)? res.data.userDeptName : res.data.userDeptCode || ''
             // this.createDeptCode = res.data.userDeptName || ''
-            // console.log(this.deptList,'dddddddddddddddddd');
 
             // setDeptListAll(res.data)
           }).catch(err=>{
