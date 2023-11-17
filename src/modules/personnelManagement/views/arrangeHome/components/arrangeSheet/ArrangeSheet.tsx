@@ -533,7 +533,7 @@ export default observer(function ArrangeSheet(props: Props) {
     }),
     ...appStore.hisMatch({
       map: {
-        'sdlj,qzde': [],
+        'sdlj,qzde,925': [],
         other: [
           {
             title: (
@@ -608,7 +608,7 @@ export default observer(function ArrangeSheet(props: Props) {
   ];
 
 /** 东莞横沥特殊字段 */
-if (["dghl", "fsxt", '925', 'fssdy', 'zjhj'].includes(appStore.HOSPITAL_ID)) {
+if (["dghl", "fsxt", 'fssdy', 'zjhj'].includes(appStore.HOSPITAL_ID)) {
   columns.push({
     title: (
       <div>
@@ -750,7 +750,7 @@ if (["wh", "gzsrm", "gxjb", "fsxt", '925', "whyx", 'whhk', 'sdlj', 'fssdy', "gdt
   columns.push(
     ...appStore.hisMatch({
       map: {
-        'sdlj,qzde': [],//佛山杏坛去除累计结余添加本周结余
+        'sdlj,qzde,925': [],//佛山杏坛去除累计结余添加本周结余
         other: [
           {
             title: (
@@ -1096,7 +1096,7 @@ useLayoutEffect(() => {
                 'lyrm': 0,
                 'dghm': 5,
                 qhwy: 2,
-                '925':9,
+                '925':7,
                 other: 2
               },
               vague: true

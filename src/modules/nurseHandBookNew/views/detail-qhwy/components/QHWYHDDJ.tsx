@@ -16,7 +16,6 @@ import cloneDeep from "lodash/cloneDeep";
 /**各类活动等级 */
 export default observer(function () {
     const columns = useMemo(() => tableConConfig[model.detail?.record?.menuCode]?.columns || [], [model.id])
-    console.log(columns);
     const onChange = (e: any, config: Obj) => {
         const {index, key} = config
         let value: any = e
@@ -73,6 +72,7 @@ export default observer(function () {
                                         return (
                                             <td key={`${i}-${i1}`} >
                                                 <ChildCon {...{
+                                                    height:'60px',
                                                     component: v1.component,
                                                     value: v[`v${i1}`],
                                                     onChange: (e: any) => onChange(e, {index: i, key: `v${i1}`})

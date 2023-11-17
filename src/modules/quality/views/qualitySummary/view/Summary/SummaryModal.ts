@@ -31,7 +31,7 @@ class SummaryModal {
     {name:"柏拉图",code:"2"},
   ]; //质控级别
   @observable public qcCodeList = []; //表单列表
-  @observable public qcLevel = 1; //质控级别
+  @observable public qcLevel = [1]; //质控级别
   @observable public qcCode = ""; //表单编码
   @observable public showtype = "1"; //页面显示类型
   @observable public type = 1; //类型（1汇总；2明细）
@@ -51,12 +51,17 @@ class SummaryModal {
   @computed
   get postObj() {
     return {
-      qcLevel:this.qcLevel,
+      qcLevel:this._qcLevel,
       qcCode:this.qcCode,
       type:this.type,
       beginDate: this.selectedDate[0].format("YYYY-MM-DD"),
       endDate: this.selectedDate[1].format("YYYY-MM-DD")
     };
+  }
+
+  @computed
+  get _qcLevel(){
+    return this.qcLevel.join(",")
   }
 
   @action
@@ -66,9 +71,9 @@ class SummaryModal {
 
   getTemplateList(){
     return new Promise((resolve:any,reject:any)=>{
-      qualityService.getTemplateList(this.qcLevel).then(res=>{
+      qualityService.getTemplateList(this._qcLevel).then(res=>{
         this.qcCodeList = res.data;
-        this.qcCode = res.data[0].qcCode
+        this.qcCode = res.data.length ? res.data[0]?.qcCode : ""
         resolve(true)
       })
     })
@@ -99,12 +104,15 @@ class SummaryModal {
 
   toPrint = ()=>{
     setTimeout(() => {
-      printing.preview(document.querySelector(".tableBox") as HTMLElement, {
+      printing(document.querySelector(".tableBox") as HTMLElement, {
         // 插入所有link和style标签到打印，默认是false
         injectGlobalCss: true,
         // 指定扫描样式，默认是true（全部）
         scanStyles: false,
         css: `
+          @page{
+            size:landscape;
+          }
           .chart-img {
             max-height: 260mm;
             width: 100%;

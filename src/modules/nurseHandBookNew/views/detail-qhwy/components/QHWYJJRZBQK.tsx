@@ -162,7 +162,7 @@ export default observer(function () {
                                 return <tr key={i}>
                                     <td colSpan={2}>
                                         <div className='row-box'>
-                                            <span>改进措施:</span>
+                                            <div>改进措施:</div>
                                             <ChildRon {...{
                                                 component: 'TextArea',
                                                 value: v[`v${1}`],
@@ -188,7 +188,7 @@ export default observer(function () {
                                 return <tr key={i}>
                                     <td colSpan={2}>
                                         <div className='row-box'>
-                                            <span> 改进措施:</span>
+                                            <div> 改进措施:</div>
                                             <ChildRon {...{
                                                 component: 'TextArea',
                                                 value: v[`v${1}`],
@@ -214,7 +214,7 @@ export default observer(function () {
                                 return <tr key={i}>
                                     <td colSpan={2}>
                                         <div className='row-box'>
-                                            <span>改进措施:</span>
+                                            <div>改进措施:</div>
                                             <ChildRon {...{
                                                 component: 'TextArea',
                                                 value: v[`v${1}`],
@@ -240,7 +240,7 @@ export default observer(function () {
                                 return <tr key={i}>
                                     <td colSpan={2}>
                                         <div className='row-box'>
-                                            <span>改进措施:</span>
+                                            <div>改进措施:</div>
                                             <ChildRon {...{
                                                 component: 'TextArea',
                                                 value: v[`v${1}`],
@@ -275,9 +275,10 @@ const Wrapper = styled(DetailCtxCon)`
     align-items: center;
     padding: 0 3px;
     .span-text{
-      width: 120px;
+      width: 200px;
       font-size: 16px;
       font-weight: 600;
+      text-align:left;
     }
   }
   table td .cell-ipt.ant-calendar-picker{
@@ -289,9 +290,16 @@ const Wrapper = styled(DetailCtxCon)`
     height: 100px;
 
     span {
-      width: 100px;
+      width: 260px;
       font-size: 16px;
       font-weight: 600;
+      text-align: left;
+    }
+    div{
+      width: 80px;
+      font-size: 16px;
+      font-weight: 600;
+      text-align: left;
     }
   }
 

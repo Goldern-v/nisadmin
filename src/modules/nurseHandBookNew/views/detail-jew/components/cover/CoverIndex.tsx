@@ -59,7 +59,7 @@ export default observer(function () {
             case 6:
                 return <div className='coverContainer'>
                     <img className='imgBg' src={require('./assets/护士长手册封面6.jpg')} alt=''/>
-                    <Input className='coverYear6' value={model.editorData.v1 } onChange={e => onChange(e, 'v1')}/>
+                    <Input className='coverYear6' value={model.editorData.v1} onChange={e => onChange(e, 'v1')}/>
                     <Input className='coverDept6' value={model.editorData.v2} onChange={e => onChange(e, 'v2')}/>
                     <Input className='coverEmpName6' value={model.editorData.v3} onChange={e => onChange(e, 'v3')}/>
                 </div>
@@ -71,12 +71,22 @@ export default observer(function () {
                     <Input className='coverEmpName7' value={model.editorData.v3} onChange={e => onChange(e, 'v3')}/>
                 </div>
             case 8:
-            case 8:
                 return <div className='coverContainer'>
                     <img className='imgBg' src={require('./assets/护士长手册封面8.jpg')} alt=''/>
                     <Input className='coverYear' value={model.editorData.v1} onChange={e => onChange(e, 'v1')}/>
                     <Input className='coverDept' value={model.editorData.v2} onChange={e => onChange(e, 'v2')}/>
                     <Input className='coverEmpName' value={model.editorData.v3} onChange={e => onChange(e, 'v3')}/>
+                </div>
+            case 9:
+                return <div className='coverContainer'>
+                    <img className='imgBg' src={require('./assets/zjhj-1.png')} alt=''/>
+                    <div className='zjhjCoverYear'>
+                       <div>科室:</div><Input value={model.editorData.v1} onChange={e => onChange(e, 'v1')}/>
+                    </div>
+                    <div className='zjhjCoverDept'>
+                        <div>年份:</div><Input value={model.editorData.v2} onChange={e => onChange(e, 'v2')}/>
+                    </div>
+
                 </div>
             default :
                 return <div></div>
@@ -102,11 +112,61 @@ const Wrapper = styled.div`
     height: 95vh;
   }
 
+  .zjhjCoverDept {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    bottom: 21%;
+    left: 29%;
+    //width: 320px;
+    font-size: 30px;
+    font-weight: bold;
+    div{
+      width: 110px;
+      font-weight: 600;
+    }
+    .ant-input {
+      font-size:30px;
+      font-weight: 600;
+      height: 45px;
+      border: none;
+      background: transparent;
+      outline: none;
+      box-shadow: none;
+    }
+  }
+
+  .zjhjCoverYear {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    bottom: 30%;
+    left: 29%;
+    //width: 320px;
+    font-size: 30px;
+    font-weight: bold;
+    div{
+      width: 110px;
+      font-weight: 600;
+    }
+    .ant-input {
+      font-size:30px;
+      font-weight: 600;
+      border: none;
+      background: transparent;
+      outline: none;
+      box-shadow: none;
+      height: 45px;
+    }
+  }
+
   .coverYear {
     position: absolute;
     bottom: 37%;
     left: 40%;
     width: 246px;
+    font-size: 30px;
+    font-weight: bold;
   }
 
   .coverYear1 {
@@ -129,30 +189,35 @@ const Wrapper = styled.div`
     left: 48%;
     width: 246px;
   }
+
   .coverYear4 {
     position: absolute;
     bottom: 60%;
     left: 41%;
     width: 246px;
   }
-  .coverYear5{
+
+  .coverYear5 {
     position: absolute;
     bottom: 15%;
     left: 41%;
     width: 246px;
   }
-  .coverYear6{
+
+  .coverYear6 {
     position: absolute;
     bottom: 12.5%;
     left: 41%;
     width: 246px;
   }
-  .coverYear7{
+
+  .coverYear7 {
     position: absolute;
     bottom: 27%;
     left: 42.5%;
     width: 246px;
   }
+
   .coverDept {
     position: absolute;
     bottom: 31%;
@@ -180,30 +245,35 @@ const Wrapper = styled.div`
     left: 48%;
     width: 246px;
   }
+
   .coverDept4 {
     position: absolute;
     bottom: 55%;
     left: 41%;
     width: 246px;
   }
+
   .coverDept5 {
     position: absolute;
     bottom: 11.5%;
     left: 41%;
     width: 246px;
   }
+
   .coverDept6 {
     position: absolute;
     bottom: 9%;
     left: 41%;
     width: 246px;
   }
+
   .coverDept7 {
     position: absolute;
     bottom: 19.5%;
     left: 42.5%;
     width: 246px;
   }
+
   .coverEmpName {
     position: absolute;
     bottom: 26%;
@@ -232,30 +302,35 @@ const Wrapper = styled.div`
     left: 48%;
     width: 246px;
   }
+
   .coverEmpName4 {
     position: absolute;
     bottom: 50%;
     left: 41%;
     width: 246px;
   }
+
   .coverEmpName5 {
     position: absolute;
     bottom: 8%;
     left: 41%;
     width: 246px;
   }
+
   .coverEmpName6 {
     position: absolute;
     bottom: 5.5%;
     left: 41%;
     width: 246px;
   }
+
   .coverEmpName7 {
     position: absolute;
     bottom: 11.5%;
     left: 42.5%;
     width: 246px;
   }
+
   .ant-input {
     font-size: 20px;
     font-weight: 600;

@@ -37,7 +37,7 @@ export default observer(function (props: Props) {
   }, [appStore.location.pathname])
 
   const [query, setQuery] = useState<Obj>({
-    deptCode: authStore.defaultDeptCode,
+    deptCode:appStore.HOSPITAL_ID ==='qhwy'?'': authStore.defaultDeptCode,
     status: '',
     pageSize: 20,
     pageNum: 1,
@@ -174,12 +174,12 @@ const [exportVisible,setExportVisible]=useState<boolean>(false)
       setQuery({
         ...query,
         year: moment(),
-        menuCode: '',
+        menuCode:''
       })
       setAddQuery({
         ...addQuery,
         year: moment(),
-        menuCode: '',
+        menuCode:''
       })
       const newColumns = [
         {
@@ -260,11 +260,14 @@ const [exportVisible,setExportVisible]=useState<boolean>(false)
         ...query,
         year: moment(),
         month:moment().format('M'),
+        menuCode:options.showType =='childList'?'':undefined,  //针对925月报配置显示配置表
       })
       setAddQuery({
         ...addQuery,
         year: moment(),
         month:moment().format('M'),
+        menuCode:options.showType =='childList'?'':undefined,//针对925月报配置显示配置表
+
       })
       const newColumns = [
         {
@@ -525,7 +528,7 @@ const [exportVisible,setExportVisible]=useState<boolean>(false)
   }, [query])
   useEffect(() => {
   /**增加提示语**/
-  if(['925HLLWDJ_9_1','925JSGXDJ_9_2','925JSGXDJ_9_3','925WCXXJXDJ_9_4','925JSJXJXDJ_9_5','925HLRYJDDJ_9_6','925HRHSDJ_9_7'].includes(options.menuCode) && appStore.HOSPITAL_ID ==='925'){
+  if(['925HLLWDJ_9_1','925JSGXDJ_9_3','925WCXXJXDJ_9_4','925HLRYJDDJ_9_6'].includes(options.menuCode) && appStore.HOSPITAL_ID ==='925'){
    return  message.info('请您到护理管理系统档案管理的查询统计模块进行数据汇总统计及导出！')
   }
   }, [appStore.location.pathname])

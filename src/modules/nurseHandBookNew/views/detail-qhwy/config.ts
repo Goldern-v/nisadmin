@@ -48,6 +48,7 @@ export default {
         v5: '',
         v6: '',
         v7: '',
+
         vYear:new Date().getFullYear(),
         vMonth:new Date().getMonth() + 1,
         vWeek:Math.ceil( ((day + 6) - week)/7)
@@ -64,8 +65,10 @@ export default {
         v4: "",
         v5: '',
         v6: '',
-        vYear:new Date().getFullYear(),
-        vMonth:new Date().getMonth() + 1,
+        vYear:self.detail?.record?.year,
+        vMonth:self.detail?.record?.month,
+        // vYear:new Date().getFullYear(),
+        // vMonth:new Date().getMonth() + 1,
       });
     },
   },
@@ -105,6 +108,7 @@ export const tableConConfig = {
       {
         title: "胎次",
         width: "25%",
+        component: 'TextArea'
       },
     ],
     rows: 20,
@@ -191,23 +195,28 @@ export const tableConConfig = {
       },
       {
         title: "活动名称",
-        width: "15%",
+        width: "23%",
+        component: 'TextArea'
       },
       {
         title: "活动地点",
-        width: "15%",
+        width: "23%",
+        component: 'TextArea'
       },
       {
         title: "参加人数",
-        width: "15%",
+        width: "12%",
+        component: 'TextArea'
       },
       {
         title: "受众人群",
-        width: "15%",
+        width: "12%",
+        component: 'TextArea'
       },
       {
         title: "备注",
-        width: "25%",
+        width: "15%",
+        component: 'TextArea'
       },
     ],
     rows: 20,

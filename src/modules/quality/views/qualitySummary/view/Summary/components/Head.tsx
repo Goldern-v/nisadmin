@@ -56,6 +56,7 @@ export default observer(function Head() {
 
         <span>质控级别：</span>
         <Select
+          mode="multiple"
           value={summaryModal.qcLevel}
           placeholder='请选择质控级别'
           onChange={handleChange}
@@ -72,7 +73,6 @@ export default observer(function Head() {
             summaryModal.onload()
           }}
         >
-          <Select.Option value=''>全部</Select.Option>
           {summaryModal.qcCodeList.map((item: any, index: number) => (
             <Select.Option value={item.qcCode} key={index}>
               {item.qcName}

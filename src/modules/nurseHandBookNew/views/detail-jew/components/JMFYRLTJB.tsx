@@ -1,54 +1,25 @@
-import React, {memo, useEffect, useMemo, useState} from 'react'
+import React, { useEffect, useMemo, useState} from 'react'
 import styled from 'styled-components'
 import {nurseHandbookRecordModel as model} from '../model'
-import {Button, DatePicker, Input, message, Select, Spin} from 'antd'
+import { Spin} from 'antd'
 import {observer} from 'mobx-react'
 import {DetailCtxCon} from 'src/modules/nurseHandBookNew/style'
 import {ChangeOrFocus, Obj} from 'src/libs/types'
 import cloneDeep from 'lodash/cloneDeep'
-import {dateFormat, dateFormat3, tableConConfig} from '../config'
+import {dateFormat, tableConConfig} from '../config'
 import moment, {isMoment} from 'moment'
 import {isOfType} from 'src/utils/ts.utils'
-import {createArr} from "src/utils/array/array";
-import {createObjV} from "src/utils/object/object";
-import {QuarterV} from "src/modules/nurseHandBookNew/views/list-jew/utils/enums";
 import {nurseHandBookService} from "src/modules/nurseHandBookNew/services/NurseHandBookService";
 import {appStore, authStore} from "src/stores";
+import ChildCon from "src/modules/nurseHandBookNew/views/components/ChildCon";
 
-const {Option} = Select
-const {TextArea} = Input
 
 export interface Props {
 }
 
-const ChildCon = memo((props: any) => {
-    const {value, component, ...other} = props
-    switch (component) {
-        case 'Dead':
-            return (
-                <Select
-                    style={{width: 80}}
-                    value={value || ''}  {...other}>
-                    {(model?.nurseList || []).map((nurse: any) => <Option key={nurse.empNo}>{nurse.empName}</Option>)}
-                </Select>
-            )
-        case 'TextArea':
-            return (
-                <TextArea className='cell-ipt'
-                          value={value} {...other} />)
-        case 'DataPicker':
-            return (
-                <DatePicker className='cell-ipt'
-                            format={dateFormat3} value={value ? moment(value) : undefined} {...other} />)
-        default:
-            return <Input className='cell-ipt ta-c' value={value} {...other} />
-    }
-}, (prev: any, next: any) => {
-    return prev?.value == next?.value
-})
 /**表格类表单 */
 export default observer(function (props: Props) {
-const [loading,setLoading]=useState<boolean>(false)
+    const [loading, setLoading] = useState<boolean>(false)
     const columns = useMemo(() => tableConConfig[model.detail?.record?.menuCode]?.columns || [], [model.id])
     const config = useMemo(() => tableConConfig[model.detail?.record?.menuCode] || {}, [model.id])
     const onChange = (e: any, config: Obj) => {
@@ -61,28 +32,49 @@ const [loading,setLoading]=useState<boolean>(false)
         } else if (e instanceof Array) {
             value = e.join(',')
         }
+        /**有些特定值需要动态计算**/
         const newData = cloneDeep(model.editorData)
-        newData[index][key] = value
-        // newData[index][key] = value
-        model.handleEditorChange(newData)
+        let list = newData.map((item: any, i: number) => {
+            if (i == index) {
+                item[key] = value
+                // 应配护士
+                if (item['openBeds'] && item['standards']) {
+                    item['assignedNumber'] = item['openBeds'] * item['standards']
+                }
+                // 实际床护比
+                if (item['employees'] && item['rateBed'] && item['openBeds']) {
+                    item['actualBed'] =( (item['employees'] / item['rateBed']) * item['openBeds']).toFixed(2)
+                }
+                // 实际应配护士
+                if (item['rateBed'] && item['openBeds'] && item['standards']) {
+                    item['assignedNurse'] = item['rateBed'] * item['openBeds'] * item['standards']
+                }
+            //     人力实际情况 实际在岗人次大于实际应配护士，人力富余；相反就是人力负荷大。
+                if(item['employees'] && item['assignedNurse']){
+                    item['percentage'] =item['employees'] > item['assignedNurse'] ?'人力富余':'人力负荷大'
+                }
+            }
+            return item
+        })
+        model.handleEditorChange(list)
     }
-    const handleCopyItem = (type: string) => {
-        const newData = cloneDeep(model.editorData)
-        const conData = createArr(1, (j, k) => createObjV(4));
-        newData[type] = [...newData[type], ...conData]
-        model.handleEditorChange(newData)
-    }
-    const handleDeleteItem = (type: string) => {
-        const newData = cloneDeep(model.editorData)
-        let startIndex = newData[type].length - 1;
-        if (startIndex >= 12) {
-            newData[type].splice(startIndex, 1);
-            model.handleEditorChange(newData)
-        } else {
-            return message.info('不能再删除了~')
-        }
-
-    }
+    // const handleCopyItem = (type: string) => {
+    //     const newData = cloneDeep(model.editorData)
+    //     const conData = createArr(1, (j, k) => createObjV(4));
+    //     newData[type] = [...newData[type], ...conData]
+    //     model.handleEditorChange(newData)
+    // }
+    // const handleDeleteItem = (type: string) => {
+    //     const newData = cloneDeep(model.editorData)
+    //     let startIndex = newData[type].length - 1;
+    //     if (startIndex >= 12) {
+    //         newData[type].splice(startIndex, 1);
+    //         model.handleEditorChange(newData)
+    //     } else {
+    //         return message.info('不能再删除了~')
+    //     }
+    //
+    // }
     /**获取指定日期所在月的第一天和最后一天**/
     const getFirstDateAndLastDate = () => {
         let year = new Date().getFullYear();
@@ -100,25 +92,12 @@ const [loading,setLoading]=useState<boolean>(false)
         setLoading(true)
         const timeObj = getFirstDateAndLastDate()
         nurseHandBookService.getManpowerData({...timeObj}).then((res) => {
-            const arr = createArr(res.data.itemList.length, (j, k) => createObjV(10));
-            // model.handleEditorChange(arr);
-            let list:any =arr.map((i:any,index:number)=>{
-                // deptName,practicingNurses执业护士总人数,trainee培训生
-                res.data.itemList.map((item:any,key:number)=>{
-                    if(index == key){
-                        i['practicingNurses'] = item.practicingNurses
-                        i['deptName'] = item.deptName
-                        i['trainee'] = item.trainee
-                    }
-                })
-                return   i
-            })
-          model.handleEditorChange(list)
+            model.handleEditorChange(model.editorData||res.data.itemList)
             setLoading(false)
         })
     }, [appStore.location.pathname])
     return (
-        <Wrapper className='con--a4' ref={model.ctxRef}>
+        <Wrapper className='con--a4' ref={model.ctxRef} style={{width:'1000px'}}>
             <div className='title'>
                 {model.detail?.record?.year}年{model.detail?.record?.month}月{model.detail?.record?.[config?.titleType || 'menuName']}
             </div>
@@ -147,18 +126,21 @@ const [loading,setLoading]=useState<boolean>(false)
                                 <tr key={i}>
                                     {
                                         columns.map((v1: Obj, i1: number, c1: any) => {
-                                            if(i1 == 0){
-                                                return  <td>{i + 1}</td>
+                                            if (i1 == 0) {
+                                                return <td>{i + 1}</td>
                                             }
-                                            if(!v1.isEdit && v1.keyType ){
-                                                return  <td>{v[v1.keyType]}</td>
+                                            if (!v1.isEdit && v1.keyType) {
+                                                return <td>{v[v1.keyType]}</td>
                                             }
                                             return (
-                                                <td key={`${i}-${i1}`} >
+                                                <td key={`${i}-${i1}`}>
                                                     <ChildCon {...{
                                                         component: v1.component,
                                                         value: v[v1.keyType],
-                                                        onChange: (e: any) => onChange( e, {index: i, key: `${v1.keyType}`})
+                                                        onChange: (e: any) => onChange(e, {
+                                                            index: i,
+                                                            key: `${v1.keyType}`
+                                                        })
                                                     }} />
                                                 </td>
                                             )
@@ -172,8 +154,8 @@ const [loading,setLoading]=useState<boolean>(false)
                     </tbody>
                 </table>
                 <div className='date'>
-                    <div style={{marginLeft:"50px"}}>填表人:{authStore.user?.empName}</div>
-                    <div style={{marginLeft:"50px"}}>填表日期:{moment().format("YYYY-MM-DD")}</div>
+                    <div style={{marginLeft: "50px"}}>填表人:{authStore.user?.empName}</div>
+                    <div style={{marginLeft: "50px"}}>填表日期:{moment().format("YYYY-MM-DD")}</div>
                 </div>
             </Spin>
 
@@ -200,7 +182,8 @@ const Wrapper = styled(DetailCtxCon)`
     right: -200px;
     height: 35px
   }
-  .date{
+
+  .date {
     display: flex;
     justify-content: flex-end;
     height: 50px;

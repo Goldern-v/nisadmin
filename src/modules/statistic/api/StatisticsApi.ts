@@ -59,7 +59,12 @@ class StatisticsApi extends BaseApiService {
       ls: data,
       status: exportData
     }
-    let trancePostData = this.stringify(postData)
+    
+    let trancePostData = ""
+    if(statisticViewModel.useStatisticTypeList){
+      trancePostData = this.stringify({...postData,statisticType:statisticViewModel.statisticType}) 
+    }else trancePostData = this.stringify(postData) 
+
     if (exportData === false) {
       return this.post(`/scheduling/countUser`, trancePostData, { responseType: 'blob' })
     } else {

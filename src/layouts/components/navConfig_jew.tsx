@@ -103,6 +103,11 @@ const baseConfig: navConfigItem[] = [
     path: "/nurseHandBookNew",
   },
   {
+    name: "敏感指标登记本",
+    path: "/sensitiveRegister",
+    // hidden: !appStore.isDev
+  },
+  {
     name: "学习培训",
     path: "/continuingEdu",
     // hidden: !appStore.isDev
@@ -148,14 +153,17 @@ const baseConfig: navConfigItem[] = [
     name: "病区登记本",
     path: "/wardRegister",
   },
- 
-  
-  
   {
     name: "系统设置",
     path: "/setting",
   },
-  
+  {
+    name:"敏感指标",
+    onClick:()=>{
+      let token = sessionStorage.getItem("authToken") || ""
+      window.open(`http://192.168.1.37:9093/bcyNursingQuality/ssoLogin?token=${token}`)
+    }
+  }
 ];
 
 const beConfig: navConfigItem[] = [];

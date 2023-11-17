@@ -40,7 +40,7 @@ export interface Props extends ModalComponentProps {
   getTableData?: () => {};
 }
 
-const rules: Rules = {
+let rules: Rules = {
   cardNumber: (val: any) => {
     if (val && val.length != 18) {
       return "身份证格式不正确";
@@ -57,10 +57,10 @@ const rules: Rules = {
         nativePlace: (val: any) => !!val || '籍贯不能为空',
         age: (val: any) => !!val || '年龄不能为空',
         phone: (val: any) => !!val || '手机号不能为空',
-        zyzsNumber: (val: any) => !!val || '护士执业证书编号不能为空',
-        zyzsDate: (val: any) => !!val || '取得护士执业证书时间不能为空',
-        zyzsNursingPostDate: (val: any) => !!val || '取得执业证书并从事护理岗位时间不能为空',
-        zyzsEffectiveUpDate: (val: any) => !!val || '护士执业证书有效截止日期不能为空',
+        // zyzsNumber: (val: any) => !!val || '护士执业证书编号不能为空',
+        // zyzsDate: (val: any) => !!val || '取得护士执业证书时间不能为空',
+        // zyzsNursingPostDate: (val: any) => !!val || '取得执业证书并从事护理岗位时间不能为空',
+        // zyzsEffectiveUpDate: (val: any) => !!val || '护士执业证书有效截止日期不能为空',
       },
       'dghm': {
         sex: (val: any) => !!val || '性别不能为空',
@@ -163,16 +163,14 @@ export default function EditWorkHistoryModal(props: Props) {
     return footerList
   }
 
-  const onFieldChange = (name: any, value: any, form: Form<any>) => {
+  const onFieldChange = async (name: any, value: any, form: Form<any>) => {
     if (name == "nativePlace") {
       if (value) {
-        nurseFilesService.nurseNativePlaceFindByName(value).then((res) => {
-          setNativePlaceList(
-            res.data.list
-              .filter((item: any, index: number) => index < 100)
-              .map((item: any) => item.nativePlaceName)
-          );
-        });
+        let list:any =  await nurseFilesService.nurseNativePlaceFindByName(value)
+        setNativePlaceList(
+          list.filter((item: any, index: number) => index < 100)
+            .map((item: any) => item.nativePlaceName)
+        );
       } else {
         setNativePlaceList([]);
       }
@@ -236,6 +234,15 @@ export default function EditWorkHistoryModal(props: Props) {
     if (!refForm.current) return;
     let [err, value] = await to(refForm.current.validateFields());
     if (err) return;
+    if (appStore.HOSPITAL_ID === 'wh') {
+      if (value.zyzsNumber || value.zyzsDate || value.zyzsNursingPostDate || value.zyzsEffectiveUpDate) {
+        if (!(value.zyzsNumber && value.zyzsDate && value.zyzsNursingPostDate && value.zyzsEffectiveUpDate)) {
+          message.error("填写了执业证书相关内容，就必须全部填写【护士执业证书编号、取得护士执业证书时间、取得执业证书并从事护理岗位时间、护士执业证书有效截止日期】");
+          return
+        }
+      }
+    }
+
     momentFormatIntoStr(value, 'birthday')
     momentFormatIntoStr(value, 'zyzsDate')
     momentFormatIntoStr(value, 'zyzsNursingPostDate')
@@ -369,7 +376,7 @@ export default function EditWorkHistoryModal(props: Props) {
       >
         <Row>
           <Col span={12}>
-            <Form.Field label={`姓名`} name="empName">
+            <Form.Field label={`姓名11111111`} name="empName">
               <Input disabled />
             </Form.Field>
           </Col>
