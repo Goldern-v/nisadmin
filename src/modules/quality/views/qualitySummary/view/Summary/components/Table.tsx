@@ -126,10 +126,18 @@ export default observer(function Table() {
   const chartOptions = {
     title: {
       text: "质量检查汇总" + (summaryModal.type == 1 ? "汇总":"明细"),
-      left:"center"
+      left:"center",
+      top:20
+    },
+    grid: {
+      containLabel: true,
+      bottom: 0, 
     },
     xAxis: {
         show:true,
+        axisLabel: {
+          rotate: 60,
+        },
         type: 'category',
         data: summaryModal.plato.map(item => item.qcItemTypeName)
     },
@@ -146,6 +154,9 @@ export default observer(function Table() {
         axisLabel: {
           formatter: '{value}%', // 设置线图单位为 %
         },
+        min:0,
+        max:100,
+        interval:25
         // offset: 80,   
       }
     ],
@@ -154,10 +165,10 @@ export default observer(function Table() {
         type: 'bar',
         data: summaryModal.plato.map((item:any)=>item.countNum),
         yAxisIndex: 0,
-        label:{
-          show:true,
-          position:'top',
-        },
+        // label:{
+        //   show:true,
+        //   position:'top',
+        // },
         itemStyle:{
           color:'#4f71be'
         }
@@ -171,15 +182,15 @@ export default observer(function Table() {
           position:'top',
         },
         itemStyle:{
-          color:'grey'
+          color:'#e89e42'
         }
       },
     ],
     graphic: [
       {
         type: "group",
-        left: "center",
-        bottom: 10,
+        right:150, 
+        top: 0,
         children: [
           {
             type: "rect",
@@ -202,21 +213,36 @@ export default observer(function Table() {
             left: -0
           },
           {
-            type: "rect",
+            type: 'line', // 添加线元素
             shape: {
-              width: 40,
-              height: 6
+              x1: 60,
+              y1: 0,
+              x2: 100,
+              y2: 0,
+              lineWidth: 2,
             },
+            top:3,
             style: {
-              fill: "grey"
+              stroke: '#e89e42',
             },
-            left: 60,
-            top:3
+          },
+          {
+            type: 'circle', // 添加圆点元素
+            shape: {
+              cx: 100,
+              cy: 0,
+              r: 5,
+            },
+            left:75,
+            top:1,
+            style: {
+              fill: '#e89e42',
+            },
           },
           {
             type: "text",
             style: {
-              text: "发生频率",
+              text: "累计频率",
               textAlign: "left",
               fill: "#333"
             },
@@ -271,7 +297,9 @@ export default observer(function Table() {
           :
           summaryModal.isPrint ? 
           <img className="chart-img" src={''} /> :
-          <ReactECharts option={chartOptions} />
+          <div className="ReactEChartsBox">
+            <ReactECharts option={chartOptions} />
+          </div>
         }
         </div>
       </Spin>
@@ -290,5 +318,8 @@ const Wrapper = styled(TabledCon)`
       right: 15px;
       top: 15px;
     }
+  }
+  .ReactEChartsBox{
+    padding-top:50px;
   }
 `;

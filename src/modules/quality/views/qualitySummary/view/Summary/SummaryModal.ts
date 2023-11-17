@@ -114,6 +114,9 @@ class SummaryModal {
             size:landscape;
           }
           .chart-img {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
             max-height: 260mm;
             width: 100%;
             object-fit: cover
@@ -151,7 +154,7 @@ class SummaryModal {
         this.tableList = arr
       }),
       qualityService.getPlato(this.postObj).then((res:any) => {
-        this.plato = res.data
+        this.plato = res.data.sort((prev:any,next:any)=>next.countNum - prev.countNum)
       })
     ])
     this.tableLoading = false;
