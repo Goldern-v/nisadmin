@@ -42,10 +42,22 @@ const LEFT_MENU_CONFIG = [
           icon: <PBTJ />,
           children: [
             { title: "护士排班表", path: "/statistic/护士排班表" },
-            {
-              title: "护士排班统计（按班次）",
-              path: "/statistic/护士排班统计（按班次）"
-            },
+            ...appStore.hisMatch({
+              map: {
+                qhwy: [
+                  {
+                    title: "护士排班休假统计（按班次）",
+                    path: "/statistic/护士排班统计（按班次）"
+                  },
+                ],
+                default: [
+                  {
+                    title: "护士排班统计（按班次）",
+                    path: "/statistic/护士排班统计（按班次）"
+                  },
+                ]
+              }
+            }),
             ...appStore.hisMatch({
               map: {
                 nys: [
