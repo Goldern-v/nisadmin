@@ -640,7 +640,19 @@ export default observer((props: Props) => {
                   </td>
                 </tr>
               </tbody>
-              {appStore.queryObj.id && <tbody >
+              <tbody >
+              <tr>
+                <td>备注</td>
+                <td colSpan={5}>
+                  <Input.TextArea
+                      value={form.SR0005030}
+                      rows={6}
+                      onChange={(e) =>
+                          setFormItem({ 'SR0005030': e.target.value })
+                      }
+                  />
+                </td>
+              </tr>
                 <tr className={allowRectification ? '' : 'disable'}>
                   <td>病区整改</td>
                   <td colSpan={5}>
@@ -665,7 +677,7 @@ export default observer((props: Props) => {
                 {/*    />*/}
                 {/*  </td>*/}
                 {/*</tr>*/}
-              </tbody>}
+              </tbody>
             </table>
           </div>
           {(hasAudit() && master.status !== '0') && <div className='audit-wrapper'>

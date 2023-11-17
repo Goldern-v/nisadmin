@@ -645,6 +645,18 @@ export default observer((props: Props) => {
               </tbody>
              {/*   {appStore.queryObj.id &&   */}
              <tbody >
+             <tr>
+               <td>备注</td>
+               <td colSpan={5}>
+                 <Input.TextArea
+                     value={form.SR0004030}
+                     rows={6}
+                     onChange={(e) =>
+                         setFormItem({ 'SR0004030': e.target.value })
+                     }
+                 />
+               </td>
+             </tr>
                 <tr className={allowRectification ? '' : 'disable'}>
                   <td>病区整改</td>
                   <td colSpan={5}>
