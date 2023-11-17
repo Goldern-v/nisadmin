@@ -20,9 +20,9 @@ export default function BedSituation(props: any) {
     false,
   ]);
   const [startClassList, setStartClassList]: any = useState([]);
-  const [checkboxItemStandard, setCheckboxItemStandard] = useState([]);
+  const [checkboxItemStandard, setCheckboxItemStandard] = useState<any[]>([]);
 
-  const [checkboxItem, setCheckboxItem] = useState([]);
+  const [checkboxItem, setCheckboxItem] = useState<any[]>([]);
   // const [cacheCheckboxItem, setCacheCheckboxItem] = useState([])
   const [classList, setClassList]: any = useState([]);
 
@@ -30,9 +30,10 @@ export default function BedSituation(props: any) {
     StatisticsApi.postName().then((res) => {
       let listData = res.data;
       let getShiftType = listData.map((item: any) => item.name);
-      setCheckboxItemStandard(getShiftType);
-      checkboxItemState = [...getShiftType];
-      setCheckboxItem(getShiftType);
+      let _getShiftType:any[] = Array.from(new Set(getShiftType))
+      setCheckboxItemStandard(_getShiftType);
+      checkboxItemState = [..._getShiftType];
+      setCheckboxItem(_getShiftType);
     });
     StatisticsApi.dictInfo().then((res) => {
       let listData = res.data;
@@ -49,9 +50,10 @@ export default function BedSituation(props: any) {
     const res = await StatisticsApi.postName();
     let listData = res.data;
     let getShiftType = listData.map((item: any) => item.name);
-    setCheckboxItemStandard(getShiftType);
-    checkboxItemState = [...getShiftType];
-    setCheckboxItem(getShiftType);
+    let _getShiftType:any[] = Array.from(new Set(getShiftType))
+    setCheckboxItemStandard(_getShiftType);
+    checkboxItemState = [..._getShiftType];
+    setCheckboxItem(_getShiftType);
   };
   useEffect(() => {
     getCheckboxItemByDeptCode();

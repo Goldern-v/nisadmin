@@ -31,6 +31,10 @@ class StatisticsApi extends BaseApiService {
     let postData = {
       deptCode: authStore.selectedDeptCode
     }
+    if('qhwy' === appStore.HOSPITAL_ID){
+      postData['shiftType'] = "休假"
+      authStore.selectedDeptCode === "全院" && (delete postData.deptCode)
+    }
     let trancePostData = this.stringify(postData)
     return this.post(`/schShiftSetting/getByDeptCode`, trancePostData)
   }
