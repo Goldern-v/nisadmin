@@ -3,6 +3,7 @@ import {appStore, authStore} from "src/stores";
 import ArrangeHome from "../views/arrangeHome/ArrangeHome";
 import NurseSettingViewNew from "src/modules/personnelManagement/views/arrangeHome/page/NurseSetting/NurseSettingView";
 import ShiftSettingViewNew from "src/modules/personnelManagement/views/arrangeHome/page/ShiftSetting/ShiftSettingView";
+import ShiftSettingViewNewZJHJ from "src/modules/personnelManagement/views/arrangeHome/page/ShiftSetting-zjhj/ShiftSettingView";
 import MealSettingViewNew from "src/modules/personnelManagement/views/arrangeHome/page/MealSetting/MealSettingView";
 import PersonnelSettingViewNew from "src/modules/personnelManagement/views/arrangeHome/page/PersonnelSetting/PersonnelSettingView";
 import PersonnelSecondment from "../views/arrangeHome/page/personnelSecondment/PersonnelSecondment";
@@ -39,59 +40,71 @@ export const meunConfig: meunConfigItem[] = [
         component: ArrangeHome,
         style: { background: "#fff" },
         iSlimit: false,
+        hide: false,
       },
       {
         title: "我的期望排班",
         path: "/personnelManagement/expectedRecordSelf",
         component: ExpectedRecordSelf,
         iSlimit: false,
+        hide: false,
       },
       {
         title: "临时人员借调",
         path: "/personnelManagement/personnelSecondment",
         component: PersonnelSecondment,
         style: { background: "#fff" },
+        hide: false,
         iSlimit: true,
       },
       {
         title: "人员分组",
         path: "/personnelManagement/PersonnelSettingViewNew",
         component: PersonnelSettingViewNew,
-        // hide: !authStore.isRoleManage
+        hide: false,
         iSlimit: true,
       },
       {
         title: "排班人员设置",
         path: "/personnelManagement/NurseSettingViewNew",
         component: NurseSettingViewNew,
-        // hide: !authStore.isRoleManage
+        hide: false,
         iSlimit: true,
       },
       {
         title: "班次设置",
         path: "/personnelManagement/ShiftSettingViewNew",
         component: ShiftSettingViewNew,
-        // hide: !authStore.isRoleManage
         iSlimit: true,
-        onlyNursingDepartment: appStore.HOSPITAL_ID === 'zjhj'
+        hide: appStore.HOSPITAL_ID == 'zjhj'
+      },
+      {
+        title: "班次设置",
+        path: "/personnelManagement/ShiftSettingViewNewZJHJ",
+        component: ShiftSettingViewNewZJHJ,
+        iSlimit: true,
+        onlyNursingDepartment: true,
+        hide: appStore.HOSPITAL_ID != 'zjhj'
       },
       {
         title: "排班套餐设置",
         path: "/personnelManagement/MealSettingViewNew",
         component: MealSettingViewNew,
         iSlimit: false,
+        hide: false,
       },
       {
         title: "结余设置",
         path: "/personnelManagement/balanceInit",
         component: BalanceInit,
         iSlimit: false,
+        hide: false,
       },
       {
         title: "标准工时设置",
         path: "/personnelManagement/standardTime",
         component: StandardTime,
-        // hide: !(authStore.user?.empNo == 'G6051' || authStore.user?.empNo == 'ADMIN')
+        hide: false,
         iSlimit: true,
         special: appStore.HOSPITAL_ID !=='925' && appStore.HOSPITAL_ID !=='zjhj',
       },
@@ -99,43 +112,50 @@ export const meunConfig: meunConfigItem[] = [
         title: "加减班列表查询",
         path: "/personnelManagement/addSubClass",
         component: AddSubClass,
-        // hide: !authStore.isRoleManage
+        hide: false,
         iSlimit: true,
       },
       {
         title: "节假日查询",
         path: "/personnelManagement/holidaysList",
         component: HolidaysList,
-        // hide: !authStore.isRoleManage
+        hide: false,
         iSlimit: true,
       },
       {
         title: "休假记录查询",
         path: "/personnelManagement/leaveRecord",
         component: LeaveRecord,
-        // hide: !authStore.isRoleManage
+        hide: false,
         iSlimit: true,
       },
       {
         title: "夜班费统计",
         path: "/personnelManagement/nightChargingReport",
         component: StarRatingReportList,
-        // hide: !authStore.isRoleManage
+        hide: false,
         iSlimit: true,
       },
       {
         title: "排班统计",
         path: "/personnelManagement/arrangStatistics",
         component: ArrangStatistics,
-        // hide: !authStore.isRoleManage
+        hide: false,
         iSlimit: true,
       },
       {
         title: "期望排班记录查询",
         path: "/personnelManagement/expectedRecord",
         component: ExpectedRecord,
-        // hide: !authStore.isRoleManage
+        hide: false,
         iSlimit: true,
+      },
+      {
+        title: "排班审核",
+        path: "/personnelManagement/schedulingAudit",
+        component: ShiftSettingViewNewZJHJ,
+        onlyNursingDepartment: true,
+        hide: appStore.HOSPITAL_ID != 'zjhj'
       }
     ]
   },

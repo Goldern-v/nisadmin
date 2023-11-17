@@ -87,8 +87,9 @@ export default observer(function NursingReportDetailView() {
               })
             })
           }
-          
           setCurrentPage({...res[0].data, nursingQualityManagement: list})
+          setSpinning(false)
+        }else{
           setSpinning(false)
         }
         }).catch(()=>{

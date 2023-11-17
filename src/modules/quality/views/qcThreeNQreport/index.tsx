@@ -46,8 +46,6 @@ export default observer(function qcThreeNQreport() {
     pageSize: 20 ,
     pageIndex: 1 ,
   });
-  const [formList, setFormList] = useState([] as any);
-  const [userNurseList, setUserNurseList] = useState([] as any)
   const [loading, setLoading] = useState(false);
   const [tableData, setTableData] = useState([] as any[]);
   const [formListLoading, setFormListLoaindg] = useState(false);
@@ -172,30 +170,7 @@ export default observer(function qcThreeNQreport() {
   useEffect(() => {
     getTableData();
   }, [report]);
-  const getFormList = () => {
-    setFormListLoaindg(true);
-    qualityControlRecordApi
-      .formTemplateList({
-        level: Number(queryObj.templateName || "1"),
-        templateName: "",
-      })
-      .then(
-        (res) => {
-          setFormListLoaindg(false);
-          if (res.data) setFormList(res.data);
-        },
-        () => setFormListLoaindg(false)
-      );
-  };
-  const initNurseList = (wardCode: string) => {
-    service.commonApiService.userDictInfo(wardCode || authStore.selectedDeptCode).then((res) => {
-      setUserNurseList(res.data || [])
-    })
-  }
-  useEffect(() => {
-    getFormList();
-    initNurseList('')
-  }, []);
+  
   return (
     <Wrapper>
       <PageHeader>

@@ -181,7 +181,7 @@
     "start:stmz": "env-cmd -e stmz react-app-rewired start",
     "start:qzde": "env-cmd -e qzde react-app-rewired start",
     "start:dghm": "env-cmd -e dghm react-app-rewired start",
-    "start:zjhj": "env-cmd -e zjhj react-app-rewired start",
+    "start:zjhj": "env-cmd -e zjhj react-app-rewired --max_old_space_size=4096 start",
     "start:gdsfy": "env-cmd -e gdsfy react-app-rewired start",
     "start:xyzy": "env-cmd -e xyzy react-app-rewired start",
     "build": "env-cmd -e hj react-app-rewired build",

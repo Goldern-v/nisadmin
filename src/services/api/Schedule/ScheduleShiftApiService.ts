@@ -1,3 +1,4 @@
+import  qs  from 'qs';
 /**
  * @date: 2019-03-28
  * @author: laiweijun
@@ -13,6 +14,7 @@
  */
 
 import BaseApiService from '../BaseApiService'
+import { appStore } from "src/stores";
 
 export default class ScheduleShiftApiService extends BaseApiService {
   // 0.排班班次设置新增
@@ -37,7 +39,8 @@ export default class ScheduleShiftApiService extends BaseApiService {
     } else {
       postData = data
     }
-    return this.post(`/schShiftSetting/getByDeptCode`, this.stringify(postData))
+    if(appStore.HOSPITAL_ID  == 'zjhj') return this.get(`/schShiftSettingZjhj/list?${this.stringify(postData)}`)
+    else return this.post(`/schShiftSetting/getByDeptCode`, this.stringify(postData))
   }
 
   // 1.查找班次设置列表
@@ -55,6 +58,23 @@ export default class ScheduleShiftApiService extends BaseApiService {
   // 3.班次设置删除
   public async delete (id: string) {
     return this.get(`/schShiftSetting/delById/${id}`)
+  }
+  // 3.班次设置删除zjhj
+  public async deleteZJHJ (obj: any) {
+    return this.post(`/schShiftSettingZjhj/delete`, obj)
+  }
+  // 4.班次设置撤销zjhj
+  public async cancelZJHJ (id: string) {
+    let obj = { id };
+    return this.post(`/schShiftSettingZjhj/cancel`, obj)
+  }
+  // 5.班次设置撤销zjhj
+  public async getDetailZJHJ (recordId: string) {
+    return this.get(`/schShiftSettingZjhj/detail/${recordId}`)
+  }
+  // 5.班次设置审核接口zjhj
+  public async getHandNode (data: any) {
+    return this.post(`/schShiftSettingZjhj/handNode`, data)
   }
 
   // 4.班次设置新增或更新(JSON传参)
