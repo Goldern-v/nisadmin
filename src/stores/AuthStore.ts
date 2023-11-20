@@ -213,16 +213,12 @@ export default class AuthStore {
   /** 是否是护理部 zjhj */
   public get isDepartmentZJHJ() {
     try {
-      if (this.isAdmin) return true;
-
       if (this.user && this.user.roleManageCode === "QCR0003") return true;
-
       if (
         this.user &&
         this.user.roleManageCodeList.find((code: string) => code === "QCR0003")
       )
         return true;
-
       return false;
     } catch (error) {
       return false;

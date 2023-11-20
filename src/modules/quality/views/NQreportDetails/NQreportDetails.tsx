@@ -78,15 +78,10 @@ export default observer(function NursingReportDetailView() {
       delete newQuery.reportMasterData;
       let list:any[] = [];
       let ReportObj:any = {};
-      api.getReport(newQuery).then((res)=>{
-        if (isMounted && res.code == 200) {
-          res.data.qualityDataList.map((item:any,index:number) => item.key = index+1)
-          ReportObj = res.data
-        }
-      })
-      api.getQcProblemList(params).then((res) => {
-        if (isMounted && res.code == 200) {
-          let newRoleList:any[] = res.data;
+      Promise.all([api.getReport(newQuery),api.getQcProblemList(params)]).then((res)=>{
+        res[0].data.qualityDataList.map((item:any,index:number) => item.key = index+1)
+        ReportObj = res[0].data;
+        let newRoleList:any[] = res[1].data;
           if(newRoleList.length){
             newRoleList.map((item:any)=>{
               item.remarks.map((childItem: any,childIndex:number)=>{
@@ -100,21 +95,15 @@ export default observer(function NursingReportDetailView() {
                 })
               })
             })
-          }
-        } 
-        
+          };
+          setCurrentPage({...ReportObj,nursingQualityManagement: list});
+          setSpinning(false);
+      }).catch(()=>{
+        setSpinning(false);
       })
-      setSpinning(false)
-      if(Object.keys(ReportObj).length){
-        setCurrentPage({...ReportObj,nursingQualityManagement: list});
-      }
-
     }
     return () => {
       setIsMounted(false);
-      setCurrentPage({})
-      setPageData([])
-      setQueryData({})
     }
   }, [])
 

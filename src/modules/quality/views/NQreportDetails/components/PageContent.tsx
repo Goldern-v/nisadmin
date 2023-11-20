@@ -38,7 +38,6 @@ export default function PageContent(props: Props) {
   }, [pageData]);
   useEffect(() => {
     if(Object.keys(currentPage).length > 0) {
-      console.log(currentPage, 'qqqqqqqqqqqqq');
       setItemData(currentPage);
     }
     return () => {
