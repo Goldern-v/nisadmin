@@ -169,6 +169,9 @@ export default observer(function qcThreeNQreport() {
 
   useEffect(() => {
     getTableData();
+    return()=>{
+      return setTableData([])
+    }
   }, [report]);
   
   return (

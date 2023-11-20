@@ -242,6 +242,33 @@ export default class NurseHandBookService extends BaseApiService {
     public getManpowerData(params: Obj) {
         return this.post('/nurseHandbook/jmfy/getManpowerData', params)
     }
+    /**护理人员一栏表：获取列表 **/
+    public getStaffList(params:Obj){
+        return this.post('/nurseHandbookStaff/getStaffList', params)
+    }
+    /**质量监测指标汇总:查询**/
+    public getIndicatorsSummary(params:Obj){
+        return this.post('/nurseHandbook/jmfy/getIndicatorsSummary', params)
+    }
+    /**获取分类**/
+    public getFormList(){
+        let formData =new  FormData()
+        formData.append('menuCode','JMFYZLJCZBLR')
+        return this.post('/nurseHandbook/common/formList', formData)
+    }
+    /**分类维护：新增或修改分类**/
+    public saveCategoryMenu(params:Obj){
+        return this.post('/nurseHandbook/jmfy/saveCategoryMenu', params)
+    }
+    /**删除分类**/
+    public deleteCategoryMenu(params:Obj){
+        return this.post('/nurseHandbook/jmfy/deleteCategoryMenu', params)
+    }
+    /**获取通用指标**/
+    public getPublicIndicatorsItem(params:Obj){
+        return this.post('/nurseHandbookItem/getIndicatorsItem', params)
+    }
+
 }
 
 export const nurseHandBookService = new NurseHandBookService()

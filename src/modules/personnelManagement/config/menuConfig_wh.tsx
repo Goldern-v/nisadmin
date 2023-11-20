@@ -27,6 +27,7 @@ export interface meunConfigItem {
   iSlimit?: boolean | Function;
   special?: boolean | Function;
   onlyNursingDepartment?: boolean // 仅仅护理部
+  onlyNursingaduit?: boolean // 仅仅护理部
 }
 
 export const meunConfig: meunConfigItem[] = [
@@ -154,7 +155,7 @@ export const meunConfig: meunConfigItem[] = [
         title: "排班审核",
         path: "/personnelManagement/schedulingAudit",
         component: ShiftSettingViewNewZJHJ,
-        onlyNursingDepartment: true,
+        onlyNursingaduit: true,
         hide: appStore.HOSPITAL_ID != 'zjhj'
       }
     ]

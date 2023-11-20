@@ -47,14 +47,20 @@ export default observer(function NursingReportDetailView() {
           let getReportData = {};
           query = {...query, ...data.reportMasterData};
           data.qcReportItemDataList.map((item: any) => {
-            getReportData[filterObj[item.itemName]] = JSON.parse(item.itemValue);
+            if(item.itemValue){
+              getReportData[filterObj[item.itemName]] = JSON.parse(item.itemValue);
+            }
           });
           let sortedData = data.qcReportItemDataList.sort((a:any, b:any) => a.indexNo - b.indexNo);
           setPageData(sortedData);
           setQueryData(query);
           setCurrentPage(getReportData);
           setSpinning(false);
+        }else{
+          setSpinning(false);
         }
+      }).catch(()=>{
+        setSpinning(false);
       })
     }else{
       setPageData(query.reportData?.qcReportItemList)
@@ -65,14 +71,17 @@ export default observer(function NursingReportDetailView() {
         reportLevel: query.reportData.reportLevel,
         dataSourceType: query.reportData.dataSourceType,
       }
-      Promise.all([
-        api.getReport(query.reportData),
-        api.getQcProblemList(params),
-      ]).then((res) => {
-        if (isMounted && res[0].code == 200 && res[1].code == 200) {
-          res[0].data.qualityDataList.map((item:any,index:number) => item.key = index+1)
-          let list:any[] = []
-          let newRoleList:any[] = res[1].data;
+      let newQuery = {
+        ...query.reportData
+      }
+      delete newQuery.qcReportItemList;
+      delete newQuery.reportMasterData;
+      let list:any[] = [];
+      let ReportObj:any = {};
+      Promise.all([api.getReport(newQuery),api.getQcProblemList(params)]).then((res)=>{
+        res[0].data.qualityDataList.map((item:any,index:number) => item.key = index+1)
+        ReportObj = res[0].data;
+        let newRoleList:any[] = res[1].data;
           if(newRoleList.length){
             newRoleList.map((item:any)=>{
               item.remarks.map((childItem: any,childIndex:number)=>{
@@ -86,22 +95,15 @@ export default observer(function NursingReportDetailView() {
                 })
               })
             })
-          }
-          setCurrentPage({...res[0].data, nursingQualityManagement: list})
-          setSpinning(false)
-        }else{
-          setSpinning(false)
-        }
-        }).catch(()=>{
-          setSpinning(false)
+          };
+          setCurrentPage({...ReportObj,nursingQualityManagement: list});
+          setSpinning(false);
+      }).catch(()=>{
+        setSpinning(false);
       })
-
     }
-    
-    
     return () => {
       setIsMounted(false);
-      setCurrentPage({})
     }
   }, [])
 

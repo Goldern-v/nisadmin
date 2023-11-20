@@ -210,6 +210,20 @@ export default class AuthStore {
       return false;
     }
   }
+  /** 是否是护理部 zjhj */
+  public get isDepartmentZJHJ() {
+    try {
+      if (this.user && this.user.roleManageCode === "QCR0003") return true;
+      if (
+        this.user &&
+        this.user.roleManageCodeList.find((code: string) => code === "QCR0003")
+      )
+        return true;
+      return false;
+    } catch (error) {
+      return false;
+    }
+  }
 
   /** 武汉亚心是否是护理部 */
   public get isDepartmentYaXin() {
@@ -356,7 +370,16 @@ export default class AuthStore {
       return false
     }
   }
-
+  /** 护长、教学组长以上*/
+  public get isHeadNurseAll() {
+    let adminCode = ['SYS0001', 'QCR0004', 'QCR0100', 'QCR0001','QCR0003']
+    try {
+      if (!this.user) return false
+      return adminCode.includes(this.user.roleManageCode)
+    } catch (error) {
+      return false
+    }
+  }
   /** 是否只是护士长 */
   public get isOnlyRoleManage() {
     return this.isRoleManage && !(this.isDepartment || this.isSupervisorNurse);
