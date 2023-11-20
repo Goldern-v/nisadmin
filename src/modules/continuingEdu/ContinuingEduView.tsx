@@ -1297,6 +1297,61 @@ const getIcon = (icon: any) => {
       ]
     }
   })
+
+  const 新护士管理临床培训 = appStore.hisMatch({
+    map: {
+      whyx:[
+        {
+          title: "新护士管理-临床培训",
+          path: "/continuingEdu",
+          icon: <YNXXB />,
+          hide: peixunWHYX(),
+          children: [
+            {
+              title: "培训计划",
+              path: "/continuingEdu/trainingPlanManage",
+              component: TrainingPlanManage,
+            },
+            {
+              title: "临床培训考核",
+              path: "/continuingEdu/trainingExamManage",
+              component: TrainingExamManage,
+            },
+            {
+              title: "临床实操考核",
+              path: "/continuingEdu/practiceExamManage",
+              component: TrainingExamManage,
+            },
+          ],
+        },
+      ],
+      default:[
+        {
+          title: "新护士管理-临床培训",
+          path: "/continuingEdu",
+          icon: <YNXXB />,
+          hide: ['whhk'].includes(appStore.HOSPITAL_ID),
+          children: [
+            {
+              title: "培训计划",
+              path: "/continuingEdu/trainingPlanManage",
+              component: TrainingPlanManage,
+            },
+            {
+              title: "临床培训考核",
+              path: "/continuingEdu/trainingExamManage",
+              component: TrainingExamManage,
+            },
+            {
+              title: "临床实操考核",
+              path: "/continuingEdu/practiceExamManage",
+              component: TrainingExamManage,
+            },
+          ],
+        },
+      ]
+    }
+  })
   
   const LEFT_MENU_CONFIG_WHYX = [
     {
@@ -1332,29 +1387,7 @@ const getIcon = (icon: any) => {
       ],
     },
     ...新护士管理岗前培训,
-    {
-      title: "新护士管理-临床培训",
-      path: "/continuingEdu",
-      icon: <YNXXB />,
-      hide: ['whhk'].includes(appStore.HOSPITAL_ID),
-      children: [
-        {
-          title: "培训计划",
-          path: "/continuingEdu/trainingPlanManage",
-          component: TrainingPlanManage,
-        },
-        {
-          title: "临床培训考核",
-          path: "/continuingEdu/trainingExamManage",
-          component: TrainingExamManage,
-        },
-        {
-          title: "临床实操考核",
-          path: "/continuingEdu/practiceExamManage",
-          component: TrainingExamManage,
-        },
-      ],
-    },
+    ...新护士管理临床培训,
     {
       title: "规培生管理",
       path: "/continuingEdu",
