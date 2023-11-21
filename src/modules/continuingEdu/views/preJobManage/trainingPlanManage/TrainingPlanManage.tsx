@@ -16,8 +16,11 @@ const Option = Select.Option;
 const TextArea = Input.TextArea;
 export interface Props {
 	payload: any;
+	canEdit:boolean | undefined
 }
 export default observer(function TrainingPlanManage(props: Props) {
+	let canEdit = typeof(props.canEdit)==="boolean" ? props.canEdit : true;
+	
 	const previewModal = createModal(PreviewModal)
 	const columns: any = [
         {
@@ -66,10 +69,10 @@ export default observer(function TrainingPlanManage(props: Props) {
 					<DoCon>
 						{/* <span className={Number(record.status)>0?'disable-sty':''} onClick={()=>{rutnToAduit(record,idx)}}>审核</span> */}
 						<span onClick={()=>{handDownload(record)}}>下载</span>
-						<span onClick={()=>{resetFile(record)}}>重新上传</span>
-                        <span onClick={() => showReview(record)}>预览</span>
+						{canEdit && <span onClick={()=>{resetFile(record)}}>重新上传</span>}
+						<span onClick={() => showReview(record)}>预览</span>
 						{/* <span onClick={() => showReview(record.file)}>{record.file?.name}</span> */}
-						<span onClick={()=>{removeTableItem(record,index)}}>删除</span>
+						{canEdit && <span onClick={()=>{removeTableItem(record,index)}}>删除</span>}
 					</DoCon>
 				);
 			}
@@ -172,7 +175,7 @@ export default observer(function TrainingPlanManage(props: Props) {
 						>
 						查询
 					</Button>
-					<Button className="span" onClick={openModal}>导入</Button>
+					{canEdit && <Button className="span" onClick={openModal}>导入</Button>}
 				</RightIcon>
 			</Headerr>
 			<ScrollCon>

@@ -370,7 +370,16 @@ export default class AuthStore {
       return false
     }
   }
-
+  /** 护长、教学组长以上*/
+  public get isHeadNurseAll() {
+    let adminCode = ['SYS0001', 'QCR0004', 'QCR0100', 'QCR0001','QCR0003']
+    try {
+      if (!this.user) return false
+      return adminCode.includes(this.user.roleManageCode)
+    } catch (error) {
+      return false
+    }
+  }
   /** 是否只是护士长 */
   public get isOnlyRoleManage() {
     return this.isRoleManage && !(this.isDepartment || this.isSupervisorNurse);

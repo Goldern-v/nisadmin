@@ -206,10 +206,12 @@ export const obj = {
       yearList.map((x:any)=>{
         obj['dayNursingWorkStatistics'].push({ ...blankDayNur,year:x})
       })
-      emrMonthCare.map((x:any)=>{
+      let problemList = appStore.HOSPITAL_ID==="whyx" ? analysisModal.renderData.emrMonthCareProblemImprove.map((item:any)=>item.evaluationCriterion) : emrMonthCare
+      let dayMontCareList = appStore.HOSPITAL_ID==="whyx" ? analysisModal.renderData.dayMonthCareProblemImprove.map((item:any)=>item.evaluationCriterion) : dayMontCare
+      problemList.map((x:any)=>{
         obj['emrMonthCareProblemImprove'].push({ ...blankemg,item:x})
       })
-      dayMontCare.map((x:any)=>{
+      dayMontCareList.map((x:any)=>{
         obj['dayMonthCareProblemImprove'].push({ ...emrMonthCare,item:x})
       })
     let proList: any[] = []

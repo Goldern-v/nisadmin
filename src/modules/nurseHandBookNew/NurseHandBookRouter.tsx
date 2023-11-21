@@ -14,9 +14,10 @@ import { nurseHandBookService } from './services/NurseHandBookService'
 import { Obj } from 'src/libs/types'
 import ListLyrm from './views/list-lyrm'
 import ListLyrmNew from './views/list-lyrm/newIndex'
-
 import ListGzsrm from './views/list-gzsrm'
 import List925 from './views/list-jew'
+import PersonnelColumn from "src/modules/nurseHandBookNew/views/list-jmfy/personnelColumn";
+import ListJmfy from "src/modules/nurseHandBookNew/views/list-jmfy";
 
 /**是否拥有menuList */
 const IS_EXTRA_ROUTE = ['lyrm', 'gzsrm','925','zjhj','qhwy','jmfy'].includes(appStore.HOSPITAL_ID)
@@ -36,8 +37,9 @@ export default function NurseHandBookRouter() {
             title: '护士长工作计划',
             path: '/nurseHandBookNew/jmPlan',
             icon: <WCJD />,
-            component: { ...NurseHandBook_jmfy },
-            disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
+            component:PersonnelColumn,
+            // component: { ...NurseHandBook_jmfy },
+            // disabledKeepAlive: (appStore.history && appStore.history.action) !== 'POP'
           },
           {
             title: '护士长工作总结',
@@ -314,7 +316,7 @@ export default function NurseHandBookRouter() {
             map: {
               gzsrm: <ListGzsrm options={v} />,
               925:<List925 options={v}/>,
-              jmfy:<List925 options={v}/>,
+              jmfy:<ListJmfy options={v}/>,
               qhwy:<List925 options={v}/>,
               zjhj:<List925 options={v}/>,
               lyrm: <ListLyrmNew options={v} />,

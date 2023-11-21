@@ -15,6 +15,8 @@ export interface Props {
 	payload: any;
 }
 export default observer(function TrainExamDetail(props: Props) {
+	let canEdit = appStore.queryObj.canEdit === "true"
+
 	const columns: any = [
 		{
 			title: "序号",
@@ -50,13 +52,18 @@ export default observer(function TrainExamDetail(props: Props) {
 			render: (text: any, record: any, index: number) => {
 				return (
 					<InputNumber className='cell-ipt'
-						defaultValue={text}
+						// defaultValue={text}
+						value={text}
 						key={record.id}
 						step={1} min={1} max={150} style={{ width: '100%' }}
-						onBlur={(e: any) => {
-							trainExamData.tableDetailList[index].examScore = e.target.value
+						// onBlur={(e: any) => {
+						// 	trainExamData.tableDetailList[index].examScore = e.target.value
+						// 	trainExamData.tableDetailList = [...trainExamData.tableDetailList]
+						// 	// console.log(trainExamData.tableDetailList[index].resitFlag)
+						// }}
+						onChange={(e: any) => {
+							trainExamData.tableDetailList[index].examScore = e
 							trainExamData.tableDetailList = [...trainExamData.tableDetailList]
-							// console.log(trainExamData.tableDetailList[index].resitFlag)
 						}}
 					/>
 				)
@@ -88,13 +95,18 @@ export default observer(function TrainExamDetail(props: Props) {
 			render: (text: any, record: any, index: number) => {
 				return (
 					<InputNumber className='cell-ipt'
-						defaultValue={text}
+						// defaultValue={text}
+						value={text}
 						key={record.id}
 						step={1} min={1} max={150} style={{ width: '100%' }}
-						onBlur={(e: any) => {
-							trainExamData.tableDetailList[index].resitScore = e.target.value
+						// onBlur={(e: any) => {
+						// 	trainExamData.tableDetailList[index].resitScore = e.target.value
+						// 	trainExamData.tableDetailList = [...trainExamData.tableDetailList]
+						// 	// console.log(e.target.value)
+						// }}
+						onChange={(e: any) => {
+							trainExamData.tableDetailList[index].resitScore = e
 							trainExamData.tableDetailList = [...trainExamData.tableDetailList]
-							// console.log(e.target.value)
 						}}
 					/>
 				)
@@ -166,7 +178,7 @@ export default observer(function TrainExamDetail(props: Props) {
 				</div>
 				<div className='tool-con'>
 					<Button onClick={() => appStore.history.goBack()}>返回</Button>
-					<Button type='primary' onClick={() => { saveDetailList() }}>保存</Button>
+					{canEdit && <Button type='primary' onClick={() => { saveDetailList() }}>保存</Button>}
 					<Button className="span" onClick={() => onExport()} >导出</Button>
 				</div>
 			</HeadCon>
