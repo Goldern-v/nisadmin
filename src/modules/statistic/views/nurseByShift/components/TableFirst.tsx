@@ -5,6 +5,7 @@ import service from "src/services/api";
 import StatisticsApi from "src/modules/statistic/api/StatisticsApi";
 import statisticViewModel from "src/modules/statistic/StatisticViewModel";
 import { Button } from "antd";
+import { appStore } from "src/stores";
 
 export default function BedSituation() {
   //
@@ -239,9 +240,16 @@ export default function BedSituation() {
         });
       });
       let endTotal = 0;
-      totalArr.map((item: any) => {
-        endTotal += parseInt(item, 10);
-      });
+      if("dghm" === appStore.HOSPITAL_ID){
+        endTotal = getTableList.reduce((pre:any,next:any)=>{
+          pre += next['合计'] || 0
+          return pre
+        },0)
+      }else{
+        totalArr.map((item: any) => {
+          endTotal += parseInt(item, 10);
+        });
+      }
       totalArr.push(endTotal);
     }
     let tdDom = totalArr.map((item: any, index: number) => {
