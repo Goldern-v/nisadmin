@@ -18,6 +18,10 @@ import { resolve } from 'dns'
 
 export interface Props extends RouteComponentProps {
 }
+export interface DeptType {
+  code: string,
+  name: string
+}
 export default function ToolBar() {
   const addShiftModal = createModal(AddShiftModal);
   const aduitModal = createModal(AduitModal);
@@ -44,6 +48,8 @@ export default function ToolBar() {
       name: "已撤销"
     }
   ];
+  let defaultValue = '';
+  let deptList = [{name:'全院', code: ''}, ...authStore.deptList];
   const [bangci, setBangci]: [any, any] = useState([]);
   const [dataSourceColorCN, setDataSourceColorCN]: [any, any] = useState([]);
   const [colorMap, setColorMap]: [any, any] = useState({});
@@ -335,6 +341,10 @@ export default function ToolBar() {
     emitter.emit("更新班次zjhj", data);
   }
 
+  useEffect(()=>{
+    emitter.emit("更新班次zjhj" ,!pathName  && {auditStatus:selectedStatusType, startDate: date[0] ? moment(date[0]).format("YYYY-MM-DD") : "",endDate: date[1] ? moment(date[1]).format("YYYY-MM-DD") : ""});
+  }, [pathName])
+
   return (
     <div>
       <BreadcrumbBox
@@ -399,9 +409,21 @@ export default function ToolBar() {
         <Title>排班审核</Title>
         <div style={{ flex: 1 }} />
         <span className='span'>科室</span>
-        <DeptSelect
+        <Select
+          defaultValue={defaultValue}
+          showSearch
+          filterOption={(input: any, option: any) =>
+            option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+          }
+          style={{ width: 200 }}
           onChange={getTableList}
-        />
+        >
+          {deptList.map((item: DeptType) => (
+            <Select.Option key={item.code} value={item.code} title={item.name}>
+              {item.name}
+            </Select.Option>
+          ))}
+        </Select>
         <span className='span'>状态</span>
         <Select
           onChange={(value: string) =>{ setSelectedStatusType(value); getTableList(value, 'auditStatus') }}

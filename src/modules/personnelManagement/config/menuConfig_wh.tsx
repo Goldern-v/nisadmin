@@ -22,7 +22,7 @@ export interface meunConfigItem {
   component?: any;
   path?: string;
   children?: meunConfigItem[];
-  hide?: boolean | Function;
+  hidder?: boolean | Function;
   style?: React.CSSProperties;
   iSlimit?: boolean | Function;
   special?: boolean | Function;
@@ -41,35 +41,35 @@ export const meunConfig: meunConfigItem[] = [
         component: ArrangeHome,
         style: { background: "#fff" },
         iSlimit: false,
-        hide: false,
+        hidder: false,
       },
       {
         title: "我的期望排班",
         path: "/personnelManagement/expectedRecordSelf",
         component: ExpectedRecordSelf,
         iSlimit: false,
-        hide: false,
+        hidder: false,
       },
       {
         title: "临时人员借调",
         path: "/personnelManagement/personnelSecondment",
         component: PersonnelSecondment,
         style: { background: "#fff" },
-        hide: false,
+        hidder: false,
         iSlimit: true,
       },
       {
         title: "人员分组",
         path: "/personnelManagement/PersonnelSettingViewNew",
         component: PersonnelSettingViewNew,
-        hide: false,
+        hidder: false,
         iSlimit: true,
       },
       {
         title: "排班人员设置",
         path: "/personnelManagement/NurseSettingViewNew",
         component: NurseSettingViewNew,
-        hide: false,
+        hidder: false,
         iSlimit: true,
       },
       {
@@ -77,35 +77,34 @@ export const meunConfig: meunConfigItem[] = [
         path: "/personnelManagement/ShiftSettingViewNew",
         component: ShiftSettingViewNew,
         iSlimit: true,
-        hide: appStore.HOSPITAL_ID == 'zjhj'
+        hidder: appStore.HOSPITAL_ID == 'zjhj'
       },
       {
         title: "班次设置",
         path: "/personnelManagement/ShiftSettingViewNewZJHJ",
         component: ShiftSettingViewNewZJHJ,
-        iSlimit: true,
         onlyNursingDepartment: true,
-        hide: appStore.HOSPITAL_ID != 'zjhj'
+        hidder: appStore.HOSPITAL_ID != 'zjhj'
       },
       {
         title: "排班套餐设置",
         path: "/personnelManagement/MealSettingViewNew",
         component: MealSettingViewNew,
         iSlimit: false,
-        hide: false,
+        hidder: false,
       },
       {
         title: "结余设置",
         path: "/personnelManagement/balanceInit",
         component: BalanceInit,
         iSlimit: false,
-        hide: false,
+        hidder: false,
       },
       {
         title: "标准工时设置",
         path: "/personnelManagement/standardTime",
         component: StandardTime,
-        hide: false,
+        hidder: false,
         iSlimit: true,
         special: appStore.HOSPITAL_ID !=='925' && appStore.HOSPITAL_ID !=='zjhj',
       },
@@ -113,50 +112,50 @@ export const meunConfig: meunConfigItem[] = [
         title: "加减班列表查询",
         path: "/personnelManagement/addSubClass",
         component: AddSubClass,
-        hide: false,
+        hidder: false,
         iSlimit: true,
       },
       {
         title: "节假日查询",
         path: "/personnelManagement/holidaysList",
         component: HolidaysList,
-        hide: false,
+        hidder: false,
         iSlimit: true,
       },
       {
         title: "休假记录查询",
         path: "/personnelManagement/leaveRecord",
         component: LeaveRecord,
-        hide: false,
+        hidder: false,
         iSlimit: true,
       },
       {
         title: "夜班费统计",
         path: "/personnelManagement/nightChargingReport",
         component: StarRatingReportList,
-        hide: false,
+        hidder: false,
         iSlimit: true,
       },
       {
         title: "排班统计",
         path: "/personnelManagement/arrangStatistics",
         component: ArrangStatistics,
-        hide: false,
+        hidder: false,
         iSlimit: true,
       },
       {
         title: "期望排班记录查询",
         path: "/personnelManagement/expectedRecord",
         component: ExpectedRecord,
-        hide: false,
+        hidder: false,
         iSlimit: true,
       },
       {
         title: "排班审核",
         path: "/personnelManagement/schedulingAudit",
         component: ShiftSettingViewNewZJHJ,
+        hidder: appStore.HOSPITAL_ID != 'zjhj',
         onlyNursingaduit: true,
-        hide: appStore.HOSPITAL_ID != 'zjhj'
       }
     ]
   },

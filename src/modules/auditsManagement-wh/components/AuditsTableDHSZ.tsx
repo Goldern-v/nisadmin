@@ -342,7 +342,7 @@ export default observer(function AuditsTableDHSZ(props: Props) {
 
     return (
         <Wrapper>
-            <GroupPostBtn onClick={() => onload(current, searchText, pageSize)}>
+            <GroupPostBtn onClick={() => onload(current, searchText, selectedDate, pageSize)}>
                 刷新
             </GroupPostBtn>
             {needAudit && showType !== 'nursePromotion' && (
