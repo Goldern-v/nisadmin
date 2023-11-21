@@ -83,7 +83,6 @@ export const meunConfig: meunConfigItem[] = [
         title: "班次设置",
         path: "/personnelManagement/ShiftSettingViewNewZJHJ",
         component: ShiftSettingViewNewZJHJ,
-        iSlimit: true,
         onlyNursingDepartment: true,
         hide: appStore.HOSPITAL_ID != 'zjhj'
       },
