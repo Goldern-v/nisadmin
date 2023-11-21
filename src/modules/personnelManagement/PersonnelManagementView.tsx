@@ -89,12 +89,10 @@ export default function PersonnelManagementView() {
   })();
   const list = ((array: any) => {
     return array.map((item: any) => {
-      if(!item.hide){
-        if (item.onlyNursingDepartment) { 
+      if(!item.hidder){
+        if (item.onlyNursingDepartment) {
           item['hide'] = !authStore.isDepartmentZJHJ // 是护理部就显示
-        }else if (item.onlyNursingaduit) { 
-          console.log(authStore.isDepartment);
-          
+        }else if (item.onlyNursingaduit) {
           item['hide'] = !authStore.isDepartment // 是护理部就显示
         }else {
           if (item.iSlimit) {
@@ -103,7 +101,7 @@ export default function PersonnelManagementView() {
           }
         }
       }else{
-        item['hide'] = true
+        item['hide'] = item.hidder
       }
       if (item.children?.length > 0) {
         list(item.children)
