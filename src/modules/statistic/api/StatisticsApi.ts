@@ -2,6 +2,7 @@
 import statisticViewModel from 'src/modules/statistic/StatisticViewModel'
 import BaseApiService from 'src/services/api/BaseApiService'
 import { authStore } from 'src/stores/index'
+import { Obj } from 'src/libs/types'
 import { appStore } from 'src/stores'
 
 class StatisticsApi extends BaseApiService {
@@ -316,6 +317,20 @@ class StatisticsApi extends BaseApiService {
     return this.post('/countInformation/countEducation', query)
   }
 
+  /**全院统计 */
+  countBookStatistics(params: Obj) {
+    const { key, ...other} = params
+    return this.post(`/qcRegisterData/${key}/countBookStatistics`, other)
+  }
+
+  /**导出 */
+  exportBookStatistics(params: Obj) {
+    const { key, ...other} = params
+    return this.post(`/qcRegisterData/${key}/exportBookStatistics`, other, {
+      responseType: 'blob'
+    })
+  }
+  
   public countInformationExport(query: any) {
     return this.post('/countInformation/export', query,{ responseType: 'blob' })
   }
@@ -429,10 +444,17 @@ class StatisticsApi extends BaseApiService {
   public changeIsCountDevice(query: any) {
     return this.post('/device/changeIsCount', query)
   }
-/**根据科室获取科室人员工作年限统计 **/
-public countEntryDateDetail(query: any) {
-  return this.post('/countInformation/countEntryDateDetail', query)
-}
+  /**根据科室获取科室人员工作年限统计 **/
+  public countEntryDateDetail(query: any) {
+    switch(appStore.location.pathname){
+      case "/statistic/护士学历分布" :
+        return this.post('/countInformation/countEducationDetail', query)
+      case "/statistic/护士层级分布" :
+        return this.post('/countInformation/countHierarchyDetail', query)
+      default : 
+        return this.post('/countInformation/countEntryDateDetail', query)
+    }
+  }
 }
 
 let statisticsApi = new StatisticsApi()
