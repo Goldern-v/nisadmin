@@ -261,7 +261,7 @@ export default function MainBox() {
     getShiftList(data||'');
   });
   const getShiftList = (data?:any) => {
-    let deptCode = scheduleStore.getDeptCode(); // '2508' ||
+    let deptCode = pathName ? scheduleStore.getDeptCode() : ''; // '2508' ||
     if(!pathName && !data){
       data = {
         deptCode: '',

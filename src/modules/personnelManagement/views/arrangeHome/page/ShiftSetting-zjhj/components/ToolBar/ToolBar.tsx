@@ -270,7 +270,7 @@ export default function ToolBar() {
     };
     service.scheduleShiftApiService.save(postData).then(res => {
       message.success(title + "成功");
-      emitter.emit("更新班次zjhj" ,!pathName  && {auditStatus:selectedStatusType, startDate: date[0] ? moment(date[0]).format("YYYY-MM-DD") : "",endDate: date[1] ? moment(date[1]).format("YYYY-MM-DD") : ""});
+      emitter.emit("更新班次zjhj" ,!pathName  && {auditStatus:selectedStatusType, startDate: date[0] ? moment(date[0]).format("YYYY-MM-DD") : "",endDate: date[1] ? moment(date[1]).format("YYYY-MM-DD") : "" ,deptCode: '' });
       console.log(title + "成功", res);
       // 更新班次zjhj
     });
