@@ -39,6 +39,7 @@ import FileUploadColumnRender from '../../components/Render.v1/FileUploadColumnR
 import DatePickerColumnRender from '../../components/Render.v1/DatePickerColumnRender'
 import InputColumnRender from '../../components/Render.v1/InputColumnRender'
 import { baseRegisterMode } from "../../data/BaseRegisterModel"
+import monnet from "src/vendors/moment";
 export interface Props {
   payload: any;
 }
@@ -54,6 +55,7 @@ export default observer(function 敏感指标登记本(props: Props) {
   const [rangConfigList, setRangeConfigList] = useState([]);
   const [pageLoading, setPageLoading] = useState(false);
   const [blockList, setBlockList] = useState([]);
+  const [config, setConfig] = useState({} as any);
   const [selectedBlockId, setSelectedBlockId]: any = useState(null);
   const [date, setDate]: any = useState(getCurrentMonth());
   const [surplusHeight, setSurplusHeight]: any = useState(220);
@@ -168,6 +170,16 @@ export default observer(function 敏感指标登记本(props: Props) {
       width: 100,
       render(text: string, record: any, index: number) {
         if (registerCode == 'QCRG_22_3') return text.split('-')[0] + '年'
+        else if(registerCode === "QCRG_HJ_03") return (
+          <DatePicker 
+            disabled={cellDisabled(record)}
+            defaultValue={moment(record.recordDate)}
+            onOpenChange={(status) => {!status && updateDataSource()}}
+            onChange={e => {
+              record.modified = true
+              record.recordDate = monnet(e).format("YYYY-MM-DD")
+            }} />
+        )
         return (
           <Input
             disabled={cellDisabled(record)}
@@ -278,8 +290,7 @@ export default observer(function 敏感指标登记本(props: Props) {
                 registerCode,
               }}
             />
-          }
-          else if (item.itemType == "attachment") {
+          } else if (item.itemType == "attachment") {
             //处理上传附件类型
             children = <FileUploadColumnRender
               {...{
@@ -323,6 +334,24 @@ export default observer(function 敏感指标登记本(props: Props) {
           return obj
         }
       };
+    }),
+    //签名
+    ...appStore.hisMatch({
+      map: {
+        'hj': (config.signList || []).map((signItem: any) =>
+           signRowObj({
+            title: signItem.title,
+            width: 15 * signItem.width || 50,
+            dataIndex: signItem.fieldName,
+            aside: signItem.title,
+            registerCode,
+            updateDataSource,
+            selectedBlockId
+          })
+          ),
+        other: [],
+      },
+      vague: true
     }),
     //不同登记本固定的项目
     ...codeAdapter({
@@ -507,6 +536,7 @@ export default observer(function 敏感指标登记本(props: Props) {
     registerName,
     setBlockList,
     setSelectedBlockId,
+    setConfig,
     setPageOptions,
     pageOptions,
     setTotal,
