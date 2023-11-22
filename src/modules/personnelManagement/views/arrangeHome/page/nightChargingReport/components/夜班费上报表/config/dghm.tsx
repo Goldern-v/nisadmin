@@ -30,6 +30,7 @@ const getColumns = (cloneData: any, calBack: Function) => {
                   prev1 += cur1.total
                   return prev1
                 }, 0)
+                cloneData = holdTotal(cloneData,["schNightTotalContentList", cur.timeType])
                 calBack('setData', cloneData)
               }}
             />
@@ -53,6 +54,7 @@ const getColumns = (cloneData: any, calBack: Function) => {
                   prev1 += cur1.total
                   return prev1
                 }, 0)
+                cloneData = holdTotal(cloneData,["schNightTotalContentList", cur.timeType])
                 calBack('setData', cloneData)
               }}
             />
@@ -135,6 +137,8 @@ const getColumns = (cloneData: any, calBack: Function) => {
             <span
               onClick={e => {
                 cloneData.list.splice(index, 1);
+                cloneData = holdTotal(cloneData,["schNightTotalContentList", "N班"])
+                cloneData = holdTotal(cloneData,["schNightTotalContentList", "P班"])
                 calBack('setData', cloneData)
               }}
             >
@@ -146,6 +150,42 @@ const getColumns = (cloneData: any, calBack: Function) => {
     }
   ]
 }
+
+//计算合计
+const holdTotal = (cloneData: any,keyArray:any)=>{
+  
+  const getNum = (target:any,tgkey:any)=>{
+    let _keyArray = keyArray.concat(tgkey) 
+    return _keyArray.reduce((prev:any, next:any,ind:number) => {
+      if(ind===1) return prev.find((pp:any)=>pp.nightShift == next)
+      return prev[next]
+    }, target);
+  }
+  const getTgOBJ = (target:any)=>{
+    return keyArray.reduce((prev:any, next:any,inde:number) => {
+      if(inde===1) return prev.find((pp:any)=>pp.nightShift == next)
+      return prev[next]
+    }, target);
+  }
+
+  let totalObj = cloneData.list.splice(cloneData.list.length-1,1).find((item:any)=>true)
+  getTgOBJ(totalObj)['num'] = cloneData.list.reduce((pre:any,next:any)=>{
+     pre += getNum(next,"num")
+     return pre
+  },0)
+  getTgOBJ(totalObj)['standard'] = cloneData.list.reduce((pre:any,next:any)=>{
+     pre += getNum(next,"num") * getNum(next,"standard")
+     return pre
+  },0)
+  totalObj['total'] = cloneData.list.reduce((pre:any,next:any)=>{
+     pre += next.total
+     return pre
+  },0)
+  
+  cloneData.list = cloneData.list.concat(totalObj)
+  return cloneData
+}
+
 /**新增数据 */
 const item = () => {
   return {
