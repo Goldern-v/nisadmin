@@ -48,7 +48,6 @@ export default function ToolBar() {
       name: "已撤销"
     }
   ];
-  let defaultValue = '';
   let deptList = [{name:'全院', code: ''}, ...authStore.deptList];
   const [bangci, setBangci]: [any, any] = useState([]);
   const [dataSourceColorCN, setDataSourceColorCN]: [any, any] = useState([]);
@@ -59,6 +58,7 @@ export default function ToolBar() {
   const [selectedStatusType, setSelectedStatusType] = useState("1");
   const [date, setDate]: any = useState(getCurrentMonthNow());
   const [selectData, setSelectData]= useState<any[]>([])
+  const [defaultValue, setDefaultValue]= useState('')
 
   // Similar to componentDidMount and componentDidUpdate:
   useEffect(() => {
@@ -328,6 +328,7 @@ export default function ToolBar() {
   const getTableList = (value?:any, type?:any) =>{
     let data = {
       auditStatus:selectedStatusType, 
+      deptCode: '',
       startDate: date[0] ? moment(date[0]).format("YYYY-MM-DD") : "",
       endDate: date[1] ? moment(date[1]).format("YYYY-MM-DD") : ""
     }
@@ -337,7 +338,10 @@ export default function ToolBar() {
     }else if(type == 'date'){
       data.startDate = value[0] ? moment(value[0]).format("YYYY-MM-DD") : "";
       data.endDate = value[1] ? moment(value[1]).format("YYYY-MM-DD") : "";
+    }else if(type == 'deptList'){
+      data.deptCode = value;
     }
+    
     emitter.emit("更新班次zjhj", data);
   }
 
@@ -416,7 +420,7 @@ export default function ToolBar() {
             option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
           }
           style={{ width: 200 }}
-          onChange={getTableList}
+          onChange={(value: any)=>{setDefaultValue(value); getTableList(value, 'deptList')}}
         >
           {deptList.map((item: DeptType) => (
             <Select.Option key={item.code} value={item.code} title={item.name}>

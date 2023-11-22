@@ -264,6 +264,7 @@ export default function MainBox() {
     let deptCode = scheduleStore.getDeptCode(); // '2508' ||
     if(!pathName && !data){
       data = {
+        deptCode: '',
         auditStatus: '1',
         startDate: moment().startOf('month').format("YYYY-MM-DD"),
         endDate:  moment().format("YYYY-MM-DD")
