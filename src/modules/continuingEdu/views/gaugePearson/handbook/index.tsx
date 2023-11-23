@@ -8,6 +8,7 @@ import styled from 'styled-components'
 import moment from 'moment'
 import {Button, Select, message} from 'antd'
 import AddModal from './components/addModal'
+import EditTree from './components/editTree'
 import {trainingSettingApi} from '../api/TrainingSettingApi'
 import {handbookModel, handbookModel as model} from './model'
 import Menu from './components/menu'
@@ -26,6 +27,7 @@ export default observer(function PearsonHandbook(props: IProps) {
      * 从学习培训跳转通过params传递信息
      */
     const [addVisible, setAddVisible] = useState(false)
+    const [editTreeVisible, setEditTreeVisible] = useState(false)
     const [exportVisible, setExportVisible] = useState(false)
 
     const onExport = () => {
@@ -45,6 +47,16 @@ export default observer(function PearsonHandbook(props: IProps) {
             setAddVisible(false)
             model.getHandbookList()
         })
+    }
+
+    const okEditTree = (tableData:any)=>{
+      trainingSettingApi.updateHandbookCatalog(tableData).then(Res=>{
+        if(Res.code==="200"){
+          message.success("更新目录成功")
+          model.reset()
+        } else message.error("更新目录失败")
+        setEditTreeVisible(false)
+      },()=>{message.error("更新目录失败");setEditTreeVisible(false)})
     }
 
     useEffect(() => {
@@ -95,6 +107,7 @@ export default observer(function PearsonHandbook(props: IProps) {
                 <Place/>
                 <Button type='danger' onClick={() => model.delHandbook()}>删除</Button>
                 <Button type='primary' onClick={() => onCreate()}>创建手册</Button>
+                {appStore.HOSPITAL_ID === "whyx" && <Button type='primary' onClick={() => setEditTreeVisible(true)}>目录编辑</Button>}
             </div>
             <div className={'ctx-con' + (model.curHb?.id ? '' : ' ctx-con__empty')}>
                 {model.curHb?.id ?
@@ -111,6 +124,8 @@ export default observer(function PearsonHandbook(props: IProps) {
             </div>
             <AddModal visible={addVisible} data={model.info} onCancel={() => setAddVisible(false)}
                       onOk={createHandbook}/>
+            <EditTree visible={editTreeVisible} data={model.catalogue} onCancel={() => setEditTreeVisible(false)}
+                      onOk={okEditTree}/>
           {/*导出pdf  */}
             {exportVisible && (
                 <ExportBookWhyx
