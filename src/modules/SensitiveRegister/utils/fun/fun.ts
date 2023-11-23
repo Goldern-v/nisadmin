@@ -1,5 +1,5 @@
 import { sensitiveRegisterService } from "../../services/SensitiveRegisterService";
-import { authStore } from "src/stores";
+import { appStore, authStore } from "src/stores";
 import { globalModal } from "src/global/globalModal";
 import { message, Modal } from "src/vendors/antd";
 import moment from "moment";
@@ -43,6 +43,7 @@ export function getFun(context: any) {
     setPageOptions,
     pageOptions,
     setTotal,
+    setConfig,
     setDataSource,
     setItemConfigList,
     setRangeConfigList,
@@ -167,10 +168,13 @@ export function getFun(context: any) {
         // console.log(res, "res");
 
         let newList = res.data.itemDataPage.list || []
+        let itemConfigList = thMerge(res.data.itemConfigList).filter((item:any)=>("hj" === appStore.HOSPITAL_ID ? item.itemType!=="ward_user" : true))
 
         setTotal(res.data.itemDataPage.totalCount);
-        setItemConfigList(thMerge(res.data.itemConfigList));
+        setConfig(res.data.config)
         setRangeConfigList(res.data.rangeConfigList);
+        
+        setItemConfigList(itemConfigList);
 
         setDataMap && setDataMap(res.data.dataMap || {})
 
@@ -183,10 +187,14 @@ export function getFun(context: any) {
           //默认返回空数组时新建一行记录
           // registerCode=='QCRG_22_3' ? return true ''
           if (newList.length == 0 && !stopCreateRow) {
+            let defaultObj = { recordDate: moment().format("YYYY-MM-DD") }
             if (registerCode == 'QCRG_22_3')  return true
-            setDataSource([
-              { recordDate: moment().format("YYYY-MM-DD") }
-            ])
+            else if('QCRG_HJ_03' === registerCode){
+              res.data.itemConfigList.map((con:any)=>{
+                con.itemCode.indexOf("签名") === -1 && !defaultObj[con.itemCode] && (defaultObj[con.itemCode] = 0)
+              })
+            }
+            setDataSource([defaultObj])
           } else {
             setDataSource(newList.map((item: any) => ({ ...item, modified: false })))
           }
@@ -297,24 +305,26 @@ export function getFun(context: any) {
       }
     }
     let newRow: any = [];
-    let row: any = []
-    for (let i = 0; i < 3; i++) {
-      if ((lastMonth + i) <= 12) { 
-        row.push({
-          blockId: selectedBlockId,
-          description: "",
-          range,
-          rangeIndexNo,
-          recordDate: moment().format('YYYY')+'-01'+'-01',
-          registerCode,
-          editType: 'new',
-          modified: true,
-          "基础数据：时间":lastMonth +i + "月"
-        })
+    if(registerCode == 'QCRG_22_3'){
+      let row: any = []
+      for (let i = 0; i < 3; i++) {
+        if ((lastMonth + i) <= 12) { 
+          row.push({
+            blockId: selectedBlockId,
+            description: "",
+            range,
+            rangeIndexNo,
+            recordDate: moment().format('YYYY')+'-01'+'-01',
+            registerCode,
+            editType: 'new',
+            modified: true,
+            "基础数据：时间":lastMonth +i + "月"
+          })
+        }
       }
-    }
-    newRow = registerCode == 'QCRG_22_3' ? [].concat(...dataSource, row)
-      : [{
+      newRow = [].concat(...dataSource, row)
+    }else{
+      let defaultObj: any = {
         blockId: selectedBlockId,
         description: "",
         range,
@@ -323,9 +333,17 @@ export function getFun(context: any) {
         registerCode,
         editType: 'new',
         modified: true,
-      },
-      ...dataSource
-    ]
+      };
+      if('QCRG_HJ_03' === registerCode){
+        itemConfigList.map((con:any)=>{
+          con.itemCode.indexOf("签名") === -1 && (defaultObj[con.itemCode] = 0)
+        })
+      }
+      newRow = [defaultObj,...dataSource]
+    }
+    // newRow = registerCode == 'QCRG_22_3' ? [].concat(...dataSource, row)
+    //   : [defaultObj,...dataSource]
+    
     setTimeout(() => {
       setDataSource([...newRow])
       setTimeout(() => {

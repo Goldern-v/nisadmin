@@ -11,6 +11,7 @@ import { ColumnProps } from 'antd/lib/table'
 import { chartHeightCol } from '../../utils/chartHeightCol'
 import printing from "printing";
 import PrintTable from '../printTable/printTable'
+import ByDeptCodeGetPeople from "src/modules/statistic/views/护士工作年限分布/ByDeptCodeGetPeople";
 import {Con} from 'src/modules/statistic/common/css/CommonLayout.ts';
 import { delWithResData } from '../../utils/dealWithData'
 
@@ -18,6 +19,11 @@ const Option = Select.Option
 
 export interface Props { }
 
+interface QhwyPeopleModal{
+  visible:boolean
+ dept:number
+ workType:string
+}
 export default observer(function 护士层级分布() {
   const { deptList } = authStore
   const [query, setQuery] = useState({
@@ -28,6 +34,7 @@ export default observer(function 护士层级分布() {
   const [chartHeight, setChartHeight] = useState(chartHeightCol())
   const [chartVisible, setChartVisible] = useState(false)
   const [chartsImg, setChartsImg] = useState<any[]>([])
+  const [paramsObj,setParamsObj]=useState({} as QhwyPeopleModal)
   const [isPrint, setIsPrint] = useState(false)
 
   const [loading, setLoading] = useState(false)
@@ -54,6 +61,16 @@ export default observer(function 护士层级分布() {
       width: 60,
       dataIndex: 'NUM',
       align: 'center',
+      render:(text:any,record:any)=>{
+        return <div onClick={()=>{
+          if(appStore.HOSPITAL_ID =='qhwy'){
+            paramsObj.dept =record.DEPTCODE
+            paramsObj.visible = true
+            paramsObj.workType ='all'
+            setParamsObj({...paramsObj})
+          }
+        }}>{text}</div>
+      }
     },
     ...extraColumns,
   ]
@@ -76,8 +93,24 @@ export default observer(function 护士层级分布() {
           } = delWithResData({
             dataList 
           })
-
-          setExtraColumns(newExtraColumns)
+          let newList:any =[]
+        if(appStore.HOSPITAL_ID ==='qhwy'){
+          newList = newExtraColumns.map((item:any)=>{
+            item.children[0]={
+              ...item.children[0],
+              render:(text:any,record:any)=>{
+                return <div onClick={()=>{
+                  paramsObj.dept =record.DEPTCODE
+                  paramsObj.visible = true
+                  paramsObj.workType =item.children[0]['dataIndex']
+                  setParamsObj({...paramsObj})
+                }}>{text}</div>
+              }
+            }
+            return item
+          })
+        }
+          setExtraColumns(appStore.HOSPITAL_ID =='qhwy'? newList:newExtraColumns)
           setChartData(newChartData)
           setData(newData)
         }
@@ -218,6 +251,10 @@ export default observer(function 护士层级分布() {
         <div ref={tablePrintRef} style={{display:'none'}}>
           <PrintTable dataSource={data} columns={columns} title={'护士层级分布'}></PrintTable>
         </div>
+        <ByDeptCodeGetPeople {...paramsObj} onCancel={()=>{
+          paramsObj.visible =false
+          setParamsObj({...paramsObj})
+        }}/>
       </Con>
     </Spin>} />
 })

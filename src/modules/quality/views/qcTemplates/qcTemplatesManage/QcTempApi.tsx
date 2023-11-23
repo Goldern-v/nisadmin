@@ -1,4 +1,5 @@
 import BaseApiService from "src/services/api/BaseApiService";
+import { appStore } from "src/stores";
 
 export default class QcTempApi extends BaseApiService {
 /**上传，导入模板 */
@@ -8,7 +9,8 @@ export default class QcTempApi extends BaseApiService {
     for (let x in newParams) {
       formData.append(x, newParams[x])
     }
-    return this.post(`/qcTemplateManage/impForm/zzwy`,formData);
+    let hospital = appStore.HOSPITAL_ID === "whyx" ? "yx" : "zzwy"
+    return this.post(`/qcTemplateManage/impForm/${hospital}`,formData);
   }
 
   /**列表查询 */

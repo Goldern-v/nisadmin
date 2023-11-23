@@ -134,6 +134,10 @@ export default class TrainingSettingApi extends BaseApiService {
   public async getHandbookCatalog(masterId: number) {
     return this.get(`/studyAndTrain/planTrainStudentInfo/getHandbookCatalog/${masterId}`);
   }
+
+  public async updateHandbookCatalog(tableData:any) {
+    return this.post(`/studyAndTrain/planTrainStudentInfo/updateHandbookCatalog`, tableData);
+  }
   /**
    * 查询出对应模板的项和数据  
    * @param obj.catalogId {string}  
