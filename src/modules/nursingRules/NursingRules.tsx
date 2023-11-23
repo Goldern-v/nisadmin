@@ -463,11 +463,11 @@ export default class NursingRules extends Component<Props> {
               <React.Fragment>
                 <Button onClick={this.openNewRuleDialog}>新建</Button>
 
-                <span className='route-group'>
+                {/* <span className='route-group'>
                   <Link to='/nursingRulesTypeSetting'>类型设置</Link>
                   <span> | </span>
                   <Link to='/nursingRulesTypeIndexSetting'>类型目录设置</Link>
-                </span>
+                </span> */}
               </React.Fragment>
             )}
           </div>

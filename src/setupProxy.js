@@ -134,7 +134,9 @@ const urlFromHospitalId = (HOSPITAL_ID) => {
             // return "http://223.220.175.6:50014/"; // 医院正式
         //威海市立
         case "whsl":
-            return "http://192.168.1.54:9896";
+            // return "http://192.168.1.54:9896";
+            return "http://221.2.154.22:19094";
+            // return "http://192.168.20.29:8080";
         //漳州五院
         case "zzwy":
             return 'http://120.24.240.231:16093'
