@@ -160,7 +160,8 @@ export default function EditJoinScientificModal(props: Props) {
           </Col>}
           <Col span={24}>
             <Form.Field label={`参与排名`} name='goRank'>
-              <Input />
+              {/* <Input /> */}
+              <AutoComplete dataSource={nurseFileDetailViewModal.getDict('参与排名').map((item) => item.name)} />
             </Form.Field>
           </Col>
           <Col span={24}>
