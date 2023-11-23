@@ -391,7 +391,7 @@ switch (appStore.HOSPITAL_ID) {
               {
                  appStore.HOSPITAL_ID ==='925'&& <Col span={24}>
                     <Form.Field label={`天数`} name="days" >
-                      <InputNumber min={1} max={1000} step={0.5} precision={1} />
+                      <InputNumber min={0} max={1000} step={0.5} precision={1} />
                     </Form.Field>
                   </Col>
               }
