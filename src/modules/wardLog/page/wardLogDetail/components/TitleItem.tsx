@@ -6,10 +6,11 @@ export interface Props {
   title: string
   aside: string
   type?:string
+  rowOne? :number | undefined
 }
 
 export default function TitleItem(props: Props) {
-  const { title, aside ,type } = props
+  const { title, aside ,type,rowOne } = props
     /**青海五院需要增加参与人员  转Json处理**/
     const [personContent,setPersonContent]=useState('')
     useEffect(()=>{
@@ -18,8 +19,9 @@ export default function TitleItem(props: Props) {
             setPersonContent(list)
         }
     },[])
+
   return (
-    <Wrapper>
+    <Wrapper className={rowOne ===1 ? "printFlex" : ""} >
       <div className='title'>{title}</div>
       <div className='aside' dangerouslySetInnerHTML={{ __html:personContent || aside }}></div>
     </Wrapper>

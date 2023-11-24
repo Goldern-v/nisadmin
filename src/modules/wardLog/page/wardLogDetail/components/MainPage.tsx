@@ -18,6 +18,7 @@ interface logItem {
   indexNo: string
   name: string
   type: string
+  rowOne :number | undefined
 }
 
 export default React.forwardRef(function MainPage(props: Props, ref: any) {
@@ -46,7 +47,7 @@ export default React.forwardRef(function MainPage(props: Props, ref: any) {
       </div>
       <div className="hr"></div>
       {listData.filter((item: any) => item.type !== '7').map((item: logItem, index: number) => (
-        <TitleItem title={item.name} type={item.type} aside={item.content} key={index} />
+        <TitleItem rowOne={item.rowOne} title={item.name} type={item.type} aside={item.content} key={index} />
       ))}
       <TitleItem title={'备注'} aside={props.pageData?.detail?.remark || ''} />
       <Line />

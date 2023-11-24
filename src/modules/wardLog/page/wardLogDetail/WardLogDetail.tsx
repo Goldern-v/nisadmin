@@ -42,6 +42,17 @@ export default function WardLogDetail() {
            margin: 0;
            border: 0;
          }
+         .printFlex{
+            display:flex;
+            align-items: center;
+          .title{
+            margin: 0;
+          }
+          .aside{
+            line-height: 1;
+            margin-left: 10px;
+          }
+         }
       `
     })
     setTimeout(() => {
