@@ -8,6 +8,7 @@ import {appStore, authStore} from 'src/stores'
 import styled from 'styled-components'
 import {STATUS_LIST} from '../../list-jew/utils/enums'
 import {quarterList, quarterYear} from "src/enums/date";
+import {nurseHandbookJmfyModel as model} from "src/modules/nurseHandBookNew/views/list-jmfy/model";
 
 const {Option} = Select
 
@@ -18,17 +19,23 @@ export interface Props extends Obj {
     setQuery: (data: Obj) => void
     openCreate: () => void
     title: string
-    formList: Obj[]
+    // formList: Obj[]
     openAudit?: () => void
     onResetQuery?: () => void
-    openImport?:()=>void
-    printTable?:()=>void
-    isAudit?:boolean //是否拥有审核
+    openImport?: () => void
+    printTable?: () => void
+    isAudit?: boolean //是否拥有审核
 }
 
 /**搜索组件 */
 export default observer(function (props: Props) {
-    const {query, openCreate, setQuery, title, formList, openAudit, onResetQuery,openImport,printTable,isAudit} = props
+    const {
+        query,
+        openCreate,
+        setQuery,
+        title,
+        isAudit
+    } = props
     const changeQuery = (e: any, key: string) => {
         if (key === 'date') {
             const [d1, d2] = e
@@ -128,9 +135,26 @@ export default observer(function (props: Props) {
                     </Select>
                 </>
             }
+            {
+                query.assortCode !== undefined &&
+                <>
+                    <span className='label'>分类:</span>
+                    <Select value={query.assortCode} onChange={(e: any) => {
+                    changeQuery(e, 'assortCode')
+                }}>
+                    <Option key={0} value={''}>全部</Option>
+                    {
+                        model.menuList.map((v: any) => (
+                            <Option key={v.menuCode} value={v.menuCode}>{v.name}</Option>
+                        ))
+                    }
+                </Select>
+                </>
+            }
+
             <Button type='primary' onClick={openCreate}>创建</Button>
-            <Button type='primary' onClick={onResetQuery}>重置</Button>
-            {isAudit && <Button type='primary' onClick={openAudit}>批量审批</Button>}
+            {/*<Button type='primary' onClick={onResetQuery}>重置</Button>*/}
+            {/*{isAudit && <Button type='primary' onClick={openAudit}>批量审批</Button>}*/}
         </Wrapper>
     )
 })

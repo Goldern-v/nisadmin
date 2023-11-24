@@ -448,29 +448,29 @@ export default observer(function JmFyAnalysis() {
                             </Select>
                         </div>
                     </div>
-                    {['jmfy'].includes(appStore.HOSPITAL_ID) && 
-                        <div className="item">
-                            <div className="label">表单小组：</div>
-                            <div className="content">
-                                <Select
-                                    value={query.qcCode}
-                                    onChange={(qcCode: any) => {
-                                        setQuery({...query, qcCode});
-                                    }}
-                                    className="recode-type-select"
-                                >
-                                    <Option value="">全部</Option>
-                                    {biaodanList.map((item: any) => (
-                                        <Option value={item.qcCode} key={item.qcCode}>
-                                            {item.qcName}
-                                        </Option>
-                                    ))}
-                                </Select>
-                            </div>
-                        </div>
-                    }
+                    {/*{['jmfy'].includes(appStore.HOSPITAL_ID) && */}
+                    {/*    <div className="item">*/}
+                    {/*        <div className="label">表单小组：</div>*/}
+                    {/*        <div className="content">*/}
+                    {/*            <Select*/}
+                    {/*                value={query.qcCode}*/}
+                    {/*                onChange={(qcCode: any) => {*/}
+                    {/*                    setQuery({...query, qcCode});*/}
+                    {/*                }}*/}
+                    {/*                className="recode-type-select"*/}
+                    {/*            >*/}
+                    {/*                <Option value="">全部</Option>*/}
+                    {/*                {biaodanList.map((item: any) => (*/}
+                    {/*                    <Option value={item.qcCode} key={item.qcCode}>*/}
+                    {/*                        {item.qcName}*/}
+                    {/*                    </Option>*/}
+                    {/*                ))}*/}
+                    {/*            </Select>*/}
+                    {/*        </div>*/}
+                    {/*    </div>*/}
+                    {/*}*/}
                     <div className="item">
-                            <div className="label">质控组：</div>
+                            <div className="label">表单小组：</div>
                             <div className="content">
                                 <Select
                                     value={query.groupRoleCode}
@@ -492,10 +492,9 @@ export default observer(function JmFyAnalysis() {
                         <Button onClick={handleSearch}>查询</Button>
                     </div>
                     <div className="item">
-                        {" "}
                         <Button onClick={handleCreate} type="primary">
                             创建
-                        </Button>{" "}
+                        </Button>
                     </div>
                     <div className="item">
                         <Button

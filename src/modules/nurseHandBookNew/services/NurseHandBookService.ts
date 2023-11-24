@@ -268,7 +268,22 @@ export default class NurseHandBookService extends BaseApiService {
     public getPublicIndicatorsItem(params:Obj){
         return this.post('/nurseHandbookItem/getIndicatorsItem', params)
     }
-
+    public publicDeleteIndicatorsItem(params:Obj){
+        return this.post('/nurseHandbookItem/deleteIndicatorsItem', params)
+    }
+    public publicSaveIndicatorsTItem(params:Obj){
+        return this.post('/nurseHandbookItem/saveIndicatorsTItem', params)
+    }
+    public getIndicatorsItemData(params:Obj){
+        return this.post('/nurseHandbook/jmfy/getIndicatorsItemData', params)
+    }
+    public saveIndicatorsItemData(params:Obj){
+        return this.post('/nurseHandbook/jmfy/saveIndicatorsItemData', params)
+    }
+    /**质量监测指标分析:查询**/
+    public getIndicatorsAnalysis(params:Obj){
+        return this.post('/nurseHandbook/jmfy/getIndicatorsAnalysis', params)
+    }
 }
 
 export const nurseHandBookService = new NurseHandBookService()

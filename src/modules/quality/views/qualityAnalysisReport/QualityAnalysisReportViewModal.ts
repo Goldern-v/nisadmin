@@ -116,6 +116,7 @@ class QualityAnalysisReportViewModal {
           beginDate: `${data.data?.report?.beginDate} 00:00:00`,
           endDate:`${data.data?.report?.endDate} 23:59:59`,
           qcCode: data.data?.report?.qcCode,
+          groupRoleCode: data.data?.report?.groupRoleCode
         })
       }
     }
