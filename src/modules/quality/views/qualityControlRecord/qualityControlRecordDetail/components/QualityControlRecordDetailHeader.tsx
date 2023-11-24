@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import React, { useState, useEffect } from "react";
 import { appStore, authStore } from "src/stores";
-const BG = require("../../../../images/顶部背景.png");
 import { Button, message, Modal } from "antd";
 import BreadcrumbBox from "src/layouts/components/BreadcrumbBox";
 import createModal from "src/libs/createModal";
@@ -15,6 +14,7 @@ import { fileDownload } from "src/utils/file/file";
 import { navTitle } from "src/modules/quality/data/qcTitle";
 import QcPrint from "./QcPrint";
 import { qualityControlRecordVM } from "../../QualityControlRecordVM";
+const BG = require("../../../../images/顶部背景.png");
 
 interface Props {
   detailData: any;
@@ -60,6 +60,7 @@ export default function qualityControlRecordDetailHeader(props: Props) {
           nodeCode: nextNode.nodeCode,
           title: nextNode.nodeName,
           onOkCallBack: props.onload,
+          handleType:handleType,
         });
         break;
 
@@ -70,7 +71,7 @@ export default function qualityControlRecordDetailHeader(props: Props) {
           onOkCallBack: props.onload,
           list: props.detailData.itemGroupList || [],
         });
-
+      break
       case "3":
         ejkhszModal.show({
           id: appStore.match.params.id,

@@ -14,7 +14,8 @@ export interface Props extends ModalComponentProps {
   onOkCallBack?: () => {},
   nodeCode: any,
   id: any,
-  title?: string
+  title?: string,
+  handleType?: any; 
 }
 
 /** 设置规则 */
@@ -40,7 +41,8 @@ export default function BqclModal(props: Props) {
         // password: '',
         nodeCode: props.nodeCode,
         handleContent: value.handleContent,
-        expand: value.expand
+        expand: value.expand,
+        handleType:props.handleType
       })
       .then((res) => {
         message.success('操作成功')

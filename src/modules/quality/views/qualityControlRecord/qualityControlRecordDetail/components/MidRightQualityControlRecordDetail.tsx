@@ -30,11 +30,27 @@ export default function midRightQualityControlRecordDetail(props: Props) {
                     <div className='info'>
                       {item.handleTime} ({getWeekString(item.handleTime)})
                     </div>
-                    {item.handleContent && item.nodeCode != 'dept_handle' && (
-                      <div className='text-box' style={item.noPass ? { color: 'red' } : {}}>
-                        {item.nodeCode == 'dept_handle' && <div className='text-box-title'>整改措施：</div>}
-                        {item.handleContent}
+                     {item.handleContent && item.nodeCode != 'dept_handle' && item.handleType != 2 && (
+                       <div className='text-box' style={item.noPass ? { color: 'red' } : {}}>
+                       {item.nodeCode == 'dept_handle' && <div className='text-box-title'>整改措施：</div>}
+                       {item.handleContent}
                       </div>
+                     )}
+                     {item.handleContent && item.nodeCode != 'dept_handle' && item.handleType == 2 && (
+                      <React.Fragment>
+                        {
+                          item.expand &&<div className='text-box'>
+                            <div className='text-box-title'>原因分析：</div>
+                            {item.expand}
+                          </div>
+                        }
+                        { (
+                          <div className='text-box' style={item.noPass ? { color: 'red' } : {}}>
+                            {<div className='text-box-title'>{ '整改措施：'}</div>}
+                            {item.handleContent}
+                          </div>
+                        )}
+                      </React.Fragment>
                     )}
                     {/* 三级质控 */}
                     {item.nodeCode == 'dept_handle' && (
