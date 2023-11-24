@@ -9,14 +9,15 @@ import {ModalComponentProps} from 'src/libs/createModal'
 import {appStore, authStore} from 'src/stores'
 import SelectFilter from 'src/components/SelectFilter'
 import {quarterList, quarterYear} from "src/enums/date";
-import {jewCoverArr,zjhjCoverArr} from "src/modules/nurseHandBookNew/views/list-jew/utils/enums";
+import {jewCoverArr, zjhjCoverArr} from "src/modules/nurseHandBookNew/views/list-jew/utils/enums";
+import {nurseHandbookJmfyModel as model} from "src/modules/nurseHandBookNew/views/list-jmfy/model";
 
 const {Option} = Select
 
 export interface Props extends ModalComponentProps {
     onOkCb: Function
     addQuery: Obj
-    formList: Obj[]
+    // formList: Obj[]
     menuCode?: string
 }
 
@@ -27,15 +28,12 @@ const ALL_RULE: Rules = {
     deptCode: (val) => !!val || '请选择科室',
     date: (val) => val?.length == 2 || '请选择日期',
     type: (val) => !!val || '请选择护士长封面',
-    // menuCode: (val) => !!val || '请选择记录表',
 }
 const Quarter = {'第一季度': 1, '第二季度': 2, '第三季度': 3, '第四季度': 4}
 export default function (props: Props) {
     const refForm = useRef<any>()
     const [rules, setRules] = useState<Obj>({})
-    const {visible, onCancel, onOkCb, addQuery = {}, formList, menuCode} = props
-    /**封面url**/
-        // const [pathUrl,setPathUrl] =useState({} as any)
+    const {visible, onCancel, onOkCb, addQuery = {},menuCode} = props
     const {deptList} = authStore
     useLayoutEffect(() => {
         if (visible) {
@@ -59,34 +57,21 @@ export default function (props: Props) {
                         newObj.date = [startTime, endTime]
                         refForm.current.setFields(newObj)
                     }
-                    /**如果是记录表，并且只有一个选项直接赋值**/
                     refForm.current.setFields(addQuery)
-                    if (formList && formList.length == 1) {
-                        refForm.current.setField(
-                            'menuCode',formList[0].menuCode)
-                    }
-                    console.log(refForm.current.getFields());
                 }
             }, 300)
         }
     }, [visible])
     const handleOk = () => {
         let current = refForm.current
-
         if (current) {
             let formData = current.getFields()
-            if (menuCode === '925NDBRDJ_7' && !formData.menuCode) {
-                return message.info('记录表不能为空')
-            }
             current
                 .validateFields()
                 .then((res: any) => {
-                    // if( addQuery.code =='no_validate_create_more' && Object.keys(pathUrl).length === 0){
-                    //   return message.info('封面未上传')
-                    // }
-                    let {deptCode, menuCode} = formData
+
+                    let {deptCode, assortName} = formData
                     const deptName = deptList.find(v => v.code === deptCode)?.name || ''
-                    const menuName = formList.find(v => v.menuCode === menuCode)?.name || ''
 
                     let params: Obj = {
                         ...formData,
@@ -100,12 +85,10 @@ export default function (props: Props) {
                         params.endTime = endTime ? endTime.format('YYYY-MM-DD') + ' 23:59:59' : ''
                     }
                     if (params.hasOwnProperty('time')) params.time = params.time ? params.time.format("YYYY-MM-DD HH:mm:ss") : ''
-
-                    // if(pathUrl){
-                    //   params['url']=pathUrl?.path
-                    // }
-                    if (menuName) params.menuName = menuName
-
+                    const assortCode = model.menuList.find((v: any) => v.name === assortName)?.menuCode || ''
+                    // params.assortCode = assortCode
+                    params.menuCode =assortCode
+                    params.assortCode =menuCode
                     onOkCb && onOkCb(params)
                 })
                 .catch((e: any) => {
@@ -125,11 +108,7 @@ export default function (props: Props) {
         }
         return monthArr
     })()
-    // const onChange=(e?:any)=>{
-    //   if(e[0]){
-    //     setPathUrl(e[0])
-    //   }
-    // }
+
     return (
         <Modal
             title='创建'
@@ -155,21 +134,7 @@ export default function (props: Props) {
                             </Form.Field>
                         </Col>
                     </Row>
-                    {
-                        addQuery?.menuCode !== undefined &&
-                        <Row>
-                            <Col span={8} className='label'>
-                                记录表：
-                            </Col>
-                            <Col span={16}>
-                                <Form.Field name='menuCode'>
-                                    <SelectFilter list={formList} configKey={{
-                                        value: 'menuCode', name:
-                                            'name'
-                                    }}/>
-                                </Form.Field>
-                            </Col>
-                        </Row>}
+
                     {
                         addQuery?.startTime !== undefined && addQuery?.isQHWYZB &&
                         <Row>
@@ -224,56 +189,6 @@ export default function (props: Props) {
                                 </Form.Field>
                             </Col>
                         </Row>}
-                    {/* todo   护士长手册封面  */}
-                    {
-                        addQuery.coverCode == '925SCFM_1' &&
-                        <Row>
-                            <Col span={8} className='label'>
-                                护士长封面：
-                            </Col>
-                            <Col span={16}>
-                                <Form.Field name='type'>
-                                    <Select>
-                                        {(appStore.HOSPITAL_ID ==='925'?  jewCoverArr:zjhjCoverArr).map((item:any) => <Option value={item.type}
-                                                                        key={item.type + 'a'}>{item.name}</Option>)}
-                                    </Select>
-                                </Form.Field>
-                            </Col>
-                        </Row>
-                    }
-                    {/*{*/}
-                    {/*  addQuery.code =='no_validate_create_more' &&*/}
-                    {/*    <Row>*/}
-                    {/*      <Col span={8} className='label' >*/}
-                    {/*        名称：*/}
-                    {/*      </Col>*/}
-                    {/*      <Col span={16}>*/}
-                    {/*        <Form.Field  name='title' required>*/}
-                    {/*          <Input  placeholder='请输入文件名称'/>*/}
-                    {/*        </Form.Field>*/}
-                    {/*      </Col>*/}
-                    {/*    </Row>*/}
-                    {/*}*/}
-                    {/*{*/}
-                    {/*    addQuery.code =='no_validate_create_more' &&*/}
-                    {/*    <Row>*/}
-                    {/*      <Col span={8} className='label'>*/}
-                    {/*        <span style={{color:"red",marginRight:4}}>*</span>上传文件：*/}
-                    {/*      </Col>*/}
-                    {/*      <Col span={16}>*/}
-                    {/*        {*/}
-                    {/*          pathUrl && pathUrl.fileName ? <div className='fileContent'>*/}
-                    {/*          <div className='fileName'>{pathUrl.fileName}</div>*/}
-                    {/*            <Icon onClick={()=>setPathUrl(undefined)} className='delete-icon' type={'delete'}/>*/}
-                    {/*          </div>: <MultiFileUploader*/}
-                    {/*              isFormModel*/}
-                    {/*              onChange={onChange}*/}
-                    {/*              accept={'.pdf'} size={1} maxSize={8 * 1024 * 1024}*/}
-                    {/*          />*/}
-                    {/*        }*/}
-                    {/*      </Col>*/}
-                    {/*    </Row>*/}
-                    {/*}*/}
                     {
                         addQuery.halfYear !== undefined &&
                         <Row>
@@ -301,7 +216,27 @@ export default function (props: Props) {
                                     <DatePicker format={dateFormat}/>
                                 </Form.Field>
                             </Col>
-                        </Row>}
+                        </Row>
+                    }
+                    {
+                        addQuery?.assortCode !== undefined &&
+                        <Row>
+                            <Col span={8} className='label'>
+                                分类：
+                            </Col>
+                            <Col span={16}>
+                                <Form.Field name='assortName'>
+                                    <Select>
+                                        {
+                                            model.menuList.map((v: any) => (
+                                                <Option key={v.menuCode} value={v.name}>{v.name}</Option>
+                                            ))
+                                        }
+                                    </Select>
+                                </Form.Field>
+                            </Col>
+                        </Row>
+                    }
                 </Form>
             </Wrapper>
         </Modal>

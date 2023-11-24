@@ -11,6 +11,7 @@ import moment from "moment";
 import YearPicker from "src/components/YearPicker";
 import {nurseHandBookService} from "src/modules/nurseHandBookNew/services/NurseHandBookService";
 import {Obj} from "src/libs/types";
+import {nurseHandbookJmfyModel as model} from "src/modules/nurseHandBookNew/views/list-jmfy/model";
 
 const {Option} = Select
 
@@ -26,17 +27,12 @@ export default observer(function (props: Props) {
     const [menuList, setMenuList] = useState([])
     const [total, setTotal] = useState(0)
     const [query, setQuery] = useState<Obj>({
-        // "year": "string",
-        //   "monitorContent": "string",
-        //   "menuCode": "string",
-        //   "startTime": "string",
-        //   "endTime": "string",
-        //   "deptCode": "string"
         deptCode: authStore.defaultDeptCode,
         year: moment(),
         pageSize: 20,
         menuCode: "",
         monitorContent: '',
+        assortName:"",
         pageNum: 1,
     })
 
@@ -44,7 +40,7 @@ export default observer(function (props: Props) {
 
         {
             title: '分类',
-            dataIndex: 'menuCode',
+            dataIndex: 'assortName',
             width: 100,
             align: 'center',
         },
@@ -163,11 +159,11 @@ export default observer(function (props: Props) {
     useEffect(() => {
         getData()
     }, [query])
-    useEffect(() => {
-        if(menuCode){
-            getMenuCode()
-        }
-    }, [menuCode])
+    // useEffect(() => {
+    //     if(menuCode){
+    //         getMenuCode()
+    //     }
+    // }, [menuCode])
     return (
         <Wrapper>
             <WrapperHeard>
@@ -189,16 +185,17 @@ export default observer(function (props: Props) {
                     setQuery({...query, year: e})
                 }}/>
                 <span className='label'>分类:</span>
-                <Select value={query.deptCode} onChange={(e: any) => {
-                    setQuery({...query, deptCode: e})
+                <Select value={query.assortName} onChange={(e: any) => {
+                    setQuery({...query, assortName: e})
                 }}>
                     <Option key={0} value={''}>全部</Option>
                     {
-                        menuList.map((v:any) => (
+                        model.menuList.map((v:any) => (
                             <Option key={v.menuCode} value={v.menuCode}>{v.name}</Option>
                         ))
                     }
                 </Select>
+                <span className='label'>指标名称:</span>
                 <Input
                     placeholder='请输入指标名称'
                     style={{width: '120px'}} value={query.monitorContent} onChange={(e: any) => {
@@ -209,6 +206,7 @@ export default observer(function (props: Props) {
                 loading={pageLoading}
                 dataSource={dataSource}
                 columns={columns}
+                surplusHeight={220}
                 wrapperStyle={{margin: '0 15px'}}
                 type={['index']}
                 pagination={{

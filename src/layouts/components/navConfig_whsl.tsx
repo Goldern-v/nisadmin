@@ -95,7 +95,7 @@ export const navConfig = (appStore:any,authStore?:any)=>{
     },
     {
       name: "护理制度",
-      path: "/nursingRulesNew"
+      path: "/nursingRules"
     },
     {
       name: "档案管理",

@@ -85,7 +85,7 @@ const SentNoticeView = lazy(() =>
 const LmsDetails = lazy(() => import("src/modules/lms/views/LmsDetails"));
 
 //护理制度
-// const NursingRules = lazy(() => import('src/modules/nursingRules/NursingRules'))
+const NursingRules = lazy(() => import('src/modules/nursingRules/NursingRules'))
 // const NursingRulesTypeIndexSetting = lazy(() => import('src/modules/nursingRules/NursingRulesTypeIndexSetting'))
 // const NursingRulesTypeSetting = lazy(() => import('src/modules/nursingRules/NursingRulesTypeSetting'))
 //护理制度 改版
@@ -695,7 +695,7 @@ const routes: RouteItem[] = [
     }
   }),
   setLayout("/setting/:name", SettingView, layouts.MainLayout),
-  // setLayout('/nursingRules', NursingRules, layouts.MainLayout),
+  setLayout('/nursingRules', NursingRules, layouts.MainLayout),
   // setLayout('/nursingRulesTypeSetting', NursingRulesTypeSetting, layouts.BreadcrumbLayout, [
   //   { name: '护理制度建设', link: '/nursingRules' },
   //   { name: '类型设置', link: '' }

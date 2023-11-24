@@ -310,6 +310,11 @@ export default observer(function 健康宣教字典(props: Props) {
         <div className="title">科室</div>
         <div className="content">
           <div
+            className={query.deptCode == '' ? 'dept-item selected' : 'dept-item'}
+            onClick={() => handleDeptSelect({ code: '' })}>
+            <span className="before" />全部<span className="after" />
+          </div>
+          <div
             className={query.deptCode == '000000' ? 'dept-item selected' : 'dept-item'}
             onClick={() => handleDeptSelect({ code: '000000' })}>
             <span className="before" />公共<span className="after" />

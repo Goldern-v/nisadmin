@@ -38,6 +38,7 @@ let dictList = {
   专科护士: 'nurse_name',
   专科护士级别: 'level',
   带教老师: 'tutor',
+  参与排名: 'participation_ranking'
 }
 
 type DictList = typeof dictList

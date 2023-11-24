@@ -1,7 +1,7 @@
 import Form from 'src/components/Form'
 import styled from 'styled-components'
 import React, {useEffect, useLayoutEffect, useRef, useState} from 'react'
-import {Modal, Button, Input, message as Message} from 'antd'
+import {Modal, Button, Input, message as Message, message} from 'antd'
 import {ModalComponentProps} from 'src/libs/createModal'
 import BaseTable, {DoCon} from "src/components/BaseTable";
 import {Obj} from "src/libs/types";
@@ -19,20 +19,30 @@ export default function (props: Props) {
     const {visible, onCancel, onOkCb, menuCode} = props
     const [data, setData] = useState([] as any)
     const handleOk = () => {
-
+        if(data.filter((item:any)=> !item.name).length >=1){
+            return message.info('分类名称不能为空')
+        }
+        nurseHandBookService.saveCategoryMenu(data).then(res => {
+            if (res.code == 200) {
+                Message.success('保存成功')
+                onCancel()
+            }
+        })
     }
-    const changeValue = (e: any, index: number) => {
+    const handleInputChange = (index: number) => (e: any) => {
         let newData: any = cloneDeep(data)
-        newData[index]['name'] = e.target.value
+        newData[index].name = e.target.value
         setData(newData)
-    }
+    };
     const columns: any = [
         {
             title: '序号',
             dataIndex: 'index',
             align: 'center',
             width: 60,
-            render:(text:string,record:any,index:number)=> { index + 1 }
+            render:(text:string,record:any,index:number)=>{
+                return index + 1
+            }
         },
         {
             title: '分类名称',
@@ -41,12 +51,8 @@ export default function (props: Props) {
             width: 140,
             render: (text: string, record: any, index: number) => {
                 return <Input
-                    onChange={(e: any) => {
-                        let newData: any = cloneDeep(data)
-                        newData[index].name = e.target.value
-                        setData(newData)
-                        console.log(newData[index]);
-                    }}
+                    key={index+'a1'}
+                    onChange={handleInputChange(index)}
                     value={text} placeholder='请输入分类名称'/>
             }
         },
@@ -66,10 +72,10 @@ export default function (props: Props) {
         },
     ]
     const add = () => {
-        setData([...data, {index: data.length + 1, name: '',}])
+        setData([...data, { name: '',}])
     }
     const handleSaveItem = (record: any) => {
-        nurseHandBookService.saveCategoryMenu(record ? [record] : data).then(res => {
+        nurseHandBookService.saveCategoryMenu( [record] ).then(res => {
             if (res.code == 200) {
                 Message.success('保存成功')
                 getMenuData()

@@ -66,18 +66,6 @@ export default observer(function (props: Props) {
                     width: 60,
                     align: 'center'
                 },
-                // "month1": "string",
-                //   "month2": "string",
-                //   "month3": "string",
-                //   "month4": "string",
-                //   "month5": "string",
-                //   "month6": "string",
-                //   "month7": "string",
-                //   "month8": "string",
-                //   "month9": "string",
-                //   "month10": "string",
-                //   "month11": "string",
-                //   "month12": "string"
                 {
                     title: '2月',
                     dataIndex: 'month2',
@@ -146,36 +134,18 @@ export default observer(function (props: Props) {
                 },
             ]
         },
-        {
-            title: '操作',
-            width: 80,
-            render(text: any, record: any, index: number) {
-                return (
-                    <DoCon>
-
-                    </DoCon>
-                )
-            }
-        }
     ]
     const getData = () => {
         setPageLoading(true)
         nurseHandBookService.getStaffList({...query, year: query.year.format('YYYY')}).then((res: Obj) => {
-            setDataSource(res.data)
-            setTotal(res.data.totalCount)
+            setDataSource(res.list)
+            setTotal(res.totalCount)
             setPageLoading(false)
         }).catch(e => setPageLoading(false))
     }
     useEffect(() => {
         getData()
     }, [query])
-    // useEffect(() => {
-    //     if(props.year)
-    //     setQuery({
-    //         ...query,
-    //         year: props.year.format('YYYY')
-    //     })
-    // }, [props.year])
     return (
         <Wrapper>
             <WrapperHeard>
@@ -192,7 +162,7 @@ export default observer(function (props: Props) {
                         ))
                     }</Select>
 
-                <span className='label'>年份:</span>
+                <span className='label'>入院时间:</span>
                 <YearPicker value={query.year} onChange={(e: any) => {
                     setQuery({...query, year: e})
                 }}/>

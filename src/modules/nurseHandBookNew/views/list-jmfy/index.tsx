@@ -21,6 +21,9 @@ import {fileDownload} from "src/utils/file/file";
 import PersonnelColumn from "src/modules/nurseHandBookNew/views/list-jmfy/personnelColumn";
 import SummaryIndex from "src/modules/nurseHandBookNew/views/list-jmfy/nursingQuality/summaryIndex";
 import JMFYZLJCZBWH from './nursingQuality/JMFYZLJCZBWH'
+import {nurseHandbookJmfyModel} from "src/modules/nurseHandBookNew/views/list-jmfy/model";
+import JMFYZLJCZBLR from "src/modules/nurseHandBookNew/views/list-jmfy/nursingQuality/JMFYZLJCZBLR";
+import JMFYZLJCZBFX from "src/modules/nurseHandBookNew/views/list-jmfy/nursingQuality/JMFYZLJCZBFX";
 
 export interface Props {
     options: Obj
@@ -68,17 +71,18 @@ export default observer(function (props: Props) {
             setSelectedRowKeys(keys)
         }
     }
-    const getHalfYear = () => {
-        let currentDate = new Date();
-        let currentMonth = currentDate.getMonth() + 1; // JavaScript 中月份从 0 开始，所以需要加 1
-        return currentMonth >= 1 && currentMonth <= 6 ? '上半年' : '下半年'
-    }
+    // const getHalfYear = () => {
+    //     let currentDate = new Date();
+    //     let currentMonth = currentDate.getMonth() + 1; // JavaScript 中月份从 0 开始，所以需要加 1
+    //     return currentMonth >= 1 && currentMonth <= 6 ? '上半年' : '下半年'
+    // }
     const defColumns: any[] = [
         {
             title: '序号',
             align: 'center',
             dataIndex: '',
             render: (text: string, row: Obj, index: number) => index + 1,
+
         },
         {
             title: '标题',
@@ -165,99 +169,103 @@ export default observer(function (props: Props) {
      * （12）no_validate_create_more：科室
      */
     const switchFn = {
-        year_can_create_more: () => {
-            setQuery({
-                ...query,
-                year: moment(),
-                menuCode: ''
-            })
-            setAddQuery({
-                ...addQuery,
-                year: moment(),
-                menuCode: ''
-            })
-            const newColumns = [
-                {
-                    title: '年份',
-                    align: 'center',
-                    dataIndex: 'year'
-                },
-                {
-                    title: '类型',
-                    align: 'center',
-                    dataIndex: 'menuName'
-                }
-            ]
-            setColumns(newColumns)
-            getFormList()
-        },
-        year_no_create_more: () => {
-            setQuery({
-                ...query,
-                year: moment()
-            })
-            setAddQuery({
-                ...addQuery,
-                year: moment()
-            })
-            const newColumns = [
-                {
-                    title: '年份',
-                    align: 'center',
-                    dataIndex: 'year'
-                },
-                // {
-                //   title: '标题',
-                //   align: 'center',
-                //   dataIndex: 'title'
-                // }
-            ]
-            setColumns(newColumns)
-            getFormList()
-        },
-        start_end_time_create_more: () => {
-            const [startTime, endTime] = currentMonth()
-            setQuery({
-                ...query,
-                startTime,
-                endTime,
-            })
-            setAddQuery({
-                ...addQuery,
-                startTime,
-                endTime,
-            })
-            const newColumns = [
-                {
-                    title: '日期',
-                    align: 'center',
-                    dataIndex: 'startTime',
-                    render: (text: string, row: Obj) => {
-                        return `${row.startTime}-${row.endTime}`
-                    }
-                },
-                {
-                    title: '类型',
-                    align: 'center',
-                    dataIndex: 'menuName'
-                }
-            ]
-            setColumns(newColumns)
-            getFormList()
-        },
+        // year_can_create_more: () => {
+        //     setQuery({
+        //         ...query,
+        //         year: moment(),
+        //         menuCode: ''
+        //     })
+        //     setAddQuery({
+        //         ...addQuery,
+        //         year: moment(),
+        //         menuCode: ''
+        //     })
+        //     const newColumns = [
+        //         {
+        //             title: '年份',
+        //             align: 'center',
+        //             dataIndex: 'year'
+        //         },
+        //         {
+        //             title: '类型',
+        //             align: 'center',
+        //             dataIndex: 'menuName'
+        //         }
+        //     ]
+        //     setColumns(newColumns)
+        //     getFormList()
+        // },
+        // year_no_create_more: () => {
+        //     setQuery({
+        //         ...query,
+        //         year: moment()
+        //     })
+        //     setAddQuery({
+        //         ...addQuery,
+        //         year: moment()
+        //     })
+        //     const newColumns = [
+        //         {
+        //             title: '年份',
+        //             align: 'center',
+        //             dataIndex: 'year'
+        //         },
+        //         // {
+        //         //   title: '标题',
+        //         //   align: 'center',
+        //         //   dataIndex: 'title'
+        //         // }
+        //     ]
+        //     setColumns(newColumns)
+        //     getFormList()
+        // },
+        // start_end_time_create_more: () => {
+        //     const [startTime, endTime] = currentMonth()
+        //     setQuery({
+        //         ...query,
+        //         startTime,
+        //         endTime,
+        //     })
+        //     setAddQuery({
+        //         ...addQuery,
+        //         startTime,
+        //         endTime,
+        //     })
+        //     const newColumns = [
+        //         {
+        //             title: '日期',
+        //             align: 'center',
+        //             dataIndex: 'startTime',
+        //             render: (text: string, row: Obj) => {
+        //                 return `${row.startTime}-${row.endTime}`
+        //             }
+        //         },
+        //         {
+        //             title: '类型',
+        //             align: 'center',
+        //             dataIndex: 'menuName'
+        //         }
+        //     ]
+        //     setColumns(newColumns)
+        //     getFormList()
+        // },
         month_no_create_more: () => {
             setQuery({
                 ...query,
                 year: moment(),
-                month: moment().format('M'),
-                menuCode: options.showType == 'childList' ? '' : undefined,  //针对925月报配置显示配置表
+                month:'',
+                ...options.menuCode === 'JMFYZLJCZBLR' && {
+                    assortCode: ''
+                }
+                //     质量监测指标录入 JMFYZLJCZBLR 需要状态以及分类选项
             })
             setAddQuery({
                 ...addQuery,
                 year: moment(),
                 month: moment().format('M'),
-                menuCode: options.showType == 'childList' ? '' : undefined,//针对925月报配置显示配置表
-
+                ...options.menuCode === 'JMFYZLJCZBLR' && {
+                    assortCode: ''
+                }
             })
             const newColumns = [
                 {
@@ -278,109 +286,98 @@ export default observer(function (props: Props) {
                 }
             ]
             setColumns(newColumns)
-            getFormList()
+            // getFormList()
         },
-        quarter_not_more: () => {
-            setQuery({
-                ...query,
-                year: moment(),
-                quarter: QuarterV[moment().quarter()],
-            })
-            setAddQuery({
-                ...addQuery,
-                year: moment(),
-                quarter: QuarterV[moment().quarter()],
-            })
-            const newColumns = [
-                {
-                    title: '年份',
-                    align: 'center',
-                    dataIndex: 'year',
-                    render: (text: string) => {
-                        return `${text}年`
-                    }
-                },
-                {
-                    title: '季度',
-                    align: 'center',
-                    dataIndex: 'quarter',
-                    render: (text: string) => {
-                        return `第${text}季度`
-                    }
-                }
-            ]
-            setColumns(newColumns)
-            getFormList()
-        },
-        no_validate_create_more: () => {
-            setQuery({
-                ...query,
-            })
-            setAddQuery({
-                ...addQuery,
-                coverCode: "925SCFM_1",
-            })
-            // const newColumns = [
-            //   {
-            //     title: '',
-            //     align: 'center',
-            //     dataIndex: 'title',
-            //     render: (text: string) => {
-            //       return `${text}`
-            //     }
-            //   },
-            // ]
-            // setColumns(newColumns)
-            getFormList()
-        },
-        half_year_not_more: () => {
-            setQuery({
-                ...query,
-                year: moment(),
-                halfYear: getHalfYear()
-            })
-            setAddQuery({
-                ...addQuery,
-                year: moment(),
-                halfYear: getHalfYear()
-            })
-            const newColumns = [
-                {
-                    title: '年度',
-                    align: 'center',
-                    dataIndex: 'halfYear',
-                    render: (text: any) => {
-                        return {'1': '下半年', '0': '上半年', '2': "全年"}[text]
-                    }
-                },
-            ]
-            setColumns(newColumns)
-            getFormList()
-        },
-        time_create_more: () => {
-            const [startTime] = currentMonth()
-            setQuery({
-                ...query,
-                time: startTime
-            })
-            setAddQuery({
-                ...addQuery,
-                time: startTime
-            })
-            getFormList()
-        },
-        time_no_create_more: () => {
-            const [startTime] = currentMonth()
-            setQuery({
-                ...query,
-                time: startTime
-            })
-            setAddQuery({
-                ...addQuery,
-                time: startTime
-            })
-            getFormList()
-        },
+        // quarter_not_more: () => {
+        //     setQuery({
+        //         ...query,
+        //         year: moment(),
+        //         quarter: QuarterV[moment().quarter()],
+        //     })
+        //     setAddQuery({
+        //         ...addQuery,
+        //         year: moment(),
+        //         quarter: QuarterV[moment().quarter()],
+        //     })
+        //     const newColumns = [
+        //         {
+        //             title: '年份',
+        //             align: 'center',
+        //             dataIndex: 'year',
+        //             render: (text: string) => {
+        //                 return `${text}年`
+        //             }
+        //         },
+        //         {
+        //             title: '季度',
+        //             align: 'center',
+        //             dataIndex: 'quarter',
+        //             render: (text: string) => {
+        //                 return `第${text}季度`
+        //             }
+        //         }
+        //     ]
+        //     setColumns(newColumns)
+        //     getFormList()
+        // },
+        // no_validate_create_more: () => {
+        //     setQuery({
+        //         ...query,
+        //     })
+        //     setAddQuery({
+        //         ...addQuery,
+        //     })
+        //
+        //     getFormList()
+        // },
+        // half_year_not_more: () => {
+        //     setQuery({
+        //         ...query,
+        //         year: moment(),
+        //         halfYear: getHalfYear()
+        //     })
+        //     setAddQuery({
+        //         ...addQuery,
+        //         year: moment(),
+        //         halfYear: getHalfYear()
+        //     })
+        //     const newColumns = [
+        //         {
+        //             title: '年度',
+        //             align: 'center',
+        //             dataIndex: 'halfYear',
+        //             render: (text: any) => {
+        //                 return {'1': '下半年', '0': '上半年', '2': "全年"}[text]
+        //             }
+        //         },
+        //     ]
+        //     setColumns(newColumns)
+        //     getFormList()
+        // },
+        // time_create_more: () => {
+        //     const [startTime] = currentMonth()
+        //     setQuery({
+        //         ...query,
+        //         time: startTime
+        //     })
+        //     setAddQuery({
+        //         ...addQuery,
+        //         time: startTime
+        //     })
+        //     getFormList()
+        // },
+        // time_no_create_more: () => {
+        //     const [startTime] = currentMonth()
+        //     setQuery({
+        //         ...query,
+        //         time: startTime
+        //     })
+        //     setAddQuery({
+        //         ...addQuery,
+        //         time: startTime
+        //     })
+        //     getFormList()
+        // },
     }
 
     const onOkBAdd = (params: Obj) => {
@@ -397,16 +394,19 @@ export default observer(function (props: Props) {
 
         nurseHandBookService.createOrUpdate(data).then(res => {
             if (res.code === '200') {
-                const {id} = res.data
-                // let link =params.url?`/nurseHandBookNewForm/detail?id=${id}&url=${params.url}&menuCode=${options.menuCode}`:`/nurseHandBookNewForm/detail?id=${id}&menuCode=${options.menuCode}`
-                appStore.history.push(`/nurseHandBookNewForm/detail?id=${id}&menuCode=${options.menuCode}&type=${params?.type}`)
+                if (options.menuCode === 'JMFYZLJCZBLR') {
+                    getTableData('1')
+                } else {
+                    const {id} = res.data
+                    appStore.history.push(`/nurseHandBookNewForm/detail?id=${id}&menuCode=${options.menuCode}&type=${params?.type}`)
+                }
+
             }
         })
     }
     const openCreate = () => {
         addModal.show({
             onOkCb: onOkBAdd,
-            formList,
             addQuery,
             menuCode: options?.menuCode
         })
@@ -418,7 +418,7 @@ export default observer(function (props: Props) {
     //     return { deptCode: res.data.defaultDept }
     //   })
     // }
-    const getTableData = () => {
+    const getTableData = (key:string) => {
         const {menuCode} = options
         setLoading(true)
         const params = {...query}
@@ -436,6 +436,10 @@ export default observer(function (props: Props) {
             console.log(params.halfYear);
             params.halfYear = params.halfYear === '上半年' ? 0 : 1
         }
+        /**我的计划不用传工号**/
+        if (key == '1') {
+            params['createdBy'] = authStore.user?.empNo
+        }
         nurseHandBookService.getTableDataList(params).then((res: Obj) => {
             setTableData(res.data.list || [])
             setTotal(res.data.totalCount)
@@ -450,20 +454,20 @@ export default observer(function (props: Props) {
                 nurseHandBookService.delNHR({id}).then(res => {
                     if (res.code === '200') {
                         message.success('删除成功')
-                        getTableData()
+                        getTableData('1')
                     }
                 })
             }
         })
     }
-    /**根据menuCode获取表单 */
-    const getFormList = () => {
-        const {menuCode} = options
-        nurseHandBookService.getFormListNHR({menuCode}).then(res => {
-            setFormList(res.data || [])
-            model.formListMenu = res.data || []
-        })
-    }
+    // /**根据menuCode获取表单 */
+    // const getFormList = () => {
+    //     const {menuCode} = options
+    //     nurseHandBookService.getFormListNHR({menuCode}).then(res => {
+    //         setFormList(res.data || [])
+    //         model.formListMenu = res.data || []
+    //     })
+    // }
     /**isAudit 为ture才能审核**/
     const openAudit = () => {
         if (options?.isAudit) {
@@ -478,7 +482,7 @@ export default observer(function (props: Props) {
         nurseHandBookService.multiHandleNodeNHR(data).then((res) => {
             setSelectedRowKeys([])
             setSelectedRows([])
-            getTableData()
+            getTableData('1')
         });
     }
     /**初始化query columns，弹窗， 搜索组件，请求列表数据 */
@@ -498,14 +502,18 @@ export default observer(function (props: Props) {
             fileDownload(res)
         })
     }
-
+    const onCommit = (key:string = '1') => {
+        getTableData(key)
+    }
     useEffect(() => {
         init()
     }, [options])
-
+    useEffect(() => {
+        nurseHandbookJmfyModel.getMenuList()
+    }, [])
     useFirstDisEffect(() => {
-        if(!['JMFYHLRYYLB','JMFYZLJCZBHZ','JMFYZLJCZBWH'].includes(options.menuCode)){
-            getTableData()
+        if (!['JMFYHLRYYLB', 'JMFYZLJCZBHZ', 'JMFYZLJCZBWH','JMFYZLJCZBFX'].includes(options.menuCode)) {
+            getTableData('1')
         }
     }, [query])
     const getElement = () => {
@@ -515,34 +523,43 @@ export default observer(function (props: Props) {
             case 'JMFYZLJCZBHZ':
                 return <SummaryIndex menuCode={options.menuCode} title={options.name || ''}/>;
             case   'JMFYZLJCZBWH':
-                return  <JMFYZLJCZBWH menuCode={options.menuCode} title={options.name || ''}/>
+                return <JMFYZLJCZBWH menuCode={options.menuCode} title={options.name || ''}/>
+            case  'JMFYZLJCZBFX':
+                return <JMFYZLJCZBFX menuCode={options.menuCode} title={options.name || ''}/>
             default :
                 return <>
                     <SelectCon {...{
-                        query, setQuery, openCreate, title: options.name || '', formList, openAudit, openImport,
+                        query, setQuery, openCreate, title: options.name || '',  openAudit, openImport,
 
                     }} isAudit={options.isAudit}/>
-                    <PageContainer ref={tableRef}>
-                        <BaseTable
-                            surplusHeight={250}
-                            dataSource={tableData}
-                            columns={defColumns.filter((item: any) => item.title)}
-                            rowSelection={options.isAudit ? rowSelection : undefined}
-                            loading={loading}
-                            pagination={{
-                                current: query.pageNum,
-                                pageSize: query.pageSize,
-                                total,
-                            }}
-                            onChange={(pagination) => {
-                                setQuery({
-                                    ...query,
-                                    pageNum: pagination.current,
-                                    pageSize: pagination.pageSize,
-                                })
-                            }}
-                        />
-                    </PageContainer>
+                    {
+                        options.menuCode === 'JMFYZLJCZBLR' ?
+                            <JMFYZLJCZBLR
+                                onCommit={onCommit}
+                                tableData={tableData} menuCode={query.assortCode}
+                                title={options.name || ''}/> :
+                            <PageContainer ref={tableRef}>
+                                <BaseTable
+                                    surplusHeight={250}
+                                    dataSource={tableData}
+                                    columns={defColumns.filter((item: any) => item.title)}
+                                    rowSelection={options.isAudit ? rowSelection : undefined}
+                                    loading={loading}
+                                    pagination={{
+                                        current: query.pageNum,
+                                        pageSize: query.pageSize,
+                                        total,
+                                    }}
+                                    onChange={(pagination) => {
+                                        setQuery({
+                                            ...query,
+                                            pageNum: pagination.current,
+                                            pageSize: pagination.pageSize,
+                                        })
+                                    }}
+                                />
+                            </PageContainer>
+                    }
                 </>
         }
     }
