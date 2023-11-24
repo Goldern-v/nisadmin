@@ -227,6 +227,21 @@ const LEFT_MENU_CONFIG = [
     }
   }),
   ...appStore.hisMatch({
+    map:{
+      hj:[
+        {
+          title: "敏感指标登记本统计",
+          icon: <PBTJ />,
+          children: [{
+            title: "基础指标数据统计",
+            path: "/statistic/基础指标数据统计",
+          }],
+        }
+      ],
+      other: []
+    }
+  }),
+  ...appStore.hisMatch({
     map: {
       gzhd:[
         {

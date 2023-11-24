@@ -51,3 +51,7 @@ const startAndEnd = {
 export const quarterTimes = (year:number|string|undefined,quarter:number|string)=>{
   return [year+'-'+startAndEnd[quarter][0],year+'-'+startAndEnd[quarter][1]]
 }
+export const textFormat2= 'YYYY-MM-DD'
+export const textYM1= 'YYYY年MM月'
+
+

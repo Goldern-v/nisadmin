@@ -11,6 +11,7 @@ import DepartmentNightByQuarterView from './views/departmentNightByQuarter/Depar
 import DepartmentVacationByMonthView from './views/departmentVacationByMonth/DepartmentVacationByMonthView'
 import DepartmentVacationByQuarterView from './views/departmentVacationByQuarter/DepartmentVacationByQuarterView'
 import DepartmentWhiteByMonthView from './views/departmentWhiteByMonth/DepartmentWhiteByMonthView'
+import ClinicalNursingQualityIndicators from './views/clinicalNursingQualityIndicators/index'
 import DepartmentWhiteByQuarterView from './views/departmentWhiteByQuarter/DepartmentWhiteByQuarterView'
 import FeverPatient from './views/feverPatients/FeverPatient'
 import NurseByShiftView from './views/nurseByShift/NurseByShiftView'
@@ -269,6 +270,20 @@ export default function StatisticView() {
     }),
     ...appStore.hisMatch({
       map: {
+        'hj': [
+          {
+            name: "基础指标数据统计",
+            path: "/statistic/基础指标数据统计",
+            component: () => <ClinicalNursingQualityIndicators code='QCRG_HJ_03' />,
+          },
+        ],
+
+        default: [],
+      },
+      vague:true
+    }),
+    ...appStore.hisMatch({
+      map: {
         'sdlj,qzde': [
           {
             name: "护士职务分布",
@@ -376,7 +391,6 @@ export default function StatisticView() {
   let CurrentRoute = leftListPath.find(
     (item) => item.path === currentRoutePath
   );
-
   // let NursingStatisticsRoute = leftNursingStatistics.find((item) => item.path === currentRoutePath)
   return (
     <Con>
