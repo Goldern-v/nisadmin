@@ -186,8 +186,8 @@ class QualityAnalysisReportViewModal {
         endDate:`${appStore.queryObj.endDate} 23:59:59`
       }
       const res = await Promise.all([
-        api.countDeptQc({...params,qcCode:record?.qcCode, flag: 'mz'}),
-        api.countDeptQc({...params,qcCode:record?.qcCode, flag: 'zy'}),
+        api.countDeptQc({...params,groupRoleCode:this.allData.report?.groupRoleCode, flag: 'mz'}),
+        api.countDeptQc({...params,groupRoleCode:this.allData.report?.groupRoleCode, flag: 'zy'}),
         api.getSpecificDeductionList({...params, typeList: [1, 2, 3, 4, 5, 6]})
       ])
       this.mzData =(res[0].data||[]).sort((a:any,b:any)=>b.score - a.score)

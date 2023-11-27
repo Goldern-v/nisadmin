@@ -10,18 +10,21 @@ import {DetailCtxCon} from '../../../style'
 CKEditor.editorUrl = `ckeditor/ckeditor.js`
 
 export interface Props {
+    title?:string
 }
+
 
 let editorInstance: any;
 export default observer(function (props: Props, ref) {
+    const {title}=props
     const editorRef = useRef()
     const onChange = (e: any) => {
         model.handleEditorChange({v1: e.editor.getData()})
     }
-    console.log(model.editorTitle);
     return (
         <Wrapper ref={model.ctxRef} >
-            <Input className='title' value={model.editorTitle} onChange={(e) => model.onChangeTitle(e)}/>
+            <div  className='title'>{title||model.editorTitle}</div>
+            {/*<Input className='title' value={title||model.editorTitle} onChange={(e) => model.onChangeTitle(e)}/>*/}
             {model.isPrint?
                 <div dangerouslySetInnerHTML={{__html: model.editorData.v1}}></div>
                 :

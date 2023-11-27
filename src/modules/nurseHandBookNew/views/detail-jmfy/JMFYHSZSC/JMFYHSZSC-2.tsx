@@ -8,9 +8,12 @@ import {Obj} from "src/libs/types";
 import {jmfydModel as model} from "src/modules/nurseHandBookNew/views/detail-jmfy/model";
 import {Tabs} from "antd";
 const {TabPane} = Tabs;
+export interface Props {
+    title?:string
+}
+export default observer(function (props:Props) {
+    const {title }=props
 
-export default observer(function () {
-    const {deptCode, year} = model.detail.record || {}
     const [pageLoading, setPageLoading] = useState(false)
     const [dataSource, setDataSource] = useState([])
     const [tabIndex,setTabIndex]=useState('1')
@@ -20,6 +23,7 @@ export default observer(function () {
             dataIndex: 'index',
             width: 50,
             align: 'center',
+            render:(text:string,record:any,index:number)=>index + 1
         },
         {
             title: '指标项目',
@@ -42,9 +46,10 @@ export default observer(function () {
     ]
     const getData = () => {
         setPageLoading(true)
+        console.log(menuCode);
         nurseHandBookService.getPublicIndicatorsItem({
             ...model.detail.record,
-            assortCode:assortCode
+            assortCode:menuCode
         }).then((res: Obj) => {
             setDataSource(res.data.list || [])
             setPageLoading(false)
@@ -53,15 +58,19 @@ export default observer(function () {
     const onChange =(key:string)=>{
         setTabIndex(key)
     }
-    const assortCode =useMemo(()=>{
-        return model.menuList[Number(tabIndex)].assortCode
+    const menuCode =useMemo(()=>{
+        return model.menuList[Number(tabIndex)].menuCode
     },[tabIndex])
     useEffect(() => {
         getData()
     }, [tabIndex])
     return (
         <Wrapper>
-            <div>护理质量检测指标汇总</div>
+            <div style={{
+                textAlign:'center',
+                fontSize:'18px',
+                fontWeight:600
+            }}>护理质量检测指标汇总</div>
             <Tabs defaultActiveKey={tabIndex} tabPosition={'top'} style={{height: 220}} onChange={onChange}>
                 {
                     model.menuList.map((item: any, index: number) =>

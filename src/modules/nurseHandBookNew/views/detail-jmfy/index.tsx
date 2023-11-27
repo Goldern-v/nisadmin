@@ -41,17 +41,6 @@ export default observer(function (props: Props) {
         }
         return ''
     }, [curNode])
-    const getElement = () => {
-        switch (curIndex) {
-            case 0 :
-                return <div>0000</div>
-            case 1 :
-                return <div>1111</div>
-            case 2 :
-                return <div>2222</div>
-        }
-
-    }
     useEffect(() => {
         return () => {
             model.auditModal.unMount()
@@ -86,6 +75,8 @@ export default observer(function (props: Props) {
                         <Button onClick={() => appStore.history.goBack()}>返回</Button>
                         <Button onClick={model.onPrint}>打印</Button>
                         {btnList}
+                        <Button onClick={model.editLink}>编辑</Button>
+                        {/*{authStore.isOnlyRoleManage && <Button onClick={model.editLink}>编辑</Button>}*/}
                     </>}
                 />
                 <MainWrapper>
@@ -93,27 +84,6 @@ export default observer(function (props: Props) {
                     <div className='main-ctx'>
                         <CtxCon/>
                     </div>
-                    {/*{model.configFn&& <model.configFn.Component/>}*/}
-                        {/*<div className='main-ctx'>*/}
-                    {/*    /!*<CtxCon />*!/*/}
-                    {/*    <div className='main-left'>*/}
-                    {/*        {*/}
-                    {/*            menuList.map((item: string, index: number) => {*/}
-                    {/*                return <div key={'a' + index} style={{*/}
-                    {/*                    height: "50px",*/}
-                    {/*                    width: '150px',*/}
-                    {/*                    textAlign: "center",*/}
-                    {/*                    color: index == curIndex ? 'green' : "#333",*/}
-                    {/*                    borderBottom: "1px solid #999",*/}
-                    {/*                    lineHeight:'50px'*/}
-                    {/*                }} onClick={() => setCurIndex(index)}>{item}</div>*/}
-                    {/*            })*/}
-                    {/*        }*/}
-                    {/*    </div>*/}
-                    {/*    <div style={{flex:1}}>*/}
-                    {/*        <CtxCon curIndex={curIndex} />*/}
-                    {/*    </div>*/}
-                    {/*</div>*/}
                 </MainWrapper>
                 {model.auditModal && <model.auditModal.Component/>}
             </Spin>

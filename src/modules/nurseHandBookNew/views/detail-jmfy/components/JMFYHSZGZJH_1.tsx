@@ -12,6 +12,7 @@ import {ChangeOrFocus} from "src/libs/types";
 const {TextArea} = Input
 
 export interface Props {
+    title?:string
 }
 
 const ChildCon = memo((props: any) => {
@@ -22,6 +23,7 @@ const ChildCon = memo((props: any) => {
     return prev?.value == next?.value
 })
 export default observer(function (props: Props) {
+    const {title}=props
     const onChange = (e: any, key: string) => {
         let value: any = e
         if (isMoment(e)) {
@@ -39,7 +41,7 @@ export default observer(function (props: Props) {
 
     return (
         <Wrapper ref={model.ctxRef} style={{pointerEvents: model.allowEdit ? 'auto' : 'none'}}>
-            <div className='title'>{model.detail?.record?.menuName || ''}</div>
+            <div className='title'>{title||model.detail?.record?.menuName || ''}</div>
             <table>
                 <colgroup>
                     <col width='15%'/>
