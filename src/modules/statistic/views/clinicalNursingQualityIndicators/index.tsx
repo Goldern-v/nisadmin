@@ -18,8 +18,7 @@ import { fileDownload } from 'src/utils/file/file'
 interface QueryIF {
   type: number,
   year: any,
-  wardCode: any[],
-  areaCode: string,
+  wardCode: string,
   timeType: number,
   months: any[],
   quarter: number[],
@@ -34,8 +33,7 @@ export default function (props: Props) {
   const { code } = props
   const [query, setQuery] = useState<QueryIF>({
     type: 1,
-    wardCode: [],
-    areaCode: '',
+    wardCode: "",
     timeType: 1,
     year: moment(),
     months: currentYear(),
@@ -48,8 +46,9 @@ export default function (props: Props) {
 
   const tableTitle = useMemo(() => {
     const { timeType, months, type, quarter } = query
-    const wardName = authStore.deptList.find(v => v.code === query.wardCode[1])?.name || ''
-    const areaName = areaList.find(v => v.code === query.areaCode)?.name || ''
+    const wardName = authStore.deptList.find(v => v.code === query.wardCode)?.name || ''
+    
+    const areaName = areaList.find(v => v.code === query.wardCode)?.name || ''
     return getTitle({ year: query.year, wardName, areaName, timeType, months, code, type, quarter })
   }, [query])
 
@@ -113,7 +112,7 @@ export default function (props: Props) {
 
   const getBlockList = () => new Promise((res, rej) =>
     sensitiveRegisterService
-      .qcRegisterBlockGetList(code, query.wardCode[1]).then(res1 => {
+      .qcRegisterBlockGetList(code, query.wardCode).then(res1 => {
         setBlockList(res1.data || [])
         if (res1.data.length) {
           setQuery({ ...query, qcRegisterBlockId: res1.data[0].id })
@@ -130,8 +129,7 @@ export default function (props: Props) {
         setAreaList(treeDept)
         setQuery({
           ...query,
-          areaCode: userBigDeptCode,
-          wardCode: [userBigDeptCode, userDeptCode],
+          wardCode: userDeptCode,
         })
       }
     })
@@ -139,7 +137,7 @@ export default function (props: Props) {
   const formatParams = () => {
     try {
 
-      let { year, type, wardCode, areaCode, timeType, quarter, months, ...other }: Obj = query
+      let { year, type, wardCode, timeType, quarter, months, ...other }: Obj = query
       let params: Obj = other
 
       year = year.format('YYYY')
@@ -158,8 +156,7 @@ export default function (props: Props) {
         params.endDate = months[1].format(textFormat2)
       }
       if (type === 3) {
-        params.wardCode = wardCode[1]
-        params.areaCode = wardCode[0]
+        params.wardCode = wardCode
       }
       
       return params
@@ -177,7 +174,7 @@ export default function (props: Props) {
     getTableData()
   }, [])
   useEffect(() => {
-    if (query.wardCode.length === 2) {
+    if (query.wardCode) {
       getBlockList()
     }
   }, [query.wardCode])

@@ -39,30 +39,11 @@ export default function (props: Props) {
           <Select.Option value={v.code} key={i}>{v.name}</Select.Option>
         ))}
       </Select>
-      {query.type === 2 && <Select
-        value={query.areaCode}
-        style={{ width: 180 }}
-        showSearch
-        onChange={(areaCode: string) => {
-          setQuery({ ...query, areaCode })
-          //每次选完片区后，拿到值  设置对应的片区科室
-        }}
-        filterOption={(input: any, option: any) =>
-          option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-        }>
-        {areaList.map((item: any, index: number) =>
-          <Select.Option value={item.code} key={index}>{item.name}</Select.Option>)}
+      {query.type === 3 && <Select value={query.wardCode} onChange={(e: any) => onChange(e, 'wardCode')}>
+        {areaList.map((v, i) => (
+          <Select.Option value={v.code} key={i}>{v.name}</Select.Option>
+        ))}
       </Select>}
-      {query.type === 3 && <Cascader options={areaList} expandTrigger='hover'
-        value={query.wardCode}
-        fieldNames={{ label: 'name', value: 'code', children: 'childDepts' }}
-        onChange={(e: any) => {
-          onChange(e, 'wardCode')
-        }}
-        displayRender={(label: any) => {
-          return label[label.length - 1]
-        }}
-        placeholder="请选择" style={{ width: 150 }} />}
       <Select value={query.timeType} onChange={(e: any) => onChange(e, 'timeType')}>
         {timeTypes.map((v, i) => (
           <Select.Option value={v.code} key={i}>{v.name}</Select.Option>
