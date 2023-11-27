@@ -1,20 +1,18 @@
 import styled from 'styled-components'
 import React, {useState, useEffect} from 'react'
-import {Button, Row, Col, InputNumber, Modal, message as Message} from 'antd'
+import {Button,  InputNumber, Modal, } from 'antd'
 import {PageHeader, PageTitle, Place} from 'src/components/common'
 import {Select, Input, Tabs, Switch, message} from 'src/vendors/antd'
 import {appStore, authStore} from 'src/stores'
 import BaseTable, {DoCon} from 'src/components/BaseTable'
 import {observer} from 'mobx-react-lite'
-import YearPicker from "src/components/YearPicker";
 import {nurseHandBookService} from "src/modules/nurseHandBookNew/services/NurseHandBookService";
 import {Obj} from "src/libs/types";
 import createModal from "src/libs/createModal";
 import AddClassModal from "src/modules/nurseHandBookNew/views/list-jmfy/nursingQuality/addClassModal";
 import AddContent from "src/modules/nurseHandBookNew/views/list-jmfy/nursingQuality/addContent";
 import {cloneDeep} from "lodash";
-import {nurseHandbookJmfyModel as model} from "src/modules/nurseHandBookNew/views/list-jmfy/model";
-
+import { jmfydModel as model} from "src/modules/nurseHandBookNew/views/detail-jmfy/model";
 const {TabPane} = Tabs;
 const {Option} = Select
 

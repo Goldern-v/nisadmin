@@ -1,18 +1,15 @@
 import styled from 'styled-components'
 import React, {useState, useEffect} from 'react'
-import {Button, Row, Col, Icon, Table} from 'antd'
+import {Button,  Icon, Table} from 'antd'
 import {PageHeader, PageTitle, Place} from 'src/components/common'
-import {DatePicker, Select, PaginationConfig, Modal, message, Input} from 'src/vendors/antd'
+import { Select,  Input} from 'src/vendors/antd'
 import {appStore, authStore} from 'src/stores'
-import BaseTable from 'src/components/BaseTable'
-import {DoCon} from 'src/components/BaseTable'
 import {observer} from 'mobx-react-lite'
 import moment from "moment";
 import YearPicker from "src/components/YearPicker";
 import {nurseHandBookService} from "src/modules/nurseHandBookNew/services/NurseHandBookService";
 import {Obj} from "src/libs/types";
-import {nurseHandbookJmfyModel as model} from "src/modules/nurseHandBookNew/views/list-jmfy/model";
-import {ColumnGroupProps} from "antd/lib/table/ColumnGroup";
+import { jmfydModel as model} from "src/modules/nurseHandBookNew/views/detail-jmfy/model";
 
 const {Option} = Select
 const Quarter = [{name: '第一季度', code: 1}, {name: '第二季度', code: 2}, {
@@ -208,29 +205,29 @@ export default observer(function (props: Props) {
             // if (res.data && res.data.length >= 1) {
             //     setDataSource(res.data)
             // }
-    let data =[{
-        deptName:"呼吸与危重症医学科护理单元",
-        monitorContent:'uuuuu',
-        'uuuuu':{
-            qoq:1,
-            period:2,
-            descend:3,
-            sameTerm:4,
-            summary:5
-        }
-    },
-        {
-            deptName:"呼吸",
-            monitorContent:'xxxx',
-            'xxxx':{
-                qoq:1,
-                period:2,
-                descend:3,
-                sameTerm:4,
-                summary:5
-            }
-        }]
-            setDataSource(data)
+    // let data =[{
+    //     deptName:"呼吸与危重症医学科护理单元",
+    //     monitorContent:'uuuuu',
+    //     'uuuuu':{
+    //         qoq:1,
+    //         period:2,
+    //         descend:3,
+    //         sameTerm:4,
+    //         summary:5
+    //     }
+    // },
+    //     {
+    //         deptName:"呼吸",
+    //         monitorContent:'xxxx',
+    //         'xxxx':{
+    //             qoq:1,
+    //             period:2,
+    //             descend:3,
+    //             sameTerm:4,
+    //             summary:5
+    //         }
+    //     }]
+            setDataSource(res.data||[])
             setTotal(res.data.totalCount)
             setPageLoading(false)
         }).catch(e => setPageLoading(false))
@@ -308,7 +305,7 @@ export default observer(function (props: Props) {
                 <Table
                     pagination={false}
                     bordered={true}
-                    loading={pageLoading} columns={newColumn} dataSource={dataSource}/>
+                    loading={pageLoading} columns={columns} dataSource={dataSource}/>
                 {/*<BaseTable*/}
                 {/*    loading={pageLoading}*/}
                 {/*    dataSource={dataSource}*/}

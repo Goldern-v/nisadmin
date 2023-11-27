@@ -6,7 +6,7 @@ import {Rules} from 'src/components/Form/interfaces'
 import {Obj} from 'src/libs/types'
 import {ModalComponentProps} from 'src/libs/createModal'
 import {authStore} from 'src/stores'
-import {nurseHandbookJmfyModel as model} from "src/modules/nurseHandBookNew/views/list-jmfy/model";
+import { jmfydModel as model} from "src/modules/nurseHandBookNew/views/detail-jmfy/model";
 import {observer} from "mobx-react-lite";
 import {Switch} from "src/vendors/antd";
 

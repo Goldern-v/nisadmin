@@ -1,17 +1,15 @@
 import styled from 'styled-components'
 import React, {useState, useEffect} from 'react'
-import {Button, Row, Col} from 'antd'
 import {PageHeader, PageTitle, Place} from 'src/components/common'
-import {DatePicker, Select, PaginationConfig, Modal, message, Input} from 'src/vendors/antd'
-import {appStore, authStore} from 'src/stores'
+import {Select, Input} from 'src/vendors/antd'
+import { authStore} from 'src/stores'
 import BaseTable from 'src/components/BaseTable'
-import {DoCon} from 'src/components/BaseTable'
 import {observer} from 'mobx-react-lite'
 import moment from "moment";
 import YearPicker from "src/components/YearPicker";
 import {nurseHandBookService} from "src/modules/nurseHandBookNew/services/NurseHandBookService";
 import {Obj} from "src/libs/types";
-import {nurseHandbookJmfyModel as model} from "src/modules/nurseHandBookNew/views/list-jmfy/model";
+import { jmfydModel as model} from "src/modules/nurseHandBookNew/views/detail-jmfy/model";
 
 const {Option} = Select
 

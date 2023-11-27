@@ -1,16 +1,17 @@
 import Form from 'src/components/Form'
 import styled from 'styled-components'
 import React, {useLayoutEffect, useRef, useState} from 'react'
-import {Col, DatePicker, message, Modal, Row, Select} from 'antd'
+import {Col, DatePicker,Modal, Row, Select} from 'antd'
 import {Rules} from 'src/components/Form/interfaces'
 import {Obj} from 'src/libs/types'
 import YearPicker from 'src/components/YearPicker'
 import {ModalComponentProps} from 'src/libs/createModal'
-import {appStore, authStore} from 'src/stores'
+import { authStore} from 'src/stores'
 import SelectFilter from 'src/components/SelectFilter'
 import {quarterList, quarterYear} from "src/enums/date";
-import {jewCoverArr, zjhjCoverArr} from "src/modules/nurseHandBookNew/views/list-jew/utils/enums";
-import {nurseHandbookJmfyModel as model} from "src/modules/nurseHandBookNew/views/list-jmfy/model";
+import {
+    jmfydModel as model
+} from "src/modules/nurseHandBookNew/views/detail-jmfy/model";
 
 const {Option} = Select
 
@@ -86,9 +87,10 @@ export default function (props: Props) {
                     }
                     if (params.hasOwnProperty('time')) params.time = params.time ? params.time.format("YYYY-MM-DD HH:mm:ss") : ''
                     const assortCode = model.menuList.find((v: any) => v.name === assortName)?.menuCode || ''
-                    // params.assortCode = assortCode
-                    params.menuCode =assortCode
-                    params.assortCode =menuCode
+                    if(params.assortCode){
+                        params.menuCode =assortCode
+                        params.assortCode =menuCode
+                    }
                     onOkCb && onOkCb(params)
                 })
                 .catch((e: any) => {
@@ -205,6 +207,21 @@ export default function (props: Props) {
                             </Col>
                         </Row>
                     }
+                    {
+                        addQuery?.menuCode !== undefined &&
+                        <Row>
+                            <Col span={8} className='label'>
+                                记录表：
+                            </Col>
+                            <Col span={16}>
+                                <Form.Field name='menuCode'>
+                                    <SelectFilter list={model.formListMenu} configKey={{
+                                        value: 'menuCode', name:
+                                            'name'
+                                    }}/>
+                                </Form.Field>
+                            </Col>
+                        </Row>}
                     {
                         addQuery?.time !== undefined &&
                         <Row>

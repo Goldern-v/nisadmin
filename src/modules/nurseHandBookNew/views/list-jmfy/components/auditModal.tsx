@@ -2,7 +2,6 @@ import { Col, Input, Modal, Radio, Row } from 'antd'
 import { observer } from 'mobx-react'
 import React, { useLayoutEffect, useState } from 'react'
 import { globalModal } from 'src/global/globalModal'
-import { ModalComponentProps } from 'src/libs/createModal'
 import { Obj } from 'src/libs/types'
 import styled from 'styled-components'
 

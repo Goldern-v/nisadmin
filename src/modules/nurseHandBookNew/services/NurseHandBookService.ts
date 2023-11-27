@@ -266,7 +266,7 @@ export default class NurseHandBookService extends BaseApiService {
     }
     /**获取通用指标**/
     public getPublicIndicatorsItem(params:Obj){
-        return this.post('/nurseHandbookItem/getIndicatorsItem', params)
+        return this.post('/nurseHandbook/jmfy/getIndicatorsItem', params)
     }
     public publicDeleteIndicatorsItem(params:Obj){
         return this.post('/nurseHandbookItem/deleteIndicatorsItem', params)

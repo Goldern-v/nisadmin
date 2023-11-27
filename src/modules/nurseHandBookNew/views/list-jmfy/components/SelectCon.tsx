@@ -4,12 +4,13 @@ import React from 'react'
 import {PageHeader, PageTitle, Place} from 'src/components/common'
 import YearPicker from 'src/components/YearPicker'
 import {Obj} from 'src/libs/types'
-import {appStore, authStore} from 'src/stores'
+import { authStore} from 'src/stores'
 import styled from 'styled-components'
 import {STATUS_LIST} from '../../list-jew/utils/enums'
 import {quarterList, quarterYear} from "src/enums/date";
-import {nurseHandbookJmfyModel as model} from "src/modules/nurseHandBookNew/views/list-jmfy/model";
-
+import {
+    jmfydModel as model
+} from "src/modules/nurseHandBookNew/views/detail-jmfy/model";
 const {Option} = Select
 
 const dateFormat = 'YYYY-MM-DD';
@@ -134,6 +135,20 @@ export default observer(function (props: Props) {
                         }
                     </Select>
                 </>
+            }
+            {query.menuCode !== undefined && <>
+                <span className='label'>记录表:</span>
+                <Select value={query.menuCode} onChange={(e: any) => {
+                    changeQuery(e, 'menuCode')
+                }}>
+                    <Option key={'all'} value={''}>全部</Option>
+                    {
+                        model.formListMenu.map((v:any) => (
+                            <Option key={v.menuCode} value={v.menuCode}>{v.name}</Option>
+                        ))
+                    }
+                </Select>
+            </>
             }
             {
                 query.assortCode !== undefined &&

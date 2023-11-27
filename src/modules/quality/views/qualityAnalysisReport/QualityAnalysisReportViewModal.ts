@@ -127,7 +127,8 @@ class QualityAnalysisReportViewModal {
     this.getSectionData(`2-1`).report = this.allData!.report || {}
     this.getSectionData(`本月质量检查扣分情况`).report = this.allData!.report || {}
     if(appStore.HOSPITAL_ID ==='jmfy' && jmfyData.data?.typeCompareList.length > 0){
-      this.jmfyTypeCompareList(jmfyData.data?.typeCompareList)
+      // this.jmfyTypeCompareList(jmfyData.data?.typeCompareList)
+      this.getSectionData(`质量扣分比较`).list =jmfyData.data?.typeCompareList
     }else{
       this.getSectionData(`质量扣分比较`).list = (this.allData!.typeCompareList || []).map((item: any) => {
         return Object.assign(item, {
@@ -217,8 +218,8 @@ class QualityAnalysisReportViewModal {
 }
   /**江门妇幼数据--质量扣分比较**/
   jmfyTypeCompareList(data:any){
-    this.getSectionData(`质量扣分比较`).list = (this.allData!.typeCompareList || []).map((item: any,key:number) => {
-      const matchingItemB = data.find((itemB:any) => itemB.itemType === item.itemType);
+    this.getSectionData(`质量扣分比较`).list = data.map((item: any,key:number) => {
+      const matchingItemB = (this.allData!.typeCompareList || []).find((itemB:any) => itemB.itemType === item.itemType);
       return Object.assign(item, {
         currentDeductScore: Number(matchingItemB?.currentDeductScore||0).toFixed(2),
         lastDeductScore: Number(matchingItemB?.lastDeductScore||0).toFixed(2),

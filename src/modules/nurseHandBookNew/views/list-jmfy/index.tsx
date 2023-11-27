@@ -6,7 +6,6 @@ import styled from 'styled-components'
 import {appStore, authStore} from 'src/stores'
 import BaseTable, {DoCon} from 'src/components/BaseTable'
 import moment from 'moment'
-import {currentMonth} from 'src/utils/date/rangeMethod'
 import {nurseHandBookService} from '../../services/NurseHandBookService'
 import SelectCon from './components/SelectCon'
 import AddModal from './components/addModal'
@@ -16,14 +15,15 @@ import {message, Modal} from 'antd'
 import {HALF_YEAR, STATUS_LIST, QuarterV} from '../list-jew/utils/enums'
 import {formatTitle} from '../detail-lyrm/config'
 import AuditModal from './components/auditModal'
-import {nurseHandbookRecordModel as model} from '../detail-jew/model'
 import {fileDownload} from "src/utils/file/file";
 import PersonnelColumn from "src/modules/nurseHandBookNew/views/list-jmfy/personnelColumn";
 import SummaryIndex from "src/modules/nurseHandBookNew/views/list-jmfy/nursingQuality/summaryIndex";
 import JMFYZLJCZBWH from './nursingQuality/JMFYZLJCZBWH'
-import {nurseHandbookJmfyModel} from "src/modules/nurseHandBookNew/views/list-jmfy/model";
+import {jmfydModel} from "src/modules/nurseHandBookNew/views/detail-jmfy/model";
 import JMFYZLJCZBLR from "src/modules/nurseHandBookNew/views/list-jmfy/nursingQuality/JMFYZLJCZBLR";
 import JMFYZLJCZBFX from "src/modules/nurseHandBookNew/views/list-jmfy/nursingQuality/JMFYZLJCZBFX";
+import JMFYHSZGZJH from './JMFYHLGLMBYJH/JMFYHSZGZJH'
+import MultiFileUploader, {FileItem} from "src/components/MultiFileUploader";
 
 export interface Props {
     options: Obj
@@ -102,21 +102,6 @@ export default observer(function (props: Props) {
                 return <span style={{color: cur?.color}}>{cur?.label || row.statusDesc}</span>
             }
         } : {},
-        // ...appStore.hisMatch({
-        //   map:{
-        //     'qhwy':[],
-        //     other:[{
-        //       title: '状态',
-        //       align: 'center',
-        //       dataIndex: 'status',
-        //       render(text: number, row: Obj) {
-        //         const cur = STATUS_LIST.find(v => v.value === text)
-        //         return <span style={{ color: cur?.color }}>{cur?.label || row.statusDesc}</span>
-        //       }
-        //     },]
-        //   }
-        // }),
-
         {
             title: '科室',
             align: 'center',
@@ -249,23 +234,16 @@ export default observer(function (props: Props) {
         //     setColumns(newColumns)
         //     getFormList()
         // },
-        month_no_create_more: () => {
+        month_create_more: () => {
             setQuery({
                 ...query,
                 year: moment(),
-                month:'',
-                ...options.menuCode === 'JMFYZLJCZBLR' && {
-                    assortCode: ''
-                }
-                //     质量监测指标录入 JMFYZLJCZBLR 需要状态以及分类选项
+                month: moment().format('M')
             })
             setAddQuery({
                 ...addQuery,
                 year: moment(),
                 month: moment().format('M'),
-                ...options.menuCode === 'JMFYZLJCZBLR' && {
-                    assortCode: ''
-                }
             })
             const newColumns = [
                 {
@@ -286,7 +264,52 @@ export default observer(function (props: Props) {
                 }
             ]
             setColumns(newColumns)
-            // getFormList()
+        },
+        month_no_create_more: () => {
+            setQuery({
+                ...query,
+                year: moment(),
+                month: '',
+                //  质量监测指标录入 JMFYZLJCZBLR 需要状态以及分类选项
+                ...options.menuCode === 'JMFYZLJCZBLR' && {
+                    assortCode: ''
+                },
+                //  工作计划 工作总结 增加选择表
+                ...['JMFYHSZGZZJ', 'JMFYHSZGZJH'].includes(options.menuCode) && {
+                    menuCode: ''
+                },
+            })
+            setAddQuery({
+                ...addQuery,
+                year: moment(),
+                month: moment().format('M'),
+                ...options.menuCode === 'JMFYZLJCZBLR' && {
+                    assortCode: ''
+                },
+                ...['JMFYHSZGZZJ', 'JMFYHSZGZJH'].includes(options.menuCode) && {
+                    menuCode: ''
+                },
+            })
+            const newColumns = [
+                {
+                    title: '年份',
+                    align: 'center',
+                    dataIndex: 'year',
+                    render: (text: string) => {
+                        return `${text}年`
+                    }
+                },
+                {
+                    title: '月份',
+                    align: 'center',
+                    dataIndex: 'month',
+                    render: (text: string) => {
+                        return `${text}月`
+                    }
+                }
+            ]
+            setColumns(newColumns)
+            getFormList()
         },
         // quarter_not_more: () => {
         //     setQuery({
@@ -393,9 +416,16 @@ export default observer(function (props: Props) {
         title && (data.title = title)
 
         nurseHandBookService.createOrUpdate(data).then(res => {
-            if (res.code === '200') {
+            if (res.code == 200) {
                 if (options.menuCode === 'JMFYZLJCZBLR') {
                     getTableData('1')
+                    return
+                } else if (options.mennCode === 'JMFYHSZGZJH') {
+                    console.log(options);
+                    const {id} = res.data
+                    getTableData('1')
+                    jmfydModel.init(id)
+                    return addModal.hide()
                 } else {
                     const {id} = res.data
                     appStore.history.push(`/nurseHandBookNewForm/detail?id=${id}&menuCode=${options.menuCode}&type=${params?.type}`)
@@ -418,10 +448,11 @@ export default observer(function (props: Props) {
     //     return { deptCode: res.data.defaultDept }
     //   })
     // }
-    const getTableData = (key:string) => {
+    const getTableData = (key: string) => {
         const {menuCode} = options
         setLoading(true)
         const params = {...query}
+        // console.log(params);
         if (!params.menuCode) params.menuCode = menuCode
         if (params.hasOwnProperty('year')) params.year = params.year ? params.year.format('YYYY') : ''
         if (params.hasOwnProperty('startTime')) {
@@ -461,13 +492,12 @@ export default observer(function (props: Props) {
         })
     }
     // /**根据menuCode获取表单 */
-    // const getFormList = () => {
-    //     const {menuCode} = options
-    //     nurseHandBookService.getFormListNHR({menuCode}).then(res => {
-    //         setFormList(res.data || [])
-    //         model.formListMenu = res.data || []
-    //     })
-    // }
+    const getFormList = () => {
+        const {menuCode} = options
+        nurseHandBookService.getFormListNHR({menuCode}).then(res => {
+            jmfydModel.formListMenu = res.data || []
+        })
+    }
     /**isAudit 为ture才能审核**/
     const openAudit = () => {
         if (options?.isAudit) {
@@ -502,20 +532,21 @@ export default observer(function (props: Props) {
             fileDownload(res)
         })
     }
-    const onCommit = (key:string = '1') => {
+    const onCommit = (key: string = '1') => {
         getTableData(key)
     }
     useEffect(() => {
         init()
     }, [options])
     useEffect(() => {
-        nurseHandbookJmfyModel.getMenuList()
+        jmfydModel.getMenuList()
     }, [])
     useFirstDisEffect(() => {
-        if (!['JMFYHLRYYLB', 'JMFYZLJCZBHZ', 'JMFYZLJCZBWH','JMFYZLJCZBFX'].includes(options.menuCode)) {
+        if (!['JMFYHLRYYLB', 'JMFYZLJCZBHZ', 'JMFYZLJCZBWH', 'JMFYZLJCZBFX'].includes(options.menuCode)) {
             getTableData('1')
         }
     }, [query])
+
     const getElement = () => {
         switch (options.menuCode) {
             case 'JMFYHLRYYLB':
@@ -526,10 +557,20 @@ export default observer(function (props: Props) {
                 return <JMFYZLJCZBWH menuCode={options.menuCode} title={options.name || ''}/>
             case  'JMFYZLJCZBFX':
                 return <JMFYZLJCZBFX menuCode={options.menuCode} title={options.name || ''}/>
+            // case  'JMFYHSZGZJH':
+            //     return <>
+            //         <SelectCon {...{
+            //             query, setQuery, openCreate, title: options.name || '', openAudit, openImport,
+            //
+            //         }} isAudit={options.isAudit}/>
+            //         <JMFYHSZGZJH onCommit={onCommit}
+            //                      tableData={tableData} menuCode={query.assortCode}
+            //                      title={options.name || ''}/>
+            //     </>
             default :
                 return <>
                     <SelectCon {...{
-                        query, setQuery, openCreate, title: options.name || '',  openAudit, openImport,
+                        query, setQuery, openCreate, title: options.name || '', openAudit, openImport,
 
                     }} isAudit={options.isAudit}/>
                     {

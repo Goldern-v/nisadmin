@@ -31,6 +31,7 @@ import QcTempManage from 'src/modules/quality/views/qcTemplates/qcTemplatesManag
 import LeaveRecordDetail from 'src/modules/nurseFiles/view/nurseFiles-wh/views/nurseFileDetail/components/leaveRecordDetail/LeaveRecordDetail'
 import detailQhwy from 'src/modules/nurseHandBookNew/views/detail-qhwy'
 import JewDutyRecord from "src/modules/quality/views/jewDutyRecord";
+import detailJmfy from 'src/modules/nurseHandBookNew/views/detail-jmfy'
 
 const ScheduleHomeView = lazy(() =>
   import("src/modules/schedule/views/ScheduleHome/ScheduleHomeView")
@@ -1014,7 +1015,7 @@ const routes: RouteItem[] = [
         925:detail925,
         qhwy:detailQhwy,
         zjhj:detail925,
-        jmfy:detail925,
+        jmfy:detailJmfy,
         other: detailLyrm
         // other: null
       }
