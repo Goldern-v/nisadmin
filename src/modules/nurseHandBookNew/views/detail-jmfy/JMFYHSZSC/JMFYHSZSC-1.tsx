@@ -7,13 +7,13 @@ import {nurseHandBookService} from "src/modules/nurseHandBookNew/services/NurseH
 import {Obj} from "src/libs/types";
 import  {jmfydModel as model} from "src/modules/nurseHandBookNew/views/detail-jmfy/model";
 
-// export interface Props {
-//     deptCode?:number
-//     year:string
-// }
+export interface Props {
+    title?:string
+}
 
-export default observer(function () {
+export default observer(function (props:Props) {
     const {deptCode,year} =model.detail.record||{}
+    const {title }=props
     const [pageLoading, setPageLoading] = useState(false)
     const [dataSource, setDataSource] = useState([])
     let columns: any = [
@@ -135,7 +135,11 @@ useEffect(()=>{
 },[deptCode,year])
     return (
         <Wrapper>
-            <div>护理人员一览表</div>
+            <div style={{
+                textAlign:'center',
+                fontSize:'18px',
+                fontWeight:600
+            }}>{title}</div>
             <BaseTable
                 loading={pageLoading}
                 dataSource={dataSource}

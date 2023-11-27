@@ -14,6 +14,7 @@ import MultiFileUploader, {FileItem} from "src/components/MultiFileUploader";
 const { TextArea } = Input
 
 export interface Props {
+    title?:string
 }
 const ChildCon = memo((props: any) => {
     const {value, component, ...other} = props
@@ -23,6 +24,7 @@ const ChildCon = memo((props: any) => {
     return prev?.value == next?.value
 })
 export default observer(function (props: Props) {
+    const {title}=props
     const [files, setFiles] = useState(model.editorData.fileData as FileItem[])
 
     const onChange = (e: any,config: Obj) => {
@@ -47,12 +49,10 @@ export default observer(function (props: Props) {
         })
         setFiles(list)
         console.log("newList===",list);
-        // setUrls(urls)
-        // setIds(ids)
     }
     return (
         <Wrapper className='con--a4' ref={model.ctxRef}>
-                <div className='title'>{model.detail?.record?.menuName || ''}</div>
+                <div className='title'>{title||model.detail?.record?.menuName || ''}</div>
             <table>
                 <colgroup>
                     <col width='10%' />

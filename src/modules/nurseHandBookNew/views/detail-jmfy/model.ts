@@ -32,6 +32,7 @@ class NurseHandBookRecordModelJmfy {
   @observable public  formListMenu:any =[]
   @observable public result:boolean =false
   @observable public menuList:any =[]  //分类列表
+  @observable public curIndex:number = 0  //护士长手册当前选中索引
   constructor() {
     this.auditModal = createModal(auditModal)
   }
@@ -263,6 +264,11 @@ class NurseHandBookRecordModelJmfy {
     nurseHandBookService.getFormList().then(res => {
       this.menuList =res.data
     })
+  }
+  public editLink(){
+    window.open(
+        `/crNursing/manage/#/nurseHandBookNew/form29/JMFYZLJCZBWH`
+    );
   }
 }
 

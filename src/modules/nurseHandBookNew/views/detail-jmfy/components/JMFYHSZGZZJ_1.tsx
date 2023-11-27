@@ -9,6 +9,7 @@ import {isOfType} from "src/utils/ts.utils";
 import {ChangeOrFocus} from "src/libs/types";
 const { TextArea } = Input
 export interface Props {
+    title?:string
 }
 const ChildCon = memo((props: any) => {
     const {value, component, ...other} = props
@@ -21,7 +22,7 @@ const ChildCon = memo((props: any) => {
 const dateFormat = 'YYYY-MM-DD HH:mm'
 /**业务学习项目 */
 export default observer(function (props: Props) {
-
+const {title}=props
     const onChange = (e: any, key: string) => {
         let value: any = e
         if (isMoment(e)) {
@@ -45,24 +46,24 @@ export default observer(function (props: Props) {
                 </colgroup>
                 <thead>
                 <tr>
-                    <th className='title' colSpan={2}>{model.detail?.record?.menuName}</th>
+                    <th className='title' colSpan={2}>{title||model.detail?.record?.menuName}</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr>
-                    <td >月工作总结</td>
+                    <td >本年工作总结</td>
                     <td colSpan={3}>
                         <ChildCon value={model.editorData.v1} onChange={(e:any) => onChange(e, 'v1')}/>
                     </td>
                    </tr>
                 <tr>
-                    <td >本月工作亮点</td>
+                    <td >本年工作亮点</td>
                     <td  colSpan={3}>
                         <ChildCon value={model.editorData.v2} onChange={(e:any) => onChange(e, 'v2')}/>
                     </td>
                 </tr>
                 <tr>
-                    <td >下月改进重点</td>
+                    <td >明年改进重点</td>
                     <td colSpan={3}>
                         <ChildCon value={model.editorData.v3} onChange={(e:any) => onChange(e, 'v3')}/>
 
