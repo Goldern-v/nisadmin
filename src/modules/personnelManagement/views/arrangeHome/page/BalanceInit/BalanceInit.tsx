@@ -173,6 +173,20 @@ export default observer(function FollowUpRecord() {
             align: "center",
           },
         ],
+        'wh':[
+          {
+            title: "操作人",
+            dataIndex: "updaterName",
+            width: 80,
+            align: "center"
+          },
+          {
+            title: "操作时间",
+            dataIndex: "updateTime",
+            width: 120,
+            align: "center"
+          }
+        ],
         other: [],
       },
       vague: true
